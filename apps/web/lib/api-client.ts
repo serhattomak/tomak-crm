@@ -782,6 +782,166 @@ export class ApiClient {
       tenantId
     )
   }
+
+  // ==========================================
+  // Products Module
+  // ==========================================
+  static async getProducts(
+    params: {
+      type?: string
+      categoryId?: string
+      status?: string
+      stockStatus?: string
+      search?: string
+      page?: number
+      pageSize?: number
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedProductsResponse>> {
+    const query = new URLSearchParams()
+    if (params.type) query.set("type", params.type)
+    if (params.categoryId) query.set("categoryId", params.categoryId)
+    if (params.status) query.set("status", params.status)
+    if (params.stockStatus) query.set("stockStatus", params.stockStatus)
+    if (params.search) query.set("search", params.search)
+    if (params.page) query.set("page", params.page.toString())
+    if (params.pageSize) query.set("pageSize", params.pageSize.toString())
+    const qs = query.toString()
+    const url = `/api/products${qs ? `?${qs}` : ""}`
+    return ApiClient.request<PagedProductsResponse>(url, {}, tenantId)
+  }
+
+  static async getProductById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<ProductDetailDto>> {
+    return ApiClient.request<ProductDetailDto>(`/api/products/${id}`, {}, tenantId)
+  }
+
+  static async getProductStats(
+    tenantId: string
+  ): Promise<ApiResponse<ProductStatsDto>> {
+    return ApiClient.request<ProductStatsDto>("/api/products/stats", {}, tenantId)
+  }
+
+  static async createProduct(
+    data: CreateProductRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/products",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async updateProduct(
+    id: string,
+    data: UpdateProductRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/products/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteProduct(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/products/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
+
+  static async adjustProductStock(
+    productId: string,
+    data: AdjustProductStockRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/products/${productId}/stock-adjustments`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async getProductCategories(
+    tenantId: string
+  ): Promise<ApiResponse<ProductCategoryDto[]>> {
+    return ApiClient.request<ProductCategoryDto[]>("/api/products/categories", {}, tenantId)
+  }
+
+  static async createProductCategory(
+    data: CreateProductCategoryRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/products/categories",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteProductCategory(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/products/categories/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
+
+  static async addProductVariant(
+    productId: string,
+    data: AddProductVariantRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/products/${productId}/variants`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteProductVariant(
+    productId: string,
+    variantId: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/products/${productId}/variants/${variantId}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
 }
 
 export interface CustomerListDto {
@@ -969,4 +1129,210 @@ export interface AddCustomerActivityRequest {
   performedAt?: string
   title: string
 }
+
+// ==========================================
+// Product DTOs
+// ==========================================
+export interface ProductCategoryDto {
+  createdAt: string
+  description?: string
+  fullPath?: string
+  icon?: string
+  id: string
+  isActive: boolean
+  name: string
+  parentId?: string
+  parentName?: string
+  productsCount: number
+  slug: string
+  tenantId: string
+  updatedAt: string
+}
+
+export interface ProductListDto {
+  availableStock: number
+  barcode?: string
+  brand?: string
+  categoryId?: string
+  categoryName?: string
+  costPrice: number
+  createdAt: string
+  currency: string
+  currentStock: number
+  discountRate: number
+  id: string
+  images?: string[]
+  isLowStock: boolean
+  minStockLevel: number
+  name: string
+  profitMargin: number
+  reservedStock: number
+  sellingPrice: number
+  sku?: string
+  status: "Active" | "Inactive" | "Draft" | "Discontinued" | string
+  tags?: string[]
+  taxRate: number
+  tenantId: string
+  trackInventory: boolean
+  type: "Physical" | "Service" | "Digital" | "Subscription" | string
+  unit: string
+  updatedAt: string
+  variantsCount: number
+}
+
+export interface PagedProductsResponse {
+  items: ProductListDto[]
+  page: number
+  pageSize: number
+  totalCount: number
+}
+
+export interface ProductVariantDetailDto {
+  additionalPrice: number
+  attributes?: string
+  barcode?: string
+  createdAt: string
+  id: string
+  isActive: boolean
+  name: string
+  productId: string
+  sku?: string
+  stockQuantity: number
+}
+
+export interface ProductStockMovementDto {
+  createdAt: string
+  id: string
+  movementType: "In" | "Out" | "Adjustment" | "Return" | string
+  newStock: number
+  notes?: string
+  performedByUserId?: string
+  previousStock: number
+  productId: string
+  quantity: number
+  reason?: string
+  referenceNumber?: string
+  unitCost?: number
+  variantId?: string
+  variantName?: string
+}
+
+export interface ProductDetailDto {
+  attributes?: string
+  availableStock: number
+  barcode?: string
+  brand?: string
+  categoryId?: string
+  categoryName?: string
+  costPrice: number
+  createdAt: string
+  currency: string
+  currentStock: number
+  description?: string
+  discountRate: number
+  id: string
+  images?: string[]
+  isLowStock: boolean
+  minStockLevel: number
+  name: string
+  profitMargin: number
+  reservedStock: number
+  sellingPrice: number
+  sku?: string
+  status: "Active" | "Inactive" | "Draft" | "Discontinued" | string
+  stockMovements: ProductStockMovementDto[]
+  tags?: string[]
+  taxRate: number
+  tenantId: string
+  trackInventory: boolean
+  type: "Physical" | "Service" | "Digital" | "Subscription" | string
+  unit: string
+  updatedAt: string
+  variants: ProductVariantDetailDto[]
+}
+
+export interface ProductStatsDto {
+  currency: string
+  digitalProductsCount: number
+  lowStockCount: number
+  outOfStockCount: number
+  physicalProductsCount: number
+  servicesCount: number
+  subscriptionsCount: number
+  totalInventoryValue: number
+  totalProducts: number
+  totalRetailValue: number
+}
+
+export interface CreateProductRequest {
+  attributes?: string
+  barcode?: string
+  brand?: string
+  categoryId?: string
+  costPrice: number
+  currency?: string
+  description?: string
+  discountRate?: number
+  images?: string[]
+  initialStock?: number
+  minStockLevel?: number
+  name: string
+  sellingPrice: number
+  sku?: string
+  status?: string
+  tags?: string[]
+  taxRate?: number
+  trackInventory?: boolean
+  type: string
+  unit: string
+}
+
+export interface UpdateProductRequest {
+  attributes?: string
+  barcode?: string
+  brand?: string
+  categoryId?: string
+  costPrice: number
+  currency?: string
+  description?: string
+  discountRate?: number
+  images?: string[]
+  minStockLevel?: number
+  name: string
+  sellingPrice: number
+  sku?: string
+  status?: string
+  tags?: string[]
+  taxRate?: number
+  trackInventory?: boolean
+  type: string
+  unit: string
+}
+
+export interface CreateProductCategoryRequest {
+  description?: string
+  icon?: string
+  name: string
+  parentId?: string
+}
+
+export interface AdjustProductStockRequest {
+  movementType: "In" | "Out" | "Adjustment" | "Return" | string
+  notes?: string
+  quantity: number
+  reason?: string
+  referenceNumber?: string
+  unitCost?: number
+  variantId?: string
+}
+
+export interface AddProductVariantRequest {
+  additionalPrice?: number
+  attributes?: string
+  barcode?: string
+  name: string
+  sku?: string
+  stockQuantity?: number
+}
+
 

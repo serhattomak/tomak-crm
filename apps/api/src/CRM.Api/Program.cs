@@ -6,6 +6,7 @@ using CRM.Modules.Identity;
 using CRM.Modules.Organization;
 using CRM.Modules.Tenants;
 using CRM.Modules.Customers;
+using CRM.Modules.Products;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
@@ -28,12 +29,14 @@ var tenantAssembly = typeof(TenantsModuleExtensions).Assembly;
 var identityAssembly = typeof(IdentityModuleExtensions).Assembly;
 var organizationAssembly = typeof(OrganizationModuleExtensions).Assembly;
 var customersAssembly = typeof(CustomersModuleExtensions).Assembly;
+var productsAssembly = typeof(ProductsModuleExtensions).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
 builder.Services.AddCustomersModule(builder.Configuration);
+builder.Services.AddProductsModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>
