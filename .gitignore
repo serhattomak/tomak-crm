@@ -84,3 +84,5 @@ yarn-error.log*
 Thumbs.db
 *.pem
 .vercel/
+
+inspo/

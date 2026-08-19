@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from "react"
 import {
   ApiClient,
@@ -41,45 +42,59 @@ export function PermissionProvider({
   const [activeTenant, setActiveTenantState] = useState<TenantDto | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
+  const activeTenantRef = useRef<TenantDto | null>(null)
+  activeTenantRef.current = activeTenant
+
   const refreshTenants = useCallback(async () => {
     const res = await ApiClient.getMyTenants()
     if (res.success && res.data) {
       setTenants(res.data)
-      if (!activeTenant && res.data.length > 0) {
+      if (!activeTenantRef.current && res.data.length > 0) {
         const found = initialTenantSlug
           ? res.data.find((t) => t.slug === initialTenantSlug) || res.data[0]
           : res.data[0]
-        setActiveTenantState(found || null)
+        if (found) {
+          setActiveTenantState(found)
+        }
       }
     }
-  }, [activeTenant, initialTenantSlug])
+  }, [initialTenantSlug])
 
   const refreshProfile = useCallback(async () => {
-    if (!activeTenant) return
-    const res = await ApiClient.getProfile(activeTenant.id)
+    const current = activeTenantRef.current
+    if (!current) return
+    const res = await ApiClient.getProfile(current.id)
     if (res.success && res.data) {
       setProfile(res.data)
     }
-  }, [activeTenant])
+  }, [])
 
   const setActiveTenant = (tenant: TenantDto) => {
     setActiveTenantState(tenant)
   }
 
+  // Load tenants on mount
   useEffect(() => {
+    let isMounted = true
     const init = async () => {
       setIsLoading(true)
       await refreshTenants()
-      setIsLoading(false)
+      if (isMounted) {
+        setIsLoading(false)
+      }
     }
     init()
+    return () => {
+      isMounted = false
+    }
   }, [refreshTenants])
 
+  // Fetch profile when active tenant changes
   useEffect(() => {
-    if (activeTenant) {
+    if (activeTenant?.id) {
       refreshProfile()
     }
-  }, [activeTenant, refreshProfile])
+  }, [activeTenant?.id, refreshProfile])
 
   const hasPermission = (permissionCode: string): boolean => {
     if (!profile) return false

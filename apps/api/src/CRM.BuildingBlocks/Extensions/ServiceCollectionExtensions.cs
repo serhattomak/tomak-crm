@@ -73,8 +73,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var jwtSecret = configuration["Supabase:JwtSecret"] ?? "super-secret-jwt-token-with-at-least-32-bytes-long";
-        var jwtIssuer = configuration["Supabase:Url"] ?? "http://localhost:54321/auth/v1";
+        var jwtSecret = configuration["Supabase:JwtSecret"] ?? "super-secret-jwt-token-with-at-least-32-characters-long";
 
         services.AddAuthentication(options =>
         {
@@ -89,9 +88,9 @@ public static class ServiceCollectionExtensions
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-                ValidateIssuer = false, // Supabase local tokens can vary issuer URL
-                ValidateAudience = true,
-                ValidAudience = "authenticated",
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
         });

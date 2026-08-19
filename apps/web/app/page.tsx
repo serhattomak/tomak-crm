@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ApiClient, type TenantDto } from "@/lib/api-client"
-import { Building2, Plus, Loader2, LogOut } from "lucide-react"
+import { Building2, Plus, Loader2, LogOut, Sparkles } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 export default function RootPage() {
@@ -12,6 +12,7 @@ export default function RootPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [newTenantName, setNewTenantName] = useState("")
   const [isCreating, setIsCreating] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     const loadTenants = async () => {
@@ -32,13 +33,17 @@ export default function RootPage() {
     if (!newTenantName.trim()) return
 
     setIsCreating(true)
+    setErrorMessage(null)
     const res = await ApiClient.createTenant(newTenantName.trim())
     setIsCreating(false)
 
     if (res.success && res.data) {
       router.push(`/${res.data.slug}`)
     } else {
-      alert(res.message || "Failed to create workspace")
+      setErrorMessage(
+        res.message ||
+          "Failed to create workspace. Please check your credentials."
+      )
     }
   }
 
@@ -50,26 +55,26 @@ export default function RootPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-slate-300">
-        <Loader2 className="mb-3 h-8 w-8 animate-spin text-indigo-500" />
-        <p className="text-sm">Loading your workspaces...</p>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f5f8] text-slate-600">
+        <Loader2 className="mb-3 h-8 w-8 animate-spin text-orange-500" />
+        <p className="text-xs font-semibold">Loading your workspaces...</p>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
-        <div className="mb-6 flex items-center justify-between">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f5f8] p-4">
+      <div className="w-full max-w-md space-y-6 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-5">
           <div className="flex items-center gap-3">
-            <div className="rounded-xl border border-indigo-500/20 bg-indigo-600/10 p-2.5 text-indigo-400">
-              <Building2 className="h-6 w-6" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-500 text-white shadow-md shadow-orange-500/25">
+              <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-100">
+              <h1 className="text-lg font-bold tracking-tight text-slate-900">
                 Create a Workspace
               </h1>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 You don&apos;t have any active workspace yet.
               </p>
             </div>
@@ -77,15 +82,21 @@ export default function RootPage() {
           <button
             onClick={handleLogout}
             title="Logout"
-            className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-800 hover:text-red-400"
+            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
           >
             <LogOut className="h-4 w-4" />
           </button>
         </div>
 
+        {errorMessage && (
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs font-medium text-rose-700">
+            {errorMessage}
+          </div>
+        )}
+
         <form onSubmit={handleCreateTenant} className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-800">
               Workspace Name
             </label>
             <input
@@ -94,14 +105,15 @@ export default function RootPage() {
               value={newTenantName}
               onChange={(e) => setNewTenantName(e.target.value)}
               placeholder="e.g. Acme Corp"
-              className="w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-900 transition-all placeholder:text-slate-400 focus:border-orange-500 focus:bg-white focus:outline-none"
+              autoFocus
             />
           </div>
 
           <button
             type="submit"
             disabled={isCreating}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3 text-xs font-semibold text-white shadow-sm transition-all hover:bg-slate-800 disabled:opacity-50"
           >
             {isCreating ? (
               <Loader2 className="h-4 w-4 animate-spin" />
