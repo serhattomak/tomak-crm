@@ -20,6 +20,11 @@ public class PermissionService(
         string permissionCode,
         CancellationToken cancellationToken = default)
     {
+        if (await IsSuperAdminAsync(userId, cancellationToken))
+        {
+            return true;
+        }
+
         var permissions = await GetUserPermissionsAsync(userId, tenantId, cancellationToken);
         return permissions.Contains(permissionCode);
     }
@@ -29,6 +34,12 @@ public class PermissionService(
         Guid tenantId,
         CancellationToken cancellationToken = default)
     {
+        // Super admins get all permissions
+        if (await IsSuperAdminAsync(userId, cancellationToken))
+        {
+            return await GetAllPermissionsAsync(cancellationToken);
+        }
+
         var cacheKey = GetCacheKey(tenantId, userId);
         var tenantTag = $"tenant:{tenantId}:permissions";
 
@@ -73,5 +84,52 @@ public class PermissionService(
             logger.LogInformation("Invalidating all user permission caches for Tenant {TenantId} via tag {Tag}", tenantId, tenantTag);
             await cacheService.RemoveByTagAsync(tenantTag, cancellationToken);
         }
+    }
+
+    private async Task<bool> IsSuperAdminAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var cacheKey = $"user:{userId}:is_super_admin";
+
+        var result = await cacheService.GetOrCreateAsync<bool?>(
+            cacheKey,
+            async ct =>
+            {
+                logger.LogInformation("Checking super admin status from DB for User {UserId}", userId);
+
+                return await dbContext.Users
+                    .IgnoreQueryFilters()
+                    .Where(u => u.Id == userId && u.IsActive)
+                    .Select(u => u.IsSuperAdmin)
+                    .FirstOrDefaultAsync(ct);
+            },
+            TimeSpan.FromMinutes(60),
+            [$"user:{userId}"],
+            cancellationToken);
+
+        return result == true;
+    }
+
+    private async Task<IReadOnlySet<string>> GetAllPermissionsAsync(CancellationToken cancellationToken)
+    {
+        const string cacheKey = "global:all_permissions";
+
+        var set = await cacheService.GetOrCreateAsync<HashSet<string>>(
+            cacheKey,
+            async ct =>
+            {
+                logger.LogInformation("Loading all permissions from DB for super admin");
+
+                var permissions = await dbContext.Set<Entities.Permission>()
+                    .IgnoreQueryFilters()
+                    .Select(p => p.Code)
+                    .ToListAsync(ct);
+
+                return permissions.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            },
+            TimeSpan.FromMinutes(60),
+            ["global:permissions"],
+            cancellationToken);
+
+        return set ?? (IReadOnlySet<string>)new HashSet<string>();
     }
 }

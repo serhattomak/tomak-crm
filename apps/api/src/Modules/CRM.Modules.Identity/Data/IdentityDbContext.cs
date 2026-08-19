@@ -27,6 +27,7 @@ public class IdentityDbContext(
             entity.Property(e => e.FullName).HasColumnName("full_name").HasMaxLength(200);
             entity.Property(e => e.AvatarUrl).HasColumnName("avatar_url");
             entity.Property(e => e.IsActive).HasColumnName("is_active").IsRequired();
+            entity.Property(e => e.IsSuperAdmin).HasColumnName("is_super_admin").IsRequired();
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
