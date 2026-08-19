@@ -150,7 +150,11 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <form className="space-y-3.5" onSubmit={handleRegister}>
+            <form
+              action="javascript:void(0);"
+              className="space-y-3.5"
+              onSubmit={handleRegister}
+            >
               <div>
                 <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Full Name

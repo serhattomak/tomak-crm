@@ -97,7 +97,11 @@ export default function RootPage() {
           </div>
         )}
 
-        <form className="space-y-4" onSubmit={handleCreateTenant}>
+        <form
+          action="javascript:void(0);"
+          className="space-y-4"
+          onSubmit={handleCreateTenant}
+        >
           <div>
             <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
               Workspace Name

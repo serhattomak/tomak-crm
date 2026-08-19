@@ -5,6 +5,7 @@
   </Folder>
   <Folder Name="/src/Modules/">
     <Project Path="src/Modules/CRM.Modules.Identity/CRM.Modules.Identity.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Organization/CRM.Modules.Organization.csproj" />
     <Project Path="src/Modules/CRM.Modules.Tenants/CRM.Modules.Tenants.csproj" />
   </Folder>
 </Solution>

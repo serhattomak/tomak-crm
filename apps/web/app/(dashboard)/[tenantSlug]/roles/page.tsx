@@ -376,7 +376,11 @@ export default function RolesManagementPage() {
               </button>
             </div>
 
-            <form className="space-y-4" onSubmit={handleCreateRole}>
+            <form
+              action="javascript:void(0);"
+              className="space-y-4"
+              onSubmit={handleCreateRole}
+            >
               <div>
                 <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Role Name

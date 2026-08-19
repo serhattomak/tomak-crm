@@ -100,17 +100,37 @@ export function PermissionProvider({
   }, [activeTenant?.id, refreshProfile]);
 
   const hasPermission = (permissionCode: string): boolean => {
+    if (activeTenant?.isOwner) {
+      return true;
+    }
     if (!profile) {
       return false;
     }
-    return profile.permissions.includes(permissionCode);
+    if (
+      profile.roles?.includes("Owner") ||
+      profile.roles?.includes("Admin") ||
+      profile.permissions?.includes("*")
+    ) {
+      return true;
+    }
+    return profile.permissions?.includes(permissionCode) ?? false;
   };
 
   const hasAnyPermission = (permissionCodes: string[]): boolean => {
+    if (activeTenant?.isOwner) {
+      return true;
+    }
     if (!profile) {
       return false;
     }
-    return permissionCodes.some((code) => profile.permissions.includes(code));
+    if (
+      profile.roles?.includes("Owner") ||
+      profile.roles?.includes("Admin") ||
+      profile.permissions?.includes("*")
+    ) {
+      return true;
+    }
+    return permissionCodes.some((code) => profile.permissions?.includes(code));
   };
 
   return (

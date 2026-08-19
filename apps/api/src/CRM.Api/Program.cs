@@ -3,6 +3,7 @@ using CRM.BuildingBlocks.Extensions;
 using CRM.BuildingBlocks.Messaging;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Identity;
+using CRM.Modules.Organization;
 using CRM.Modules.Tenants;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -24,10 +25,12 @@ builder.Host.UseSerilog((context, services, configuration) =>
 // 2. Add Building Blocks & Modules
 var tenantAssembly = typeof(TenantsModuleExtensions).Assembly;
 var identityAssembly = typeof(IdentityModuleExtensions).Assembly;
+var organizationAssembly = typeof(OrganizationModuleExtensions).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
+builder.Services.AddOrganizationModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>

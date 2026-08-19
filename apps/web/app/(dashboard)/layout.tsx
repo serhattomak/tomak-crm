@@ -3,6 +3,8 @@
 import {
   BarChart3,
   Boxes,
+  Briefcase,
+  Building2,
   ChevronRight,
   Flame,
   HelpCircle,
@@ -11,18 +13,20 @@ import {
   Mail,
   MessageCircleQuestion,
   MessageSquare,
+  Network,
   Package,
   Search,
   Settings,
   Shield,
   ShoppingCart,
+  UserCheck,
   Users,
   Users2,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import type React from "react";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import { TenantSwitcher } from "@/components/tenant-switcher";
 import { PermissionProvider } from "@/lib/permissions/permission-context";
@@ -62,7 +66,9 @@ export default function DashboardLayout({
             </div>
 
             {/* Navigation Menus */}
-            <DashboardNavigation />
+            <Suspense fallback={<div className="h-48 animate-pulse rounded-2xl bg-slate-50" />}>
+              <DashboardNavigation />
+            </Suspense>
           </div>
 
           {/* Bottom Sidebar Actions & Upgrade Card */}
@@ -80,8 +86,10 @@ export default function DashboardLayout({
 
 function DashboardNavigation() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const params = useParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
+  const currentTab = searchParams.get("tab") || "chart";
 
   const mainMenu = [
     {
@@ -113,6 +121,45 @@ function DashboardNavigation() {
       href: `/${tenantSlug}/messages`,
       icon: MessageSquare,
       name: "Message",
+    },
+  ];
+
+  const organizationMenu = [
+    {
+      badge: null,
+      dot: "bg-fuchsia-500",
+      href: `/${tenantSlug}/organization?tab=chart`,
+      icon: Network,
+      name: "Org Chart (Şema)",
+      permission: "Organization.ViewChart",
+      tab: "chart",
+    },
+    {
+      badge: null,
+      dot: "bg-cyan-500",
+      href: `/${tenantSlug}/organization?tab=departments`,
+      icon: Building2,
+      name: "Departmanlar",
+      permission: "Departments.View",
+      tab: "departments",
+    },
+    {
+      badge: null,
+      dot: "bg-violet-500",
+      href: `/${tenantSlug}/organization?tab=employees`,
+      icon: UserCheck,
+      name: "Çalışanlar & Kadro",
+      permission: "Employees.View",
+      tab: "employees",
+    },
+    {
+      badge: null,
+      dot: "bg-indigo-500",
+      href: `/${tenantSlug}/organization?tab=positions`,
+      icon: Briefcase,
+      name: "Pozisyonlar & Ünvanlar",
+      permission: "JobPositions.Manage",
+      tab: "positions",
     },
   ];
 
@@ -172,6 +219,7 @@ function DashboardNavigation() {
                 }`}
                 href={item.href}
                 key={item.name}
+                prefetch={false}
               >
                 <div className="flex items-center gap-2.5">
                   <item.icon
@@ -186,6 +234,54 @@ function DashboardNavigation() {
                 )}
               </Link>
             );
+          })}
+        </div>
+      </div>
+
+      {/* ORGANIZATION & PEOPLE */}
+      <div>
+        <div className="px-3 pb-1.5 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+          ORGANİZASYON
+        </div>
+        <div className="space-y-0.5">
+          {organizationMenu.map((item) => {
+            const isOrgPage = pathname === `/${tenantSlug}/organization`;
+            const isActive = isOrgPage && currentTab === item.tab;
+
+            const linkContent = (
+              <Link
+                className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
+                  isActive
+                    ? "bg-slate-900 font-semibold text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+                href={item.href}
+                key={item.name}
+                prefetch={false}
+              >
+                <div className="flex items-center gap-2.5">
+                  <item.icon
+                    className={`h-4 w-4 ${isActive ? "text-fuchsia-400" : "text-slate-400"}`}
+                  />
+                  <span>{item.name}</span>
+                </div>
+                {item.badge && (
+                  <span className="rounded-full bg-slate-100 px-1.5 py-0.2 font-bold text-[10px] text-slate-500">
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+            );
+
+            if (item.permission) {
+              return (
+                <PermissionGate key={item.name} permission={item.permission}>
+                  {linkContent}
+                </PermissionGate>
+              );
+            }
+
+            return linkContent;
           })}
         </div>
       </div>
@@ -207,6 +303,7 @@ function DashboardNavigation() {
                 }`}
                 href={item.href}
                 key={item.name}
+                prefetch={false}
               >
                 <div className="flex items-center gap-2.5">
                   <item.icon className="h-4 w-4 text-slate-400" />
@@ -236,6 +333,7 @@ function DashboardNavigation() {
                 }`}
                 href={item.href}
                 key={item.name}
+                prefetch={false}
               >
                 <div className="flex items-center gap-2.5">
                   {item.dot ? (

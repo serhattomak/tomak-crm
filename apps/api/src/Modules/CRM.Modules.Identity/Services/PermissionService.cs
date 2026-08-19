@@ -32,7 +32,7 @@ public class PermissionService(
         var cacheKey = GetCacheKey(tenantId, userId);
         var tenantTag = $"tenant:{tenantId}:permissions";
 
-        return await cacheService.GetOrCreateAsync(
+        var set = await cacheService.GetOrCreateAsync<HashSet<string>>(
             cacheKey,
             async ct =>
             {
@@ -47,11 +47,13 @@ public class PermissionService(
                     .Distinct()
                     .ToListAsync(ct);
 
-                return (IReadOnlySet<string>)permissions.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                return permissions.ToHashSet(StringComparer.OrdinalIgnoreCase);
             },
             TimeSpan.FromMinutes(30),
             [tenantTag, $"user:{userId}"],
             cancellationToken);
+
+        return set ?? (IReadOnlySet<string>)new HashSet<string>();
     }
 
     public async Task InvalidateUserPermissionsCacheAsync(

@@ -100,7 +100,11 @@ export function TenantSwitcher() {
 
           <div className="mt-1 border-slate-100 border-t px-1.5 pt-1.5">
             {isCreating ? (
-              <form className="space-y-2 p-1.5" onSubmit={handleCreateTenant}>
+              <form
+                action="javascript:void(0);"
+                className="space-y-2 p-1.5"
+                onSubmit={handleCreateTenant}
+              >
                 <input
                   autoFocus
                   className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-fuchsia-500 focus:outline-none"

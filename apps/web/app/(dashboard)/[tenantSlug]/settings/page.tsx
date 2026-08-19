@@ -80,7 +80,11 @@ export default function WorkspaceSettingsPage() {
       )}
 
       <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
-        <form className="space-y-4" onSubmit={handleSave}>
+        <form
+          action="javascript:void(0);"
+          className="space-y-4"
+          onSubmit={handleSave}
+        >
           <div>
             <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
               Workspace Name

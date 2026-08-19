@@ -145,7 +145,11 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form className="space-y-4" onSubmit={handleLogin}>
+            <form
+              action="javascript:void(0);"
+              className="space-y-4"
+              onSubmit={handleLogin}
+            >
               <div>
                 <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Email
