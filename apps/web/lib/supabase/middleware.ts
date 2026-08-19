@@ -19,18 +19,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Intercept any unwanted POST requests to /login and convert/respond gracefully
-  if (request.method === "POST" && pathname.startsWith("/login")) {
-    const referer = request.headers.get("referer");
-    console.log(`[INFO] Intercepted POST /login from: ${referer || "unknown"}`);
-    return NextResponse.json({ ok: true });
+  // Skip non-GET requests (form submissions, API calls, etc.)
+  if (request.method !== "GET") {
+    return NextResponse.next();
   }
+
 
   let supabaseResponse = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
+  supabaseResponse.headers.set("Permissions-Policy", "identity-credentials-get=()");
 
   const supabase = createServerClient(
     SUPABASE_URL,

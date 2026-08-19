@@ -146,7 +146,6 @@ export default function LoginPage() {
             )}
 
             <form
-              action="javascript:void(0);"
               className="space-y-4"
               onSubmit={handleLogin}
             >
