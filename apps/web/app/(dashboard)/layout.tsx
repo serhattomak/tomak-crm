@@ -111,25 +111,25 @@ function DashboardNavigation() {
       badge: null,
       href: `/${tenantSlug}/products`,
       icon: Package,
-      name: "Product",
+      name: "Ürün & Hizmetler",
     },
     {
       badge: null,
       href: `/${tenantSlug}/orders`,
       icon: ShoppingCart,
-      name: "Order",
+      name: "Siparişler",
     },
     {
       badge: null,
       href: `/${tenantSlug}/customers`,
       icon: Users2,
-      name: "Customer",
+      name: "Müşteriler",
     },
     {
       badge: "33",
       href: `/${tenantSlug}/messages`,
       icon: MessageSquare,
-      name: "Message",
+      name: "Mesajlar",
     },
   ]
 

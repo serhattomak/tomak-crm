@@ -942,6 +942,117 @@ export class ApiClient {
       tenantId
     )
   }
+
+  // ==========================================
+  // Orders Module
+  // ==========================================
+  static async getOrders(
+    params: {
+      status?: string
+      paymentStatus?: string
+      customerId?: string
+      search?: string
+      page?: number
+      pageSize?: number
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedOrdersResponse>> {
+    const query = new URLSearchParams()
+    if (params.status) query.set("status", params.status)
+    if (params.paymentStatus) query.set("paymentStatus", params.paymentStatus)
+    if (params.customerId) query.set("customerId", params.customerId)
+    if (params.search) query.set("search", params.search)
+    if (params.page) query.set("page", params.page.toString())
+    if (params.pageSize) query.set("pageSize", params.pageSize.toString())
+    const qs = query.toString()
+    const url = `/api/orders${qs ? `?${qs}` : ""}`
+    return ApiClient.request<PagedOrdersResponse>(url, {}, tenantId)
+  }
+
+  static async getOrderById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<OrderDetailDto>> {
+    return ApiClient.request<OrderDetailDto>(`/api/orders/${id}`, {}, tenantId)
+  }
+
+  static async getOrderStats(
+    tenantId: string
+  ): Promise<ApiResponse<OrderStatsDto>> {
+    return ApiClient.request<OrderStatsDto>("/api/orders/stats", {}, tenantId)
+  }
+
+  static async createOrder(
+    data: CreateOrderRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/orders",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async updateOrder(
+    id: string,
+    data: UpdateOrderRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/orders/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    )
+  }
+
+  static async changeOrderStatus(
+    id: string,
+    data: ChangeOrderStatusRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/orders/${id}/status`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async addOrderPayment(
+    orderId: string,
+    data: AddOrderPaymentRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/orders/${orderId}/payments`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteOrder(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/orders/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
 }
 
 export interface CustomerListDto {
@@ -1334,5 +1445,208 @@ export interface AddProductVariantRequest {
   sku?: string
   stockQuantity?: number
 }
+
+// ==========================================
+// Order DTOs
+// ==========================================
+export interface OrderListDto {
+  carrier?: string
+  createdAt: string
+  currency: string
+  customerId?: string
+  customerName: string
+  discountAmount: number
+  dueDate?: string
+  id: string
+  invoiceNumber?: string
+  itemsCount: number
+  orderDate: string
+  orderNumber: string
+  paidAmount: number
+  paymentMethod: "BankTransfer" | "CreditCard" | "Cash" | "Check" | "OpenAccount" | string
+  paymentStatus: "Unpaid" | "PartiallyPaid" | "Paid" | "Refunded" | string
+  remainingAmount: number
+  shippingFee: number
+  status: "Draft" | "PendingApproval" | "Confirmed" | "Processing" | "Shipped" | "Delivered" | "Cancelled" | "Refunded" | string
+  subtotal: number
+  taxAmount: number
+  tenantId: string
+  totalAmount: number
+  trackingNumber?: string
+  updatedAt: string
+}
+
+export interface PagedOrdersResponse {
+  items: OrderListDto[]
+  page: number
+  pageSize: number
+  totalCount: number
+}
+
+export interface OrderItemDetailDto {
+  createdAt: string
+  discountAmount: number
+  discountRate: number
+  id: string
+  optionsOrNotes?: string
+  orderId: string
+  productId?: string
+  productName: string
+  quantity: number
+  sku?: string
+  taxAmount: number
+  taxRate: number
+  totalPrice: number
+  unit: string
+  unitCost: number
+  unitPrice: number
+  variantId?: string
+}
+
+export interface OrderPaymentDetailDto {
+  amount: number
+  createdAt: string
+  id: string
+  notes?: string
+  orderId: string
+  paymentDate: string
+  paymentMethod: string
+  referenceNumber?: string
+}
+
+export interface OrderActivityDetailDto {
+  activityType: string
+  createdAt: string
+  description?: string
+  id: string
+  orderId: string
+  title: string
+}
+
+export interface OrderDetailDto {
+  activities: OrderActivityDetailDto[]
+  billingAddress?: string
+  carrier?: string
+  createdAt: string
+  currency: string
+  customerId?: string
+  customerName: string
+  discountAmount: number
+  dueDate?: string
+  id: string
+  invoiceNumber?: string
+  items: OrderItemDetailDto[]
+  notes?: string
+  orderDate: string
+  orderNumber: string
+  paidAmount: number
+  paymentMethod: string
+  paymentStatus: string
+  payments: OrderPaymentDetailDto[]
+  remainingAmount: number
+  shippingAddress?: string
+  shippingFee: number
+  status: string
+  subtotal: number
+  taxAmount: number
+  tenantId: string
+  totalAmount: number
+  trackingNumber?: string
+  updatedAt: string
+}
+
+export interface OrderStatsDto {
+  cancelledOrders: number
+  confirmedOrders: number
+  currency: string
+  deliveredOrders: number
+  paidRevenue: number
+  pendingOrders: number
+  processingOrders: number
+  shippedOrders: number
+  totalOrders: number
+  totalRevenue: number
+  unpaidRevenue: number
+}
+
+export interface CreateOrderItemRequest {
+  discountRate?: number
+  optionsOrNotes?: string
+  productId?: string
+  productName: string
+  quantity: number
+  sku?: string
+  taxRate?: number
+  unit?: string
+  unitCost?: number
+  unitPrice: number
+  variantId?: string
+}
+
+export interface CreateOrderRequest {
+  billingAddress?: string
+  carrier?: string
+  currency?: string
+  customerId?: string
+  customerName: string
+  dueDate?: string
+  generalDiscountAmount?: number
+  invoiceNumber?: string
+  items: CreateOrderItemRequest[]
+  notes?: string
+  orderDate?: string
+  paymentMethod?: string
+  shippingAddress?: string
+  shippingFee?: number
+  status?: string
+  trackingNumber?: string
+}
+
+export interface UpdateOrderItemDto {
+  discountRate?: number
+  id?: string
+  optionsOrNotes?: string
+  productId?: string
+  productName: string
+  quantity: number
+  sku?: string
+  taxRate?: number
+  unit?: string
+  unitCost?: number
+  unitPrice: number
+  variantId?: string
+}
+
+export interface UpdateOrderRequest {
+  billingAddress?: string
+  carrier?: string
+  currency?: string
+  customerId?: string
+  customerName: string
+  dueDate?: string
+  generalDiscountAmount?: number
+  invoiceNumber?: string
+  items: UpdateOrderItemDto[]
+  notes?: string
+  orderDate?: string
+  paymentMethod?: string
+  shippingAddress?: string
+  shippingFee?: number
+  trackingNumber?: string
+}
+
+export interface ChangeOrderStatusRequest {
+  newStatus: string
+  notes?: string
+}
+
+export interface AddOrderPaymentRequest {
+  amount: number
+  notes?: string
+  paymentDate?: string
+  paymentMethod?: string
+  referenceNumber?: string
+}
+
 
 
