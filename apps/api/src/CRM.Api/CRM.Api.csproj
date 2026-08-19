@@ -5,6 +5,7 @@
     <ProjectReference Include="..\Modules\CRM.Modules.Tenants\CRM.Modules.Tenants.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Identity\CRM.Modules.Identity.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Organization\CRM.Modules.Organization.csproj" />
+    <ProjectReference Include="..\Modules\CRM.Modules.Customers\CRM.Modules.Customers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

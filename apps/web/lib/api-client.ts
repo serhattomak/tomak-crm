@@ -638,4 +638,335 @@ export class ApiClient {
     const url = `/api/organization/chart${qs ? `?${qs}` : ""}`
     return ApiClient.request<OrgChartNodeDto[]>(url, {}, tenantId)
   }
+
+  // ==========================================
+  // Customers Module
+  // ==========================================
+  static async getCustomers(
+    tenantId: string,
+    params?: {
+      type?: string
+      status?: string
+      tier?: string
+      industry?: string
+      assignedEmployeeId?: string
+      search?: string
+      page?: number
+      pageSize?: number
+    }
+  ): Promise<ApiResponse<PagedCustomersResponse>> {
+    const query = new URLSearchParams()
+    if (params?.type) query.set("type", params.type)
+    if (params?.status) query.set("status", params.status)
+    if (params?.tier) query.set("tier", params.tier)
+    if (params?.industry) query.set("industry", params.industry)
+    if (params?.assignedEmployeeId) query.set("assignedEmployeeId", params.assignedEmployeeId)
+    if (params?.search) query.set("search", params.search)
+    if (params?.page) query.set("page", params.page.toString())
+    if (params?.pageSize) query.set("pageSize", params.pageSize.toString())
+    const qs = query.toString()
+    const url = `/api/customers${qs ? `?${qs}` : ""}`
+    return ApiClient.request<PagedCustomersResponse>(url, {}, tenantId)
+  }
+
+  static async getCustomerById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<CustomerDetailDto>> {
+    return ApiClient.request<CustomerDetailDto>(`/api/customers/${id}`, {}, tenantId)
+  }
+
+  static async getCustomerStats(
+    tenantId: string
+  ): Promise<ApiResponse<CustomerStatsDto>> {
+    return ApiClient.request<CustomerStatsDto>("/api/customers/stats", {}, tenantId)
+  }
+
+  static async createCustomer(
+    data: CreateCustomerRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/customers",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async updateCustomer(
+    id: string,
+    data: UpdateCustomerRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/customers/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteCustomer(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/customers/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
+
+  static async addCustomerContact(
+    customerId: string,
+    data: AddCustomerContactRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/customers/${customerId}/contacts`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async deleteCustomerContact(
+    customerId: string,
+    contactId: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/customers/${customerId}/contacts/${contactId}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    )
+  }
+
+  static async addCustomerNote(
+    customerId: string,
+    data: AddCustomerNoteRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/customers/${customerId}/notes`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async addCustomerActivity(
+    customerId: string,
+    data: AddCustomerActivityRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/customers/${customerId}/activities`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
 }
+
+export interface CustomerListDto {
+  assignedEmployeeId?: string
+  assignedEmployeeName?: string
+  city?: string
+  contactsCount: number
+  country?: string
+  createdAt: string
+  currency: string
+  dealsCount: number
+  email?: string
+  id: string
+  industry?: string
+  name: string
+  notesCount: number
+  phone?: string
+  status: "Lead" | "Active" | "Passive" | "Churned" | string
+  tags?: string[]
+  tenantId: string
+  tier: "VIP" | "Enterprise" | "SME" | "Standard" | string
+  totalRevenue: number
+  type: "Company" | "Individual" | string
+  updatedAt: string
+  website?: string
+}
+
+export interface PagedCustomersResponse {
+  items: CustomerListDto[]
+  page: number
+  pageSize: number
+  totalCount: number
+}
+
+export interface CustomerContactDto {
+  createdAt: string
+  customerId: string
+  department?: string
+  email?: string
+  firstName: string
+  fullName: string
+  id: string
+  isPrimary: boolean
+  lastName: string
+  mobile?: string
+  notes?: string
+  phone?: string
+  title?: string
+}
+
+export interface CustomerActivityDto {
+  activityType: "Call" | "Meeting" | "Email" | "Note" | "StatusChange" | "DealCreated" | string
+  createdAt: string
+  customerId: string
+  description?: string
+  id: string
+  performedAt: string
+  title: string
+  userId?: string
+}
+
+export interface CustomerNoteDto {
+  content: string
+  createdAt: string
+  customerId: string
+  id: string
+  isPinned: boolean
+  updatedAt: string
+  userId?: string
+}
+
+export interface CustomerDetailDto {
+  activities: CustomerActivityDto[]
+  addressLine?: string
+  assignedEmployeeAvatar?: string
+  assignedEmployeeId?: string
+  assignedEmployeeName?: string
+  assignedUserId?: string
+  city?: string
+  contacts: CustomerContactDto[]
+  country?: string
+  createdAt: string
+  currency: string
+  dealsCount: number
+  email?: string
+  id: string
+  industry?: string
+  name: string
+  notes: CustomerNoteDto[]
+  notesCount: number
+  phone?: string
+  postalCode?: string
+  state?: string
+  status: "Lead" | "Active" | "Passive" | "Churned" | string
+  tags?: string[]
+  taxNumber?: string
+  taxOffice?: string
+  tenantId: string
+  tier: "VIP" | "Enterprise" | "SME" | "Standard" | string
+  totalRevenue: number
+  type: "Company" | "Individual" | string
+  updatedAt: string
+  website?: string
+}
+
+export interface CustomerStatsDto {
+  activeCustomers: number
+  averageRevenuePerCustomer: number
+  churnedCustomers: number
+  companiesCount: number
+  currency: string
+  enterpriseCount: number
+  individualsCount: number
+  leadCustomers: number
+  totalCustomers: number
+  totalRevenue: number
+  vipCount: number
+}
+
+export interface CreateCustomerRequest {
+  addressLine?: string
+  assignedEmployeeId?: string
+  city?: string
+  country?: string
+  email?: string
+  industry?: string
+  initialContactEmail?: string
+  initialContactFirstName?: string
+  initialContactLastName?: string
+  initialContactPhone?: string
+  initialContactTitle?: string
+  name: string
+  phone?: string
+  postalCode?: string
+  state?: string
+  status: string
+  tags?: string[]
+  taxNumber?: string
+  taxOffice?: string
+  tier: string
+  type: string
+  website?: string
+}
+
+export interface UpdateCustomerRequest {
+  addressLine?: string
+  assignedEmployeeId?: string
+  city?: string
+  country?: string
+  email?: string
+  industry?: string
+  name: string
+  phone?: string
+  postalCode?: string
+  state?: string
+  status: string
+  tags?: string[]
+  taxNumber?: string
+  taxOffice?: string
+  tier: string
+  type: string
+  website?: string
+}
+
+export interface AddCustomerContactRequest {
+  department?: string
+  email?: string
+  firstName: string
+  isPrimary: boolean
+  lastName: string
+  mobile?: string
+  notes?: string
+  phone?: string
+  title?: string
+}
+
+export interface AddCustomerNoteRequest {
+  content: string
+  isPinned?: boolean
+}
+
+export interface AddCustomerActivityRequest {
+  activityType: string
+  description?: string
+  performedAt?: string
+  title: string
+}
+
