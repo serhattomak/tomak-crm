@@ -1,71 +1,72 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
+      });
 
       if (authError) {
-        setError(authError.message)
-        setIsLoading(false)
-        return
+        setError(authError.message);
+        setIsLoading(false);
+        return;
       }
 
-      router.push("/")
-      router.refresh()
+      router.push("/");
+      router.refresh();
     } catch {
-      setError("An unexpected error occurred. Please try again.")
-      setIsLoading(false)
+      setError("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       await supabase.auth.signInWithOAuth({
-        provider: "google",
         options: {
           redirectTo: `${window.location.origin}/`,
         },
-      })
+        provider: "google",
+      });
     } catch {
-      setError("Failed to initialize Google login.")
+      setError("Failed to initialize Google login.");
     }
-  }
+  };
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070709] p-3 sm:p-6">
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
-          src="/auth-art.jpg"
           alt="Ambient Background"
-          fill
           className="scale-125 object-cover blur-3xl"
+          fill
           priority
+          src="/auth-art.jpg"
         />
       </div>
 
@@ -74,17 +75,17 @@ export default function LoginPage() {
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
-            src="/auth-art.jpg"
             alt="Editorial Wave Art"
-            fill
             className="object-cover"
+            fill
             priority
+            src="/auth-art.jpg"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40" />
 
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
-            <span className="text-[11px] font-bold tracking-[0.25em] text-white/90 uppercase">
+            <span className="font-bold text-[11px] text-white/90 uppercase tracking-[0.25em]">
               A WISE QUOTE
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />
@@ -92,14 +93,14 @@ export default function LoginPage() {
 
           {/* Bottom Quote & Typography */}
           <div className="relative z-10 max-w-sm space-y-4">
-            <h2 className="font-serif text-4xl leading-[1.08] font-normal tracking-tight text-white sm:text-5xl">
+            <h2 className="font-normal font-serif text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl">
               Get
               <br />
               Everything
               <br />
               You Want
             </h2>
-            <p className="text-xs leading-relaxed font-light text-white/80 sm:text-sm">
+            <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
               You can get everything you want if you work hard, trust the
               process, and stick to the plan.
             </p>
@@ -112,17 +113,17 @@ export default function LoginPage() {
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm">
               <svg
-                viewBox="0 0 24 24"
+                className="h-3.5 w-3.5"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
-                className="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
               >
                 <path d="M12 3a9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9Z" />
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="text-base font-semibold tracking-tight text-slate-900">
+            <span className="font-semibold text-base text-slate-900 tracking-tight">
               Cogie
             </span>
           </div>
@@ -130,52 +131,52 @@ export default function LoginPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-6">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-serif text-3xl font-normal tracking-tight text-slate-900 sm:text-4xl">
+              <h1 className="font-normal font-serif text-3xl text-slate-900 tracking-tight sm:text-4xl">
                 Welcome Back
               </h1>
-              <p className="text-xs font-normal text-slate-500">
+              <p className="font-normal text-slate-500 text-xs">
                 Enter your email and password to access your account
               </p>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-xs text-red-600">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-red-600 text-xs">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleLogin} className="space-y-4">
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
+                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Email
                 </label>
                 <input
-                  type="email"
-                  required
-                  value={email}
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  required
+                  type="email"
+                  value={email}
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
+                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={password}
+                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                    required
+                    type={showPassword ? "text" : "password"}
+                    value={password}
                   />
                   <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute top-3.5 right-3 text-slate-400 hover:text-slate-600"
+                    onClick={() => setShowPassword(!showPassword)}
+                    type="button"
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -187,24 +188,24 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between pt-1 text-xs">
-                <label className="flex cursor-pointer items-center gap-2 text-slate-600 select-none">
+                <label className="flex cursor-pointer select-none items-center gap-2 text-slate-600">
                   <input
-                    type="checkbox"
                     checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
                     className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    type="checkbox"
                   />
                   Remember me
                 </label>
                 <a
+                  className="font-normal text-slate-700 hover:text-black"
                   href="#forgot"
                   onClick={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     alert(
                       "Password reset instructions will be sent to your email."
-                    )
+                    );
                   }}
-                  className="font-normal text-slate-700 hover:text-black"
                 >
                   Forgot Password
                 </a>
@@ -212,35 +213,35 @@ export default function LoginPage() {
 
               <div className="space-y-2.5 pt-2">
                 <button
-                  type="submit"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 font-medium text-white text-xs shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
                   disabled={isLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
+                  type="submit"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                   Sign In
                 </button>
 
                 <button
-                  type="button"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 font-medium text-slate-700 text-xs shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
                   onClick={handleGoogleLogin}
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 text-xs font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
+                  type="button"
                 >
                   <svg className="h-4 w-4" viewBox="0 0 24 24">
                     <path
-                      fill="#4285F4"
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="#4285F4"
                     />
                     <path
-                      fill="#34A853"
                       d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="#34A853"
                     />
                     <path
-                      fill="#FBBC05"
                       d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                      fill="#FBBC05"
                     />
                     <path
-                      fill="#EA4335"
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                      fill="#EA4335"
                     />
                   </svg>
                   Sign In with Google
@@ -250,11 +251,11 @@ export default function LoginPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-xs text-slate-500">
+          <div className="mt-8 text-center text-slate-500 text-xs">
             Don&apos;t have an account?{" "}
             <Link
-              href="/register"
               className="font-semibold text-slate-900 hover:underline"
+              href="/register"
             >
               Sign Up
             </Link>
@@ -262,5 +263,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -2,15 +2,19 @@
   "name": "crm-monorepo",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "dev:web": "npm run dev --workspace=web",
     "dev:api": "npm run dev --workspace=api",
-    "docker:up": "docker compose up -d",
+    "dev:web": "npm run dev --workspace=web",
     "docker:down": "docker compose down",
-    "lint": "turbo lint",
+    "docker:up": "docker compose up -d",
     "format": "turbo format",
+    "lint": "turbo lint",
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
@@ -24,9 +28,5 @@
   "packageManager": "npm@11.6.2",
   "engines": {
     "node": ">=20"
-  },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  }
 }

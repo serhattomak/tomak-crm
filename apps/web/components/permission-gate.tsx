@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import React from "react"
-import { usePermissions } from "@/lib/permissions/permission-context"
+import type React from "react";
+import { usePermissions } from "@/lib/permissions/permission-context";
 
 interface PermissionGateProps {
-  permission?: string
-  anyOf?: string[]
-  children: React.ReactNode
-  fallback?: React.ReactNode
+  anyOf?: string[];
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  permission?: string;
 }
 
 export function PermissionGate({
@@ -16,19 +16,19 @@ export function PermissionGate({
   children,
   fallback = null,
 }: PermissionGateProps) {
-  const { hasPermission, hasAnyPermission, isLoading } = usePermissions()
+  const { hasPermission, hasAnyPermission, isLoading } = usePermissions();
 
   if (isLoading) {
-    return null
+    return null;
   }
 
   if (permission && !hasPermission(permission)) {
-    return <>{fallback}</>
+    return <>{fallback}</>;
   }
 
   if (anyOf && anyOf.length > 0 && !hasAnyPermission(anyOf)) {
-    return <>{fallback}</>
+    return <>{fallback}</>;
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }

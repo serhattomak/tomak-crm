@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "dotnet watch run --project src/CRM.Api/CRM.Api.csproj --urls http://localhost:5000",
     "build": "dotnet build CRM.Monolith.slnx",
-    "test": "dotnet test CRM.Monolith.slnx",
-    "start": "dotnet run --project src/CRM.Api/CRM.Api.csproj --urls http://localhost:5000"
+    "dev": "dotnet watch run --project src/CRM.Api/CRM.Api.csproj --urls http://localhost:5000",
+    "start": "dotnet run --project src/CRM.Api/CRM.Api.csproj --urls http://localhost:5000",
+    "test": "dotnet test CRM.Monolith.slnx"
   }
 }
