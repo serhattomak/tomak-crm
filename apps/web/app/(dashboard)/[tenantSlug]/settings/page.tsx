@@ -55,62 +55,63 @@ export default function WorkspaceSettingsPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <div>
-        <h1 className="flex items-center gap-2.5 text-2xl font-bold text-slate-100">
-          <Settings className="h-6 w-6 text-indigo-400" />
+        <h1 className="flex items-center gap-2.5 text-2xl font-bold tracking-tight text-slate-900">
+          <Settings className="h-6 w-6 text-orange-500" />
           Workspace Settings
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
-          Update basic details and preferences for this workspace.
+        <p className="mt-1 text-xs text-slate-500">
+          Update basic details and branding preferences for this workspace.
         </p>
       </div>
 
       {statusMsg && (
         <div
-          className={`rounded-lg p-3 text-sm ${
+          className={`rounded-xl p-3.5 text-xs font-medium ${
             statusMsg.type === "success"
-              ? "border border-emerald-800/60 bg-emerald-950/60 text-emerald-300"
-              : "border border-red-800/60 bg-red-950/60 text-red-300"
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border border-rose-200 bg-rose-50 text-rose-700"
           }`}
         >
           {statusMsg.text}
         </div>
       )}
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
         <form onSubmit={handleSave} className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-800">
               Workspace Name
             </label>
             <div className="relative">
-              <Building2 className="absolute top-3 left-3 h-4 w-4 text-slate-500" />
+              <Building2 className="absolute top-3 left-3 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-slate-800 bg-slate-950 py-2 pr-3 pl-9 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-3 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:bg-white focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-800">
               Workspace Slug
             </label>
             <input
               type="text"
               disabled
               value={activeTenant?.slug || ""}
-              className="w-full cursor-not-allowed rounded-lg border border-slate-800/80 bg-slate-950/50 px-3 py-2 font-mono text-sm text-slate-500"
+              className="w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100/70 px-3 py-2.5 font-mono text-xs text-slate-500"
             />
-            <p className="mt-1 text-[11px] text-slate-500">
-              Slug is permanent and used in URL paths.
+            <p className="mt-1 text-[11px] text-slate-400">
+              Slug is permanent and used in URL paths and database partition
+              keys.
             </p>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-800">
               Logo URL
             </label>
             <input
@@ -118,21 +119,21 @@ export default function WorkspaceSettingsPage() {
               value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://example.com/logo.png"
-              className="w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:bg-white focus:outline-none"
             />
           </div>
 
           <PermissionGate permission="Tenants.Update">
-            <div className="pt-2">
+            <div className="flex justify-end border-t border-slate-100 pt-3">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition-colors hover:bg-indigo-500 disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-slate-800 disabled:opacity-50"
               >
                 {isSaving ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <Check className="h-4 w-4" />
+                  <Check className="h-3.5 w-3.5" />
                 )}
                 Save Changes
               </button>

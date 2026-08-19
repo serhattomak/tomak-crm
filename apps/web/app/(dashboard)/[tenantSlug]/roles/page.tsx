@@ -148,22 +148,22 @@ export default function RolesManagementPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="flex items-center gap-2.5 text-2xl font-bold text-slate-100">
-            <Shield className="h-6 w-6 text-indigo-400" />
-            Roles & Permission Matrix
+          <h1 className="flex items-center gap-2.5 text-2xl font-bold tracking-tight text-slate-900">
+            <Shield className="h-6 w-6 text-orange-500" />
+            Roles & Permissions Matrix
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs text-slate-500">
             Configure fine-grained PBAC / RBAC permission policies. Changes
-            automatically invalidate Redis cache.
+            automatically update Redis cache.
           </p>
         </div>
 
         <PermissionGate permission="Roles.Create">
           <button
             onClick={() => setIsCreateOpen(true)}
-            className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition-colors hover:bg-indigo-500"
+            className="flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-slate-800"
           >
             <Plus className="h-4 w-4" />
             New Role
@@ -173,10 +173,10 @@ export default function RolesManagementPage() {
 
       {statusMsg && (
         <div
-          className={`rounded-lg p-3 text-sm ${
+          className={`rounded-xl p-3.5 text-xs font-medium ${
             statusMsg.type === "success"
-              ? "border border-emerald-800/60 bg-emerald-950/60 text-emerald-300"
-              : "border border-red-800/60 bg-red-950/60 text-red-300"
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border border-rose-200 bg-rose-50 text-rose-700"
           }`}
         >
           {statusMsg.text}
@@ -186,14 +186,14 @@ export default function RolesManagementPage() {
       {/* Main Grid: Roles List (Left) and Matrix (Right) */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
-        <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-900 p-4 md:col-span-4">
-          <div className="mb-2 px-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+        <div className="space-y-2 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:col-span-4">
+          <div className="mb-2 px-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
             Available Roles ({roles.length})
           </div>
 
           {isLoading ? (
-            <div className="p-4 text-center text-slate-400">
-              <Loader2 className="mx-auto h-5 w-5 animate-spin text-indigo-400" />
+            <div className="p-4 text-center text-xs text-slate-400">
+              <Loader2 className="mx-auto h-4 w-4 animate-spin text-orange-500" />
             </div>
           ) : (
             <div className="space-y-1.5">
@@ -203,28 +203,28 @@ export default function RolesManagementPage() {
                   <div
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
-                    className={`cursor-pointer rounded-lg border p-3 transition-all ${
+                    className={`cursor-pointer rounded-xl border p-3 transition-all ${
                       isSelected
-                        ? "border-indigo-500/40 bg-indigo-600/15 text-indigo-300"
-                        : "border-slate-800/80 bg-slate-950/60 text-slate-300 hover:bg-slate-800/50"
+                        ? "border-orange-200 bg-orange-50/70 text-orange-950 shadow-2xs"
+                        : "border-slate-100 bg-white text-slate-700 hover:bg-slate-50"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-sm font-semibold">
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-900">
                         {role.name}
                         {role.isDefault && (
                           <span title="System default role">
-                            <Lock className="h-3.5 w-3.5 text-amber-400" />
+                            <Lock className="h-3 w-3 text-amber-500" />
                           </span>
                         )}
                       </span>
-                      <span className="font-mono text-xs text-slate-500">
+                      <span className="font-mono text-[11px] text-slate-400">
                         {role.memberCount} member
                         {role.memberCount !== 1 ? "s" : ""}
                       </span>
                     </div>
                     {role.description && (
-                      <p className="mt-1 line-clamp-2 text-xs text-slate-400">
+                      <p className="mt-1 line-clamp-2 text-[11px] text-slate-500">
                         {role.description}
                       </p>
                     )}
@@ -236,20 +236,20 @@ export default function RolesManagementPage() {
         </div>
 
         {/* Permissions Matrix */}
-        <div className="flex flex-col justify-between rounded-xl border border-slate-800 bg-slate-900 p-6 md:col-span-8">
+        <div className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs md:col-span-8">
           {selectedRole ? (
             <div>
-              <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
                 <div>
-                  <h2 className="flex items-center gap-2 text-lg font-bold text-slate-100">
+                  <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
                     {selectedRole.name}
                     {selectedRole.isDefault && (
-                      <span className="rounded border border-amber-800/60 bg-amber-950 px-2 py-0.5 text-xs font-normal text-amber-400">
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
                         System Default
                       </span>
                     )}
                   </h2>
-                  <p className="mt-0.5 text-xs text-slate-400">
+                  <p className="mt-0.5 text-xs text-slate-500">
                     {selectedRole.description || "No description provided."}
                   </p>
                 </div>
@@ -258,7 +258,7 @@ export default function RolesManagementPage() {
                   <PermissionGate permission="Roles.Delete">
                     <button
                       onClick={() => handleDeleteRole(selectedRole.id)}
-                      className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-red-950/30 hover:text-red-400"
+                      className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600"
                       title="Delete Role"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -268,11 +268,11 @@ export default function RolesManagementPage() {
               </div>
 
               {/* Permission Groups */}
-              <div className="max-h-[500px] space-y-6 overflow-y-auto pr-2">
+              <div className="max-h-[460px] space-y-6 overflow-y-auto pr-2">
                 {permissionGroups.map((group) => (
                   <div key={group.module} className="space-y-3">
-                    <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-indigo-400 uppercase">
-                      <span className="h-2 w-2 rounded-full bg-indigo-500"></span>
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-orange-600 uppercase">
+                      <span className="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
                       {group.module} Module
                     </div>
 
@@ -282,27 +282,27 @@ export default function RolesManagementPage() {
                         return (
                           <label
                             key={perm.id}
-                            className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-all ${
+                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${
                               isChecked
-                                ? "border-indigo-500/40 bg-indigo-950/30 text-slate-100"
-                                : "border-slate-800/80 bg-slate-950/40 text-slate-400 hover:bg-slate-800/30"
+                                ? "border-orange-200 bg-orange-50/50 text-slate-900 shadow-2xs"
+                                : "border-slate-100 bg-white text-slate-600 hover:bg-slate-50"
                             }`}
                           >
                             <input
                               type="checkbox"
                               checked={isChecked}
                               onChange={() => togglePermission(perm.id)}
-                              className="mt-0.5 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-indigo-500"
+                              className="mt-0.5 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                             />
                             <div>
-                              <div className="text-xs font-semibold text-slate-200">
+                              <div className="text-xs font-semibold text-slate-900">
                                 {perm.name}
                               </div>
-                              <div className="font-mono text-[11px] text-indigo-300/80">
+                              <div className="font-mono text-[10px] text-orange-600/90">
                                 {perm.code}
                               </div>
                               {perm.description && (
-                                <div className="mt-0.5 text-[11px] text-slate-400">
+                                <div className="mt-0.5 text-[11px] text-slate-500">
                                   {perm.description}
                                 </div>
                               )}
@@ -316,8 +316,8 @@ export default function RolesManagementPage() {
               </div>
 
               {/* Action Bar */}
-              <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-4">
-                <span className="text-xs text-slate-400">
+              <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                <span className="text-xs font-medium text-slate-500">
                   {selectedPermIds.size} permission
                   {selectedPermIds.size !== 1 ? "s" : ""} selected
                 </span>
@@ -326,12 +326,12 @@ export default function RolesManagementPage() {
                   <button
                     onClick={handleSavePermissions}
                     disabled={isSaving}
-                    className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white shadow-lg shadow-indigo-600/20 transition-colors hover:bg-indigo-500 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-slate-800 disabled:opacity-50"
                   >
                     {isSaving ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     ) : (
-                      <Check className="h-4 w-4" />
+                      <Check className="h-3.5 w-3.5" />
                     )}
                     Save & Invalidate Cache
                   </button>
@@ -339,7 +339,7 @@ export default function RolesManagementPage() {
               </div>
             </div>
           ) : (
-            <div className="p-12 text-center text-slate-500">
+            <div className="p-12 text-center text-xs text-slate-400">
               Select a role from the left panel to configure its permission
               matrix.
             </div>
@@ -349,24 +349,24 @@ export default function RolesManagementPage() {
 
       {/* Create Role Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-bold text-slate-100">
-                <Shield className="h-5 w-5 text-indigo-400" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
+                <Shield className="h-4 w-4 text-orange-500" />
                 Create Custom Role
               </h2>
               <button
                 onClick={() => setIsCreateOpen(false)}
-                className="text-slate-400 hover:text-slate-200"
+                className="text-slate-400 hover:text-slate-700"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handleCreateRole} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-300">
+                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Role Name
                 </label>
                 <input
@@ -375,12 +375,12 @@ export default function RolesManagementPage() {
                   value={newRoleName}
                   onChange={(e) => setNewRoleName(e.target.value)}
                   placeholder="e.g. Sales Manager"
-                  className="w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-slate-300">
+                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Description
                 </label>
                 <textarea
@@ -388,24 +388,26 @@ export default function RolesManagementPage() {
                   onChange={(e) => setNewRoleDesc(e.target.value)}
                   placeholder="Responsibilities and access scope..."
                   rows={3}
-                  className="w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(false)}
-                  className="px-4 py-2 text-sm text-slate-400 hover:text-slate-200"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isCreating}
-                  className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
                 >
-                  {isCreating && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {isCreating && (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  )}
                   Create Role
                 </button>
               </div>

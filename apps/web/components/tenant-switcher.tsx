@@ -1,16 +1,13 @@
 "use client"
 
 import React, { useState } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { usePermissions } from "@/lib/permissions/permission-context"
 import { ApiClient } from "@/lib/api-client"
-import { Building2, ChevronDown, Plus, Check, Loader2 } from "lucide-react"
+import { ChevronDown, Plus, Check, Loader2, Sparkles } from "lucide-react"
 
 export function TenantSwitcher() {
   const router = useRouter()
-  const params = useParams()
-  const currentSlug = params?.tenantSlug as string | undefined
-
   const { tenants, activeTenant, setActiveTenant, refreshTenants } =
     usePermissions()
   const [isOpen, setIsOpen] = useState(false)
@@ -45,30 +42,37 @@ export function TenantSwitcher() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-56 items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 transition-colors hover:bg-slate-800"
+        className="group flex w-full items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-2 text-left transition-all hover:bg-slate-100"
       >
-        <div className="flex items-center gap-2 truncate">
-          <div className="rounded bg-indigo-600 p-1 text-white">
-            <Building2 className="h-4 w-4" />
+        <div className="flex min-w-0 items-center gap-2.5">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-sm font-bold text-white shadow-sm">
+            {activeTenant?.name
+              ? activeTenant.name.charAt(0).toUpperCase()
+              : "W."}
           </div>
-          <span className="truncate">
-            {activeTenant?.name || "Select Workspace"}
-          </span>
+          <div className="min-w-0">
+            <div className="truncate text-xs font-bold text-slate-900">
+              {activeTenant?.name || "Select Workspace"}
+            </div>
+            <div className="text-[10px] font-medium text-slate-400">
+              Free Plan
+            </div>
+          </div>
         </div>
-        <ChevronDown className="h-4 w-4 text-slate-400" />
+        <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:text-slate-600" />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 z-50 mt-1 w-64 rounded-lg border border-slate-800 bg-slate-900 py-1 shadow-xl">
-          <div className="px-3 py-1.5 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+        <div className="absolute top-full left-0 z-50 mt-1.5 w-full min-w-[240px] animate-in rounded-2xl border border-slate-200/80 bg-white py-1.5 shadow-xl fade-in slide-in-from-top-1">
+          <div className="px-3 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
             Workspaces
           </div>
 
-          <div className="max-h-56 overflow-y-auto">
+          <div className="max-h-56 overflow-y-auto py-1">
             {tenants.map((tenant) => {
               const isSelected = activeTenant?.id === tenant.id
               return (
@@ -76,44 +80,44 @@ export function TenantSwitcher() {
                   key={tenant.id}
                   type="button"
                   onClick={() => handleSelectTenant(tenant)}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm transition-colors hover:bg-slate-800 ${
+                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition-colors hover:bg-slate-50 ${
                     isSelected
-                      ? "bg-slate-800/50 font-medium text-indigo-400"
-                      : "text-slate-200"
+                      ? "bg-orange-50/60 font-semibold text-orange-600"
+                      : "text-slate-700"
                   }`}
                 >
                   <span className="truncate">{tenant.name}</span>
                   {isSelected && (
-                    <Check className="h-4 w-4 shrink-0 text-indigo-400" />
+                    <Check className="h-3.5 w-3.5 shrink-0 text-orange-600" />
                   )}
                 </button>
               )
             })}
           </div>
 
-          <div className="mt-1 border-t border-slate-800 pt-1">
+          <div className="mt-1 border-t border-slate-100 px-1.5 pt-1.5">
             {isCreating ? (
-              <form onSubmit={handleCreateTenant} className="space-y-2 p-2">
+              <form onSubmit={handleCreateTenant} className="space-y-2 p-1.5">
                 <input
                   type="text"
                   placeholder="Workspace Name"
                   value={newTenantName}
                   onChange={(e) => setNewTenantName(e.target.value)}
-                  className="w-full rounded border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:outline-none"
                   autoFocus
                 />
-                <div className="flex justify-end gap-1.5">
+                <div className="flex justify-end gap-1">
                   <button
                     type="button"
                     onClick={() => setIsCreating(false)}
-                    className="px-2 py-1 text-xs text-slate-400 hover:text-slate-200"
+                    className="px-2 py-1 text-[11px] text-slate-500 hover:text-slate-800"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-1 rounded bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                    className="flex items-center gap-1 rounded-lg bg-slate-950 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-slate-800 disabled:opacity-50"
                   >
                     {isLoading && <Loader2 className="h-3 w-3 animate-spin" />}
                     Create
@@ -124,10 +128,10 @@ export function TenantSwitcher() {
               <button
                 type="button"
                 onClick={() => setIsCreating(true)}
-                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-medium text-indigo-400 transition-colors hover:bg-slate-800"
+                className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-xs font-semibold text-orange-600 transition-colors hover:bg-orange-50"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Create Workspace
+                Add New Workspace
               </button>
             )}
           </div>
