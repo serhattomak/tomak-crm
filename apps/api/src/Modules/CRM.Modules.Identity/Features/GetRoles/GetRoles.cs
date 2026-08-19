@@ -67,9 +67,9 @@ public class GetRolesEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/identity/roles", async (IQueryHandler<GetRolesQuery, IReadOnlyList<RoleDto>> handler, CancellationToken ct) =>
+        app.MapGet("/api/identity/roles", async (MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new GetRolesQuery(), ct);
+            var result = await sender.Send(new GetRolesQuery(), ct);
             return Results.Ok(ApiResponse<IReadOnlyList<RoleDto>>.Ok(result.Value));
         })
         .RequireAuthorization()

@@ -61,14 +61,14 @@ public class UpdateTenantEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/tenants/{id:guid}", async (Guid id, UpdateTenantCommand command, ICommandHandler<UpdateTenantCommand, TenantDto> handler, CancellationToken ct) =>
+        app.MapPut("/api/tenants/{id:guid}", async (Guid id, UpdateTenantCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
             if (id != command.Id)
             {
                 return Results.BadRequest(ApiResponse<TenantDto>.Fail("IdMismatch", "Route ID does not match body ID."));
             }
 
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<TenantDto>.Ok(result.Value, "Tenant updated successfully."));
         })
         .RequireAuthorization()

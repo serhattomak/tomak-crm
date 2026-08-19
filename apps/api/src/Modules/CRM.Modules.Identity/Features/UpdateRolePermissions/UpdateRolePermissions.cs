@@ -102,7 +102,7 @@ public class UpdateRolePermissionsEndpoint : IEndpoint
         app.MapPut("/api/identity/roles/{id:guid}/permissions", async (
             Guid id,
             UpdateRolePermissionsCommand command,
-            ICommandHandler<UpdateRolePermissionsCommand> handler,
+            MediatR.ISender sender,
             CancellationToken ct) =>
         {
             if (id != command.RoleId)
@@ -110,7 +110,7 @@ public class UpdateRolePermissionsEndpoint : IEndpoint
                 return Results.BadRequest(ApiResponse<string>.Fail("IdMismatch", "Route ID does not match body RoleId."));
             }
 
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<string>.Ok("Permissions updated successfully."));
         })
         .RequireAuthorization()

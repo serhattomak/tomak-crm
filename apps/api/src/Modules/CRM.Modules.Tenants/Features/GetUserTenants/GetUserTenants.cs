@@ -49,9 +49,9 @@ public class GetUserTenantsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/tenants/me", async (IQueryHandler<GetUserTenantsQuery, IReadOnlyList<TenantDto>> handler, CancellationToken ct) =>
+        app.MapGet("/api/tenants/me", async (MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new GetUserTenantsQuery(), ct);
+            var result = await sender.Send(new GetUserTenantsQuery(), ct);
             return Results.Ok(ApiResponse<IReadOnlyList<TenantDto>>.Ok(result.Value));
         })
         .RequireAuthorization()

@@ -66,9 +66,9 @@ public class GetTenantEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/tenants/by-slug/{slug}", async (string slug, IQueryHandler<GetTenantBySlugQuery, TenantDto> handler, CancellationToken ct) =>
+        app.MapGet("/api/tenants/by-slug/{slug}", async (string slug, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new GetTenantBySlugQuery(slug), ct);
+            var result = await sender.Send(new GetTenantBySlugQuery(slug), ct);
             return Results.Ok(ApiResponse<TenantDto>.Ok(result.Value));
         })
         .RequireAuthorization()

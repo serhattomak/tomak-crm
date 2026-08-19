@@ -37,9 +37,9 @@ public class GetPermissionsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/identity/permissions", async (IQueryHandler<GetPermissionsQuery, IReadOnlyList<PermissionGroupDto>> handler, CancellationToken ct) =>
+        app.MapGet("/api/identity/permissions", async (MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new GetPermissionsQuery(), ct);
+            var result = await sender.Send(new GetPermissionsQuery(), ct);
             return Results.Ok(ApiResponse<IReadOnlyList<PermissionGroupDto>>.Ok(result.Value));
         })
         .RequireAuthorization()

@@ -69,9 +69,9 @@ public class GetProfileEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/identity/profile", async (IQueryHandler<GetProfileQuery, UserProfileDto> handler, CancellationToken ct) =>
+        app.MapGet("/api/identity/profile", async (MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new GetProfileQuery(), ct);
+            var result = await sender.Send(new GetProfileQuery(), ct);
             return Results.Ok(ApiResponse<UserProfileDto>.Ok(result.Value));
         })
         .RequireAuthorization()

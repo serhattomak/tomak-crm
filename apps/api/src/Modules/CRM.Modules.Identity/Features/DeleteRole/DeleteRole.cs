@@ -64,9 +64,9 @@ public class DeleteRoleEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/identity/roles/{id:guid}", async (Guid id, ICommandHandler<DeleteRoleCommand> handler, CancellationToken ct) =>
+        app.MapDelete("/api/identity/roles/{id:guid}", async (Guid id, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(new DeleteRoleCommand(id), ct);
+            var result = await sender.Send(new DeleteRoleCommand(id), ct);
             return Results.Ok(ApiResponse<string>.Ok("Role deleted successfully."));
         })
         .RequireAuthorization()

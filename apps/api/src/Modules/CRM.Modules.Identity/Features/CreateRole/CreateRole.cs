@@ -83,9 +83,9 @@ public class CreateRoleEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/identity/roles", async (CreateRoleCommand command, ICommandHandler<CreateRoleCommand, Guid> handler, CancellationToken ct) =>
+        app.MapPost("/api/identity/roles", async (CreateRoleCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<Guid>.Ok(result.Value, "Role created successfully."));
         })
         .RequireAuthorization()

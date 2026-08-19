@@ -99,9 +99,9 @@ public class InviteUserEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/identity/users/invite", async (InviteUserCommand command, ICommandHandler<InviteUserCommand, Guid> handler, CancellationToken ct) =>
+        app.MapPost("/api/identity/users/invite", async (InviteUserCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<Guid>.Ok(result.Value, "User added to workspace successfully."));
         })
         .RequireAuthorization()

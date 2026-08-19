@@ -105,9 +105,9 @@ public class CreateTenantEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/tenants", async (CreateTenantCommand command, ICommandHandler<CreateTenantCommand, TenantDto> handler, CancellationToken ct) =>
+        app.MapPost("/api/tenants", async (CreateTenantCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<TenantDto>.Ok(result.Value, "Tenant created successfully."));
         })
         .RequireAuthorization()

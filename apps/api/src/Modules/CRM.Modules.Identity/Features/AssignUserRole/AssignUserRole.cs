@@ -81,7 +81,7 @@ public class AssignUserRoleEndpoint : IEndpoint
         app.MapPost("/api/identity/users/{userId:guid}/role", async (
             Guid userId,
             AssignUserRoleCommand command,
-            ICommandHandler<AssignUserRoleCommand> handler,
+            MediatR.ISender sender,
             CancellationToken ct) =>
         {
             if (userId != command.UserId)
@@ -89,7 +89,7 @@ public class AssignUserRoleEndpoint : IEndpoint
                 return Results.BadRequest(ApiResponse<string>.Fail("IdMismatch", "Route userId does not match body userId."));
             }
 
-            var result = await handler.Handle(command, ct);
+            var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<string>.Ok("User role updated successfully."));
         })
         .RequireAuthorization()
