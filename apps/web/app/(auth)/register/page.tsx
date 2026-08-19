@@ -1,29 +1,29 @@
-"use client";
+"use client"
 
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { Eye, EyeOff, Loader2 } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
+    e.preventDefault()
+    setError(null)
+    setIsLoading(true)
 
     try {
-      const supabase = createClient();
+      const supabase = createClient()
       const { error: authError } = await supabase.auth.signUp({
         email,
         options: {
@@ -32,35 +32,35 @@ export default function RegisterPage() {
           },
         },
         password,
-      });
+      })
 
       if (authError) {
-        setError(authError.message);
-        setIsLoading(false);
-        return;
+        setError(authError.message)
+        setIsLoading(false)
+        return
       }
 
-      router.push("/");
-      router.refresh();
+      router.push("/")
+      router.refresh()
     } catch {
-      setError("An unexpected error occurred. Please try again.");
-      setIsLoading(false);
+      setError("An unexpected error occurred. Please try again.")
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient();
+      const supabase = createClient()
       await supabase.auth.signInWithOAuth({
         options: {
           redirectTo: `${window.location.origin}/`,
         },
         provider: "google",
-      });
+      })
     } catch {
-      setError("Failed to initialize Google signup.");
+      setError("Failed to initialize Google signup.")
     }
-  };
+  }
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070709] p-3 sm:p-6">
@@ -90,7 +90,7 @@ export default function RegisterPage() {
 
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
-            <span className="font-bold text-[11px] text-white/90 uppercase tracking-[0.25em]">
+            <span className="text-[11px] font-bold tracking-[0.25em] text-white/90 uppercase">
               START YOUR JOURNEY
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />
@@ -98,14 +98,14 @@ export default function RegisterPage() {
 
           {/* Bottom Quote & Typography */}
           <div className="relative z-10 max-w-sm space-y-4">
-            <h2 className="font-normal font-serif text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl">
+            <h2 className="font-serif text-4xl leading-[1.08] font-normal tracking-tight text-white sm:text-5xl">
               Build
               <br />
               Something
               <br />
               Remarkable
             </h2>
-            <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
+            <p className="text-xs leading-relaxed font-light text-white/80 sm:text-sm">
               Create your multi-tenant workspace and unleash the full power of
               your team.
             </p>
@@ -128,7 +128,7 @@ export default function RegisterPage() {
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="font-semibold text-base text-slate-900 tracking-tight">
+            <span className="text-base font-semibold tracking-tight text-slate-900">
               Cogie
             </span>
           </div>
@@ -136,16 +136,16 @@ export default function RegisterPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-5">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-normal font-serif text-3xl text-slate-900 tracking-tight sm:text-4xl">
+              <h1 className="font-serif text-3xl font-normal tracking-tight text-slate-900 sm:text-4xl">
                 Create Account
               </h1>
-              <p className="font-normal text-slate-500 text-xs">
+              <p className="text-xs font-normal text-slate-500">
                 Enter your details to create your workspace
               </p>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-red-600 text-xs">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-xs text-red-600">
                 {error}
               </div>
             )}
@@ -156,11 +156,11 @@ export default function RegisterPage() {
               onSubmit={handleRegister}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Full Name
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
                   required
@@ -170,11 +170,11 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Email
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -184,12 +184,12 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Minimum 6 characters"
                     required
@@ -212,7 +212,7 @@ export default function RegisterPage() {
 
               <div className="space-y-2.5 pt-2">
                 <button
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 font-medium text-white text-xs shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
                   disabled={isLoading}
                   type="submit"
                 >
@@ -221,7 +221,7 @@ export default function RegisterPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 font-medium text-slate-700 text-xs shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 text-xs font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
                   onClick={handleGoogleLogin}
                   type="button"
                 >
@@ -250,7 +250,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-slate-500 text-xs">
+          <div className="mt-8 text-center text-xs text-slate-500">
             Already have an account?{" "}
             <Link
               className="font-semibold text-slate-900 hover:underline"
@@ -262,5 +262,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

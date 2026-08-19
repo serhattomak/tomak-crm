@@ -1,6 +1,12 @@
 "use client"
 
-import React, { useEffect, useState, useMemo, useCallback, Suspense } from "react"
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  Suspense,
+} from "react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { usePermissions } from "@/lib/permissions/permission-context"
 import {
@@ -71,18 +77,29 @@ function OrganizationPageContent() {
   const tenantSlug = (params?.tenantSlug as string) || ""
   const { activeTenant, hasPermission } = usePermissions()
 
-  const tabParam = searchParams.get("tab") as "chart" | "departments" | "employees" | "positions" | null
-  const [activeTab, setActiveTab] = useState<"chart" | "departments" | "employees" | "positions">(
-    tabParam && ["chart", "departments", "employees", "positions"].includes(tabParam) ? tabParam : "chart"
+  const tabParam = searchParams.get("tab") as
+    "chart" | "departments" | "employees" | "positions" | null
+  const [activeTab, setActiveTab] = useState<
+    "chart" | "departments" | "employees" | "positions"
+  >(
+    tabParam &&
+      ["chart", "departments", "employees", "positions"].includes(tabParam)
+      ? tabParam
+      : "chart"
   )
 
   useEffect(() => {
-    if (tabParam && ["chart", "departments", "employees", "positions"].includes(tabParam)) {
+    if (
+      tabParam &&
+      ["chart", "departments", "employees", "positions"].includes(tabParam)
+    ) {
       setActiveTab(tabParam)
     }
   }, [tabParam])
 
-  const handleTabChange = (tab: "chart" | "departments" | "employees" | "positions") => {
+  const handleTabChange = (
+    tab: "chart" | "departments" | "employees" | "positions"
+  ) => {
     setActiveTab(tab)
     router.push(`/${tenantSlug}/organization?tab=${tab}`)
   }
@@ -103,7 +120,8 @@ function OrganizationPageContent() {
   const [isEmpModalOpen, setIsEmpModalOpen] = useState(false)
   const [editingEmp, setEditingEmp] = useState<EmployeeDto | null>(null)
   const [viewingEmpId, setViewingEmpId] = useState<string | null>(null)
-  const [selectedEmpDetail, setSelectedEmpDetail] = useState<EmployeeDetailDto | null>(null)
+  const [selectedEmpDetail, setSelectedEmpDetail] =
+    useState<EmployeeDetailDto | null>(null)
   const [isLoadingDetail, setIsLoadingDetail] = useState(false)
 
   // Filters
@@ -168,12 +186,17 @@ function OrganizationPageContent() {
         searchQuery === "" ||
         emp.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         emp.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (emp.title && emp.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (emp.employeeNumber && emp.employeeNumber.toLowerCase().includes(searchQuery.toLowerCase()))
+        (emp.title &&
+          emp.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (emp.employeeNumber &&
+          emp.employeeNumber.toLowerCase().includes(searchQuery.toLowerCase()))
 
-      const matchesDept = filterDept === "all" || emp.departmentId === filterDept
-      const matchesType = filterType === "all" || emp.employmentType === filterType
-      const matchesStatus = filterStatus === "all" || emp.status === filterStatus
+      const matchesDept =
+        filterDept === "all" || emp.departmentId === filterDept
+      const matchesType =
+        filterType === "all" || emp.employmentType === filterType
+      const matchesStatus =
+        filterStatus === "all" || emp.status === filterStatus
 
       return matchesSearch && matchesDept && matchesType && matchesStatus
     })
@@ -184,7 +207,7 @@ function OrganizationPageContent() {
       {/* 1. Header & Navigation */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-fuchsia-600 uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-fuchsia-600 uppercase">
             <Network className="h-4 w-4" />
             <span>Organization & People</span>
           </div>
@@ -192,7 +215,8 @@ function OrganizationPageContent() {
             Organizasyon & Departmanlar
           </h1>
           <p className="mt-1 text-xs text-slate-500">
-            Departman hiyerarşisi, organizasyon şeması, çalışan kadrosu ve pozisyonları yönetin.
+            Departman hiyerarşisi, organizasyon şeması, çalışan kadrosu ve
+            pozisyonları yönetin.
           </p>
         </div>
 
@@ -299,7 +323,9 @@ function OrganizationPageContent() {
           disabled={isLoading}
           className="flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
         >
-          <RotateCcw className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-fuchsia-500" : "text-slate-500"}`} />
+          <RotateCcw
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-fuchsia-500" : "text-slate-500"}`}
+          />
           <span>Yenile</span>
         </button>
       </div>
@@ -308,7 +334,9 @@ function OrganizationPageContent() {
       {isLoading ? (
         <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white p-8 text-slate-500 shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-fuchsia-500" />
-          <p className="text-xs font-semibold">Organizasyon verileri yükleniyor...</p>
+          <p className="text-xs font-semibold">
+            Organizasyon verileri yükleniyor...
+          </p>
         </div>
       ) : (
         <>
@@ -345,8 +373,13 @@ function OrganizationPageContent() {
                 setIsDeptModalOpen(true)
               }}
               onDelete={async (deptId) => {
-                if (confirm("Bu departmanı silmek istediğinizden emin misiniz?")) {
-                  const res = await ApiClient.deleteDepartment(deptId, activeTenant!.id)
+                if (
+                  confirm("Bu departmanı silmek istediğinizden emin misiniz?")
+                ) {
+                  const res = await ApiClient.deleteDepartment(
+                    deptId,
+                    activeTenant!.id
+                  )
                   if (res.success) loadData()
                   else alert(res.message || "Departman silinemedi.")
                 }
@@ -387,8 +420,13 @@ function OrganizationPageContent() {
                 setIsEmpModalOpen(true)
               }}
               onDelete={async (empId) => {
-                if (confirm("Bu çalışanı silmek istediğinizden emin misiniz?")) {
-                  const res = await ApiClient.deleteEmployee(empId, activeTenant!.id)
+                if (
+                  confirm("Bu çalışanı silmek istediğinizden emin misiniz?")
+                ) {
+                  const res = await ApiClient.deleteEmployee(
+                    empId,
+                    activeTenant!.id
+                  )
                   if (res.success) loadData()
                   else alert(res.message || "Çalışan silinemedi.")
                 }
@@ -405,8 +443,15 @@ function OrganizationPageContent() {
                 setIsPosModalOpen(true)
               }}
               onDelete={async (posId) => {
-                if (confirm("Bu pozisyon tanımını silmek istediğinizden emin misiniz?")) {
-                  const res = await ApiClient.deleteJobPosition(posId, activeTenant!.id)
+                if (
+                  confirm(
+                    "Bu pozisyon tanımını silmek istediğinizden emin misiniz?"
+                  )
+                ) {
+                  const res = await ApiClient.deleteJobPosition(
+                    posId,
+                    activeTenant!.id
+                  )
                   if (res.success) loadData()
                   else alert(res.message || "Pozisyon silinemedi.")
                 }
@@ -515,9 +560,12 @@ function OrgChartTab({
         <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-fuchsia-50 text-fuchsia-600 shadow-sm shadow-fuchsia-500/10">
           <Network className="h-7 w-7" />
         </div>
-        <h3 className="mt-4 text-base font-bold text-slate-900">Organizasyon Şeması Henüz Oluşmadı</h3>
+        <h3 className="mt-4 text-base font-bold text-slate-900">
+          Organizasyon Şeması Henüz Oluşmadı
+        </h3>
         <p className="mt-1 max-w-sm text-xs text-slate-500">
-          Şema oluşturmak için çalışanları ekleyip birbirine bağlı yönetici (Reports To) hiyerarşisi belirleyin.
+          Şema oluşturmak için çalışanları ekleyip birbirine bağlı yönetici
+          (Reports To) hiyerarşisi belirleyin.
         </p>
       </div>
     )
@@ -535,7 +583,9 @@ function OrgChartTab({
         >
           <ZoomIn className="h-4 w-4" />
         </button>
-        <span className="font-mono text-[11px] font-semibold text-slate-500 px-1">{Math.round(zoom * 100)}%</span>
+        <span className="px-1 font-mono text-[11px] font-semibold text-slate-500">
+          {Math.round(zoom * 100)}%
+        </span>
         <button
           type="button"
           onClick={() => setZoom((z) => Math.max(z - 0.15, 0.4))}
@@ -563,7 +613,7 @@ function OrgChartTab({
         }}
       >
         <div
-          className="flex justify-center transition-transform origin-top"
+          className="flex origin-top justify-center transition-transform"
           style={{ transform: `scale(${zoom})` }}
         >
           <div className="flex flex-col items-center gap-12">
@@ -616,7 +666,9 @@ function OrgNodeItem({
       <div className="group relative z-10 w-72 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-fuchsia-300 hover:shadow-xl hover:shadow-fuchsia-500/10">
         {/* Top badges */}
         <div className="mb-3 flex items-center justify-between">
-          <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wide shadow-2xs ${levelBadge}`}>
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wide shadow-2xs ${levelBadge}`}
+          >
             {node.level || "Staff"}
           </span>
           {node.departmentName && (
@@ -645,13 +697,13 @@ function OrgNodeItem({
           )}
 
           <div className="min-w-0 flex-1">
-            <h4 className="truncate text-xs font-bold text-slate-900 group-hover:text-fuchsia-600 transition-colors">
+            <h4 className="truncate text-xs font-bold text-slate-900 transition-colors group-hover:text-fuchsia-600">
               {node.fullName}
             </h4>
             <p className="truncate text-[11px] font-medium text-slate-500">
               {node.title || "Ünvan Belirtilmedi"}
             </p>
-            <p className="truncate text-[10px] font-mono text-slate-400">
+            <p className="truncate font-mono text-[10px] text-slate-400">
               {node.email}
             </p>
           </div>
@@ -663,7 +715,9 @@ function OrgNodeItem({
             <Users className="h-3.5 w-3.5 text-slate-400" />
             <span>{node.directReportsCount} Doğrudan</span>
             {node.totalSubordinatesCount > node.directReportsCount && (
-              <span className="text-[10px] text-slate-400">({node.totalSubordinatesCount} Toplam)</span>
+              <span className="text-[10px] text-slate-400">
+                ({node.totalSubordinatesCount} Toplam)
+              </span>
             )}
           </div>
 
@@ -710,7 +764,7 @@ function OrgNodeItem({
           {/* Horizontal crossbar for multiple children */}
           {node.directReports.length > 1 && (
             <div
-              className="h-px bg-slate-300 mb-8"
+              className="mb-8 h-px bg-slate-300"
               style={{
                 width: `calc(100% - ${100 / node.directReports.length}%)`,
               }}
@@ -720,7 +774,10 @@ function OrgNodeItem({
           {/* Subordinate cards row */}
           <div className="flex items-start gap-8">
             {node.directReports.map((child) => (
-              <div key={child.id} className="relative flex flex-col items-center">
+              <div
+                key={child.id}
+                className="relative flex flex-col items-center"
+              >
                 {/* Stem line connecting horizontal bar to child card */}
                 <div className="absolute -top-8 h-8 w-px bg-slate-300" />
                 <OrgNodeItem
@@ -760,7 +817,8 @@ function DepartmentsTab({
       (d) =>
         d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (d.code && d.code.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (d.costCenter && d.costCenter.toLowerCase().includes(searchTerm.toLowerCase()))
+        (d.costCenter &&
+          d.costCenter.toLowerCase().includes(searchTerm.toLowerCase()))
     )
   }, [departments, searchTerm])
 
@@ -795,7 +853,9 @@ function DepartmentsTab({
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-900">{dept.name}</h3>
+                    <h3 className="text-sm font-bold text-slate-900">
+                      {dept.name}
+                    </h3>
                     {dept.code && (
                       <span className="font-mono text-[10px] font-bold text-fuchsia-600">
                         [{dept.code}]
@@ -828,7 +888,9 @@ function DepartmentsTab({
               {dept.parentName && (
                 <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-slate-500">
                   <span className="text-slate-400">Üst Departman:</span>
-                  <span className="font-semibold text-slate-700">{dept.parentName}</span>
+                  <span className="font-semibold text-slate-700">
+                    {dept.parentName}
+                  </span>
                 </div>
               )}
 
@@ -841,7 +903,9 @@ function DepartmentsTab({
               {/* Lead & Stats */}
               <div className="mt-4 space-y-2 rounded-xl bg-slate-50 p-3 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">Departman Lideri:</span>
+                  <span className="text-[11px] text-slate-400">
+                    Departman Lideri:
+                  </span>
                   <span className="font-semibold text-slate-800">
                     {dept.leadName || "Atanmadı"}
                   </span>
@@ -849,7 +913,9 @@ function DepartmentsTab({
 
                 {dept.costCenter && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400">Maliyet Merkezi:</span>
+                    <span className="text-[11px] text-slate-400">
+                      Maliyet Merkezi:
+                    </span>
                     <span className="font-mono text-[11px] font-semibold text-slate-700">
                       {dept.costCenter}
                     </span>
@@ -860,7 +926,7 @@ function DepartmentsTab({
 
             {/* Footer */}
             <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
-              <div className="flex items-center gap-3 text-slate-600 font-semibold">
+              <div className="flex items-center gap-3 font-semibold text-slate-600">
                 <span className="flex items-center gap-1">
                   <Users className="h-3.5 w-3.5 text-slate-400" />
                   {dept.employeeCount} Personel
@@ -1011,8 +1077,12 @@ function EmployeesTab({
       {employees.length === 0 ? (
         <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-white p-8 text-center shadow-xs">
           <Users className="h-10 w-10 text-slate-300" />
-          <h3 className="mt-3 text-sm font-bold text-slate-800">Çalışan Bulunamadı</h3>
-          <p className="mt-1 text-xs text-slate-500">Filtrelerinizi değiştirin veya yeni çalışan ekleyin.</p>
+          <h3 className="mt-3 text-sm font-bold text-slate-800">
+            Çalışan Bulunamadı
+          </h3>
+          <p className="mt-1 text-xs text-slate-500">
+            Filtrelerinizi değiştirin veya yeni çalışan ekleyin.
+          </p>
         </div>
       ) : viewMode === "table" ? (
         <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
@@ -1029,7 +1099,10 @@ function EmployeesTab({
             </thead>
             <tbody className="divide-y divide-slate-100">
               {employees.map((emp) => (
-                <tr key={emp.id} className="transition-colors hover:bg-slate-50/70">
+                <tr
+                  key={emp.id}
+                  className="transition-colors hover:bg-slate-50/70"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {emp.avatarUrl ? (
@@ -1044,14 +1117,22 @@ function EmployeesTab({
                         </div>
                       )}
                       <div>
-                        <div className="font-bold text-slate-900">{emp.fullName}</div>
-                        <div className="font-mono text-[11px] text-slate-400">{emp.email}</div>
+                        <div className="font-bold text-slate-900">
+                          {emp.fullName}
+                        </div>
+                        <div className="font-mono text-[11px] text-slate-400">
+                          {emp.email}
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-slate-800">{emp.title || "—"}</div>
-                    <div className="text-[11px] text-slate-500">{emp.departmentName || "Genel"}</div>
+                    <div className="font-semibold text-slate-800">
+                      {emp.title || "—"}
+                    </div>
+                    <div className="text-[11px] text-slate-500">
+                      {emp.departmentName || "Genel"}
+                    </div>
                   </td>
                   <td className="px-6 py-4 font-medium text-slate-700">
                     {emp.managerName ? (
@@ -1072,13 +1153,17 @@ function EmployeesTab({
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                         emp.status === "Active"
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
                           : emp.status === "OnLeave"
-                          ? "bg-amber-50 text-amber-700 border border-amber-200"
-                          : "bg-slate-100 text-slate-600"
+                            ? "border border-amber-200 bg-amber-50 text-amber-700"
+                            : "bg-slate-100 text-slate-600"
                       }`}
                     >
-                      {emp.status === "Active" ? "Aktif" : emp.status === "OnLeave" ? "İzinde" : emp.status}
+                      {emp.status === "Active"
+                        ? "Aktif"
+                        : emp.status === "OnLeave"
+                          ? "İzinde"
+                          : emp.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -1136,13 +1221,19 @@ function EmployeesTab({
                       </div>
                     )}
                     <div>
-                      <h4 className="font-bold text-slate-900">{emp.fullName}</h4>
-                      <p className="text-xs font-medium text-slate-500">{emp.title || "Personel"}</p>
+                      <h4 className="font-bold text-slate-900">
+                        {emp.fullName}
+                      </h4>
+                      <p className="text-xs font-medium text-slate-500">
+                        {emp.title || "Personel"}
+                      </p>
                     </div>
                   </div>
                   <span
                     className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                      emp.status === "Active" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
+                      emp.status === "Active"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-slate-100 text-slate-600"
                     }`}
                   >
                     {emp.status}
@@ -1156,7 +1247,9 @@ function EmployeesTab({
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-slate-400" />
-                    <span className="truncate font-mono text-[11px]">{emp.email}</span>
+                    <span className="truncate font-mono text-[11px]">
+                      {emp.email}
+                    </span>
                   </div>
                   {emp.phone && (
                     <div className="flex items-center gap-2">
@@ -1169,7 +1262,9 @@ function EmployeesTab({
 
               <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3">
                 <span className="text-[11px] font-medium text-slate-400">
-                  {emp.directReportCount > 0 ? `${emp.directReportCount} Doğrudan Ast` : "Bireysel Katılımcı"}
+                  {emp.directReportCount > 0
+                    ? `${emp.directReportCount} Doğrudan Ast`
+                    : "Bireysel Katılımcı"}
                 </span>
                 <div className="flex items-center gap-1">
                   <button
@@ -1226,11 +1321,16 @@ function PositionsTab({
           </thead>
           <tbody className="divide-y divide-slate-100">
             {positions.map((pos) => (
-              <tr key={pos.id} className="transition-colors hover:bg-slate-50/70">
+              <tr
+                key={pos.id}
+                className="transition-colors hover:bg-slate-50/70"
+              >
                 <td className="px-6 py-4">
                   <div className="font-bold text-slate-900">{pos.title}</div>
                   {pos.jobDescription && (
-                    <div className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{pos.jobDescription}</div>
+                    <div className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">
+                      {pos.jobDescription}
+                    </div>
                   )}
                 </td>
                 <td className="px-6 py-4">
@@ -1335,7 +1435,11 @@ function DepartmentModal({
             <Building2 className="h-5 w-5 text-fuchsia-500" />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
           </h2>
-          <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-700">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-700"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -1346,7 +1450,9 @@ function DepartmentModal({
           className="space-y-3.5 text-xs"
         >
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Departman Adı *</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Departman Adı *
+            </label>
             <input
               type="text"
               required
@@ -1359,7 +1465,9 @@ function DepartmentModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Departman Kodu</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Departman Kodu
+              </label>
               <input
                 type="text"
                 value={code}
@@ -1369,7 +1477,9 @@ function DepartmentModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Maliyet Merkezi</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Maliyet Merkezi
+              </label>
               <input
                 type="text"
                 value={costCenter}
@@ -1381,7 +1491,9 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Üst Departman</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Üst Departman
+            </label>
             <select
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
@@ -1399,7 +1511,9 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Departman Lideri / Müdürü</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Departman Lideri / Müdürü
+            </label>
             <select
               value={leadId}
               onChange={(e) => setLeadId(e.target.value)}
@@ -1415,7 +1529,9 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Açıklama</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Açıklama
+            </label>
             <textarea
               rows={2}
               value={description}
@@ -1465,9 +1581,15 @@ function PositionModal({
   const [title, setTitle] = useState(position?.title || "")
   const [level, setLevel] = useState(position?.level || "Mid")
   const [departmentId, setDepartmentId] = useState(position?.departmentId || "")
-  const [jobDescription, setJobDescription] = useState(position?.jobDescription || "")
-  const [minSalary, setMinSalary] = useState(position?.minSalary?.toString() || "")
-  const [maxSalary, setMaxSalary] = useState(position?.maxSalary?.toString() || "")
+  const [jobDescription, setJobDescription] = useState(
+    position?.jobDescription || ""
+  )
+  const [minSalary, setMinSalary] = useState(
+    position?.minSalary?.toString() || ""
+  )
+  const [maxSalary, setMaxSalary] = useState(
+    position?.maxSalary?.toString() || ""
+  )
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1501,7 +1623,11 @@ function PositionModal({
             <Briefcase className="h-5 w-5 text-violet-500" />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
           </h2>
-          <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-700">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-700"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -1512,7 +1638,9 @@ function PositionModal({
           className="space-y-3.5 text-xs"
         >
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Pozisyon / Ünvan Başlığı *</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Pozisyon / Ünvan Başlığı *
+            </label>
             <input
               type="text"
               required
@@ -1525,7 +1653,9 @@ function PositionModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Kariyer Kademesi *</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Kariyer Kademesi *
+              </label>
               <select
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
@@ -1542,7 +1672,9 @@ function PositionModal({
               </select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Varsayılan Departman</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Varsayılan Departman
+              </label>
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
@@ -1560,7 +1692,9 @@ function PositionModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Min Maaş Bandı</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Min Maaş Bandı
+              </label>
               <input
                 type="number"
                 value={minSalary}
@@ -1570,7 +1704,9 @@ function PositionModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Max Maaş Bandı</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Max Maaş Bandı
+              </label>
               <input
                 type="number"
                 value={maxSalary}
@@ -1582,7 +1718,9 @@ function PositionModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Görev Tanımı</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Görev Tanımı
+            </label>
             <textarea
               rows={2}
               value={jobDescription}
@@ -1593,7 +1731,11 @@ function PositionModal({
           </div>
 
           <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
-            <button type="button" onClick={onClose} className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100"
+            >
               İptal
             </button>
             <button
@@ -1635,14 +1777,22 @@ function EmployeeModal({
   const [lastName, setLastName] = useState(employee?.lastName || "")
   const [email, setEmail] = useState(employee?.email || "")
   const [phone, setPhone] = useState(employee?.phone || "")
-  const [employeeNumber, setEmployeeNumber] = useState(employee?.employeeNumber || "")
+  const [employeeNumber, setEmployeeNumber] = useState(
+    employee?.employeeNumber || ""
+  )
   const [title, setTitle] = useState(employee?.title || "")
   const [departmentId, setDepartmentId] = useState(employee?.departmentId || "")
-  const [jobPositionId, setJobPositionId] = useState(employee?.jobPositionId || "")
+  const [jobPositionId, setJobPositionId] = useState(
+    employee?.jobPositionId || ""
+  )
   const [managerId, setManagerId] = useState(employee?.managerId || "")
-  const [employmentType, setEmploymentType] = useState(employee?.employmentType || "FullTime")
+  const [employmentType, setEmploymentType] = useState(
+    employee?.employmentType || "FullTime"
+  )
   const [status, setStatus] = useState(employee?.status || "Active")
-  const [hireDate, setHireDate] = useState(employee?.hireDate?.split("T")[0] || "")
+  const [hireDate, setHireDate] = useState(
+    employee?.hireDate?.split("T")[0] || ""
+  )
   const [avatarUrl, setAvatarUrl] = useState(employee?.avatarUrl || "")
   const [salary, setSalary] = useState(employee?.salary?.toString() || "")
   const [currency, setCurrency] = useState(employee?.currency || "USD")
@@ -1709,14 +1859,20 @@ function EmployeeModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 p-4 backdrop-blur-sm">
       <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
             <Users className="h-5 w-5 text-fuchsia-500" />
-            {employee?.id ? "Çalışan Kartını Düzenle" : "Yeni Çalışan / Personel Kartı Aç"}
+            {employee?.id
+              ? "Çalışan Kartını Düzenle"
+              : "Yeni Çalışan / Personel Kartı Aç"}
           </h2>
-          <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-700">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-700"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -1727,14 +1883,18 @@ function EmployeeModal({
           className="space-y-4 text-xs"
         >
           {/* Quick link existing user */}
-          <div className="rounded-2xl bg-fuchsia-50/50 border border-fuchsia-100 p-3">
-            <label className="mb-1 block font-bold text-fuchsia-900">Sistem Kullanıcısı Eşleştir (Opsiyonel)</label>
+          <div className="rounded-2xl border border-fuchsia-100 bg-fuchsia-50/50 p-3">
+            <label className="mb-1 block font-bold text-fuchsia-900">
+              Sistem Kullanıcısı Eşleştir (Opsiyonel)
+            </label>
             <select
               value={userId}
               onChange={(e) => handleUserLink(e.target.value)}
               className="w-full rounded-xl border border-fuchsia-200 bg-white px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:outline-none"
             >
-              <option value="">Bağımsız Personel Kartı (Hesap Bağlama Yok)</option>
+              <option value="">
+                Bağımsız Personel Kartı (Hesap Bağlama Yok)
+              </option>
               {tenantUsers.map((u) => (
                 <option key={u.id} value={u.id}>
                   {u.fullName ? `${u.fullName} (${u.email})` : u.email}
@@ -1746,7 +1906,9 @@ function EmployeeModal({
           {/* Personal Info */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Adı *</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Adı *
+              </label>
               <input
                 type="text"
                 required
@@ -1757,7 +1919,9 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Soyadı *</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Soyadı *
+              </label>
               <input
                 type="text"
                 required
@@ -1771,7 +1935,9 @@ function EmployeeModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">E-posta Adresi *</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                E-posta Adresi *
+              </label>
               <input
                 type="email"
                 required
@@ -1782,7 +1948,9 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Telefon</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Telefon
+              </label>
               <input
                 type="text"
                 value={phone}
@@ -1796,7 +1964,9 @@ function EmployeeModal({
           {/* Org & Role Fields */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Departman</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Departman
+              </label>
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
@@ -1811,7 +1981,9 @@ function EmployeeModal({
               </select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Pozisyon Kataloğu</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Pozisyon Kataloğu
+              </label>
               <select
                 value={jobPositionId}
                 onChange={(e) => handlePositionChange(e.target.value)}
@@ -1826,7 +1998,9 @@ function EmployeeModal({
               </select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Özel / Görünen Ünvan</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Özel / Görünen Ünvan
+              </label>
               <input
                 type="text"
                 value={title}
@@ -1839,18 +2013,23 @@ function EmployeeModal({
 
           {/* Manager / Reports To Hierarchy */}
           <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5">
-            <label className="mb-1 block font-bold text-slate-900">Bağlı Olduğu Yönetici (Reports To)</label>
+            <label className="mb-1 block font-bold text-slate-900">
+              Bağlı Olduğu Yönetici (Reports To)
+            </label>
             <select
               value={managerId}
               onChange={(e) => setManagerId(e.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:outline-none"
             >
-              <option value="">Üst Yönetici Yok (En Üst Düzey / CEO / Founder)</option>
+              <option value="">
+                Üst Yönetici Yok (En Üst Düzey / CEO / Founder)
+              </option>
               {employees
                 .filter((e) => e.id !== employee?.id)
                 .map((e) => (
                   <option key={e.id} value={e.id}>
-                    {e.fullName} — {e.title || "Personel"} ({e.departmentName || "Genel"})
+                    {e.fullName} — {e.title || "Personel"} (
+                    {e.departmentName || "Genel"})
                   </option>
                 ))}
             </select>
@@ -1859,7 +2038,9 @@ function EmployeeModal({
           {/* HR & Employment Details */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Çalışma Şekli</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Çalışma Şekli
+              </label>
               <select
                 value={employmentType}
                 onChange={(e) => setEmploymentType(e.target.value)}
@@ -1875,7 +2056,9 @@ function EmployeeModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Çalışan Durumu</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Çalışan Durumu
+              </label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
@@ -1889,7 +2072,9 @@ function EmployeeModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Sicil No</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Sicil No
+              </label>
               <input
                 type="text"
                 value={employeeNumber}
@@ -1902,7 +2087,9 @@ function EmployeeModal({
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">İşe Giriş Tarihi</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                İşe Giriş Tarihi
+              </label>
               <input
                 type="date"
                 value={hireDate}
@@ -1911,7 +2098,9 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Maaş (Net/Brüt)</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Maaş (Net/Brüt)
+              </label>
               <input
                 type="number"
                 value={salary}
@@ -1921,7 +2110,9 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">Para Birimi</label>
+              <label className="mb-1 block font-semibold text-slate-800">
+                Para Birimi
+              </label>
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
@@ -1936,7 +2127,9 @@ function EmployeeModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">Avatar Fotoğraf URL</label>
+            <label className="mb-1 block font-semibold text-slate-800">
+              Avatar Fotoğraf URL
+            </label>
             <input
               type="url"
               value={avatarUrl}
@@ -1947,7 +2140,11 @@ function EmployeeModal({
           </div>
 
           <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
-            <button type="button" onClick={onClose} className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100"
+            >
               İptal
             </button>
             <button
@@ -1992,8 +2189,8 @@ function EmployeeDetailDrawer({
   if (!employeeDetail) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="flex h-full w-full max-w-md flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 z-50 flex animate-in justify-end bg-black/40 backdrop-blur-xs duration-200 fade-in">
+      <div className="flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl duration-300 slide-in-from-right">
         <div>
           {/* Top Close & Edit actions */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -2033,7 +2230,9 @@ function EmployeeDetailDrawer({
               </div>
             )}
 
-            <h3 className="mt-3 text-lg font-bold text-slate-900">{employeeDetail.fullName}</h3>
+            <h3 className="mt-3 text-lg font-bold text-slate-900">
+              {employeeDetail.fullName}
+            </h3>
             <p className="text-xs font-semibold text-fuchsia-600">
               {employeeDetail.title || "Ünvan Tanımlanmadı"}
             </p>
@@ -2042,7 +2241,7 @@ function EmployeeDetailDrawer({
               <span className="rounded-full bg-slate-100 px-3 py-0.5 text-[11px] font-bold text-slate-700">
                 {employeeDetail.departmentName || "Genel"}
               </span>
-              <span className="rounded-full bg-emerald-50 px-3 py-0.5 text-[11px] font-bold text-emerald-700 border border-emerald-200">
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 text-[11px] font-bold text-emerald-700">
                 {employeeDetail.status}
               </span>
             </div>
@@ -2050,7 +2249,9 @@ function EmployeeDetailDrawer({
 
           {/* Contact Details Card */}
           <div className="mt-6 space-y-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-xs">
-            <h4 className="font-bold text-[11px] text-slate-400 uppercase tracking-wider">İletişim & İK Bilgileri</h4>
+            <h4 className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+              İletişim & İK Bilgileri
+            </h4>
             <div className="flex items-center gap-2.5 text-slate-700">
               <Mail className="h-4 w-4 text-slate-400" />
               <span className="font-mono">{employeeDetail.email}</span>
@@ -2063,23 +2264,32 @@ function EmployeeDetailDrawer({
             )}
             <div className="flex items-center gap-2.5 text-slate-700">
               <Briefcase className="h-4 w-4 text-slate-400" />
-              <span>Çalışma Türü: <strong>{employeeDetail.employmentType}</strong></span>
+              <span>
+                Çalışma Türü: <strong>{employeeDetail.employmentType}</strong>
+              </span>
             </div>
             {employeeDetail.hireDate && (
               <div className="flex items-center gap-2.5 text-slate-700">
                 <Calendar className="h-4 w-4 text-slate-400" />
-                <span>İşe Giriş: {new Date(employeeDetail.hireDate).toLocaleDateString()}</span>
+                <span>
+                  İşe Giriş:{" "}
+                  {new Date(employeeDetail.hireDate).toLocaleDateString()}
+                </span>
               </div>
             )}
           </div>
 
           {/* Hierarchy & Reporting Tree */}
           <div className="mt-5 space-y-3 text-xs">
-            <h4 className="font-bold text-[11px] text-slate-400 uppercase tracking-wider">Hiyerarşi & Raporlama</h4>
+            <h4 className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+              Hiyerarşi & Raporlama
+            </h4>
 
             {/* Manager */}
             <div className="rounded-2xl border border-slate-200/80 p-3">
-              <div className="mb-1.5 text-[10px] font-bold text-slate-400 uppercase">Bağlı Olduğu Yönetici</div>
+              <div className="mb-1.5 text-[10px] font-bold text-slate-400 uppercase">
+                Bağlı Olduğu Yönetici
+              </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
                 <div
                   onClick={() => onSelectEmployee(employeeDetail.managerId!)}
@@ -2089,25 +2299,36 @@ function EmployeeDetailDrawer({
                     {employeeDetail.managerName.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900">{employeeDetail.managerName}</div>
-                    <div className="text-[10px] text-slate-500">Yönetici Profilini Görüntüle →</div>
+                    <div className="font-bold text-slate-900">
+                      {employeeDetail.managerName}
+                    </div>
+                    <div className="text-[10px] text-slate-500">
+                      Yönetici Profilini Görüntüle →
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="text-xs text-slate-500 font-medium italic">En üst düzey yönetici (Üst raporlama yok)</div>
+                <div className="text-xs font-medium text-slate-500 italic">
+                  En üst düzey yönetici (Üst raporlama yok)
+                </div>
               )}
             </div>
 
             {/* Direct Reports */}
             <div className="rounded-2xl border border-slate-200/80 p-3">
               <div className="mb-2 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
-                <span>Doğrudan Yönettiği Kişiler ({employeeDetail.directReports.length})</span>
+                <span>
+                  Doğrudan Yönettiği Kişiler (
+                  {employeeDetail.directReports.length})
+                </span>
               </div>
 
               {employeeDetail.directReports.length === 0 ? (
-                <div className="text-xs text-slate-400 italic">Doğrudan bağlı çalışan bulunmuyor.</div>
+                <div className="text-xs text-slate-400 italic">
+                  Doğrudan bağlı çalışan bulunmuyor.
+                </div>
               ) : (
-                <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                <div className="max-h-40 space-y-1.5 overflow-y-auto pr-1">
                   {employeeDetail.directReports.map((report) => (
                     <div
                       key={report.id}
@@ -2119,8 +2340,12 @@ function EmployeeDetailDrawer({
                           {report.fullName.charAt(0)}
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-slate-900">{report.fullName}</div>
-                          <div className="text-[10px] text-slate-500">{report.title || report.email}</div>
+                          <div className="text-xs font-bold text-slate-900">
+                            {report.fullName}
+                          </div>
+                          <div className="text-[10px] text-slate-500">
+                            {report.title || report.email}
+                          </div>
                         </div>
                       </div>
                       <ChevronRight className="h-4 w-4 text-slate-400" />
