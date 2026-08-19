@@ -1037,53 +1037,122 @@ function CreateOrderWizardModal({
             </div>
           </div>
 
-          {/* 4. Financial Calculations Summary Bar */}
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 space-y-2">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div>
-                <label className="mb-1 block font-medium text-slate-600">Ödeme Yöntemi</label>
-                <select
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  value={paymentMethod}
-                >
-                  <option value="BankTransfer">Havale / EFT</option>
-                  <option value="CreditCard">Kredi Kartı</option>
-                  <option value="Cash">Nakit</option>
-                  <option value="Check">Çek / Senet</option>
-                  <option value="OpenAccount">Açık Hesap (Cari)</option>
-                </select>
+          {/* 4. Financial Controls & Summary Section */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 rounded-3xl border border-slate-200/80 bg-slate-50/50 p-5">
+            {/* Left Options (7 cols) */}
+            <div className="space-y-3 lg:col-span-7">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block font-medium text-slate-700">Ödeme Yöntemi</label>
+                  <select
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    value={paymentMethod}
+                  >
+                    <option value="BankTransfer">🏦 Havale / EFT</option>
+                    <option value="CreditCard">💳 Kredi Kartı</option>
+                    <option value="Cash">💵 Nakit</option>
+                    <option value="Check">📜 Çek / Senet</option>
+                    <option value="OpenAccount">📑 Açık Hesap (Cari)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-1 block font-medium text-slate-700">Kargo Bedeli (₺)</label>
+                  <div className="relative">
+                    <span className="absolute top-2 left-3 font-semibold text-slate-400">₺</span>
+                    <input
+                      className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-7 text-slate-900 focus:border-blue-500 focus:outline-none font-medium"
+                      min="0"
+                      onChange={(e) => setShippingFee(parseFloat(e.target.value) || 0)}
+                      placeholder="0.00"
+                      step="0.01"
+                      type="number"
+                      value={shippingFee || ""}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label className="mb-1 block font-medium text-slate-600">Kargo Bedeli (₺)</label>
-                <input
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
-                  min="0"
-                  onChange={(e) => setShippingFee(parseFloat(e.target.value) || 0)}
-                  step="0.01"
-                  type="number"
-                  value={shippingFee}
-                />
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block font-medium text-slate-700">Genel İskonto / İndirim (₺)</label>
+                  <div className="relative">
+                    <span className="absolute top-2 left-3 font-semibold text-slate-400">₺</span>
+                    <input
+                      className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-7 text-slate-900 focus:border-blue-500 focus:outline-none font-medium"
+                      min="0"
+                      onChange={(e) => setGeneralDiscount(parseFloat(e.target.value) || 0)}
+                      placeholder="0.00"
+                      step="0.01"
+                      type="number"
+                      value={generalDiscount || ""}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="mb-1 block font-medium text-slate-700">Sipariş Notu</label>
+                  <input
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Siparişe özel not ekleyin..."
+                    type="text"
+                    value={notes}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Right Financial Summary Card (5 cols) */}
+            <div className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs lg:col-span-5 space-y-2">
+              <div className="space-y-1.5 text-[11px]">
+                <div className="flex justify-between items-center text-slate-600">
+                  <span>Ara Toplam (KDV Hariç):</span>
+                  <span className="font-semibold text-slate-900">
+                    ₺{subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                {generalDiscount > 0 && (
+                  <div className="flex justify-between items-center text-rose-600 font-medium">
+                    <span>Genel İskonto:</span>
+                    <span>-₺{Number(generalDiscount).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center text-slate-600">
+                  <span>Hesaplanan KDV (%):</span>
+                  <span className="font-semibold text-slate-900">
+                    ₺{totalTax.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                {shippingFee > 0 && (
+                  <div className="flex justify-between items-center text-slate-600">
+                    <span>Kargo / Sevkiyat:</span>
+                    <span className="font-semibold text-slate-900">
+                      ₺{Number(shippingFee).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                )}
               </div>
 
-              <div>
-                <label className="mb-1 block font-medium text-slate-600">Genel İskonto (₺)</label>
-                <input
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
-                  min="0"
-                  onChange={(e) => setGeneralDiscount(parseFloat(e.target.value) || 0)}
-                  step="0.01"
-                  type="number"
-                  value={generalDiscount}
-                />
-              </div>
-
-              <div className="rounded-xl bg-slate-900 p-3 text-white flex flex-col justify-center text-right">
-                <span className="text-[10px] text-slate-400 font-medium">GENEL TOPLAM</span>
-                <span className="font-extrabold text-base text-emerald-400">
-                  ₺{grandTotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
-                </span>
+              {/* Grand Total Highlight */}
+              <div className="border-slate-100 border-t pt-2.5 mt-1">
+                <div className="flex items-baseline justify-between">
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 uppercase tracking-wider block">
+                      Genel Toplam
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium">Tüm Vergiler Dahil</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-extrabold text-xl text-blue-600 tracking-tight">
+                      ₺{grandTotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
