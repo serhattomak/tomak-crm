@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CRM.Api/CRM.Api.csproj" />
+    <Project Path="src/CRM.BuildingBlocks/CRM.BuildingBlocks.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/">
+    <Project Path="src/Modules/CRM.Modules.Identity/CRM.Modules.Identity.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Tenants/CRM.Modules.Tenants.csproj" />
+  </Folder>
+</Solution>

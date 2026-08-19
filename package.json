@@ -5,6 +5,10 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:api": "npm run dev --workspace=api",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck"
