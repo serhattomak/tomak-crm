@@ -1,10 +1,15 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Geist, Geist_Mono, Inter, Playfair_Display } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -23,6 +28,7 @@ export default function RootLayout({
       className={cn(
         "antialiased",
         fontMono.variable,
+        playfair.variable,
         "font-sans",
         inter.variable
       )}
