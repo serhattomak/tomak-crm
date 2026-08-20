@@ -7,6 +7,7 @@ import {
   Briefcase,
   Building2,
   Calendar,
+  ChevronDown,
   ChevronRight,
   Clock,
   Flame,
@@ -243,24 +244,62 @@ function DashboardNavigation() {
   const tenantSlug = (params?.tenantSlug as string) || ""
   const currentTab = searchParams.get("tab") || "chart"
 
-  const mainMenu = [
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    hr: true,
+    management: true,
+    sales: true,
+    tools: true,
+  })
+
+  // Ensure the section containing the active page is always open
+  useEffect(() => {
+    if (!pathname) return
+
+    if (
+      pathname === `/${tenantSlug}` ||
+      pathname.startsWith(`/${tenantSlug}/customers`) ||
+      pathname.startsWith(`/${tenantSlug}/orders`) ||
+      pathname.startsWith(`/${tenantSlug}/products`)
+    ) {
+      setOpenSections((prev) => ({ ...prev, sales: true }))
+    } else if (
+      pathname.startsWith(`/${tenantSlug}/attendance`) ||
+      pathname.startsWith(`/${tenantSlug}/leaves`) ||
+      pathname.startsWith(`/${tenantSlug}/payroll`) ||
+      pathname.startsWith(`/${tenantSlug}/organization`)
+    ) {
+      setOpenSections((prev) => ({ ...prev, hr: true }))
+    } else if (
+      pathname.startsWith(`/${tenantSlug}/messages`) ||
+      pathname.startsWith(`/${tenantSlug}/email`) ||
+      pathname.startsWith(`/${tenantSlug}/automation`) ||
+      pathname.startsWith(`/${tenantSlug}/analytics`) ||
+      pathname.startsWith(`/${tenantSlug}/integration`)
+    ) {
+      setOpenSections((prev) => ({ ...prev, tools: true }))
+    } else if (
+      pathname.startsWith(`/${tenantSlug}/users`) ||
+      pathname.startsWith(`/${tenantSlug}/roles`) ||
+      pathname.startsWith(`/${tenantSlug}/settings`)
+    ) {
+      setOpenSections((prev) => ({ ...prev, management: true }))
+    }
+  }, [pathname, tenantSlug])
+
+  const toggleSection = (sectionKey: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey],
+    }))
+  }
+
+  // 1. Genel & Satış CRM
+  const salesMenu = [
     {
       exact: true,
       href: `/${tenantSlug}`,
       icon: LayoutDashboard,
       name: "Dashboard",
-    },
-    {
-      badge: null,
-      href: `/${tenantSlug}/products`,
-      icon: Package,
-      name: "Ürün & Hizmetler",
-    },
-    {
-      badge: null,
-      href: `/${tenantSlug}/orders`,
-      icon: ShoppingCart,
-      name: "Siparişler",
     },
     {
       badge: null,
@@ -270,52 +309,43 @@ function DashboardNavigation() {
     },
     {
       badge: null,
-      href: `/${tenantSlug}/leaves`,
-      icon: Calendar,
-      name: "İzinler & Takvim",
+      href: `/${tenantSlug}/orders`,
+      icon: ShoppingCart,
+      name: "Siparişler",
     },
+    {
+      badge: null,
+      href: `/${tenantSlug}/products`,
+      icon: Package,
+      name: "Ürün & Hizmetler",
+    },
+  ]
+
+  // 2. İnsan Kaynakları & Bordro
+  const hrMenu = [
     {
       badge: null,
       href: `/${tenantSlug}/attendance`,
       icon: Clock,
       name: "Vardiya & PDKS",
+      permission: "Attendance.View",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/leaves`,
+      icon: Calendar,
+      name: "İzinler & Takvim",
+      permission: "Leaves.View",
     },
     {
       badge: null,
       href: `/${tenantSlug}/payroll`,
       icon: Banknote,
       name: "Bordro & Maaşlar",
-    },
-    {
-      badge: "33",
-      href: `/${tenantSlug}/messages`,
-      icon: MessageSquare,
-      name: "Mesajlar",
-    },
-  ]
-
-  const organizationMenu = [
-    {
-      badge: null,
-      dot: "bg-fuchsia-500",
-      href: `/${tenantSlug}/organization?tab=chart`,
-      icon: Network,
-      name: "Org Chart (Şema)",
-      permission: "Organization.ViewChart",
-      tab: "chart",
+      permission: "Payroll.View",
     },
     {
       badge: null,
-      dot: "bg-cyan-500",
-      href: `/${tenantSlug}/organization?tab=departments`,
-      icon: Building2,
-      name: "Departmanlar",
-      permission: "Departments.View",
-      tab: "departments",
-    },
-    {
-      badge: null,
-      dot: "bg-violet-500",
       href: `/${tenantSlug}/organization?tab=employees`,
       icon: UserCheck,
       name: "Çalışanlar & Kadro",
@@ -324,214 +354,296 @@ function DashboardNavigation() {
     },
     {
       badge: null,
-      dot: "bg-indigo-500",
+      href: `/${tenantSlug}/organization?tab=departments`,
+      icon: Building2,
+      name: "Departmanlar",
+      permission: "Departments.View",
+      tab: "departments",
+    },
+    {
+      badge: null,
       href: `/${tenantSlug}/organization?tab=positions`,
       icon: Briefcase,
       name: "Pozisyonlar & Ünvanlar",
       permission: "JobPositions.Manage",
       tab: "positions",
     },
+    {
+      badge: null,
+      href: `/${tenantSlug}/organization?tab=chart`,
+      icon: Network,
+      name: "Org Şeması",
+      permission: "Organization.ViewChart",
+      tab: "chart",
+    },
   ]
 
+  // 3. İletişim & Araçlar
   const toolsMenu = [
-    { href: `/${tenantSlug}/email`, icon: Mail, name: "Email" },
-    { href: `/${tenantSlug}/automation`, icon: Zap, name: "Automation" },
-    { href: `/${tenantSlug}/analytics`, icon: BarChart3, name: "Analytics" },
-    { href: `/${tenantSlug}/integration`, icon: Boxes, name: "Integration" },
+    {
+      badge: "33",
+      href: `/${tenantSlug}/messages`,
+      icon: MessageSquare,
+      name: "Mesajlar",
+    },
+    {
+      href: `/${tenantSlug}/email`,
+      icon: Mail,
+      name: "E-Posta",
+    },
+    {
+      href: `/${tenantSlug}/automation`,
+      icon: Zap,
+      name: "Otomasyon",
+    },
+    {
+      href: `/${tenantSlug}/analytics`,
+      icon: BarChart3,
+      name: "Raporlar & Analitik",
+    },
+    {
+      href: `/${tenantSlug}/integration`,
+      icon: Boxes,
+      name: "Entegrasyonlar",
+    },
   ]
 
-  const workspaceMenu = [
+  // 4. Sistem & Yönetim
+  const managementMenu = [
     {
       badge: "6",
-      dot: "bg-indigo-500",
       href: `/${tenantSlug}/users`,
       icon: Users,
-      name: "Team & Members",
+      name: "Ekip & Üyeler",
       permission: "Users.View",
     },
     {
       badge: "4",
-      dot: "bg-pink-500",
       href: `/${tenantSlug}/roles`,
       icon: Shield,
-      name: "Roles & Permissions",
+      name: "Roller & Yetkiler",
       permission: "Roles.View",
     },
     {
       badge: null,
-      dot: null,
       href: `/${tenantSlug}/settings`,
       icon: Settings,
-      name: "Workspace Settings",
+      name: "Şirket Ayarları",
       permission: "Tenants.Update",
     },
   ]
 
   return (
     <div className="space-y-4">
-      {/* MAIN MENU */}
+      {/* 1. GENEL & SATIŞ CRM */}
       <div>
-        <div className="px-3 pb-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-          MAIN MENU
-        </div>
-        <div className="space-y-0.5">
-          {mainMenu.map((item) => {
-            const isActive = item.exact
-              ? pathname === item.href
-              : pathname?.startsWith(item.href)
+        <button
+          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          onClick={() => toggleSection("sales")}
+          type="button"
+        >
+          <span>Genel & Satış CRM</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+              openSections.sales ? "rotate-0 transform" : "-rotate-90"
+            }`}
+          />
+        </button>
 
-            return (
-              <Link
-                className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
-                  isActive
-                    ? "bg-slate-900 text-white shadow-sm"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-                href={item.href}
-                key={item.name}
-                prefetch={false}
-              >
-                <div className="flex items-center gap-2.5">
-                  <item.icon
-                    className={`h-4 w-4 ${isActive ? "text-fuchsia-400" : "text-slate-400"}`}
-                  />
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            )
-          })}
-        </div>
-      </div>
+        {openSections.sales && (
+          <div className="mt-1 space-y-0.5">
+            {salesMenu.map((item) => {
+              const isActive = item.exact
+                ? pathname === item.href
+                : pathname?.startsWith(item.href)
 
-      {/* ORGANIZATION & PEOPLE */}
-      <div>
-        <div className="px-3 pb-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-          ORGANİZASYON
-        </div>
-        <div className="space-y-0.5">
-          {organizationMenu.map((item) => {
-            const isOrgPage = pathname === `/${tenantSlug}/organization`
-            const isActive = isOrgPage && currentTab === item.tab
-
-            const linkContent = (
-              <Link
-                className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                  isActive
-                    ? "bg-slate-900 font-semibold text-white shadow-sm"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-                href={item.href}
-                key={item.name}
-                prefetch={false}
-              >
-                <div className="flex items-center gap-2.5">
-                  <item.icon
-                    className={`h-4 w-4 ${isActive ? "text-fuchsia-400" : "text-slate-400"}`}
-                  />
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span className="py-0.2 rounded-full bg-slate-100 px-1.5 text-[10px] font-bold text-slate-500">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            )
-
-            if (item.permission) {
               return (
-                <PermissionGate key={item.name} permission={item.permission}>
-                  {linkContent}
-                </PermissionGate>
+                <Link
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                  }`}
+                  href={item.href}
+                  key={item.name}
+                  prefetch={false}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon
+                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                </Link>
               )
-            }
-
-            return linkContent
-          })}
-        </div>
+            })}
+          </div>
+        )}
       </div>
 
-      {/* TOOLS */}
+      {/* 2. İNSAN KAYNAKLARI & BORDRO */}
       <div>
-        <div className="px-3 pb-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-          TOOLS
-        </div>
-        <div className="space-y-0.5">
-          {toolsMenu.map((item) => {
-            const isActive = pathname === item.href
-            return (
-              <Link
-                className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                  isActive
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-                href={item.href}
-                key={item.name}
-                prefetch={false}
-              >
-                <div className="flex items-center gap-2.5">
-                  <item.icon className="h-4 w-4 text-slate-400" />
-                  <span>{item.name}</span>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+        <button
+          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          onClick={() => toggleSection("hr")}
+          type="button"
+        >
+          <span>İnsan Kaynakları & Bordro</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+              openSections.hr ? "rotate-0 transform" : "-rotate-90"
+            }`}
+          />
+        </button>
+
+        {openSections.hr && (
+          <div className="mt-1 space-y-0.5">
+            {hrMenu.map((item) => {
+              const isOrgPage = pathname === `/${tenantSlug}/organization`
+              const isActive = item.tab
+                ? isOrgPage && currentTab === item.tab
+                : pathname === item.href || pathname?.startsWith(`${item.href}/`)
+
+              const linkContent = (
+                <Link
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                  }`}
+                  href={item.href}
+                  key={item.name}
+                  prefetch={false}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon
+                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                </Link>
+              )
+
+              if (item.permission) {
+                return (
+                  <PermissionGate key={item.name} permission={item.permission}>
+                    {linkContent}
+                  </PermissionGate>
+                )
+              }
+
+              return linkContent
+            })}
+          </div>
+        )}
       </div>
 
-      {/* WORKSPACE */}
+      {/* 3. İLETİŞİM & ARAÇLAR */}
       <div>
-        <div className="px-3 pb-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-          WORKSPACE
-        </div>
-        <div className="space-y-0.5">
-          {workspaceMenu.map((item) => {
-            const isActive = pathname === item.href
+        <button
+          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          onClick={() => toggleSection("tools")}
+          type="button"
+        >
+          <span>İletişim & Araçlar</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+              openSections.tools ? "rotate-0 transform" : "-rotate-90"
+            }`}
+          />
+        </button>
 
-            const linkContent = (
-              <Link
-                className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                  isActive
-                    ? "bg-slate-900 font-semibold text-white"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-                href={item.href}
-                key={item.name}
-                prefetch={false}
-              >
-                <div className="flex items-center gap-2.5">
-                  {item.dot ? (
-                    <span className={`h-2 w-2 rounded-full ${item.dot}`} />
-                  ) : (
-                    <item.icon className="h-4 w-4 text-slate-400" />
+        {openSections.tools && (
+          <div className="mt-1 space-y-0.5">
+            {toolsMenu.map((item) => {
+              const isActive = pathname === item.href
+
+              return (
+                <Link
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                  }`}
+                  href={item.href}
+                  key={item.name}
+                  prefetch={false}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon
+                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-muted dark:text-slate-300">
+                      {item.badge}
+                    </span>
                   )}
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span className="py-0.2 rounded-full bg-slate-100 px-1.5 text-[10px] font-bold text-slate-500">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            )
-
-            if (item.permission) {
-              return (
-                <PermissionGate key={item.name} permission={item.permission}>
-                  {linkContent}
-                </PermissionGate>
+                </Link>
               )
-            }
+            })}
+          </div>
+        )}
+      </div>
 
-            return linkContent
-          })}
-        </div>
+      {/* 4. SİSTEM & YÖNETİM */}
+      <div>
+        <button
+          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          onClick={() => toggleSection("management")}
+          type="button"
+        >
+          <span>Sistem & Yönetim</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+              openSections.management ? "rotate-0 transform" : "-rotate-90"
+            }`}
+          />
+        </button>
+
+        {openSections.management && (
+          <div className="mt-1 space-y-0.5">
+            {managementMenu.map((item) => {
+              const isActive = pathname === item.href
+
+              const linkContent = (
+                <Link
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                  }`}
+                  href={item.href}
+                  key={item.name}
+                  prefetch={false}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon
+                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-muted dark:text-slate-300">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              )
+
+              if (item.permission) {
+                return (
+                  <PermissionGate key={item.name} permission={item.permission}>
+                    {linkContent}
+                  </PermissionGate>
+                )
+              }
+
+              return linkContent
+            })}
+          </div>
+        )}
       </div>
     </div>
   )
