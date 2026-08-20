@@ -84,6 +84,12 @@ public class InviteUserHandler(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        // 3.1. Ensure tenant_members membership entry exists
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "INSERT INTO public.tenant_members (id, tenant_id, user_id, is_owner, created_at) VALUES ({0}, {1}, {2}, {3}, {4}) ON CONFLICT (tenant_id, user_id) DO NOTHING;",
+            [Guid.NewGuid(), tenantId, user.Id, false, DateTime.UtcNow],
+            cancellationToken);
+
         // 4. Publish event to invalidate user permission cache
         await publishEndpoint.Publish(new UserRolesChangedIntegrationEvent(
             tenantId,
