@@ -24,6 +24,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Truck,
   UserCheck,
   Users,
   Users2,
@@ -142,6 +143,10 @@ export default function DashboardLayout({
         } else if (seq === "go") {
           e.preventDefault();
           router.push(`/${tenantSlug}/organization`);
+          keyBuffer = [];
+        } else if (seq === "gk") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/shipments`);
           keyBuffer = [];
         } else if (seq === "ga") {
           e.preventDefault();
@@ -268,7 +273,8 @@ function DashboardNavigation() {
       pathname === `/${tenantSlug}` ||
       pathname.startsWith(`/${tenantSlug}/customers`) ||
       pathname.startsWith(`/${tenantSlug}/orders`) ||
-      pathname.startsWith(`/${tenantSlug}/products`)
+      pathname.startsWith(`/${tenantSlug}/products`) ||
+      pathname.startsWith(`/${tenantSlug}/shipments`)
     ) {
       setOpenSections((prev) => ({ ...prev, sales: true }));
     } else if (
@@ -327,6 +333,13 @@ function DashboardNavigation() {
       href: `/${tenantSlug}/products`,
       icon: Package,
       name: "Ürün & Hizmetler",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/shipments`,
+      icon: Truck,
+      name: "Kargo & Sevkiyat",
+      permission: "Shipment.View",
     },
   ];
 

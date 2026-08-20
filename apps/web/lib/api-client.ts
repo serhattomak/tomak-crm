@@ -202,6 +202,7 @@ export class ApiClient {
 
     if (tenantId) {
       headers["X-Tenant-Id"] = tenantId;
+      headers["X-Tenant-Slug"] = tenantId;
     }
 
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -1848,6 +1849,201 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // --- Shipping & Fulfillment ---
+  static async getShipments(
+    params: {
+      status?: string;
+      type?: string;
+      carrierId?: string;
+      customerId?: string;
+      orderId?: string;
+      search?: string;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<ShipmentDto[]>> {
+    const query = new URLSearchParams();
+    if (params.status) query.set("status", params.status);
+    if (params.type) query.set("type", params.type);
+    if (params.carrierId) query.set("carrierId", params.carrierId);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.orderId) query.set("orderId", params.orderId);
+    if (params.search) query.set("search", params.search);
+    const qs = query.toString();
+    return ApiClient.request<ShipmentDto[]>(
+      `/api/shipping/shipments${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getShipmentById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<ShipmentDto>> {
+    return ApiClient.request<ShipmentDto>(
+      `/api/shipping/shipments/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getShippingStats(
+    tenantId?: string
+  ): Promise<ApiResponse<ShippingStatsDto>> {
+    return ApiClient.request<ShippingStatsDto>(
+      "/api/shipping/shipments/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createShipment(
+    data: CreateShipmentPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ShipmentDto>> {
+    return ApiClient.request<ShipmentDto>(
+      "/api/shipping/shipments",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateShipmentStatus(
+    id: string,
+    data: UpdateShipmentStatusPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ShipmentDto>> {
+    return ApiClient.request<ShipmentDto>(
+      `/api/shipping/shipments/${id}/status`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateShipmentTracking(
+    id: string,
+    data: { carrierId?: string; trackingNumber?: string },
+    tenantId?: string
+  ): Promise<ApiResponse<ShipmentDto>> {
+    return ApiClient.request<ShipmentDto>(
+      `/api/shipping/shipments/${id}/tracking`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async getShippingCarriers(
+    activeOnly = false,
+    tenantId?: string
+  ): Promise<ApiResponse<CarrierDto[]>> {
+    return ApiClient.request<CarrierDto[]>(
+      `/api/shipping/carriers${activeOnly ? "?activeOnly=true" : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createShippingCarrier(
+    data: CreateCarrierPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<CarrierDto>> {
+    return ApiClient.request<CarrierDto>(
+      "/api/shipping/carriers",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async getReturnShipments(
+    params: { status?: string; customerId?: string; search?: string } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<ReturnShipmentDto[]>> {
+    const query = new URLSearchParams();
+    if (params.status) query.set("status", params.status);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.search) query.set("search", params.search);
+    const qs = query.toString();
+    return ApiClient.request<ReturnShipmentDto[]>(
+      `/api/shipping/returns${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createReturnShipment(
+    data: CreateReturnShipmentPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ReturnShipmentDto>> {
+    return ApiClient.request<ReturnShipmentDto>(
+      "/api/shipping/returns",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateReturnStatus(
+    id: string,
+    data: UpdateReturnStatusPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ReturnShipmentDto>> {
+    return ApiClient.request<ReturnShipmentDto>(
+      `/api/shipping/returns/${id}/status`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteShipment(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/shipping/shipments/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async deleteReturnShipment(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/shipping/returns/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async deleteShippingCarrier(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/shipping/carriers/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -3282,3 +3478,155 @@ export interface UpdateSupportSessionStatusPayload {
   resolutionNotes?: string;
   status: "Open" | "Pending" | "Resolved" | "Closed" | string;
 }
+
+// --- Shipping Interfaces ---
+
+export interface CarrierDto {
+  activeShipmentsCount: number;
+  branchCode?: string;
+  code: string;
+  customerAccountNumber?: string;
+  id: string;
+  isActive: boolean;
+  isDefault: boolean;
+  name: string;
+  trackingUrlTemplate?: string;
+}
+
+export interface ShipmentItemDto {
+  id: string;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  sku?: string;
+  unit: string;
+}
+
+export interface ShipmentStatusHistoryDto {
+  changedByName?: string;
+  changedByUserId?: string;
+  createdAt: string;
+  description?: string;
+  id: string;
+  location?: string;
+  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+}
+
+export interface ShipmentDto {
+  carrierId?: string;
+  carrierName?: string;
+  createdAt: string;
+  customerId?: string;
+  customerName: string;
+  deliveredAt?: string;
+  dispatchedAt?: string;
+  id: string;
+  items: ShipmentItemDto[];
+  notes?: string;
+  orderId?: string;
+  orderNumber?: string;
+  packageCount: number;
+  preparedByName?: string;
+  preparedByUserId?: string;
+  recipientAddress: string;
+  recipientCity?: string;
+  recipientDistrict?: string;
+  recipientName: string;
+  recipientPhone?: string;
+  shipmentNumber: string;
+  shippingCost: number;
+  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+  statusHistories: ShipmentStatusHistoryDto[];
+  totalDesi: number;
+  totalWeightKg: number;
+  trackingNumber?: string;
+  trackingUrl?: string;
+  type: "Outbound" | "Return" | string;
+  updatedAt: string;
+}
+
+export interface ShippingStatsDto {
+  deliveredTodayCount: number;
+  deliverySuccessRatePercentage: number;
+  inTransitCount: number;
+  pendingReturnsCount: number;
+  preparingCount: number;
+  totalShipments: number;
+}
+
+export interface ReturnShipmentDto {
+  carrierId?: string;
+  carrierName?: string;
+  createdAt: string;
+  customerId?: string;
+  customerName: string;
+  id: string;
+  inspectedAt?: string;
+  inspectedByName?: string;
+  inspectedByUserId?: string;
+  inspectionNotes?: string;
+  orderId?: string;
+  originalShipmentId?: string;
+  reason: string;
+  returnCode: string;
+  status: "Requested" | "InTransit" | "Received" | "Inspected" | "Rejected" | "Restocked" | string;
+  trackingNumber?: string;
+  updatedAt: string;
+}
+
+export interface CreateShipmentPayload {
+  carrierId?: string;
+  customerId?: string;
+  customerName: string;
+  items?: { productId?: string; productName: string; quantity: number; sku?: string; unit?: string }[];
+  notes?: string;
+  orderId?: string;
+  orderNumber?: string;
+  packageCount?: number;
+  preparedByName?: string;
+  preparedByUserId?: string;
+  recipientAddress: string;
+  recipientCity?: string;
+  recipientDistrict?: string;
+  recipientName: string;
+  recipientPhone?: string;
+  shippingCost?: number;
+  totalDesi?: number;
+  totalWeightKg?: number;
+  trackingNumber?: string;
+}
+
+export interface UpdateShipmentStatusPayload {
+  changedByName?: string;
+  changedByUserId?: string;
+  description?: string;
+  location?: string;
+  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+}
+
+export interface CreateCarrierPayload {
+  branchCode?: string;
+  code: string;
+  customerAccountNumber?: string;
+  isDefault?: boolean;
+  name: string;
+  trackingUrlTemplate?: string;
+}
+
+export interface CreateReturnShipmentPayload {
+  carrierId?: string;
+  customerId?: string;
+  customerName: string;
+  orderId?: string;
+  originalShipmentId?: string;
+  reason: string;
+  trackingNumber?: string;
+}
+
+export interface UpdateReturnStatusPayload {
+  inspectedByName?: string;
+  inspectedByUserId?: string;
+  inspectionNotes?: string;
+  status: "Requested" | "InTransit" | "Received" | "Inspected" | "Rejected" | "Restocked" | string;
+}
+
