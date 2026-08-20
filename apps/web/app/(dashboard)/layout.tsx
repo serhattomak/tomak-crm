@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Banknote,
   BarChart3,
   Boxes,
   Briefcase,
@@ -131,6 +132,12 @@ function DashboardNavigation() {
       href: `/${tenantSlug}/leaves`,
       icon: Calendar,
       name: "İzinler & Takvim",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/payroll`,
+      icon: Banknote,
+      name: "Bordro & Maaşlar",
     },
     {
       badge: "33",

@@ -1177,6 +1177,189 @@ export class ApiClient {
       tenantId
     )
   }
+
+  // ==========================================
+  // Payroll API Methods
+  // ==========================================
+  static async getPayrollParameters(
+    year?: number,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollParameterDto>> {
+    const query = year ? `?year=${year}` : ""
+    return ApiClient.request<PayrollParameterDto>(
+      `/api/payroll/parameters${query}`,
+      { method: "GET" },
+      tenantId
+    )
+  }
+
+  static async updatePayrollParameters(
+    data: UpdatePayrollParametersRequest,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollParameterDto>> {
+    return ApiClient.request<PayrollParameterDto>(
+      "/api/payroll/parameters",
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    )
+  }
+
+  static async getPayrollRuns(
+    params: {
+      year?: number
+      month?: number
+      status?: string
+      page?: number
+      pageSize?: number
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedPayrollRunsResponse>> {
+    const sp = new URLSearchParams()
+    if (params.year) sp.set("year", params.year.toString())
+    if (params.month) sp.set("month", params.month.toString())
+    if (params.status) sp.set("status", params.status)
+    if (params.page) sp.set("page", params.page.toString())
+    if (params.pageSize) sp.set("pageSize", params.pageSize.toString())
+
+    const query = sp.toString() ? `?${sp.toString()}` : ""
+    return ApiClient.request<PagedPayrollRunsResponse>(
+      `/api/payroll/runs${query}`,
+      { method: "GET" },
+      tenantId
+    )
+  }
+
+  static async getPayrollRunById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollRunDetailResponse>> {
+    return ApiClient.request<PayrollRunDetailResponse>(
+      `/api/payroll/runs/${id}`,
+      { method: "GET" },
+      tenantId
+    )
+  }
+
+  static async createPayrollRun(
+    data: CreatePayrollRunRequest,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollRunDto>> {
+    return ApiClient.request<PayrollRunDto>(
+      "/api/payroll/runs",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async calculatePayrollRun(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollRunDto>> {
+    return ApiClient.request<PayrollRunDto>(
+      `/api/payroll/runs/${id}/calculate`,
+      { method: "POST" },
+      tenantId
+    )
+  }
+
+  static async approvePayrollRun(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollRunDto>> {
+    return ApiClient.request<PayrollRunDto>(
+      `/api/payroll/runs/${id}/approve`,
+      { method: "POST" },
+      tenantId
+    )
+  }
+
+  static async lockPayrollRun(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollRunDto>> {
+    return ApiClient.request<PayrollRunDto>(
+      `/api/payroll/runs/${id}/lock`,
+      { method: "POST" },
+      tenantId
+    )
+  }
+
+  static async deletePayrollRun(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/payroll/runs/${id}`,
+      { method: "DELETE" },
+      tenantId
+    )
+  }
+
+  static async updateEmployeePuantaj(
+    runId: string,
+    employeePayrollId: string,
+    data: UpdateEmployeePuantajRequest,
+    tenantId?: string
+  ): Promise<ApiResponse<EmployeePayrollDetailDto>> {
+    return ApiClient.request<EmployeePayrollDetailDto>(
+      `/api/payroll/runs/${runId}/employees/${employeePayrollId}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    )
+  }
+
+  static async getEmployeePayslip(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayslipDto>> {
+    return ApiClient.request<PayslipDto>(
+      `/api/payroll/payslips/${id}`,
+      { method: "GET" },
+      tenantId
+    )
+  }
+
+  static async getMyPayslips(tenantId?: string): Promise<ApiResponse<PayslipDto[]>> {
+    return ApiClient.request<PayslipDto[]>(
+      "/api/payroll/my-payslips",
+      { method: "GET" },
+      tenantId
+    )
+  }
+
+  static async simulatePayroll(
+    data: SimulatePayrollRequest,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollCalculationResultDto>> {
+    return ApiClient.request<PayrollCalculationResultDto>(
+      "/api/payroll/simulate",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async exportPayrollIcmal(
+    runId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<PayrollIcmalResponse>> {
+    return ApiClient.request<PayrollIcmalResponse>(
+      `/api/payroll/runs/${runId}/icmal`,
+      { method: "GET" },
+      tenantId
+    )
+  }
 }
 
 export interface CustomerListDto {
@@ -1851,6 +2034,369 @@ export interface CreateLeaveRequestPayload {
   leaveType: string
   reason?: string
   startDate: string
+}
+
+// ==========================================
+// Payroll DTOs & Interfaces
+// ==========================================
+export interface PayrollParameterDto {
+  besDefaultRate: number
+  id: string
+  isActive: boolean
+  mealExemptionDaily: number
+  minWageGross: number
+  minWageNet: number
+  minWageStampExemption: number
+  minWageTaxExemption: number
+  sgkCeiling: number
+  sgkEmployeeRate: number
+  sgkEmployerDiscount5510Rate: number
+  sgkEmployerRate: number
+  sgkFloor: number
+  stampTaxRate: number
+  taxBracket1Limit: number
+  taxBracket1Rate: number
+  taxBracket2Limit: number
+  taxBracket2Rate: number
+  taxBracket3Limit: number
+  taxBracket3Rate: number
+  taxBracket4Limit: number
+  taxBracket4Rate: number
+  taxBracket5Rate: number
+  title: string
+  travelExemptionDaily: number
+  unemploymentEmployeeRate: number
+  unemploymentEmployerRate: number
+  year: number
+}
+
+export interface UpdatePayrollParametersRequest {
+  besDefaultRate: number
+  isActive: boolean
+  mealExemptionDaily: number
+  minWageGross: number
+  minWageNet: number
+  minWageStampExemption: number
+  minWageTaxExemption: number
+  sgkCeiling: number
+  sgkEmployeeRate: number
+  sgkEmployerDiscount5510Rate: number
+  sgkEmployerRate: number
+  sgkFloor: number
+  stampTaxRate: number
+  taxBracket1Limit: number
+  taxBracket1Rate: number
+  taxBracket2Limit: number
+  taxBracket2Rate: number
+  taxBracket3Limit: number
+  taxBracket3Rate: number
+  taxBracket4Limit: number
+  taxBracket4Rate: number
+  taxBracket5Rate: number
+  title: string
+  travelExemptionDaily: number
+  unemploymentEmployeeRate: number
+  unemploymentEmployerRate: number
+  year: number
+}
+
+export interface PayrollRunDto {
+  approvedAt?: string
+  approvedByUserName?: string
+  calculatedAt?: string
+  createdAt: string
+  id: string
+  lockedAt?: string
+  month: number
+  notes?: string
+  status: "Draft" | "Calculated" | "Approved" | "Locked" | string
+  tenantId: string
+  title: string
+  totalEmployees: number
+  totalEmployerCost: number
+  totalGross: number
+  totalIncomeTax: number
+  totalNet: number
+  totalSgkEmployee: number
+  totalSgkEmployer: number
+  totalStampTax: number
+  updatedAt: string
+  year: number
+}
+
+export interface PagedPayrollRunsResponse {
+  items: PayrollRunDto[]
+  page: number
+  pageSize: number
+  totalCount: number
+}
+
+export interface EmployeePayrollDetailDto {
+  advanceDeduction: number
+  baseSalary: number
+  besDeduction: number
+  bonusGross: number
+  calculatedIncomeTax: number
+  calculatedStampTax: number
+  contractSalaryType: "Gross" | "Net" | string
+  createdAt: string
+  currentCumulativeIncomeTaxBase: number
+  currentIncomeTaxBase: number
+  departmentId?: string
+  departmentName?: string
+  employeeId: string
+  employeeName: string
+  employeeNumber?: string
+  holidayDays: number
+  iban?: string
+  icraDeduction: number
+  id: string
+  jobTitle?: string
+  mealAllowanceGross: number
+  minWageIncomeTaxExemption: number
+  minWageStampExemption: number
+  netSalary: number
+  normalGross: number
+  otherGross: number
+  overtimeGross: number
+  overtimeHours: number
+  paidLeaveDays: number
+  payableIncomeTax: number
+  payableNetSalary: number
+  payableStampTax: number
+  payrollRunId: string
+  priorCumulativeIncomeTaxBase: number
+  privateHealthInsuranceDeduction: number
+  sickLeaveDays: number
+  sgkBase: number
+  sgkEmployeeDeduction: number
+  sgkEmployerDeduction: number
+  sgkEmployerDiscount5510: number
+  status: string
+  tcIdentityNumber?: string
+  totalDeductions: number
+  totalEmployerCost: number
+  totalGross: number
+  totalPaidDays: number
+  travelAllowanceGross: number
+  unemploymentEmployeeDeduction: number
+  unemploymentEmployerDeduction: number
+  unpaidLeaveDays: number
+  updatedAt: string
+  weekendDays: number
+  workedDays: number
+}
+
+export interface PayrollRunDetailResponse {
+  employees: EmployeePayrollDetailDto[]
+  run: PayrollRunDto
+}
+
+export interface PayslipDto {
+  advanceDeduction: number
+  approvedAt?: string
+  baseSalary: number
+  besDeduction: number
+  bonusGross: number
+  calculatedAt?: string
+  calculatedIncomeTax: number
+  calculatedStampTax: number
+  contractSalaryType: string
+  createdAt: string
+  currentCumulativeIncomeTaxBase: number
+  currentIncomeTaxBase: number
+  departmentId?: string
+  departmentName?: string
+  employeeId: string
+  employeeName: string
+  employeeNumber?: string
+  holidayDays: number
+  iban?: string
+  icraDeduction: number
+  id: string
+  jobTitle?: string
+  mealAllowanceGross: number
+  minWageIncomeTaxExemption: number
+  minWageStampExemption: number
+  month: number
+  netSalary: number
+  normalGross: number
+  otherGross: number
+  overtimeGross: number
+  overtimeHours: number
+  paidLeaveDays: number
+  payableIncomeTax: number
+  payableNetSalary: number
+  payableStampTax: number
+  payrollRunId: string
+  priorCumulativeIncomeTaxBase: number
+  privateHealthInsuranceDeduction: number
+  runStatus: string
+  runTitle: string
+  sickLeaveDays: number
+  sgkBase: number
+  sgkEmployeeDeduction: number
+  sgkEmployerDeduction: number
+  sgkEmployerDiscount5510: number
+  tcIdentityNumber?: string
+  totalDeductions: number
+  totalEmployerCost: number
+  totalGross: number
+  totalPaidDays: number
+  travelAllowanceGross: number
+  unemploymentEmployeeDeduction: number
+  unemploymentEmployerDeduction: number
+  unpaidLeaveDays: number
+  weekendDays: number
+  workedDays: number
+  year: number
+}
+
+export interface PayrollCalculationResultDto {
+  advanceDeduction: number
+  baseSalary: number
+  besDeduction: number
+  bonusGross: number
+  calculatedIncomeTax: number
+  calculatedStampTax: number
+  contractSalaryType: string
+  currentCumulativeIncomeTaxBase: number
+  currentIncomeTaxBase: number
+  holidayDays: number
+  icraDeduction: number
+  mealAllowanceGross: number
+  minWageIncomeTaxExemption: number
+  minWageStampExemption: number
+  netSalary: number
+  normalGross: number
+  otherGross: number
+  overtimeGross: number
+  overtimeHours: number
+  paidLeaveDays: number
+  payableIncomeTax: number
+  payableNetSalary: number
+  payableStampTax: number
+  priorCumulativeIncomeTaxBase: number
+  privateHealthInsuranceDeduction: number
+  sickLeaveDays: number
+  sgkBase: number
+  sgkEmployeeDeduction: number
+  sgkEmployerDeduction: number
+  sgkEmployerDiscount5510: number
+  totalDeductions: number
+  totalEmployerCost: number
+  totalGross: number
+  totalPaidDays: number
+  travelAllowanceGross: number
+  unemploymentEmployeeDeduction: number
+  unemploymentEmployerDeduction: number
+  unpaidLeaveDays: number
+  weekendDays: number
+  workedDays: number
+}
+
+export interface CreatePayrollRunRequest {
+  month: number
+  notes?: string
+  title?: string
+  year: number
+}
+
+export interface UpdateEmployeePuantajRequest {
+  advanceDeduction: number
+  baseSalary: number
+  besRate: number
+  bonusGross: number
+  contractSalaryType: string
+  hasBes: boolean
+  holidayDays: number
+  icraDeduction: number
+  mealAllowanceGross: number
+  otherGross: number
+  overtimeHours: number
+  paidLeaveDays: number
+  privateHealthInsurance: number
+  sickLeaveDays: number
+  travelAllowanceGross: number
+  unpaidLeaveDays: number
+  weekendDays: number
+  workedDays: number
+}
+
+export interface SimulatePayrollRequest {
+  advanceDeduction?: number
+  apply5510Incentive?: boolean
+  baseSalary: number
+  besRate?: number
+  bonusGross?: number
+  contractSalaryType?: string
+  hasBes?: boolean
+  holidayDays?: number
+  icraDeduction?: number
+  mealAllowance?: number
+  otherGross?: number
+  overtimeHours?: number
+  paidLeaveDays?: number
+  priorCumulativeIncomeTaxBase?: number
+  privateHealthInsurance?: number
+  sickLeaveDays?: number
+  travelAllowance?: number
+  unpaidLeaveDays?: number
+  weekendDays?: number
+  workedDays?: number
+  year?: number
+}
+
+export interface PayrollIcmalRowDto {
+  advanceDeduction: number
+  baseSalary: number
+  besDeduction: number
+  calculatedIncomeTax: number
+  calculatedStampTax: number
+  currentCumulativeIncomeTaxBase: number
+  currentIncomeTaxBase: number
+  departmentName: string
+  employeeName: string
+  employeeNumber: string
+  iban: string
+  icraDeduction: number
+  jobTitle: string
+  minWageIncomeTaxExemption: number
+  minWageStampExemption: number
+  overtimeHours: number
+  payableIncomeTax: number
+  payableNetSalary: number
+  payableStampTax: number
+  priorCumulativeIncomeTaxBase: number
+  sgkBase: number
+  sgkEmployeeDeduction: number
+  sgkEmployerDeduction: number
+  sgkEmployerDiscount5510: number
+  tcIdentityNumber: string
+  totalDeductions: number
+  totalEmployerCost: number
+  totalGross: number
+  totalPaidDays: number
+  unemploymentEmployeeDeduction: number
+  unemploymentEmployerDeduction: number
+  workedDays: number
+}
+
+export interface PayrollIcmalResponse {
+  month: number
+  rows: PayrollIcmalRowDto[]
+  runId: string
+  status: string
+  title: string
+  totalEmployees: number
+  totalEmployerCost: number
+  totalGross: number
+  totalIncomeTax: number
+  totalNet: number
+  totalSgkEmployee: number
+  totalSgkEmployer: number
+  totalStampTax: number
+  year: number
 }
 
 

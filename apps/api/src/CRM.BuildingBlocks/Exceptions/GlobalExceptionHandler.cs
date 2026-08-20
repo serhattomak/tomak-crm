@@ -14,6 +14,12 @@ public class AppException(string message, string? code = null, int statusCode = 
     public int StatusCode { get; } = statusCode;
 }
 
+public class BadRequestException(string message, string? code = null)
+    : AppException(message, code ?? "Error.BadRequest", StatusCodes.Status400BadRequest);
+
+public class ConflictException(string message, string? code = null)
+    : AppException(message, code ?? "Error.Conflict", StatusCodes.Status409Conflict);
+
 public class NotFoundException(string message, string? code = null)
     : AppException(message, code ?? "Error.NotFound", StatusCodes.Status404NotFound);
 
