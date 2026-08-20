@@ -1,32 +1,31 @@
-"use client"
+"use client";
 
-import {
-  HelpCircle,
-  Keyboard,
-  X,
-} from "lucide-react"
-import React from "react"
+import { HelpCircle, Keyboard, X } from "lucide-react";
 
 interface ShortcutsHelpModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps) {
-  if (!isOpen) return null
+export function ShortcutsHelpModal({
+  isOpen,
+  onClose,
+}: ShortcutsHelpModalProps) {
+  if (!isOpen) {
+    return null;
+  }
 
   const shortcutSections = [
     {
-      title: "Genel Kısayollar",
       items: [
         { keys: ["⌘", "K"], label: "Komut Paleti / Hızlı Arama (veya Ctrl+K)" },
         { keys: ["/"], label: "Arama Çubuğuna Odaklan" },
         { keys: ["?"], label: "Klavye Kısayolları Kılavuzu" },
         { keys: ["Esc"], label: "Açık Modalı / Menüyü Kapat" },
       ],
+      title: "Genel Kısayollar",
     },
     {
-      title: "Hızlı Sayfa Geçişleri (Sırasıyla)",
       items: [
         { keys: ["G", "D"], label: "Dashboard / Ana Sayfa" },
         { keys: ["G", "M"], label: "Müşteriler" },
@@ -38,23 +37,24 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
         { keys: ["G", "O"], label: "Organizasyon" },
         { keys: ["G", "A"], label: "Ayarlar" },
       ],
+      title: "Hızlı Sayfa Geçişleri (Sırasıyla)",
     },
     {
-      title: "Hızlı Eylemler (Sırasıyla)",
       items: [
         { keys: ["N", "M"], label: "Yeni Müşteri Ekle" },
         { keys: ["N", "S"], label: "Yeni Sipariş Oluştur" },
         { keys: ["N", "I"], label: "Yeni İzin Talebi" },
         { keys: ["N", "U"], label: "Yeni Ürün / Hizmet Ekle" },
       ],
+      title: "Hızlı Eylemler (Sırasıyla)",
     },
-  ]
+  ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl text-xs">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-3xl border border-slate-200/80 bg-white p-6 text-xs shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b pb-4 mb-4">
+        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
               <Keyboard className="h-5 w-5" />
@@ -69,7 +69,7 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
             </div>
           </div>
           <button
-            className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+            className="rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
             onClick={onClose}
             type="button"
           >
@@ -78,26 +78,26 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto space-y-5 pr-1">
+        <div className="flex-1 space-y-5 overflow-y-auto pr-1">
           {shortcutSections.map((section) => (
-            <div key={section.title} className="space-y-2">
-              <div className="font-bold text-[10px] uppercase tracking-wider text-slate-400">
+            <div className="space-y-2" key={section.title}>
+              <div className="font-bold text-[10px] text-slate-400 uppercase tracking-wider">
                 {section.title}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {section.items.map((item, idx) => (
                   <div
-                    key={idx}
                     className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2"
+                    key={idx}
                   >
                     <span className="font-medium text-slate-700 text-xs">
                       {item.label}
                     </span>
-                    <div className="flex items-center gap-1 shrink-0 ml-2">
+                    <div className="ml-2 flex shrink-0 items-center gap-1">
                       {item.keys.map((k, kIdx) => (
                         <kbd
+                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-slate-200 bg-white px-1.5 font-bold font-mono text-[10px] text-slate-700 shadow-2xs"
                           key={kIdx}
-                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-slate-200 bg-white px-1.5 font-mono text-[10px] font-bold text-slate-700 shadow-2xs"
                         >
                           {k}
                         </kbd>
@@ -111,13 +111,16 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-slate-100 border-t pt-4 mt-4 text-[11px] text-slate-400">
+        <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-4 text-[11px] text-slate-400">
           <div className="flex items-center gap-1.5">
             <HelpCircle className="h-3.5 w-3.5 text-blue-600" />
-            <span>Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu pencereyi açabilirsiniz.</span>
+            <span>
+              Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu
+              pencereyi açabilirsiniz.
+            </span>
           </div>
           <button
-            className="rounded-xl border border-slate-200 bg-white px-4 py-1.5 font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+            className="rounded-xl border border-slate-200 bg-white px-4 py-1.5 font-semibold text-slate-700 transition-colors hover:bg-slate-50"
             onClick={onClose}
             type="button"
           >
@@ -126,5 +129,5 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
         </div>
       </div>
     </div>
-  )
+  );
 }

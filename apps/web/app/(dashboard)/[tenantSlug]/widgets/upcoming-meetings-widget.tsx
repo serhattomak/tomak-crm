@@ -6,33 +6,33 @@ import type { MeetingItem } from "./dashboard-types";
 export function UpcomingMeetingsWidget() {
   const meetings: MeetingItem[] = [
     {
-      id: "m-1",
-      title: "Yıllık Sözleşme & Fiyatlandırma Revizyonu",
-      customer: "Acme Holding - Satın Alma Direktörü",
-      time: "14:00 - 15:00",
-      date: "Bugün",
-      type: "video",
-      link: "https://meet.google.com/abc-xyz",
       attendees: ["Ahmet Y.", "Selin K.", "Ali B."],
-    },
-    {
-      id: "m-2",
-      title: "CRM Entegrasyonu Teknik Demo",
-      customer: "TechNova Yazılım - Baş Mühendis",
-      time: "16:30 - 17:15",
+      customer: "Acme Holding - Satın Alma Direktörü",
       date: "Bugün",
+      id: "m-1",
+      link: "https://meet.google.com/abc-xyz",
+      time: "14:00 - 15:00",
+      title: "Yıllık Sözleşme & Fiyatlandırma Revizyonu",
       type: "video",
-      link: "https://zoom.us/j/12345",
-      attendees: ["Serhat Dev", "Mehmet D."],
     },
     {
-      id: "m-3",
-      title: "Yüz Yüze Strateji Toplantısı",
-      customer: "Vortex Lojistik - Maslak Ofis",
-      time: "11:00 - 12:30",
-      date: "Yarın",
-      type: "in-person",
+      attendees: ["Serhat Dev", "Mehmet D."],
+      customer: "TechNova Yazılım - Baş Mühendis",
+      date: "Bugün",
+      id: "m-2",
+      link: "https://zoom.us/j/12345",
+      time: "16:30 - 17:15",
+      title: "CRM Entegrasyonu Teknik Demo",
+      type: "video",
+    },
+    {
       attendees: ["Canan Ö.", "Ahmet Y."],
+      customer: "Vortex Lojistik - Maslak Ofis",
+      date: "Yarın",
+      id: "m-3",
+      time: "11:00 - 12:30",
+      title: "Yüz Yüze Strateji Toplantısı",
+      type: "in-person",
     },
   ];
 
@@ -56,8 +56,12 @@ export function UpcomingMeetingsWidget() {
               <Calendar className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Yaklaşan Görüşmeler</span>
-              <div className="text-[11px] text-slate-500">Bugün ve bu hafta planlanan toplantılar</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Yaklaşan Görüşmeler
+              </span>
+              <div className="text-[11px] text-slate-500">
+                Bugün ve bu hafta planlanan toplantılar
+              </div>
             </div>
           </div>
 
@@ -76,20 +80,22 @@ export function UpcomingMeetingsWidget() {
               <div className="flex items-start justify-between gap-2">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="flex items-center gap-1 rounded bg-white px-1.5 py-0.5 font-bold text-[10px] text-slate-700 shadow-2xs border border-slate-200/60">
+                    <span className="flex items-center gap-1 rounded border border-slate-200/60 bg-white px-1.5 py-0.5 font-bold text-[10px] text-slate-700 shadow-2xs">
                       {getTypeIcon(meeting.type)}
                       {meeting.date} {meeting.time}
                     </span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-xs group-hover:text-blue-600 transition-colors">
+                  <h4 className="font-semibold text-slate-900 text-xs transition-colors group-hover:text-blue-600">
                     {meeting.title}
                   </h4>
-                  <p className="text-[11px] text-slate-500">{meeting.customer}</p>
+                  <p className="text-[11px] text-slate-500">
+                    {meeting.customer}
+                  </p>
                 </div>
 
                 {meeting.link && (
                   <a
-                    className="flex shrink-0 items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1.5 font-semibold text-white text-[11px] shadow-2xs transition-colors hover:bg-blue-700"
+                    className="flex shrink-0 items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1.5 font-semibold text-[11px] text-white shadow-2xs transition-colors hover:bg-blue-700"
                     href={meeting.link}
                     rel="noreferrer"
                     target="_blank"

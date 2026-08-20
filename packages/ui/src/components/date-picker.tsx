@@ -1,26 +1,41 @@
 "use client";
 
 import { cn } from "@workspace/ui/lib/utils";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
 import { Popover as PopoverPrimitive } from "radix-ui";
 import * as React from "react";
 
 const TURKISH_MONTHS = [
-  "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
-  "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+  "Ocak",
+  "Şubat",
+  "Mart",
+  "Nisan",
+  "Mayıs",
+  "Haziran",
+  "Temmuz",
+  "Ağustos",
+  "Eylül",
+  "Ekim",
+  "Kasım",
+  "Aralık",
 ];
 
 const TURKISH_DAYS_SHORT = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
 
 export interface DatePickerProps {
-  value?: string; // YYYY-MM-DD
+  className?: string;
+  clearable?: boolean;
+  disabled?: boolean;
+  maxDate?: string;
+  minDate?: string;
   onChange?: (date: string) => void;
   placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-  minDate?: string;
-  maxDate?: string;
-  clearable?: boolean;
+  value?: string; // YYYY-MM-DD
 }
 
 export function DatePicker({
@@ -50,16 +65,22 @@ export function DatePicker({
 
   // Format Turkish display (15 Mart 2026)
   const displayFormatted = React.useMemo(() => {
-    if (!value) return null;
+    if (!value) {
+      return null;
+    }
     const parts = value.split("-");
     const p0 = parts[0];
     const p1 = parts[1];
     const p2 = parts[2];
-    if (parts.length !== 3 || !p0 || !p1 || !p2) return value;
-    const y = parseInt(p0, 10);
-    const m = parseInt(p1, 10) - 1;
-    const d = parseInt(p2, 10);
-    if (isNaN(y) || isNaN(m) || isNaN(d) || !TURKISH_MONTHS[m]) return value;
+    if (parts.length !== 3 || !p0 || !p1 || !p2) {
+      return value;
+    }
+    const y = Number.parseInt(p0, 10);
+    const m = Number.parseInt(p1, 10) - 1;
+    const d = Number.parseInt(p2, 10);
+    if (isNaN(y) || isNaN(m) || isNaN(d) || !TURKISH_MONTHS[m]) {
+      return value;
+    }
     return `${d} ${TURKISH_MONTHS[m]} ${y}`;
   }, [value]);
 
@@ -88,10 +109,13 @@ export function DatePicker({
 
     // Monday as 0, Sunday as 6
     let startingDay = firstDayOfMonth.getDay() - 1;
-    if (startingDay === -1) startingDay = 6;
+    if (startingDay === -1) {
+      startingDay = 6;
+    }
 
     const totalDays = lastDayOfMonth.getDate();
-    const days: { dateStr: string; dayNum: number; isCurrentMonth: boolean }[] = [];
+    const days: { dateStr: string; dayNum: number; isCurrentMonth: boolean }[] =
+      [];
 
     // Prev month padding
     const prevMonthLastDay = new Date(viewYear, viewMonth, 0).getDate();
@@ -140,32 +164,29 @@ export function DatePicker({
   };
 
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+    <PopoverPrimitive.Root onOpenChange={setOpen} open={open}>
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
-          type="button"
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 shadow-2xs outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
+          type="button"
         >
           <div className="flex items-center gap-2 truncate">
             <CalendarIcon className="h-4 w-4 shrink-0 text-slate-400" />
             <span
-              className={cn(
-                "truncate",
-                !value && "font-normal text-slate-400"
-              )}
+              className={cn("truncate", !value && "font-normal text-slate-400")}
             >
               {displayFormatted || placeholder}
             </span>
           </div>
 
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex shrink-0 items-center gap-1">
             {clearable && value && (
               <span
-                onClick={handleClear}
                 className="rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                onClick={handleClear}
               >
                 <X className="h-3.5 w-3.5" />
               </span>
@@ -177,34 +198,34 @@ export function DatePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
+          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-72 animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 text-slate-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out"
           sideOffset={4}
-          className="z-50 w-72 overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 text-slate-900 shadow-xl backdrop-blur-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
         >
           {/* Header Month / Year Navigation */}
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div className="flex items-center justify-between border-slate-100 border-b pb-2">
             <button
-              type="button"
-              onClick={handlePrevMonth}
               className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+              onClick={handlePrevMonth}
+              type="button"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
 
-            <div className="text-xs font-bold text-slate-900">
+            <div className="font-bold text-slate-900 text-xs">
               {TURKISH_MONTHS[viewMonth]} {viewYear}
             </div>
 
             <button
-              type="button"
-              onClick={handleNextMonth}
               className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+              onClick={handleNextMonth}
+              type="button"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
 
           {/* Days of week */}
-          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center text-[10px] font-bold text-slate-400">
+          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-[10px] text-slate-400">
             {TURKISH_DAYS_SHORT.map((day) => (
               <div key={day}>{day}</div>
             ))}
@@ -218,21 +239,21 @@ export function DatePicker({
 
               return (
                 <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleSelectDay(d.dateStr)}
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-xl font-semibold transition-all text-xs",
+                    "flex h-8 w-8 items-center justify-center rounded-xl font-semibold text-xs transition-all",
                     !d.isCurrentMonth && "text-slate-300",
                     d.isCurrentMonth &&
                       !isSelected &&
                       "text-slate-700 hover:bg-blue-50 hover:text-blue-700",
                     isToday &&
                       !isSelected &&
-                      "border border-blue-300 bg-blue-50/50 text-blue-700 font-bold",
+                      "border border-blue-300 bg-blue-50/50 font-bold text-blue-700",
                     isSelected &&
-                      "bg-blue-600 text-white font-bold shadow-xs hover:bg-blue-700"
+                      "bg-blue-600 font-bold text-white shadow-xs hover:bg-blue-700"
                   )}
+                  key={idx}
+                  onClick={() => handleSelectDay(d.dateStr)}
+                  type="button"
                 >
                   {d.dayNum}
                 </button>
@@ -241,21 +262,21 @@ export function DatePicker({
           </div>
 
           {/* Quick Preset Footers */}
-          <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-slate-100 text-[11px]">
+          <div className="mt-2 flex items-center justify-between border-slate-100 border-t pt-2.5 text-[11px]">
             <button
-              type="button"
-              onClick={handleSetToday}
               className="font-bold text-blue-600 hover:text-blue-700"
+              onClick={handleSetToday}
+              type="button"
             >
               Bugün
             </button>
             <button
-              type="button"
+              className="text-slate-400 hover:text-slate-600"
               onClick={() => {
                 onChange?.("");
                 setOpen(false);
               }}
-              className="text-slate-400 hover:text-slate-600"
+              type="button"
             >
               Temizle
             </button>
@@ -267,11 +288,11 @@ export function DatePicker({
 }
 
 export interface DateRangePickerProps {
-  startDate?: string; // YYYY-MM-DD
+  className?: string;
   endDate?: string; // YYYY-MM-DD
   onChange?: (range: { startDate: string; endDate: string }) => void;
   placeholder?: string;
-  className?: string;
+  startDate?: string; // YYYY-MM-DD
 }
 
 export function DateRangePicker({
@@ -293,7 +314,9 @@ export function DateRangePicker({
     return placeholder;
   }, [startDate, endDate, placeholder]);
 
-  const handleQuickPreset = (preset: "today" | "thisMonth" | "lastMonth" | "last30Days" | "thisYear") => {
+  const handleQuickPreset = (
+    preset: "today" | "thisMonth" | "lastMonth" | "last30Days" | "thisYear"
+  ) => {
     const now = new Date();
     const formatDate = (d: Date) => {
       const y = d.getFullYear();
@@ -304,36 +327,40 @@ export function DateRangePicker({
 
     if (preset === "today") {
       const today = formatDate(now);
-      onChange?.({ startDate: today, endDate: today });
+      onChange?.({ endDate: today, startDate: today });
     } else if (preset === "thisMonth") {
       const start = formatDate(new Date(now.getFullYear(), now.getMonth(), 1));
-      const end = formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-      onChange?.({ startDate: start, endDate: end });
+      const end = formatDate(
+        new Date(now.getFullYear(), now.getMonth() + 1, 0)
+      );
+      onChange?.({ endDate: end, startDate: start });
     } else if (preset === "lastMonth") {
-      const start = formatDate(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+      const start = formatDate(
+        new Date(now.getFullYear(), now.getMonth() - 1, 1)
+      );
       const end = formatDate(new Date(now.getFullYear(), now.getMonth(), 0));
-      onChange?.({ startDate: start, endDate: end });
+      onChange?.({ endDate: end, startDate: start });
     } else if (preset === "last30Days") {
       const start = formatDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
       const end = formatDate(now);
-      onChange?.({ startDate: start, endDate: end });
+      onChange?.({ endDate: end, startDate: start });
     } else if (preset === "thisYear") {
       const start = formatDate(new Date(now.getFullYear(), 0, 1));
       const end = formatDate(new Date(now.getFullYear(), 11, 31));
-      onChange?.({ startDate: start, endDate: end });
+      onChange?.({ endDate: end, startDate: start });
     }
     setOpen(false);
   };
 
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+    <PopoverPrimitive.Root onOpenChange={setOpen} open={open}>
       <PopoverPrimitive.Trigger asChild>
         <button
-          type="button"
           className={cn(
-            "flex h-9 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 shadow-2xs outline-none transition-all hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
+            "flex h-9 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
             className
           )}
+          type="button"
         >
           <CalendarIcon className="h-4 w-4 text-slate-400" />
           <span>{displayString}</span>
@@ -343,45 +370,45 @@ export function DateRangePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          sideOffset={4}
           className="z-50 w-64 overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 text-slate-900 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
+          sideOffset={4}
         >
-          <div className="text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">
+          <div className="mb-2 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
             Hızlı Tarih Filtreleri
           </div>
-          <div className="space-y-1 text-xs font-semibold">
+          <div className="space-y-1 font-semibold text-xs">
             <button
-              type="button"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
               onClick={() => handleQuickPreset("today")}
-              className="w-full text-left px-2.5 py-1.5 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              type="button"
             >
               Bugün
             </button>
             <button
-              type="button"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
               onClick={() => handleQuickPreset("thisMonth")}
-              className="w-full text-left px-2.5 py-1.5 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              type="button"
             >
               Bu Ay
             </button>
             <button
-              type="button"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
               onClick={() => handleQuickPreset("lastMonth")}
-              className="w-full text-left px-2.5 py-1.5 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              type="button"
             >
               Geçen Ay
             </button>
             <button
-              type="button"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
               onClick={() => handleQuickPreset("last30Days")}
-              className="w-full text-left px-2.5 py-1.5 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              type="button"
             >
               Son 30 Gün
             </button>
             <button
-              type="button"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
               onClick={() => handleQuickPreset("thisYear")}
-              className="w-full text-left px-2.5 py-1.5 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              type="button"
             >
               Bu Yıl
             </button>

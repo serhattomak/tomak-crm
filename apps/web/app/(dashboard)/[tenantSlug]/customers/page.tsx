@@ -23,7 +23,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import {
   ApiClient,
@@ -57,7 +58,8 @@ export default function CustomersPage() {
 
   // Modals & Messages
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [deletingCustomer, setDeletingCustomer] = useState<CustomerListDto | null>(null);
+  const [deletingCustomer, setDeletingCustomer] =
+    useState<CustomerListDto | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -72,7 +74,9 @@ export default function CustomersPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setLoading(true);
     try {
       const [custRes, statsRes, empRes] = await Promise.all([
@@ -81,8 +85,8 @@ export default function CustomersPage() {
           pageSize,
           search: search.trim() || undefined,
           status: statusFilter || undefined,
-          type: typeFilter || undefined,
           tier: tierFilter || undefined,
+          type: typeFilter || undefined,
         }),
         ApiClient.getCustomerStats(activeTenant.id),
         ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
@@ -103,16 +107,29 @@ export default function CustomersPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, page, pageSize, search, statusFilter, typeFilter, tierFilter]);
+  }, [
+    activeTenant,
+    page,
+    pageSize,
+    search,
+    statusFilter,
+    typeFilter,
+    tierFilter,
+  ]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
   const handleDelete = async () => {
-    if (!activeTenant || !deletingCustomer) return;
+    if (!(activeTenant && deletingCustomer)) {
+      return;
+    }
     try {
-      const res = await ApiClient.deleteCustomer(deletingCustomer.id, activeTenant.id);
+      const res = await ApiClient.deleteCustomer(
+        deletingCustomer.id,
+        activeTenant.id
+      );
       if (res.success) {
         showToast(`'${deletingCustomer.name}' başarıyla silindi.`);
         setDeletingCustomer(null);
@@ -172,7 +189,7 @@ export default function CustomersPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl animate-in slide-in-from-top-4">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -189,8 +206,9 @@ export default function CustomersPage() {
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500">
-            Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari geçmişini yönetin.
+          <p className="mt-0.5 text-slate-500 text-xs">
+            Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari
+            geçmişini yönetin.
           </p>
         </div>
 
@@ -198,7 +216,9 @@ export default function CustomersPage() {
         <div className="flex flex-wrap items-center gap-2">
           <button
             className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
-            onClick={() => showToast("Müşteri listesi CSV olarak dışa aktarılıyor...")}
+            onClick={() =>
+              showToast("Müşteri listesi CSV olarak dışa aktarılıyor...")
+            }
             type="button"
           >
             <Download className="h-3.5 w-3.5" />
@@ -224,8 +244,10 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Toplam Müşteri</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Toplam Müşteri
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
                 {stats?.totalCustomers ?? 0}
               </div>
             </div>
@@ -244,8 +266,10 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Aktif Müşteriler</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Aktif Müşteriler
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
                 {stats?.activeCustomers ?? 0}
               </div>
             </div>
@@ -253,8 +277,16 @@ export default function CustomersPage() {
               <UserCheck className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-emerald-600 font-semibold">
-            <span>%{stats?.totalCustomers ? Math.round((stats.activeCustomers / stats.totalCustomers) * 100) : 0} Aktiflik Oranı</span>
+          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-emerald-600">
+            <span>
+              %
+              {stats?.totalCustomers
+                ? Math.round(
+                    (stats.activeCustomers / stats.totalCustomers) * 100
+                  )
+                : 0}{" "}
+              Aktiflik Oranı
+            </span>
           </div>
         </div>
 
@@ -262,8 +294,10 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Potansiyel (Lead)</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Potansiyel (Lead)
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
                 {stats?.leadCustomers ?? 0}
               </div>
             </div>
@@ -271,7 +305,7 @@ export default function CustomersPage() {
               <UserPlus className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-blue-600 font-semibold">
+          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-blue-600">
             <span>Dönüşüm bekleyen adaylar</span>
           </div>
         </div>
@@ -280,8 +314,10 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Toplam Müşteri Hacmi</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Toplam Müşteri Hacmi
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
                 ₺{(stats?.totalRevenue ?? 0).toLocaleString("tr-TR")}
               </div>
             </div>
@@ -290,7 +326,10 @@ export default function CustomersPage() {
             </div>
           </div>
           <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
-            <span>Ort. Müşteri Değeri: ₺{(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}</span>
+            <span>
+              Ort. Müşteri Değeri: ₺
+              {(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}
+            </span>
           </div>
         </div>
       </div>
@@ -298,10 +337,10 @@ export default function CustomersPage() {
       {/* 3. Filters & View Switcher Bar */}
       <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
         {/* Search */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative max-w-md flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
             type="text"
@@ -313,7 +352,7 @@ export default function CustomersPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
             onChange={(e) => setTypeFilter(e.target.value)}
             value={typeFilter}
           >
@@ -324,7 +363,7 @@ export default function CustomersPage() {
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -337,7 +376,7 @@ export default function CustomersPage() {
 
           {/* Tier Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
             onChange={(e) => setTierFilter(e.target.value)}
             value={tierFilter}
           >
@@ -351,7 +390,7 @@ export default function CustomersPage() {
           {/* Reset Filters */}
           {(search || statusFilter || typeFilter || tierFilter) && (
             <button
-              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100"
+              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
               onClick={() => {
                 setSearch("");
                 setStatusFilter("");
@@ -400,7 +439,9 @@ export default function CustomersPage() {
         <div className="flex h-64 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
-            <span className="text-xs text-slate-500 font-medium">Müşteriler yükleniyor...</span>
+            <span className="font-medium text-slate-500 text-xs">
+              Müşteriler yükleniyor...
+            </span>
           </div>
         </div>
       ) : customers.length === 0 ? (
@@ -408,9 +449,12 @@ export default function CustomersPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
             <Users className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-slate-900 text-sm">Kayıtlı Müşteri Bulunamadı</h3>
-          <p className="mt-1 max-w-sm text-xs text-slate-500">
-            Arama kriterlerinize uygun müşteri bulunamadı veya henüz müşteri kaydı eklenmedi.
+          <h3 className="mt-3 font-bold text-slate-900 text-sm">
+            Kayıtlı Müşteri Bulunamadı
+          </h3>
+          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+            Arama kriterlerinize uygun müşteri bulunamadı veya henüz müşteri
+            kaydı eklenmedi.
           </p>
           <PermissionGate permission="Customers.Create">
             <button
@@ -428,20 +472,23 @@ export default function CustomersPage() {
         <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-100 border-b bg-slate-50/50 text-[11px] text-slate-500 font-medium">
+              <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Müşteri / Şirket</th>
-                  <th className="py-3.5 px-4">Statü & Segment</th>
-                  <th className="py-3.5 px-4">İletişim</th>
-                  <th className="py-3.5 px-4">Konum</th>
-                  <th className="py-3.5 px-4">Temsilci</th>
-                  <th className="py-3.5 px-4 text-right">Toplam Hacim</th>
+                  <th className="px-4 py-3.5">Statü & Segment</th>
+                  <th className="px-4 py-3.5">İletişim</th>
+                  <th className="px-4 py-3.5">Konum</th>
+                  <th className="px-4 py-3.5">Temsilci</th>
+                  <th className="px-4 py-3.5 text-right">Toplam Hacim</th>
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlem</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {customers.map((c) => (
-                  <tr className="group transition-colors hover:bg-slate-50/80" key={c.id}>
+                  <tr
+                    className="group transition-colors hover:bg-slate-50/80"
+                    key={c.id}
+                  >
                     <td className="py-4 pr-4 pl-6">
                       <Link
                         className="flex items-center gap-3"
@@ -461,11 +508,13 @@ export default function CustomersPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 group-hover:text-violet-600 transition-colors">
+                          <div className="font-bold text-slate-900 transition-colors group-hover:text-violet-600">
                             {c.name}
                           </div>
-                          <div className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                            <span>{c.type === "Company" ? "Kurumsal" : "Bireysel"}</span>
+                          <div className="flex items-center gap-2 font-medium text-[10px] text-slate-400">
+                            <span>
+                              {c.type === "Company" ? "Kurumsal" : "Bireysel"}
+                            </span>
                             {c.industry && (
                               <>
                                 <span>•</span>
@@ -483,7 +532,7 @@ export default function CustomersPage() {
                       </Link>
                     </td>
 
-                    <td className="py-4 px-4">
+                    <td className="px-4 py-4">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getStatusBadge(
@@ -502,7 +551,7 @@ export default function CustomersPage() {
                       </div>
                     </td>
 
-                    <td className="py-4 px-4">
+                    <td className="px-4 py-4">
                       <div className="space-y-0.5 text-[11px] text-slate-600">
                         {c.phone && (
                           <div className="flex items-center gap-1">
@@ -519,32 +568,36 @@ export default function CustomersPage() {
                       </div>
                     </td>
 
-                    <td className="py-4 px-4">
-                      <span className="text-[11px] text-slate-700 font-medium">
+                    <td className="px-4 py-4">
+                      <span className="font-medium text-[11px] text-slate-700">
                         {c.city ? `${c.city}, ${c.country || "TR"}` : "—"}
                       </span>
                     </td>
 
-                    <td className="py-4 px-4">
+                    <td className="px-4 py-4">
                       {c.assignedEmployeeName ? (
                         <div className="flex items-center gap-1.5">
                           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 font-bold text-[9px] text-white">
                             {c.assignedEmployeeName.charAt(0)}
                           </div>
-                          <span className="font-medium text-slate-800 text-[11px]">
+                          <span className="font-medium text-[11px] text-slate-800">
                             {c.assignedEmployeeName}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-slate-400 text-[11px]">Atanmadı</span>
+                        <span className="text-[11px] text-slate-400">
+                          Atanmadı
+                        </span>
                       )}
                     </td>
 
-                    <td className="py-4 px-4 text-right">
+                    <td className="px-4 py-4 text-right">
                       <div className="font-bold text-slate-900 text-xs">
                         ₺{c.totalRevenue.toLocaleString("tr-TR")}
                       </div>
-                      <div className="text-[10px] text-slate-400">{c.dealsCount} Fırsat</div>
+                      <div className="text-[10px] text-slate-400">
+                        {c.dealsCount} Fırsat
+                      </div>
                     </td>
 
                     <td className="py-4 pr-6 pl-4 text-right">
@@ -558,7 +611,7 @@ export default function CustomersPage() {
                         </Link>
                         <PermissionGate permission="Customers.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                             onClick={() => setDeletingCustomer(c)}
                             title="Sil"
                             type="button"
@@ -600,13 +653,15 @@ export default function CustomersPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-slate-900 text-sm group-hover:text-violet-600 transition-colors"
+                        className="font-bold text-slate-900 text-sm transition-colors group-hover:text-violet-600"
                         href={`/${tenantSlug}/customers/${c.id}`}
                       >
                         {c.name}
                       </Link>
                       <div className="text-[10px] text-slate-400">
-                        {c.type === "Company" ? "Kurumsal Şirket" : "Bireysel Müşteri"}
+                        {c.type === "Company"
+                          ? "Kurumsal Şirket"
+                          : "Bireysel Müşteri"}
                       </div>
                     </div>
                   </div>
@@ -646,14 +701,16 @@ export default function CustomersPage() {
               {/* Card Footer */}
               <div className="mt-5 flex items-center justify-between border-slate-100 border-t pt-3">
                 <div>
-                  <span className="text-[10px] text-slate-400">Toplam Ciro:</span>
+                  <span className="text-[10px] text-slate-400">
+                    Toplam Ciro:
+                  </span>
                   <div className="font-extrabold text-slate-900 text-xs">
                     ₺{c.totalRevenue.toLocaleString("tr-TR")}
                   </div>
                 </div>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-blue-700 active:scale-[0.98] transition-all"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-blue-700 active:scale-[0.98]"
                   href={`/${tenantSlug}/customers/${c.id}`}
                 >
                   <span>Detay (360°)</span>
@@ -682,12 +739,17 @@ export default function CustomersPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingCustomer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
           <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <h3 className="font-bold text-base text-slate-900">Müşteriyi Sil</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              <strong className="text-slate-900 font-semibold">{deletingCustomer.name}</strong> isimli
-              müşteriyi ve buna bağlı yetkilileri, notları silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+            <h3 className="font-bold text-base text-slate-900">
+              Müşteriyi Sil
+            </h3>
+            <p className="mt-2 text-slate-600 text-xs leading-relaxed">
+              <strong className="font-semibold text-slate-900">
+                {deletingCustomer.name}
+              </strong>{" "}
+              isimli müşteriyi ve buna bağlı yetkilileri, notları silmek
+              istediğinize emin misiniz? Bu işlem geri alınamaz.
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
@@ -726,52 +788,54 @@ function CreateCustomerModal({
   employees: EmployeeDto[];
 }) {
   const [formData, setFormData] = useState<CreateCustomerRequest>({
-    type: "Company",
-    name: "",
-    email: "",
-    phone: "",
-    website: "",
-    status: "Lead",
-    tier: "Standard",
-    industry: "",
-    taxOffice: "",
-    taxNumber: "",
-    city: "",
     addressLine: "",
     assignedEmployeeId: "",
+    city: "",
+    email: "",
+    industry: "",
+    initialContactEmail: "",
     initialContactFirstName: "",
     initialContactLastName: "",
-    initialContactTitle: "",
-    initialContactEmail: "",
     initialContactPhone: "",
+    initialContactTitle: "",
+    name: "",
+    phone: "",
+    status: "Lead",
+    taxNumber: "",
+    taxOffice: "",
+    tier: "Standard",
+    type: "Company",
+    website: "",
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    if (!formData.name.trim()) {
+      return;
+    }
 
     setSubmitting(true);
     setError(null);
     try {
       const cleanData: CreateCustomerRequest = {
-        type: formData.type,
-        name: formData.name.trim(),
-        status: formData.status,
-        tier: formData.tier,
-        email: formData.email?.trim() || undefined,
-        phone: formData.phone?.trim() || undefined,
-        website: formData.website?.trim() || undefined,
-        industry: formData.industry?.trim() || undefined,
-        taxOffice: formData.taxOffice?.trim() || undefined,
-        taxNumber: formData.taxNumber?.trim() || undefined,
-        city: formData.city?.trim() || undefined,
         addressLine: formData.addressLine?.trim() || undefined,
-        assignedEmployeeId: formData.assignedEmployeeId ? formData.assignedEmployeeId : undefined,
+        assignedEmployeeId: formData.assignedEmployeeId
+          ? formData.assignedEmployeeId
+          : undefined,
+        city: formData.city?.trim() || undefined,
+        email: formData.email?.trim() || undefined,
+        industry: formData.industry?.trim() || undefined,
+        initialContactEmail:
+          formData.type === "Company"
+            ? formData.initialContactEmail?.trim() || undefined
+            : undefined,
         initialContactFirstName:
           formData.type === "Company"
             ? formData.initialContactFirstName?.trim() || undefined
@@ -780,18 +844,22 @@ function CreateCustomerModal({
           formData.type === "Company"
             ? formData.initialContactLastName?.trim() || undefined
             : undefined,
-        initialContactTitle:
-          formData.type === "Company"
-            ? formData.initialContactTitle?.trim() || undefined
-            : undefined,
-        initialContactEmail:
-          formData.type === "Company"
-            ? formData.initialContactEmail?.trim() || undefined
-            : undefined,
         initialContactPhone:
           formData.type === "Company"
             ? formData.initialContactPhone?.trim() || undefined
             : undefined,
+        initialContactTitle:
+          formData.type === "Company"
+            ? formData.initialContactTitle?.trim() || undefined
+            : undefined,
+        name: formData.name.trim(),
+        phone: formData.phone?.trim() || undefined,
+        status: formData.status,
+        taxNumber: formData.taxNumber?.trim() || undefined,
+        taxOffice: formData.taxOffice?.trim() || undefined,
+        tier: formData.tier,
+        type: formData.type,
+        website: formData.website?.trim() || undefined,
       };
 
       const res = await ApiClient.createCustomer(cleanData, tenantId);
@@ -809,12 +877,14 @@ function CreateCustomerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">Yeni Müşteri Ekle</h2>
+            <h2 className="font-bold text-base text-slate-900">
+              Yeni Müşteri Ekle
+            </h2>
             <p className="text-slate-500 text-xs">
               Kurumsal şirket veya bireysel şahıs müşterisi oluşturun
             </p>
@@ -830,9 +900,12 @@ function CreateCustomerModal({
         </div>
 
         {/* Form */}
-        <form className="flex-1 overflow-y-auto p-6 space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="flex-1 space-y-4 overflow-y-auto p-6"
+          onSubmit={handleSubmit}
+        >
           {error && (
-            <div className="rounded-xl bg-rose-50 p-3 text-xs text-rose-700 font-medium">
+            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
               {error}
             </div>
           )}
@@ -840,7 +913,7 @@ function CreateCustomerModal({
           {/* Type Switcher */}
           <div className="flex items-center gap-2 rounded-2xl bg-slate-100 p-1">
             <button
-              className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
+              className={`flex-1 rounded-xl py-2 font-semibold text-xs transition-all ${
                 formData.type === "Company"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
@@ -851,7 +924,7 @@ function CreateCustomerModal({
               Kurumsal (Şirket)
             </button>
             <button
-              className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
+              className={`flex-1 rounded-xl py-2 font-semibold text-xs transition-all ${
                 formData.type === "Individual"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
@@ -866,13 +939,21 @@ function CreateCustomerModal({
           {/* Core Info */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-xs text-slate-700">
-                {formData.type === "Company" ? "Şirket / Kurum Adı *" : "Müşteri Adı Soyadı *"}
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                {formData.type === "Company"
+                  ? "Şirket / Kurum Adı *"
+                  : "Müşteri Adı Soyadı *"}
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder={formData.type === "Company" ? "Acme Holding A.Ş." : "Ahmet Yılmaz"}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                placeholder={
+                  formData.type === "Company"
+                    ? "Acme Holding A.Ş."
+                    : "Ahmet Yılmaz"
+                }
                 required
                 type="text"
                 value={formData.name}
@@ -880,10 +961,14 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">E-Posta</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                E-Posta
+              </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="info@acme.com"
                 type="email"
                 value={formData.email}
@@ -891,10 +976,14 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">Telefon</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                Telefon
+              </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
                 placeholder="+90 212 555 0100"
                 type="tel"
                 value={formData.phone}
@@ -902,10 +991,14 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">Statü</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                Statü
+              </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.value })
+                }
                 value={formData.status}
               >
                 <option value="Lead">Potansiyel (Lead)</option>
@@ -916,10 +1009,14 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">Segment / Seviye</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                Segment / Seviye
+              </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, tier: e.target.value })
+                }
                 value={formData.tier}
               >
                 <option value="Standard">Standart</option>
@@ -930,10 +1027,14 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">Sektör</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                Sektör
+              </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, industry: e.target.value })
+                }
                 placeholder="Yazılım / Bilişim"
                 type="text"
                 value={formData.industry}
@@ -941,10 +1042,17 @@ function CreateCustomerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">Sorumlu Temsilci</label>
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
+                Sorumlu Temsilci
+              </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, assignedEmployeeId: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    assignedEmployeeId: e.target.value,
+                  })
+                }
                 value={formData.assignedEmployeeId}
               >
                 <option value="">Temsilci Seçin (Opsiyonel)</option>
@@ -959,33 +1067,55 @@ function CreateCustomerModal({
 
           {/* Primary Contact for Companies */}
           {formData.type === "Company" && (
-            <div className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4 space-y-3">
-              <h4 className="font-bold text-xs text-slate-900">Birincil Yetkili / İlgili Kişi</h4>
+            <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
+              <h4 className="font-bold text-slate-900 text-xs">
+                Birincil Yetkili / İlgili Kişi
+              </h4>
               <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) => setFormData({ ...formData, initialContactFirstName: e.target.value })}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      initialContactFirstName: e.target.value,
+                    })
+                  }
                   placeholder="Yetkili Adı"
                   type="text"
                   value={formData.initialContactFirstName}
                 />
                 <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) => setFormData({ ...formData, initialContactLastName: e.target.value })}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      initialContactLastName: e.target.value,
+                    })
+                  }
                   placeholder="Yetkili Soyadı"
                   type="text"
                   value={formData.initialContactLastName}
                 />
                 <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) => setFormData({ ...formData, initialContactTitle: e.target.value })}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      initialContactTitle: e.target.value,
+                    })
+                  }
                   placeholder="Ünvan (Örn: Satın Alma Md.)"
                   type="text"
                   value={formData.initialContactTitle}
                 />
                 <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) => setFormData({ ...formData, initialContactEmail: e.target.value })}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      initialContactEmail: e.target.value,
+                    })
+                  }
                   placeholder="Yetkili E-Posta"
                   type="email"
                   value={formData.initialContactEmail}
@@ -1004,7 +1134,7 @@ function CreateCustomerModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

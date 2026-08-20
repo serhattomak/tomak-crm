@@ -9,14 +9,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
-import { Briefcase, Check, CheckSquare, FileText, UserPlus, X } from "lucide-react";
+import {
+  Briefcase,
+  Check,
+  CheckSquare,
+  FileText,
+  UserPlus,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 
 interface QuickCreateModalProps {
   isOpen: boolean;
-  type: "lead" | "deal" | "task" | "proposal" | null;
   onClose: () => void;
   onSuccess: (message: string) => void;
+  type: "lead" | "deal" | "task" | "proposal" | null;
 }
 
 export function QuickCreateModal({
@@ -26,42 +33,44 @@ export function QuickCreateModal({
   onSuccess,
 }: QuickCreateModalProps) {
   const [formData, setFormData] = useState({
-    title: "",
     company: "",
     contactName: "",
+    dueDate: "",
     email: "",
     phone: "",
-    value: "",
     priority: "medium",
-    dueDate: "",
+    title: "",
+    value: "",
   });
 
-  if (!isOpen || !type) return null;
+  if (!(isOpen && type)) {
+    return null;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const typeNames: Record<string, string> = {
-      lead: "Müşteri Adayı",
       deal: "Satış Fırsatı",
-      task: "Görev",
+      lead: "Müşteri Adayı",
       proposal: "Teklif Taslağı",
+      task: "Görev",
     };
     onSuccess(`${typeNames[type] || "Kayıt"} başarıyla oluşturuldu!`);
     onClose();
     setFormData({
-      title: "",
       company: "",
       contactName: "",
+      dueDate: "",
       email: "",
       phone: "",
-      value: "",
       priority: "medium",
-      dueDate: "",
+      title: "",
+      value: "",
     });
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
@@ -79,11 +88,13 @@ export function QuickCreateModal({
                 {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
                 {type === "proposal" && "Yeni Teklif Taslağı Başlat"}
               </h2>
-              <p className="text-slate-500 text-xs">Temel bilgileri girerek saniyeler içinde kaydedin</p>
+              <p className="text-slate-500 text-xs">
+                Temel bilgileri girerek saniyeler içinde kaydedin
+              </p>
             </div>
           </div>
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100"
             onClick={onClose}
             type="button"
           >
@@ -92,17 +103,26 @@ export function QuickCreateModal({
         </div>
 
         {/* Form Body */}
-        <form className="flex-1 overflow-y-auto p-6 space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="flex-1 space-y-4 overflow-y-auto p-6"
+          onSubmit={handleSubmit}
+        >
           <div className="space-y-3">
             {/* Title / Name */}
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
                 {type === "lead" ? "Aday Adı & Soyadı *" : "Başlık / İsim *"}
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder={type === "lead" ? "Örn: Ahmet Yılmaz" : "Örn: ERP Yazılım Lisans Satışı"}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                placeholder={
+                  type === "lead"
+                    ? "Örn: Ahmet Yılmaz"
+                    : "Örn: ERP Yazılım Lisans Satışı"
+                }
                 required
                 type="text"
                 value={formData.title}
@@ -111,12 +131,14 @@ export function QuickCreateModal({
 
             {/* Company */}
             <div>
-              <label className="mb-1 block font-medium text-xs text-slate-700">
+              <label className="mb-1 block font-medium text-slate-700 text-xs">
                 Firma / Kuruluş
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, company: e.target.value })
+                }
                 placeholder="Örn: Acme Holding A.Ş."
                 type="text"
                 value={formData.company}
@@ -127,22 +149,26 @@ export function QuickCreateModal({
             {(type === "deal" || type === "proposal") && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     Tahmini Tutar (₺)
                   </label>
                   <NumberInput
-                    value={parseFloat(formData.value) || 0}
-                    onChange={(val) => setFormData({ ...formData, value: String(val) })}
+                    onChange={(val) =>
+                      setFormData({ ...formData, value: String(val) })
+                    }
                     prefix="₺"
+                    value={Number.parseFloat(formData.value) || 0}
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     Kapanış Tarihi
                   </label>
                   <DatePicker
+                    onChange={(dateStr) =>
+                      setFormData({ ...formData, dueDate: dateStr })
+                    }
                     value={formData.dueDate}
-                    onChange={(dateStr) => setFormData({ ...formData, dueDate: dateStr })}
                   />
                 </div>
               </div>
@@ -152,24 +178,28 @@ export function QuickCreateModal({
             {type === "lead" && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     E-Posta Adresi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     placeholder="ahmet@sirket.com"
                     type="email"
                     value={formData.email}
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     Telefon Numarası
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     placeholder="+90 555 ..."
                     type="tel"
                     value={formData.phone}
@@ -182,12 +212,14 @@ export function QuickCreateModal({
             {type === "task" && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     Öncelik Seviyesi
                   </label>
                   <Select
+                    onValueChange={(val) =>
+                      setFormData({ ...formData, priority: val })
+                    }
                     value={formData.priority}
-                    onValueChange={(val) => setFormData({ ...formData, priority: val })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -201,12 +233,14 @@ export function QuickCreateModal({
                   </Select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-xs text-slate-700">
+                  <label className="mb-1 block font-medium text-slate-700 text-xs">
                     Teslim Tarihi
                   </label>
                   <DatePicker
+                    onChange={(dateStr) =>
+                      setFormData({ ...formData, dueDate: dateStr })
+                    }
                     value={formData.dueDate}
-                    onChange={(dateStr) => setFormData({ ...formData, dueDate: dateStr })}
                   />
                 </div>
               </div>
@@ -216,14 +250,14 @@ export function QuickCreateModal({
           {/* Footer */}
           <div className="flex items-center justify-end gap-2 border-slate-100 border-t p-5">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50 transition-colors"
+              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs transition-colors hover:bg-slate-50"
               onClick={onClose}
               type="button"
             >
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
               type="submit"
             >
               <Check className="h-3.5 w-3.5" />

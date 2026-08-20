@@ -6,48 +6,48 @@ import type { TeamMemberScore } from "./dashboard-types";
 export function TeamLeaderboardWidget() {
   const members: TeamMemberScore[] = [
     {
-      id: "mem-1",
-      name: "Ahmet Yılmaz",
-      role: "Kıdemli Satış Yöneticisi",
-      initials: "AY",
+      achieved: 245_000,
       avatarColor: "bg-indigo-600",
-      target: 200000,
-      achieved: 245000,
       dealsClosed: 14,
+      id: "mem-1",
+      initials: "AY",
+      name: "Ahmet Yılmaz",
       rank: 1,
+      role: "Kıdemli Satış Yöneticisi",
+      target: 200_000,
     },
     {
-      id: "mem-2",
-      name: "Selin Kaya",
-      role: "Müşteri Temsilcisi",
-      initials: "SK",
+      achieved: 142_000,
       avatarColor: "bg-fuchsia-600",
-      target: 150000,
-      achieved: 142000,
       dealsClosed: 11,
+      id: "mem-2",
+      initials: "SK",
+      name: "Selin Kaya",
       rank: 2,
+      role: "Müşteri Temsilcisi",
+      target: 150_000,
     },
     {
-      id: "mem-3",
-      name: "Mehmet Demir",
-      role: "Kurumsal Satış Uzmanı",
-      initials: "MD",
+      achieved: 158_000,
       avatarColor: "bg-cyan-600",
-      target: 180000,
-      achieved: 158000,
       dealsClosed: 9,
+      id: "mem-3",
+      initials: "MD",
+      name: "Mehmet Demir",
       rank: 3,
+      role: "Kurumsal Satış Uzmanı",
+      target: 180_000,
     },
     {
-      id: "mem-4",
-      name: "Canan Öztürk",
-      role: "Satış Destek Temsilcisi",
-      initials: "CÖ",
+      achieved: 89_000,
       avatarColor: "bg-emerald-600",
-      target: 100000,
-      achieved: 89000,
       dealsClosed: 6,
+      id: "mem-4",
+      initials: "CÖ",
+      name: "Canan Öztürk",
       rank: 4,
+      role: "Satış Destek Temsilcisi",
+      target: 100_000,
     },
   ];
 
@@ -55,25 +55,25 @@ export function TeamLeaderboardWidget() {
     switch (rank) {
       case 1:
         return (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-amber-600 font-bold text-xs">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 font-bold text-amber-600 text-xs">
             <Trophy className="h-3.5 w-3.5" />
           </div>
         );
       case 2:
         return (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 font-bold text-slate-600 text-xs">
             <Medal className="h-3.5 w-3.5" />
           </div>
         );
       case 3:
         return (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-50 text-amber-800 font-bold text-xs">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-50 font-bold text-amber-800 text-xs">
             <Award className="h-3.5 w-3.5" />
           </div>
         );
       default:
         return (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-slate-500 font-bold text-xs">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-500 text-xs">
             {rank}
           </div>
         );
@@ -89,8 +89,12 @@ export function TeamLeaderboardWidget() {
               <Trophy className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Satış Liderlik Tablosu</span>
-              <div className="text-[11px] text-slate-500">Bu ayın en başarılı temsilcileri</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Satış Liderlik Tablosu
+              </span>
+              <div className="text-[11px] text-slate-500">
+                Bu ayın en başarılı temsilcileri
+              </div>
             </div>
           </div>
 
@@ -118,8 +122,12 @@ export function TeamLeaderboardWidget() {
                       {member.initials}
                     </div>
                     <div>
-                      <div className="font-bold text-slate-900 text-xs">{member.name}</div>
-                      <div className="text-[10px] text-slate-400">{member.role}</div>
+                      <div className="font-bold text-slate-900 text-xs">
+                        {member.name}
+                      </div>
+                      <div className="text-[10px] text-slate-400">
+                        {member.role}
+                      </div>
                     </div>
                   </div>
 
@@ -127,7 +135,9 @@ export function TeamLeaderboardWidget() {
                     <div className="font-extrabold text-slate-900 text-xs">
                       ₺{member.achieved.toLocaleString("tr-TR")}
                     </div>
-                    <div className="text-[10px] text-slate-400">{member.dealsClosed} Satış</div>
+                    <div className="text-[10px] text-slate-400">
+                      {member.dealsClosed} Satış
+                    </div>
                   </div>
                 </div>
 
@@ -155,7 +165,7 @@ export function TeamLeaderboardWidget() {
         </div>
       </div>
 
-      <div className="mt-4 border-slate-100 border-t pt-3 text-center flex items-center justify-center gap-1.5 text-slate-700 text-xs font-semibold">
+      <div className="mt-4 flex items-center justify-center gap-1.5 border-slate-100 border-t pt-3 text-center font-semibold text-slate-700 text-xs">
         <Trophy className="h-4 w-4 text-amber-500" />
         <span>
           Aylık Hedef Birincisi Ödülü: <strong>₺25.000 Prim + Tatil</strong>

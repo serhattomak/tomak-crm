@@ -1,127 +1,124 @@
-"use client"
+"use client";
 
 import {
-  ArrowRight,
   Bell,
   CheckCircle2,
   ChevronDown,
   Download,
   Filter,
-  Info,
   Plus,
   RotateCcw,
   Share2,
   SlidersHorizontal,
-  Sparkles,
   UserPlus,
-} from "lucide-react"
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { usePermissions } from "@/lib/permissions/permission-context"
-import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget"
-import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal"
-import type { DashboardTab, DateRange } from "./widgets/dashboard-types"
-import { DealsTableWidget } from "./widgets/deals-table-widget"
-import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget"
-import { LeadSourcesWidget } from "./widgets/lead-sources-widget"
+} from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePermissions } from "@/lib/permissions/permission-context";
+import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget";
+import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal";
+import type { DashboardTab, DateRange } from "./widgets/dashboard-types";
+import { DealsTableWidget } from "./widgets/deals-table-widget";
+import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget";
+import { LeadSourcesWidget } from "./widgets/lead-sources-widget";
 import { PipelineFunnelWidget } from "./widgets/pipeline-funnel-widget";
 import { QuickCreateModal } from "./widgets/quick-create-modal";
 import { RevenueChartWidget } from "./widgets/revenue-chart-widget";
-import { SalesGaugeWidget } from "./widgets/sales-gauge-widget"
-import { TasksChecklistWidget } from "./widgets/tasks-checklist-widget"
-import { TeamLeaderboardWidget } from "./widgets/team-leaderboard-widget"
-import { UpcomingMeetingsWidget } from "./widgets/upcoming-meetings-widget"
-import { DEFAULT_WIDGET_IDS_BY_TAB } from "./widgets/widget-registry"
+import { SalesGaugeWidget } from "./widgets/sales-gauge-widget";
+import { TasksChecklistWidget } from "./widgets/tasks-checklist-widget";
+import { TeamLeaderboardWidget } from "./widgets/team-leaderboard-widget";
+import { UpcomingMeetingsWidget } from "./widgets/upcoming-meetings-widget";
+import { DEFAULT_WIDGET_IDS_BY_TAB } from "./widgets/widget-registry";
 
 export default function WorkspaceOverviewPage() {
-  const params = useParams()
-  const tenantSlug = (params?.tenantSlug as string) || "workspace"
-  const { activeTenant, profile } = usePermissions()
+  const params = useParams();
+  const tenantSlug = (params?.tenantSlug as string) || "workspace";
+  const { activeTenant, profile } = usePermissions();
 
-  const [activeTab, setActiveTab] = useState<DashboardTab>("Overview")
-  const [dateRange, setDateRange] = useState<DateRange>("month")
-  const [showDateDropdown, setShowDateDropdown] = useState(false)
+  const [activeTab, setActiveTab] = useState<DashboardTab>("Overview");
+  const [dateRange, setDateRange] = useState<DateRange>("month");
+  const [showDateDropdown, setShowDateDropdown] = useState(false);
 
   // Modals state
-  const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false)
+  const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
   const [quickCreateType, setQuickCreateType] = useState<
     "lead" | "deal" | "task" | "proposal" | null
-  >(null)
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  >(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Widget layouts stored per tab and tenant
   const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(
     DEFAULT_WIDGET_IDS_BY_TAB
-  )
+  );
 
   // Load configuration from LocalStorage
   useEffect(() => {
     try {
-      const storageKey = `crm_dashboard_layout_${tenantSlug}`
-      const saved = localStorage.getItem(storageKey)
+      const storageKey = `crm_dashboard_layout_${tenantSlug}`;
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
-        setWidgetsByTab(JSON.parse(saved))
+        setWidgetsByTab(JSON.parse(saved));
       }
     } catch {
       // ignore storage errors
     }
-  }, [tenantSlug])
+  }, [tenantSlug]);
 
   // Save layout helper
   const saveWidgets = (newLayout: Record<string, string[]>) => {
-    setWidgetsByTab(newLayout)
+    setWidgetsByTab(newLayout);
     try {
-      const storageKey = `crm_dashboard_layout_${tenantSlug}`
-      localStorage.setItem(storageKey, JSON.stringify(newLayout))
+      const storageKey = `crm_dashboard_layout_${tenantSlug}`;
+      localStorage.setItem(storageKey, JSON.stringify(newLayout));
     } catch {
       // ignore storage errors
     }
-  }
+  };
 
   const currentTabWidgets =
-    widgetsByTab[activeTab] || DEFAULT_WIDGET_IDS_BY_TAB[activeTab] || []
+    widgetsByTab[activeTab] || DEFAULT_WIDGET_IDS_BY_TAB[activeTab] || [];
 
   const handleToggleWidget = (widgetId: string) => {
-    const isCurrentlyActive = currentTabWidgets.includes(widgetId)
+    const isCurrentlyActive = currentTabWidgets.includes(widgetId);
     const updated = isCurrentlyActive
       ? currentTabWidgets.filter((id) => id !== widgetId)
-      : [...currentTabWidgets, widgetId]
+      : [...currentTabWidgets, widgetId];
 
     const newLayout = {
       ...widgetsByTab,
       [activeTab]: updated,
-    }
-    saveWidgets(newLayout)
-  }
+    };
+    saveWidgets(newLayout);
+  };
 
   const handleResetDefaults = () => {
     const newLayout = {
       ...widgetsByTab,
       [activeTab]: DEFAULT_WIDGET_IDS_BY_TAB[activeTab] || [],
-    }
-    saveWidgets(newLayout)
-  }
+    };
+    saveWidgets(newLayout);
+  };
 
   const showToast = (message: string) => {
-    setToastMessage(message)
+    setToastMessage(message);
     setTimeout(() => {
-      setToastMessage(null)
-    }, 4000)
-  }
+      setToastMessage(null);
+    }, 4000);
+  };
 
   const tabs: { id: DashboardTab; label: string }[] = [
     { id: "Overview", label: "Genel Bakış" },
     { id: "Sales", label: "Satış & Pipeline" },
     { id: "Activities", label: "Aktiviteler & Takım" },
-  ]
+  ];
 
   const dateRangeLabels: Record<DateRange, string> = {
-    today: "Bugün",
-    week: "Bu Hafta",
     month: "Bu Ay (Ağustos)",
     quarter: "Bu Çeyrek (Q3)",
+    today: "Bugün",
+    week: "Bu Hafta",
     year: "Bu Yıl (2026)",
-  }
+  };
 
   const renderWidget = (widgetId: string) => {
     switch (widgetId) {
@@ -130,81 +127,81 @@ export default function WorkspaceOverviewPage() {
           <div className="col-span-12" key="kpi-metrics">
             <KpiMetricsWidget dateRange={dateRange} />
           </div>
-        )
+        );
 
       case "revenue-chart":
         return (
           <div className="col-span-12 lg:col-span-8" key="revenue-chart">
             <RevenueChartWidget dateRange={dateRange} />
           </div>
-        )
+        );
 
       case "sales-gauge":
         return (
           <div className="col-span-12 lg:col-span-4" key="sales-gauge">
             <SalesGaugeWidget dateRange={dateRange} />
           </div>
-        )
+        );
 
       case "pipeline-funnel":
         return (
           <div className="col-span-12 lg:col-span-6" key="pipeline-funnel">
             <PipelineFunnelWidget dateRange={dateRange} />
           </div>
-        )
+        );
 
       case "deals-table":
         return (
           <div className="col-span-12 lg:col-span-6" key="deals-table">
             <DealsTableWidget />
           </div>
-        )
+        );
 
       case "lead-sources":
         return (
           <div className="col-span-12 lg:col-span-4" key="lead-sources">
             <LeadSourcesWidget dateRange={dateRange} />
           </div>
-        )
+        );
 
       case "tasks-checklist":
         return (
           <div className="col-span-12 lg:col-span-8" key="tasks-checklist">
             <TasksChecklistWidget />
           </div>
-        )
+        );
 
       case "upcoming-meetings":
         return (
           <div className="col-span-12 lg:col-span-6" key="upcoming-meetings">
             <UpcomingMeetingsWidget />
           </div>
-        )
+        );
 
       case "activity-timeline":
         return (
           <div className="col-span-12 lg:col-span-6" key="activity-timeline">
             <ActivityTimelineWidget />
           </div>
-        )
+        );
 
       case "team-leaderboard":
         return (
           <div className="col-span-12 lg:col-span-6" key="team-leaderboard">
             <TeamLeaderboardWidget />
           </div>
-        )
+        );
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-xs text-white shadow-2xl slide-in-from-top-4">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -214,14 +211,14 @@ export default function WorkspaceOverviewPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
               Dashboard
             </h1>
-            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-[11px] font-bold text-violet-700">
+            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700">
               {activeTenant?.name || "Ana Çalışma Alanı"}
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500">
+          <p className="mt-0.5 text-slate-500 text-xs">
             Hoş geldiniz,{" "}
             <span className="font-semibold text-slate-800">
               {profile?.fullName || "Serhat Dev"}
@@ -252,24 +249,24 @@ export default function WorkspaceOverviewPage() {
           {/* Member Avatars Stack */}
           <div className="flex items-center -space-x-2 px-1">
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-xs font-semibold text-white shadow-xs"
+              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-900 font-semibold text-white text-xs shadow-xs"
               title="Serhat Dev"
             >
               S
             </div>
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-indigo-600 text-xs font-semibold text-white shadow-xs"
+              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-indigo-600 font-semibold text-white text-xs shadow-xs"
               title="Ahmet Yılmaz"
             >
               A
             </div>
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-fuchsia-500 text-xs font-semibold text-white shadow-xs"
+              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-fuchsia-500 font-semibold text-white text-xs shadow-xs"
               title="Selin Kaya"
             >
               S
             </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 text-[10px] font-bold text-slate-700 shadow-xs">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 font-bold text-[10px] text-slate-700 shadow-xs">
               +4
             </div>
           </div>
@@ -284,7 +281,7 @@ export default function WorkspaceOverviewPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs transition-colors hover:bg-slate-50 hover:text-violet-600"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-colors hover:bg-slate-50 hover:text-violet-600"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -295,12 +292,12 @@ export default function WorkspaceOverviewPage() {
       </div>
 
       {/* 2. Subheader Tabs & Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
         {/* Pill Tabs */}
         <div className="flex w-fit items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
           {tabs.map((tab) => (
             <button
-              className={`rounded-xl px-4 py-1.5 text-xs font-semibold transition-all ${
+              className={`rounded-xl px-4 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === tab.id
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
@@ -313,7 +310,7 @@ export default function WorkspaceOverviewPage() {
             </button>
           ))}
           <button
-            className="flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-white/50 hover:text-slate-900"
+            className="flex items-center gap-1 rounded-xl px-3 py-1.5 font-semibold text-slate-600 text-xs transition-colors hover:bg-white/50 hover:text-slate-900"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -327,7 +324,7 @@ export default function WorkspaceOverviewPage() {
           {/* Dynamic Date Range Dropdown */}
           <div className="relative">
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
               onClick={() => setShowDateDropdown(!showDateDropdown)}
               type="button"
             >
@@ -337,18 +334,18 @@ export default function WorkspaceOverviewPage() {
             </button>
 
             {showDateDropdown && (
-              <div className="absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-2xl border border-slate-200/80 bg-white p-1.5 shadow-xl fade-in">
+              <div className="fade-in absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-2xl border border-slate-200/80 bg-white p-1.5 shadow-xl">
                 {(Object.keys(dateRangeLabels) as DateRange[]).map((range) => (
                   <button
-                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium transition-colors ${
+                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left font-medium text-xs transition-colors ${
                       dateRange === range
                         ? "bg-violet-50 font-bold text-violet-700"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                     key={range}
                     onClick={() => {
-                      setDateRange(range)
-                      setShowDateDropdown(false)
+                      setDateRange(range);
+                      setShowDateDropdown(false);
                     }}
                     type="button"
                   >
@@ -363,7 +360,7 @@ export default function WorkspaceOverviewPage() {
           </div>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs transition-colors hover:bg-slate-800"
+            className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-3.5 py-1.5 font-medium text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
             onClick={() =>
               showToast("Dashboard PDF/Excel raporu indiriliyor...")
             }
@@ -378,20 +375,20 @@ export default function WorkspaceOverviewPage() {
       {/* 3. Main Dynamic Grid of Widgets */}
       <div className="grid grid-cols-12 gap-6">
         {currentTabWidgets.length === 0 ? (
-          <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200/80 bg-slate-50/50 p-12 text-center">
+          <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-slate-50/50 p-12 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-xs">
               <SlidersHorizontal className="h-6 w-6" />
             </div>
-            <h3 className="mt-3 text-sm font-bold text-slate-900">
+            <h3 className="mt-3 font-bold text-slate-900 text-sm">
               Bu sekmede henüz aktif widget yok
             </h3>
-            <p className="mt-1 max-w-sm text-xs text-slate-500">
+            <p className="mt-1 max-w-sm text-slate-500 text-xs">
               Widget kataloğunu açarak bu sekmeye dilediğiniz CRM bileşenlerini
               ekleyebilirsiniz.
             </p>
             <div className="mt-4 flex gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
                 onClick={() => setIsCustomizeModalOpen(true)}
                 type="button"
               >
@@ -399,7 +396,7 @@ export default function WorkspaceOverviewPage() {
                 <span>Widget Kataloğunu Aç</span>
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
                 onClick={handleResetDefaults}
                 type="button"
               >
@@ -431,5 +428,5 @@ export default function WorkspaceOverviewPage() {
         type={quickCreateType}
       />
     </div>
-  )
+  );
 }

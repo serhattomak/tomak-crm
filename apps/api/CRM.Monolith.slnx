@@ -13,5 +13,6 @@
     <Project Path="src/Modules/CRM.Modules.Leaves/CRM.Modules.Leaves.csproj" />
     <Project Path="src/Modules/CRM.Modules.Payroll/CRM.Modules.Payroll.csproj" />
     <Project Path="src/Modules/CRM.Modules.Attendance/CRM.Modules.Attendance.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Chat/CRM.Modules.Chat.csproj" />
   </Folder>
 </Solution>

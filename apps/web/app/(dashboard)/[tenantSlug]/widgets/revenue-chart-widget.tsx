@@ -8,31 +8,35 @@ interface RevenueChartWidgetProps {
   dateRange?: DateRange;
 }
 
-export function RevenueChartWidget({ dateRange: _dateRange }: RevenueChartWidgetProps) {
-  const [activeMetric, setActiveMetric] = useState<"revenue" | "deals" | "margin">("revenue");
+export function RevenueChartWidget({
+  dateRange: _dateRange,
+}: RevenueChartWidgetProps) {
+  const [activeMetric, setActiveMetric] = useState<
+    "revenue" | "deals" | "margin"
+  >("revenue");
   const [hoveredMonth, setHoveredMonth] = useState<string>("Haz");
 
   const monthlyData = [
-    { m: "Oca", revenue: 24500, deals: 18, margin: 42, height: "h-14" },
-    { m: "Şub", revenue: 31200, deals: 24, margin: 45, height: "h-20" },
-    { m: "Mar", revenue: 28400, deals: 21, margin: 40, height: "h-16" },
-    { m: "Nis", revenue: 38900, deals: 29, margin: 48, height: "h-24" },
-    { m: "May", revenue: 22100, deals: 15, margin: 38, height: "h-12" },
-    { m: "Haz", revenue: 48250, deals: 38, margin: 52, height: "h-28" },
-    { m: "Tem", revenue: 34100, deals: 26, margin: 44, height: "h-20" },
-    { m: "Ağu", revenue: 41800, deals: 32, margin: 50, height: "h-26" },
-    { m: "Eyl", revenue: 29400, deals: 22, margin: 41, height: "h-16" },
-    { m: "Eki", revenue: 36700, deals: 28, margin: 46, height: "h-22" },
-    { m: "Kas", revenue: 26300, deals: 19, margin: 39, height: "h-14" },
-    { m: "Ara", revenue: 33500, deals: 25, margin: 43, height: "h-18" },
+    { deals: 18, height: "h-14", m: "Oca", margin: 42, revenue: 24_500 },
+    { deals: 24, height: "h-20", m: "Şub", margin: 45, revenue: 31_200 },
+    { deals: 21, height: "h-16", m: "Mar", margin: 40, revenue: 28_400 },
+    { deals: 29, height: "h-24", m: "Nis", margin: 48, revenue: 38_900 },
+    { deals: 15, height: "h-12", m: "May", margin: 38, revenue: 22_100 },
+    { deals: 38, height: "h-28", m: "Haz", margin: 52, revenue: 48_250 },
+    { deals: 26, height: "h-20", m: "Tem", margin: 44, revenue: 34_100 },
+    { deals: 32, height: "h-26", m: "Ağu", margin: 50, revenue: 41_800 },
+    { deals: 22, height: "h-16", m: "Eyl", margin: 41, revenue: 29_400 },
+    { deals: 28, height: "h-22", m: "Eki", margin: 46, revenue: 36_700 },
+    { deals: 19, height: "h-14", m: "Kas", margin: 39, revenue: 26_300 },
+    { deals: 25, height: "h-18", m: "Ara", margin: 43, revenue: 33_500 },
   ];
 
   const currentHovered = monthlyData.find((d) => d.m === hoveredMonth) ?? {
-    m: "Haz",
-    revenue: 48250,
     deals: 38,
-    margin: 52,
     height: "h-28",
+    m: "Haz",
+    margin: 52,
+    revenue: 48_250,
   };
 
   return (
@@ -120,10 +124,12 @@ export function RevenueChartWidget({ dateRange: _dateRange }: RevenueChartWidget
                   {/* Tooltip on Hover */}
                   {isHovered && (
                     <div className="fade-in absolute -top-16 z-30 min-w-[120px] -translate-x-1/2 rounded-xl bg-slate-950 px-3 py-2 text-white shadow-xl">
-                      <div className="font-semibold text-[10px] text-slate-400">{bar.m} 2026</div>
+                      <div className="font-semibold text-[10px] text-slate-400">
+                        {bar.m} 2026
+                      </div>
                       <div className="mt-0.5 flex items-center justify-between gap-2 font-bold text-xs">
                         <span>₺{bar.revenue.toLocaleString("tr-TR")}</span>
-                        <span className="text-emerald-400 font-semibold text-[10px]">
+                        <span className="font-semibold text-[10px] text-emerald-400">
                           {bar.deals} anlaşma
                         </span>
                       </div>
@@ -135,16 +141,16 @@ export function RevenueChartWidget({ dateRange: _dateRange }: RevenueChartWidget
                     <div
                       className={`w-full max-w-[28px] ${bar.height} rounded-2xl transition-all duration-200 ${
                         isHovered
-                          ? "bg-gradient-to-t from-violet-600 via-purple-500 to-fuchsia-500 shadow-fuchsia-500/30 shadow-lg scale-105"
+                          ? "scale-105 bg-gradient-to-t from-violet-600 via-purple-500 to-fuchsia-500 shadow-fuchsia-500/30 shadow-lg"
                           : "bg-slate-100 hover:bg-slate-200"
                       }`}
                       style={
-                        !isHovered
-                          ? {
+                        isHovered
+                          ? undefined
+                          : {
                               backgroundImage:
                                 "repeating-linear-gradient(45deg, #e2e8f0, #e2e8f0 2px, #f8fafc 2px, #f8fafc 6px)",
                             }
-                          : undefined
                       }
                     />
                   </div>
@@ -168,18 +174,24 @@ export function RevenueChartWidget({ dateRange: _dateRange }: RevenueChartWidget
       <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-slate-100 border-t pt-4 text-xs">
         <div className="flex items-center gap-6">
           <div>
-            <span className="text-slate-400 text-[11px]">Seçili Ay ({currentHovered.m}):</span>
+            <span className="text-[11px] text-slate-400">
+              Seçili Ay ({currentHovered.m}):
+            </span>
             <div className="font-bold text-slate-900 text-sm">
               ₺{currentHovered.revenue.toLocaleString("tr-TR")}
             </div>
           </div>
           <div>
-            <span className="text-slate-400 text-[11px]">Başarılı Satış:</span>
-            <div className="font-bold text-slate-900 text-sm">{currentHovered.deals} Adet</div>
+            <span className="text-[11px] text-slate-400">Başarılı Satış:</span>
+            <div className="font-bold text-slate-900 text-sm">
+              {currentHovered.deals} Adet
+            </div>
           </div>
           <div>
-            <span className="text-slate-400 text-[11px]">Net Kâr Marjı:</span>
-            <div className="font-bold text-emerald-600 text-sm">%{currentHovered.margin}</div>
+            <span className="text-[11px] text-slate-400">Net Kâr Marjı:</span>
+            <div className="font-bold text-emerald-600 text-sm">
+              %{currentHovered.margin}
+            </div>
           </div>
         </div>
 

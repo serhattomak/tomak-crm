@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Briefcase,
@@ -7,10 +7,10 @@ import {
   Plus,
   UserPlus,
   Zap,
-} from "lucide-react"
+} from "lucide-react";
 
 interface QuickActionsWidgetProps {
-  onOpenQuickCreate: (type: "lead" | "deal" | "task" | "proposal") => void
+  onOpenQuickCreate: (type: "lead" | "deal" | "task" | "proposal") => void;
 }
 
 export function QuickActionsWidget({
@@ -18,42 +18,42 @@ export function QuickActionsWidget({
 }: QuickActionsWidgetProps) {
   const actions = [
     {
+      actionType: "lead" as const,
+      color: "from-violet-600 to-indigo-600 text-white",
+      description: "Müşteri adayı kaydı oluştur",
+      hoverRing: "hover:ring-violet-400",
+      icon: UserPlus,
       id: "lead",
       title: "Yeni Lead Ekle",
-      description: "Müşteri adayı kaydı oluştur",
-      icon: UserPlus,
-      color: "from-violet-600 to-indigo-600 text-white",
-      hoverRing: "hover:ring-violet-400",
-      actionType: "lead" as const,
     },
     {
+      actionType: "deal" as const,
+      color: "from-blue-600 to-cyan-600 text-white",
+      description: "Pipeline'a yeni anlaşma ekle",
+      hoverRing: "hover:ring-blue-400",
+      icon: Briefcase,
       id: "deal",
       title: "Fırsat Başlat",
-      description: "Pipeline'a yeni anlaşma ekle",
-      icon: Briefcase,
-      color: "from-blue-600 to-cyan-600 text-white",
-      hoverRing: "hover:ring-blue-400",
-      actionType: "deal" as const,
     },
     {
+      actionType: "task" as const,
+      color: "from-emerald-600 to-teal-600 text-white",
+      description: "Kendine veya ekibe iş ata",
+      hoverRing: "hover:ring-emerald-400",
+      icon: CheckSquare,
       id: "task",
       title: "Görev Tanımla",
-      description: "Kendine veya ekibe iş ata",
-      icon: CheckSquare,
-      color: "from-emerald-600 to-teal-600 text-white",
-      hoverRing: "hover:ring-emerald-400",
-      actionType: "task" as const,
     },
     {
+      actionType: "proposal" as const,
+      color: "from-fuchsia-600 to-pink-600 text-white",
+      description: "PDF şablonuyla teklif oluştur",
+      hoverRing: "hover:ring-fuchsia-400",
+      icon: FileText,
       id: "proposal",
       title: "Hızlı Teklif Hazırla",
-      description: "PDF şablonuyla teklif oluştur",
-      icon: FileText,
-      color: "from-fuchsia-600 to-pink-600 text-white",
-      hoverRing: "hover:ring-fuchsia-400",
-      actionType: "proposal" as const,
     },
-  ]
+  ];
 
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-5 text-white shadow-md">
@@ -63,7 +63,7 @@ export function QuickActionsWidget({
             <Zap className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white">
+            <h3 className="font-bold text-sm text-white">
               Hızlı İşlemler & Kısayollar
             </h3>
             <p className="text-[11px] text-slate-300">
@@ -75,10 +75,12 @@ export function QuickActionsWidget({
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {actions.map((act) => {
-          const Icon = act.icon
+          const Icon = act.icon;
           return (
             <button
-              className={`group flex items-center gap-3.5 rounded-xl border border-white/10 bg-white/5 p-3.5 text-left transition-all duration-150 hover:scale-[1.02] hover:bg-white/15 hover:shadow-lg`}
+              className={
+                "group flex items-center gap-3.5 rounded-xl border border-white/10 bg-white/5 p-3.5 text-left transition-all duration-150 hover:scale-[1.02] hover:bg-white/15 hover:shadow-lg"
+              }
               key={act.id}
               onClick={() => onOpenQuickCreate(act.actionType)}
               type="button"
@@ -89,7 +91,7 @@ export function QuickActionsWidget({
                 <Icon className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-white transition-colors group-hover:text-amber-200">
+                <div className="font-semibold text-white text-xs transition-colors group-hover:text-amber-200">
                   {act.title}
                 </div>
                 <div className="truncate text-[10px] text-slate-300">
@@ -98,9 +100,9 @@ export function QuickActionsWidget({
               </div>
               <Plus className="h-4 w-4 text-slate-400 transition-colors group-hover:text-white" />
             </button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

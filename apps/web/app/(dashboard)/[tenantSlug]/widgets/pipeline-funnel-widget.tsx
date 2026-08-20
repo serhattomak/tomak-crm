@@ -7,52 +7,54 @@ interface PipelineFunnelWidgetProps {
   dateRange?: DateRange;
 }
 
-export function PipelineFunnelWidget({ dateRange: _dateRange }: PipelineFunnelWidgetProps) {
+export function PipelineFunnelWidget({
+  dateRange: _dateRange,
+}: PipelineFunnelWidgetProps) {
   const stages = [
     {
+      barWidth: "w-full",
+      color: "bg-blue-500",
+      conversion: "100%",
+      count: 48,
       id: "discovery",
       name: "1. Yeni Talep / Keşif",
-      count: 48,
-      value: 360000,
-      conversion: "100%",
-      color: "bg-blue-500",
-      barWidth: "w-full",
+      value: 360_000,
     },
     {
+      barWidth: "w-[85%]",
+      color: "bg-indigo-500",
+      conversion: "75%",
+      count: 36,
       id: "contacted",
       name: "2. İletişim & Değerlendirme",
-      count: 36,
-      value: 285000,
-      conversion: "75%",
-      color: "bg-indigo-500",
-      barWidth: "w-[85%]",
+      value: 285_000,
     },
     {
+      barWidth: "w-[68%]",
+      color: "bg-violet-500",
+      conversion: "50%",
+      count: 24,
       id: "proposal",
       name: "3. Teklif Hazırlandı",
-      count: 24,
-      value: 210000,
-      conversion: "50%",
-      color: "bg-violet-500",
-      barWidth: "w-[68%]",
+      value: 210_000,
     },
     {
+      barWidth: "w-[50%]",
+      color: "bg-fuchsia-500",
+      conversion: "31%",
+      count: 15,
       id: "negotiation",
       name: "4. Müzakere & Sözleşme",
-      count: 15,
-      value: 155000,
-      conversion: "31%",
-      color: "bg-fuchsia-500",
-      barWidth: "w-[50%]",
+      value: 155_000,
     },
     {
+      barWidth: "w-[35%]",
+      color: "bg-emerald-500",
+      conversion: "23%",
+      count: 11,
       id: "won",
       name: "5. Başarıyla Kazanıldı",
-      count: 11,
-      value: 118000,
-      conversion: "23%",
-      color: "bg-emerald-500",
-      barWidth: "w-[35%]",
+      value: 118_000,
     },
   ];
 
@@ -67,7 +69,9 @@ export function PipelineFunnelWidget({ dateRange: _dateRange }: PipelineFunnelWi
               <Filter className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Satış Hunisi (Pipeline Stages)</span>
+              <span className="font-bold text-slate-900 text-sm">
+                Satış Hunisi (Pipeline Stages)
+              </span>
               <div className="text-[11px] text-slate-500">
                 Toplam Hacim: ₺{totalPipelineValue.toLocaleString("tr-TR")}
               </div>
@@ -82,11 +86,16 @@ export function PipelineFunnelWidget({ dateRange: _dateRange }: PipelineFunnelWi
         {/* Funnel Visualizer */}
         <div className="space-y-3 pt-2">
           {stages.map((stage) => (
-            <div className="group rounded-xl p-2 transition-colors hover:bg-slate-50" key={stage.id}>
+            <div
+              className="group rounded-xl p-2 transition-colors hover:bg-slate-50"
+              key={stage.id}
+            >
               <div className="mb-1.5 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <span className={`h-2.5 w-2.5 rounded-full ${stage.color}`} />
-                  <span className="font-semibold text-slate-800">{stage.name}</span>
+                  <span className="font-semibold text-slate-800">
+                    {stage.name}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-medium text-[11px] text-slate-400">
@@ -111,7 +120,9 @@ export function PipelineFunnelWidget({ dateRange: _dateRange }: PipelineFunnelWi
       </div>
 
       <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 text-xs">
-        <span className="text-[11px] text-slate-500">Toplam Dönüşüm Oranı: %23</span>
+        <span className="text-[11px] text-slate-500">
+          Toplam Dönüşüm Oranı: %23
+        </span>
         <button
           className="flex items-center gap-1 font-semibold text-indigo-600 hover:text-indigo-700"
           type="button"

@@ -6,44 +6,44 @@ import type { ActivityItem } from "./dashboard-types";
 export function ActivityTimelineWidget() {
   const activities: ActivityItem[] = [
     {
-      id: "act-1",
-      user: { name: "Ahmet Yılmaz", initials: "AY" },
       action: "yeni bir teklif oluşturdu",
+      id: "act-1",
       target: "Acme Holding (₺125.000)",
       timestamp: "12 dk önce",
       type: "deal",
+      user: { initials: "AY", name: "Ahmet Yılmaz" },
     },
     {
-      id: "act-2",
-      user: { name: "Selin Kaya", initials: "SK" },
       action: "telefon görüşmesi kaydetti",
+      id: "act-2",
       target: "TechNova CTO'su ile 24 dk",
       timestamp: "45 dk önce",
       type: "call",
+      user: { initials: "SK", name: "Selin Kaya" },
     },
     {
-      id: "act-3",
-      user: { name: "Mehmet Demir", initials: "MD" },
       action: "anlaşmayı başarıyla kapattı",
+      id: "act-3",
       target: "Vortex Lojistik (₺94.500)",
       timestamp: "2 saat önce",
       type: "deal",
+      user: { initials: "MD", name: "Mehmet Demir" },
     },
     {
-      id: "act-4",
-      user: { name: "Sistem Botu", initials: "SB" },
       action: "web sitesinden yeni lead yakaladı",
+      id: "act-4",
       target: "Argeus Enerji A.Ş.",
       timestamp: "3 saat önce",
       type: "lead",
+      user: { initials: "SB", name: "Sistem Botu" },
     },
     {
-      id: "act-5",
-      user: { name: "Canan Öz", initials: "CÖ" },
       action: "önemli bir toplantı notu ekledi",
+      id: "act-5",
       target: "MegaFinans Çözüm Analizi",
       timestamp: "5 saat önce",
       type: "task",
+      user: { initials: "CÖ", name: "Canan Öz" },
     },
   ];
 
@@ -71,8 +71,12 @@ export function ActivityTimelineWidget() {
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Canlı Aktivite Akışı</span>
-              <div className="text-[11px] text-slate-500">Ekip içi son işlemler ve loglar</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Canlı Aktivite Akışı
+              </span>
+              <div className="text-[11px] text-slate-500">
+                Ekip içi son işlemler ve loglar
+              </div>
             </div>
           </div>
 
@@ -82,7 +86,10 @@ export function ActivityTimelineWidget() {
         {/* Timeline List */}
         <div className="relative space-y-4 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
           {activities.map((act) => (
-            <div className="relative flex items-start gap-3 text-xs" key={act.id}>
+            <div
+              className="relative flex items-start gap-3 text-xs"
+              key={act.id}
+            >
               {/* User / Action Avatar */}
               <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white bg-slate-900 font-bold text-[10px] text-white shadow-2xs">
                 {act.user.initials}
@@ -94,10 +101,13 @@ export function ActivityTimelineWidget() {
                     {getActionIcon(act.type)}
                     <span>{act.user.name}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium">{act.timestamp}</span>
+                  <span className="font-medium text-[10px] text-slate-400">
+                    {act.timestamp}
+                  </span>
                 </div>
                 <p className="mt-0.5 text-[11px] text-slate-600">
-                  {act.action}: <strong className="text-slate-800">{act.target}</strong>
+                  {act.action}:{" "}
+                  <strong className="text-slate-800">{act.target}</strong>
                 </p>
               </div>
             </div>

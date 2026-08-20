@@ -1,5 +1,15 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
+import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowRightLeft,
   Banknote,
@@ -39,22 +49,6 @@ import {
   type UpdateEmployeePuantajRequest,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
-import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
-import { NumberInput } from "@workspace/ui/components/number-input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
-import { toast } from "@workspace/ui/components/sonner";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@workspace/ui/components/tooltip";
 
 const MONTH_NAMES = [
   "Ocak",
@@ -121,10 +115,10 @@ export default function PayrollPage() {
     loading?: boolean;
     onConfirm: () => void | Promise<void>;
   }>({
-    open: false,
-    title: "",
     description: "",
     onConfirm: () => {},
+    open: false,
+    title: "",
   });
 
   const [newRunForm, setNewRunForm] = useState({
@@ -184,7 +178,12 @@ export default function PayrollPage() {
       const res = await ApiClient.getPayrollRuns({}, activeTenant.id);
       if (res.success && res.data) {
         setRuns(res.data.items);
-        if (res.data.items && res.data.items.length > 0 && !selectedRunId && res.data.items[0]) {
+        if (
+          res.data.items &&
+          res.data.items.length > 0 &&
+          !selectedRunId &&
+          res.data.items[0]
+        ) {
           setSelectedRunId(res.data.items[0].id);
         }
       }
@@ -205,7 +204,12 @@ export default function PayrollPage() {
         const res = await ApiClient.getPayrollRunById(runId, activeTenant.id);
         if (res.success && res.data) {
           setSelectedRun(res.data);
-          if (res.data.employees && res.data.employees.length > 0 && !selectedEmployeePayroll && res.data.employees[0]) {
+          if (
+            res.data.employees &&
+            res.data.employees.length > 0 &&
+            !selectedEmployeePayroll &&
+            res.data.employees[0]
+          ) {
             setSelectedEmployeePayroll(res.data.employees[0]);
           }
         }
@@ -353,12 +357,9 @@ export default function PayrollPage() {
       return;
     }
     setConfirmDialog({
-      open: true,
-      title: "Bordro Dönemini Onayla",
+      confirmText: "Onayla",
       description:
         "Bordro dönemi onaylandığında kesinleşme aşamasına geçecektir. Devam etmek istiyor musunuz?",
-      confirmText: "Onayla",
-      variant: "default",
       onConfirm: async () => {
         try {
           const res = await ApiClient.approvePayrollRun(runId, activeTenant.id);
@@ -376,6 +377,9 @@ export default function PayrollPage() {
           setConfirmDialog((prev) => ({ ...prev, open: false }));
         }
       },
+      open: true,
+      title: "Bordro Dönemini Onayla",
+      variant: "default",
     });
   };
 
@@ -385,12 +389,9 @@ export default function PayrollPage() {
       return;
     }
     setConfirmDialog({
-      open: true,
-      title: "Bordro Dönemini Kilitle",
+      confirmText: "Kilitle",
       description:
         "Kilitlenen bordro dönemi üzerinde çalışan, puantaj ve maaş değişiklikleri yapılamaz. Emin misiniz?",
-      confirmText: "Kilitle",
-      variant: "warning",
       onConfirm: async () => {
         try {
           const res = await ApiClient.lockPayrollRun(runId, activeTenant.id);
@@ -408,6 +409,9 @@ export default function PayrollPage() {
           setConfirmDialog((prev) => ({ ...prev, open: false }));
         }
       },
+      open: true,
+      title: "Bordro Dönemini Kilitle",
+      variant: "warning",
     });
   };
 
@@ -417,12 +421,9 @@ export default function PayrollPage() {
       return;
     }
     setConfirmDialog({
-      open: true,
-      title: "Bordro Dönemini Sil",
+      confirmText: "Dönemi Sil",
       description:
         "Bu bordro dönemini ve tüm çalışan puantaj detaylarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
-      confirmText: "Dönemi Sil",
-      variant: "destructive",
       onConfirm: async () => {
         try {
           const res = await ApiClient.deletePayrollRun(runId, activeTenant.id);
@@ -440,6 +441,9 @@ export default function PayrollPage() {
           setConfirmDialog((prev) => ({ ...prev, open: false }));
         }
       },
+      open: true,
+      title: "Bordro Dönemini Sil",
+      variant: "destructive",
     });
   };
 
@@ -1200,7 +1204,7 @@ export default function PayrollPage() {
 
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
                 onClick={() => window.print()}
               >
                 <Printer className="h-4 w-4 text-white" />
@@ -1754,53 +1758,53 @@ export default function PayrollPage() {
 
             {/* Base Salary */}
             <div>
-              <label className="font-semibold text-slate-700 text-xs mb-1 block">
+              <label className="mb-1 block font-semibold text-slate-700 text-xs">
                 {simForm.contractSalaryType === "Gross"
                   ? "Aylık Brüt Maaş (₺)"
                   : "Hedef Net Maaş (₺)"}
               </label>
               <NumberInput
-                value={simForm.baseSalary}
                 onChange={(val) =>
                   setSimForm({
                     ...simForm,
                     baseSalary: val,
                   })
                 }
-                step={100}
                 prefix="₺"
+                step={100}
+                value={simForm.baseSalary}
               />
             </div>
 
             {/* Cumulative Prior Income Tax Base */}
             <div>
-              <label className="font-semibold text-slate-700 text-xs mb-1 block">
+              <label className="mb-1 block font-semibold text-slate-700 text-xs">
                 Önceki Aylardan Kümülatif GV Matrahı (₺)
               </label>
               <NumberInput
-                value={simForm.priorCumulativeIncomeTaxBase}
                 onChange={(val) =>
                   setSimForm({
                     ...simForm,
                     priorCumulativeIncomeTaxBase: val,
                   })
                 }
-                step={1000}
                 prefix="₺"
+                step={1000}
+                value={simForm.priorCumulativeIncomeTaxBase}
               />
               <p className="mt-1 text-[10px] text-slate-400">
-                Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek için
+                Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek
+                için
               </p>
             </div>
 
             {/* Overtime & Bonuses */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-medium text-slate-700 text-xs mb-1 block">
+                <label className="mb-1 block font-medium text-slate-700 text-xs">
                   Fazla Mesai (Saat)
                 </label>
                 <NumberInput
-                  value={simForm.overtimeHours}
                   onChange={(val) =>
                     setSimForm({
                       ...simForm,
@@ -1808,14 +1812,14 @@ export default function PayrollPage() {
                     })
                   }
                   suffix="saat"
+                  value={simForm.overtimeHours}
                 />
               </div>
               <div>
-                <label className="font-medium text-slate-700 text-xs mb-1 block">
+                <label className="mb-1 block font-medium text-slate-700 text-xs">
                   Prim / İkramiye (₺)
                 </label>
                 <NumberInput
-                  value={simForm.bonusGross}
                   onChange={(val) =>
                     setSimForm({
                       ...simForm,
@@ -1823,6 +1827,7 @@ export default function PayrollPage() {
                     })
                   }
                   prefix="₺"
+                  value={simForm.bonusGross}
                 />
               </div>
             </div>
@@ -1830,11 +1835,10 @@ export default function PayrollPage() {
             {/* Allowances */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-medium text-slate-700 text-xs mb-1 block">
+                <label className="mb-1 block font-medium text-slate-700 text-xs">
                   Yemek Yardımı (₺)
                 </label>
                 <NumberInput
-                  value={simForm.mealAllowance}
                   onChange={(val) =>
                     setSimForm({
                       ...simForm,
@@ -1842,14 +1846,14 @@ export default function PayrollPage() {
                     })
                   }
                   prefix="₺"
+                  value={simForm.mealAllowance}
                 />
               </div>
               <div>
-                <label className="font-medium text-slate-700 text-xs mb-1 block">
+                <label className="mb-1 block font-medium text-slate-700 text-xs">
                   Yol Yardımı (₺)
                 </label>
                 <NumberInput
-                  value={simForm.travelAllowance}
                   onChange={(val) =>
                     setSimForm({
                       ...simForm,
@@ -1857,6 +1861,7 @@ export default function PayrollPage() {
                     })
                   }
                   prefix="₺"
+                  value={simForm.travelAllowance}
                 />
               </div>
             </div>
@@ -1892,7 +1897,7 @@ export default function PayrollPage() {
             </div>
 
             <button
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 font-bold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 font-bold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
               disabled={simulating}
               onClick={handleSimulate}
             >
@@ -2227,14 +2232,14 @@ export default function PayrollPage() {
 
       {/* MODAL 1: CREATE PAYROLL RUN */}
       {showCreateRunModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl text-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200/80 bg-white p-6 text-xs shadow-2xl">
             <div className="flex items-center justify-between border-slate-100 border-b pb-3">
               <h3 className="font-bold text-slate-900 text-sm">
                 Yeni Aylık Bordro Dönemi Başlat
               </h3>
               <button
-                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+                className="rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
                 onClick={() => setShowCreateRunModal(false)}
                 type="button"
               >
@@ -2245,21 +2250,27 @@ export default function PayrollPage() {
             <form className="space-y-4 text-xs" onSubmit={handleCreateRun}>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Yıl</label>
+                  <label className="mb-1 block font-semibold text-slate-700">
+                    Yıl
+                  </label>
                   <NumberInput
-                    min={2020}
                     max={2035}
+                    min={2020}
+                    onChange={(val) =>
+                      setNewRunForm({ ...newRunForm, year: val })
+                    }
                     value={newRunForm.year}
-                    onChange={(val) => setNewRunForm({ ...newRunForm, year: val })}
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Ay</label>
+                  <label className="mb-1 block font-semibold text-slate-700">
+                    Ay
+                  </label>
                   <Select
-                    value={String(newRunForm.month)}
                     onValueChange={(val) =>
                       setNewRunForm({ ...newRunForm, month: Number(val) })
                     }
+                    value={String(newRunForm.month)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Ay Seçiniz" />
@@ -2276,7 +2287,7 @@ export default function PayrollPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">
+                <label className="mb-1 block font-semibold text-slate-700">
                   Bordro Başlığı (İsteğe Bağlı)
                 </label>
                 <input
@@ -2291,7 +2302,7 @@ export default function PayrollPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">
+                <label className="mb-1 block font-semibold text-slate-700">
                   Açıklama / Notlar
                 </label>
                 <textarea
@@ -2305,7 +2316,7 @@ export default function PayrollPage() {
                 />
               </div>
 
-              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 text-[11px] text-blue-900 leading-relaxed font-medium">
+              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 font-medium text-[11px] text-blue-900 leading-relaxed">
                 Bu işlem başlatıldığında şirketteki tüm aktif çalışanların
                 kadro, pozisyon ve taban maaş bilgileri otomatik olarak
                 kopyalanır ve 30 günlük standart puantaj hesabı yapılır.
@@ -2313,14 +2324,14 @@ export default function PayrollPage() {
 
               <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
                 <button
-                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50 transition-colors"
+                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs transition-colors hover:bg-slate-50"
                   onClick={() => setShowCreateRunModal(false)}
                   type="button"
                 >
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
                   type="submit"
                 >
                   Dönemi Oluştur ve Hesapla
@@ -2333,8 +2344,8 @@ export default function PayrollPage() {
 
       {/* MODAL 2: EDIT EMPLOYEE PUANTAJ */}
       {showEditPuantajModal && editingPuantaj && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl text-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-3xl border border-slate-200/80 bg-white p-6 text-xs shadow-2xl">
             <div className="flex items-center justify-between border-slate-100 border-b pb-3">
               <div>
                 <h3 className="font-bold text-slate-900 text-sm">
@@ -2345,7 +2356,7 @@ export default function PayrollPage() {
                 </p>
               </div>
               <button
-                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+                className="rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
                 onClick={() => setShowEditPuantajModal(false)}
                 type="button"
               >
@@ -2357,14 +2368,11 @@ export default function PayrollPage() {
               {/* Base Salary & Type */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="mb-1 block font-semibold text-slate-700">
                     Taban Maaş (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={100}
-                    value={editingPuantaj.form.baseSalary}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2374,14 +2382,16 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={100}
+                    value={editingPuantaj.form.baseSalary}
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="mb-1 block font-semibold text-slate-700">
                     Sözleşme Tipi
                   </label>
                   <Select
-                    value={editingPuantaj.form.contractSalaryType}
                     onValueChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2391,6 +2401,7 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    value={editingPuantaj.form.contractSalaryType}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -2406,15 +2417,12 @@ export default function PayrollPage() {
               {/* Days breakdown */}
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Çalışılan Gün
                   </label>
                   <NumberInput
-                    min={0}
                     max={31}
-                    step={0.5}
-                    suffix="gün"
-                    value={editingPuantaj.form.workedDays}
+                    min={0}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2424,18 +2432,18 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.workedDays}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Ücretsiz İzin
                   </label>
                   <NumberInput
-                    min={0}
                     max={31}
-                    step={0.5}
-                    suffix="gün"
-                    value={editingPuantaj.form.unpaidLeaveDays}
+                    min={0}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2445,18 +2453,18 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.unpaidLeaveDays}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Rapor / Hastalık
                   </label>
                   <NumberInput
-                    min={0}
                     max={31}
-                    step={0.5}
-                    suffix="gün"
-                    value={editingPuantaj.form.sickLeaveDays}
+                    min={0}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2466,6 +2474,9 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.sickLeaveDays}
                   />
                 </div>
               </div>
@@ -2473,14 +2484,11 @@ export default function PayrollPage() {
               {/* Overtime and Extras */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Fazla Mesai (Saat)
                   </label>
                   <NumberInput
                     min={0}
-                    step={0.5}
-                    suffix="saat"
-                    value={editingPuantaj.form.overtimeHours}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2490,17 +2498,17 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    step={0.5}
+                    suffix="saat"
+                    value={editingPuantaj.form.overtimeHours}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Prim / İkramiye (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={100}
-                    value={editingPuantaj.form.bonusGross}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2510,6 +2518,9 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={100}
+                    value={editingPuantaj.form.bonusGross}
                   />
                 </div>
               </div>
@@ -2517,14 +2528,11 @@ export default function PayrollPage() {
               {/* Meal & Travel */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Yemek Yardımı (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={50}
-                    value={editingPuantaj.form.mealAllowanceGross}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2534,17 +2542,17 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.mealAllowanceGross}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Yol Yardımı (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={50}
-                    value={editingPuantaj.form.travelAllowanceGross}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2554,6 +2562,9 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.travelAllowanceGross}
                   />
                 </div>
               </div>
@@ -2561,14 +2572,11 @@ export default function PayrollPage() {
               {/* Deductions: Icra, Advance */}
               <div className="grid grid-cols-2 gap-3 border-slate-100 border-t pt-3">
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     İcra Kesintisi (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={50}
-                    value={editingPuantaj.form.icraDeduction}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2578,17 +2586,17 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.icraDeduction}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700 block mb-1">
+                  <label className="mb-1 block font-medium text-slate-700">
                     Avans Mahsubu (₺)
                   </label>
                   <NumberInput
                     min={0}
-                    prefix="₺"
-                    step={50}
-                    value={editingPuantaj.form.advanceDeduction}
                     onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
@@ -2598,6 +2606,9 @@ export default function PayrollPage() {
                         },
                       })
                     }
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.advanceDeduction}
                   />
                 </div>
               </div>
@@ -2619,7 +2630,7 @@ export default function PayrollPage() {
                   type="checkbox"
                 />
                 <label
-                  className="font-semibold text-slate-700 text-xs cursor-pointer"
+                  className="cursor-pointer font-semibold text-slate-700 text-xs"
                   htmlFor="hasBesEdit"
                 >
                   Otomatik BES (%3) kesintisi uygulansın
@@ -2628,14 +2639,14 @@ export default function PayrollPage() {
 
               <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
                 <button
-                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50 transition-colors"
+                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs transition-colors hover:bg-slate-50"
                   onClick={() => setShowEditPuantajModal(false)}
                   type="button"
                 >
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
                   type="submit"
                 >
                   Kaydet ve Yeniden Hesapla
@@ -2648,15 +2659,15 @@ export default function PayrollPage() {
 
       {/* GLOBAL CONFIRM DIALOG */}
       <ConfirmDialog
-        open={confirmDialog.open}
-        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
-        title={confirmDialog.title}
-        description={confirmDialog.description}
-        confirmText={confirmDialog.confirmText}
         cancelText={confirmDialog.cancelText}
-        variant={confirmDialog.variant}
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
         loading={confirmDialog.loading}
         onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
       />
     </div>
   );

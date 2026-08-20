@@ -7,7 +7,9 @@ interface SalesGaugeWidgetProps {
   dateRange?: DateRange;
 }
 
-export function SalesGaugeWidget({ dateRange: _dateRange }: SalesGaugeWidgetProps) {
+export function SalesGaugeWidget({
+  dateRange: _dateRange,
+}: SalesGaugeWidgetProps) {
   const currentScore = 84;
 
   return (
@@ -19,8 +21,12 @@ export function SalesGaugeWidget({ dateRange: _dateRange }: SalesGaugeWidgetProp
               <Trophy className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Satış Hedef Performansı</span>
-              <div className="text-[11px] text-slate-500">Dönemsel Kota Tamamlama</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Satış Hedef Performansı
+              </span>
+              <div className="text-[11px] text-slate-500">
+                Dönemsel Kota Tamamlama
+              </div>
             </div>
           </div>
 
@@ -34,7 +40,13 @@ export function SalesGaugeWidget({ dateRange: _dateRange }: SalesGaugeWidgetProp
         <div className="relative my-3 flex flex-col items-center justify-center">
           <svg className="w-48 overflow-visible" viewBox="0 0 200 120">
             <defs>
-              <linearGradient id="salesGaugeGrad" x1="0%" x2="100%" y1="100%" y2="0%">
+              <linearGradient
+                id="salesGaugeGrad"
+                x1="0%"
+                x2="100%"
+                y1="100%"
+                y2="0%"
+              >
                 <stop offset="0%" stopColor="#06b6d4" />
                 <stop offset="50%" stopColor="#8b5cf6" />
                 <stop offset="100%" stopColor="#ec4899" />
@@ -75,7 +87,9 @@ export function SalesGaugeWidget({ dateRange: _dateRange }: SalesGaugeWidgetProp
         {/* Motivational message & Highlights */}
         <div className="mt-2 space-y-2 rounded-xl bg-slate-50 p-3 text-xs">
           <div className="flex items-center justify-between">
-            <span className="font-medium text-slate-600">Kapanan Anlaşmalar:</span>
+            <span className="font-medium text-slate-600">
+              Kapanan Anlaşmalar:
+            </span>
             <span className="font-bold text-slate-900">42 / 50</span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200">

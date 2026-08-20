@@ -13,14 +13,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
-import {
-  ApiClient,
-  type AddOrderPaymentRequest,
-  type ChangeOrderStatusRequest,
-  type OrderDetailDto,
-} from "@/lib/api-client";
+import { ApiClient, type OrderDetailDto } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function OrderDetailPage() {
@@ -32,7 +28,9 @@ export default function OrderDetailPage() {
 
   const [order, setOrder] = useState<OrderDetailDto | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"items" | "payments" | "timeline">("items");
+  const [activeTab, setActiveTab] = useState<"items" | "payments" | "timeline">(
+    "items"
+  );
 
   // Modals
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -45,7 +43,9 @@ export default function OrderDetailPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!activeTenant || !orderId) return;
+    if (!(activeTenant && orderId)) {
+      return;
+    }
     setLoading(true);
     try {
       const res = await ApiClient.getOrderById(orderId, activeTenant.id);
@@ -168,19 +168,23 @@ export default function OrderDetailPage() {
       <div className="flex h-96 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="text-xs text-slate-500 font-medium">Sipariş detayları yükleniyor...</span>
+          <span className="font-medium text-slate-500 text-xs">
+            Sipariş detayları yükleniyor...
+          </span>
         </div>
       </div>
     );
   }
 
-  if (!order) return null;
+  if (!order) {
+    return null;
+  }
 
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl animate-in slide-in-from-top-4">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -190,7 +194,7 @@ export default function OrderDetailPage() {
       <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs hover:bg-slate-50 transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
             href={`/${tenantSlug}/orders`}
             title="Siparişlere Dön"
           >
@@ -198,13 +202,13 @@ export default function OrderDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 font-bold text-base shadow-xs text-blue-600">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 font-bold text-base text-blue-600 shadow-xs">
               <ShoppingCart className="h-6 w-6" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-extrabold text-xl text-slate-900 tracking-tight sm:text-2xl">
+                <h1 className="font-extrabold text-slate-900 text-xl tracking-tight sm:text-2xl">
                   {order.orderNumber}
                 </h1>
                 <span
@@ -222,10 +226,14 @@ export default function OrderDetailPage() {
                   {getPaymentLabel(order.paymentStatus)}
                 </span>
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-xs text-slate-500">
-                <span className="font-bold text-slate-800">{order.customerName}</span>
+              <div className="mt-0.5 flex items-center gap-2 text-slate-500 text-xs">
+                <span className="font-bold text-slate-800">
+                  {order.customerName}
+                </span>
                 <span>•</span>
-                <span>{new Date(order.orderDate).toLocaleDateString("tr-TR")}</span>
+                <span>
+                  {new Date(order.orderDate).toLocaleDateString("tr-TR")}
+                </span>
                 {order.invoiceNumber && (
                   <>
                     <span>•</span>
@@ -240,7 +248,7 @@ export default function OrderDetailPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-colors hover:bg-slate-50"
             onClick={handlePrint}
             title="Siparişi Yazdır / PDF"
             type="button"
@@ -251,7 +259,7 @@ export default function OrderDetailPage() {
 
           <PermissionGate permission="Orders.PaymentRecord">
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 font-semibold text-emerald-800 text-xs shadow-2xs hover:bg-emerald-100 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 font-semibold text-emerald-800 text-xs shadow-2xs transition-colors hover:bg-emerald-100"
               onClick={() => setIsPaymentModalOpen(true)}
               type="button"
             >
@@ -262,7 +270,7 @@ export default function OrderDetailPage() {
 
           <PermissionGate permission="Orders.StatusChange">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsStatusModalOpen(true)}
               type="button"
             >
@@ -278,70 +286,103 @@ export default function OrderDetailPage() {
         {/* Left Column: Customer, Delivery, & Financial Summary (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Financial Summary */}
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-3 text-xs">
-            <h3 className="font-bold text-slate-900 text-xs">Sipariş Tutarı & Ödeme Özeti</h3>
+          <div className="space-y-3 rounded-3xl border border-slate-200/80 bg-white p-5 text-xs shadow-xs">
+            <h3 className="font-bold text-slate-900 text-xs">
+              Sipariş Tutarı & Ödeme Özeti
+            </h3>
 
             <div className="space-y-2 border-slate-100 border-b pb-3">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="text-slate-500">Ara Toplam:</span>
                 <span className="font-semibold text-slate-800">
-                  ₺{order.subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  ₺
+                  {order.subtotal.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </span>
               </div>
 
               {order.discountAmount > 0 && (
-                <div className="flex justify-between items-center text-rose-600 font-medium">
+                <div className="flex items-center justify-between font-medium text-rose-600">
                   <span>Toplam İndirim / İskonto:</span>
-                  <span>-₺{order.discountAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                  <span>
+                    -₺
+                    {order.discountAmount.toLocaleString("tr-TR", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
                 </div>
               )}
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="text-slate-500">Hesaplanan KDV:</span>
                 <span className="font-semibold text-slate-800">
-                  ₺{order.taxAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  ₺
+                  {order.taxAmount.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </span>
               </div>
 
               {order.shippingFee > 0 && (
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <span className="text-slate-500">Kargo & Sevkiyat:</span>
                   <span className="font-semibold text-slate-800">
-                    ₺{order.shippingFee.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                    ₺
+                    {order.shippingFee.toLocaleString("tr-TR", {
+                      minimumFractionDigits: 2,
+                    })}
                   </span>
                 </div>
               )}
             </div>
 
             {/* Grand Total */}
-            <div className="flex justify-between items-center pt-1">
-              <span className="font-bold text-slate-900 text-sm">GENEL TOPLAM:</span>
-              <span className="font-extrabold text-blue-600 text-base">
-                ₺{order.totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+            <div className="flex items-center justify-between pt-1">
+              <span className="font-bold text-slate-900 text-sm">
+                GENEL TOPLAM:
+              </span>
+              <span className="font-extrabold text-base text-blue-600">
+                ₺
+                {order.totalAmount.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
               </span>
             </div>
 
             {/* Paid & Remaining */}
             <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-50 p-3 pt-2">
               <div>
-                <span className="text-[10px] text-slate-400 font-medium uppercase">Tahsil Edilen</span>
+                <span className="font-medium text-[10px] text-slate-400 uppercase">
+                  Tahsil Edilen
+                </span>
                 <div className="font-bold text-emerald-600 text-sm">
-                  ₺{order.paidAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  ₺
+                  {order.paidAmount.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </div>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 font-medium uppercase">Kalan Bakiye</span>
+                <span className="font-medium text-[10px] text-slate-400 uppercase">
+                  Kalan Bakiye
+                </span>
                 <div
                   className={`font-bold text-sm ${
-                    order.remainingAmount > 0 ? "text-rose-600" : "text-slate-700"
+                    order.remainingAmount > 0
+                      ? "text-rose-600"
+                      : "text-slate-700"
                   }`}
                 >
-                  ₺{order.remainingAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  ₺
+                  {order.remainingAmount.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-between text-[11px] text-slate-500 pt-1">
+            <div className="flex justify-between pt-1 text-[11px] text-slate-500">
               <span>Ödeme Yöntemi:</span>
               <span className="font-semibold text-slate-800">
                 {getPaymentMethodLabel(order.paymentMethod)}
@@ -350,19 +391,27 @@ export default function OrderDetailPage() {
           </div>
 
           {/* Card: Customer & Delivery Info */}
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-3 text-xs">
-            <h3 className="font-bold text-slate-900">Müşteri & Sevkiyat Bilgileri</h3>
+          <div className="space-y-3 rounded-3xl border border-slate-200/80 bg-white p-5 text-xs shadow-xs">
+            <h3 className="font-bold text-slate-900">
+              Müşteri & Sevkiyat Bilgileri
+            </h3>
 
             <div className="space-y-2.5 text-slate-600">
               <div>
-                <span className="text-slate-400 block text-[10px]">Müşteri / Firma</span>
-                <span className="font-bold text-slate-900 text-sm">{order.customerName}</span>
+                <span className="block text-[10px] text-slate-400">
+                  Müşteri / Firma
+                </span>
+                <span className="font-bold text-slate-900 text-sm">
+                  {order.customerName}
+                </span>
               </div>
 
               {order.shippingAddress && (
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Teslimat Adresi</span>
-                  <p className="text-slate-800 leading-relaxed bg-slate-50 p-2.5 rounded-xl mt-0.5">
+                  <span className="block text-[10px] text-slate-400">
+                    Teslimat Adresi
+                  </span>
+                  <p className="mt-0.5 rounded-xl bg-slate-50 p-2.5 text-slate-800 leading-relaxed">
                     {order.shippingAddress}
                   </p>
                 </div>
@@ -370,24 +419,28 @@ export default function OrderDetailPage() {
 
               {order.billingAddress && (
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Fatura Adresi</span>
-                  <p className="text-slate-800 leading-relaxed bg-slate-50 p-2.5 rounded-xl mt-0.5">
+                  <span className="block text-[10px] text-slate-400">
+                    Fatura Adresi
+                  </span>
+                  <p className="mt-0.5 rounded-xl bg-slate-50 p-2.5 text-slate-800 leading-relaxed">
                     {order.billingAddress}
                   </p>
                 </div>
               )}
 
               {(order.carrier || order.trackingNumber) && (
-                <div className="rounded-2xl border border-cyan-100 bg-cyan-50/50 p-3 space-y-1">
+                <div className="space-y-1 rounded-2xl border border-cyan-100 bg-cyan-50/50 p-3">
                   <div className="flex items-center gap-1.5 font-bold text-cyan-900">
                     <Truck className="h-3.5 w-3.5 text-cyan-600" />
                     <span>Kargo & Takip</span>
                   </div>
                   {order.carrier && (
-                    <div className="text-[11px] text-cyan-800">Taşıyıcı: {order.carrier}</div>
+                    <div className="text-[11px] text-cyan-800">
+                      Taşıyıcı: {order.carrier}
+                    </div>
                   )}
                   {order.trackingNumber && (
-                    <div className="text-[11px] font-mono font-bold text-cyan-950">
+                    <div className="font-bold font-mono text-[11px] text-cyan-950">
                       Takip No: {order.trackingNumber}
                     </div>
                   )}
@@ -396,7 +449,9 @@ export default function OrderDetailPage() {
 
               {order.notes && (
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Sipariş Notu</span>
+                  <span className="block text-[10px] text-slate-400">
+                    Sipariş Notu
+                  </span>
                   <p className="text-slate-700 italic">{order.notes}</p>
                 </div>
               )}
@@ -445,49 +500,65 @@ export default function OrderDetailPage() {
 
           {/* TAB 1: ORDER ITEMS TABLE */}
           {activeTab === "items" && (
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
-              <h4 className="font-bold text-xs text-slate-900">Sipariş Edilen Ürün ve Hizmetler</h4>
+            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+              <h4 className="font-bold text-slate-900 text-xs">
+                Sipariş Edilen Ürün ve Hizmetler
+              </h4>
 
               <div className="overflow-x-auto rounded-2xl border border-slate-200">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-slate-200 border-b bg-slate-50 text-[11px] text-slate-500 font-medium">
+                  <thead className="border-slate-200 border-b bg-slate-50 font-medium text-[11px] text-slate-500">
                     <tr>
-                      <th className="py-3 px-3.5">Kalem / Ürün</th>
-                      <th className="py-3 px-3 text-center">Miktar</th>
-                      <th className="py-3 px-3 text-right">Birim Fiyat</th>
-                      <th className="py-3 px-3 text-center">KDV</th>
-                      <th className="py-3 px-3 text-center">İndirim</th>
-                      <th className="py-3 pr-4 pl-3 text-right">Toplam Tutar</th>
+                      <th className="px-3.5 py-3">Kalem / Ürün</th>
+                      <th className="px-3 py-3 text-center">Miktar</th>
+                      <th className="px-3 py-3 text-right">Birim Fiyat</th>
+                      <th className="px-3 py-3 text-center">KDV</th>
+                      <th className="px-3 py-3 text-center">İndirim</th>
+                      <th className="py-3 pr-4 pl-3 text-right">
+                        Toplam Tutar
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {order.items.map((item) => (
                       <tr className="hover:bg-slate-50/60" key={item.id}>
-                        <td className="py-3.5 px-3.5">
-                          <div className="font-bold text-slate-900">{item.productName}</div>
+                        <td className="px-3.5 py-3.5">
+                          <div className="font-bold text-slate-900">
+                            {item.productName}
+                          </div>
                           {item.sku && (
-                            <div className="text-[10px] text-slate-400 font-mono">SKU: {item.sku}</div>
+                            <div className="font-mono text-[10px] text-slate-400">
+                              SKU: {item.sku}
+                            </div>
                           )}
                           {item.optionsOrNotes && (
-                            <div className="text-[10px] text-slate-500 italic mt-0.5">
+                            <div className="mt-0.5 text-[10px] text-slate-500 italic">
                               {item.optionsOrNotes}
                             </div>
                           )}
                         </td>
-                        <td className="py-3.5 px-3 text-center font-extrabold text-slate-900">
+                        <td className="px-3 py-3.5 text-center font-extrabold text-slate-900">
                           {item.quantity} {item.unit}
                         </td>
-                        <td className="py-3.5 px-3 text-right font-medium text-slate-700">
-                          ₺{item.unitPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                        <td className="px-3 py-3.5 text-right font-medium text-slate-700">
+                          ₺
+                          {item.unitPrice.toLocaleString("tr-TR", {
+                            minimumFractionDigits: 2,
+                          })}
                         </td>
-                        <td className="py-3.5 px-3 text-center text-slate-600">
+                        <td className="px-3 py-3.5 text-center text-slate-600">
                           %{item.taxRate}
                         </td>
-                        <td className="py-3.5 px-3 text-center text-rose-600 font-medium">
-                          {item.discountRate > 0 ? `-%${item.discountRate}` : "—"}
+                        <td className="px-3 py-3.5 text-center font-medium text-rose-600">
+                          {item.discountRate > 0
+                            ? `-%${item.discountRate}`
+                            : "—"}
                         </td>
                         <td className="py-3.5 pr-4 pl-3 text-right font-extrabold text-slate-900">
-                          ₺{item.totalPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                          ₺
+                          {item.totalPrice.toLocaleString("tr-TR", {
+                            minimumFractionDigits: 2,
+                          })}
                         </td>
                       </tr>
                     ))}
@@ -499,12 +570,14 @@ export default function OrderDetailPage() {
 
           {/* TAB 2: PAYMENTS LIST */}
           {activeTab === "payments" && (
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
+            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-xs text-slate-900">Tahsilat & Ödeme Kayıtları</h4>
+                <h4 className="font-bold text-slate-900 text-xs">
+                  Tahsilat & Ödeme Kayıtları
+                </h4>
                 <PermissionGate permission="Orders.PaymentRecord">
                   <button
-                    className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
+                    className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
                     onClick={() => setIsPaymentModalOpen(true)}
                     type="button"
                   >
@@ -515,7 +588,7 @@ export default function OrderDetailPage() {
               </div>
 
               {order.payments.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center text-xs text-slate-400">
+                <div className="rounded-2xl border border-slate-200 border-dashed p-8 text-center text-slate-400 text-xs">
                   Bu sipariş için henüz tahsilat kaydedilmedi.
                 </div>
               ) : (
@@ -534,7 +607,9 @@ export default function OrderDetailPage() {
                             {getPaymentMethodLabel(p.paymentMethod)}
                           </div>
                           <div className="text-[10px] text-slate-400">
-                            {p.referenceNumber ? `Dekont / Ref: ${p.referenceNumber}` : "Referans girilmedi"}
+                            {p.referenceNumber
+                              ? `Dekont / Ref: ${p.referenceNumber}`
+                              : "Referans girilmedi"}
                             {p.notes && ` • ${p.notes}`}
                           </div>
                         </div>
@@ -542,7 +617,10 @@ export default function OrderDetailPage() {
 
                       <div className="text-right">
                         <div className="font-extrabold text-emerald-600 text-sm">
-                          ₺{p.amount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                          ₺
+                          {p.amount.toLocaleString("tr-TR", {
+                            minimumFractionDigits: 2,
+                          })}
                         </div>
                         <div className="text-[10px] text-slate-400">
                           {new Date(p.paymentDate).toLocaleDateString("tr-TR")}
@@ -557,17 +635,22 @@ export default function OrderDetailPage() {
 
           {/* TAB 3: TIMELINE & ACTIVITIES */}
           {activeTab === "timeline" && (
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
-              <h4 className="font-bold text-xs text-slate-900">Sipariş Yaşam Döngüsü & Etkinlik Defteri</h4>
+            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+              <h4 className="font-bold text-slate-900 text-xs">
+                Sipariş Yaşam Döngüsü & Etkinlik Defteri
+              </h4>
 
               {order.activities.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center text-xs text-slate-400">
+                <div className="rounded-2xl border border-slate-200 border-dashed p-8 text-center text-slate-400 text-xs">
                   Etkinlik kaydı bulunmuyor.
                 </div>
               ) : (
                 <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
                   {order.activities.map((act) => (
-                    <div className="relative flex items-start gap-3 text-xs" key={act.id}>
+                    <div
+                      className="relative flex items-start gap-3 text-xs"
+                      key={act.id}
+                    >
                       <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-slate-100">
                         {act.activityType === "StatusChange" ? (
                           <RotateCcw className="h-3.5 w-3.5 text-blue-600" />
@@ -580,13 +663,15 @@ export default function OrderDetailPage() {
 
                       <div className="flex-1 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900">{act.title}</span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="font-bold text-slate-900">
+                            {act.title}
+                          </span>
+                          <span className="font-medium text-[10px] text-slate-400">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
                         {act.description && (
-                          <p className="mt-1 text-slate-600 leading-relaxed bg-slate-50 p-2 rounded-xl text-[11px]">
+                          <p className="mt-1 rounded-xl bg-slate-50 p-2 text-[11px] text-slate-600 leading-relaxed">
                             {act.description}
                           </p>
                         )}
@@ -653,7 +738,9 @@ function ChangeStatusModal({
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -677,20 +764,28 @@ function ChangeStatusModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl text-xs">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-4 mb-4">
-          <h3 className="font-bold text-base text-slate-900">Sipariş Durumunu Değiştir</h3>
-          <button className="text-slate-400 hover:text-slate-700" onClick={onClose} type="button">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
+          <h3 className="font-bold text-base text-slate-900">
+            Sipariş Durumunu Değiştir
+          </h3>
+          <button
+            className="text-slate-400 hover:text-slate-700"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Yeni Aşama / Durum *</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Yeni Aşama / Durum *
+            </label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 font-bold focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-bold text-slate-900 focus:outline-none"
               onChange={(e) => setNewStatus(e.target.value)}
               value={newStatus}
             >
@@ -706,7 +801,9 @@ function ChangeStatusModal({
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Açıklama / Durum Notu</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Açıklama / Durum Notu
+            </label>
             <textarea
               className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-900 focus:bg-white focus:outline-none"
               onChange={(e) => setNotes(e.target.value)}
@@ -716,7 +813,7 @@ function ChangeStatusModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4 mt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
               className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
               onClick={onClose}
@@ -725,7 +822,7 @@ function ChangeStatusModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -751,17 +848,25 @@ function AddPaymentModal({
   tenantId: string;
   order: OrderDetailDto;
 }) {
-  const [amount, setAmount] = useState(order.remainingAmount > 0 ? order.remainingAmount : 0);
-  const [paymentMethod, setPaymentMethod] = useState(order.paymentMethod || "BankTransfer");
+  const [amount, setAmount] = useState(
+    order.remainingAmount > 0 ? order.remainingAmount : 0
+  );
+  const [paymentMethod, setPaymentMethod] = useState(
+    order.paymentMethod || "BankTransfer"
+  );
   const [referenceNumber, setReferenceNumber] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (amount <= 0) return;
+    if (amount <= 0) {
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -769,9 +874,9 @@ function AddPaymentModal({
         order.id,
         {
           amount: Number(amount),
+          notes: notes.trim() || undefined,
           paymentMethod,
           referenceNumber: referenceNumber.trim() || undefined,
-          notes: notes.trim() || undefined,
         },
         tenantId
       );
@@ -785,33 +890,50 @@ function AddPaymentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl text-xs">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-4 mb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">Tahsilat Kaydet</h3>
-            <p className="text-slate-500 text-xs truncate max-w-xs">{order.orderNumber} - {order.customerName}</p>
+            <h3 className="font-bold text-base text-slate-900">
+              Tahsilat Kaydet
+            </h3>
+            <p className="max-w-xs truncate text-slate-500 text-xs">
+              {order.orderNumber} - {order.customerName}
+            </p>
           </div>
-          <button className="text-slate-400 hover:text-slate-700" onClick={onClose} type="button">
+          <button
+            className="text-slate-400 hover:text-slate-700"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Balance Strip */}
-        <div className="rounded-2xl bg-emerald-50/70 p-3 mb-4 flex items-center justify-between">
-          <span className="font-semibold text-emerald-900">Kalan Açık Bakiye:</span>
-          <span className="font-extrabold text-sm text-emerald-700">
-            ₺{order.remainingAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+        <div className="mb-4 flex items-center justify-between rounded-2xl bg-emerald-50/70 p-3">
+          <span className="font-semibold text-emerald-900">
+            Kalan Açık Bakiye:
+          </span>
+          <span className="font-extrabold text-emerald-700 text-sm">
+            ₺
+            {order.remainingAmount.toLocaleString("tr-TR", {
+              minimumFractionDigits: 2,
+            })}
           </span>
         </div>
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Tahsil Edilen Tutar (₺) *</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Tahsil Edilen Tutar (₺) *
+            </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-900 font-extrabold text-sm focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 font-extrabold text-slate-900 text-sm focus:bg-white focus:outline-none"
               min="0.01"
-              onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
+              onChange={(e) =>
+                setAmount(Number.parseFloat(e.target.value) || 0)
+              }
               required
               step="0.01"
               type="number"
@@ -820,7 +942,9 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Ödeme Yöntemi</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Ödeme Yöntemi
+            </label>
             <select
               className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
               onChange={(e) => setPaymentMethod(e.target.value)}
@@ -835,7 +959,9 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Dekont / İşlem Referans No</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Dekont / İşlem Referans No
+            </label>
             <input
               className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
               onChange={(e) => setReferenceNumber(e.target.value)}
@@ -846,7 +972,9 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Tahsilat Notu</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Tahsilat Notu
+            </label>
             <input
               className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
               onChange={(e) => setNotes(e.target.value)}
@@ -856,7 +984,7 @@ function AddPaymentModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4 mt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
               className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
               onClick={onClose}
@@ -865,7 +993,7 @@ function AddPaymentModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting || amount <= 0}
               type="submit"
             >

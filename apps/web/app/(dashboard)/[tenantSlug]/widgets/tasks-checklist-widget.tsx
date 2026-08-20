@@ -7,44 +7,44 @@ import type { TaskItem } from "./dashboard-types";
 export function TasksChecklistWidget() {
   const [tasks, setTasks] = useState<TaskItem[]>([
     {
-      id: "t-1",
-      title: "Acme Holding teklif revizyonunu gönder",
-      dueDate: "Bugün 14:00",
-      priority: "urgent",
-      completed: false,
       category: "Teklif",
-    },
-    {
-      id: "t-2",
-      title: "TechNova CTO'su ile demo toplantısı yap",
-      dueDate: "Bugün 16:30",
-      priority: "high",
       completed: false,
-      category: "Görüşme",
-    },
-    {
-      id: "t-3",
-      title: "Haftalık satış raporunu yönetim kuruluna ilet",
-      dueDate: "Yarın 10:00",
-      priority: "medium",
-      completed: true,
-      category: "Rapor",
-    },
-    {
-      id: "t-4",
-      title: "Vortex Lojistik sözleşme taslağını hukuk birimine gönder",
-      dueDate: "22 Ağu",
-      priority: "high",
-      completed: false,
-      category: "Hukuk",
-    },
-    {
-      id: "t-5",
-      title: "Yeni gelen 12 web lead'ini satış temsilcilerine ata",
-      dueDate: "Bugün 18:00",
+      dueDate: "Bugün 14:00",
+      id: "t-1",
       priority: "urgent",
+      title: "Acme Holding teklif revizyonunu gönder",
+    },
+    {
+      category: "Görüşme",
       completed: false,
+      dueDate: "Bugün 16:30",
+      id: "t-2",
+      priority: "high",
+      title: "TechNova CTO'su ile demo toplantısı yap",
+    },
+    {
+      category: "Rapor",
+      completed: true,
+      dueDate: "Yarın 10:00",
+      id: "t-3",
+      priority: "medium",
+      title: "Haftalık satış raporunu yönetim kuruluna ilet",
+    },
+    {
+      category: "Hukuk",
+      completed: false,
+      dueDate: "22 Ağu",
+      id: "t-4",
+      priority: "high",
+      title: "Vortex Lojistik sözleşme taslağını hukuk birimine gönder",
+    },
+    {
       category: "Lead",
+      completed: false,
+      dueDate: "Bugün 18:00",
+      id: "t-5",
+      priority: "urgent",
+      title: "Yeni gelen 12 web lead'ini satış temsilcilerine ata",
     },
   ]);
 
@@ -58,15 +58,17 @@ export function TasksChecklistWidget() {
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTaskTitle.trim()) return;
+    if (!newTaskTitle.trim()) {
+      return;
+    }
 
     const newTask: TaskItem = {
-      id: `t-${Date.now()}`,
-      title: newTaskTitle.trim(),
-      dueDate: "Bugün",
-      priority: "medium",
-      completed: false,
       category: "Genel",
+      completed: false,
+      dueDate: "Bugün",
+      id: `t-${Date.now()}`,
+      priority: "medium",
+      title: newTaskTitle.trim(),
     };
 
     setTasks((prev) => [newTask, ...prev]);
@@ -111,9 +113,12 @@ export function TasksChecklistWidget() {
               <CheckSquare className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Görevler & Checklist</span>
+              <span className="font-bold text-slate-900 text-sm">
+                Görevler & Checklist
+              </span>
               <div className="text-[11px] text-slate-500">
-                {tasks.length} görevden {completedCount} tanesi tamamlandı (%{progressPct})
+                {tasks.length} görevden {completedCount} tanesi tamamlandı (%
+                {progressPct})
               </div>
             </div>
           </div>
@@ -166,12 +171,14 @@ export function TasksChecklistWidget() {
                   onClick={() => toggleTask(task.id)}
                   type="button"
                 >
-                  {task.completed && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+                  {task.completed && (
+                    <Check className="h-3.5 w-3.5 stroke-[3]" />
+                  )}
                 </button>
 
                 <div className="space-y-0.5">
                   <p
-                    className={`font-medium text-xs text-slate-800 ${
+                    className={`font-medium text-slate-800 text-xs ${
                       task.completed ? "text-slate-400 line-through" : ""
                     }`}
                   >
@@ -183,7 +190,7 @@ export function TasksChecklistWidget() {
                       {task.dueDate}
                     </span>
                     {task.category && (
-                      <span className="rounded bg-slate-100 px-1.5 py-0.2 text-slate-600 font-medium">
+                      <span className="rounded bg-slate-100 px-1.5 py-0.2 font-medium text-slate-600">
                         {task.category}
                       </span>
                     )}
@@ -203,8 +210,11 @@ export function TasksChecklistWidget() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 text-xs text-slate-500">
-        <span>Kalan acil görevler: {tasks.filter((t) => !t.completed && t.priority === "urgent").length}</span>
+      <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 text-slate-500 text-xs">
+        <span>
+          Kalan acil görevler:{" "}
+          {tasks.filter((t) => !t.completed && t.priority === "urgent").length}
+        </span>
         <button
           className="font-semibold text-emerald-600 hover:text-emerald-700"
           onClick={() => setTasks((prev) => prev.filter((t) => !t.completed))}

@@ -1,61 +1,61 @@
-"use client"
+"use client";
 
-import { Eye, EyeOff, Loader2 } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import type React from "react"
-import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
+      });
 
       if (authError) {
-        setError(authError.message)
-        setIsLoading(false)
-        return
+        setError(authError.message);
+        setIsLoading(false);
+        return;
       }
 
-      router.push("/")
-      router.refresh()
+      router.push("/");
+      router.refresh();
     } catch {
-      setError("An unexpected error occurred. Please try again.")
-      setIsLoading(false)
+      setError("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       await supabase.auth.signInWithOAuth({
         options: {
           redirectTo: `${window.location.origin}/`,
         },
         provider: "google",
-      })
+      });
     } catch {
-      setError("Failed to initialize Google login.")
+      setError("Failed to initialize Google login.");
     }
-  }
+  };
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070709] p-3 sm:p-6">
@@ -85,7 +85,7 @@ export default function LoginPage() {
 
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
-            <span className="text-[11px] font-bold tracking-[0.25em] text-white/90 uppercase">
+            <span className="font-bold text-[11px] text-white/90 uppercase tracking-[0.25em]">
               A WISE QUOTE
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />
@@ -93,14 +93,14 @@ export default function LoginPage() {
 
           {/* Bottom Quote & Typography */}
           <div className="relative z-10 max-w-sm space-y-4">
-            <h2 className="font-serif text-4xl leading-[1.08] font-normal tracking-tight text-white sm:text-5xl">
+            <h2 className="font-normal font-serif text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl">
               Get
               <br />
               Everything
               <br />
               You Want
             </h2>
-            <p className="text-xs leading-relaxed font-light text-white/80 sm:text-sm">
+            <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
               You can get everything you want if you work hard, trust the
               process, and stick to the plan.
             </p>
@@ -123,7 +123,7 @@ export default function LoginPage() {
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="text-base font-semibold tracking-tight text-slate-900">
+            <span className="font-semibold text-base text-slate-900 tracking-tight">
               Cogie
             </span>
           </div>
@@ -131,27 +131,27 @@ export default function LoginPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-6">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-serif text-3xl font-normal tracking-tight text-slate-900 sm:text-4xl">
+              <h1 className="font-normal font-serif text-3xl text-slate-900 tracking-tight sm:text-4xl">
                 Welcome Back
               </h1>
-              <p className="text-xs font-normal text-slate-500">
+              <p className="font-normal text-slate-500 text-xs">
                 Enter your email and password to access your account
               </p>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-xs text-red-600">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-red-600 text-xs">
                 {error}
               </div>
             )}
 
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
+                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Email
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -161,12 +161,12 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-slate-800">
+                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-xs text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     required
@@ -188,7 +188,7 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between pt-1 text-xs">
-                <label className="flex cursor-pointer items-center gap-2 text-slate-600 select-none">
+                <label className="flex cursor-pointer select-none items-center gap-2 text-slate-600">
                   <input
                     checked={rememberMe}
                     className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
@@ -201,10 +201,10 @@ export default function LoginPage() {
                   className="font-normal text-slate-700 hover:text-black"
                   href="#forgot"
                   onClick={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     alert(
                       "Password reset instructions will be sent to your email."
-                    )
+                    );
                   }}
                 >
                   Forgot Password
@@ -213,7 +213,7 @@ export default function LoginPage() {
 
               <div className="space-y-2.5 pt-2">
                 <button
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 font-medium text-white text-xs shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
                   disabled={isLoading}
                   type="submit"
                 >
@@ -222,7 +222,7 @@ export default function LoginPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 text-xs font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 font-medium text-slate-700 text-xs shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
                   onClick={handleGoogleLogin}
                   type="button"
                 >
@@ -251,7 +251,7 @@ export default function LoginPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-xs text-slate-500">
+          <div className="mt-8 text-center text-slate-500 text-xs">
             Don&apos;t have an account?{" "}
             <Link
               className="font-semibold text-slate-900 hover:underline"
@@ -263,5 +263,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

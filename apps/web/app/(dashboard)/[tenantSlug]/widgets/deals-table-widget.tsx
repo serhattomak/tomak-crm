@@ -6,56 +6,56 @@ import type { DealItem } from "./dashboard-types";
 export function DealsTableWidget() {
   const deals: DealItem[] = [
     {
-      id: "deal-1",
-      title: "Kurumsal ERP Entegrasyonu",
-      company: "Acme Holding A.Ş.",
-      value: 125000,
-      stage: "Negotiation",
       closingDate: "24 Ağu 2026",
-      probability: 85,
+      company: "Acme Holding A.Ş.",
+      id: "deal-1",
       owner: {
-        name: "Ahmet Yılmaz",
         initials: "AY",
+        name: "Ahmet Yılmaz",
       },
+      probability: 85,
+      stage: "Negotiation",
+      title: "Kurumsal ERP Entegrasyonu",
+      value: 125_000,
     },
     {
-      id: "deal-2",
-      title: "Bulut Altyapı & CRM Lisansı",
-      company: "TechNova Yazılım",
-      value: 78000,
-      stage: "Proposal",
       closingDate: "28 Ağu 2026",
-      probability: 60,
+      company: "TechNova Yazılım",
+      id: "deal-2",
       owner: {
-        name: "Selin Kaya",
         initials: "SK",
+        name: "Selin Kaya",
       },
+      probability: 60,
+      stage: "Proposal",
+      title: "Bulut Altyapı & CRM Lisansı",
+      value: 78_000,
     },
     {
-      id: "deal-3",
-      title: "Siber Güvenlik & Denetim Paketi",
-      company: "Vortex Lojistik",
-      value: 94500,
-      stage: "Won",
       closingDate: "18 Ağu 2026",
-      probability: 100,
+      company: "Vortex Lojistik",
+      id: "deal-3",
       owner: {
-        name: "Mehmet Demir",
         initials: "MD",
+        name: "Mehmet Demir",
       },
+      probability: 100,
+      stage: "Won",
+      title: "Siber Güvenlik & Denetim Paketi",
+      value: 94_500,
     },
     {
-      id: "deal-4",
-      title: "Özel API & Çağrı Merkezi Modülü",
-      company: "MegaFinans Danışmanlık",
-      value: 52000,
-      stage: "Discovery",
       closingDate: "05 Eyl 2026",
-      probability: 35,
+      company: "MegaFinans Danışmanlık",
+      id: "deal-4",
       owner: {
-        name: "Canan Öz",
         initials: "CÖ",
+        name: "Canan Öz",
       },
+      probability: 35,
+      stage: "Discovery",
+      title: "Özel API & Çağrı Merkezi Modülü",
+      value: 52_000,
     },
   ];
 
@@ -98,8 +98,12 @@ export function DealsTableWidget() {
               <Building2 className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Sıcak Fırsatlar (Top Deals)</span>
-              <div className="text-[11px] text-slate-500">En yüksek potansiyelli anlaşmalar</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Sıcak Fırsatlar (Top Deals)
+              </span>
+              <div className="text-[11px] text-slate-500">
+                En yüksek potansiyelli anlaşmalar
+              </div>
             </div>
           </div>
 
@@ -121,14 +125,19 @@ export function DealsTableWidget() {
                 <th className="pb-2.5 font-medium">Tutar</th>
                 <th className="pb-2.5 font-medium">Aşama</th>
                 <th className="pb-2.5 font-medium">Olasılık</th>
-                <th className="pb-2.5 font-medium text-right">Temsilci</th>
+                <th className="pb-2.5 text-right font-medium">Temsilci</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {deals.map((deal) => (
-                <tr className="group transition-colors hover:bg-slate-50/80" key={deal.id}>
+                <tr
+                  className="group transition-colors hover:bg-slate-50/80"
+                  key={deal.id}
+                >
                   <td className="py-3 pr-3">
-                    <div className="font-semibold text-slate-900">{deal.title}</div>
+                    <div className="font-semibold text-slate-900">
+                      {deal.title}
+                    </div>
                     <div className="flex items-center gap-1 text-[11px] text-slate-500">
                       <Building2 className="h-3 w-3 text-slate-400" />
                       <span>{deal.company}</span>
@@ -139,7 +148,9 @@ export function DealsTableWidget() {
                     <span className="font-bold text-slate-900">
                       ₺{deal.value.toLocaleString("tr-TR")}
                     </span>
-                    <div className="text-[10px] text-slate-400">{deal.closingDate}</div>
+                    <div className="text-[10px] text-slate-400">
+                      {deal.closingDate}
+                    </div>
                   </td>
 
                   <td className="py-3 pr-3">

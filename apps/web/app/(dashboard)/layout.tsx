@@ -1,5 +1,6 @@
-"use client"
+"use client";
 
+import { Toaster } from "@workspace/ui/components/sonner";
 import {
   Banknote,
   BarChart3,
@@ -27,149 +28,155 @@ import {
   Users,
   Users2,
   Zap,
-} from "lucide-react"
-import Link from "next/link"
+} from "lucide-react";
+import Link from "next/link";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
-} from "next/navigation"
-import React, { Suspense, useEffect, useState } from "react"
-import { CommandPalette } from "@/components/command-palette"
-import { PermissionGate } from "@/components/permission-gate"
-import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal"
-import { TenantSwitcher } from "@/components/tenant-switcher"
-import { PermissionProvider } from "@/lib/permissions/permission-context"
-import { createClient } from "@/lib/supabase/client"
-import { Toaster } from "@workspace/ui/components/sonner"
+} from "next/navigation";
+import type React from "react";
+import { Suspense, useEffect, useState } from "react";
+import { CommandPalette } from "@/components/command-palette";
+import { PermissionGate } from "@/components/permission-gate";
+import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
+import { TenantSwitcher } from "@/components/tenant-switcher";
+import { PermissionProvider } from "@/lib/permissions/permission-context";
+import { createClient } from "@/lib/supabase/client";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const router = useRouter()
-  const params = useParams()
-  const tenantSlug = (params?.tenantSlug as string) || ""
+  const router = useRouter();
+  const params = useParams();
+  const tenantSlug = (params?.tenantSlug as string) || "";
 
-  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
-  const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false)
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false);
 
   // Global Keyboard Navigation & Shortcuts Listener
   useEffect(() => {
-    let keyBuffer: string[] = []
-    let bufferTimeout: NodeJS.Timeout | null = null
+    let keyBuffer: string[] = [];
+    let bufferTimeout: NodeJS.Timeout | null = null;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // 1. Command Palette: Cmd+K or Ctrl+K
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault()
-        setIsCommandPaletteOpen((prev) => !prev)
-        return
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+        return;
       }
 
       // Check if user is actively typing in an editable field
-      const target = e.target as HTMLElement
+      const target = e.target as HTMLElement;
       const isInput =
         target.tagName === "INPUT" ||
         target.tagName === "TEXTAREA" ||
         target.tagName === "SELECT" ||
-        target.isContentEditable
+        target.isContentEditable;
 
-      if (isInput) return
+      if (isInput) {
+        return;
+      }
 
       // 2. Slash (/) to focus Command Palette
       if (e.key === "/" && !isCommandPaletteOpen && !isShortcutsHelpOpen) {
-        e.preventDefault()
-        setIsCommandPaletteOpen(true)
-        return
+        e.preventDefault();
+        setIsCommandPaletteOpen(true);
+        return;
       }
 
       // 3. Question mark (?) to toggle Shortcuts Help Modal
       if (e.key === "?" && !isCommandPaletteOpen) {
-        e.preventDefault()
-        setIsShortcutsHelpOpen((prev) => !prev)
-        return
+        e.preventDefault();
+        setIsShortcutsHelpOpen((prev) => !prev);
+        return;
       }
 
       // 4. Sequence Shortcuts (e.g. G then D, G then M, N then M)
-      const key = e.key.toLowerCase()
+      const key = e.key.toLowerCase();
       if (key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        keyBuffer.push(key)
+        keyBuffer.push(key);
 
-        if (bufferTimeout) clearTimeout(bufferTimeout)
+        if (bufferTimeout) {
+          clearTimeout(bufferTimeout);
+        }
         bufferTimeout = setTimeout(() => {
-          keyBuffer = []
-        }, 800)
+          keyBuffer = [];
+        }, 800);
 
-        const seq = keyBuffer.join("")
+        const seq = keyBuffer.join("");
 
         // Navigation Sequence (g + key)
         if (seq === "gd") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}`);
+          keyBuffer = [];
         } else if (seq === "gm") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/customers`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/customers`);
+          keyBuffer = [];
         } else if (seq === "gs") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/orders`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/orders`);
+          keyBuffer = [];
         } else if (seq === "gu") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/products`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/products`);
+          keyBuffer = [];
         } else if (seq === "gi") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/leaves`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/leaves`);
+          keyBuffer = [];
         } else if (seq === "gb") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/payroll`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/payroll`);
+          keyBuffer = [];
         } else if (seq === "gv") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/attendance`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/attendance`);
+          keyBuffer = [];
         } else if (seq === "go") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/organization`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/organization`);
+          keyBuffer = [];
         } else if (seq === "ga") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/settings`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/settings`);
+          keyBuffer = [];
         }
         // Creation Sequence (n + key)
         else if (seq === "nm") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/customers?create=true`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/customers?create=true`);
+          keyBuffer = [];
         } else if (seq === "ns") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/orders?create=true`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/orders?create=true`);
+          keyBuffer = [];
         } else if (seq === "ni") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/leaves?create=true`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/leaves?create=true`);
+          keyBuffer = [];
         } else if (seq === "nu") {
-          e.preventDefault()
-          router.push(`/${tenantSlug}/products?create=true`)
-          keyBuffer = []
+          e.preventDefault();
+          router.push(`/${tenantSlug}/products?create=true`);
+          keyBuffer = [];
         }
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleKeyDown)
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-      if (bufferTimeout) clearTimeout(bufferTimeout)
-    }
-  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen])
+      window.removeEventListener("keydown", handleKeyDown);
+      if (bufferTimeout) {
+        clearTimeout(bufferTimeout);
+      }
+    };
+  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen]);
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
@@ -185,17 +192,17 @@ export default function DashboardLayout({
 
             {/* Interactive Search Bar Trigger */}
             <button
-              className="group relative flex w-full items-center justify-between rounded-xl border border-slate-200/90 bg-slate-50/90 py-2 pr-2.5 pl-3 text-xs text-slate-500 shadow-2xs transition-all hover:border-blue-300 hover:bg-white hover:text-slate-800 hover:shadow-xs focus:outline-none"
+              className="group relative flex w-full items-center justify-between rounded-xl border border-slate-200/90 bg-slate-50/90 py-2 pr-2.5 pl-3 text-slate-500 text-xs shadow-2xs transition-all hover:border-blue-300 hover:bg-white hover:text-slate-800 hover:shadow-xs focus:outline-none"
               onClick={() => setIsCommandPaletteOpen(true)}
               type="button"
             >
               <div className="flex items-center gap-2">
-                <Search className="h-4 w-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
-                <span className="font-medium text-slate-400 group-hover:text-slate-600 transition-colors">
+                <Search className="h-4 w-4 text-slate-400 transition-colors group-hover:text-blue-600" />
+                <span className="font-medium text-slate-400 transition-colors group-hover:text-slate-600">
                   Hızlı Arama & Komutlar...
                 </span>
               </div>
-              <div className="flex items-center gap-0.5 rounded-md border border-slate-200/80 bg-white px-1.5 py-0.5 text-[10px] font-bold text-slate-400 shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600 transition-colors">
+              <div className="flex items-center gap-0.5 rounded-md border border-slate-200/80 bg-white px-1.5 py-0.5 font-bold text-[10px] text-slate-400 shadow-2xs transition-colors group-hover:border-blue-200 group-hover:text-blue-600">
                 <span>⌘</span>
                 <span>K</span>
               </div>
@@ -234,26 +241,28 @@ export default function DashboardLayout({
         onClose={() => setIsShortcutsHelpOpen(false)}
       />
     </PermissionProvider>
-  )
+  );
 }
 
 function DashboardNavigation() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const params = useParams()
-  const tenantSlug = (params?.tenantSlug as string) || ""
-  const currentTab = searchParams.get("tab") || "chart"
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = useParams();
+  const tenantSlug = (params?.tenantSlug as string) || "";
+  const currentTab = searchParams.get("tab") || "chart";
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     hr: true,
     management: true,
     sales: true,
     tools: true,
-  })
+  });
 
   // Ensure the section containing the active page is always open
   useEffect(() => {
-    if (!pathname) return
+    if (!pathname) {
+      return;
+    }
 
     if (
       pathname === `/${tenantSlug}` ||
@@ -261,14 +270,14 @@ function DashboardNavigation() {
       pathname.startsWith(`/${tenantSlug}/orders`) ||
       pathname.startsWith(`/${tenantSlug}/products`)
     ) {
-      setOpenSections((prev) => ({ ...prev, sales: true }))
+      setOpenSections((prev) => ({ ...prev, sales: true }));
     } else if (
       pathname.startsWith(`/${tenantSlug}/attendance`) ||
       pathname.startsWith(`/${tenantSlug}/leaves`) ||
       pathname.startsWith(`/${tenantSlug}/payroll`) ||
       pathname.startsWith(`/${tenantSlug}/organization`)
     ) {
-      setOpenSections((prev) => ({ ...prev, hr: true }))
+      setOpenSections((prev) => ({ ...prev, hr: true }));
     } else if (
       pathname.startsWith(`/${tenantSlug}/messages`) ||
       pathname.startsWith(`/${tenantSlug}/email`) ||
@@ -276,22 +285,22 @@ function DashboardNavigation() {
       pathname.startsWith(`/${tenantSlug}/analytics`) ||
       pathname.startsWith(`/${tenantSlug}/integration`)
     ) {
-      setOpenSections((prev) => ({ ...prev, tools: true }))
+      setOpenSections((prev) => ({ ...prev, tools: true }));
     } else if (
       pathname.startsWith(`/${tenantSlug}/users`) ||
       pathname.startsWith(`/${tenantSlug}/roles`) ||
       pathname.startsWith(`/${tenantSlug}/settings`)
     ) {
-      setOpenSections((prev) => ({ ...prev, management: true }))
+      setOpenSections((prev) => ({ ...prev, management: true }));
     }
-  }, [pathname, tenantSlug])
+  }, [pathname, tenantSlug]);
 
   const toggleSection = (sectionKey: string) => {
     setOpenSections((prev) => ({
       ...prev,
       [sectionKey]: !prev[sectionKey],
-    }))
-  }
+    }));
+  };
 
   // 1. Genel & Satış CRM
   const salesMenu = [
@@ -319,7 +328,7 @@ function DashboardNavigation() {
       icon: Package,
       name: "Ürün & Hizmetler",
     },
-  ]
+  ];
 
   // 2. İnsan Kaynakları & Bordro
   const hrMenu = [
@@ -376,7 +385,7 @@ function DashboardNavigation() {
       permission: "Organization.ViewChart",
       tab: "chart",
     },
-  ]
+  ];
 
   // 3. İletişim & Araçlar
   const toolsMenu = [
@@ -406,7 +415,7 @@ function DashboardNavigation() {
       icon: Boxes,
       name: "Entegrasyonlar",
     },
-  ]
+  ];
 
   // 4. Sistem & Yönetim
   const managementMenu = [
@@ -431,20 +440,20 @@ function DashboardNavigation() {
       name: "Şirket Ayarları",
       permission: "Tenants.Update",
     },
-  ]
+  ];
 
   return (
     <div className="space-y-4">
       {/* 1. GENEL & SATIŞ CRM */}
       <div>
         <button
-          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          className="flex w-full cursor-pointer select-none items-center justify-between px-3 py-1.5 font-bold text-[11px] text-slate-400 uppercase tracking-wider transition-colors hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
           onClick={() => toggleSection("sales")}
           type="button"
         >
           <span>Genel & Satış CRM</span>
           <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+            className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
               openSections.sales ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
@@ -455,11 +464,11 @@ function DashboardNavigation() {
             {salesMenu.map((item) => {
               const isActive = item.exact
                 ? pathname === item.href
-                : pathname?.startsWith(item.href)
+                : pathname?.startsWith(item.href);
 
               return (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
                     isActive
                       ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
@@ -475,7 +484,7 @@ function DashboardNavigation() {
                     <span>{item.name}</span>
                   </div>
                 </Link>
-              )
+              );
             })}
           </div>
         )}
@@ -484,13 +493,13 @@ function DashboardNavigation() {
       {/* 2. İNSAN KAYNAKLARI & BORDRO */}
       <div>
         <button
-          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          className="flex w-full cursor-pointer select-none items-center justify-between px-3 py-1.5 font-bold text-[11px] text-slate-400 uppercase tracking-wider transition-colors hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
           onClick={() => toggleSection("hr")}
           type="button"
         >
           <span>İnsan Kaynakları & Bordro</span>
           <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+            className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
               openSections.hr ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
@@ -499,14 +508,15 @@ function DashboardNavigation() {
         {openSections.hr && (
           <div className="mt-1 space-y-0.5">
             {hrMenu.map((item) => {
-              const isOrgPage = pathname === `/${tenantSlug}/organization`
+              const isOrgPage = pathname === `/${tenantSlug}/organization`;
               const isActive = item.tab
                 ? isOrgPage && currentTab === item.tab
-                : pathname === item.href || pathname?.startsWith(`${item.href}/`)
+                : pathname === item.href ||
+                  pathname?.startsWith(`${item.href}/`);
 
               const linkContent = (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
                     isActive
                       ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
@@ -522,17 +532,17 @@ function DashboardNavigation() {
                     <span>{item.name}</span>
                   </div>
                 </Link>
-              )
+              );
 
               if (item.permission) {
                 return (
                   <PermissionGate key={item.name} permission={item.permission}>
                     {linkContent}
                   </PermissionGate>
-                )
+                );
               }
 
-              return linkContent
+              return linkContent;
             })}
           </div>
         )}
@@ -541,13 +551,13 @@ function DashboardNavigation() {
       {/* 3. İLETİŞİM & ARAÇLAR */}
       <div>
         <button
-          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          className="flex w-full cursor-pointer select-none items-center justify-between px-3 py-1.5 font-bold text-[11px] text-slate-400 uppercase tracking-wider transition-colors hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
           onClick={() => toggleSection("tools")}
           type="button"
         >
           <span>İletişim & Araçlar</span>
           <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+            className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
               openSections.tools ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
@@ -556,11 +566,11 @@ function DashboardNavigation() {
         {openSections.tools && (
           <div className="mt-1 space-y-0.5">
             {toolsMenu.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
 
               return (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
                     isActive
                       ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
@@ -576,12 +586,12 @@ function DashboardNavigation() {
                     <span>{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-muted dark:text-slate-300">
+                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-muted dark:text-slate-300">
                       {item.badge}
                     </span>
                   )}
                 </Link>
-              )
+              );
             })}
           </div>
         )}
@@ -590,13 +600,13 @@ function DashboardNavigation() {
       {/* 4. SİSTEM & YÖNETİM */}
       <div>
         <button
-          className="flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-[11px] font-bold tracking-wider text-slate-400 uppercase transition-colors select-none hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
+          className="flex w-full cursor-pointer select-none items-center justify-between px-3 py-1.5 font-bold text-[11px] text-slate-400 uppercase tracking-wider transition-colors hover:text-slate-700 dark:text-muted-foreground dark:hover:text-foreground"
           onClick={() => toggleSection("management")}
           type="button"
         >
           <span>Sistem & Yönetim</span>
           <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform duration-200 text-slate-400 ${
+            className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
               openSections.management ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
@@ -605,11 +615,11 @@ function DashboardNavigation() {
         {openSections.management && (
           <div className="mt-1 space-y-0.5">
             {managementMenu.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
 
               const linkContent = (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
                     isActive
                       ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
@@ -625,42 +635,42 @@ function DashboardNavigation() {
                     <span>{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-muted dark:text-slate-300">
+                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-muted dark:text-slate-300">
                       {item.badge}
                     </span>
                   )}
                 </Link>
-              )
+              );
 
               if (item.permission) {
                 return (
                   <PermissionGate key={item.name} permission={item.permission}>
                     {linkContent}
                   </PermissionGate>
-                )
+                );
               }
 
-              return linkContent
+              return linkContent;
             })}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 function DashboardBottom() {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push("/login")
-  }
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   return (
-    <div className="space-y-2 border-t border-slate-100 pt-4">
-      <div className="space-y-0.5 text-xs font-medium text-slate-600">
+    <div className="space-y-2 border-slate-100 border-t pt-4">
+      <div className="space-y-0.5 font-medium text-slate-600 text-xs">
         <Link
           className="flex items-center gap-2.5 rounded-xl px-3 py-1.5 transition-colors hover:bg-slate-50"
           href="#help"
@@ -687,11 +697,11 @@ function DashboardBottom() {
       {/* Upgrade & Unlock features Card */}
       <div className="group flex cursor-pointer items-center justify-between rounded-2xl border border-fuchsia-200/60 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-cyan-500/10 p-3 transition-all hover:border-fuchsia-300">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-500 text-white shadow-sm shadow-fuchsia-500/30">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-500 text-white shadow-fuchsia-500/30 shadow-sm">
             <Flame className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-[11px] leading-tight font-bold text-slate-900">
+            <div className="font-bold text-[11px] text-slate-900 leading-tight">
               Upgrade & unlock
             </div>
             <div className="text-[10px] text-slate-500">all features</div>
@@ -700,5 +710,5 @@ function DashboardBottom() {
         <ChevronRight className="h-4 w-4 text-slate-400 transition-all group-hover:translate-x-0.5 group-hover:text-fuchsia-600" />
       </div>
     </div>
-  )
+  );
 }

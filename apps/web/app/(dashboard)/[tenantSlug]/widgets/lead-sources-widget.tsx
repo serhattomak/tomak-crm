@@ -7,13 +7,20 @@ interface LeadSourcesWidgetProps {
   dateRange?: DateRange;
 }
 
-export function LeadSourcesWidget({ dateRange: _dateRange }: LeadSourcesWidgetProps) {
+export function LeadSourcesWidget({
+  dateRange: _dateRange,
+}: LeadSourcesWidgetProps) {
   const sources = [
-    { name: "Google & Arama", count: 48, percentage: 38, color: "#8b5cf6" },
-    { name: "Referans & Tavsiye", count: 32, percentage: 25, color: "#06b6d4" },
-    { name: "LinkedIn & Sosyal", count: 25, percentage: 20, color: "#ec4899" },
-    { name: "Doğrudan Web & Kampanya", count: 14, percentage: 11, color: "#10b981" },
-    { name: "Diğer Kanallar", count: 8, percentage: 6, color: "#f59e0b" },
+    { color: "#8b5cf6", count: 48, name: "Google & Arama", percentage: 38 },
+    { color: "#06b6d4", count: 32, name: "Referans & Tavsiye", percentage: 25 },
+    { color: "#ec4899", count: 25, name: "LinkedIn & Sosyal", percentage: 20 },
+    {
+      color: "#10b981",
+      count: 14,
+      name: "Doğrudan Web & Kampanya",
+      percentage: 11,
+    },
+    { color: "#f59e0b", count: 8, name: "Diğer Kanallar", percentage: 6 },
   ];
 
   const totalLeads = sources.reduce((sum, s) => sum + s.count, 0);
@@ -27,8 +34,12 @@ export function LeadSourcesWidget({ dateRange: _dateRange }: LeadSourcesWidgetPr
               <PieChart className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">Lead Kaynak Dağılımı</span>
-              <div className="text-[11px] text-slate-500">Müşteri Adayı Kazanım Kanalları</div>
+              <span className="font-bold text-slate-900 text-sm">
+                Lead Kaynak Dağılımı
+              </span>
+              <div className="text-[11px] text-slate-500">
+                Müşteri Adayı Kazanım Kanalları
+              </div>
             </div>
           </div>
 
@@ -38,7 +49,10 @@ export function LeadSourcesWidget({ dateRange: _dateRange }: LeadSourcesWidgetPr
         {/* Donut Chart Visualizer + Centered Total */}
         <div className="my-3 flex items-center justify-center">
           <div className="relative flex h-32 w-32 items-center justify-center">
-            <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
+            <svg
+              className="h-full w-full -rotate-90 transform"
+              viewBox="0 0 100 100"
+            >
               {/* Segments */}
               {/* Google (38%) */}
               <circle
@@ -98,8 +112,12 @@ export function LeadSourcesWidget({ dateRange: _dateRange }: LeadSourcesWidgetPr
             </svg>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-extrabold text-xl text-slate-900">{totalLeads}</span>
-              <span className="text-[10px] text-slate-400 font-medium">Toplam Lead</span>
+              <span className="font-extrabold text-slate-900 text-xl">
+                {totalLeads}
+              </span>
+              <span className="font-medium text-[10px] text-slate-400">
+                Toplam Lead
+              </span>
             </div>
           </div>
         </div>
@@ -113,11 +131,15 @@ export function LeadSourcesWidget({ dateRange: _dateRange }: LeadSourcesWidgetPr
                   className="h-2.5 w-2.5 rounded-full"
                   style={{ backgroundColor: s.color }}
                 />
-                <span className="text-slate-600 text-[11px]">{s.name}</span>
+                <span className="text-[11px] text-slate-600">{s.name}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-slate-900 text-[11px]">{s.count}</span>
-                <span className="text-[10px] text-slate-400">%{s.percentage}</span>
+                <span className="font-semibold text-[11px] text-slate-900">
+                  {s.count}
+                </span>
+                <span className="text-[10px] text-slate-400">
+                  %{s.percentage}
+                </span>
               </div>
             </div>
           ))}

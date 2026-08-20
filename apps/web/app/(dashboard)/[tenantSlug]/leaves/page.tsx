@@ -1,5 +1,15 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
+import { toast } from "@workspace/ui/components/sonner";
 import {
   Calendar as CalendarIcon,
   CheckCircle2,
@@ -15,7 +25,8 @@ import {
   X,
 } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import {
   ApiClient,
@@ -28,22 +39,6 @@ import {
   type LeaveStatsDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
-import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
-import { DatePicker } from "@workspace/ui/components/date-picker";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
-import { toast } from "@workspace/ui/components/sonner";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@workspace/ui/components/tooltip";
 
 export default function LeavesPage() {
   const params = useParams();
@@ -51,21 +46,25 @@ export default function LeavesPage() {
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
-  const [activeTab, setActiveTab] = useState<"calendar" | "pending" | "all" | "my">("calendar");
+  const [activeTab, setActiveTab] = useState<
+    "calendar" | "pending" | "all" | "my"
+  >("calendar");
   const [loading, setLoading] = useState(true);
 
   // Data states
   const [stats, setStats] = useState<LeaveStatsDto | null>(null);
   const [myBalance, setMyBalance] = useState<LeaveBalanceDto | null>(null);
   const [leaves, setLeaves] = useState<LeaveRequestDto[]>([]);
-  const [calendarEvents, setCalendarEvents] = useState<LeaveCalendarEventDto[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<LeaveCalendarEventDto[]>(
+    []
+  );
   const [employees, setEmployees] = useState<EmployeeDto[]>([]);
   const [departments, setDepartments] = useState<DepartmentDto[]>([]);
 
   // Calendar Date State (Year & Month)
   const [calendarDate, setCalendarDate] = useState(() => {
     const d = new Date();
-    return { year: d.getFullYear(), month: d.getMonth() + 1 };
+    return { month: d.getMonth() + 1, year: d.getFullYear() };
   });
 
   // Filters
@@ -82,7 +81,9 @@ export default function LeavesPage() {
       setIsCreateModalOpen(true);
     }
   }, [searchParams]);
-  const [rejectingLeave, setRejectingLeave] = useState<LeaveRequestDto | null>(null);
+  const [rejectingLeave, setRejectingLeave] = useState<LeaveRequestDto | null>(
+    null
+  );
   const [rejectionReason, setRejectionReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -96,52 +97,77 @@ export default function LeavesPage() {
     variant?: "destructive" | "warning" | "default";
     onConfirm: () => void | Promise<void>;
   }>({
-    open: false,
-    title: "",
     description: "",
     onConfirm: () => {},
+    open: false,
+    title: "",
   });
 
   const loadData = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setLoading(true);
     try {
-      const [statsRes, balRes, leavesRes, calRes, empRes, deptRes] = await Promise.all([
-        ApiClient.getLeaveStats(activeTenant.id),
-        ApiClient.getMyLeaveBalance({ year: calendarDate.year }, activeTenant.id),
-        ApiClient.getLeaveRequests(
-          {
-            search: search.trim() || undefined,
-            status: statusFilter || undefined,
-            leaveType: leaveTypeFilter || undefined,
-            pageSize: 100,
-          },
-          activeTenant.id
-        ),
-        ApiClient.getLeaveCalendar(
-          {
-            year: calendarDate.year,
-            month: calendarDate.month,
-            departmentId: calendarDeptFilter || undefined,
-          },
-          activeTenant.id
-        ),
-        ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
-        ApiClient.getDepartments(activeTenant.id),
-      ]);
+      const [statsRes, balRes, leavesRes, calRes, empRes, deptRes] =
+        await Promise.all([
+          ApiClient.getLeaveStats(activeTenant.id),
+          ApiClient.getMyLeaveBalance(
+            { year: calendarDate.year },
+            activeTenant.id
+          ),
+          ApiClient.getLeaveRequests(
+            {
+              leaveType: leaveTypeFilter || undefined,
+              pageSize: 100,
+              search: search.trim() || undefined,
+              status: statusFilter || undefined,
+            },
+            activeTenant.id
+          ),
+          ApiClient.getLeaveCalendar(
+            {
+              departmentId: calendarDeptFilter || undefined,
+              month: calendarDate.month,
+              year: calendarDate.year,
+            },
+            activeTenant.id
+          ),
+          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
+          ApiClient.getDepartments(activeTenant.id),
+        ]);
 
-      if (statsRes.success && statsRes.data) setStats(statsRes.data);
-      if (balRes.success && balRes.data) setMyBalance(balRes.data);
-      if (leavesRes.success && leavesRes.data) setLeaves(leavesRes.data.items);
-      if (calRes.success && calRes.data) setCalendarEvents(calRes.data);
-      if (empRes.success && empRes.data) setEmployees(empRes.data.items);
-      if (deptRes.success && deptRes.data) setDepartments(deptRes.data);
+      if (statsRes.success && statsRes.data) {
+        setStats(statsRes.data);
+      }
+      if (balRes.success && balRes.data) {
+        setMyBalance(balRes.data);
+      }
+      if (leavesRes.success && leavesRes.data) {
+        setLeaves(leavesRes.data.items);
+      }
+      if (calRes.success && calRes.data) {
+        setCalendarEvents(calRes.data);
+      }
+      if (empRes.success && empRes.data) {
+        setEmployees(empRes.data.items);
+      }
+      if (deptRes.success && deptRes.data) {
+        setDepartments(deptRes.data);
+      }
     } catch {
       toast.error("İzin verileri yüklenirken bir hata oluştu.");
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, calendarDate, calendarDeptFilter, search, statusFilter, leaveTypeFilter]);
+  }, [
+    activeTenant,
+    calendarDate,
+    calendarDeptFilter,
+    search,
+    statusFilter,
+    leaveTypeFilter,
+  ]);
 
   useEffect(() => {
     loadData();
@@ -149,7 +175,9 @@ export default function LeavesPage() {
 
   // Actions
   const handleApprove = async (id: string) => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setActionLoading(true);
     try {
       const res = await ApiClient.approveLeaveRequest(id, activeTenant.id);
@@ -167,7 +195,9 @@ export default function LeavesPage() {
   };
 
   const handleReject = async () => {
-    if (!activeTenant || !rejectingLeave || !rejectionReason.trim()) return;
+    if (!(activeTenant && rejectingLeave && rejectionReason.trim())) {
+      return;
+    }
     setActionLoading(true);
     try {
       const res = await ApiClient.rejectLeaveRequest(
@@ -191,13 +221,13 @@ export default function LeavesPage() {
   };
 
   const handleCancel = (id: string) => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setConfirmDialog({
-      open: true,
-      title: "İzin Talebini İptal Et",
-      description: "Bu izin talebini iptal etmek istediğinize emin misiniz? İptal edilen izin bakiyenize iade edilir.",
       confirmText: "Talebi İptal Et",
-      variant: "destructive",
+      description:
+        "Bu izin talebini iptal etmek istediğinize emin misiniz? İptal edilen izin bakiyenize iade edilir.",
       onConfirm: async () => {
         setActionLoading(true);
         try {
@@ -215,6 +245,9 @@ export default function LeavesPage() {
           setConfirmDialog((prev) => ({ ...prev, open: false }));
         }
       },
+      open: true,
+      title: "İzin Talebini İptal Et",
+      variant: "destructive",
     });
   };
 
@@ -295,27 +328,41 @@ export default function LeavesPage() {
   };
 
   const monthNames = [
-    "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
-    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
   ];
 
   const handlePrevMonth = () => {
     setCalendarDate((prev) => {
-      if (prev.month === 1) return { year: prev.year - 1, month: 12 };
-      return { year: prev.year, month: prev.month - 1 };
+      if (prev.month === 1) {
+        return { month: 12, year: prev.year - 1 };
+      }
+      return { month: prev.month - 1, year: prev.year };
     });
   };
 
   const handleNextMonth = () => {
     setCalendarDate((prev) => {
-      if (prev.month === 12) return { year: prev.year + 1, month: 1 };
-      return { year: prev.year, month: prev.month + 1 };
+      if (prev.month === 12) {
+        return { month: 1, year: prev.year + 1 };
+      }
+      return { month: prev.month + 1, year: prev.year };
     });
   };
 
   const handleCurrentMonth = () => {
     const d = new Date();
-    setCalendarDate({ year: d.getFullYear(), month: d.getMonth() + 1 });
+    setCalendarDate({ month: d.getMonth() + 1, year: d.getFullYear() });
   };
 
   // Build Calendar Days Matrix
@@ -326,18 +373,20 @@ export default function LeavesPage() {
 
     // Monday as first day of week (0: Mon, ..., 6: Sun)
     let startDayOfWeek = firstDay.getDay() - 1;
-    if (startDayOfWeek === -1) startDayOfWeek = 6;
+    if (startDayOfWeek === -1) {
+      startDayOfWeek = 6;
+    }
 
     const days = [];
     for (let i = 0; i < startDayOfWeek; i++) {
-      days.push({ day: null, dateStr: "" });
+      days.push({ dateStr: "", day: null });
     }
     for (let d = 1; d <= daysCount; d++) {
       const monthStr = month < 10 ? `0${month}` : `${month}`;
       const dayStr = d < 10 ? `0${d}` : `${d}`;
       days.push({
-        day: d,
         dateStr: `${year}-${monthStr}-${dayStr}`,
+        day: d,
       });
     }
     return days;
@@ -359,8 +408,9 @@ export default function LeavesPage() {
               {stats?.totalApprovedRequests ?? 0} Onaylı İzin
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500">
-            Çalışan izin talepleri, onay süreçleri, yıllık izin bakiye takibi ve interaktif şirket izin takvimi.
+          <p className="mt-0.5 text-slate-500 text-xs">
+            Çalışan izin talepleri, onay süreçleri, yıllık izin bakiye takibi ve
+            interaktif şirket izin takvimi.
           </p>
         </div>
 
@@ -385,8 +435,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Onay Bekleyen Talepler</span>
-              <div className="font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Onay Bekleyen Talepler
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
                 {stats?.pendingRequestsCount ?? 0}
               </div>
             </div>
@@ -403,8 +455,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Bugün İzinli Olanlar</span>
-              <div className="font-extrabold text-2xl text-blue-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Bugün İzinli Olanlar
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-blue-600 tracking-tight sm:text-3xl">
                 {stats?.todayOnLeaveCount ?? 0} Kişi
               </div>
             </div>
@@ -421,8 +475,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Bu Ay Kullanılan İzin</span>
-              <div className="font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Bu Ay Kullanılan İzin
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
                 {stats?.thisMonthUsedDays ?? 0} Gün
               </div>
             </div>
@@ -439,8 +495,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Yıllık İzin Bakiyem</span>
-              <div className="font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Yıllık İzin Bakiyem
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl">
                 {myBalance?.remainingDays ?? 14} Gün
               </div>
             </div>
@@ -517,9 +575,9 @@ export default function LeavesPage() {
 
       {/* 4. TAB 1: INTERACTIVE MONTHLY CALENDAR */}
       {activeTab === "calendar" && (
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
+        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
           {/* Calendar Header / Controls */}
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center border-slate-100 border-b pb-4">
+          <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <button
                 className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -528,7 +586,7 @@ export default function LeavesPage() {
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <h2 className="font-extrabold text-slate-900 text-base min-w-[150px] text-center">
+              <h2 className="min-w-[150px] text-center font-extrabold text-base text-slate-900">
                 {monthNames[calendarDate.month - 1]} {calendarDate.year}
               </h2>
               <button
@@ -539,7 +597,7 @@ export default function LeavesPage() {
                 <ChevronRight className="h-4 w-4" />
               </button>
               <button
-                className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 ml-2"
+                className="ml-2 rounded-xl border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 text-xs hover:bg-slate-50"
                 onClick={handleCurrentMonth}
                 type="button"
               >
@@ -549,9 +607,11 @@ export default function LeavesPage() {
 
             {/* Department Filter */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 font-medium">Departman:</span>
+              <span className="font-medium text-slate-500 text-xs">
+                Departman:
+              </span>
               <select
-                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-800 font-medium focus:outline-none"
+                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 font-medium text-slate-800 text-xs focus:outline-none"
                 onChange={(e) => setCalendarDeptFilter(e.target.value)}
                 value={calendarDeptFilter}
               >
@@ -569,14 +629,18 @@ export default function LeavesPage() {
           <div className="overflow-x-auto">
             <div className="min-w-[700px]">
               {/* Day Names Header */}
-              <div className="grid grid-cols-7 gap-2 mb-2 text-center text-[11px] font-bold text-slate-500">
-                <div className="py-1 bg-slate-50 rounded-lg">Pazartesi</div>
-                <div className="py-1 bg-slate-50 rounded-lg">Salı</div>
-                <div className="py-1 bg-slate-50 rounded-lg">Çarşamba</div>
-                <div className="py-1 bg-slate-50 rounded-lg">Perşembe</div>
-                <div className="py-1 bg-slate-50 rounded-lg">Cuma</div>
-                <div className="py-1 bg-amber-50/60 text-amber-700 rounded-lg">Cumartesi</div>
-                <div className="py-1 bg-amber-50/60 text-amber-700 rounded-lg">Pazar</div>
+              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-[11px] text-slate-500">
+                <div className="rounded-lg bg-slate-50 py-1">Pazartesi</div>
+                <div className="rounded-lg bg-slate-50 py-1">Salı</div>
+                <div className="rounded-lg bg-slate-50 py-1">Çarşamba</div>
+                <div className="rounded-lg bg-slate-50 py-1">Perşembe</div>
+                <div className="rounded-lg bg-slate-50 py-1">Cuma</div>
+                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700">
+                  Cumartesi
+                </div>
+                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700">
+                  Pazar
+                </div>
               </div>
 
               {/* Day Cells Grid */}
@@ -585,23 +649,24 @@ export default function LeavesPage() {
                   if (!cell.day) {
                     return (
                       <div
-                        className="h-28 rounded-2xl border border-dashed border-slate-100 bg-slate-50/30 p-2"
+                        className="h-28 rounded-2xl border border-slate-100 border-dashed bg-slate-50/30 p-2"
                         key={idx}
                       />
                     );
                   }
 
                   // Find leaves active on this day
-                  const activeLeaves = calendarEvents.filter((ev) => {
-                    return ev.startDate <= cell.dateStr && ev.endDate >= cell.dateStr;
-                  });
+                  const activeLeaves = calendarEvents.filter(
+                    (ev) =>
+                      ev.startDate <= cell.dateStr && ev.endDate >= cell.dateStr
+                  );
 
                   const isToday =
                     new Date().toISOString().slice(0, 10) === cell.dateStr;
 
                   return (
                     <div
-                      className={`h-28 flex flex-col justify-between rounded-2xl border p-2 transition-all hover:border-slate-300 ${
+                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-slate-300 ${
                         isToday
                           ? "border-blue-500 bg-blue-50/20 ring-1 ring-blue-500"
                           : "border-slate-200/80 bg-white"
@@ -610,27 +675,29 @@ export default function LeavesPage() {
                     >
                       <div className="flex items-center justify-between">
                         <span
-                          className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-                            isToday ? "bg-blue-600 text-white" : "text-slate-700"
+                          className={`flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs ${
+                            isToday
+                              ? "bg-blue-600 text-white"
+                              : "text-slate-700"
                           }`}
                         >
                           {cell.day}
                         </span>
                         {activeLeaves.length > 0 && (
-                          <span className="rounded-full bg-slate-100 px-1.5 py-0.2 text-[9px] font-bold text-slate-600">
+                          <span className="rounded-full bg-slate-100 px-1.5 py-0.2 font-bold text-[9px] text-slate-600">
                             {activeLeaves.length} İzinli
                           </span>
                         )}
                       </div>
 
                       {/* Leaves pills inside day */}
-                      <div className="space-y-1 overflow-y-auto max-h-16 text-[10px] mt-1">
+                      <div className="mt-1 max-h-16 space-y-1 overflow-y-auto text-[10px]">
                         {activeLeaves.map((ev) => (
                           <div
                             className={`truncate rounded-lg border px-1.5 py-0.5 font-semibold ${
                               ev.status === "Approved"
-                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                                : "bg-amber-50 text-amber-800 border-amber-200"
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                                : "border-amber-200 bg-amber-50 text-amber-800"
                             }`}
                             key={ev.id}
                             title={`${ev.employeeName} - ${getLeaveTypeLabel(ev.leaveType)} (${ev.totalDays} Gün)`}
@@ -650,22 +717,30 @@ export default function LeavesPage() {
 
       {/* 5. TAB 2: PENDING APPROVALS (MANAGER WORKBENCH) */}
       {activeTab === "pending" && (
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
+        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Yönetici Onay Masası</h3>
-              <p className="text-xs text-slate-500">Onay veya ret işlemi bekleyen personel izin talepleri</p>
+              <h3 className="font-bold text-slate-900 text-sm">
+                Yönetici Onay Masası
+              </h3>
+              <p className="text-slate-500 text-xs">
+                Onay veya ret işlemi bekleyen personel izin talepleri
+              </p>
             </div>
-            <span className="rounded-full bg-amber-50 px-3 py-1 font-bold text-xs text-amber-700 border border-amber-200">
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-bold text-amber-700 text-xs">
               {pendingLeaves.length} Bekleyen Talep
             </span>
           </div>
 
           {pendingLeaves.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center text-xs text-slate-400">
-              <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
-              <p className="font-bold text-slate-700">Tüm talepler sonuçlandırıldı!</p>
-              <p className="text-slate-400 mt-0.5">Şu anda onay bekleyen yeni izin talebi bulunmuyor.</p>
+            <div className="rounded-2xl border border-slate-200 border-dashed p-12 text-center text-slate-400 text-xs">
+              <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
+              <p className="font-bold text-slate-700">
+                Tüm talepler sonuçlandırıldı!
+              </p>
+              <p className="mt-0.5 text-slate-400">
+                Şu anda onay bekleyen yeni izin talebi bulunmuyor.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -676,38 +751,52 @@ export default function LeavesPage() {
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 text-sm">{leave.employeeName}</span>
+                      <span className="font-bold text-slate-900 text-sm">
+                        {leave.employeeName}
+                      </span>
                       {leave.departmentName && (
-                        <span className="rounded-md bg-slate-200 px-2 py-0.5 text-[10px] text-slate-700 font-medium">
+                        <span className="rounded-md bg-slate-200 px-2 py-0.5 font-medium text-[10px] text-slate-700">
                           {leave.departmentName}
                         </span>
                       )}
-                      <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-bold ${getLeaveTypeBadge(leave.leaveType)}`}>
+                      <span
+                        className={`rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(leave.leaveType)}`}
+                      >
                         {getLeaveTypeLabel(leave.leaveType)}
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                    <div className="flex flex-wrap items-center gap-3 text-slate-600 text-xs">
                       <span className="flex items-center gap-1">
                         <CalendarIcon className="h-3.5 w-3.5 text-slate-400" />
-                        <strong>{new Date(leave.startDate).toLocaleDateString("tr-TR")}</strong> -{" "}
-                        <strong>{new Date(leave.endDate).toLocaleDateString("tr-TR")}</strong>
+                        <strong>
+                          {new Date(leave.startDate).toLocaleDateString(
+                            "tr-TR"
+                          )}
+                        </strong>{" "}
+                        -{" "}
+                        <strong>
+                          {new Date(leave.endDate).toLocaleDateString("tr-TR")}
+                        </strong>
                       </span>
                       <span>•</span>
                       <span>
-                        Süre: <strong>{leave.totalDays} Gün</strong> {leave.isHalfDay ? `(Yarım Gün - ${leave.halfDayPeriod || "Öğleden Sonra"})` : ""}
+                        Süre: <strong>{leave.totalDays} Gün</strong>{" "}
+                        {leave.isHalfDay
+                          ? `(Yarım Gün - ${leave.halfDayPeriod || "Öğleden Sonra"})`
+                          : ""}
                       </span>
                     </div>
 
                     {leave.reason && (
-                      <p className="text-xs text-slate-700 italic bg-white p-2 rounded-xl border border-slate-200/80 mt-1 max-w-xl">
+                      <p className="mt-1 max-w-xl rounded-xl border border-slate-200/80 bg-white p-2 text-slate-700 text-xs italic">
                         "{leave.reason}"
                       </p>
                     )}
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex shrink-0 items-center gap-2">
                     <PermissionGate permission="Leaves.Approve">
                       <button
                         className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100 disabled:opacity-50"
@@ -742,10 +831,10 @@ export default function LeavesPage() {
         <div className="space-y-4">
           {/* Filter Bar */}
           <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
-            <div className="relative flex-1 max-w-md">
+            <div className="relative max-w-md flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Çalışan adı, departman veya sebep ara..."
                 type="text"
@@ -755,7 +844,7 @@ export default function LeavesPage() {
 
             <div className="flex flex-wrap items-center gap-2">
               <select
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none"
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:outline-none"
                 onChange={(e) => setStatusFilter(e.target.value)}
                 value={statusFilter}
               >
@@ -767,7 +856,7 @@ export default function LeavesPage() {
               </select>
 
               <select
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none"
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:outline-none"
                 onChange={(e) => setLeaveTypeFilter(e.target.value)}
                 value={leaveTypeFilter}
               >
@@ -785,21 +874,24 @@ export default function LeavesPage() {
           <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="border-slate-100 border-b bg-slate-50/50 text-[11px] text-slate-500 font-medium">
+                <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
                   <tr>
                     <th className="py-3.5 pr-4 pl-6">Çalışan</th>
-                    <th className="py-3.5 px-4">İzin Türü</th>
-                    <th className="py-3.5 px-4">Tarih Aralığı</th>
-                    <th className="py-3.5 px-4 text-center">Toplam Gün</th>
-                    <th className="py-3.5 px-4">Durum</th>
-                    <th className="py-3.5 px-4">Onaylayan</th>
+                    <th className="px-4 py-3.5">İzin Türü</th>
+                    <th className="px-4 py-3.5">Tarih Aralığı</th>
+                    <th className="px-4 py-3.5 text-center">Toplam Gün</th>
+                    <th className="px-4 py-3.5">Durum</th>
+                    <th className="px-4 py-3.5">Onaylayan</th>
                     <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {leaves.length === 0 ? (
                     <tr>
-                      <td className="py-8 text-center text-slate-400" colSpan={7}>
+                      <td
+                        className="py-8 text-center text-slate-400"
+                        colSpan={7}
+                      >
                         İzin kaydı bulunamadı.
                       </td>
                     </tr>
@@ -807,30 +899,39 @@ export default function LeavesPage() {
                     leaves.map((l) => (
                       <tr className="hover:bg-slate-50/80" key={l.id}>
                         <td className="py-3.5 pr-4 pl-6">
-                          <div className="font-bold text-slate-900">{l.employeeName}</div>
+                          <div className="font-bold text-slate-900">
+                            {l.employeeName}
+                          </div>
                           {l.departmentName && (
-                            <div className="text-[10px] text-slate-400">{l.departmentName}</div>
+                            <div className="text-[10px] text-slate-400">
+                              {l.departmentName}
+                            </div>
                           )}
                         </td>
-                        <td className="py-3.5 px-4">
-                          <span className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}>
+                        <td className="px-4 py-3.5">
+                          <span
+                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
+                          >
                             {getLeaveTypeLabel(l.leaveType)}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4">
+                        <td className="px-4 py-3.5">
                           <div className="font-semibold text-slate-800">
-                            {new Date(l.startDate).toLocaleDateString("tr-TR")} - {new Date(l.endDate).toLocaleDateString("tr-TR")}
+                            {new Date(l.startDate).toLocaleDateString("tr-TR")}{" "}
+                            - {new Date(l.endDate).toLocaleDateString("tr-TR")}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 text-center font-extrabold text-slate-900">
+                        <td className="px-4 py-3.5 text-center font-extrabold text-slate-900">
                           {l.totalDays} Gün
                         </td>
-                        <td className="py-3.5 px-4">
-                          <span className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}>
+                        <td className="px-4 py-3.5">
+                          <span
+                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
+                          >
                             {getStatusLabel(l.status)}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-600">
+                        <td className="px-4 py-3.5 text-slate-600">
                           {l.approvedByUserName || "—"}
                         </td>
                         <td className="py-3.5 pr-6 pl-4 text-right">
@@ -838,14 +939,14 @@ export default function LeavesPage() {
                             <PermissionGate permission="Leaves.Approve">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
-                                  className="rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+                                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-bold text-[11px] text-emerald-700 hover:bg-emerald-100"
                                   onClick={() => handleApprove(l.id)}
                                   type="button"
                                 >
                                   Onayla
                                 </button>
                                 <button
-                                  className="rounded-lg bg-rose-50 px-2.5 py-1 text-[11px] font-bold text-rose-700 border border-rose-200 hover:bg-rose-100"
+                                  className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-[11px] text-rose-700 hover:bg-rose-100"
                                   onClick={() => {
                                     setRejectingLeave(l);
                                     setRejectionReason("");
@@ -870,11 +971,15 @@ export default function LeavesPage() {
 
       {/* 7. TAB 4: MY LEAVE REQUESTS */}
       {activeTab === "my" && (
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs space-y-4">
+        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Kendi İzin Taleplerim</h3>
-              <p className="text-xs text-slate-500">Oluşturduğunuz izin talepleri ve onay durumları</p>
+              <h3 className="font-bold text-slate-900 text-sm">
+                Kendi İzin Taleplerim
+              </h3>
+              <p className="text-slate-500 text-xs">
+                Oluşturduğunuz izin talepleri ve onay durumları
+              </p>
             </div>
             <button
               className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
@@ -888,13 +993,13 @@ export default function LeavesPage() {
 
           <div className="overflow-x-auto rounded-2xl border border-slate-200">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-200 border-b bg-slate-50 text-[11px] text-slate-500 font-medium">
+              <thead className="border-slate-200 border-b bg-slate-50 font-medium text-[11px] text-slate-500">
                 <tr>
-                  <th className="py-3 px-4">İzin Türü</th>
-                  <th className="py-3 px-4">Tarih Aralığı</th>
-                  <th className="py-3 px-4 text-center">Toplam Gün</th>
-                  <th className="py-3 px-4">Durum</th>
-                  <th className="py-3 px-4">Sebep / Gerekçe</th>
+                  <th className="px-4 py-3">İzin Türü</th>
+                  <th className="px-4 py-3">Tarih Aralığı</th>
+                  <th className="px-4 py-3 text-center">Toplam Gün</th>
+                  <th className="px-4 py-3">Durum</th>
+                  <th className="px-4 py-3">Sebep / Gerekçe</th>
                   <th className="py-3 pr-4 pl-3 text-right">İptal</th>
                 </tr>
               </thead>
@@ -908,26 +1013,31 @@ export default function LeavesPage() {
                 ) : (
                   leaves.map((l) => (
                     <tr className="hover:bg-slate-50/60" key={l.id}>
-                      <td className="py-3.5 px-4 font-bold text-slate-900">
-                        <span className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}>
+                      <td className="px-4 py-3.5 font-bold text-slate-900">
+                        <span
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
+                        >
                           {getLeaveTypeLabel(l.leaveType)}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 font-semibold text-slate-800">
-                        {new Date(l.startDate).toLocaleDateString("tr-TR")} - {new Date(l.endDate).toLocaleDateString("tr-TR")}
+                      <td className="px-4 py-3.5 font-semibold text-slate-800">
+                        {new Date(l.startDate).toLocaleDateString("tr-TR")} -{" "}
+                        {new Date(l.endDate).toLocaleDateString("tr-TR")}
                       </td>
-                      <td className="py-3.5 px-4 text-center font-bold text-slate-900">
+                      <td className="px-4 py-3.5 text-center font-bold text-slate-900">
                         {l.totalDays} Gün
                       </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}>
+                      <td className="px-4 py-3.5">
+                        <span
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
+                        >
                           {getStatusLabel(l.status)}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-600 italic">
+                      <td className="px-4 py-3.5 text-slate-600 italic">
                         {l.reason || "—"}
                         {l.rejectionReason && (
-                          <div className="text-[10px] text-rose-600 font-bold not-italic mt-0.5">
+                          <div className="mt-0.5 font-bold text-[10px] text-rose-600 not-italic">
                             Ret Nedeni: {l.rejectionReason}
                           </div>
                         )}
@@ -935,7 +1045,7 @@ export default function LeavesPage() {
                       <td className="py-3.5 pr-4 pl-3 text-right">
                         {l.status === "Pending" && (
                           <button
-                            className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 text-[11px] font-bold text-rose-700 hover:bg-rose-100"
+                            className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-[11px] text-rose-700 hover:bg-rose-100"
                             onClick={() => handleCancel(l.id)}
                             type="button"
                           >
@@ -971,16 +1081,23 @@ export default function LeavesPage() {
 
       {/* 9. REJECT MODAL */}
       {rejectingLeave && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl text-xs">
-            <h3 className="font-bold text-base text-slate-900">İzin Talebini Reddet</h3>
-            <p className="mt-1 text-xs text-slate-600">
-              <strong className="text-slate-900 font-semibold">{rejectingLeave.employeeName}</strong> personelinin{" "}
-              {rejectingLeave.totalDays} günlük izin talebini reddetmek üzeresiniz. Lütfen bir ret gerekçesi belirtin.
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
+            <h3 className="font-bold text-base text-slate-900">
+              İzin Talebini Reddet
+            </h3>
+            <p className="mt-1 text-slate-600 text-xs">
+              <strong className="font-semibold text-slate-900">
+                {rejectingLeave.employeeName}
+              </strong>{" "}
+              personelinin {rejectingLeave.totalDays} günlük izin talebini
+              reddetmek üzeresiniz. Lütfen bir ret gerekçesi belirtin.
             </p>
 
             <div className="mt-4">
-              <label className="block font-medium text-slate-700 mb-1">Ret Gerekçesi *</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Ret Gerekçesi *
+              </label>
               <textarea
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-900 focus:bg-white focus:outline-none"
                 onChange={(e) => setRejectionReason(e.target.value)}
@@ -1013,14 +1130,14 @@ export default function LeavesPage() {
 
       {/* CONFIRM DIALOG */}
       <ConfirmDialog
-        open={confirmDialog.open}
-        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
-        title={confirmDialog.title}
-        description={confirmDialog.description}
-        confirmText={confirmDialog.confirmText}
         cancelText={confirmDialog.cancelText}
-        variant={confirmDialog.variant}
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
         onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
       />
     </div>
   );
@@ -1045,10 +1162,15 @@ function CreateLeaveModal({
 }) {
   const [employeeId, setEmployeeId] = useState(employees[0]?.id || "");
   const [employeeName, setEmployeeName] = useState(
-    employees[0]?.fullName || `${employees[0]?.firstName ?? ""} ${employees[0]?.lastName ?? ""}`.trim()
+    employees[0]?.fullName ||
+      `${employees[0]?.firstName ?? ""} ${employees[0]?.lastName ?? ""}`.trim()
   );
-  const [departmentId, setDepartmentId] = useState(employees[0]?.departmentId || "");
-  const [departmentName, setDepartmentName] = useState(employees[0]?.departmentName || "");
+  const [departmentId, setDepartmentId] = useState(
+    employees[0]?.departmentId || ""
+  );
+  const [departmentName, setDepartmentName] = useState(
+    employees[0]?.departmentName || ""
+  );
   const [leaveType, setLeaveType] = useState("Annual");
 
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -1062,13 +1184,17 @@ function CreateLeaveModal({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleEmployeeChange = (id: string) => {
     setEmployeeId(id);
     const found = employees.find((e) => e.id === id);
     if (found) {
-      setEmployeeName(found.fullName || `${found.firstName} ${found.lastName}`.trim());
+      setEmployeeName(
+        found.fullName || `${found.firstName} ${found.lastName}`.trim()
+      );
       setDepartmentId(found.departmentId || "");
       setDepartmentName(found.departmentName || "");
     }
@@ -1076,11 +1202,17 @@ function CreateLeaveModal({
 
   // Calculate business days
   const calculateDays = () => {
-    if (isHalfDay) return 0.5;
-    if (!startDate || !endDate) return 1;
+    if (isHalfDay) {
+      return 0.5;
+    }
+    if (!(startDate && endDate)) {
+      return 1;
+    }
     const start = new Date(startDate);
     const end = new Date(endDate);
-    if (end < start) return 0;
+    if (end < start) {
+      return 0;
+    }
 
     let count = 0;
     const cur = new Date(start);
@@ -1102,7 +1234,7 @@ function CreateLeaveModal({
       setError("Lütfen bir çalışan seçin.");
       return;
     }
-    if (!startDate || !endDate) {
+    if (!(startDate && endDate)) {
       setError("Lütfen başlangıç ve bitiş tarihlerini girin.");
       return;
     }
@@ -1111,17 +1243,17 @@ function CreateLeaveModal({
     setError(null);
     try {
       const payload: CreateLeaveRequestPayload = {
-        employeeId,
-        employeeName,
         departmentId: departmentId || undefined,
         departmentName: departmentName || undefined,
-        leaveType,
-        startDate,
-        endDate: isHalfDay ? startDate : endDate,
-        isHalfDay,
-        halfDayPeriod: isHalfDay ? halfDayPeriod : undefined,
-        reason: reason.trim() || undefined,
         emergencyContact: emergencyContact.trim() || undefined,
+        employeeId,
+        employeeName,
+        endDate: isHalfDay ? startDate : endDate,
+        halfDayPeriod: isHalfDay ? halfDayPeriod : undefined,
+        isHalfDay,
+        leaveType,
+        reason: reason.trim() || undefined,
+        startDate,
       };
 
       const res = await ApiClient.createLeaveRequest(payload, tenantId);
@@ -1138,36 +1270,50 @@ function CreateLeaveModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl text-xs">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white text-xs shadow-2xl">
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">Yeni İzin Talebi Oluştur</h2>
-            <p className="text-slate-500 text-xs">İzin türünü, gün aralığını ve gerekçenizi girin</p>
+            <h2 className="font-bold text-base text-slate-900">
+              Yeni İzin Talebi Oluştur
+            </h2>
+            <p className="text-slate-500 text-xs">
+              İzin türünü, gün aralığını ve gerekçenizi girin
+            </p>
           </div>
-          <button className="rounded-full p-2 text-slate-400 hover:bg-slate-100" onClick={onClose} type="button">
+          <button
+            className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="flex-1 overflow-y-auto p-6 space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="flex-1 space-y-4 overflow-y-auto p-6"
+          onSubmit={handleSubmit}
+        >
           {error && (
-            <div className="rounded-xl bg-rose-50 p-3 text-xs text-rose-700 font-medium">
+            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
               {error}
             </div>
           )}
 
           {/* Employee Picker */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">Personel / Çalışan *</label>
-            <Select value={employeeId} onValueChange={handleEmployeeChange}>
+            <label className="mb-1 block font-medium text-slate-700">
+              Personel / Çalışan *
+            </label>
+            <Select onValueChange={handleEmployeeChange} value={employeeId}>
               <SelectTrigger>
                 <SelectValue placeholder="Personel Seçiniz" />
               </SelectTrigger>
               <SelectContent>
                 {employees.map((e) => (
                   <SelectItem key={e.id} value={e.id}>
-                    {e.fullName || `${e.firstName} ${e.lastName}`} {e.departmentName ? `(${e.departmentName})` : ""}
+                    {e.fullName || `${e.firstName} ${e.lastName}`}{" "}
+                    {e.departmentName ? `(${e.departmentName})` : ""}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -1177,27 +1323,35 @@ function CreateLeaveModal({
           {/* Leave Type & Balance Alert */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">İzin Türü *</label>
-              <Select value={leaveType} onValueChange={setLeaveType}>
+              <label className="mb-1 block font-medium text-slate-700">
+                İzin Türü *
+              </label>
+              <Select onValueChange={setLeaveType} value={leaveType}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Annual">Yıllık İzin (Bakiyeden Düşer)</SelectItem>
+                  <SelectItem value="Annual">
+                    Yıllık İzin (Bakiyeden Düşer)
+                  </SelectItem>
                   <SelectItem value="Casual">Mazeret İzni</SelectItem>
                   <SelectItem value="Sick">Hastalık / Sağlık Raporu</SelectItem>
                   <SelectItem value="Unpaid">Ücretsiz İzin</SelectItem>
                   <SelectItem value="Marriage">Evlilik İzni (3 Gün)</SelectItem>
                   <SelectItem value="Maternity">Doğum İzni</SelectItem>
-                  <SelectItem value="Paternity">Babalık İzni (5 Gün)</SelectItem>
-                  <SelectItem value="Bereavement">Vefat İzni (3 Gün)</SelectItem>
+                  <SelectItem value="Paternity">
+                    Babalık İzni (5 Gün)
+                  </SelectItem>
+                  <SelectItem value="Bereavement">
+                    Vefat İzni (3 Gün)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Half Day Option */}
             <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 cursor-pointer hover:bg-slate-100 transition-colors">
+              <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 transition-colors hover:bg-slate-100">
                 <input
                   checked={isHalfDay}
                   className="rounded text-blue-600 focus:ring-0"
@@ -1212,50 +1366,64 @@ function CreateLeaveModal({
           {/* Date Picker Grid */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">Başlangıç Tarihi *</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Başlangıç Tarihi *
+              </label>
               <DatePicker
-                value={startDate}
                 onChange={(dateStr) => {
                   setStartDate(dateStr);
-                  if (isHalfDay || dateStr > endDate) setEndDate(dateStr);
+                  if (isHalfDay || dateStr > endDate) {
+                    setEndDate(dateStr);
+                  }
                 }}
+                value={startDate}
               />
             </div>
 
-            {!isHalfDay ? (
+            {isHalfDay ? (
               <div>
-                <label className="mb-1 block font-medium text-slate-700">Bitiş Tarihi *</label>
-                <DatePicker
-                  value={endDate}
-                  minDate={startDate}
-                  onChange={setEndDate}
-                />
-              </div>
-            ) : (
-              <div>
-                <label className="mb-1 block font-medium text-slate-700">Yarım Gün Periyodu</label>
-                <Select value={halfDayPeriod} onValueChange={setHalfDayPeriod}>
+                <label className="mb-1 block font-medium text-slate-700">
+                  Yarım Gün Periyodu
+                </label>
+                <Select onValueChange={setHalfDayPeriod} value={halfDayPeriod}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Morning">Sabah (Öğleden Önce)</SelectItem>
+                    <SelectItem value="Morning">
+                      Sabah (Öğleden Önce)
+                    </SelectItem>
                     <SelectItem value="Afternoon">Öğleden Sonra</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+            ) : (
+              <div>
+                <label className="mb-1 block font-medium text-slate-700">
+                  Bitiş Tarihi *
+                </label>
+                <DatePicker
+                  minDate={startDate}
+                  onChange={setEndDate}
+                  value={endDate}
+                />
               </div>
             )}
           </div>
 
           {/* Smart Duration & Balance Calculation Banner */}
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5 flex items-center justify-between">
+          <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
                 <CalendarIcon className="h-4 w-4" />
               </div>
               <div>
-                <span className="font-bold text-slate-900">Hesaplanan İş Günü:</span>
-                <span className="text-[11px] text-slate-500 block">Hafta sonları otomatik atlandı</span>
+                <span className="font-bold text-slate-900">
+                  Hesaplanan İş Günü:
+                </span>
+                <span className="block text-[11px] text-slate-500">
+                  Hafta sonları otomatik atlandı
+                </span>
               </div>
             </div>
             <span className="font-extrabold text-base text-blue-600">
@@ -1265,7 +1433,9 @@ function CreateLeaveModal({
 
           {/* Reason & Emergency Contact */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">İzin Sebebi / Açıklama</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              İzin Sebebi / Açıklama
+            </label>
             <textarea
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setReason(e.target.value)}
@@ -1276,7 +1446,9 @@ function CreateLeaveModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">Acil Durum İletişim Notu (Opsiyonel)</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Acil Durum İletişim Notu (Opsiyonel)
+            </label>
             <input
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setEmergencyContact(e.target.value)}
@@ -1296,7 +1468,7 @@ function CreateLeaveModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

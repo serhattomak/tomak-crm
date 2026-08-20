@@ -1,79 +1,83 @@
-export type DashboardTab = "Overview" | "Sales" | "Activities"
+export type DashboardTab = "Overview" | "Sales" | "Activities";
 
-export type DateRange = "today" | "week" | "month" | "quarter" | "year"
+export type DateRange = "today" | "week" | "month" | "quarter" | "year";
 
 export type WidgetCategory =
-  "Sales" | "Leads" | "Activities" | "Team" | "General"
+  | "Sales"
+  | "Leads"
+  | "Activities"
+  | "Team"
+  | "General";
 
-export type WidgetSpan = "full" | "half" | "third" | "two-thirds" | "quarter"
+export type WidgetSpan = "full" | "half" | "third" | "two-thirds" | "quarter";
 
 export interface WidgetMeta {
-  id: string
-  title: string
-  description: string
-  category: WidgetCategory
-  defaultTabs: DashboardTab[]
-  defaultSpan: WidgetSpan
-  iconName: string
+  category: WidgetCategory;
+  defaultSpan: WidgetSpan;
+  defaultTabs: DashboardTab[];
+  description: string;
+  iconName: string;
+  id: string;
+  title: string;
 }
 
 export interface TaskItem {
-  id: string
-  title: string
-  dueDate: string
-  priority: "low" | "medium" | "high" | "urgent"
-  completed: boolean
-  assignedTo?: string
-  category?: string
+  assignedTo?: string;
+  category?: string;
+  completed: boolean;
+  dueDate: string;
+  id: string;
+  priority: "low" | "medium" | "high" | "urgent";
+  title: string;
 }
 
 export interface DealItem {
-  id: string
-  title: string
-  company: string
-  value: number
-  stage: "Discovery" | "Proposal" | "Negotiation" | "Won" | "Lost"
-  closingDate: string
+  closingDate: string;
+  company: string;
+  id: string;
   owner: {
-    name: string
-    avatar?: string
-    initials: string
-  }
-  probability: number
+    name: string;
+    avatar?: string;
+    initials: string;
+  };
+  probability: number;
+  stage: "Discovery" | "Proposal" | "Negotiation" | "Won" | "Lost";
+  title: string;
+  value: number;
 }
 
 export interface ActivityItem {
-  id: string
+  action: string;
+  id: string;
+  target: string;
+  timestamp: string;
+  type: "deal" | "lead" | "meeting" | "task" | "call";
   user: {
-    name: string
-    avatar?: string
-    initials: string
-  }
-  action: string
-  target: string
-  timestamp: string
-  type: "deal" | "lead" | "meeting" | "task" | "call"
+    name: string;
+    avatar?: string;
+    initials: string;
+  };
 }
 
 export interface MeetingItem {
-  id: string
-  title: string
-  customer: string
-  time: string
-  date: string
-  type: "video" | "phone" | "in-person"
-  link?: string
-  attendees: string[]
+  attendees: string[];
+  customer: string;
+  date: string;
+  id: string;
+  link?: string;
+  time: string;
+  title: string;
+  type: "video" | "phone" | "in-person";
 }
 
 export interface TeamMemberScore {
-  id: string
-  name: string
-  role: string
-  initials: string
-  avatarColor: string
-  target: number
-  achieved: number
-  dealsClosed: number
-  rank: number
+  achieved: number;
+  avatarColor: string;
+  dealsClosed: number;
+  id: string;
+  initials: string;
+  name: string;
+  rank: number;
+  role: string;
+  target: number;
 }

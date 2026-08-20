@@ -22,12 +22,12 @@ import type { DashboardTab } from "./dashboard-types";
 import { WIDGET_REGISTRY } from "./widget-registry";
 
 interface CustomizeWidgetsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   activeTab: DashboardTab;
   activeWidgetIds: string[];
-  onToggleWidget: (widgetId: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
   onResetDefaults: () => void;
+  onToggleWidget: (widgetId: string) => void;
 }
 
 export function CustomizeWidgetsModal({
@@ -41,7 +41,9 @@ export function CustomizeWidgetsModal({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const categories: { id: string; label: string }[] = [
     { id: "all", label: "Tümü" },
@@ -82,7 +84,8 @@ export function CustomizeWidgetsModal({
   };
 
   const filteredWidgets = WIDGET_REGISTRY.filter((w) => {
-    const matchesCategory = selectedCategory === "all" || w.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === "all" || w.category === selectedCategory;
     const matchesSearch =
       w.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       w.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -90,7 +93,7 @@ export function CustomizeWidgetsModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
       <div className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
@@ -103,14 +106,17 @@ export function CustomizeWidgetsModal({
                 Dashboard Widgetlarını Özelleştir
               </h2>
               <p className="text-slate-500 text-xs">
-                <strong className="text-violet-600 font-semibold">{activeTab}</strong> sekmesinde
-                görüntülenecek panelleri seçin ({activeWidgetIds.length} aktif)
+                <strong className="font-semibold text-violet-600">
+                  {activeTab}
+                </strong>{" "}
+                sekmesinde görüntülenecek panelleri seçin (
+                {activeWidgetIds.length} aktif)
               </p>
             </div>
           </div>
 
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
             onClick={onClose}
             type="button"
           >
@@ -119,7 +125,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="space-y-3 border-slate-100 border-b p-5 bg-slate-50/50">
+        <div className="space-y-3 border-slate-100 border-b bg-slate-50/50 p-5">
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
             <input
@@ -138,7 +144,7 @@ export function CustomizeWidgetsModal({
                 className={`rounded-xl px-3 py-1 font-semibold text-xs transition-all ${
                   selectedCategory === cat.id
                     ? "bg-slate-900 text-white shadow-xs"
-                    : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"
+                    : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
                 }`}
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
@@ -151,7 +157,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Widget Grid List */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-2.5">
+        <div className="flex-1 space-y-2.5 overflow-y-auto p-5">
           {filteredWidgets.map((widget) => {
             const isActive = activeWidgetIds.includes(widget.id);
             return (
@@ -164,13 +170,15 @@ export function CustomizeWidgetsModal({
                 key={widget.id}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/80 shadow-2xs">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 bg-white shadow-2xs">
                     {getWidgetIcon(widget.iconName)}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 text-xs">{widget.title}</span>
-                      <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[9px] text-slate-500 font-medium">
+                      <span className="font-bold text-slate-900 text-xs">
+                        {widget.title}
+                      </span>
+                      <span className="rounded bg-slate-100 px-1.5 py-0.5 font-medium text-[9px] text-slate-500">
                         {widget.category}
                       </span>
                     </div>
@@ -189,7 +197,7 @@ export function CustomizeWidgetsModal({
                   type="button"
                 >
                   <div
-                    className={`h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-200 ${
+                    className={`h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-200 ${
                       isActive ? "translate-x-5" : "translate-x-0"
                     }`}
                   />
@@ -202,7 +210,7 @@ export function CustomizeWidgetsModal({
         {/* Footer */}
         <div className="flex items-center justify-between border-slate-100 border-t p-5">
           <button
-            className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+            className="flex items-center gap-1.5 font-semibold text-slate-500 text-xs transition-colors hover:text-slate-800"
             onClick={onResetDefaults}
             type="button"
           >

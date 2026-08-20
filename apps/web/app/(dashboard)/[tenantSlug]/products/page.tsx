@@ -21,12 +21,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import {
-  ApiClient,
   type AdjustProductStockRequest,
-  type CreateProductCategoryRequest,
+  ApiClient,
   type CreateProductRequest,
   type ProductCategoryDto,
   type ProductListDto,
@@ -59,8 +59,11 @@ export default function ProductsPage() {
   // Modals & Actions
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [stockAdjustProduct, setStockAdjustProduct] = useState<ProductListDto | null>(null);
-  const [deletingProduct, setDeletingProduct] = useState<ProductListDto | null>(null);
+  const [stockAdjustProduct, setStockAdjustProduct] =
+    useState<ProductListDto | null>(null);
+  const [deletingProduct, setDeletingProduct] = useState<ProductListDto | null>(
+    null
+  );
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -75,19 +78,21 @@ export default function ProductsPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setLoading(true);
     try {
       const [prodRes, catRes, statsRes] = await Promise.all([
         ApiClient.getProducts(
           {
+            categoryId: categoryFilter || undefined,
             page,
             pageSize,
             search: search.trim() || undefined,
-            type: typeFilter || undefined,
-            categoryId: categoryFilter || undefined,
             status: statusFilter || undefined,
             stockStatus: stockStatusFilter || undefined,
+            type: typeFilter || undefined,
           },
           activeTenant.id
         ),
@@ -110,16 +115,30 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, page, pageSize, search, typeFilter, categoryFilter, statusFilter, stockStatusFilter]);
+  }, [
+    activeTenant,
+    page,
+    pageSize,
+    search,
+    typeFilter,
+    categoryFilter,
+    statusFilter,
+    stockStatusFilter,
+  ]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
   const handleDelete = async () => {
-    if (!activeTenant || !deletingProduct) return;
+    if (!(activeTenant && deletingProduct)) {
+      return;
+    }
     try {
-      const res = await ApiClient.deleteProduct(deletingProduct.id, activeTenant.id);
+      const res = await ApiClient.deleteProduct(
+        deletingProduct.id,
+        activeTenant.id
+      );
       if (res.success) {
         showToast(`'${deletingProduct.name}' silindi.`);
         setDeletingProduct(null);
@@ -181,7 +200,7 @@ export default function ProductsPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl animate-in slide-in-from-top-4">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -198,8 +217,9 @@ export default function ProductsPage() {
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500">
-            Fiziksel stoklu ürünlerinizi, danışmanlık hizmetlerinizi ve abonelik paketlerinizi tek noktadan yönetin.
+          <p className="mt-0.5 text-slate-500 text-xs">
+            Fiziksel stoklu ürünlerinizi, danışmanlık hizmetlerinizi ve abonelik
+            paketlerinizi tek noktadan yönetin.
           </p>
         </div>
 
@@ -242,8 +262,10 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Toplam Katalog</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Toplam Katalog
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
                 {stats?.totalProducts ?? 0}
               </div>
             </div>
@@ -264,9 +286,14 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Toplam Envanter Değeri (Maliyet)</span>
-              <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl mt-1">
-                ₺{(stats?.totalInventoryValue ?? 0).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+              <span className="font-medium text-slate-500 text-xs">
+                Toplam Envanter Değeri (Maliyet)
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+                ₺
+                {(stats?.totalInventoryValue ?? 0).toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
               </div>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
@@ -274,7 +301,12 @@ export default function ProductsPage() {
             </div>
           </div>
           <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
-            <span>Satış Değeri: ₺{(stats?.totalRetailValue ?? 0).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+            <span>
+              Satış Değeri: ₺
+              {(stats?.totalRetailValue ?? 0).toLocaleString("tr-TR", {
+                minimumFractionDigits: 2,
+              })}
+            </span>
           </div>
         </div>
 
@@ -282,8 +314,10 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Kritik Stok Uyarısı</span>
-              <div className="font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Kritik Stok Uyarısı
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
                 {stats?.lowStockCount ?? 0}
               </div>
             </div>
@@ -291,7 +325,7 @@ export default function ProductsPage() {
               <AlertTriangle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-rose-600 font-semibold">
+          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-rose-600">
             <span>{stats?.outOfStockCount ?? 0} Ürün Tükendi</span>
           </div>
         </div>
@@ -300,8 +334,10 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">Hizmet & Abonelikler</span>
-              <div className="font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl mt-1">
+              <span className="font-medium text-slate-500 text-xs">
+                Hizmet & Abonelikler
+              </span>
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
                 {(stats?.servicesCount ?? 0) + (stats?.subscriptionsCount ?? 0)}
               </div>
             </div>
@@ -318,10 +354,10 @@ export default function ProductsPage() {
       {/* 3. Filters & View Switcher Bar */}
       <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
         {/* Search */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative max-w-md flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Ürün adı, SKU, Barkod veya Marka ara..."
             type="text"
@@ -333,7 +369,7 @@ export default function ProductsPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setTypeFilter(e.target.value)}
             value={typeFilter}
           >
@@ -346,21 +382,22 @@ export default function ProductsPage() {
 
           {/* Category Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setCategoryFilter(e.target.value)}
             value={categoryFilter}
           >
             <option value="">Tüm Kategoriler</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name} ({c.productsCount})
+                {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name} (
+                {c.productsCount})
               </option>
             ))}
           </select>
 
           {/* Stock Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setStockStatusFilter(e.target.value)}
             value={stockStatusFilter}
           >
@@ -372,7 +409,7 @@ export default function ProductsPage() {
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 font-medium focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -384,9 +421,13 @@ export default function ProductsPage() {
           </select>
 
           {/* Reset Filters */}
-          {(search || typeFilter || categoryFilter || statusFilter || stockStatusFilter) && (
+          {(search ||
+            typeFilter ||
+            categoryFilter ||
+            statusFilter ||
+            stockStatusFilter) && (
             <button
-              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100"
+              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
               onClick={() => {
                 setSearch("");
                 setTypeFilter("");
@@ -436,7 +477,9 @@ export default function ProductsPage() {
         <div className="flex h-64 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="text-xs text-slate-500 font-medium">Ürün ve hizmetler yükleniyor...</span>
+            <span className="font-medium text-slate-500 text-xs">
+              Ürün ve hizmetler yükleniyor...
+            </span>
           </div>
         </div>
       ) : products.length === 0 ? (
@@ -444,9 +487,12 @@ export default function ProductsPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
             <Package className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-slate-900 text-sm">Ürün veya Hizmet Bulunamadı</h3>
-          <p className="mt-1 max-w-sm text-xs text-slate-500">
-            Arama kriterlerinize uygun kayıt bulunamadı veya henüz bir ürün/hizmet tanımlanmadı.
+          <h3 className="mt-3 font-bold text-slate-900 text-sm">
+            Ürün veya Hizmet Bulunamadı
+          </h3>
+          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+            Arama kriterlerinize uygun kayıt bulunamadı veya henüz bir
+            ürün/hizmet tanımlanmadı.
           </p>
           <PermissionGate permission="Products.Create">
             <button
@@ -464,27 +510,30 @@ export default function ProductsPage() {
         <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-100 border-b bg-slate-50/50 text-[11px] text-slate-500 font-medium">
+              <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Ürün / Hizmet</th>
-                  <th className="py-3.5 px-4">Kategori & Marka</th>
-                  <th className="py-3.5 px-4">Tip & Durum</th>
-                  <th className="py-3.5 px-4">Stok Durumu</th>
-                  <th className="py-3.5 px-4 text-right">Maliyet</th>
-                  <th className="py-3.5 px-4 text-right">Satış Fiyatı</th>
-                  <th className="py-3.5 px-4 text-right">Kar Marjı</th>
+                  <th className="px-4 py-3.5">Kategori & Marka</th>
+                  <th className="px-4 py-3.5">Tip & Durum</th>
+                  <th className="px-4 py-3.5">Stok Durumu</th>
+                  <th className="px-4 py-3.5 text-right">Maliyet</th>
+                  <th className="px-4 py-3.5 text-right">Satış Fiyatı</th>
+                  <th className="px-4 py-3.5 text-right">Kar Marjı</th>
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {products.map((p) => (
-                  <tr className="group transition-colors hover:bg-slate-50/80" key={p.id}>
+                  <tr
+                    className="group transition-colors hover:bg-slate-50/80"
+                    key={p.id}
+                  >
                     <td className="py-4 pr-4 pl-6">
                       <Link
                         className="flex items-center gap-3"
                         href={`/${tenantSlug}/products/${p.id}`}
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-xs text-slate-600 shadow-2xs">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-600 text-xs shadow-2xs">
                           {p.images && p.images.length > 0 ? (
                             <img
                               alt={p.name}
@@ -500,10 +549,10 @@ export default function ProductsPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                          <div className="font-bold text-slate-900 transition-colors group-hover:text-blue-600">
                             {p.name}
                           </div>
-                          <div className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                          <div className="flex items-center gap-2 font-medium text-[10px] text-slate-400">
                             {p.sku && <span>SKU: {p.sku}</span>}
                             {p.barcode && (
                               <>
@@ -514,7 +563,9 @@ export default function ProductsPage() {
                             {p.variantsCount > 0 && (
                               <>
                                 <span>•</span>
-                                <span className="text-violet-600">{p.variantsCount} Varyant</span>
+                                <span className="text-violet-600">
+                                  {p.variantsCount} Varyant
+                                </span>
                               </>
                             )}
                           </div>
@@ -522,14 +573,18 @@ export default function ProductsPage() {
                       </Link>
                     </td>
 
-                    <td className="py-4 px-4">
-                      <div className="text-slate-800 font-medium text-[11px]">
+                    <td className="px-4 py-4">
+                      <div className="font-medium text-[11px] text-slate-800">
                         {p.categoryName || "Kategorisiz"}
                       </div>
-                      {p.brand && <div className="text-[10px] text-slate-400">{p.brand}</div>}
+                      {p.brand && (
+                        <div className="text-[10px] text-slate-400">
+                          {p.brand}
+                        </div>
+                      )}
                     </td>
 
-                    <td className="py-4 px-4">
+                    <td className="px-4 py-4">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getTypeBadge(
@@ -548,7 +603,7 @@ export default function ProductsPage() {
                       </div>
                     </td>
 
-                    <td className="py-4 px-4">
+                    <td className="px-4 py-4">
                       {p.trackInventory && p.type === "Physical" ? (
                         <div>
                           <div className="flex items-center gap-1.5">
@@ -557,8 +612,8 @@ export default function ProductsPage() {
                                 p.availableStock <= 0
                                   ? "text-rose-600"
                                   : p.isLowStock
-                                  ? "text-amber-600"
-                                  : "text-slate-900"
+                                    ? "text-amber-600"
+                                    : "text-slate-900"
                               }`}
                             >
                               {p.currentStock} {p.unit}
@@ -574,31 +629,41 @@ export default function ProductsPage() {
                           </div>
                         </div>
                       ) : (
-                        <span className="text-slate-400 text-[11px]">— (Stoksuz)</span>
+                        <span className="text-[11px] text-slate-400">
+                          — (Stoksuz)
+                        </span>
                       )}
                     </td>
 
-                    <td className="py-4 px-4 text-right">
+                    <td className="px-4 py-4 text-right">
                       <div className="font-medium text-slate-600 text-xs">
-                        ₺{p.costPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                        ₺
+                        {p.costPrice.toLocaleString("tr-TR", {
+                          minimumFractionDigits: 2,
+                        })}
                       </div>
                     </td>
 
-                    <td className="py-4 px-4 text-right">
+                    <td className="px-4 py-4 text-right">
                       <div className="font-extrabold text-slate-900 text-xs">
-                        ₺{p.sellingPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                        ₺
+                        {p.sellingPrice.toLocaleString("tr-TR", {
+                          minimumFractionDigits: 2,
+                        })}
                       </div>
-                      <div className="text-[10px] text-slate-400">KDV: %{p.taxRate}</div>
+                      <div className="text-[10px] text-slate-400">
+                        KDV: %{p.taxRate}
+                      </div>
                     </td>
 
-                    <td className="py-4 px-4 text-right">
+                    <td className="px-4 py-4 text-right">
                       <span
                         className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-[10px] ${
                           p.profitMargin >= 40
                             ? "bg-emerald-50 text-emerald-700"
                             : p.profitMargin > 0
-                            ? "bg-blue-50 text-blue-700"
-                            : "bg-rose-50 text-rose-700"
+                              ? "bg-blue-50 text-blue-700"
+                              : "bg-rose-50 text-rose-700"
                         }`}
                       >
                         %{Math.round(p.profitMargin)}
@@ -610,7 +675,7 @@ export default function ProductsPage() {
                         {p.trackInventory && (
                           <PermissionGate permission="Products.StockAdjust">
                             <button
-                              className="flex h-7 items-center gap-1 rounded-lg border border-slate-200 px-2 text-slate-600 hover:bg-slate-100 font-semibold text-[10px]"
+                              className="flex h-7 items-center gap-1 rounded-lg border border-slate-200 px-2 font-semibold text-[10px] text-slate-600 hover:bg-slate-100"
                               onClick={() => setStockAdjustProduct(p)}
                               title="Stok Hareketi Ekle"
                               type="button"
@@ -629,7 +694,7 @@ export default function ProductsPage() {
                         </Link>
                         <PermissionGate permission="Products.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                             onClick={() => setDeletingProduct(p)}
                             title="Sil"
                             type="button"
@@ -671,13 +736,14 @@ export default function ProductsPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors block"
+                        className="block font-bold text-slate-900 text-sm transition-colors group-hover:text-blue-600"
                         href={`/${tenantSlug}/products/${p.id}`}
                       >
                         {p.name}
                       </Link>
                       <div className="text-[10px] text-slate-400">
-                        {p.categoryName || "Kategorisiz"} {p.brand && `• ${p.brand}`}
+                        {p.categoryName || "Kategorisiz"}{" "}
+                        {p.brand && `• ${p.brand}`}
                       </div>
                     </div>
                   </div>
@@ -694,23 +760,32 @@ export default function ProductsPage() {
                 {/* Stock & Price Strip */}
                 <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-slate-50 p-3 text-xs">
                   <div>
-                    <span className="text-[10px] text-slate-400 font-medium">Satış Fiyatı</span>
+                    <span className="font-medium text-[10px] text-slate-400">
+                      Satış Fiyatı
+                    </span>
                     <div className="font-extrabold text-slate-900 text-sm">
-                      ₺{p.sellingPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                      ₺
+                      {p.sellingPrice.toLocaleString("tr-TR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400 font-medium">Stok Miktarı</span>
+                    <span className="font-medium text-[10px] text-slate-400">
+                      Stok Miktarı
+                    </span>
                     <div
                       className={`font-bold text-sm ${
                         p.availableStock <= 0
                           ? "text-rose-600"
                           : p.isLowStock
-                          ? "text-amber-600"
-                          : "text-slate-800"
+                            ? "text-amber-600"
+                            : "text-slate-800"
                       }`}
                     >
-                      {p.trackInventory ? `${p.currentStock} ${p.unit}` : "Hizmet"}
+                      {p.trackInventory
+                        ? `${p.currentStock} ${p.unit}`
+                        : "Hizmet"}
                     </div>
                   </div>
                 </div>
@@ -729,7 +804,7 @@ export default function ProductsPage() {
                 </span>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-blue-700 active:scale-[0.98] transition-all"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-blue-700 active:scale-[0.98]"
                   href={`/${tenantSlug}/products/${p.id}`}
                 >
                   <span>Detay</span>
@@ -787,12 +862,15 @@ export default function ProductsPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
           <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
             <h3 className="font-bold text-base text-slate-900">Ürünü Sil</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              <strong className="text-slate-900 font-semibold">{deletingProduct.name}</strong> isimli
-              ürünü ve buna bağlı varyant ile stok geçmişini silmek istediğinize emin misiniz?
+            <p className="mt-2 text-slate-600 text-xs leading-relaxed">
+              <strong className="font-semibold text-slate-900">
+                {deletingProduct.name}
+              </strong>{" "}
+              isimli ürünü ve buna bağlı varyant ile stok geçmişini silmek
+              istediğinize emin misiniz?
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
@@ -831,55 +909,63 @@ function CreateProductModal({
   categories: ProductCategoryDto[];
 }) {
   const [formData, setFormData] = useState<CreateProductRequest>({
-    type: "Physical",
-    name: "",
-    categoryId: "",
-    sku: "",
     barcode: "",
     brand: "",
-    unit: "Adet",
+    categoryId: "",
     costPrice: 0,
-    sellingPrice: 0,
     currency: "TRY",
-    taxRate: 20,
+    description: "",
     discountRate: 0,
-    trackInventory: true,
     initialStock: 0,
     minStockLevel: 5,
+    name: "",
+    sellingPrice: 0,
+    sku: "",
     status: "Active",
-    description: "",
+    taxRate: 20,
+    trackInventory: true,
+    type: "Physical",
+    unit: "Adet",
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    if (!formData.name.trim()) {
+      return;
+    }
 
     setSubmitting(true);
     setError(null);
     try {
       const cleanData: CreateProductRequest = {
-        type: formData.type,
-        name: formData.name.trim(),
-        categoryId: formData.categoryId ? formData.categoryId : undefined,
-        sku: formData.sku?.trim() || undefined,
         barcode: formData.barcode?.trim() || undefined,
         brand: formData.brand?.trim() || undefined,
-        unit: formData.unit?.trim() || "Adet",
+        categoryId: formData.categoryId ? formData.categoryId : undefined,
         costPrice: Number(formData.costPrice) || 0,
-        sellingPrice: Number(formData.sellingPrice) || 0,
         currency: formData.currency || "TRY",
-        taxRate: Number(formData.taxRate) ?? 20,
-        discountRate: Number(formData.discountRate) || 0,
-        trackInventory: formData.type === "Physical" ? formData.trackInventory : false,
-        initialStock: formData.type === "Physical" && formData.trackInventory ? Number(formData.initialStock) || 0 : 0,
-        minStockLevel: Number(formData.minStockLevel) || 5,
-        status: formData.status || "Active",
         description: formData.description?.trim() || undefined,
+        discountRate: Number(formData.discountRate) || 0,
+        initialStock:
+          formData.type === "Physical" && formData.trackInventory
+            ? Number(formData.initialStock) || 0
+            : 0,
+        minStockLevel: Number(formData.minStockLevel) || 5,
+        name: formData.name.trim(),
+        sellingPrice: Number(formData.sellingPrice) || 0,
+        sku: formData.sku?.trim() || undefined,
+        status: formData.status || "Active",
+        taxRate: Number(formData.taxRate) ?? 20,
+        trackInventory:
+          formData.type === "Physical" ? formData.trackInventory : false,
+        type: formData.type,
+        unit: formData.unit?.trim() || "Adet",
       };
 
       const res = await ApiClient.createProduct(cleanData, tenantId);
@@ -897,41 +983,61 @@ function CreateProductModal({
 
   const calculatedMargin =
     formData.sellingPrice > 0
-      ? Math.round(((formData.sellingPrice - formData.costPrice) / formData.sellingPrice) * 100)
+      ? Math.round(
+          ((formData.sellingPrice - formData.costPrice) /
+            formData.sellingPrice) *
+            100
+        )
       : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">Yeni Ürün / Hizmet Ekle</h2>
+            <h2 className="font-bold text-base text-slate-900">
+              Yeni Ürün / Hizmet Ekle
+            </h2>
             <p className="text-slate-500 text-xs">
-              Fiziksel stoklu ürün, danışmanlık hizmeti veya abonelik paketi tanımlayın
+              Fiziksel stoklu ürün, danışmanlık hizmeti veya abonelik paketi
+              tanımlayın
             </p>
           </div>
-          <button className="rounded-full p-2 text-slate-400 hover:bg-slate-100" onClick={onClose} type="button">
+          <button
+            className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="flex-1 overflow-y-auto p-6 space-y-4 text-xs" onSubmit={handleSubmit}>
+        <form
+          className="flex-1 space-y-4 overflow-y-auto p-6 text-xs"
+          onSubmit={handleSubmit}
+        >
           {error && (
-            <div className="rounded-xl bg-rose-50 p-3 text-xs text-rose-700 font-medium">
+            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
               {error}
             </div>
           )}
 
           {/* Type Switcher */}
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 rounded-2xl bg-slate-100 p-1">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 sm:grid-cols-4">
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Physical"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
               }`}
-              onClick={() => setFormData({ ...formData, type: "Physical", trackInventory: true })}
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  trackInventory: true,
+                  type: "Physical",
+                })
+              }
               type="button"
             >
               Fiziksel Ürün
@@ -942,7 +1048,13 @@ function CreateProductModal({
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
               }`}
-              onClick={() => setFormData({ ...formData, type: "Service", trackInventory: false })}
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  trackInventory: false,
+                  type: "Service",
+                })
+              }
               type="button"
             >
               Hizmet / Servis
@@ -953,7 +1065,13 @@ function CreateProductModal({
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
               }`}
-              onClick={() => setFormData({ ...formData, type: "Digital", trackInventory: false })}
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  trackInventory: false,
+                  type: "Digital",
+                })
+              }
               type="button"
             >
               Dijital Ürün
@@ -964,7 +1082,13 @@ function CreateProductModal({
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-900"
               }`}
-              onClick={() => setFormData({ ...formData, type: "Subscription", trackInventory: false })}
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  trackInventory: false,
+                  type: "Subscription",
+                })
+              }
               type="button"
             >
               Abonelik
@@ -974,10 +1098,14 @@ function CreateProductModal({
           {/* Core Info */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-slate-700">Ürün / Hizmet Adı *</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Ürün / Hizmet Adı *
+              </label>
               <input
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 placeholder="Örn: Ergonomik Ofis Koltuğu veya Yıllık Bakım Anlaşması"
                 required
                 type="text"
@@ -986,10 +1114,14 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">Kategori</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Kategori
+              </label>
               <select
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, categoryId: e.target.value })
+                }
                 value={formData.categoryId}
               >
                 <option value="">Kategori Seçin (Opsiyonel)</option>
@@ -1002,10 +1134,14 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">Marka</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Marka
+              </label>
               <input
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, brand: e.target.value })
+                }
                 placeholder="Örn: Logitech, Apple, Acme"
                 type="text"
                 value={formData.brand}
@@ -1013,10 +1149,14 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">Stok Kodu (SKU)</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Stok Kodu (SKU)
+              </label>
               <input
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sku: e.target.value })
+                }
                 placeholder="Örn: PRD-001"
                 type="text"
                 value={formData.sku}
@@ -1024,10 +1164,14 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">Barkod (EAN/UPC)</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Barkod (EAN/UPC)
+              </label>
               <input
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
-                onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, barcode: e.target.value })
+                }
                 placeholder="8690000000000"
                 type="text"
                 value={formData.barcode}
@@ -1036,16 +1180,18 @@ function CreateProductModal({
           </div>
 
           {/* Pricing & Tax Strip */}
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 space-y-3">
+          <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-slate-900">Fiyatlandırma & Vergi</h4>
+              <h4 className="font-bold text-slate-900">
+                Fiyatlandırma & Vergi
+              </h4>
               <span
                 className={`rounded-lg px-2 py-0.5 font-bold text-[11px] ${
                   calculatedMargin >= 40
                     ? "bg-emerald-100 text-emerald-800"
                     : calculatedMargin > 0
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-slate-200 text-slate-700"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-slate-200 text-slate-700"
                 }`}
               >
                 Tahmini Kar Marjı: %{calculatedMargin}
@@ -1054,11 +1200,18 @@ function CreateProductModal({
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
-                <label className="mb-1 block font-medium text-slate-700">Alış / Maliyet Fiyatı</label>
+                <label className="mb-1 block font-medium text-slate-700">
+                  Alış / Maliyet Fiyatı
+                </label>
                 <input
                   className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
                   min="0"
-                  onChange={(e) => setFormData({ ...formData, costPrice: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      costPrice: Number.parseFloat(e.target.value) || 0,
+                    })
+                  }
                   step="0.01"
                   type="number"
                   value={formData.costPrice}
@@ -1066,11 +1219,18 @@ function CreateProductModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-slate-700">Satış Fiyatı *</label>
+                <label className="mb-1 block font-medium text-slate-700">
+                  Satış Fiyatı *
+                </label>
                 <input
                   className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
                   min="0"
-                  onChange={(e) => setFormData({ ...formData, sellingPrice: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      sellingPrice: Number.parseFloat(e.target.value) || 0,
+                    })
+                  }
                   required
                   step="0.01"
                   type="number"
@@ -1079,10 +1239,17 @@ function CreateProductModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-slate-700">KDV Oranı (%)</label>
+                <label className="mb-1 block font-medium text-slate-700">
+                  KDV Oranı (%)
+                </label>
                 <select
                   className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
-                  onChange={(e) => setFormData({ ...formData, taxRate: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      taxRate: Number.parseFloat(e.target.value) || 0,
+                    })
+                  }
                   value={formData.taxRate}
                 >
                   <option value="20">%20 (Standart KDV)</option>
@@ -1096,14 +1263,21 @@ function CreateProductModal({
 
           {/* Inventory Settings (Only for Physical) */}
           {formData.type === "Physical" && (
-            <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 space-y-3">
+            <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-900">Stok & Envanter Ayarları</h4>
-                <label className="flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer">
+                <h4 className="font-bold text-slate-900">
+                  Stok & Envanter Ayarları
+                </h4>
+                <label className="flex cursor-pointer items-center gap-1.5 text-slate-700 text-xs">
                   <input
                     checked={formData.trackInventory}
                     className="rounded text-blue-600"
-                    onChange={(e) => setFormData({ ...formData, trackInventory: e.target.checked })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        trackInventory: e.target.checked,
+                      })
+                    }
                     type="checkbox"
                   />
                   <span>Stok Takibi Yap</span>
@@ -1113,32 +1287,50 @@ function CreateProductModal({
               {formData.trackInventory && (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">Açılış Stok Miktarı</label>
+                    <label className="mb-1 block font-medium text-slate-700">
+                      Açılış Stok Miktarı
+                    </label>
                     <input
                       className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
                       min="0"
-                      onChange={(e) => setFormData({ ...formData, initialStock: parseFloat(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          initialStock: Number.parseFloat(e.target.value) || 0,
+                        })
+                      }
                       type="number"
                       value={formData.initialStock}
                     />
                   </div>
 
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">Kritik Stok Uyarısı</label>
+                    <label className="mb-1 block font-medium text-slate-700">
+                      Kritik Stok Uyarısı
+                    </label>
                     <input
                       className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
                       min="0"
-                      onChange={(e) => setFormData({ ...formData, minStockLevel: parseFloat(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          minStockLevel: Number.parseFloat(e.target.value) || 0,
+                        })
+                      }
                       type="number"
                       value={formData.minStockLevel}
                     />
                   </div>
 
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">Birim</label>
+                    <label className="mb-1 block font-medium text-slate-700">
+                      Birim
+                    </label>
                     <select
                       className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
-                      onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, unit: e.target.value })
+                      }
                       value={formData.unit}
                     >
                       <option value="Adet">Adet</option>
@@ -1156,10 +1348,14 @@ function CreateProductModal({
 
           {/* Description */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">Açıklama / Detaylar</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Açıklama / Detaylar
+            </label>
             <textarea
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="Ürün özellikleri, kullanım alanları veya hizmet kapsamı..."
               rows={2}
               value={formData.description}
@@ -1176,7 +1372,7 @@ function CreateProductModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1204,20 +1400,24 @@ function QuickStockAdjustModal({
 }) {
   const [formData, setFormData] = useState<AdjustProductStockRequest>({
     movementType: "In",
-    quantity: 1,
-    unitCost: product.costPrice,
-    referenceNumber: "",
-    reason: "",
     notes: "",
+    quantity: 1,
+    reason: "",
+    referenceNumber: "",
+    unitCost: product.costPrice,
   });
 
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.quantity <= 0) return;
+    if (formData.quantity <= 0) {
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -1225,11 +1425,11 @@ function QuickStockAdjustModal({
         product.id,
         {
           ...formData,
-          quantity: Number(formData.quantity),
-          unitCost: formData.unitCost ? Number(formData.unitCost) : undefined,
-          referenceNumber: formData.referenceNumber?.trim() || undefined,
-          reason: formData.reason?.trim() || undefined,
           notes: formData.notes?.trim() || undefined,
+          quantity: Number(formData.quantity),
+          reason: formData.reason?.trim() || undefined,
+          referenceNumber: formData.referenceNumber?.trim() || undefined,
+          unitCost: formData.unitCost ? Number(formData.unitCost) : undefined,
         },
         tenantId
       );
@@ -1243,49 +1443,73 @@ function QuickStockAdjustModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl text-xs">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-4 mb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">Hızlı Stok Hareketi</h3>
-            <p className="text-slate-500 text-xs truncate max-w-xs">{product.name}</p>
+            <h3 className="font-bold text-base text-slate-900">
+              Hızlı Stok Hareketi
+            </h3>
+            <p className="max-w-xs truncate text-slate-500 text-xs">
+              {product.name}
+            </p>
           </div>
-          <button className="text-slate-400 hover:text-slate-700" onClick={onClose} type="button">
+          <button
+            className="text-slate-400 hover:text-slate-700"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Current Stock Banner */}
-        <div className="mb-4 rounded-2xl bg-blue-50/70 p-3 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between rounded-2xl bg-blue-50/70 p-3">
           <span className="font-semibold text-blue-900">Mevcut Stok:</span>
-          <span className="font-extrabold text-sm text-blue-700">
+          <span className="font-extrabold text-blue-700 text-sm">
             {product.currentStock} {product.unit}
           </span>
         </div>
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="block font-medium text-slate-700 mb-1">İşlem Türü</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              İşlem Türü
+            </label>
             <select
               className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
-              onChange={(e) => setFormData({ ...formData, movementType: e.target.value as any })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  movementType: e.target.value as any,
+                })
+              }
               value={formData.movementType}
             >
               <option value="In">Stok Girişi (Alış / Üretim)</option>
-              <option value="Out">Stok Çıkışı (Kayıp / Hasar / Transfer)</option>
+              <option value="Out">
+                Stok Çıkışı (Kayıp / Hasar / Transfer)
+              </option>
               <option value="Adjustment">Sayım Düzeltmesi (Hedef Stok)</option>
               <option value="Return">Müşteri İadesi</option>
             </select>
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">
-              {formData.movementType === "Adjustment" ? "Yeni Sayılan Stok Miktarı *" : "Miktar *"}
+            <label className="mb-1 block font-medium text-slate-700">
+              {formData.movementType === "Adjustment"
+                ? "Yeni Sayılan Stok Miktarı *"
+                : "Miktar *"}
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
               min="0.01"
-              onChange={(e) => setFormData({ ...formData, quantity: parseFloat(e.target.value) || 0 })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  quantity: Number.parseFloat(e.target.value) || 0,
+                })
+              }
               required
               step="0.01"
               type="number"
@@ -1295,11 +1519,18 @@ function QuickStockAdjustModal({
 
           {formData.movementType === "In" && (
             <div>
-              <label className="block font-medium text-slate-700 mb-1">Birim Alış Maliyeti (₺)</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Birim Alış Maliyeti (₺)
+              </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
                 min="0"
-                onChange={(e) => setFormData({ ...formData, unitCost: parseFloat(e.target.value) || 0 })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    unitCost: Number.parseFloat(e.target.value) || 0,
+                  })
+                }
                 step="0.01"
                 type="number"
                 value={formData.unitCost}
@@ -1308,10 +1539,14 @@ function QuickStockAdjustModal({
           )}
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Fatura / İrsaliye No (Opsiyonel)</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Fatura / İrsaliye No (Opsiyonel)
+            </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
-              onChange={(e) => setFormData({ ...formData, referenceNumber: e.target.value })}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              onChange={(e) =>
+                setFormData({ ...formData, referenceNumber: e.target.value })
+              }
               placeholder="Örn: IRS-2026-0042"
               type="text"
               value={formData.referenceNumber}
@@ -1319,17 +1554,21 @@ function QuickStockAdjustModal({
           </div>
 
           <div>
-            <label className="block font-medium text-slate-700 mb-1">Açıklama / Neden</label>
+            <label className="mb-1 block font-medium text-slate-700">
+              Açıklama / Neden
+            </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
-              onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              onChange={(e) =>
+                setFormData({ ...formData, reason: e.target.value })
+              }
               placeholder="Örn: Tedarikçi siparişi depoya indi"
               type="text"
               value={formData.reason}
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4 mt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
               className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
               onClick={onClose}
@@ -1338,7 +1577,7 @@ function QuickStockAdjustModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1369,19 +1608,23 @@ function CategoryManagerModal({
   const [newCatDesc, setNewCatDesc] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCatName.trim()) return;
+    if (!newCatName.trim()) {
+      return;
+    }
 
     setSubmitting(true);
     try {
       const res = await ApiClient.createProductCategory(
         {
+          description: newCatDesc.trim() || undefined,
           name: newCatName.trim(),
           parentId: newCatParentId ? newCatParentId : undefined,
-          description: newCatDesc.trim() || undefined,
         },
         tenantId
       );
@@ -1410,28 +1653,43 @@ function CategoryManagerModal({
 
   // Group root categories and their subcategories
   const rootCategories = categories.filter((c) => !c.parentId);
-  const getSubcategories = (parentId: string) => categories.filter((c) => c.parentId === parentId);
+  const getSubcategories = (parentId: string) =>
+    categories.filter((c) => c.parentId === parentId);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex max-h-[85vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl text-xs">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-4 mb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[85vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">Kategori & Hiyerarşi Yönetimi</h3>
-            <p className="text-slate-500 text-xs">Üst ve alt kategorileri (örn. Elektronik &gt; Küçük Ev Aletleri) yapılandırın</p>
+            <h3 className="font-bold text-base text-slate-900">
+              Kategori & Hiyerarşi Yönetimi
+            </h3>
+            <p className="text-slate-500 text-xs">
+              Üst ve alt kategorileri (örn. Elektronik &gt; Küçük Ev Aletleri)
+              yapılandırın
+            </p>
           </div>
-          <button className="text-slate-400 hover:text-slate-700" onClick={onClose} type="button">
+          <button
+            className="text-slate-400 hover:text-slate-700"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Add Category Form */}
-        <form className="space-y-3 border-slate-100 border-b pb-4 mb-4" onSubmit={handleCreate}>
+        <form
+          className="mb-4 space-y-3 border-slate-100 border-b pb-4"
+          onSubmit={handleCreate}
+        >
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <div>
-              <label className="block font-medium text-slate-700 mb-1">Kategori Adı *</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Kategori Adı *
+              </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
                 onChange={(e) => setNewCatName(e.target.value)}
                 placeholder="Örn: Küçük Ev Aletleri"
                 required
@@ -1441,9 +1699,11 @@ function CategoryManagerModal({
             </div>
 
             <div>
-              <label className="block font-medium text-slate-700 mb-1">Üst Kategori (Opsiyonel)</label>
+              <label className="mb-1 block font-medium text-slate-700">
+                Üst Kategori (Opsiyonel)
+              </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
                 onChange={(e) => setNewCatParentId(e.target.value)}
                 value={newCatParentId}
               >
@@ -1459,7 +1719,7 @@ function CategoryManagerModal({
 
           <div className="flex items-center justify-end">
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
               disabled={submitting || !newCatName.trim()}
               type="submit"
             >
@@ -1469,9 +1729,11 @@ function CategoryManagerModal({
         </form>
 
         {/* Categories Hierarchical List */}
-        <div className="flex-1 overflow-y-auto space-y-2">
+        <div className="flex-1 space-y-2 overflow-y-auto">
           {categories.length === 0 ? (
-            <div className="text-center py-6 text-slate-400">Henüz kategori eklenmedi.</div>
+            <div className="py-6 text-center text-slate-400">
+              Henüz kategori eklenmedi.
+            </div>
           ) : (
             rootCategories.map((root) => {
               const subs = getSubcategories(root.id);
@@ -1481,13 +1743,15 @@ function CategoryManagerModal({
                   <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3">
                     <div className="flex items-center gap-2">
                       <FolderTree className="h-4 w-4 text-blue-600" />
-                      <span className="font-bold text-slate-900 text-xs">{root.name}</span>
+                      <span className="font-bold text-slate-900 text-xs">
+                        {root.name}
+                      </span>
                       <span className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-bold text-[10px] text-slate-600">
                         {root.productsCount} Ürün
                       </span>
                     </div>
                     <button
-                      className="text-slate-400 hover:text-rose-600 p-1"
+                      className="p-1 text-slate-400 hover:text-rose-600"
                       onClick={() => handleDelete(root.id)}
                       title="Ana Kategoriyi Sil"
                       type="button"
@@ -1503,14 +1767,16 @@ function CategoryManagerModal({
                       key={sub.id}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-slate-400 font-bold">↳</span>
-                        <span className="font-semibold text-slate-800 text-xs">{sub.name}</span>
-                        <span className="text-[10px] text-slate-400 font-medium">
+                        <span className="font-bold text-slate-400">↳</span>
+                        <span className="font-semibold text-slate-800 text-xs">
+                          {sub.name}
+                        </span>
+                        <span className="font-medium text-[10px] text-slate-400">
                           ({sub.productsCount} Ürün)
                         </span>
                       </div>
                       <button
-                        className="text-slate-400 hover:text-rose-600 p-1"
+                        className="p-1 text-slate-400 hover:text-rose-600"
                         onClick={() => handleDelete(sub.id)}
                         title="Alt Kategoriyi Sil"
                         type="button"
