@@ -200,7 +200,7 @@ export default function CustomersPage() {
 
           <PermissionGate permission="Customers.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -407,7 +407,7 @@ export default function CustomersPage() {
           </p>
           <PermissionGate permission="Customers.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -646,7 +646,7 @@ export default function CustomersPage() {
                 </div>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   href={`/${tenantSlug}/customers/${c.id}`}
                 >
                   <span>Detay (360°)</span>
@@ -841,7 +841,7 @@ function CreateCustomerModal({
               onClick={() => setFormData({ ...formData, type: "Company" })}
               type="button"
             >
-              🏢 Kurumsal (Şirket)
+              Kurumsal (Şirket)
             </button>
             <button
               className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
@@ -852,7 +852,7 @@ function CreateCustomerModal({
               onClick={() => setFormData({ ...formData, type: "Individual" })}
               type="button"
             >
-              👤 Bireysel (Şahıs)
+              Bireysel (Şahıs)
             </button>
           </div>
 
@@ -997,7 +997,7 @@ function CreateCustomerModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

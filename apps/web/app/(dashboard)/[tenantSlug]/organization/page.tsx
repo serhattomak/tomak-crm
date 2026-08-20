@@ -18,6 +18,17 @@ import {
   type OrgChartNodeDto,
   type TenantUserDto,
 } from "@/lib/api-client"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
+import { DatePicker } from "@workspace/ui/components/date-picker"
+import { NumberInput } from "@workspace/ui/components/number-input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
+import { toast } from "@workspace/ui/components/sonner"
 import {
   Network,
   Building2,
@@ -123,6 +134,22 @@ function OrganizationPageContent() {
   const [selectedEmpDetail, setSelectedEmpDetail] =
     useState<EmployeeDetailDto | null>(null)
   const [isLoadingDetail, setIsLoadingDetail] = useState(false)
+
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    confirmText?: string
+    cancelText?: string
+    variant?: "destructive" | "warning" | "default"
+    onConfirm: () => void | Promise<void>
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+  })
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("")
@@ -372,17 +399,28 @@ function OrganizationPageContent() {
                 setEditingDept(dept)
                 setIsDeptModalOpen(true)
               }}
-              onDelete={async (deptId) => {
-                if (
-                  confirm("Bu departmanı silmek istediğinizden emin misiniz?")
-                ) {
-                  const res = await ApiClient.deleteDepartment(
-                    deptId,
-                    activeTenant!.id
-                  )
-                  if (res.success) loadData()
-                  else alert(res.message || "Departman silinemedi.")
-                }
+              onDelete={(deptId) => {
+                setConfirmDialog({
+                  open: true,
+                  title: "Departmanı Sil",
+                  description:
+                    "Bu departmanı silmek istediğinizden emin misiniz? Alt departmanlar ve çalışanlar etkilenebilir.",
+                  confirmText: "Sil",
+                  variant: "destructive",
+                  onConfirm: async () => {
+                    const res = await ApiClient.deleteDepartment(
+                      deptId,
+                      activeTenant!.id
+                    )
+                    if (res.success) {
+                      toast.success("Departman başarıyla silindi.")
+                      loadData()
+                    } else {
+                      toast.error(res.message || "Departman silinemedi.")
+                    }
+                    setConfirmDialog((prev) => ({ ...prev, open: false }))
+                  },
+                })
               }}
               onAddChild={(parentId) => {
                 setEditingDept({
@@ -401,61 +439,81 @@ function OrganizationPageContent() {
 
           {activeTab === "employees" && (
             <EmployeesTab
-              employees={filteredEmployees}
               departments={departments}
-              positions={positions}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
+              employees={filteredEmployees}
               filterDept={filterDept}
-              setFilterDept={setFilterDept}
-              filterType={filterType}
-              setFilterType={setFilterType}
               filterStatus={filterStatus}
-              setFilterStatus={setFilterStatus}
-              viewMode={viewMode}
-              setViewMode={setViewMode}
-              onView={(emp) => setViewingEmpId(emp.id)}
+              filterType={filterType}
+              onDelete={(empId) => {
+                setConfirmDialog({
+                  open: true,
+                  title: "Çalışanı Sil",
+                  description:
+                    "Bu çalışanı silmek istediğinizden emin misiniz? Çalışana ait tüm bordro ve izin geçmişi de etkilenecektir.",
+                  confirmText: "Sil",
+                  variant: "destructive",
+                  onConfirm: async () => {
+                    const res = await ApiClient.deleteEmployee(
+                      empId,
+                      activeTenant!.id
+                    )
+                    if (res.success) {
+                      toast.success("Çalışan kaydı silindi.")
+                      loadData()
+                    } else {
+                      toast.error(res.message || "Çalışan silinemedi.")
+                    }
+                    setConfirmDialog((prev) => ({ ...prev, open: false }))
+                  },
+                })
+              }}
               onEdit={(emp) => {
                 setEditingEmp(emp)
                 setIsEmpModalOpen(true)
               }}
-              onDelete={async (empId) => {
-                if (
-                  confirm("Bu çalışanı silmek istediğinizden emin misiniz?")
-                ) {
-                  const res = await ApiClient.deleteEmployee(
-                    empId,
-                    activeTenant!.id
-                  )
-                  if (res.success) loadData()
-                  else alert(res.message || "Çalışan silinemedi.")
-                }
-              }}
+              onView={(emp) => setViewingEmpId(emp.id)}
+              positions={positions}
+              searchQuery={searchQuery}
+              setFilterDept={setFilterDept}
+              setFilterStatus={setFilterStatus}
+              setFilterType={setFilterType}
+              setSearchQuery={setSearchQuery}
+              setViewMode={setViewMode}
+              viewMode={viewMode}
             />
           )}
 
           {activeTab === "positions" && (
             <PositionsTab
-              positions={positions}
               departments={departments}
+              onDelete={(posId) => {
+                setConfirmDialog({
+                  open: true,
+                  title: "Pozisyonu Sil",
+                  description:
+                    "Bu pozisyon tanımını silmek istediğinizden emin misiniz?",
+                  confirmText: "Sil",
+                  variant: "destructive",
+                  onConfirm: async () => {
+                    const res = await ApiClient.deleteJobPosition(
+                      posId,
+                      activeTenant!.id
+                    )
+                    if (res.success) {
+                      toast.success("Pozisyon silindi.")
+                      loadData()
+                    } else {
+                      toast.error(res.message || "Pozisyon silinemedi.")
+                    }
+                    setConfirmDialog((prev) => ({ ...prev, open: false }))
+                  },
+                })
+              }}
               onEdit={(pos) => {
                 setEditingPos(pos)
                 setIsPosModalOpen(true)
               }}
-              onDelete={async (posId) => {
-                if (
-                  confirm(
-                    "Bu pozisyon tanımını silmek istediğinizden emin misiniz?"
-                  )
-                ) {
-                  const res = await ApiClient.deleteJobPosition(
-                    posId,
-                    activeTenant!.id
-                  )
-                  if (res.success) loadData()
-                  else alert(res.message || "Pozisyon silinemedi.")
-                }
-              }}
+              positions={positions}
             />
           )}
         </>
@@ -536,6 +594,19 @@ function OrganizationPageContent() {
           onSelectEmployee={(id) => setViewingEmpId(id)}
         />
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) =>
+          setConfirmDialog((prev) => ({ ...prev, open }))
+        }
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </div>
   )
 }
@@ -1423,8 +1494,12 @@ function DepartmentModal({
       : await ApiClient.createDepartment(payload, tenantId)
 
     setIsSubmitting(false)
-    if (res.success) onSuccess()
-    else alert(res.message || "İşlem başarısız.")
+    if (res.success) {
+      toast.success(department?.id ? "Departman güncellendi." : "Departman oluşturuldu.")
+      onSuccess()
+    } else {
+      toast.error(res.message || "İşlem başarısız.")
+    }
   }
 
   return (
@@ -1432,7 +1507,7 @@ function DepartmentModal({
       <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
-            <Building2 className="h-5 w-5 text-fuchsia-500" />
+            <Building2 className="h-5 w-5 text-blue-600" />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
           </h2>
           <button
@@ -1459,7 +1534,7 @@ function DepartmentModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Yazılım & Teknoloji"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -1473,7 +1548,7 @@ function DepartmentModal({
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Örn: TECH"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-900 uppercase focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-slate-900 uppercase focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div>
@@ -1485,7 +1560,7 @@ function DepartmentModal({
                 value={costCenter}
                 onChange={(e) => setCostCenter(e.target.value)}
                 placeholder="CC-102"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
           </div>
@@ -1494,38 +1569,46 @@ function DepartmentModal({
             <label className="mb-1 block font-semibold text-slate-800">
               Üst Departman
             </label>
-            <select
-              value={parentId}
-              onChange={(e) => setParentId(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+            <Select
+              value={parentId || "none"}
+              onValueChange={(val) => setParentId(val === "none" ? "" : val)}
             >
-              <option value="">Yok (Ana Departman)</option>
-              {departments
-                .filter((d) => d.id !== department?.id)
-                .map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-            </select>
+              <SelectTrigger>
+                <SelectValue placeholder="Yok (Ana Departman)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Yok (Ana Departman)</SelectItem>
+                {departments
+                  .filter((d) => d.id !== department?.id)
+                  .map((d) => (
+                    <SelectItem key={d.id} value={d.id}>
+                      {d.name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
             <label className="mb-1 block font-semibold text-slate-800">
               Departman Lideri / Müdürü
             </label>
-            <select
-              value={leadId}
-              onChange={(e) => setLeadId(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+            <Select
+              value={leadId || "none"}
+              onValueChange={(val) => setLeadId(val === "none" ? "" : val)}
             >
-              <option value="">Lider Seçilmedi</option>
-              {employees.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.fullName} ({e.title || e.email})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger>
+                <SelectValue placeholder="Lider Seçilmedi" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Lider Seçilmedi</SelectItem>
+                {employees.map((e) => (
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.fullName} ({e.title || e.email})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -1537,7 +1620,7 @@ function DepartmentModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Departmanın temel görev ve sorumlulukları..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -1552,7 +1635,7 @@ function DepartmentModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>{department?.id ? "Güncelle" : "Departman Oluştur"}</span>
@@ -1611,8 +1694,12 @@ function PositionModal({
       : await ApiClient.createJobPosition(payload, tenantId)
 
     setIsSubmitting(false)
-    if (res.success) onSuccess()
-    else alert(res.message || "İşlem başarısız.")
+    if (res.success) {
+      toast.success(position?.id ? "Pozisyon güncellendi." : "Pozisyon oluşturuldu.")
+      onSuccess()
+    } else {
+      toast.error(res.message || "İşlem başarısız.")
+    }
   }
 
   return (
@@ -1620,7 +1707,7 @@ function PositionModal({
       <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
-            <Briefcase className="h-5 w-5 text-violet-500" />
+            <Briefcase className="h-5 w-5 text-blue-600" />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
           </h2>
           <button
@@ -1647,7 +1734,7 @@ function PositionModal({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Örn: Senior Frontend Developer"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -1656,37 +1743,42 @@ function PositionModal({
               <label className="mb-1 block font-semibold text-slate-800">
                 Kariyer Kademesi *
               </label>
-              <select
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
-              >
-                <option value="Executive">Executive / C-Level</option>
-                <option value="Director">Director</option>
-                <option value="Manager">Manager</option>
-                <option value="Lead">Lead / Team Lead</option>
-                <option value="Senior">Senior</option>
-                <option value="Mid">Mid Level</option>
-                <option value="Junior">Junior</option>
-                <option value="Intern">Intern / Stajyer</option>
-              </select>
+              <Select value={level} onValueChange={setLevel}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Executive">Executive / C-Level</SelectItem>
+                  <SelectItem value="Director">Director</SelectItem>
+                  <SelectItem value="Manager">Manager</SelectItem>
+                  <SelectItem value="Lead">Lead / Team Lead</SelectItem>
+                  <SelectItem value="Senior">Senior</SelectItem>
+                  <SelectItem value="Mid">Mid Level</SelectItem>
+                  <SelectItem value="Junior">Junior</SelectItem>
+                  <SelectItem value="Intern">Intern / Stajyer</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Varsayılan Departman
               </label>
-              <select
-                value={departmentId}
-                onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <Select
+                value={departmentId || "all"}
+                onValueChange={(val) => setDepartmentId(val === "all" ? "" : val)}
               >
-                <option value="">Tüm Departmanlar</option>
-                {departments.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Tüm Departmanlar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Departmanlar</SelectItem>
+                  {departments.map((d) => (
+                    <SelectItem key={d.id} value={d.id}>
+                      {d.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -1695,24 +1787,20 @@ function PositionModal({
               <label className="mb-1 block font-semibold text-slate-800">
                 Min Maaş Bandı
               </label>
-              <input
-                type="number"
-                value={minSalary}
-                onChange={(e) => setMinSalary(e.target.value)}
-                placeholder="2000"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <NumberInput
+                value={parseFloat(minSalary) || 0}
+                onChange={(val) => setMinSalary(String(val))}
+                prefix="₺"
               />
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Max Maaş Bandı
               </label>
-              <input
-                type="number"
-                value={maxSalary}
-                onChange={(e) => setMaxSalary(e.target.value)}
-                placeholder="4500"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <NumberInput
+                value={parseFloat(maxSalary) || 0}
+                onChange={(val) => setMaxSalary(String(val))}
+                prefix="₺"
               />
             </div>
           </div>
@@ -1726,7 +1814,7 @@ function PositionModal({
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Pozisyonun ana sorumlulukları..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -1741,7 +1829,7 @@ function PositionModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>{position?.id ? "Güncelle" : "Pozisyon Kaydet"}</span>
@@ -1773,55 +1861,57 @@ function EmployeeModal({
   onClose: () => void
   onSuccess: () => void
 }) {
+  const [userId, setUserId] = useState(employee?.userId || "")
   const [firstName, setFirstName] = useState(employee?.firstName || "")
   const [lastName, setLastName] = useState(employee?.lastName || "")
   const [email, setEmail] = useState(employee?.email || "")
   const [phone, setPhone] = useState(employee?.phone || "")
-  const [employeeNumber, setEmployeeNumber] = useState(
-    employee?.employeeNumber || ""
-  )
-  const [title, setTitle] = useState(employee?.title || "")
   const [departmentId, setDepartmentId] = useState(employee?.departmentId || "")
   const [jobPositionId, setJobPositionId] = useState(
     employee?.jobPositionId || ""
   )
   const [managerId, setManagerId] = useState(employee?.managerId || "")
+  const [title, setTitle] = useState(employee?.title || "")
+  const [employeeNumber, setEmployeeNumber] = useState(
+    employee?.employeeNumber || ""
+  )
   const [employmentType, setEmploymentType] = useState(
     employee?.employmentType || "FullTime"
   )
   const [status, setStatus] = useState(employee?.status || "Active")
   const [hireDate, setHireDate] = useState(
-    employee?.hireDate?.split("T")[0] || ""
+    employee?.hireDate
+      ? employee.hireDate.split("T")[0]!
+      : new Date().toISOString().split("T")[0]!
   )
-  const [avatarUrl, setAvatarUrl] = useState(employee?.avatarUrl || "")
   const [salary, setSalary] = useState(employee?.salary?.toString() || "")
-  const [currency, setCurrency] = useState(employee?.currency || "USD")
-  const [userId, setUserId] = useState(employee?.userId || "")
+  const [currency, setCurrency] = useState(employee?.currency || "TRY")
+  const [avatarUrl, setAvatarUrl] = useState(employee?.avatarUrl || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Auto-fill title from position if position is selected and title is empty
-  const handlePositionChange = (posId: string) => {
-    setJobPositionId(posId)
-    const pos = positions.find((p) => p.id === posId)
-    if (pos && !title) {
-      setTitle(pos.title)
-    }
-    if (pos?.departmentId && !departmentId) {
-      setDepartmentId(pos.departmentId)
-    }
-  }
-
-  // Auto-fill name & email if linked user is selected
-  const handleUserLink = (uid: string) => {
-    setUserId(uid)
-    const u = tenantUsers.find((user) => user.id === uid)
-    if (u) {
-      setEmail(u.email)
-      if (u.fullName) {
-        const parts = u.fullName.split(" ")
+  // Auto-fill names and email when user links an existing user
+  const handleUserLink = (selectedUserId: string) => {
+    setUserId(selectedUserId)
+    const matchedUser = tenantUsers.find((u) => u.id === selectedUserId)
+    if (matchedUser) {
+      if (!firstName && !lastName && matchedUser.fullName) {
+        const parts = matchedUser.fullName.split(" ")
         setFirstName(parts[0] || "")
         setLastName(parts.slice(1).join(" ") || "")
       }
+      if (!email) {
+        setEmail(matchedUser.email)
+      }
+    }
+  }
+
+  // When job position is picked, set suggested title & default dept if empty
+  const handlePositionChange = (posId: string) => {
+    setJobPositionId(posId)
+    const pos = positions.find((p) => p.id === posId)
+    if (pos) {
+      if (!title) setTitle(pos.title)
+      if (!departmentId && pos.departmentId) setDepartmentId(pos.departmentId)
     }
   }
 
@@ -1831,22 +1921,22 @@ function EmployeeModal({
     setIsSubmitting(true)
 
     const payload = {
+      userId: userId || undefined,
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      email: email.trim().toLowerCase(),
+      email: email.trim(),
       phone: phone.trim() || undefined,
-      employeeNumber: employeeNumber.trim() || undefined,
-      title: title.trim() || undefined,
       departmentId: departmentId || undefined,
       jobPositionId: jobPositionId || undefined,
       managerId: managerId || undefined,
+      title: title.trim() || undefined,
+      employeeNumber: employeeNumber.trim() || undefined,
       employmentType: employmentType,
       status: status,
-      hireDate: hireDate ? `${hireDate}T00:00:00.000Z` : undefined,
-      avatarUrl: avatarUrl.trim() || undefined,
+      hireDate: hireDate,
       salary: salary ? parseFloat(salary) : undefined,
       currency: currency,
-      userId: userId || undefined,
+      avatarUrl: avatarUrl.trim() || undefined,
     }
 
     const res = employee?.id
@@ -1854,8 +1944,12 @@ function EmployeeModal({
       : await ApiClient.createEmployee(payload, tenantId)
 
     setIsSubmitting(false)
-    if (res.success) onSuccess()
-    else alert(res.message || "İşlem başarısız.")
+    if (res.success) {
+      toast.success(employee?.id ? "Çalışan bilgileri güncellendi." : "Yeni çalışan kartı açıldı.")
+      onSuccess()
+    } else {
+      toast.error(res.message || "İşlem başarısız.")
+    }
   }
 
   return (
@@ -1863,7 +1957,7 @@ function EmployeeModal({
       <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
-            <Users className="h-5 w-5 text-fuchsia-500" />
+            <Users className="h-5 w-5 text-blue-600" />
             {employee?.id
               ? "Çalışan Kartını Düzenle"
               : "Yeni Çalışan / Personel Kartı Aç"}
@@ -1883,24 +1977,28 @@ function EmployeeModal({
           className="space-y-4 text-xs"
         >
           {/* Quick link existing user */}
-          <div className="rounded-2xl border border-fuchsia-100 bg-fuchsia-50/50 p-3">
-            <label className="mb-1 block font-bold text-fuchsia-900">
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-3">
+            <label className="mb-1 block font-bold text-blue-950">
               Sistem Kullanıcısı Eşleştir (Opsiyonel)
             </label>
-            <select
-              value={userId}
-              onChange={(e) => handleUserLink(e.target.value)}
-              className="w-full rounded-xl border border-fuchsia-200 bg-white px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:outline-none"
+            <Select
+              value={userId || "none"}
+              onValueChange={(val) => handleUserLink(val === "none" ? "" : val)}
             >
-              <option value="">
-                Bağımsız Personel Kartı (Hesap Bağlama Yok)
-              </option>
-              {tenantUsers.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.fullName ? `${u.fullName} (${u.email})` : u.email}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="bg-white">
+                <SelectValue placeholder="Bağımsız Personel Kartı (Hesap Bağlama Yok)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">
+                  Bağımsız Personel Kartı (Hesap Bağlama Yok)
+                </SelectItem>
+                {tenantUsers.map((u) => (
+                  <SelectItem key={u.id} value={u.id}>
+                    {u.fullName ? `${u.fullName} (${u.email})` : u.email}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Personal Info */}
@@ -1915,7 +2013,7 @@ function EmployeeModal({
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Ahmet"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div>
@@ -1928,7 +2026,7 @@ function EmployeeModal({
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Yılmaz"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
           </div>
@@ -1944,7 +2042,7 @@ function EmployeeModal({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ahmet@sirket.com"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div>
@@ -1956,7 +2054,7 @@ function EmployeeModal({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+90 555 123 4567"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
           </div>
@@ -1967,35 +2065,43 @@ function EmployeeModal({
               <label className="mb-1 block font-semibold text-slate-800">
                 Departman
               </label>
-              <select
-                value={departmentId}
-                onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <Select
+                value={departmentId || "none"}
+                onValueChange={(val) => setDepartmentId(val === "none" ? "" : val)}
               >
-                <option value="">Departmansız</option>
-                {departments.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Departmansız" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Departmansız</SelectItem>
+                  {departments.map((d) => (
+                    <SelectItem key={d.id} value={d.id}>
+                      {d.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Pozisyon Kataloğu
               </label>
-              <select
-                value={jobPositionId}
-                onChange={(e) => handlePositionChange(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <Select
+                value={jobPositionId || "none"}
+                onValueChange={(val) => handlePositionChange(val === "none" ? "" : val)}
               >
-                <option value="">Seçilmedi</option>
-                {positions.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.title} ({p.level})
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Seçilmedi" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Seçilmedi</SelectItem>
+                  {positions.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.title} ({p.level})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
@@ -2006,7 +2112,7 @@ function EmployeeModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Senior Architect"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
           </div>
@@ -2016,23 +2122,27 @@ function EmployeeModal({
             <label className="mb-1 block font-bold text-slate-900">
               Bağlı Olduğu Yönetici (Reports To)
             </label>
-            <select
-              value={managerId}
-              onChange={(e) => setManagerId(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:outline-none"
+            <Select
+              value={managerId || "none"}
+              onValueChange={(val) => setManagerId(val === "none" ? "" : val)}
             >
-              <option value="">
-                Üst Yönetici Yok (En Üst Düzey / CEO / Founder)
-              </option>
-              {employees
-                .filter((e) => e.id !== employee?.id)
-                .map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.fullName} — {e.title || "Personel"} (
-                    {e.departmentName || "Genel"})
-                  </option>
-                ))}
-            </select>
+              <SelectTrigger className="bg-white">
+                <SelectValue placeholder="Üst Yönetici Yok (En Üst Düzey / CEO / Founder)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">
+                  Üst Yönetici Yok (En Üst Düzey / CEO / Founder)
+                </SelectItem>
+                {employees
+                  .filter((e) => e.id !== employee?.id)
+                  .map((e) => (
+                    <SelectItem key={e.id} value={e.id}>
+                      {e.fullName} — {e.title || "Personel"} (
+                      {e.departmentName || "Genel"})
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* HR & Employment Details */}
@@ -2041,34 +2151,36 @@ function EmployeeModal({
               <label className="mb-1 block font-semibold text-slate-800">
                 Çalışma Şekli
               </label>
-              <select
-                value={employmentType}
-                onChange={(e) => setEmploymentType(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
-              >
-                <option value="FullTime">Tam Zamanlı (Full-Time)</option>
-                <option value="PartTime">Yarı Zamanlı (Part-Time)</option>
-                <option value="Remote">Uzaktan (Remote)</option>
-                <option value="Hybrid">Hibrit (Hybrid)</option>
-                <option value="Contractor">Sözleşmeli (Contractor)</option>
-                <option value="Intern">Stajyer (Intern)</option>
-              </select>
+              <Select value={employmentType} onValueChange={setEmploymentType}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="FullTime">Tam Zamanlı (Full-Time)</SelectItem>
+                  <SelectItem value="PartTime">Yarı Zamanlı (Part-Time)</SelectItem>
+                  <SelectItem value="Remote">Uzaktan (Remote)</SelectItem>
+                  <SelectItem value="Hybrid">Hibrit (Hybrid)</SelectItem>
+                  <SelectItem value="Contractor">Sözleşmeli (Contractor)</SelectItem>
+                  <SelectItem value="Intern">Stajyer (Intern)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Çalışan Durumu
               </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
-              >
-                <option value="Active">Aktif</option>
-                <option value="OnLeave">İzinde</option>
-                <option value="Probation">Deneme Süresinde</option>
-                <option value="Terminated">İşten Ayrıldı</option>
-              </select>
+              <Select value={status} onValueChange={setStatus}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Active">Aktif</SelectItem>
+                  <SelectItem value="OnLeave">İzinde</SelectItem>
+                  <SelectItem value="Probation">Deneme Süresinde</SelectItem>
+                  <SelectItem value="Terminated">İşten Ayrıldı</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
@@ -2080,7 +2192,7 @@ function EmployeeModal({
                 value={employeeNumber}
                 onChange={(e) => setEmployeeNumber(e.target.value)}
                 placeholder="EMP-1002"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-slate-900 focus:border-blue-500 focus:outline-none"
               />
             </div>
           </div>
@@ -2090,39 +2202,36 @@ function EmployeeModal({
               <label className="mb-1 block font-semibold text-slate-800">
                 İşe Giriş Tarihi
               </label>
-              <input
-                type="date"
+              <DatePicker
                 value={hireDate}
-                onChange={(e) => setHireDate(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                onChange={setHireDate}
               />
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Maaş (Net/Brüt)
               </label>
-              <input
-                type="number"
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-                placeholder="5000"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              <NumberInput
+                value={parseFloat(salary) || 0}
+                onChange={(val) => setSalary(String(val))}
+                prefix={currency === "TRY" ? "₺" : currency === "USD" ? "$" : currency === "EUR" ? "€" : "£"}
               />
             </div>
             <div>
               <label className="mb-1 block font-semibold text-slate-800">
                 Para Birimi
               </label>
-              <select
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
-              >
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="TRY">TRY (₺)</option>
-                <option value="GBP">GBP (£)</option>
-              </select>
+              <Select value={currency} onValueChange={setCurrency}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="TRY">TRY (₺)</SelectItem>
+                  <SelectItem value="USD">USD ($)</SelectItem>
+                  <SelectItem value="EUR">EUR (€)</SelectItem>
+                  <SelectItem value="GBP">GBP (£)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -2135,7 +2244,7 @@ function EmployeeModal({
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://images.unsplash.com/photo-..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -2150,7 +2259,7 @@ function EmployeeModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-5 py-2 font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>{employee?.id ? "Güncelle" : "Çalışan Kartını Aç"}</span>
@@ -2362,7 +2471,7 @@ function EmployeeDetailDrawer({
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-xl bg-slate-900 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-slate-800"
+            className="w-full rounded-xl bg-blue-600 py-2.5 text-xs font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
           >
             Kapat
           </button>

@@ -6,6 +6,14 @@ import { useCallback, useEffect, useState } from "react"
 import { PermissionGate } from "@/components/permission-gate"
 import { ApiClient, type RoleDto, type TenantUserDto } from "@/lib/api-client"
 import { usePermissions } from "@/lib/permissions/permission-context"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
+import { toast } from "@workspace/ui/components/sonner"
 
 export default function UsersManagementPage() {
   const { activeTenant } = usePermissions()
@@ -69,15 +77,12 @@ export default function UsersManagementPage() {
     setIsSubmitting(false)
 
     if (res.success) {
-      setStatusMessage({ text: "User invited successfully!", type: "success" })
+      toast.success("Kullanıcı daveti gönderildi.")
       setInviteEmail("")
       setIsInviteOpen(false)
       await loadData()
     } else {
-      setStatusMessage({
-        text: res.message || "Failed to invite user.",
-        type: "error",
-      })
+      toast.error(res.message || "Kullanıcı davet edilemedi.")
     }
   }
 
@@ -91,9 +96,10 @@ export default function UsersManagementPage() {
       activeTenant.id
     )
     if (res.success) {
+      toast.success("Kullanıcı rolü güncellendi.")
       await loadData()
     } else {
-      alert(res.message || "Failed to update role.")
+      toast.error(res.message || "Rol güncellenemedi.")
     }
   }
 
@@ -184,19 +190,24 @@ export default function UsersManagementPage() {
                       }
                       permission="Roles.Assign"
                     >
-                      <select
-                        className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-800 focus:border-fuchsia-500 focus:outline-none"
-                        onChange={(e) =>
-                          handleRoleChange(user.id, e.target.value)
+                      <Select
+                        value={user.roles[0]?.id || "none"}
+                        onValueChange={(val) =>
+                          handleRoleChange(user.id, val === "none" ? "" : val)
                         }
-                        value={user.roles[0]?.id || ""}
                       >
-                        {roles.map((role) => (
-                          <option key={role.id} value={role.id}>
-                            {role.name}
-                          </option>
-                        ))}
-                      </select>
+                        <SelectTrigger className="h-8 w-40">
+                          <SelectValue placeholder="Rol Seçiniz" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">Rolsüz</SelectItem>
+                          {roles.map((role) => (
+                            <SelectItem key={role.id} value={role.id}>
+                              {role.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </PermissionGate>
                   </td>
                   <td className="px-6 py-4">
@@ -226,7 +237,7 @@ export default function UsersManagementPage() {
           <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h2 className="flex items-center gap-2 text-base font-bold text-slate-900">
-                <UserPlus className="h-4 w-4 text-fuchsia-500" />
+                <UserPlus className="h-4 w-4 text-indigo-500" />
                 Invite New Member
               </h2>
               <button
@@ -249,7 +260,7 @@ export default function UsersManagementPage() {
                 <div className="relative">
                   <Mail className="absolute top-3 left-3 h-4 w-4 text-slate-400" />
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-3 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-3 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder="teammate@company.com"
                     required
@@ -263,20 +274,18 @@ export default function UsersManagementPage() {
                 <label className="mb-1.5 block text-xs font-semibold text-slate-800">
                   Initial Role
                 </label>
-                <div className="relative">
-                  <Shield className="absolute top-3 left-3 h-4 w-4 text-slate-400" />
-                  <select
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-3 pl-9 text-xs text-slate-900 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
-                    onChange={(e) => setInviteRoleId(e.target.value)}
-                    value={inviteRoleId}
-                  >
+                <Select value={inviteRoleId} onValueChange={setInviteRoleId}>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Rol Seçiniz" />
+                  </SelectTrigger>
+                  <SelectContent>
                     {roles.map((role) => (
-                      <option key={role.id} value={role.id}>
+                      <SelectItem key={role.id} value={role.id}>
                         {role.name} - {role.description || "Standard role"}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </div>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="flex justify-end gap-2 border-t border-slate-100 pt-3">
@@ -288,7 +297,7 @@ export default function UsersManagementPage() {
                   Cancel
                 </button>
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
                   disabled={isSubmitting}
                   type="submit"
                 >

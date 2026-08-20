@@ -315,7 +315,7 @@ export default function CustomerDetailPage() {
 
           <PermissionGate permission="Customers.Update">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
               onClick={() => setIsEditModalOpen(true)}
               type="button"
             >
@@ -498,7 +498,7 @@ export default function CustomerDetailPage() {
                     </label>
 
                     <button
-                      className="flex items-center gap-1 rounded-xl bg-slate-900 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
                       disabled={!quickNoteContent.trim() || submittingNote}
                       type="submit"
                     >
@@ -586,7 +586,7 @@ export default function CustomerDetailPage() {
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-xs text-slate-900">Yetkili & Karar Vericiler</h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   onClick={() => setIsAddContactModalOpen(true)}
                   type="button"
                 >
@@ -672,7 +672,7 @@ export default function CustomerDetailPage() {
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-xs text-slate-900">İletişim & Aktivite Zaman Tüneli</h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   onClick={() => setIsAddActivityModalOpen(true)}
                   type="button"
                 >
@@ -719,7 +719,7 @@ export default function CustomerDetailPage() {
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-xs text-slate-900">Müşteriyle Yürütülen Fırsatlar</h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   onClick={() => showToast("Yeni satış anlaşması oluşturma modalı açılıyor...")}
                   type="button"
                 >
@@ -764,7 +764,7 @@ export default function CustomerDetailPage() {
                     </label>
 
                     <button
-                      className="flex items-center gap-1 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
                       disabled={!quickNoteContent.trim() || submittingNote}
                       type="submit"
                     >
@@ -1010,7 +1010,7 @@ function AddContactModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1075,14 +1075,14 @@ function AddActivityModal({
           <div>
             <label className="block font-medium text-slate-700 mb-1">Aktivite Türü</label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-violet-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setFormData({ ...formData, activityType: e.target.value })}
               value={formData.activityType}
             >
-              <option value="Call">📞 Telefon Görüşmesi</option>
-              <option value="Meeting">🤝 Toplantı & Demo</option>
-              <option value="Email">✉️ E-Posta İletişimi</option>
-              <option value="Note">📝 Bilgi / Not</option>
+              <option value="Call">Telefon Görüşmesi</option>
+              <option value="Meeting">Toplantı & Demo</option>
+              <option value="Email">E-Posta İletişimi</option>
+              <option value="Note">Bilgi / Not</option>
             </select>
           </div>
 
@@ -1118,7 +1118,7 @@ function AddActivityModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting}
               type="submit"
             >
@@ -1292,7 +1292,7 @@ function EditCustomerModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting}
               type="submit"
             >

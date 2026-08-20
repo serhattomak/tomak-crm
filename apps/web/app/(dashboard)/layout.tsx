@@ -38,6 +38,7 @@ import { PermissionGate } from "@/components/permission-gate"
 import { TenantSwitcher } from "@/components/tenant-switcher"
 import { PermissionProvider } from "@/lib/permissions/permission-context"
 import { createClient } from "@/lib/supabase/client"
+import { Toaster } from "@workspace/ui/components/sonner"
 
 export default function DashboardLayout({
   children,
@@ -49,6 +50,7 @@ export default function DashboardLayout({
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
+      <Toaster position="top-right" richColors />
       <div className="flex h-screen gap-3 overflow-hidden bg-[#f4f5f8] p-2 font-sans text-slate-900 antialiased sm:p-3">
         {/* Left Floating Sidebar */}
         <aside className="flex w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm">

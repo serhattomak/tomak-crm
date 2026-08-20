@@ -1,5 +1,14 @@
 "use client";
 
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import { Briefcase, Check, CheckSquare, FileText, UserPlus, X } from "lucide-react";
 import { useState } from "react";
 
@@ -29,47 +38,15 @@ export function QuickCreateModal({
 
   if (!isOpen || !type) return null;
 
-  const getModalTitle = () => {
-    switch (type) {
-      case "lead":
-        return {
-          title: "Yeni Müşteri Adayı (Lead) Ekle",
-          desc: "Potansiyel müşteri bilgilerini sisteme kaydedin",
-          icon: UserPlus,
-          color: "bg-violet-50 text-violet-600",
-        };
-      case "deal":
-        return {
-          title: "Yeni Satış Fırsatı Başlat",
-          desc: "Satış hunisine (Pipeline) yeni bir anlaşma ekleyin",
-          icon: Briefcase,
-          color: "bg-blue-50 text-blue-600",
-        };
-      case "task":
-        return {
-          title: "Yeni Görev Oluştur",
-          desc: "Kendiniz veya ekip üyeleriniz için görev planlayın",
-          icon: CheckSquare,
-          color: "bg-emerald-50 text-emerald-600",
-        };
-      case "proposal":
-        return {
-          title: "Hızlı Teklif Taslağı Oluştur",
-          desc: "Müşteriye iletilecek teklif belgesini başlatın",
-          icon: FileText,
-          color: "bg-fuchsia-50 text-fuchsia-600",
-        };
-    }
-  };
-
-  const info = getModalTitle();
-  const Icon = info.icon;
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSuccess(
-      `${info.title} başarıyla oluşturuldu!`
-    );
+    const typeNames: Record<string, string> = {
+      lead: "Müşteri Adayı",
+      deal: "Satış Fırsatı",
+      task: "Görev",
+      proposal: "Teklif Taslağı",
+    };
+    onSuccess(`${typeNames[type] || "Kayıt"} başarıyla oluşturuldu!`);
     onClose();
     setFormData({
       title: "",
@@ -85,23 +62,28 @@ export function QuickCreateModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="flex w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-slate-100 border-b p-5">
-          <div className="flex items-center gap-2.5">
-            <div
-              className={`flex h-9 w-9 items-center justify-center rounded-2xl ${info.color}`}
-            >
-              <Icon className="h-5 w-5" />
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              {type === "lead" && <UserPlus className="h-5 w-5" />}
+              {type === "deal" && <Briefcase className="h-5 w-5" />}
+              {type === "task" && <CheckSquare className="h-5 w-5" />}
+              {type === "proposal" && <FileText className="h-5 w-5" />}
             </div>
             <div>
-              <h2 className="font-bold text-base text-slate-900">{info.title}</h2>
-              <p className="text-slate-500 text-xs">{info.desc}</p>
+              <h2 className="font-bold text-slate-900 text-sm">
+                {type === "lead" && "Hızlı Müşteri Adayı (Lead) Ekle"}
+                {type === "deal" && "Yeni Satış Fırsatı Oluştur"}
+                {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
+                {type === "proposal" && "Yeni Teklif Taslağı Başlat"}
+              </h2>
+              <p className="text-slate-500 text-xs">Temel bilgileri girerek saniyeler içinde kaydedin</p>
             </div>
           </div>
-
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+            className="rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors"
             onClick={onClose}
             type="button"
           >
@@ -109,37 +91,31 @@ export function QuickCreateModal({
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-3.5 p-5">
-            {/* Common Title/Name */}
+        {/* Form Body */}
+        <form className="flex-1 overflow-y-auto p-6 space-y-4" onSubmit={handleSubmit}>
+          <div className="space-y-3">
+            {/* Title / Name */}
             <div>
               <label className="mb-1 block font-medium text-xs text-slate-700">
-                {type === "lead"
-                  ? "Aday Adı Soyadı"
-                  : type === "deal"
-                    ? "Fırsat / Proje Başlığı"
-                    : type === "task"
-                      ? "Görev Başlığı"
-                      : "Teklif Başlığı"}
+                {type === "lead" ? "Aday Adı & Soyadı *" : "Başlık / İsim *"}
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Örn: Kurumsal Lisans Paketi..."
+                placeholder={type === "lead" ? "Örn: Ahmet Yılmaz" : "Örn: ERP Yazılım Lisans Satışı"}
                 required
                 type="text"
                 value={formData.title}
               />
             </div>
 
-            {/* Company Name */}
+            {/* Company */}
             <div>
               <label className="mb-1 block font-medium text-xs text-slate-700">
-                Şirket / Kurum Adı
+                Firma / Kuruluş
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 placeholder="Örn: Acme Holding A.Ş."
                 type="text"
@@ -154,23 +130,19 @@ export function QuickCreateModal({
                   <label className="mb-1 block font-medium text-xs text-slate-700">
                     Tahmini Tutar (₺)
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, value: e.target.value })}
-                    placeholder="Örn: 75.000"
-                    type="number"
-                    value={formData.value}
+                  <NumberInput
+                    value={parseFloat(formData.value) || 0}
+                    onChange={(val) => setFormData({ ...formData, value: String(val) })}
+                    prefix="₺"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block font-medium text-xs text-slate-700">
                     Kapanış Tarihi
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                    type="date"
+                  <DatePicker
                     value={formData.dueDate}
+                    onChange={(dateStr) => setFormData({ ...formData, dueDate: dateStr })}
                   />
                 </div>
               </div>
@@ -184,7 +156,7 @@ export function QuickCreateModal({
                     E-Posta Adresi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="ahmet@sirket.com"
                     type="email"
@@ -196,7 +168,7 @@ export function QuickCreateModal({
                     Telefon Numarası
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+90 555 ..."
                     type="tel"
@@ -213,26 +185,28 @@ export function QuickCreateModal({
                   <label className="mb-1 block font-medium text-xs text-slate-700">
                     Öncelik Seviyesi
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 focus:border-violet-500 focus:bg-white focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                  <Select
                     value={formData.priority}
+                    onValueChange={(val) => setFormData({ ...formData, priority: val })}
                   >
-                    <option value="low">Düşük</option>
-                    <option value="medium">Normal</option>
-                    <option value="high">Yüksek</option>
-                    <option value="urgent">Acil 🔥</option>
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Düşük</SelectItem>
+                      <SelectItem value="medium">Normal</SelectItem>
+                      <SelectItem value="high">Yüksek</SelectItem>
+                      <SelectItem value="urgent">Acil</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
                   <label className="mb-1 block font-medium text-xs text-slate-700">
                     Teslim Tarihi
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 focus:border-violet-500 focus:bg-white focus:outline-none"
-                    onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                    type="date"
+                  <DatePicker
                     value={formData.dueDate}
+                    onChange={(dateStr) => setFormData({ ...formData, dueDate: dateStr })}
                   />
                 </div>
               </div>
@@ -249,7 +223,7 @@ export function QuickCreateModal({
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
               type="submit"
             >
               <Check className="h-3.5 w-3.5" />

@@ -28,6 +28,22 @@ import {
   type LeaveStatsDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
+import { toast } from "@workspace/ui/components/sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@workspace/ui/components/tooltip";
 
 export default function LeavesPage() {
   const params = useParams();
@@ -62,12 +78,22 @@ export default function LeavesPage() {
   const [rejectingLeave, setRejectingLeave] = useState<LeaveRequestDto | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3500);
-  };
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    cancelText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+  });
 
   const loadData = useCallback(async () => {
     if (!activeTenant) return;
@@ -104,7 +130,7 @@ export default function LeavesPage() {
       if (empRes.success && empRes.data) setEmployees(empRes.data.items);
       if (deptRes.success && deptRes.data) setDepartments(deptRes.data);
     } catch {
-      showToast("İzin verileri yüklenirken bir hata oluştu.");
+      toast.error("İzin verileri yüklenirken bir hata oluştu.");
     } finally {
       setLoading(false);
     }
@@ -121,13 +147,13 @@ export default function LeavesPage() {
     try {
       const res = await ApiClient.approveLeaveRequest(id, activeTenant.id);
       if (res.success) {
-        showToast("İzin talebi onaylandı.");
+        toast.success("İzin talebi onaylandı.");
         loadData();
       } else {
-        showToast(res.message || "İşlem başarısız.");
+        toast.error(res.message || "İşlem başarısız.");
       }
     } catch {
-      showToast("Onaylama sırasında bir hata oluştu.");
+      toast.error("Onaylama sırasında bir hata oluştu.");
     } finally {
       setActionLoading(false);
     }
@@ -143,36 +169,46 @@ export default function LeavesPage() {
         activeTenant.id
       );
       if (res.success) {
-        showToast("İzin talebi reddedildi.");
+        toast.success("İzin talebi reddedildi.");
         setRejectingLeave(null);
         setRejectionReason("");
         loadData();
       } else {
-        showToast(res.message || "İşlem başarısız.");
+        toast.error(res.message || "İşlem başarısız.");
       }
     } catch {
-      showToast("Reddetme sırasında bir hata oluştu.");
+      toast.error("Reddetme sırasında bir hata oluştu.");
     } finally {
       setActionLoading(false);
     }
   };
 
-  const handleCancel = async (id: string) => {
+  const handleCancel = (id: string) => {
     if (!activeTenant) return;
-    setActionLoading(true);
-    try {
-      const res = await ApiClient.cancelLeaveRequest(id, activeTenant.id);
-      if (res.success) {
-        showToast("İzin talebiniz iptal edildi.");
-        loadData();
-      } else {
-        showToast(res.message || "İptal edilemedi.");
-      }
-    } catch {
-      showToast("İptal işlemi sırasında hata oluştu.");
-    } finally {
-      setActionLoading(false);
-    }
+    setConfirmDialog({
+      open: true,
+      title: "İzin Talebini İptal Et",
+      description: "Bu izin talebini iptal etmek istediğinize emin misiniz? İptal edilen izin bakiyenize iade edilir.",
+      confirmText: "Talebi İptal Et",
+      variant: "destructive",
+      onConfirm: async () => {
+        setActionLoading(true);
+        try {
+          const res = await ApiClient.cancelLeaveRequest(id, activeTenant.id);
+          if (res.success) {
+            toast.success("İzin talebiniz iptal edildi.");
+            loadData();
+          } else {
+            toast.error(res.message || "İptal edilemedi.");
+          }
+        } catch {
+          toast.error("İptal işlemi sırasında hata oluştu.");
+        } finally {
+          setActionLoading(false);
+          setConfirmDialog((prev) => ({ ...prev, open: false }));
+        }
+      },
+    });
   };
 
   // Helper labels & styles
@@ -201,21 +237,21 @@ export default function LeavesPage() {
   const getLeaveTypeLabel = (type: string) => {
     switch (type) {
       case "Annual":
-        return "🏖️ Yıllık İzin";
+        return "Yıllık İzin";
       case "Casual":
-        return "☕ Mazeret İzni";
+        return "Mazeret İzni";
       case "Sick":
-        return "🩺 Hastalık / Rapor";
+        return "Hastalık / Rapor";
       case "Unpaid":
-        return "📄 Ücretsiz İzin";
+        return "Ücretsiz İzin";
       case "Marriage":
-        return "💍 Evlilik İzni";
+        return "Evlilik İzni";
       case "Maternity":
-        return "👶 Doğum İzni";
+        return "Doğum İzni";
       case "Paternity":
-        return "🍼 Babalık İzni";
+        return "Babalık İzni";
       case "Bereavement":
-        return "🕊️ Vefat İzni";
+        return "Vefat İzni";
       default:
         return type;
     }
@@ -305,14 +341,6 @@ export default function LeavesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl animate-in slide-in-from-top-4">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-          <span className="font-semibold">{toastMessage}</span>
-        </div>
-      )}
-
       {/* 1. Header Section */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -333,7 +361,7 @@ export default function LeavesPage() {
         <div className="flex items-center gap-2">
           <PermissionGate permission="Leaves.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -653,8 +681,9 @@ export default function LeavesPage() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
-                      <span>
-                        📅 <strong>{new Date(leave.startDate).toLocaleDateString("tr-TR")}</strong> -{" "}
+                      <span className="flex items-center gap-1">
+                        <CalendarIcon className="h-3.5 w-3.5 text-slate-400" />
+                        <strong>{new Date(leave.startDate).toLocaleDateString("tr-TR")}</strong> -{" "}
                         <strong>{new Date(leave.endDate).toLocaleDateString("tr-TR")}</strong>
                       </span>
                       <span>•</span>
@@ -724,10 +753,10 @@ export default function LeavesPage() {
                 value={statusFilter}
               >
                 <option value="">Tüm Durumlar</option>
-                <option value="Pending">⏳ Onay Bekliyor</option>
-                <option value="Approved">✅ Onaylandı</option>
-                <option value="Rejected">❌ Reddedildi</option>
-                <option value="Cancelled">⚪ İptal Edildi</option>
+                <option value="Pending">Onay Bekliyor</option>
+                <option value="Approved">Onaylandı</option>
+                <option value="Rejected">Reddedildi</option>
+                <option value="Cancelled">İptal Edildi</option>
               </select>
 
               <select
@@ -736,11 +765,11 @@ export default function LeavesPage() {
                 value={leaveTypeFilter}
               >
                 <option value="">Tüm İzin Türleri</option>
-                <option value="Annual">🏖️ Yıllık İzin</option>
-                <option value="Casual">☕ Mazeret İzni</option>
-                <option value="Sick">🩺 Hastalık / Rapor</option>
-                <option value="Unpaid">📄 Ücretsiz İzin</option>
-                <option value="Marriage">💍 Evlilik İzni</option>
+                <option value="Annual">Yıllık İzin</option>
+                <option value="Casual">Mazeret İzni</option>
+                <option value="Sick">Hastalık / Rapor</option>
+                <option value="Unpaid">Ücretsiz İzin</option>
+                <option value="Marriage">Evlilik İzni</option>
               </select>
             </div>
           </div>
@@ -841,7 +870,7 @@ export default function LeavesPage() {
               <p className="text-xs text-slate-500">Oluşturduğunuz izin talepleri ve onay durumları</p>
             </div>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -925,7 +954,7 @@ export default function LeavesPage() {
           myBalance={myBalance}
           onClose={() => setIsCreateModalOpen(false)}
           onSuccess={() => {
-            showToast("İzin talebi başarıyla oluşturuldu.");
+            toast.success("İzin talebi başarıyla oluşturuldu.");
             setIsCreateModalOpen(false);
             loadData();
           }}
@@ -974,6 +1003,18 @@ export default function LeavesPage() {
           </div>
         </div>
       )}
+
+      {/* CONFIRM DIALOG */}
+      <ConfirmDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        confirmText={confirmDialog.confirmText}
+        cancelText={confirmDialog.cancelText}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.onConfirm}
+      />
     </div>
   );
 }
@@ -1112,45 +1153,47 @@ function CreateLeaveModal({
           {/* Employee Picker */}
           <div>
             <label className="mb-1 block font-medium text-slate-700">Personel / Çalışan *</label>
-            <select
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
-              onChange={(e) => handleEmployeeChange(e.target.value)}
-              value={employeeId}
-            >
-              {employees.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.fullName || `${e.firstName} ${e.lastName}`} {e.departmentName ? `(${e.departmentName})` : ""}
-                </option>
-              ))}
-            </select>
+            <Select value={employeeId} onValueChange={handleEmployeeChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Personel Seçiniz" />
+              </SelectTrigger>
+              <SelectContent>
+                {employees.map((e) => (
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.fullName || `${e.firstName} ${e.lastName}`} {e.departmentName ? `(${e.departmentName})` : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Leave Type & Balance Alert */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-1 block font-medium text-slate-700">İzin Türü *</label>
-              <select
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 font-bold focus:border-blue-500 focus:outline-none"
-                onChange={(e) => setLeaveType(e.target.value)}
-                value={leaveType}
-              >
-                <option value="Annual">🏖️ Yıllık İzin (Bakiyeden Düşer)</option>
-                <option value="Casual">☕ Mazeret İzni</option>
-                <option value="Sick">🩺 Hastalık / Sağlık Raporu</option>
-                <option value="Unpaid">📄 Ücretsiz İzin</option>
-                <option value="Marriage">💍 Evlilik İzni (3 Gün)</option>
-                <option value="Maternity">👶 Doğum İzni</option>
-                <option value="Paternity">🍼 Babalık İzni (5 Gün)</option>
-                <option value="Bereavement">🕊️ Vefat İzni (3 Gün)</option>
-              </select>
+              <Select value={leaveType} onValueChange={setLeaveType}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Annual">Yıllık İzin (Bakiyeden Düşer)</SelectItem>
+                  <SelectItem value="Casual">Mazeret İzni</SelectItem>
+                  <SelectItem value="Sick">Hastalık / Sağlık Raporu</SelectItem>
+                  <SelectItem value="Unpaid">Ücretsiz İzin</SelectItem>
+                  <SelectItem value="Marriage">Evlilik İzni (3 Gün)</SelectItem>
+                  <SelectItem value="Maternity">Doğum İzni</SelectItem>
+                  <SelectItem value="Paternity">Babalık İzni (5 Gün)</SelectItem>
+                  <SelectItem value="Bereavement">Vefat İzni (3 Gün)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Half Day Option */}
             <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-800 cursor-pointer hover:bg-slate-100 transition-colors">
+              <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 cursor-pointer hover:bg-slate-100 transition-colors">
                 <input
                   checked={isHalfDay}
-                  className="rounded text-blue-600"
+                  className="rounded text-blue-600 focus:ring-0"
                   onChange={(e) => setIsHalfDay(e.target.checked)}
                   type="checkbox"
                 />
@@ -1163,39 +1206,36 @@ function CreateLeaveModal({
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-1 block font-medium text-slate-700">Başlangıç Tarihi *</label>
-              <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none font-medium"
-                onChange={(e) => {
-                  setStartDate(e.target.value);
-                  if (isHalfDay || e.target.value > endDate) setEndDate(e.target.value);
-                }}
-                type="date"
+              <DatePicker
                 value={startDate}
+                onChange={(dateStr) => {
+                  setStartDate(dateStr);
+                  if (isHalfDay || dateStr > endDate) setEndDate(dateStr);
+                }}
               />
             </div>
 
             {!isHalfDay ? (
               <div>
                 <label className="mb-1 block font-medium text-slate-700">Bitiş Tarihi *</label>
-                <input
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none font-medium"
-                  min={startDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  type="date"
+                <DatePicker
                   value={endDate}
+                  minDate={startDate}
+                  onChange={setEndDate}
                 />
               </div>
             ) : (
               <div>
                 <label className="mb-1 block font-medium text-slate-700">Yarım Gün Periyodu</label>
-                <select
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:outline-none font-medium"
-                  onChange={(e) => setHalfDayPeriod(e.target.value)}
-                  value={halfDayPeriod}
-                >
-                  <option value="Morning">Sabah (Öğleden Önce)</option>
-                  <option value="Afternoon">Öğleden Sonra</option>
-                </select>
+                <Select value={halfDayPeriod} onValueChange={setHalfDayPeriod}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Morning">Sabah (Öğleden Önce)</SelectItem>
+                    <SelectItem value="Afternoon">Öğleden Sonra</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             )}
           </div>
@@ -1249,7 +1289,7 @@ function CreateLeaveModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting}
               type="submit"
             >

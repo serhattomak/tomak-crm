@@ -281,7 +281,7 @@ export default function ProductDetailPage() {
 
           <PermissionGate permission="Products.Update">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
               onClick={() => setIsEditModalOpen(true)}
               type="button"
             >
@@ -442,13 +442,13 @@ export default function ProductDetailPage() {
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                       <div>
                         <select
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+                          className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
                           onChange={(e) => setQuickAdjType(e.target.value as any)}
                           value={quickAdjType}
                         >
-                          <option value="In">📥 Stok Girişi (+)</option>
-                          <option value="Out">📤 Stok Çıkışı (-)</option>
-                          <option value="Adjustment">⚖️ Sayım Düzeltmesi</option>
+                          <option value="In">Stok Girişi (+)</option>
+                          <option value="Out">Stok Çıkışı (-)</option>
+                          <option value="Adjustment">Sayım Düzeltmesi</option>
                         </select>
                       </div>
 
@@ -478,7 +478,7 @@ export default function ProductDetailPage() {
 
                     <div className="flex justify-end">
                       <button
-                        className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800 disabled:opacity-50"
+                        className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
                         disabled={submittingAdj || quickAdjQty <= 0}
                         type="submit"
                       >
@@ -549,7 +549,7 @@ export default function ProductDetailPage() {
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-xs text-slate-900">Ürün Varyantları (Renk, Beden, Model)</h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   onClick={() => setIsAddVariantModalOpen(true)}
                   type="button"
                 >
@@ -613,7 +613,7 @@ export default function ProductDetailPage() {
                 <h4 className="font-bold text-xs text-slate-900">Tarihsel Stok Hareket Defteri</h4>
                 {product.trackInventory && (
                   <button
-                    className="flex items-center gap-1 rounded-xl bg-slate-900 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+                    className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                     onClick={() => setIsStockAdjustModalOpen(true)}
                     type="button"
                   >
@@ -815,14 +815,14 @@ function StockAdjustModal({
           <div>
             <label className="block font-medium text-slate-700 mb-1">Hareket Türü</label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setFormData({ ...formData, movementType: e.target.value as any })}
               value={formData.movementType}
             >
-              <option value="In">📥 Stok Girişi (Alış / Sevkiyat)</option>
-              <option value="Out">📤 Stok Çıkışı (Hasar / Satış)</option>
-              <option value="Adjustment">⚖️ Sayım Düzeltmesi (Hedef Stok)</option>
-              <option value="Return">↩️ Müşteri İadesi</option>
+              <option value="In">Stok Girişi (Alış / Sevkiyat)</option>
+              <option value="Out">Stok Çıkışı (Hasar / Satış)</option>
+              <option value="Adjustment">Sayım Düzeltmesi (Hedef Stok)</option>
+              <option value="Return">Müşteri İadesi</option>
             </select>
           </div>
 
@@ -870,7 +870,7 @@ function StockAdjustModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1013,7 +1013,7 @@ function AddVariantModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1184,7 +1184,7 @@ function EditProductModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

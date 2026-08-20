@@ -1,6 +1,6 @@
 "use client";
 
-import { Flame, Trophy } from "lucide-react";
+import { Award, Flame, Medal, Trophy } from "lucide-react";
 import type { TeamMemberScore } from "./dashboard-types";
 
 export function TeamLeaderboardWidget() {
@@ -40,8 +40,8 @@ export function TeamLeaderboardWidget() {
     },
     {
       id: "mem-4",
-      name: "Canan Öz",
-      role: "SDR / Lead Uzmanı",
+      name: "Canan Öztürk",
+      role: "Satış Destek Temsilcisi",
       initials: "CÖ",
       avatarColor: "bg-emerald-600",
       target: 100000,
@@ -56,19 +56,19 @@ export function TeamLeaderboardWidget() {
       case 1:
         return (
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-amber-600 font-bold text-xs">
-            🥇
+            <Trophy className="h-3.5 w-3.5" />
           </div>
         );
       case 2:
         return (
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs">
-            🥈
+            <Medal className="h-3.5 w-3.5" />
           </div>
         );
       case 3:
         return (
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-50 text-amber-800 font-bold text-xs">
-            🥉
+            <Award className="h-3.5 w-3.5" />
           </div>
         );
       default:
@@ -155,9 +155,10 @@ export function TeamLeaderboardWidget() {
         </div>
       </div>
 
-      <div className="mt-4 border-slate-100 border-t pt-3 text-center">
-        <span className="font-semibold text-slate-700 text-xs">
-          Aylık Hedef Birincisi Ödülü: <strong>₺25.000 Prim + Tatil</strong> 🏆
+      <div className="mt-4 border-slate-100 border-t pt-3 text-center flex items-center justify-center gap-1.5 text-slate-700 text-xs font-semibold">
+        <Trophy className="h-4 w-4 text-amber-500" />
+        <span>
+          Aylık Hedef Birincisi Ödülü: <strong>₺25.000 Prim + Tatil</strong>
         </span>
       </div>
     </div>

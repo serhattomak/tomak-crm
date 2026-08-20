@@ -218,7 +218,7 @@ export default function ProductsPage() {
 
           <PermissionGate permission="Products.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -331,10 +331,10 @@ export default function ProductsPage() {
             value={typeFilter}
           >
             <option value="">Tüm Tipler</option>
-            <option value="Physical">📦 Fiziksel Ürünler</option>
-            <option value="Service">💼 Hizmet / Danışmanlık</option>
-            <option value="Digital">💾 Dijital Ürün</option>
-            <option value="Subscription">🔄 Abonelik / Lisans</option>
+            <option value="Physical">Fiziksel Ürünler</option>
+            <option value="Service">Hizmet / Danışmanlık</option>
+            <option value="Digital">Dijital Ürün</option>
+            <option value="Subscription">Abonelik / Lisans</option>
           </select>
 
           {/* Category Filter */}
@@ -359,8 +359,8 @@ export default function ProductsPage() {
           >
             <option value="">Stok Durumu: Tümü</option>
             <option value="in_stock">Stokta Var</option>
-            <option value="low_stock">⚠️ Kritik Stok</option>
-            <option value="out_of_stock">⛔ Tükendi (0)</option>
+            <option value="low_stock">Kritik Stok</option>
+            <option value="out_of_stock">Tükendi (0)</option>
           </select>
 
           {/* Status Filter */}
@@ -443,7 +443,7 @@ export default function ProductsPage() {
           </p>
           <PermissionGate permission="Products.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -722,7 +722,7 @@ export default function ProductsPage() {
                 </span>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs hover:bg-blue-700 active:scale-[0.98] transition-all"
                   href={`/${tenantSlug}/products/${p.id}`}
                 >
                   <span>Detay</span>
@@ -927,7 +927,7 @@ function CreateProductModal({
               onClick={() => setFormData({ ...formData, type: "Physical", trackInventory: true })}
               type="button"
             >
-              📦 Fiziksel Ürün
+              Fiziksel Ürün
             </button>
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
@@ -938,7 +938,7 @@ function CreateProductModal({
               onClick={() => setFormData({ ...formData, type: "Service", trackInventory: false })}
               type="button"
             >
-              💼 Hizmet / Servis
+              Hizmet / Servis
             </button>
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
@@ -949,7 +949,7 @@ function CreateProductModal({
               onClick={() => setFormData({ ...formData, type: "Digital", trackInventory: false })}
               type="button"
             >
-              💾 Dijital Ürün
+              Dijital Ürün
             </button>
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
@@ -960,7 +960,7 @@ function CreateProductModal({
               onClick={() => setFormData({ ...formData, type: "Subscription", trackInventory: false })}
               type="button"
             >
-              🔄 Abonelik
+              Abonelik
             </button>
           </div>
 
@@ -1169,7 +1169,7 @@ function CreateProductModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1260,14 +1260,14 @@ function QuickStockAdjustModal({
           <div>
             <label className="block font-medium text-slate-700 mb-1">İşlem Türü</label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setFormData({ ...formData, movementType: e.target.value as any })}
               value={formData.movementType}
             >
-              <option value="In">📥 Stok Girişi (Alış / Üretim)</option>
-              <option value="Out">📤 Stok Çıkışı (Kayıp / Hasar / Transfer)</option>
-              <option value="Adjustment">⚖️ Sayım Düzeltmesi (Hedef Stok)</option>
-              <option value="Return">↩️ Müşteri İadesi</option>
+              <option value="In">Stok Girişi (Alış / Üretim)</option>
+              <option value="Out">Stok Çıkışı (Kayıp / Hasar / Transfer)</option>
+              <option value="Adjustment">Sayım Düzeltmesi (Hedef Stok)</option>
+              <option value="Return">Müşteri İadesi</option>
             </select>
           </div>
 
@@ -1331,7 +1331,7 @@ function QuickStockAdjustModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting}
               type="submit"
             >
@@ -1443,7 +1443,7 @@ function CategoryManagerModal({
                 <option value="">— Ana Kategori Olarak Ekle —</option>
                 {rootCategories.map((c) => (
                   <option key={c.id} value={c.id}>
-                    📁 {c.name}
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -1452,7 +1452,7 @@ function CategoryManagerModal({
 
           <div className="flex items-center justify-end">
             <button
-              className="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting || !newCatName.trim()}
               type="submit"
             >

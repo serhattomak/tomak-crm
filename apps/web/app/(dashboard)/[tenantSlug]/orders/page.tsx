@@ -245,7 +245,7 @@ export default function OrdersPage() {
 
           <PermissionGate permission="Orders.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -354,13 +354,13 @@ export default function OrdersPage() {
             value={statusFilter}
           >
             <option value="">Tüm Durumlar</option>
-            <option value="Draft">📝 Taslak</option>
-            <option value="PendingApproval">⏳ Onay Bekliyor</option>
-            <option value="Confirmed">✅ Onaylandı</option>
-            <option value="Processing">⚙️ Hazırlanıyor</option>
-            <option value="Shipped">🚚 Kargoda / Yolda</option>
-            <option value="Delivered">📦 Teslim Edildi</option>
-            <option value="Cancelled">❌ İptal Edildi</option>
+            <option value="Draft">Taslak</option>
+            <option value="PendingApproval">Onay Bekliyor</option>
+            <option value="Confirmed">Onaylandı</option>
+            <option value="Processing">Hazırlanıyor</option>
+            <option value="Shipped">Kargoda / Yolda</option>
+            <option value="Delivered">Teslim Edildi</option>
+            <option value="Cancelled">İptal Edildi</option>
           </select>
 
           {/* Payment Status Filter */}
@@ -370,9 +370,9 @@ export default function OrdersPage() {
             value={paymentStatusFilter}
           >
             <option value="">Tüm Ödemeler</option>
-            <option value="Unpaid">🔴 Ödenmedi</option>
-            <option value="PartiallyPaid">🟡 Kısmi Ödendi</option>
-            <option value="Paid">🟢 Tamamı Ödendi</option>
+            <option value="Unpaid">Ödenmedi</option>
+            <option value="PartiallyPaid">Kısmi Ödendi</option>
+            <option value="Paid">Tamamı Ödendi</option>
           </select>
 
           {/* Reset Filters */}
@@ -440,7 +440,7 @@ export default function OrdersPage() {
           </p>
           <PermissionGate permission="Orders.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-slate-800"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -874,9 +874,9 @@ function CreateOrderWizardModal({
                 onChange={(e) => setStatus(e.target.value)}
                 value={status}
               >
-                <option value="Confirmed">✅ Onaylandı (Stoktan Düş)</option>
-                <option value="Draft">📝 Taslak</option>
-                <option value="PendingApproval">⏳ Onay Bekliyor</option>
+                <option value="Confirmed">Onaylandı (Stoktan Düş)</option>
+                <option value="Draft">Taslak</option>
+                <option value="PendingApproval">Onay Bekliyor</option>
               </select>
             </div>
           </div>
@@ -1049,11 +1049,11 @@ function CreateOrderWizardModal({
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     value={paymentMethod}
                   >
-                    <option value="BankTransfer">🏦 Havale / EFT</option>
-                    <option value="CreditCard">💳 Kredi Kartı</option>
-                    <option value="Cash">💵 Nakit</option>
-                    <option value="Check">📜 Çek / Senet</option>
-                    <option value="OpenAccount">📑 Açık Hesap (Cari)</option>
+                    <option value="BankTransfer">Havale / EFT</option>
+                    <option value="CreditCard">Kredi Kartı</option>
+                    <option value="Cash">Nakit</option>
+                    <option value="Check">Çek / Senet</option>
+                    <option value="OpenAccount">Açık Hesap (Cari)</option>
                   </select>
                 </div>
 
@@ -1167,7 +1167,7 @@ function CreateOrderWizardModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={submitting || items.length === 0}
               type="submit"
             >

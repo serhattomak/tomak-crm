@@ -211,7 +211,7 @@ export function CustomizeWidgetsModal({
           </button>
 
           <button
-            className="rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+            className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
             onClick={onClose}
             type="button"
           >

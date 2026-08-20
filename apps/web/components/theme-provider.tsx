@@ -10,9 +10,10 @@ function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       disableTransitionOnChange
-      enableSystem
+      enableSystem={false}
+      storageKey="crm_app_theme_mode"
       {...props}
     >
       <ThemeHotkey />

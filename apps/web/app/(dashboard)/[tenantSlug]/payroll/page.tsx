@@ -39,6 +39,22 @@ import {
   type UpdateEmployeePuantajRequest,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
+import { toast } from "@workspace/ui/components/sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@workspace/ui/components/tooltip";
 
 const MONTH_NAMES = [
   "Ocak",
@@ -85,6 +101,23 @@ export default function PayrollPage() {
     employeeName: string;
     form: UpdateEmployeePuantajRequest;
   } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    cancelText?: string;
+    variant?: "destructive" | "warning" | "default";
+    loading?: boolean;
+    onConfirm: () => void | Promise<void>;
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+  });
 
   const [newRunForm, setNewRunForm] = useState({
     month: new Date().getMonth() + 1,
@@ -273,12 +306,16 @@ export default function PayrollPage() {
       const res = await ApiClient.createPayrollRun(newRunForm, activeTenant.id);
       if (res.success && res.data) {
         setShowCreateRunModal(false);
+        toast.success("Bordro dönemi başarıyla oluşturuldu.");
         await fetchRuns();
         setSelectedRunId(res.data.id);
         setActiveTab("puantaj");
+      } else {
+        toast.error(res.message || "Bordro dönemi oluşturulamadı.");
       }
     } catch (err) {
       console.error("Create run error:", err);
+      toast.error("Bordro dönemi oluşturulurken bir hata oluştu.");
     }
   };
 
@@ -290,73 +327,112 @@ export default function PayrollPage() {
     try {
       const res = await ApiClient.calculatePayrollRun(runId, activeTenant.id);
       if (res.success) {
+        toast.success("Bordro dönemi başarıyla hesaplandı.");
         await fetchRuns();
         await fetchRunDetail(runId);
+      } else {
+        toast.error(res.message || "Hesaplama işlemi başarısız.");
       }
     } catch (err) {
       console.error("Calculate error:", err);
+      toast.error("Hesaplama sırasında bir hata oluştu.");
     }
   };
 
   // Approve Run
-  const handleApproveRun = async (runId: string) => {
+  const handleApproveRun = (runId: string) => {
     if (!activeTenant?.id) {
       return;
     }
-    if (!confirm("Bordro dönemini onaylamak istediğinize emin misiniz?")) {
-      return;
-    }
-    try {
-      const res = await ApiClient.approvePayrollRun(runId, activeTenant.id);
-      if (res.success) {
-        await fetchRuns();
-        await fetchRunDetail(runId);
-      }
-    } catch (err) {
-      console.error("Approve error:", err);
-    }
+    setConfirmDialog({
+      open: true,
+      title: "Bordro Dönemini Onayla",
+      description:
+        "Bordro dönemi onaylandığında kesinleşme aşamasına geçecektir. Devam etmek istiyor musunuz?",
+      confirmText: "Onayla",
+      variant: "default",
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.approvePayrollRun(runId, activeTenant.id);
+          if (res.success) {
+            toast.success("Bordro dönemi başarıyla onaylandı.");
+            await fetchRuns();
+            await fetchRunDetail(runId);
+          } else {
+            toast.error(res.message || "Onaylama başarısız oldu.");
+          }
+        } catch (err) {
+          console.error("Approve error:", err);
+          toast.error("Onaylama sırasında bir hata oluştu.");
+        } finally {
+          setConfirmDialog((prev) => ({ ...prev, open: false }));
+        }
+      },
+    });
   };
 
   // Lock Run
-  const handleLockRun = async (runId: string) => {
+  const handleLockRun = (runId: string) => {
     if (!activeTenant?.id) {
       return;
     }
-    if (
-      !confirm(
-        "Bordro dönemini kilitlemek istediğinize emin misiniz? Kilitlenen dönem üzerinde değişiklik yapılamaz."
-      )
-    ) {
-      return;
-    }
-    try {
-      const res = await ApiClient.lockPayrollRun(runId, activeTenant.id);
-      if (res.success) {
-        await fetchRuns();
-        await fetchRunDetail(runId);
-      }
-    } catch (err) {
-      console.error("Lock error:", err);
-    }
+    setConfirmDialog({
+      open: true,
+      title: "Bordro Dönemini Kilitle",
+      description:
+        "Kilitlenen bordro dönemi üzerinde çalışan, puantaj ve maaş değişiklikleri yapılamaz. Emin misiniz?",
+      confirmText: "Kilitle",
+      variant: "warning",
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.lockPayrollRun(runId, activeTenant.id);
+          if (res.success) {
+            toast.success("Bordro dönemi kilitlendi.");
+            await fetchRuns();
+            await fetchRunDetail(runId);
+          } else {
+            toast.error(res.message || "Kilitleme başarısız oldu.");
+          }
+        } catch (err) {
+          console.error("Lock error:", err);
+          toast.error("Kilitleme sırasında bir hata oluştu.");
+        } finally {
+          setConfirmDialog((prev) => ({ ...prev, open: false }));
+        }
+      },
+    });
   };
 
   // Delete Run
-  const handleDeleteRun = async (runId: string) => {
+  const handleDeleteRun = (runId: string) => {
     if (!activeTenant?.id) {
       return;
     }
-    if (!confirm("Bu bordro dönemini silmek istediğinize emin misiniz?")) {
-      return;
-    }
-    try {
-      const res = await ApiClient.deletePayrollRun(runId, activeTenant.id);
-      if (res.success) {
-        await fetchRuns();
-        setSelectedRun(null);
-      }
-    } catch (err) {
-      console.error("Delete error:", err);
-    }
+    setConfirmDialog({
+      open: true,
+      title: "Bordro Dönemini Sil",
+      description:
+        "Bu bordro dönemini ve tüm çalışan puantaj detaylarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+      confirmText: "Dönemi Sil",
+      variant: "destructive",
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.deletePayrollRun(runId, activeTenant.id);
+          if (res.success) {
+            toast.success("Bordro dönemi başarıyla silindi.");
+            await fetchRuns();
+            setSelectedRun(null);
+          } else {
+            toast.error(res.message || "Silme başarısız oldu.");
+          }
+        } catch (err) {
+          console.error("Delete error:", err);
+          toast.error("Silme sırasında bir hata oluştu.");
+        } finally {
+          setConfirmDialog((prev) => ({ ...prev, open: false }));
+        }
+      },
+    });
   };
 
   // Edit Puantaj
@@ -403,11 +479,15 @@ export default function PayrollPage() {
       if (res.success) {
         setShowEditPuantajModal(false);
         setEditingPuantaj(null);
+        toast.success("Puantaj ve kazançlar kaydedildi.");
         await fetchRunDetail(selectedRunId);
         await fetchRuns();
+      } else {
+        toast.error(res.message || "Puantaj kaydedilemedi.");
       }
     } catch (err) {
       console.error("Save puantaj error:", err);
+      toast.error("Puantaj kaydedilirken bir hata oluştu.");
     }
   };
 
@@ -558,10 +638,10 @@ export default function PayrollPage() {
 
           <PermissionGate permission="Payroll.Manage">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 font-semibold text-white text-xs shadow-sm transition-all hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700"
               onClick={() => setShowCreateRunModal(true)}
             >
-              <Plus className="h-4 w-4 text-emerald-400" />
+              <Plus className="h-4 w-4" />
               <span>Yeni Dönem Bordrosu</span>
             </button>
           </PermissionGate>
@@ -603,9 +683,9 @@ export default function PayrollPage() {
           <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs">
             <div className="flex items-center justify-between font-medium text-slate-500 text-xs">
               <span>SGK & Vergi Toplamı</span>
-              <ShieldCheck className="h-4 w-4 text-indigo-500" />
+              <ShieldCheck className="h-4 w-4 text-blue-500" />
             </div>
-            <div className="mt-2 font-bold text-indigo-600 text-lg">
+            <div className="mt-2 font-bold text-blue-600 text-lg">
               {formatCurrency(
                 activeRun.totalSgkEmployee +
                   activeRun.totalSgkEmployer +
@@ -638,14 +718,14 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "runs"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => setActiveTab("runs")}
         >
           <Calendar className="h-4 w-4" />
           <span>Bordro Dönemleri</span>
-          <span className="rounded-full bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded-full bg-blue-700 px-1.5 py-0.5 text-[10px] text-blue-100">
             {runs.length}
           </span>
         </button>
@@ -653,7 +733,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "puantaj"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => setActiveTab("puantaj")}
@@ -665,7 +745,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "payslip"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => setActiveTab("payslip")}
@@ -677,7 +757,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "icmal"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => {
@@ -695,7 +775,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "simulator"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => setActiveTab("simulator")}
@@ -707,7 +787,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "parameters"
-              ? "bg-slate-900 text-white shadow-xs"
+              ? "bg-blue-600 text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
           }`}
           onClick={() => setActiveTab("parameters")}
@@ -1112,10 +1192,10 @@ export default function PayrollPage() {
 
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white text-xs shadow-sm hover:bg-slate-800"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
                 onClick={() => window.print()}
               >
-                <Printer className="h-4 w-4 text-emerald-400" />
+                <Printer className="h-4 w-4 text-white" />
                 <span>Yazdır / PDF İndir</span>
               </button>
             </div>
@@ -1666,90 +1746,75 @@ export default function PayrollPage() {
 
             {/* Base Salary */}
             <div>
-              <label className="font-semibold text-slate-700 text-xs">
+              <label className="font-semibold text-slate-700 text-xs mb-1 block">
                 {simForm.contractSalaryType === "Gross"
                   ? "Aylık Brüt Maaş (₺)"
                   : "Hedef Net Maaş (₺)"}
               </label>
-              <div className="relative mt-1">
-                <input
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 font-bold text-slate-900 text-sm focus:border-slate-400 focus:bg-white focus:outline-none"
-                  min="0"
-                  onChange={(e) =>
-                    setSimForm({
-                      ...simForm,
-                      baseSalary: Number(e.target.value),
-                    })
-                  }
-                  step="100"
-                  type="number"
-                  value={simForm.baseSalary}
-                />
-                <span className="absolute top-2 right-3 font-bold text-slate-400 text-xs">
-                  TRY
-                </span>
-              </div>
+              <NumberInput
+                value={simForm.baseSalary}
+                onChange={(val) =>
+                  setSimForm({
+                    ...simForm,
+                    baseSalary: val,
+                  })
+                }
+                step={100}
+                prefix="₺"
+              />
             </div>
 
             {/* Cumulative Prior Income Tax Base */}
             <div>
-              <label className="font-semibold text-slate-700 text-xs">
+              <label className="font-semibold text-slate-700 text-xs mb-1 block">
                 Önceki Aylardan Kümülatif GV Matrahı (₺)
               </label>
-              <input
-                className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 font-medium text-slate-900 text-xs focus:border-slate-400 focus:bg-white focus:outline-none"
-                min="0"
-                onChange={(e) =>
+              <NumberInput
+                value={simForm.priorCumulativeIncomeTaxBase}
+                onChange={(val) =>
                   setSimForm({
                     ...simForm,
-                    priorCumulativeIncomeTaxBase: Number(e.target.value),
+                    priorCumulativeIncomeTaxBase: val,
                   })
                 }
-                placeholder="Örn: 158000"
-                step="1000"
-                type="number"
-                value={simForm.priorCumulativeIncomeTaxBase}
+                step={1000}
+                prefix="₺"
               />
-              <p className="mt-0.5 text-[10px] text-slate-400">
-                Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek
-                için
+              <p className="mt-1 text-[10px] text-slate-400">
+                Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek için
               </p>
             </div>
 
             {/* Overtime & Bonuses */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-medium text-slate-700 text-xs">
+                <label className="font-medium text-slate-700 text-xs mb-1 block">
                   Fazla Mesai (Saat)
                 </label>
-                <input
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                  min="0"
-                  onChange={(e) =>
+                <NumberInput
+                  value={simForm.overtimeHours}
+                  onChange={(val) =>
                     setSimForm({
                       ...simForm,
-                      overtimeHours: Number(e.target.value),
+                      overtimeHours: val,
                     })
                   }
-                  type="number"
-                  value={simForm.overtimeHours}
+                  suffix="saat"
                 />
               </div>
               <div>
-                <label className="font-medium text-slate-700 text-xs">
+                <label className="font-medium text-slate-700 text-xs mb-1 block">
                   Prim / İkramiye (₺)
                 </label>
-                <input
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                  min="0"
-                  onChange={(e) =>
+                <NumberInput
+                  value={simForm.bonusGross}
+                  onChange={(val) =>
                     setSimForm({
                       ...simForm,
-                      bonusGross: Number(e.target.value),
+                      bonusGross: val,
                     })
                   }
-                  type="number"
-                  value={simForm.bonusGross}
+                  prefix="₺"
                 />
               </div>
             </div>
@@ -1757,37 +1822,33 @@ export default function PayrollPage() {
             {/* Allowances */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-medium text-slate-700 text-xs">
+                <label className="font-medium text-slate-700 text-xs mb-1 block">
                   Yemek Yardımı (₺)
                 </label>
-                <input
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                  min="0"
-                  onChange={(e) =>
+                <NumberInput
+                  value={simForm.mealAllowance}
+                  onChange={(val) =>
                     setSimForm({
                       ...simForm,
-                      mealAllowance: Number(e.target.value),
+                      mealAllowance: val,
                     })
                   }
-                  type="number"
-                  value={simForm.mealAllowance}
+                  prefix="₺"
                 />
               </div>
               <div>
-                <label className="font-medium text-slate-700 text-xs">
+                <label className="font-medium text-slate-700 text-xs mb-1 block">
                   Yol Yardımı (₺)
                 </label>
-                <input
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                  min="0"
-                  onChange={(e) =>
+                <NumberInput
+                  value={simForm.travelAllowance}
+                  onChange={(val) =>
                     setSimForm({
                       ...simForm,
-                      travelAllowance: Number(e.target.value),
+                      travelAllowance: val,
                     })
                   }
-                  type="number"
-                  value={simForm.travelAllowance}
+                  prefix="₺"
                 />
               </div>
             </div>
@@ -1823,7 +1884,7 @@ export default function PayrollPage() {
             </div>
 
             <button
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 font-bold text-white text-xs shadow-sm hover:bg-slate-800 disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 font-bold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
               disabled={simulating}
               onClick={handleSimulate}
             >
@@ -2158,15 +2219,16 @@ export default function PayrollPage() {
 
       {/* MODAL 1: CREATE PAYROLL RUN */}
       {showCreateRunModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl text-xs">
             <div className="flex items-center justify-between border-slate-100 border-b pb-3">
               <h3 className="font-bold text-slate-900 text-sm">
                 Yeni Aylık Bordro Dönemi Başlat
               </h3>
               <button
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
                 onClick={() => setShowCreateRunModal(false)}
+                type="button"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -2175,47 +2237,42 @@ export default function PayrollPage() {
             <form className="space-y-4 text-xs" onSubmit={handleCreateRun}>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700">Yıl</label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 text-xs focus:bg-white focus:outline-none"
-                    onChange={(e) =>
-                      setNewRunForm({
-                        ...newRunForm,
-                        year: Number(e.target.value),
-                      })
-                    }
-                    required
-                    type="number"
+                  <label className="font-semibold text-slate-700 block mb-1">Yıl</label>
+                  <NumberInput
+                    min={2020}
+                    max={2035}
                     value={newRunForm.year}
+                    onChange={(val) => setNewRunForm({ ...newRunForm, year: val })}
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700">Ay</label>
-                  <select
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 text-xs focus:bg-white focus:outline-none"
-                    onChange={(e) =>
-                      setNewRunForm({
-                        ...newRunForm,
-                        month: Number(e.target.value),
-                      })
+                  <label className="font-semibold text-slate-700 block mb-1">Ay</label>
+                  <Select
+                    value={String(newRunForm.month)}
+                    onValueChange={(val) =>
+                      setNewRunForm({ ...newRunForm, month: Number(val) })
                     }
-                    value={newRunForm.month}
                   >
-                    {MONTH_NAMES.map((name, idx) => (
-                      <option key={idx + 1} value={idx + 1}>
-                        {name} ({idx + 1}. Ay)
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Ay Seçiniz" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {MONTH_NAMES.map((name, idx) => (
+                        <SelectItem key={idx + 1} value={String(idx + 1)}>
+                          {name} ({idx + 1}. Ay)
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700">
+                <label className="font-semibold text-slate-700 block mb-1">
                   Bordro Başlığı (İsteğe Bağlı)
                 </label>
                 <input
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 text-xs focus:bg-white focus:outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 text-xs focus:border-blue-500 focus:outline-none"
                   onChange={(e) =>
                     setNewRunForm({ ...newRunForm, title: e.target.value })
                   }
@@ -2226,11 +2283,11 @@ export default function PayrollPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700">
+                <label className="font-semibold text-slate-700 block mb-1">
                   Açıklama / Notlar
                 </label>
                 <textarea
-                  className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 text-xs focus:bg-white focus:outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 text-xs focus:border-blue-500 focus:outline-none"
                   onChange={(e) =>
                     setNewRunForm({ ...newRunForm, notes: e.target.value })
                   }
@@ -2240,22 +2297,22 @@ export default function PayrollPage() {
                 />
               </div>
 
-              <div className="rounded-xl bg-blue-50/80 p-3 text-[11px] text-blue-700">
+              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 text-[11px] text-blue-900 leading-relaxed font-medium">
                 Bu işlem başlatıldığında şirketteki tüm aktif çalışanların
                 kadro, pozisyon ve taban maaş bilgileri otomatik olarak
                 kopyalanır ve 30 günlük standart puantaj hesabı yapılır.
               </div>
 
-              <div className="flex justify-end gap-2 border-slate-100 border-t pt-2">
+              <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
                 <button
-                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-700 text-xs hover:bg-slate-50"
+                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50 transition-colors"
                   onClick={() => setShowCreateRunModal(false)}
                   type="button"
                 >
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-slate-900 px-4 py-2 font-bold text-white text-xs shadow-sm hover:bg-slate-800"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
                   type="submit"
                 >
                   Dönemi Oluştur ve Hesapla
@@ -2268,8 +2325,8 @@ export default function PayrollPage() {
 
       {/* MODAL 2: EDIT EMPLOYEE PUANTAJ */}
       {showEditPuantajModal && editingPuantaj && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
-          <div className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl text-xs">
             <div className="flex items-center justify-between border-slate-100 border-b pb-3">
               <div>
                 <h3 className="font-bold text-slate-900 text-sm">
@@ -2280,8 +2337,9 @@ export default function PayrollPage() {
                 </p>
               </div>
               <button
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
                 onClick={() => setShowEditPuantajModal(false)}
+                type="button"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -2291,108 +2349,115 @@ export default function PayrollPage() {
               {/* Base Salary & Type */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700">
+                  <label className="font-semibold text-slate-700 block mb-1">
                     Taban Maaş (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-bold text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={100}
+                    value={editingPuantaj.form.baseSalary}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          baseSalary: Number(e.target.value),
+                          baseSalary: val,
                         },
                       })
                     }
-                    required
-                    type="number"
-                    value={editingPuantaj.form.baseSalary}
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700">
+                  <label className="font-semibold text-slate-700 block mb-1">
                     Sözleşme Tipi
                   </label>
-                  <select
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-semibold text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <Select
+                    value={editingPuantaj.form.contractSalaryType}
+                    onValueChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          contractSalaryType: e.target.value,
+                          contractSalaryType: val,
                         },
                       })
                     }
-                    value={editingPuantaj.form.contractSalaryType}
                   >
-                    <option value="Gross">Brüt Sözleşme</option>
-                    <option value="Net">Net Sözleşme</option>
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Gross">Brüt Sözleşme</SelectItem>
+                      <SelectItem value="Net">Net Sözleşme</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               {/* Days breakdown */}
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Çalışılan Gün
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    max={31}
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.workedDays}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          workedDays: Number(e.target.value),
+                          workedDays: val,
                         },
                       })
                     }
-                    step="0.5"
-                    type="number"
-                    value={editingPuantaj.form.workedDays}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Ücretsiz İzin
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    max={31}
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.unpaidLeaveDays}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          unpaidLeaveDays: Number(e.target.value),
+                          unpaidLeaveDays: val,
                         },
                       })
                     }
-                    step="0.5"
-                    type="number"
-                    value={editingPuantaj.form.unpaidLeaveDays}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Rapor / Hastalık
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    max={31}
+                    step={0.5}
+                    suffix="gün"
+                    value={editingPuantaj.form.sickLeaveDays}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          sickLeaveDays: Number(e.target.value),
+                          sickLeaveDays: val,
                         },
                       })
                     }
-                    step="0.5"
-                    type="number"
-                    value={editingPuantaj.form.sickLeaveDays}
                   />
                 </div>
               </div>
@@ -2400,42 +2465,43 @@ export default function PayrollPage() {
               {/* Overtime and Extras */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Fazla Mesai (Saat)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    step={0.5}
+                    suffix="saat"
+                    value={editingPuantaj.form.overtimeHours}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          overtimeHours: Number(e.target.value),
+                          overtimeHours: val,
                         },
                       })
                     }
-                    step="0.5"
-                    type="number"
-                    value={editingPuantaj.form.overtimeHours}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Prim / İkramiye (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={100}
+                    value={editingPuantaj.form.bonusGross}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          bonusGross: Number(e.target.value),
+                          bonusGross: val,
                         },
                       })
                     }
-                    type="number"
-                    value={editingPuantaj.form.bonusGross}
                   />
                 </div>
               </div>
@@ -2443,41 +2509,43 @@ export default function PayrollPage() {
               {/* Meal & Travel */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Yemek Yardımı (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.mealAllowanceGross}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          mealAllowanceGross: Number(e.target.value),
+                          mealAllowanceGross: val,
                         },
                       })
                     }
-                    type="number"
-                    value={editingPuantaj.form.mealAllowanceGross}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Yol Yardımı (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.travelAllowanceGross}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          travelAllowanceGross: Number(e.target.value),
+                          travelAllowanceGross: val,
                         },
                       })
                     }
-                    type="number"
-                    value={editingPuantaj.form.travelAllowanceGross}
                   />
                 </div>
               </div>
@@ -2485,41 +2553,43 @@ export default function PayrollPage() {
               {/* Deductions: Icra, Advance */}
               <div className="grid grid-cols-2 gap-3 border-slate-100 border-t pt-3">
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     İcra Kesintisi (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.icraDeduction}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          icraDeduction: Number(e.target.value),
+                          icraDeduction: val,
                         },
                       })
                     }
-                    type="number"
-                    value={editingPuantaj.form.icraDeduction}
                   />
                 </div>
                 <div>
-                  <label className="font-medium text-slate-700">
+                  <label className="font-medium text-slate-700 block mb-1">
                     Avans Mahsubu (₺)
                   </label>
-                  <input
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-slate-900 text-xs focus:outline-none"
-                    onChange={(e) =>
+                  <NumberInput
+                    min={0}
+                    prefix="₺"
+                    step={50}
+                    value={editingPuantaj.form.advanceDeduction}
+                    onChange={(val) =>
                       setEditingPuantaj({
                         ...editingPuantaj,
                         form: {
                           ...editingPuantaj.form,
-                          advanceDeduction: Number(e.target.value),
+                          advanceDeduction: val,
                         },
                       })
                     }
-                    type="number"
-                    value={editingPuantaj.form.advanceDeduction}
                   />
                 </div>
               </div>
@@ -2527,7 +2597,7 @@ export default function PayrollPage() {
               <div className="flex items-center gap-2 pt-1">
                 <input
                   checked={editingPuantaj.form.hasBes}
-                  className="rounded border-slate-300 text-emerald-600"
+                  className="rounded border-slate-300 text-blue-600 focus:ring-0"
                   id="hasBesEdit"
                   onChange={(e) =>
                     setEditingPuantaj({
@@ -2541,7 +2611,7 @@ export default function PayrollPage() {
                   type="checkbox"
                 />
                 <label
-                  className="font-semibold text-slate-700 text-xs"
+                  className="font-semibold text-slate-700 text-xs cursor-pointer"
                   htmlFor="hasBesEdit"
                 >
                   Otomatik BES (%3) kesintisi uygulansın
@@ -2550,14 +2620,14 @@ export default function PayrollPage() {
 
               <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
                 <button
-                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-700 text-xs hover:bg-slate-50"
+                  className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50 transition-colors"
                   onClick={() => setShowEditPuantajModal(false)}
                   type="button"
                 >
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-slate-900 px-4 py-2 font-bold text-white text-xs shadow-sm hover:bg-slate-800"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 transition-colors"
                   type="submit"
                 >
                   Kaydet ve Yeniden Hesapla
@@ -2567,6 +2637,19 @@ export default function PayrollPage() {
           </div>
         </div>
       )}
+
+      {/* GLOBAL CONFIRM DIALOG */}
+      <ConfirmDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        confirmText={confirmDialog.confirmText}
+        cancelText={confirmDialog.cancelText}
+        variant={confirmDialog.variant}
+        loading={confirmDialog.loading}
+        onConfirm={confirmDialog.onConfirm}
+      />
     </div>
   );
 }

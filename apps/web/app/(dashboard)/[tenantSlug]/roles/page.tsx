@@ -10,6 +10,8 @@ import {
   type RoleDto,
 } from "@/lib/api-client"
 import { usePermissions } from "@/lib/permissions/permission-context"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
+import { toast } from "@workspace/ui/components/sonner"
 
 export default function RolesManagementPage() {
   const { activeTenant, refreshProfile } = usePermissions()
@@ -25,6 +27,21 @@ export default function RolesManagementPage() {
     type: "success" | "error"
     text: string
   } | null>(null)
+
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    confirmText?: string
+    variant?: "destructive" | "warning" | "default"
+    onConfirm: () => void | Promise<void>
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+  })
 
   // Create Role Modal
   const [isCreateOpen, setIsCreateOpen] = useState(false)
@@ -133,26 +150,35 @@ export default function RolesManagementPage() {
       setIsCreateOpen(false)
       setNewRoleName("")
       setNewRoleDesc("")
+      toast.success("Rol başarıyla oluşturuldu.")
       await loadData()
     } else {
-      alert(res.message || "Failed to create role.")
+      toast.error(res.message || "Rol oluşturulamadı.")
     }
   }
 
-  const handleDeleteRole = async (roleId: string) => {
-    if (!(
-      activeTenant && confirm("Are you sure you want to delete this role?")
-    )) {
-      return
-    }
+  const handleDeleteRole = (roleId: string) => {
+    if (!activeTenant) return
 
-    const res = await ApiClient.deleteRole(roleId, activeTenant.id)
-    if (res.success) {
-      setSelectedRole(null)
-      await loadData()
-    } else {
-      alert(res.message || "Failed to delete role.")
-    }
+    setConfirmDialog({
+      open: true,
+      title: "Rolü Sil",
+      description:
+        "Bu rolü silmek istediğinize emin misiniz? Bu role sahip kullanıcıların yetkileri etkilenecektir.",
+      confirmText: "Rolü Sil",
+      variant: "destructive",
+      onConfirm: async () => {
+        const res = await ApiClient.deleteRole(roleId, activeTenant.id)
+        if (res.success) {
+          toast.success("Rol başarıyla silindi.")
+          setSelectedRole(null)
+          await loadData()
+        } else {
+          toast.error(res.message || "Rol silinemedi.")
+        }
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+      },
+    })
   }
 
   return (
@@ -429,6 +455,19 @@ export default function RolesManagementPage() {
           </div>
         </div>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) =>
+          setConfirmDialog((prev) => ({ ...prev, open }))
+        }
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </div>
   )
 }
