@@ -8,6 +8,7 @@ import {
   Building2,
   Calendar,
   ChevronRight,
+  Clock,
   Flame,
   HelpCircle,
   LayoutDashboard,
@@ -127,6 +128,10 @@ export default function DashboardLayout({
         } else if (seq === "gb") {
           e.preventDefault()
           router.push(`/${tenantSlug}/payroll`)
+          keyBuffer = []
+        } else if (seq === "gv") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/attendance`)
           keyBuffer = []
         } else if (seq === "go") {
           e.preventDefault()
@@ -268,6 +273,12 @@ function DashboardNavigation() {
       href: `/${tenantSlug}/leaves`,
       icon: Calendar,
       name: "İzinler & Takvim",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/attendance`,
+      icon: Clock,
+      name: "Vardiya & PDKS",
     },
     {
       badge: null,

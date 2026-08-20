@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Modules\CRM.Modules.Orders\CRM.Modules.Orders.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Leaves\CRM.Modules.Leaves.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Payroll\CRM.Modules.Payroll.csproj" />
+    <ProjectReference Include="..\Modules\CRM.Modules.Attendance\CRM.Modules.Attendance.csproj" />
   </ItemGroup>
 
   <ItemGroup>

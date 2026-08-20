@@ -1360,6 +1360,73 @@ export class ApiClient {
       tenantId
     )
   }
+
+  // --- Attendance & Shifts ---
+  static async getShiftTemplates(tenantId?: string): Promise<ApiResponse<ShiftTemplateDto[]>> {
+    return ApiClient.request<ShiftTemplateDto[]>("/api/attendance/shifts/templates", { method: "GET" }, tenantId)
+  }
+
+  static async createShiftTemplate(data: CreateShiftTemplatePayload, tenantId?: string): Promise<ApiResponse<ShiftTemplateDto>> {
+    return ApiClient.request<ShiftTemplateDto>("/api/attendance/shifts/templates", {
+      body: JSON.stringify(data),
+      method: "POST",
+    }, tenantId)
+  }
+
+  static async assignShifts(data: AssignShiftsPayload, tenantId?: string): Promise<ApiResponse<number>> {
+    return ApiClient.request<number>("/api/attendance/shifts/assign", {
+      body: JSON.stringify(data),
+      method: "POST",
+    }, tenantId)
+  }
+
+  static async getShiftCalendar(params: { startDate: string; endDate: string; departmentId?: string; employeeId?: string }, tenantId?: string): Promise<ApiResponse<ShiftScheduleDto[]>> {
+    const query = new URLSearchParams({ startDate: params.startDate, endDate: params.endDate })
+    if (params.departmentId) query.set("departmentId", params.departmentId)
+    if (params.employeeId) query.set("employeeId", params.employeeId)
+    return ApiClient.request<ShiftScheduleDto[]>(`/api/attendance/shifts/calendar?${query.toString()}`, { method: "GET" }, tenantId)
+  }
+
+  static async punchAttendance(data: PunchAttendancePayload, tenantId?: string): Promise<ApiResponse<TodayStatusDto>> {
+    return ApiClient.request<TodayStatusDto>("/api/attendance/punch", {
+      body: JSON.stringify(data),
+      method: "POST",
+    }, tenantId)
+  }
+
+  static async getTodayStatus(employeeId: string, tenantId?: string): Promise<ApiResponse<TodayStatusDto>> {
+    return ApiClient.request<TodayStatusDto>(`/api/attendance/today/status?employeeId=${employeeId}`, { method: "GET" }, tenantId)
+  }
+
+  static async getLiveMonitor(tenantId?: string): Promise<ApiResponse<LiveMonitorResponse>> {
+    return ApiClient.request<LiveMonitorResponse>("/api/attendance/live-monitor", { method: "GET" }, tenantId)
+  }
+
+  static async getAttendanceRecords(params: { startDate?: string; endDate?: string; departmentId?: string; employeeId?: string; status?: string } = {}, tenantId?: string): Promise<ApiResponse<AttendanceRecordDto[]>> {
+    const query = new URLSearchParams()
+    if (params.startDate) query.set("startDate", params.startDate)
+    if (params.endDate) query.set("endDate", params.endDate)
+    if (params.departmentId) query.set("departmentId", params.departmentId)
+    if (params.employeeId) query.set("employeeId", params.employeeId)
+    if (params.status) query.set("status", params.status)
+    const qs = query.toString()
+    return ApiClient.request<AttendanceRecordDto[]>(`/api/attendance/records${qs ? `?${qs}` : ""}`, { method: "GET" }, tenantId)
+  }
+
+  static async submitAttendanceCorrection(data: SubmitCorrectionPayload, tenantId?: string): Promise<ApiResponse<AttendanceCorrectionRequestDto>> {
+    return ApiClient.request<AttendanceCorrectionRequestDto>("/api/attendance/corrections", {
+      body: JSON.stringify(data),
+      method: "POST",
+    }, tenantId)
+  }
+
+  static async reviewAttendanceCorrection(id: string, data: { approve: boolean; rejectionReason?: string }, tenantId?: string): Promise<ApiResponse<string>> {
+    const query = new URLSearchParams({ approve: String(data.approve) })
+    if (data.rejectionReason) query.set("rejectionReason", data.rejectionReason)
+    return ApiClient.request<string>(`/api/attendance/corrections/${id}/review?${query.toString()}`, {
+      method: "POST",
+    }, tenantId)
+  }
 }
 
 export interface CustomerListDto {
@@ -2398,6 +2465,161 @@ export interface PayrollIcmalResponse {
   totalStampTax: number
   year: number
 }
+
+// Attendance & Shifts
+export interface ShiftTemplateDto {
+  breakDurationMinutes: number
+  code: string
+  colorHex: string
+  endTime: string
+  gracePeriodMinutes: number
+  id: string
+  isActive: boolean
+  isFlexible: boolean
+  isNightShift: boolean
+  minWorkingHours: number
+  name: string
+  startTime: string
+}
+
+export interface CreateShiftTemplatePayload {
+  breakDurationMinutes?: number
+  code: string
+  colorHex?: string
+  endTime: string
+  gracePeriodMinutes?: number
+  isFlexible?: boolean
+  isNightShift?: boolean
+  minWorkingHours?: number
+  name: string
+  startTime: string
+}
+
+export interface ShiftScheduleDto {
+  customEndTime?: string
+  customStartTime?: string
+  date: string
+  departmentId?: string
+  departmentName?: string
+  employeeId: string
+  employeeName: string
+  id: string
+  notes?: string
+  shiftCode: string
+  shiftColorHex: string
+  shiftName: string
+  shiftTemplateId: string
+  startTime: string
+  endTime: string
+  status: string
+}
+
+export interface AssignShiftsPayload {
+  departmentId?: string
+  departmentName?: string
+  employeeIds: string[]
+  employeeNames: string[]
+  endDate: string
+  notes?: string
+  repeatOnDays?: number[]
+  shiftTemplateId: string
+  startDate: string
+}
+
+export interface PunchAttendancePayload {
+  breakType?: string
+  employeeId: string
+  employeeName: string
+  ipAddress?: string
+  latitude?: number
+  longitude?: number
+  note?: string
+  punchType: "ClockIn" | "ClockOut" | "BreakStart" | "BreakEnd"
+  source?: string
+}
+
+export interface TodayStatusDto {
+  clockInTime?: string
+  currentStatus: string
+  date: string
+  employeeId: string
+  employeeName: string
+  isClockedIn: boolean
+  isOnBreak: boolean
+  lastBreakStartTime?: string
+  shiftEndTime?: string
+  shiftName?: string
+  shiftStartTime?: string
+  totalBreakMinutesToday: number
+  totalWorkedMinutesToday: number
+}
+
+export interface LiveEmployeeStatusDto {
+  breakMinutesSoFar: number
+  clockInTime?: string
+  currentState: "Working" | "OnBreak" | "Late" | "Absent" | "Completed"
+  departmentName?: string
+  employeeId: string
+  employeeName: string
+  shiftEndTime?: string
+  shiftName?: string
+  shiftStartTime?: string
+  workedMinutesSoFar: number
+}
+
+export interface LiveMonitorResponse {
+  absentCount: number
+  currentlyOnBreak: number
+  currentlyWorking: number
+  employees: LiveEmployeeStatusDto[]
+  lateArrivals: number
+  totalEmployees: number
+}
+
+export interface AttendanceRecordDto {
+  adminNotes?: string
+  date: string
+  departmentId?: string
+  departmentName?: string
+  earlyLeaveMinutes: number
+  employeeId: string
+  employeeName: string
+  expectedWorkedMinutes: number
+  firstClockIn?: string
+  holidayOvertimeMinutes: number
+  id: string
+  isApproved: boolean
+  lastClockOut?: string
+  lateMinutes: number
+  overtimeMinutes: number
+  shiftName?: string
+  status: string
+  totalBreakMinutes: number
+  totalWorkedMinutes: number
+}
+
+export interface AttendanceCorrectionRequestDto {
+  createdAt: string
+  date: string
+  employeeId: string
+  employeeName: string
+  id: string
+  reason: string
+  rejectionReason?: string
+  requestedClockIn?: string
+  requestedClockOut?: string
+  status: string
+}
+
+export interface SubmitCorrectionPayload {
+  date: string
+  employeeId: string
+  employeeName: string
+  reason: string
+  requestedClockIn?: string
+  requestedClockOut?: string
+}
+
 
 
 

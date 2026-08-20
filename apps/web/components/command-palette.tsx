@@ -5,6 +5,7 @@ import {
   Building2,
   Calendar,
   ChevronRight,
+  Clock,
   FolderKanban,
   HelpCircle,
   History,
@@ -204,6 +205,18 @@ export function CommandPalette({
         },
       },
       {
+        id: "nav-attendance",
+        title: "Vardiya & PDKS Takibi",
+        subtitle: "Canlı devam monitörü, vardiya çizelgeleri ve mola takibi",
+        icon: Clock,
+        category: "navigation",
+        badge: "G then V",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/attendance`)
+          onClose()
+        },
+      },
+      {
         id: "nav-payroll",
         title: "Bordro & Maaş Yönetimi",
         subtitle: "Aylık bordro hesaplama, SGK ve vergi dökümleri",
@@ -313,6 +326,28 @@ export function CommandPalette({
         category: "actions",
         onSelect: () => {
           router.push(`/${tenantSlug}/payroll?create=true`)
+          onClose()
+        },
+      },
+      {
+        id: "act-assign-shift",
+        title: "Yeni Vardiya Ata",
+        subtitle: "Personel ve departmanlara toplu vardiya planlaması yap",
+        icon: Plus,
+        category: "actions",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/attendance?create=assign`)
+          onClose()
+        },
+      },
+      {
+        id: "act-create-correction",
+        title: "PDKS Düzeltme Talebi Gönder",
+        subtitle: "Unutulan giriş-çıkış saatini mazeretiyle bildir",
+        icon: Plus,
+        category: "actions",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/attendance?create=correction`)
           onClose()
         },
       },

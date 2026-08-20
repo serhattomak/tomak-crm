@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CRM.BuildingBlocks\CRM.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Organization\CRM.Modules.Organization.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Payroll\CRM.Modules.Payroll.csproj" />
+  </ItemGroup>
+
+</Project>

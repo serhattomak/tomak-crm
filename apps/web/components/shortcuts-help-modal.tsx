@@ -33,6 +33,7 @@ export function ShortcutsHelpModal({ isOpen, onClose }: ShortcutsHelpModalProps)
         { keys: ["G", "S"], label: "Siparişler" },
         { keys: ["G", "U"], label: "Ürün & Hizmetler" },
         { keys: ["G", "I"], label: "İzinler & Takvim" },
+        { keys: ["G", "V"], label: "Vardiya & PDKS" },
         { keys: ["G", "B"], label: "Bordro & Maaşlar" },
         { keys: ["G", "O"], label: "Organizasyon" },
         { keys: ["G", "A"], label: "Ayarlar" },

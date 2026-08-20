@@ -7,5 +7,11 @@
     <Project Path="src/Modules/CRM.Modules.Identity/CRM.Modules.Identity.csproj" />
     <Project Path="src/Modules/CRM.Modules.Organization/CRM.Modules.Organization.csproj" />
     <Project Path="src/Modules/CRM.Modules.Tenants/CRM.Modules.Tenants.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Customers/CRM.Modules.Customers.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Products/CRM.Modules.Products.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Orders/CRM.Modules.Orders.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Leaves/CRM.Modules.Leaves.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Payroll/CRM.Modules.Payroll.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Attendance/CRM.Modules.Attendance.csproj" />
   </Folder>
 </Solution>
