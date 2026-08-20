@@ -14,7 +14,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import {
@@ -47,6 +47,7 @@ import {
 
 export default function LeavesPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
@@ -75,6 +76,12 @@ export default function LeavesPage() {
 
   // Modals
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("create") === "true") {
+      setIsCreateModalOpen(true);
+    }
+  }, [searchParams]);
   const [rejectingLeave, setRejectingLeave] = useState<LeaveRequestDto | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);

@@ -23,7 +23,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
@@ -73,6 +73,7 @@ const MONTH_NAMES = [
 
 export default function PayrollPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
@@ -95,6 +96,13 @@ export default function PayrollPage() {
 
   // Modals state
   const [showCreateRunModal, setShowCreateRunModal] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("create") === "true") {
+      setShowCreateRunModal(true);
+    }
+  }, [searchParams]);
+
   const [showEditPuantajModal, setShowEditPuantajModal] = useState(false);
   const [editingPuantaj, setEditingPuantaj] = useState<{
     employeePayrollId: string;

@@ -17,7 +17,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import {
@@ -33,6 +33,7 @@ import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function OrdersPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
@@ -55,6 +56,12 @@ export default function OrdersPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [deletingOrder, setDeletingOrder] = useState<OrderListDto | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("create") === "true") {
+      setIsCreateModalOpen(true);
+    }
+  }, [searchParams]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);

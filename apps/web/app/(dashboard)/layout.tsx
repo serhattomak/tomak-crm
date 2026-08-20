@@ -33,8 +33,10 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation"
-import React, { Suspense } from "react"
+import React, { Suspense, useEffect, useState } from "react"
+import { CommandPalette } from "@/components/command-palette"
 import { PermissionGate } from "@/components/permission-gate"
+import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal"
 import { TenantSwitcher } from "@/components/tenant-switcher"
 import { PermissionProvider } from "@/lib/permissions/permission-context"
 import { createClient } from "@/lib/supabase/client"
@@ -45,8 +47,123 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
   const params = useParams()
-  const tenantSlug = params?.tenantSlug as string | undefined
+  const tenantSlug = (params?.tenantSlug as string) || ""
+
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
+  const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false)
+
+  // Global Keyboard Navigation & Shortcuts Listener
+  useEffect(() => {
+    let keyBuffer: string[] = []
+    let bufferTimeout: NodeJS.Timeout | null = null
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 1. Command Palette: Cmd+K or Ctrl+K
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault()
+        setIsCommandPaletteOpen((prev) => !prev)
+        return
+      }
+
+      // Check if user is actively typing in an editable field
+      const target = e.target as HTMLElement
+      const isInput =
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+
+      if (isInput) return
+
+      // 2. Slash (/) to focus Command Palette
+      if (e.key === "/" && !isCommandPaletteOpen && !isShortcutsHelpOpen) {
+        e.preventDefault()
+        setIsCommandPaletteOpen(true)
+        return
+      }
+
+      // 3. Question mark (?) to toggle Shortcuts Help Modal
+      if (e.key === "?" && !isCommandPaletteOpen) {
+        e.preventDefault()
+        setIsShortcutsHelpOpen((prev) => !prev)
+        return
+      }
+
+      // 4. Sequence Shortcuts (e.g. G then D, G then M, N then M)
+      const key = e.key.toLowerCase()
+      if (key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        keyBuffer.push(key)
+
+        if (bufferTimeout) clearTimeout(bufferTimeout)
+        bufferTimeout = setTimeout(() => {
+          keyBuffer = []
+        }, 800)
+
+        const seq = keyBuffer.join("")
+
+        // Navigation Sequence (g + key)
+        if (seq === "gd") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}`)
+          keyBuffer = []
+        } else if (seq === "gm") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/customers`)
+          keyBuffer = []
+        } else if (seq === "gs") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/orders`)
+          keyBuffer = []
+        } else if (seq === "gu") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/products`)
+          keyBuffer = []
+        } else if (seq === "gi") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/leaves`)
+          keyBuffer = []
+        } else if (seq === "gb") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/payroll`)
+          keyBuffer = []
+        } else if (seq === "go") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/organization`)
+          keyBuffer = []
+        } else if (seq === "ga") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/settings`)
+          keyBuffer = []
+        }
+        // Creation Sequence (n + key)
+        else if (seq === "nm") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/customers?create=true`)
+          keyBuffer = []
+        } else if (seq === "ns") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/orders?create=true`)
+          keyBuffer = []
+        } else if (seq === "ni") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/leaves?create=true`)
+          keyBuffer = []
+        } else if (seq === "nu") {
+          e.preventDefault()
+          router.push(`/${tenantSlug}/products?create=true`)
+          keyBuffer = []
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      if (bufferTimeout) clearTimeout(bufferTimeout)
+    }
+  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen])
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
@@ -60,19 +177,23 @@ export default function DashboardLayout({
               <TenantSwitcher />
             </div>
 
-            {/* Search Bar with ⌘ K */}
-            <div className="relative">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
-              <input
-                className="w-full rounded-xl border border-slate-100 bg-slate-50 py-2 pr-14 pl-9 text-xs text-slate-800 placeholder:text-slate-400 focus:border-slate-300 focus:bg-white focus:outline-none"
-                placeholder="Search"
-                type="text"
-              />
-              <div className="absolute top-2 right-2.5 flex items-center gap-0.5 rounded border border-slate-200/80 bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-400 shadow-2xs">
+            {/* Interactive Search Bar Trigger */}
+            <button
+              className="group relative flex w-full items-center justify-between rounded-xl border border-slate-200/90 bg-slate-50/90 py-2 pr-2.5 pl-3 text-xs text-slate-500 shadow-2xs transition-all hover:border-blue-300 hover:bg-white hover:text-slate-800 hover:shadow-xs focus:outline-none"
+              onClick={() => setIsCommandPaletteOpen(true)}
+              type="button"
+            >
+              <div className="flex items-center gap-2">
+                <Search className="h-4 w-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                <span className="font-medium text-slate-400 group-hover:text-slate-600 transition-colors">
+                  Hızlı Arama & Komutlar...
+                </span>
+              </div>
+              <div className="flex items-center gap-0.5 rounded-md border border-slate-200/80 bg-white px-1.5 py-0.5 text-[10px] font-bold text-slate-400 shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600 transition-colors">
                 <span>⌘</span>
                 <span>K</span>
               </div>
-            </div>
+            </button>
 
             {/* Navigation Menus */}
             <Suspense
@@ -93,6 +214,19 @@ export default function DashboardLayout({
           <div className="flex-1 p-6 md:p-8">{children}</div>
         </div>
       </div>
+
+      {/* Global Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onOpenShortcutsHelp={() => setIsShortcutsHelpOpen(true)}
+      />
+
+      {/* Keyboard Shortcuts Cheat Sheet Modal */}
+      <ShortcutsHelpModal
+        isOpen={isShortcutsHelpOpen}
+        onClose={() => setIsShortcutsHelpOpen(false)}
+      />
     </PermissionProvider>
   )
 }
