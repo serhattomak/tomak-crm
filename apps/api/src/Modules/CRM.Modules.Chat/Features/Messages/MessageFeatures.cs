@@ -258,7 +258,144 @@ public class MarkMessagesAsReadHandler(
     }
 }
 
-// 4. FastEndpoints Mapping
+// 4. EditMessageCommand
+public record EditMessageRequest(string Content);
+public record EditMessageCommand(Guid Id, string Content) : ICommand<ChatMessageDto>;
+
+public class EditMessageValidator : AbstractValidator<EditMessageCommand>
+{
+    public EditMessageValidator()
+    {
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Content).NotEmpty().WithMessage("Mesaj içeriği boş olamaz.");
+    }
+}
+
+public class EditMessageHandler(
+    ChatDbContext dbContext,
+    ICurrentTenant currentTenant) : ICommandHandler<EditMessageCommand, ChatMessageDto>
+{
+    public async Task<Result<ChatMessageDto>> Handle(EditMessageCommand request, CancellationToken cancellationToken)
+    {
+        if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
+            throw new ForbiddenException("Tenant context is required.");
+
+        var message = await dbContext.Messages
+            .Include(m => m.Attachments)
+            .Include(m => m.EntityEmbeds)
+            .FirstOrDefaultAsync(m => m.Id == request.Id && !m.IsDeleted, cancellationToken);
+
+        if (message == null)
+            return Result.Failure<ChatMessageDto>(new Error("Chat.MessageNotFound", "Mesaj bulunamadı veya silinmiş."));
+
+        if (message.SenderType == "Customer")
+            return Result.Failure<ChatMessageDto>(new Error("Chat.CustomerMessageImmutable", "Müşteri mesajları düzenlenemez."));
+
+        message.Content = request.Content;
+        message.IsEdited = true;
+        message.UpdatedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<ChatMessageDto>.Success(new ChatMessageDto(
+            message.Id,
+            message.ChannelId,
+            message.SenderUserId,
+            message.SenderName,
+            message.SenderAvatarUrl,
+            message.SenderType,
+            message.Content,
+            message.MessageType,
+            message.ReplyToMessageId,
+            message.IsEdited,
+            message.IsDeleted,
+            message.Attachments.Select(a => new ChatAttachmentDto(
+                a.Id, a.FileName, a.FileUrl, a.FileType, a.FileSizeBytes
+            )).ToList(),
+            message.EntityEmbeds.Select(ee => new ChatEntityEmbedDto(
+                ee.Id, ee.EntityType, ee.EntityId, ee.EntityTitle, ee.EntitySubtitle, ee.EntityStatus, ee.MetadataJson
+            )).ToList(),
+            message.CreatedAt
+        ));
+    }
+}
+
+// 5. DeleteMessageCommand
+public record DeleteMessageCommand(Guid Id) : ICommand<bool>;
+
+public class DeleteMessageHandler(
+    ChatDbContext dbContext,
+    ICurrentTenant currentTenant) : ICommandHandler<DeleteMessageCommand, bool>
+{
+    public async Task<Result<bool>> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
+    {
+        if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
+            throw new ForbiddenException("Tenant context is required.");
+
+        var message = await dbContext.Messages
+            .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+
+        if (message == null)
+            return Result.Failure<bool>(new Error("Chat.MessageNotFound", "Mesaj bulunamadı."));
+
+        message.IsDeleted = true;
+        message.UpdatedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<bool>.Success(true);
+    }
+}
+
+// 6. RestoreMessageCommand
+public record RestoreMessageCommand(Guid Id) : ICommand<ChatMessageDto>;
+
+public class RestoreMessageHandler(
+    ChatDbContext dbContext,
+    ICurrentTenant currentTenant) : ICommandHandler<RestoreMessageCommand, ChatMessageDto>
+{
+    public async Task<Result<ChatMessageDto>> Handle(RestoreMessageCommand request, CancellationToken cancellationToken)
+    {
+        if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
+            throw new ForbiddenException("Tenant context is required.");
+
+        var message = await dbContext.Messages
+            .Include(m => m.Attachments)
+            .Include(m => m.EntityEmbeds)
+            .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+
+        if (message == null)
+            return Result.Failure<ChatMessageDto>(new Error("Chat.MessageNotFound", "Mesaj bulunamadı."));
+
+        message.IsDeleted = false;
+        message.UpdatedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<ChatMessageDto>.Success(new ChatMessageDto(
+            message.Id,
+            message.ChannelId,
+            message.SenderUserId,
+            message.SenderName,
+            message.SenderAvatarUrl,
+            message.SenderType,
+            message.Content,
+            message.MessageType,
+            message.ReplyToMessageId,
+            message.IsEdited,
+            message.IsDeleted,
+            message.Attachments.Select(a => new ChatAttachmentDto(
+                a.Id, a.FileName, a.FileUrl, a.FileType, a.FileSizeBytes
+            )).ToList(),
+            message.EntityEmbeds.Select(ee => new ChatEntityEmbedDto(
+                ee.Id, ee.EntityType, ee.EntityId, ee.EntityTitle, ee.EntitySubtitle, ee.EntityStatus, ee.MetadataJson
+            )).ToList(),
+            message.CreatedAt
+        ));
+    }
+}
+
+// 7. FastEndpoints Mapping
 public class MessageEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -276,6 +413,30 @@ public class MessageEndpoints : IEndpoint
         group.MapPost("/", async (SendMessageCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
             var result = await sender.Send(command, ct);
+            return result.IsSuccess
+                ? Results.Ok(ApiResponse<ChatMessageDto>.Ok(result.Value))
+                : Results.BadRequest(ApiResponse<ChatMessageDto>.Fail(result.Error.Code, result.Error.Description));
+        }).RequirePermission("Chat.View");
+
+        group.MapPut("/{id:guid}", async (Guid id, EditMessageRequest req, MediatR.ISender sender, CancellationToken ct) =>
+        {
+            var result = await sender.Send(new EditMessageCommand(id, req.Content), ct);
+            return result.IsSuccess
+                ? Results.Ok(ApiResponse<ChatMessageDto>.Ok(result.Value))
+                : Results.BadRequest(ApiResponse<ChatMessageDto>.Fail(result.Error.Code, result.Error.Description));
+        }).RequirePermission("Chat.View");
+
+        group.MapDelete("/{id:guid}", async (Guid id, MediatR.ISender sender, CancellationToken ct) =>
+        {
+            var result = await sender.Send(new DeleteMessageCommand(id), ct);
+            return result.IsSuccess
+                ? Results.Ok(ApiResponse<bool>.Ok(result.Value))
+                : Results.BadRequest(ApiResponse<bool>.Fail(result.Error.Code, result.Error.Description));
+        }).RequirePermission("Chat.View");
+
+        group.MapPost("/{id:guid}/restore", async (Guid id, MediatR.ISender sender, CancellationToken ct) =>
+        {
+            var result = await sender.Send(new RestoreMessageCommand(id), ct);
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<ChatMessageDto>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<ChatMessageDto>.Fail(result.Error.Code, result.Error.Description));

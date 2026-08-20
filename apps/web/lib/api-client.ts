@@ -1736,6 +1736,47 @@ export class ApiClient {
     );
   }
 
+  static async editChatMessage(
+    messageId: string,
+    data: { content: string },
+    tenantId?: string
+  ): Promise<ApiResponse<ChatMessageDto>> {
+    return ApiClient.request<ChatMessageDto>(
+      `/api/chat/messages/${messageId}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteChatMessage(
+    messageId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/chat/messages/${messageId}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  static async restoreChatMessage(
+    messageId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<ChatMessageDto>> {
+    return ApiClient.request<ChatMessageDto>(
+      `/api/chat/messages/${messageId}/restore`,
+      {
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
   static async getCannedResponses(
     params: { category?: string; search?: string } = {},
     tenantId?: string
