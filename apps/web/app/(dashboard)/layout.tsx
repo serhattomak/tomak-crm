@@ -5,6 +5,7 @@ import {
   Boxes,
   Briefcase,
   Building2,
+  Calendar,
   ChevronRight,
   Flame,
   HelpCircle,
@@ -124,6 +125,12 @@ function DashboardNavigation() {
       href: `/${tenantSlug}/customers`,
       icon: Users2,
       name: "Müşteriler",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/leaves`,
+      icon: Calendar,
+      name: "İzinler & Takvim",
     },
     {
       badge: "33",

@@ -1053,6 +1053,130 @@ export class ApiClient {
       tenantId
     )
   }
+
+  // ==========================================
+  // Leaves Module
+  // ==========================================
+  static async getLeaveRequests(
+    params: {
+      status?: string
+      leaveType?: string
+      employeeId?: string
+      departmentId?: string
+      search?: string
+      page?: number
+      pageSize?: number
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedLeaveRequestsResponse>> {
+    const query = new URLSearchParams()
+    if (params.status) query.set("status", params.status)
+    if (params.leaveType) query.set("leaveType", params.leaveType)
+    if (params.employeeId) query.set("employeeId", params.employeeId)
+    if (params.departmentId) query.set("departmentId", params.departmentId)
+    if (params.search) query.set("search", params.search)
+    if (params.page) query.set("page", params.page.toString())
+    if (params.pageSize) query.set("pageSize", params.pageSize.toString())
+    const qs = query.toString()
+    const url = `/api/leaves${qs ? `?${qs}` : ""}`
+    return ApiClient.request<PagedLeaveRequestsResponse>(url, {}, tenantId)
+  }
+
+  static async getLeaveCalendar(
+    params: {
+      year?: number
+      month?: number
+      startDate?: string
+      endDate?: string
+      departmentId?: string
+      status?: string
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<LeaveCalendarEventDto[]>> {
+    const query = new URLSearchParams()
+    if (params.year) query.set("year", params.year.toString())
+    if (params.month) query.set("month", params.month.toString())
+    if (params.startDate) query.set("startDate", params.startDate)
+    if (params.endDate) query.set("endDate", params.endDate)
+    if (params.departmentId) query.set("departmentId", params.departmentId)
+    if (params.status) query.set("status", params.status)
+    const qs = query.toString()
+    const url = `/api/leaves/calendar${qs ? `?${qs}` : ""}`
+    return ApiClient.request<LeaveCalendarEventDto[]>(url, {}, tenantId)
+  }
+
+  static async getLeaveStats(
+    tenantId: string
+  ): Promise<ApiResponse<LeaveStatsDto>> {
+    return ApiClient.request<LeaveStatsDto>("/api/leaves/stats", {}, tenantId)
+  }
+
+  static async getMyLeaveBalance(
+    params: { employeeId?: string; year?: number } = {},
+    tenantId: string
+  ): Promise<ApiResponse<LeaveBalanceDto>> {
+    const query = new URLSearchParams()
+    if (params.employeeId) query.set("employeeId", params.employeeId)
+    if (params.year) query.set("year", params.year.toString())
+    const qs = query.toString()
+    const url = `/api/leaves/my-balance${qs ? `?${qs}` : ""}`
+    return ApiClient.request<LeaveBalanceDto>(url, {}, tenantId)
+  }
+
+  static async createLeaveRequest(
+    data: CreateLeaveRequestPayload,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/leaves",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async approveLeaveRequest(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/leaves/${id}/approve`,
+      {
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async rejectLeaveRequest(
+    id: string,
+    data: { rejectionReason: string },
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/leaves/${id}/reject`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    )
+  }
+
+  static async cancelLeaveRequest(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/leaves/${id}/cancel`,
+      {
+        method: "POST",
+      },
+      tenantId
+    )
+  }
 }
 
 export interface CustomerListDto {
@@ -1647,6 +1771,88 @@ export interface AddOrderPaymentRequest {
   paymentMethod?: string
   referenceNumber?: string
 }
+
+// ==========================================
+// Leave DTOs
+// ==========================================
+export interface LeaveBalanceDto {
+  employeeId: string
+  id: string
+  pendingDays: number
+  remainingDays: number
+  totalDays: number
+  usedDays: number
+  year: number
+}
+
+export interface LeaveRequestDto {
+  approvedAt?: string
+  approvedByUserId?: string
+  approvedByUserName?: string
+  createdAt: string
+  departmentId?: string
+  departmentName?: string
+  emergencyContact?: string
+  employeeId: string
+  employeeName: string
+  endDate: string
+  halfDayPeriod?: "Morning" | "Afternoon" | string
+  id: string
+  isHalfDay: boolean
+  leaveType: "Annual" | "Casual" | "Sick" | "Unpaid" | "Marriage" | "Maternity" | "Paternity" | "Bereavement" | "Other" | string
+  reason?: string
+  rejectionReason?: string
+  startDate: string
+  status: "Pending" | "Approved" | "Rejected" | "Cancelled" | string
+  tenantId: string
+  totalDays: number
+  updatedAt: string
+}
+
+export interface PagedLeaveRequestsResponse {
+  items: LeaveRequestDto[]
+  page: number
+  pageSize: number
+  totalCount: number
+}
+
+export interface LeaveCalendarEventDto {
+  departmentId?: string
+  departmentName?: string
+  employeeId: string
+  employeeName: string
+  endDate: string
+  halfDayPeriod?: string
+  id: string
+  isHalfDay: boolean
+  leaveType: string
+  reason?: string
+  startDate: string
+  status: string
+  totalDays: number
+}
+
+export interface LeaveStatsDto {
+  pendingRequestsCount: number
+  thisMonthUsedDays: number
+  todayOnLeaveCount: number
+  totalApprovedRequests: number
+}
+
+export interface CreateLeaveRequestPayload {
+  departmentId?: string
+  departmentName?: string
+  emergencyContact?: string
+  employeeId: string
+  employeeName: string
+  endDate: string
+  halfDayPeriod?: string
+  isHalfDay?: boolean
+  leaveType: string
+  reason?: string
+  startDate: string
+}
+
 
 
 
