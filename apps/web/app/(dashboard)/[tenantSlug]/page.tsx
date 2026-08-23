@@ -92,6 +92,24 @@ export default function WorkspaceOverviewPage() {
     saveWidgets(newLayout);
   };
 
+  const handleMoveWidget = (widgetId: string, direction: "up" | "down") => {
+    const currentIndex = currentTabWidgets.indexOf(widgetId);
+    if (currentIndex === -1) return;
+    const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= currentTabWidgets.length) return;
+
+    const updated = [...currentTabWidgets];
+    const removed = updated.splice(currentIndex, 1)[0];
+    if (!removed) return;
+    updated.splice(targetIndex, 0, removed);
+
+    const newLayout = {
+      ...widgetsByTab,
+      [activeTab]: updated,
+    };
+    saveWidgets(newLayout);
+  };
+
   const handleResetDefaults = () => {
     const newLayout = {
       ...widgetsByTab,
@@ -122,6 +140,11 @@ export default function WorkspaceOverviewPage() {
   };
 
   const renderWidget = (widgetId: string) => {
+    const isRevenueChartActive = currentTabWidgets.includes("revenue-chart");
+    const isSalesGaugeActive = currentTabWidgets.includes("sales-gauge");
+    const isLeadSourcesActive = currentTabWidgets.includes("lead-sources");
+    const isTasksActive = currentTabWidgets.includes("tasks-checklist");
+
     switch (widgetId) {
       case "kpi-metrics":
         return (
@@ -130,19 +153,23 @@ export default function WorkspaceOverviewPage() {
           </div>
         );
 
-      case "revenue-chart":
+      case "revenue-chart": {
+        const spanClass = isSalesGaugeActive ? "col-span-12 lg:col-span-8" : "col-span-12";
         return (
-          <div className="col-span-12 lg:col-span-8" key="revenue-chart">
+          <div className={spanClass} key="revenue-chart">
             <RevenueChartWidget dateRange={dateRange} />
           </div>
         );
+      }
 
-      case "sales-gauge":
+      case "sales-gauge": {
+        const spanClass = isRevenueChartActive ? "col-span-12 lg:col-span-4" : "col-span-12 lg:col-span-6";
         return (
-          <div className="col-span-12 lg:col-span-4" key="sales-gauge">
+          <div className={spanClass} key="sales-gauge">
             <SalesGaugeWidget dateRange={dateRange} />
           </div>
         );
+      }
 
       case "pipeline-funnel":
         return (
@@ -165,19 +192,23 @@ export default function WorkspaceOverviewPage() {
           </div>
         );
 
-      case "lead-sources":
+      case "lead-sources": {
+        const spanClass = isTasksActive ? "col-span-12 lg:col-span-4" : "col-span-12 lg:col-span-6";
         return (
-          <div className="col-span-12 lg:col-span-4" key="lead-sources">
+          <div className={spanClass} key="lead-sources">
             <LeadSourcesWidget dateRange={dateRange} />
           </div>
         );
+      }
 
-      case "tasks-checklist":
+      case "tasks-checklist": {
+        const spanClass = isLeadSourcesActive ? "col-span-12 lg:col-span-8" : "col-span-12";
         return (
-          <div className="col-span-12 lg:col-span-8" key="tasks-checklist">
+          <div className={spanClass} key="tasks-checklist">
             <TasksChecklistWidget />
           </div>
         );
+      }
 
       case "upcoming-meetings":
         return (
@@ -380,8 +411,8 @@ export default function WorkspaceOverviewPage() {
         </div>
       </div>
 
-      {/* 3. Main Dynamic Grid of Widgets */}
-      <div className="grid grid-cols-12 gap-6">
+      {/* 3. Main Dynamic Grid of Widgets with Dense Auto-Fill */}
+      <div className="grid grid-cols-12 gap-6 grid-flow-dense">
         {currentTabWidgets.length === 0 ? (
           <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-slate-50/50 p-12 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-xs">
@@ -396,7 +427,7 @@ export default function WorkspaceOverviewPage() {
             </p>
             <div className="mt-4 flex gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
                 onClick={() => setIsCustomizeModalOpen(true)}
                 type="button"
               >
@@ -426,6 +457,7 @@ export default function WorkspaceOverviewPage() {
         onClose={() => setIsCustomizeModalOpen(false)}
         onResetDefaults={handleResetDefaults}
         onToggleWidget={handleToggleWidget}
+        onMoveWidget={handleMoveWidget}
       />
 
       {/* Quick Create Lead / Deal / Task Modal */}
