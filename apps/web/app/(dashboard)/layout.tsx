@@ -45,7 +45,10 @@ import { CommandPalette } from "@/components/command-palette";
 import { PermissionGate } from "@/components/permission-gate";
 import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
 import { TenantSwitcher } from "@/components/tenant-switcher";
-import { PermissionProvider } from "@/lib/permissions/permission-context";
+import {
+  PermissionProvider,
+  usePermissions,
+} from "@/lib/permissions/permission-context";
 import { createClient } from "@/lib/supabase/client";
 
 export default function DashboardLayout({
@@ -259,6 +262,16 @@ export default function DashboardLayout({
   );
 }
 
+interface NavItem {
+  name: string;
+  href: string;
+  icon: any;
+  badge?: string | null;
+  exact?: boolean;
+  permission?: string;
+  tab?: string;
+}
+
 function DashboardNavigation() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -319,7 +332,7 @@ function DashboardNavigation() {
   };
 
   // 1. Genel & Satış CRM
-  const salesMenu = [
+  const salesMenu: NavItem[] = [
     {
       exact: true,
       href: `/${tenantSlug}`,
@@ -368,7 +381,7 @@ function DashboardNavigation() {
   ];
 
   // 2. İnsan Kaynakları & Bordro
-  const hrMenu = [
+  const hrMenu: NavItem[] = [
     {
       badge: null,
       href: `/${tenantSlug}/attendance`,
@@ -425,7 +438,7 @@ function DashboardNavigation() {
   ];
 
   // 3. İletişim & Araçlar
-  const toolsMenu = [
+  const toolsMenu: NavItem[] = [
     {
       badge: "33",
       href: `/${tenantSlug}/messages`,
@@ -455,7 +468,7 @@ function DashboardNavigation() {
   ];
 
   // 4. Sistem & Yönetim
-  const managementMenu = [
+  const managementMenu: NavItem[] = [
     {
       badge: "6",
       href: `/${tenantSlug}/users`,
@@ -497,7 +510,7 @@ function DashboardNavigation() {
         </button>
 
         {openSections.sales && (
-          <div className="mt-1 space-y-0.5">
+          <div className="mt-1 space-y-1">
             {salesMenu.map((item) => {
               const isActive = item.exact
                 ? pathname === item.href
@@ -505,21 +518,37 @@ function DashboardNavigation() {
 
               return (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
+                  className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
                   key={item.name}
                   prefetch={false}
                 >
-                  <div className="flex items-center gap-2.5">
+                  {isActive && (
+                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                  )}
+                  <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
-                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                      className={`h-4 w-4 transition-colors ${
+                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                      }`}
                     />
                     <span>{item.name}</span>
                   </div>
+                  {item.badge && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -543,7 +572,7 @@ function DashboardNavigation() {
         </button>
 
         {openSections.hr && (
-          <div className="mt-1 space-y-0.5">
+          <div className="mt-1 space-y-1">
             {hrMenu.map((item) => {
               const isOrgPage = pathname === `/${tenantSlug}/organization`;
               const isActive = item.tab
@@ -553,21 +582,37 @@ function DashboardNavigation() {
 
               const linkContent = (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
+                  className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
                   key={item.name}
                   prefetch={false}
                 >
-                  <div className="flex items-center gap-2.5">
+                  {isActive && (
+                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                  )}
+                  <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
-                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                      className={`h-4 w-4 transition-colors ${
+                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                      }`}
                     />
                     <span>{item.name}</span>
                   </div>
+                  {item.badge && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               );
 
@@ -601,29 +646,40 @@ function DashboardNavigation() {
         </button>
 
         {openSections.tools && (
-          <div className="mt-1 space-y-0.5">
+          <div className="mt-1 space-y-1">
             {toolsMenu.map((item) => {
               const isActive = pathname === item.href;
 
               return (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
+                  className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
                   key={item.name}
                   prefetch={false}
                 >
-                  <div className="flex items-center gap-2.5">
+                  {isActive && (
+                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                  )}
+                  <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
-                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                      className={`h-4 w-4 transition-colors ${
+                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                      }`}
                     />
                     <span>{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-muted dark:text-slate-300">
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
                       {item.badge}
                     </span>
                   )}
@@ -650,29 +706,40 @@ function DashboardNavigation() {
         </button>
 
         {openSections.management && (
-          <div className="mt-1 space-y-0.5">
+          <div className="mt-1 space-y-1">
             {managementMenu.map((item) => {
               const isActive = pathname === item.href;
 
               const linkContent = (
                 <Link
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 font-medium text-xs transition-all ${
+                  className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-muted/40 dark:hover:text-foreground"
+                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
                   key={item.name}
                   prefetch={false}
                 >
-                  <div className="flex items-center gap-2.5">
+                  {isActive && (
+                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                  )}
+                  <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
-                      className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
+                      className={`h-4 w-4 transition-colors ${
+                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                      }`}
                     />
                     <span>{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-muted dark:text-slate-300">
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
                       {item.badge}
                     </span>
                   )}
@@ -698,6 +765,9 @@ function DashboardNavigation() {
 
 function DashboardBottom() {
   const router = useRouter();
+  const params = useParams();
+  const tenantSlug = (params?.tenantSlug as string) || "";
+  const { profile, activeTenant } = usePermissions();
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -705,46 +775,69 @@ function DashboardBottom() {
     router.push("/login");
   };
 
-  return (
-    <div className="space-y-2 border-slate-100 border-t pt-4">
-      <div className="space-y-0.5 font-medium text-slate-600 text-xs">
-        <Link
-          className="flex items-center gap-2.5 rounded-xl px-3 py-1.5 transition-colors hover:bg-slate-50"
-          href="#help"
-        >
-          <HelpCircle className="h-4 w-4 text-slate-400" />
-          Help center
-        </Link>
-        <Link
-          className="flex items-center gap-2.5 rounded-xl px-3 py-1.5 transition-colors hover:bg-slate-50"
-          href="#feedback"
-        >
-          <MessageCircleQuestion className="h-4 w-4 text-slate-400" />
-          Feedback
-        </Link>
-        <button
-          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-left text-slate-600 transition-colors hover:bg-red-50 hover:text-red-600"
-          onClick={handleLogout}
-        >
-          <LogOut className="h-4 w-4 text-slate-400 group-hover:text-red-500" />
-          Sign Out
-        </button>
-      </div>
+  const userInitials = profile?.fullName
+    ? profile.fullName
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "SD";
 
-      {/* Upgrade & Unlock features Card */}
-      <div className="group flex cursor-pointer items-center justify-between rounded-2xl border border-fuchsia-200/60 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-cyan-500/10 p-3 transition-all hover:border-fuchsia-300">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-500 text-white shadow-fuchsia-500/30 shadow-sm">
-            <Flame className="h-4 w-4" />
+  return (
+    <div className="space-y-3 border-slate-100 border-t pt-3">
+      {/* User Profile & Account Card */}
+      <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-2.5 shadow-2xs transition-all hover:bg-slate-100/70 hover:border-slate-300">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-xs text-white shadow-2xs">
+            {userInitials}
           </div>
-          <div>
-            <div className="font-bold text-[11px] text-slate-900 leading-tight">
-              Upgrade & unlock
+          <div className="min-w-0 truncate">
+            <div className="font-bold text-xs text-slate-900 truncate">
+              {profile?.fullName || "Serhat Dev"}
             </div>
-            <div className="text-[10px] text-slate-500">all features</div>
+            <div className="text-[10px] text-slate-500 font-medium truncate">
+              {activeTenant?.name || "Ana Çalışma Alanı"}
+            </div>
           </div>
         </div>
-        <ChevronRight className="h-4 w-4 text-slate-400 transition-all group-hover:translate-x-0.5 group-hover:text-fuchsia-600" />
+
+        <div className="flex items-center gap-0.5 flex-none">
+          <Link
+            href={`/${tenantSlug || "workspace"}/settings`}
+            title="Şirket & Hesap Ayarları"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-white hover:text-slate-800 hover:shadow-2xs transition"
+          >
+            <Settings className="h-4 w-4" />
+          </Link>
+          <button
+            onClick={handleLogout}
+            title="Güvenli Çıkış Yap"
+            type="button"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Help & Feedback Footer Links */}
+      <div className="flex items-center justify-between px-2 text-[11px] font-medium text-slate-400">
+        <Link
+          className="flex items-center gap-1 transition-colors hover:text-slate-700"
+          href="#help"
+        >
+          <HelpCircle className="h-3.5 w-3.5 text-slate-400" />
+          <span>Yardım</span>
+        </Link>
+        <span className="text-slate-300">•</span>
+        <Link
+          className="flex items-center gap-1 transition-colors hover:text-slate-700"
+          href="#feedback"
+        >
+          <MessageCircleQuestion className="h-3.5 w-3.5 text-slate-400" />
+          <span>Geri Bildirim</span>
+        </Link>
       </div>
     </div>
   );
