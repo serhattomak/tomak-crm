@@ -50,6 +50,7 @@ import {
   PermissionProvider,
   usePermissions,
 } from "@/lib/permissions/permission-context";
+import { LabelProvider, useLabels } from "@/lib/labels/label-context";
 import { createClient } from "@/lib/supabase/client";
 
 export default function DashboardLayout({
@@ -221,8 +222,9 @@ export default function DashboardLayout({
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
-      <Toaster position="top-right" richColors />
-      <div className="flex h-screen w-full flex-col gap-0 overflow-hidden bg-[#f4f5f8] font-sans text-slate-900 antialiased md:flex-row md:gap-3 md:p-3">
+      <LabelProvider tenantSlug={tenantSlug}>
+        <Toaster position="top-right" richColors />
+        <div className="flex h-screen w-full flex-col gap-0 overflow-hidden bg-[#f4f5f8] font-sans text-slate-900 antialiased md:flex-row md:gap-3 md:p-3">
         {/* Mobile Top Header Bar */}
         <header className="sticky top-0 z-30 flex items-center justify-between border-slate-200/80 border-b bg-white px-3 py-2.5 shadow-2xs md:hidden">
           <div className="flex min-w-0 items-center gap-2">
@@ -404,6 +406,7 @@ export default function DashboardLayout({
         isOpen={isShortcutsHelpOpen}
         onClose={() => setIsShortcutsHelpOpen(false)}
       />
+      </LabelProvider>
     </PermissionProvider>
   );
 }
@@ -416,6 +419,7 @@ interface NavItem {
   name: string;
   permission?: string;
   tab?: string;
+  moduleKey?: string;
 }
 
 function DashboardNavigation({
@@ -481,6 +485,8 @@ function DashboardNavigation({
     }));
   };
 
+  const { getModuleDisplayName, isModuleEnabled } = useLabels();
+
   // 1. Genel & Satış CRM
   const salesMenu: NavItem[] = [
     {
@@ -493,42 +499,48 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/pipelines`,
       icon: Kanban,
-      name: "Pipeline & Akış",
+      name: getModuleDisplayName("pipelines", "Pipeline & Akış"),
       permission: "Pipelines.View",
+      moduleKey: "pipelines",
     },
     {
       badge: null,
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
-      name: "Teklifler",
+      name: getModuleDisplayName("quotes", "Teklifler"),
       permission: "Quotes.View",
+      moduleKey: "quotes",
     },
     {
       badge: null,
       href: `/${tenantSlug}/customers`,
       icon: Users2,
-      name: "Müşteriler",
+      name: getModuleDisplayName("customers", "Müşteriler"),
+      moduleKey: "customers",
     },
     {
       badge: null,
       href: `/${tenantSlug}/orders`,
       icon: ShoppingCart,
-      name: "Siparişler",
+      name: getModuleDisplayName("orders", "Siparişler"),
+      moduleKey: "orders",
     },
     {
       badge: null,
       href: `/${tenantSlug}/products`,
       icon: Package,
-      name: "Ürün & Hizmetler",
+      name: getModuleDisplayName("products", "Ürün & Hizmetler"),
+      moduleKey: "products",
     },
     {
       badge: null,
       href: `/${tenantSlug}/shipments`,
       icon: Truck,
-      name: "Kargo & Sevkiyat",
+      name: getModuleDisplayName("shipping", "Kargo & Sevkiyat"),
       permission: "Shipment.View",
+      moduleKey: "shipping",
     },
-  ];
+  ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
   // 2. İnsan Kaynakları & Bordro
   const hrMenu: NavItem[] = [
@@ -536,22 +548,25 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/attendance`,
       icon: Clock,
-      name: "Vardiya & PDKS",
+      name: getModuleDisplayName("attendance", "Vardiya & PDKS"),
       permission: "Attendance.View",
+      moduleKey: "attendance",
     },
     {
       badge: null,
       href: `/${tenantSlug}/leaves`,
       icon: Calendar,
-      name: "İzinler & Takvim",
+      name: getModuleDisplayName("leaves", "İzinler & Takvim"),
       permission: "Leaves.View",
+      moduleKey: "leaves",
     },
     {
       badge: null,
       href: `/${tenantSlug}/payroll`,
       icon: Banknote,
-      name: "Bordro & Maaşlar",
+      name: getModuleDisplayName("payroll", "Bordro & Maaşlar"),
       permission: "Payroll.View",
+      moduleKey: "payroll",
     },
     {
       badge: null,
@@ -560,6 +575,7 @@ function DashboardNavigation({
       name: "Çalışanlar & Kadro",
       permission: "Employees.View",
       tab: "employees",
+      moduleKey: "organization",
     },
     {
       badge: null,
@@ -568,6 +584,7 @@ function DashboardNavigation({
       name: "Departmanlar",
       permission: "Departments.View",
       tab: "departments",
+      moduleKey: "organization",
     },
     {
       badge: null,
@@ -576,6 +593,7 @@ function DashboardNavigation({
       name: "Pozisyonlar & Ünvanlar",
       permission: "JobPositions.Manage",
       tab: "positions",
+      moduleKey: "organization",
     },
     {
       badge: null,
@@ -584,8 +602,9 @@ function DashboardNavigation({
       name: "Org Şeması",
       permission: "Organization.ViewChart",
       tab: "chart",
+      moduleKey: "organization",
     },
-  ];
+  ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
   // 3. İletişim & Araçlar
   const toolsMenu: NavItem[] = [
@@ -593,7 +612,8 @@ function DashboardNavigation({
       badge: "33",
       href: `/${tenantSlug}/messages`,
       icon: MessageSquare,
-      name: "Mesajlar",
+      name: getModuleDisplayName("chat", "Mesajlar"),
+      moduleKey: "chat",
     },
     {
       href: `/${tenantSlug}/email`,
@@ -615,7 +635,7 @@ function DashboardNavigation({
       icon: Boxes,
       name: "Entegrasyonlar",
     },
-  ];
+  ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
   // 4. Sistem & Yönetim
   const managementMenu: NavItem[] = [

@@ -4,6 +4,7 @@ using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
 using CRM.BuildingBlocks.Messaging;
 using CRM.BuildingBlocks.Security;
+using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Tenants.Data;
 using CRM.Modules.Tenants.Entities;
 using FluentValidation;
@@ -79,6 +80,19 @@ public class CreateTenantHandler(
         };
 
         dbContext.TenantMembers.Add(member);
+
+        // Provision all default modules for the new tenant
+        var defaultModules = ModuleRegistry.GetDefaultModuleKeys();
+        foreach (var moduleKey in defaultModules)
+        {
+            dbContext.TenantModules.Add(new TenantModule
+            {
+                TenantId = tenant.Id,
+                ModuleKey = moduleKey,
+                IsEnabled = true,
+            });
+        }
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         // Publish event for Identity module or external consumers

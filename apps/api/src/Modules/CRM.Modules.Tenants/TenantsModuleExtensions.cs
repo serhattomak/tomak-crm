@@ -1,5 +1,6 @@
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Tenants.Data;
+using CRM.Modules.Tenants.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,8 @@ public static class TenantsModuleExtensions
             options.UseNpgsql(connectionString)
                    .AddInterceptors(rlsInterceptor);
         });
+
+        services.AddScoped<IModuleAccessService, ModuleAccessService>();
 
         return services;
     }

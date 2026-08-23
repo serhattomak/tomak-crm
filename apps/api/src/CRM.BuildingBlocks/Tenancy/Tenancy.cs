@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
 using System.Data;
 using System.Data.Common;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +39,8 @@ public class CurrentTenantAccessor : ICurrentTenant
 
 public class TenantContextMiddleware(
     RequestDelegate next,
-    IConfiguration configuration)
+    IConfiguration configuration,
+    IWebHostEnvironment env)
 {
     private static readonly ConcurrentDictionary<string, Guid> TenantSlugCache = new();
 
@@ -104,15 +107,36 @@ public class TenantContextMiddleware(
             }
         }
 
-        // 4. Set resolved tenant or fallback to default tenant if none resolved
+        // 4. Set resolved tenant or reject
         if (resolvedTenantId.HasValue)
         {
             currentTenant.SetTenant(resolvedTenantId.Value, candidateSlug);
         }
+        else if (env.IsDevelopment())
+        {
+            // Development fallback: use configured default tenant
+            var fallbackId = configuration["Tenancy:DefaultTenantId"];
+            if (!string.IsNullOrEmpty(fallbackId) && Guid.TryParse(fallbackId, out var devTenantId))
+            {
+                currentTenant.SetTenant(devTenantId, "dev-default");
+            }
+            else
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsJsonAsync(
+                    new { error = "Tenant could not be resolved. Set Tenancy:DefaultTenantId in appsettings.Development.json." },
+                    context.RequestAborted);
+                return;
+            }
+        }
         else
         {
-            var defaultTenantId = Guid.Parse("d00e2dac-2528-4edf-a3d6-422ecd8b0d1d");
-            currentTenant.SetTenant(defaultTenantId, candidateSlug ?? "default");
+            // Production: tenant resolution is mandatory
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsJsonAsync(
+                new { error = "Tenant could not be resolved." },
+                context.RequestAborted);
+            return;
         }
 
         await next(context);
