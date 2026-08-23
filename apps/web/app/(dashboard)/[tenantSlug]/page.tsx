@@ -14,6 +14,7 @@ import {
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NotificationCenter } from "@/components/notification-center";
+import { TeamMembersStack, InviteMemberModal } from "@/components/team-members-stack";
 import { usePermissions } from "@/lib/permissions/permission-context";
 import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget";
 import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal";
@@ -42,6 +43,7 @@ export default function WorkspaceOverviewPage() {
 
   // Modals state
   const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [quickCreateType, setQuickCreateType] = useState<
     "lead" | "deal" | "task" | "proposal" | null
   >(null);
@@ -294,35 +296,14 @@ export default function WorkspaceOverviewPage() {
           {/* Interactive Notification Center */}
           <NotificationCenter />
 
-          {/* Member Avatars Stack */}
-          <div className="flex items-center -space-x-2 px-1">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-900 font-semibold text-white text-xs shadow-xs"
-              title="Serhat Dev"
-            >
-              S
-            </div>
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-indigo-600 font-semibold text-white text-xs shadow-xs"
-              title="Ahmet Yılmaz"
-            >
-              A
-            </div>
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-fuchsia-500 font-semibold text-white text-xs shadow-xs"
-              title="Selin Kaya"
-            >
-              S
-            </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 font-bold text-[10px] text-slate-700 shadow-xs">
-              +4
-            </div>
-          </div>
+          {/* Interactive Member Avatars Stack & Popover */}
+          <TeamMembersStack onOpenInvite={() => setIsInviteModalOpen(true)} />
 
+          {/* Quick Invite Button */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
-            onClick={() => setQuickCreateType("lead")}
-            title="Üye / Lead Ekle"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-all hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 active:scale-95"
+            onClick={() => setIsInviteModalOpen(true)}
+            title="Ekip Arkadaşı Davet Et"
             type="button"
           >
             <UserPlus className="h-4 w-4" />
@@ -475,6 +456,12 @@ export default function WorkspaceOverviewPage() {
         onClose={() => setQuickCreateType(null)}
         onSuccess={(msg) => showToast(msg)}
         type={quickCreateType}
+      />
+
+      {/* Invite Member Modal */}
+      <InviteMemberModal
+        isOpen={isInviteModalOpen}
+        onClose={() => setIsInviteModalOpen(false)}
       />
     </div>
   );
