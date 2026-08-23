@@ -2656,6 +2656,158 @@ export class ApiClient {
     });
   }
 
+  // ==========================================
+  // Automations & Workflow Engine
+  // ==========================================
+  static async getWorkflows(
+    params: {
+      category?: string;
+      isActive?: boolean;
+      search?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<WorkflowSummaryDto>>> {
+    const q = new URLSearchParams();
+    if (params.category && params.category !== "all") q.set("category", params.category);
+    if (params.isActive !== undefined) q.set("isActive", String(params.isActive));
+    if (params.search) q.set("search", params.search);
+    if (params.page) q.set("page", String(params.page));
+    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<WorkflowSummaryDto>>(
+      `/api/automations${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getWorkflowStats(
+    tenantId?: string
+  ): Promise<ApiResponse<WorkflowStatsDto>> {
+    return ApiClient.request<WorkflowStatsDto>(
+      "/api/automations/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getWorkflowTemplates(
+    tenantId?: string
+  ): Promise<ApiResponse<WorkflowTemplateDto[]>> {
+    return ApiClient.request<WorkflowTemplateDto[]>(
+      "/api/automations/templates",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getWorkflowById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<WorkflowDetailDto>> {
+    return ApiClient.request<WorkflowDetailDto>(
+      `/api/automations/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createWorkflow(
+    data: CreateWorkflowPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<WorkflowSummaryDto>> {
+    return ApiClient.request<WorkflowSummaryDto>(
+      "/api/automations",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateWorkflow(
+    id: string,
+    data: UpdateWorkflowPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<WorkflowSummaryDto>> {
+    return ApiClient.request<WorkflowSummaryDto>(
+      `/api/automations/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleWorkflow(
+    id: string,
+    isActive?: boolean,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/automations/${id}/toggle`,
+      {
+        body: JSON.stringify({ id, isActive }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteWorkflow(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/automations/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async testWorkflow(
+    id: string,
+    data: TestWorkflowPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<AutomationExecutionResultDto>> {
+    return ApiClient.request<AutomationExecutionResultDto>(
+      `/api/automations/${id}/test`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async getWorkflowExecutions(
+    params: {
+      workflowId?: string;
+      status?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<ExecutionItemDto>>> {
+    const q = new URLSearchParams();
+    if (params.workflowId) q.set("workflowId", params.workflowId);
+    if (params.status && params.status !== "all") q.set("status", params.status);
+    if (params.page) q.set("page", String(params.page));
+    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<ExecutionItemDto>>(
+      `/api/automations/executions${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
   static async publicRequestRevision(
     token: string,
     feedback: string
@@ -5030,4 +5182,181 @@ export const apiClient = {
   delete: <T>(endpoint: string, tenantId?: string) =>
     ApiClient.request<T>(endpoint, { method: "DELETE" }, tenantId),
 };
+
+// ==========================================
+// Automations Module DTOs
+// ==========================================
+export interface WorkflowSummaryDto {
+  id: string;
+  name: string;
+  description?: string;
+  category: string;
+  icon: string;
+  color: string;
+  isActive: boolean;
+  triggerType: string;
+  conditionsCount: number;
+  actionsCount: number;
+  executionCount: number;
+  lastExecutedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WorkflowStatsDto {
+  totalWorkflows: number;
+  activeWorkflows: number;
+  inactiveWorkflows: number;
+  executionsToday: number;
+  totalExecutionsAllTime: number;
+  successRate: number;
+  estimatedHoursSaved: number;
+}
+
+export interface WorkflowTriggerConfigDto {
+  targetStatus?: string;
+  targetPriority?: string;
+  targetCategory?: string;
+  entityFilter?: string;
+  additionalSettings?: Record<string, string>;
+}
+
+export interface WorkflowConditionRuleDto {
+  field: string;
+  operator: string;
+  value: string;
+  fieldType?: string;
+}
+
+export interface WorkflowConditionGroupDto {
+  logicalOperator: "AND" | "OR" | string;
+  rules: WorkflowConditionRuleDto[];
+}
+
+export interface WorkflowActionStepDto {
+  id: string;
+  type: "notification" | "updateRecord" | "createRecord" | "webhook" | "delay" | string;
+  title: string;
+  order: number;
+  delayMinutes?: number;
+  config: Record<string, any>;
+}
+
+export interface ExecutionStepLogDto {
+  stepId: string;
+  stepType: string;
+  stepTitle: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  message: string;
+  timestamp: string;
+  executionDurationMs: number;
+  outputData?: Record<string, any>;
+}
+
+export interface ExecutionSummaryDto {
+  id: string;
+  triggerSource: string;
+  entityType?: string;
+  entityId?: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  evaluatedConditionsSummary?: string;
+  actionsExecutedCount: number;
+  executionDurationMs: number;
+  stepLogs: ExecutionStepLogDto[];
+  errorMessage?: string;
+  createdAt: string;
+}
+
+export interface WorkflowDetailDto {
+  id: string;
+  name: string;
+  description?: string;
+  category: string;
+  icon: string;
+  color: string;
+  isActive: boolean;
+  triggerType: string;
+  triggerConfig: WorkflowTriggerConfigDto;
+  conditions: WorkflowConditionGroupDto[];
+  actions: WorkflowActionStepDto[];
+  executionCount: number;
+  lastExecutedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  recentExecutions: ExecutionSummaryDto[];
+}
+
+export interface WorkflowTemplateDto {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  color: string;
+  triggerType: string;
+  triggerConfig: WorkflowTriggerConfigDto;
+  conditions: WorkflowConditionGroupDto[];
+  actions: WorkflowActionStepDto[];
+}
+
+export interface CreateWorkflowPayload {
+  name: string;
+  description?: string;
+  category: string;
+  icon?: string;
+  color?: string;
+  isActive: boolean;
+  triggerType: string;
+  triggerConfig?: WorkflowTriggerConfigDto;
+  conditions?: WorkflowConditionGroupDto[];
+  actions?: WorkflowActionStepDto[];
+}
+
+export interface UpdateWorkflowPayload {
+  id: string;
+  name: string;
+  description?: string;
+  category: string;
+  icon?: string;
+  color?: string;
+  isActive: boolean;
+  triggerType: string;
+  triggerConfig?: WorkflowTriggerConfigDto;
+  conditions?: WorkflowConditionGroupDto[];
+  actions?: WorkflowActionStepDto[];
+}
+
+export interface TestWorkflowPayload {
+  id: string;
+  entityType?: string;
+  entityId?: string;
+  mockContext?: Record<string, any>;
+}
+
+export interface AutomationExecutionResultDto {
+  workflowId: string;
+  workflowName: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  conditionsSummary: string;
+  actionsExecutedCount: number;
+  executionDurationMs: number;
+  stepLogs: ExecutionStepLogDto[];
+  errorMessage?: string;
+}
+
+export interface ExecutionItemDto {
+  id: string;
+  workflowId: string;
+  workflowName: string;
+  triggerSource: string;
+  entityType?: string;
+  entityId?: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  evaluatedConditionsSummary?: string;
+  actionsExecutedCount: number;
+  executionDurationMs: number;
+  errorMessage?: string;
+  createdAt: string;
+}
+
 

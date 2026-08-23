@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Modules\CRM.Modules.Attendance\CRM.Modules.Attendance.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Chat\CRM.Modules.Chat.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Shipping\CRM.Modules.Shipping.csproj" />
+    <ProjectReference Include="..\Modules\CRM.Modules.Automations\CRM.Modules.Automations.csproj" />
   </ItemGroup>
 
   <ItemGroup>

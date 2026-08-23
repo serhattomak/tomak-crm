@@ -631,9 +631,11 @@ function DashboardNavigation({
       name: "E-Posta",
     },
     {
-      href: `/${tenantSlug}/automation`,
+      href: `/${tenantSlug}/automations`,
       icon: Zap,
-      name: "Otomasyon",
+      name: getModuleDisplayName("automations", "Otomasyon"),
+      permission: "Automations.View",
+      moduleKey: "automations",
     },
     {
       href: `/${tenantSlug}/analytics`,
