@@ -155,6 +155,7 @@ export default function QuotesPage() {
   const statusCounts = useMemo(() => {
     return {
       All: quotes.length,
+      RevisionRequested: quotes.filter((q) => q.status === "RevisionRequested").length,
       Draft: quotes.filter((q) => q.status === "Draft").length,
       PendingApproval: quotes.filter((q) => q.status === "PendingApproval").length,
       Sent: quotes.filter((q) => q.status === "Sent" || q.status === "Viewed").length,
@@ -314,6 +315,7 @@ export default function QuotesPage() {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
           {[
             { key: "All", label: "Tüm Teklifler" },
+            { key: "RevisionRequested", label: "Revizyon Talepleri" },
             { key: "Draft", label: "Taslaklar" },
             { key: "PendingApproval", label: "Onay Bekleyenler" },
             { key: "Sent", label: "Müşteride" },
@@ -408,7 +410,9 @@ export default function QuotesPage() {
                     <tr
                       key={quote.id}
                       onClick={() => setSelectedQuoteId(quote.id)}
-                      className="hover:bg-blue-50/40 transition cursor-pointer group"
+                      className={`hover:bg-blue-50/40 transition cursor-pointer group ${
+                        quote.status === "RevisionRequested" ? "bg-amber-50/50 border-l-4 border-l-amber-500" : ""
+                      }`}
                     >
                       {/* 1. Quote Number & Revision Badge */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
@@ -574,6 +578,13 @@ export default function QuotesPage() {
 // ============================================================================
 function QuoteStatusBadge({ status }: { status: string }) {
   switch (status) {
+    case "RevisionRequested":
+      return (
+        <span className="inline-flex items-center gap-1.5 rounded-lg bg-amber-500/15 border border-amber-500/40 px-2.5 py-0.5 font-extrabold text-[10px] text-amber-700 shadow-2xs animate-pulse">
+          <RefreshCw className="h-3 w-3 animate-spin text-amber-600" />
+          Revizyon İstendi
+        </span>
+      );
     case "Draft":
       return (
         <span className="inline-flex items-center rounded-lg bg-slate-100 border border-slate-200/80 px-2.5 py-0.5 font-bold text-[10px] text-slate-700">
@@ -1732,6 +1743,68 @@ function QuoteDetailDrawer({
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+            {/* 0. High-Visibility Customer Revision Request Alert Card */}
+            {(quote.status === "RevisionRequested" || quote.activities?.some(a => a.activityType === "RevisionRequested")) && (
+              <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/95 p-4.5 space-y-3 shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs flex-none mt-0.5 animate-bounce">
+                      <RefreshCw className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-sm font-extrabold text-amber-950">
+                          Müşteri Revizyon / Değişiklik Talebinde Bulundu!
+                        </h4>
+                        <span className="rounded-full bg-amber-200/90 border border-amber-300 px-2 py-0.5 text-[10px] font-bold text-amber-900">
+                          Yeni Versiyon Bekleniyor
+                        </span>
+                      </div>
+                      <p className="text-xs text-amber-800 mt-1 font-medium">
+                        Müşteri dijital teklif sayfası üzerinden revizyon ve güncelleme talebinde bulundu.
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const revAct = quote.activities?.find(a => a.activityType === "RevisionRequested" || a.activityType === "NoteAdded");
+                      if (revAct?.description) {
+                        setRevisionNotes(revAct.description.replace(/^Müşterinin ilettiği revizyon.*?:\s*/, ""));
+                      }
+                      setIsRevisionOpen(true);
+                    }}
+                    className="flex-none inline-flex items-center gap-2 rounded-xl bg-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-xs hover:bg-amber-700 active:scale-95 transition"
+                  >
+                    <History className="h-4 w-4" />
+                    <span>Yeni Revizyon Başlat (R{quote.revisionNumber + 1})</span>
+                  </button>
+                </div>
+
+                {(() => {
+                  const revAct = quote.activities?.find(a => a.activityType === "RevisionRequested" || a.activityType === "NoteAdded");
+                  if (!revAct) return null;
+                  return (
+                    <div className="rounded-xl border border-amber-300 bg-white/90 p-3.5 text-xs text-slate-800 shadow-2xs">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-bold text-amber-900 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+                          <FileText className="h-3.5 w-3.5 text-amber-600" />
+                          Müşterinin İlettiği Talep Notu:
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          {new Date(revAct.createdAt).toLocaleString("tr-TR")}
+                        </span>
+                      </div>
+                      <p className="font-semibold text-slate-900 text-xs bg-amber-50/60 p-2.5 rounded-lg border border-amber-200/60 leading-relaxed">
+                        "{revAct.description?.replace(/^Müşterinin ilettiği revizyon.*?:\s*/, "") || revAct.description}"
+                      </p>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
             {/* 1. Action Alert / Banner based on status */}
             {quote.status === "PendingApproval" && (
               <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 flex items-center justify-between gap-3 shadow-2xs">

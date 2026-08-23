@@ -60,12 +60,16 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/register");
+  const isPublicPage =
+    isAuthPage ||
+    pathname.startsWith("/quotes/view/") ||
+    pathname.startsWith("/public/");
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!(user || isAuthPage)) {
+  if (!(user || isPublicPage)) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     const redirectResponse = NextResponse.redirect(url);

@@ -295,16 +295,44 @@ public class PublicQuoteHandler(
             throw new NotFoundException("Teklif bulunamadı.");
         }
 
+        quote.Status = "RevisionRequested";
+        quote.UpdatedAt = DateTime.UtcNow;
+
         dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = quote.TenantId,
             QuoteId = quote.Id,
-            ActivityType = "NoteAdded",
-            Title = "Müşteri Revizyon / Not İletti",
+            ActivityType = "RevisionRequested",
+            Title = "Müşteri Revizyon Talebi İletti",
             Description = $"Müşterinin ilettiği revizyon talebi: {request.Feedback}",
             CreatedAt = DateTime.UtcNow
         });
+
+        if (quote.DealId.HasValue)
+        {
+            var deal = await customersDbContext.Deals
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(d => d.Id == quote.DealId.Value, cancellationToken);
+
+            if (deal != null)
+            {
+                deal.LastActivityAt = DateTime.UtcNow;
+                deal.UpdatedAt = DateTime.UtcNow;
+
+                customersDbContext.DealActivities.Add(new DealActivity
+                {
+                    TenantId = quote.TenantId,
+                    DealId = deal.Id,
+                    ActivityType = "RevisionRequested",
+                    Title = "Teklif İçin Müşteri Revizyon İstedi",
+                    Description = $"Müşteri {quote.QuoteNumber} R{quote.RevisionNumber} teklifine revizyon talebi iletti: {request.Feedback}",
+                    CreatedAt = DateTime.UtcNow
+                });
+
+                await customersDbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return Result.Success(true);
