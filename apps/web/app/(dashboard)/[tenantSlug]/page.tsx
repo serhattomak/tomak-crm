@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Bell,
   CheckCircle2,
   ChevronDown,
   Download,
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { NotificationCenter } from "@/components/notification-center";
 import { usePermissions } from "@/lib/permissions/permission-context";
 import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget";
 import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal";
@@ -291,14 +291,8 @@ export default function WorkspaceOverviewPage() {
             <Share2 className="h-4 w-4" />
           </button>
 
-          <button
-            className="relative flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
-            title="Bildirimler"
-            type="button"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-fuchsia-500 ring-2 ring-white" />
-          </button>
+          {/* Interactive Notification Center */}
+          <NotificationCenter />
 
           {/* Member Avatars Stack */}
           <div className="flex items-center -space-x-2 px-1">

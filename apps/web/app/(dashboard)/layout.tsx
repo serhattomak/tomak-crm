@@ -42,6 +42,7 @@ import {
 import type React from "react";
 import { Suspense, useEffect, useState } from "react";
 import { CommandPalette } from "@/components/command-palette";
+import { NotificationCenter } from "@/components/notification-center";
 import { PermissionGate } from "@/components/permission-gate";
 import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
 import { TenantSwitcher } from "@/components/tenant-switcher";
@@ -238,6 +239,7 @@ export default function DashboardLayout({
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
+            <NotificationCenter buttonClassName="relative flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 active:scale-95" />
             <button
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 active:scale-95"
               onClick={() => setIsCommandPaletteOpen(true)}
