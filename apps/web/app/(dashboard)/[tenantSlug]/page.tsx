@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DashboardSharePopover } from "@/components/dashboard-share-popover";
 import { NotificationCenter } from "@/components/notification-center";
 import { TeamMembersStack, InviteMemberModal } from "@/components/team-members-stack";
 import { usePermissions } from "@/lib/permissions/permission-context";
@@ -262,9 +263,60 @@ export default function WorkspaceOverviewPage() {
           <span className="font-semibold">{toastMessage}</span>
         </div>
       )}
+      {/* Executive Printable Report Header (Visible Only When Printing) */}
+      <div className="hidden print:block border-b-2 border-slate-900 pb-5 mb-8">
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white font-black text-lg">
+                {(activeTenant?.name || tenantSlug || "C").slice(0, 2).toUpperCase()}
+              </div>
+              <div>
+                <h1 className="font-black text-2xl text-slate-900 tracking-tight">
+                  {activeTenant?.name || tenantSlug.toUpperCase()}
+                </h1>
+                <p className="text-xs font-semibold text-slate-600">
+                  CRM Pano Yönetici & Performans Raporu
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-4 text-xs text-slate-700 font-medium">
+              <div>
+                Pano Sekmesi:{" "}
+                <strong className="text-slate-900 font-bold">
+                  {tabs.find((t) => t.id === activeTab)?.label || activeTab}
+                </strong>
+              </div>
+              <div>
+                Dönem:{" "}
+                <strong className="text-slate-900 font-bold">
+                  {dateRangeLabels[dateRange]}
+                </strong>
+              </div>
+            </div>
+          </div>
 
-      {/* 1. Top Header Row */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="text-right text-xs text-slate-600">
+            <div className="font-bold text-slate-900">Rapor Tarihi</div>
+            <div>
+              {new Date().toLocaleDateString("tr-TR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </div>
+            <div className="text-[11px] text-slate-400 mt-1">
+              Hazırlayan: {profile?.fullName || "Yetkili Kullanıcı"}
+            </div>
+            <div className="mt-2 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-[9px] font-bold text-slate-600 uppercase tracking-wider">
+              Gizli & Kurum İçi
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 1. Top Header Row (Hidden on Print) */}
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center print:hidden">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
@@ -284,14 +336,9 @@ export default function WorkspaceOverviewPage() {
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
-            title="Paylaş"
-            type="button"
-          >
-            <Share2 className="h-4 w-4" />
-          </button>
+        <div className="flex flex-wrap items-center gap-2 print:hidden">
+          {/* Interactive Share Dashboard Popover */}
+          <DashboardSharePopover activeTab={activeTab} dateRange={dateRange} />
 
           {/* Interactive Notification Center */}
           <NotificationCenter />
@@ -320,8 +367,8 @@ export default function WorkspaceOverviewPage() {
         </div>
       </div>
 
-      {/* 2. Subheader Tabs & Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
+      {/* 2. Subheader Tabs & Filters Bar (Hidden on Print) */}
+      <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center print:hidden">
         {/* Pill Tabs */}
         <div className="flex w-fit items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
           {tabs.map((tab) => (
@@ -388,11 +435,10 @@ export default function WorkspaceOverviewPage() {
             )}
           </div>
 
+          {/* Quick PDF / Print Export */}
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-3.5 py-1.5 font-medium text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
-            onClick={() =>
-              showToast("Dashboard PDF/Excel raporu indiriliyor...")
-            }
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            onClick={() => window.print()}
             type="button"
           >
             <Download className="h-3.5 w-3.5" />
@@ -402,7 +448,7 @@ export default function WorkspaceOverviewPage() {
       </div>
 
       {/* 3. Main Dynamic Grid of Widgets with Dense Auto-Fill */}
-      <div className="grid grid-flow-dense grid-cols-12 gap-6">
+      <div className="grid grid-flow-dense grid-cols-12 gap-6 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
         {currentTabWidgets.length === 0 ? (
           <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-slate-50/50 p-12 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-xs">

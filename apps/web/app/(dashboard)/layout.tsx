@@ -224,9 +224,9 @@ export default function DashboardLayout({
     <PermissionProvider initialTenantSlug={tenantSlug}>
       <LabelProvider tenantSlug={tenantSlug}>
         <Toaster position="top-right" richColors />
-        <div className="flex h-screen w-full flex-col gap-0 overflow-hidden bg-[#f4f5f8] font-sans text-slate-900 antialiased md:flex-row md:gap-3 md:p-3">
+        <div className="flex h-screen w-full flex-col gap-0 overflow-hidden bg-[#f4f5f8] font-sans text-slate-900 antialiased md:flex-row md:gap-3 md:p-3 print:h-auto print:overflow-visible print:bg-white print:p-0 print:m-0 print:block">
         {/* Mobile Top Header Bar */}
-        <header className="sticky top-0 z-30 flex items-center justify-between border-slate-200/80 border-b bg-white px-3 py-2.5 shadow-2xs md:hidden">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-slate-200/80 border-b bg-white px-3 py-2.5 shadow-2xs md:hidden print:hidden">
           <div className="flex min-w-0 items-center gap-2">
             <button
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 shadow-2xs transition hover:bg-slate-200 active:scale-95"
@@ -255,7 +255,7 @@ export default function DashboardLayout({
 
         {/* Mobile Off-Canvas Sliding Drawer / Sheet */}
         {isMobileDrawerOpen && (
-          <div className="fixed inset-0 z-50 flex md:hidden">
+          <div className="fixed inset-0 z-50 flex md:hidden print:hidden">
             {/* Backdrop */}
             <div
               className="fade-in fixed inset-0 animate-in bg-slate-950/60 backdrop-blur-sm transition-opacity"
@@ -309,7 +309,7 @@ export default function DashboardLayout({
         )}
 
         {/* Desktop Left Floating Sidebar */}
-        <aside className="hidden w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm md:flex">
+        <aside className="hidden w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm md:flex print:hidden">
           <div className="space-y-4">
             {/* Workspace Switcher Header */}
             <div className="flex items-center justify-between gap-2">
@@ -349,14 +349,14 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content Viewport */}
-        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-slate-200/80 bg-white shadow-none md:rounded-[28px] md:border md:shadow-sm">
-          <div className="flex-1 p-3.5 pb-24 sm:p-6 md:p-8 md:pb-8">
+        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-slate-200/80 bg-white shadow-none md:rounded-[28px] md:border md:shadow-sm print:h-auto print:overflow-visible print:border-none print:shadow-none print:p-0 print:rounded-none print:block">
+          <div className="flex-1 p-3.5 pb-24 sm:p-6 md:p-8 md:pb-8 print:p-0 print:pb-0">
             {children}
           </div>
         </div>
 
         {/* Mobile Bottom Navigation Bar */}
-        <nav className="safe-bottom fixed right-0 bottom-0 left-0 z-40 flex items-center justify-around border-slate-200/90 border-t bg-white/95 px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] backdrop-blur-lg md:hidden">
+        <nav className="safe-bottom fixed right-0 bottom-0 left-0 z-40 flex items-center justify-around border-slate-200/90 border-t bg-white/95 px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] backdrop-blur-lg md:hidden print:hidden">
           {mobileBottomNav.map((item) => {
             const isActive = item.exact
               ? pathname === item.href

@@ -128,3 +128,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: #0f172a !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reset layout overflow traps on print */
+  div, main, section, aside, article {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  /* Prevent page breaks inside cards */
+  .rounded-3xl,
+  .rounded-2xl,
+  .rounded-xl,
+  [class*="widget"],
+  [class*="Widget"] {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    box-shadow: none !important;
+  }
+}
+
