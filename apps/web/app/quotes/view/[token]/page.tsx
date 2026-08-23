@@ -151,6 +151,161 @@ export default function PublicQuoteViewPage() {
     );
   }
 
+  const handlePrint = () => {
+    if (!quote) return;
+    const existingIframe = document.getElementById("quote-print-iframe") as HTMLIFrameElement;
+    if (existingIframe) {
+      existingIframe.remove();
+    }
+
+    const iframe = document.createElement("iframe");
+    iframe.id = "quote-print-iframe";
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document || iframe.contentDocument;
+    if (!doc) {
+      window.print();
+      return;
+    }
+
+    const formatCur = (amount: number) => {
+      return new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: quote.currency || "TRY",
+        minimumFractionDigits: 2,
+      }).format(amount || 0);
+    };
+
+    const itemsHtml = quote.items.map((item, idx) => `
+      <tr style="${item.isOptional ? "background-color: #fefce8;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
+        <td style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</td>
+        <td style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
+          <div style="font-weight: 700; color: #0f172a;">${item.productName}</div>
+          ${item.sku ? `<div style="font-size: 9px; color: #64748b; font-family: monospace;">SKU: ${item.sku}</div>` : ""}
+          ${item.description ? `<div style="font-size: 10px; color: #475569; margin-top: 2px;">${item.description}</div>` : ""}
+        </td>
+        <td style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${item.quantity} ${item.unit}</td>
+        <td style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0;">${formatCur(item.unitPrice)}</td>
+        <td style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</td>
+        <td style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0;">%${item.taxRate}</td>
+        <td style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${formatCur(item.totalPrice)}</td>
+      </tr>
+    `).join("");
+
+    const html = `
+      <!DOCTYPE html>
+      <html lang="tr">
+      <head>
+        <meta charset="utf-8">
+        <title>${quote.quoteNumber} - ${quote.title}</title>
+        <style>
+          @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
+          * { box-sizing: border-box; margin: 0; padding: 0; }
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #0f172a; background: #fff; font-size: 11px; line-height: 1.4; -webkit-print-color-adjust: exact !important; }
+          .page { width: 100%; max-width: 800px; margin: 0 auto; padding: 10px 0; }
+          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 14px; margin-bottom: 16px; }
+          .company-name { font-size: 18px; font-weight: 900; }
+          .quote-badge { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 13px; font-weight: 800; }
+          .party-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+          .party-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+          .items-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; border: 1px solid #cbd5e1; }
+          .items-table th { background: #0f172a; color: #ffffff; font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 8px; text-align: left; }
+          .totals-card { float: right; width: 280px; border: 2px solid #0f172a; background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 16px; }
+          .totals-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+          .grand-total { border-top: 2px solid #0f172a; padding-top: 6px; font-weight: 900; font-size: 15px; color: #1d4ed8; display: flex; justify-content: space-between; }
+          .terms { clear: both; font-size: 9px; margin-bottom: 16px; }
+          .term-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; margin-bottom: 6px; }
+          .signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; page-break-inside: avoid; }
+          .sig-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; text-align: center; font-size: 9px; }
+          .sig-line { height: 45px; border-bottom: 1px dashed #cbd5e1; margin-top: 6px; }
+        </style>
+      </head>
+      <body>
+        <div class="page">
+          <div class="header">
+            <div>
+              <div class="company-name">${quote.companyName}</div>
+              <div style="color: #64748b; font-size: 10px;">Resmi Satış & Fiyat Teklifi</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="quote-badge">${quote.quoteNumber} (R${quote.revisionNumber})</span>
+              <div style="font-size: 10px; color: #475569; margin-top: 4px;">Tarih: ${new Date().toLocaleDateString("tr-TR")}</div>
+            </div>
+          </div>
+
+          <div class="party-grid">
+            <div class="party-card">
+              <div style="font-size: 8px; font-weight: 800; color: #2563eb;">SAYIN / MÜŞTERİ</div>
+              <div style="font-size: 12px; font-weight: 800;">${quote.customerName}</div>
+              <div style="font-size: 10px; color: #475569;">${quote.title}</div>
+            </div>
+            <div class="party-card">
+              <div style="font-size: 8px; font-weight: 800; color: #64748b;">TEKLİFİ VEREN</div>
+              <div style="font-size: 12px; font-weight: 800;">${quote.companyName}</div>
+              <div style="font-size: 10px; color: #475569;">Durum: <b>${quote.status}</b></div>
+            </div>
+          </div>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="width: 25px; text-align: center;">#</th>
+                <th>Ürün / Hizmet Açıklaması</th>
+                <th style="width: 70px; text-align: center;">Miktar</th>
+                <th style="width: 90px; text-align: right;">Birim Fiyat</th>
+                <th style="width: 55px; text-align: center;">İskonto</th>
+                <th style="width: 45px; text-align: center;">KDV</th>
+                <th style="width: 100px; text-align: right;">Toplam</th>
+              </tr>
+            </thead>
+            <tbody>${itemsHtml}</tbody>
+          </table>
+
+          <div class="totals-card">
+            <div class="totals-row"><span>Ara Toplam:</span><b>${formatCur(quote.subtotal)}</b></div>
+            ${quote.discountAmount > 0 ? `<div class="totals-row" style="color: #e11d48;"><span>İskonto:</span><b>-${formatCur(quote.discountAmount)}</b></div>` : ""}
+            <div class="totals-row"><span>KDV:</span><b>${formatCur(quote.taxAmount)}</b></div>
+            <div class="grand-total"><span>GENEL TOPLAM:</span><span>${formatCur(quote.totalAmount)}</span></div>
+          </div>
+
+          <div class="terms">
+            ${quote.paymentTerms ? `<div class="term-item"><b>Ödeme Koşulları:</b> ${quote.paymentTerms}</div>` : ""}
+            ${quote.deliveryTerms ? `<div class="term-item"><b>Teslimat Şartları:</b> ${quote.deliveryTerms}</div>` : ""}
+            ${quote.bankDetails ? `<div class="term-item" style="font-family: monospace;"><b>Banka / IBAN:</b> ${quote.bankDetails}</div>` : ""}
+            ${quote.termsAndConditions ? `<div class="term-item"><b>Genel Hükümler:</b> ${quote.termsAndConditions}</div>` : ""}
+          </div>
+
+          <div class="signatures">
+            <div class="sig-box">
+              <b>TEKLİFİ DÜZENLEYEN</b>
+              <div class="sig-line"></div>
+            </div>
+            <div class="sig-box">
+              <b>TEKLİFİ ONAYLAYAN (MÜŞTERİ)</b>
+              <div class="sig-line"></div>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    iframe.contentWindow?.focus();
+    setTimeout(() => {
+      iframe.contentWindow?.print();
+    }, 250);
+  };
+
   return (
     <div className="min-h-screen bg-slate-100/70 py-8 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -174,42 +329,45 @@ export default function PublicQuoteViewPage() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
             >
               <Printer className="h-4 w-4 text-slate-500" />
-              <span>Yazdır</span>
+              <span>Yazdır / PDF</span>
             </button>
 
-            <button
-              type="button"
-              onClick={() => setIsRevisionModalOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
-            >
-              <MessageSquare className="h-4 w-4 text-slate-500" />
-              <span>Revizyon İste</span>
-            </button>
-
-            {isSuccessAccepted || quote.status === "Accepted" ? (
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 px-4 py-1.5 text-xs font-bold shadow-xs">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                <span>Teklif Onaylandı</span>
-              </span>
-            ) : (
               <button
                 type="button"
-                onClick={() => setIsAcceptModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-blue-700 active:scale-[0.99] transition"
+                onClick={() => setIsRevisionModalOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
               >
-                <Check className="h-4 w-4" />
-                <span>Teklifi Kabul Et & Onayla</span>
+                <MessageSquare className="h-4 w-4 text-slate-500" />
+                <span>Revizyon İste</span>
               </button>
-            )}
-          </div>
-        </div>
 
-        {/* Main Proposal Card Document */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl p-8 sm:p-12 space-y-8 print:border-none print:shadow-none print:p-0">
+              {isSuccessAccepted || quote.status === "Accepted" ? (
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 px-4 py-1.5 text-xs font-bold shadow-xs">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <span>Teklif Onaylandı</span>
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsAcceptModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-blue-700 active:scale-[0.99] transition"
+                >
+                  <Check className="h-4 w-4" />
+                  <span>Teklifi Kabul Et & Onayla</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Main Proposal Card Document */}
+          <div
+            id="quote-printable-document"
+            className="bg-white rounded-3xl border border-slate-200/80 shadow-xl p-8 sm:p-12 space-y-8 print:border-none print:shadow-none print:p-0 print:rounded-none"
+          >
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start border-b border-slate-200 pb-8 gap-4">
             <div>

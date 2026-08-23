@@ -51,7 +51,6 @@ public class Quote : ITenantScopedEntity
     public ICollection<QuoteItem> Items { get; set; } = [];
     public ICollection<QuoteActivity> Activities { get; set; } = [];
     public Order? ConvertedOrder { get; set; }
-    public Deal? Deal { get; set; }
 }
 
 [Table("quote_items", Schema = "public")]

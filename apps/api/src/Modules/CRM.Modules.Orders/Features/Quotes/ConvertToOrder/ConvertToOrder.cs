@@ -159,14 +159,14 @@ public class ConvertToOrderHandler(
         if (quote.DealId.HasValue)
         {
             var deal = await customersDbContext.Deals
-                .Include(d => d.Pipeline)
+                .Include(d => d.Pipeline!)
                 .ThenInclude(p => p.Stages)
                 .FirstOrDefaultAsync(d => d.Id == quote.DealId.Value && d.TenantId == tenantId, cancellationToken);
 
             if (deal != null)
             {
                 // Find Won stage in pipeline (or highest probability stage / order index)
-                var wonStage = deal.Pipeline.Stages
+                var wonStage = deal.Pipeline?.Stages
                     .OrderByDescending(s => s.Probability)
                     .ThenByDescending(s => s.OrderIndex)
                     .FirstOrDefault();

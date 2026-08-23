@@ -2356,8 +2356,518 @@ function QuoteTemplatesModal({
 }
 
 // ============================================================================
-// QUOTE PRINT MODAL
+// QUOTE PRINT ENGINE & MODAL - HIGH PRECISION A4 CORPORATE PDF
 // ============================================================================
+function renderQuotePrintHtml(quote: QuoteDetailDto, tenantName: string) {
+  const formatCur = (amount: number) => {
+    return new Intl.NumberFormat("tr-TR", {
+      style: "currency",
+      currency: quote.currency || "TRY",
+      minimumFractionDigits: 2,
+    }).format(amount || 0);
+  };
+
+  // Group Tax breakdown by rate
+  const map = new Map<number, { baseAmount: number; taxAmount: number }>();
+  quote.items.forEach((item) => {
+    if (item.isOptional) return;
+    const raw = (item.unitPrice || 0) * (item.quantity || 1);
+    const disc = item.discountRate > 0 ? raw * (item.discountRate / 100) : 0;
+    const base = Math.max(0, raw - disc);
+    const tax = item.taxAmount || (item.taxRate > 0 ? base * (item.taxRate / 100) : 0);
+
+    const existing = map.get(item.taxRate) || { baseAmount: 0, taxAmount: 0 };
+    existing.baseAmount += base;
+    existing.taxAmount += tax;
+    map.set(item.taxRate, existing);
+  });
+
+  const taxRows = Array.from(map.entries())
+    .map(([rate, vals]) => `
+      <tr>
+        <td style="padding: 4px 6px; font-weight: 700;">%${rate}</td>
+        <td style="padding: 4px 6px; text-align: right;">${formatCur(vals.baseAmount)}</td>
+        <td style="padding: 4px 6px; text-align: right; font-weight: 700;">${formatCur(vals.taxAmount)}</td>
+      </tr>
+    `).join("");
+
+  const itemsHtml = quote.items.map((item, idx) => `
+    <tr style="${item.isOptional ? "background-color: #fefce8; opacity: 0.85;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
+      <td style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</td>
+      <td style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
+        <div style="font-weight: 700; color: #0f172a;">${item.productName}</div>
+        ${item.sku ? `<div style="font-size: 9px; color: #64748b; font-family: monospace;">SKU: ${item.sku}</div>` : ""}
+        ${item.description ? `<div style="font-size: 10px; color: #475569; margin-top: 2px;">${item.description}</div>` : ""}
+        ${item.isOptional ? `<div style="display: inline-block; background-color: #fef08a; color: #713f12; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 4px; margin-top: 2px;">Opsiyonel Kalem (Toplama Dahil Değil)</div>` : ""}
+      </td>
+      <td style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.quantity} ${item.unit}</td>
+      <td style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.unitPrice)}</td>
+      <td style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</td>
+      <td style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">%${item.taxRate}</td>
+      <td style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.totalPrice)}</td>
+    </tr>
+  `).join("");
+
+  return `
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+      <meta charset="utf-8">
+      <title>${quote.quoteNumber} - ${quote.title}</title>
+      <style>
+        @page {
+          size: A4 portrait;
+          margin: 10mm 12mm 10mm 12mm;
+        }
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          color: #0f172a;
+          background: #ffffff;
+          font-size: 11px;
+          line-height: 1.4;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .page {
+          width: 100%;
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 10px 0;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          border-bottom: 2px solid #0f172a;
+          padding-bottom: 14px;
+          margin-bottom: 16px;
+        }
+        .logo-box {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .logo-icon {
+          width: 32px;
+          height: 32px;
+          background: #2563eb;
+          color: #ffffff;
+          font-weight: 900;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+        }
+        .company-name {
+          font-size: 18px;
+          font-weight: 900;
+          color: #0f172a;
+          text-transform: uppercase;
+          letter-spacing: -0.5px;
+        }
+        .doc-title {
+          font-size: 10px;
+          color: #64748b;
+          font-weight: 500;
+          margin-top: 2px;
+        }
+        .quote-ref-box {
+          text-align: right;
+        }
+        .quote-badge {
+          display: inline-block;
+          background: #f1f5f9;
+          border: 1px solid #cbd5e1;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-family: monospace;
+          font-size: 13px;
+          font-weight: 800;
+          color: #0f172a;
+        }
+        .rev-badge {
+          background: #2563eb;
+          color: #ffffff;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 9px;
+          font-weight: 800;
+          margin-left: 4px;
+        }
+        .ref-details {
+          font-size: 10px;
+          color: #475569;
+          margin-top: 4px;
+          line-height: 1.5;
+        }
+        .party-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+        .party-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 10px 12px;
+        }
+        .party-label {
+          font-size: 8px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: #2563eb;
+          margin-bottom: 3px;
+        }
+        .party-title {
+          font-size: 12px;
+          font-weight: 800;
+          color: #0f172a;
+          line-height: 1.3;
+        }
+        .party-sub {
+          font-size: 10px;
+          color: #475569;
+          margin-top: 2px;
+        }
+        .items-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 16px;
+          border: 1px solid #cbd5e1;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+        .items-table th {
+          background: #0f172a;
+          color: #ffffff;
+          font-size: 9px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          padding: 8px;
+          text-align: left;
+        }
+        .bottom-grid {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 16px;
+          margin-bottom: 16px;
+          page-break-inside: avoid;
+        }
+        .tax-box {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 10px;
+        }
+        .tax-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 10px;
+          margin-top: 4px;
+        }
+        .tax-table th {
+          border-bottom: 1px solid #cbd5e1;
+          padding-bottom: 3px;
+          color: #64748b;
+          font-weight: 700;
+        }
+        .totals-card {
+          border: 2px solid #0f172a;
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 12px;
+        }
+        .totals-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+          color: #475569;
+          margin-bottom: 4px;
+        }
+        .totals-row.discount {
+          color: #e11d48;
+          font-weight: 600;
+        }
+        .grand-total-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          border-top: 2px solid #0f172a;
+          padding-top: 8px;
+          margin-top: 6px;
+        }
+        .grand-total-label {
+          font-size: 12px;
+          font-weight: 900;
+          text-transform: uppercase;
+          color: #0f172a;
+        }
+        .grand-total-val {
+          font-size: 16px;
+          font-weight: 900;
+          color: #1d4ed8;
+        }
+        .terms-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+          font-size: 9px;
+          margin-bottom: 16px;
+          page-break-inside: avoid;
+        }
+        .term-item {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          padding: 8px;
+        }
+        .term-item.full {
+          grid-column: span 2;
+        }
+        .term-item.bank {
+          grid-column: span 2;
+          background: #f8fafc;
+          font-family: monospace;
+        }
+        .term-title {
+          font-weight: 800;
+          text-transform: uppercase;
+          color: #0f172a;
+          margin-bottom: 2px;
+          font-size: 8px;
+        }
+        .signatures {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          margin-top: 16px;
+          page-break-inside: avoid;
+        }
+        .sig-box {
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          padding: 10px;
+          text-align: center;
+          font-size: 9px;
+          background: #ffffff;
+        }
+        .sig-line {
+          height: 50px;
+          border-bottom: 1px dashed #cbd5e1;
+          margin-top: 6px;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding-bottom: 2px;
+          color: #94a3b8;
+          font-size: 8px;
+        }
+        .footer {
+          margin-top: 16px;
+          padding-top: 8px;
+          border-top: 1px solid #e2e8f0;
+          font-size: 8px;
+          color: #94a3b8;
+          display: flex;
+          justify-content: space-between;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="page">
+        <!-- 1. Header -->
+        <div class="header">
+          <div class="logo-box">
+            <div class="logo-icon">${tenantName ? tenantName.charAt(0).toUpperCase() : "C"}</div>
+            <div>
+              <div class="company-name">${tenantName || "CRM ŞİRKETİ"}</div>
+              <div class="doc-title">Kurumsal Satış & Fiyat Teklifi / Proforma Belgesi</div>
+            </div>
+          </div>
+          <div class="quote-ref-box">
+            <div>
+              <span class="quote-badge">${quote.quoteNumber}</span>
+              <span class="rev-badge">R${quote.revisionNumber}</span>
+            </div>
+            <div class="ref-details">
+              <div><b>Teklif Tarihi:</b> ${new Date(quote.createdAt).toLocaleDateString("tr-TR")}</div>
+              <div><b>Son Geçerlilik:</b> ${quote.validUntil ? new Date(quote.validUntil).toLocaleDateString("tr-TR") : "Süresiz"}</div>
+              <div><b>Para Birimi:</b> ${quote.currency}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Parties -->
+        <div class="party-grid">
+          <div class="party-card">
+            <div class="party-label">SAYIN / MÜŞTERİ (ALICI)</div>
+            <div class="party-title">${quote.customerName}</div>
+            <div class="party-sub"><b>Konu:</b> ${quote.title}</div>
+            ${quote.dealTitle ? `<div class="party-sub" style="font-size: 9px; color: #64748b;">Fırsat: ${quote.dealTitle}</div>` : ""}
+          </div>
+
+          <div class="party-card">
+            <div class="party-label" style="color: #64748b;">TEKLİFİ VEREN / TEMSİLCİ</div>
+            <div class="party-title">${quote.assignedUserName || "Satış Departmanı"}</div>
+            <div class="party-sub"><b>Firma:</b> ${tenantName || "CRM Şirketi"}</div>
+            <div class="party-sub" style="font-size: 9px; color: #64748b;">Durum: <b>${quote.status}</b></div>
+          </div>
+        </div>
+
+        <!-- 3. Line Items -->
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th style="width: 25px; text-align: center;">#</th>
+              <th>Ürün / Hizmet Tanımı</th>
+              <th style="width: 70px; text-align: center;">Miktar</th>
+              <th style="width: 90px; text-align: right;">Birim Fiyat</th>
+              <th style="width: 55px; text-align: center;">İskonto</th>
+              <th style="width: 45px; text-align: center;">KDV</th>
+              <th style="width: 100px; text-align: right;">Toplam Tutar</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+
+        <!-- 4. Financial Matrix -->
+        <div class="bottom-grid">
+          <div class="tax-box">
+            <div class="party-label" style="color: #64748b;">KDV ORAN & MATRAH DAĞILIMI</div>
+            <table class="tax-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Oran</th>
+                  <th style="text-align: right;">Matrah</th>
+                  <th style="text-align: right;">KDV Tutarı</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${taxRows}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="totals-card">
+            <div class="totals-row">
+              <span>Ara Toplam (KDV Hariç):</span>
+              <span style="font-weight: 700; color: #0f172a;">${formatCur(quote.subtotal)}</span>
+            </div>
+            ${quote.discountAmount > 0 ? `
+              <div class="totals-row discount">
+                <span>Toplam İskonto / İndirim:</span>
+                <span>-${formatCur(quote.discountAmount)}</span>
+              </div>
+            ` : ""}
+            <div class="totals-row">
+              <span>Hesaplanan Toplam KDV:</span>
+              <span style="font-weight: 700; color: #0f172a;">${formatCur(quote.taxAmount)}</span>
+            </div>
+            <div class="grand-total-row">
+              <span class="grand-total-label">GENEL TOPLAM:</span>
+              <span class="grand-total-val">${formatCur(quote.totalAmount)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Terms & Banking -->
+        <div class="terms-grid">
+          ${quote.paymentTerms ? `
+            <div class="term-item">
+              <div class="term-title">Ödeme ve Vade Koşulları</div>
+              <div>${quote.paymentTerms}</div>
+            </div>
+          ` : ""}
+          ${quote.deliveryTerms ? `
+            <div class="term-item">
+              <div class="term-title">Teslimat ve Sevkiyat Şartları</div>
+              <div>${quote.deliveryTerms}</div>
+            </div>
+          ` : ""}
+          ${quote.bankDetails ? `
+            <div class="term-item bank">
+              <div class="term-title" style="font-family: sans-serif;">Resmi Banka ve Hesap (IBAN) Bilgileri</div>
+              <div>${quote.bankDetails}</div>
+            </div>
+          ` : ""}
+          ${quote.termsAndConditions ? `
+            <div class="term-item full">
+              <div class="term-title">Genel Hükümler ve Garanti Şartları</div>
+              <div>${quote.termsAndConditions}</div>
+            </div>
+          ` : ""}
+        </div>
+
+        <!-- 6. Signatures -->
+        <div class="signatures">
+          <div class="sig-box">
+            <div class="term-title">TEKLİFİ DÜZENLEYEN (FİRMA YETKİLİSİ)</div>
+            <div style="color: #64748b; font-size: 8px;">Yetkili Kaşe & İmza</div>
+            <div class="sig-line">${quote.assignedUserName || tenantName}</div>
+          </div>
+
+          <div class="sig-box">
+            <div class="term-title">TEKLİFİ ONAYLAYAN (MÜŞTERİ YETKİLİSİ)</div>
+            <div style="color: #64748b; font-size: 8px;">Kabul & Onay İmzası</div>
+            <div class="sig-line">${quote.customerName}</div>
+          </div>
+        </div>
+
+        <!-- 7. Footer -->
+        <div class="footer">
+          <span>Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik olarak üretilmiştir.</span>
+          <span>Belge No: ${quote.quoteNumber}-R${quote.revisionNumber} • Sayfa 1 / 1</span>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function printQuoteDocument(quote: QuoteDetailDto, tenantName: string) {
+  const existingIframe = document.getElementById("quote-print-iframe") as HTMLIFrameElement;
+  if (existingIframe) {
+    existingIframe.remove();
+  }
+
+  const iframe = document.createElement("iframe");
+  iframe.id = "quote-print-iframe";
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0";
+  iframe.style.height = "0";
+  iframe.style.border = "0";
+  document.body.appendChild(iframe);
+
+  const html = renderQuotePrintHtml(quote, tenantName);
+  const doc = iframe.contentWindow?.document || iframe.contentDocument;
+  if (!doc) {
+    window.print();
+    return;
+  }
+
+  doc.open();
+  doc.write(html);
+  doc.close();
+
+  iframe.contentWindow?.focus();
+  setTimeout(() => {
+    iframe.contentWindow?.print();
+  }, 250);
+}
+
 function QuotePrintModal({
   quoteId,
   onClose,
@@ -2367,160 +2877,430 @@ function QuotePrintModal({
 }) {
   const { activeTenant } = usePermissions();
   const [quote, setQuote] = useState<QuoteDetailDto | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [zoom, setZoom] = useState<number>(100);
 
   useEffect(() => {
     if (!activeTenant?.id) return;
-    ApiClient.getQuoteById(quoteId, activeTenant.id).then((res) => {
-      if (res.success && res.data) setQuote(res.data);
-    });
+    setIsLoading(true);
+    ApiClient.getQuoteById(quoteId, activeTenant.id)
+      .then((res) => {
+        if (res.success && res.data) setQuote(res.data);
+      })
+      .finally(() => setIsLoading(false));
   }, [activeTenant?.id, quoteId]);
 
   const handlePrint = () => {
-    window.print();
+    if (!quote) return;
+    printQuoteDocument(quote, activeTenant?.name || "CRM Şirketi");
   };
 
+  // Group Tax breakdown by rate
+  const taxBreakdown = useMemo(() => {
+    if (!quote?.items) return [];
+    const map = new Map<number, { baseAmount: number; taxAmount: number }>();
+    quote.items.forEach((item) => {
+      if (item.isOptional) return;
+      const raw = (item.unitPrice || 0) * (item.quantity || 1);
+      const disc = item.discountRate > 0 ? raw * (item.discountRate / 100) : 0;
+      const base = Math.max(0, raw - disc);
+      const tax = item.taxAmount || (item.taxRate > 0 ? base * (item.taxRate / 100) : 0);
+
+      const existing = map.get(item.taxRate) || { baseAmount: 0, taxAmount: 0 };
+      existing.baseAmount += base;
+      existing.taxAmount += tax;
+      map.set(item.taxRate, existing);
+    });
+
+    return Array.from(map.entries())
+      .map(([rate, vals]) => ({
+        rate,
+        baseAmount: vals.baseAmount,
+        taxAmount: vals.taxAmount,
+      }))
+      .sort((a, b) => a.rate - b.rate);
+  }, [quote?.items]);
+
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 overflow-y-auto">
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-8 space-y-6 max-h-[90vh] overflow-y-auto print:max-h-none print:shadow-none print:rounded-none print:p-0">
-        {/* Top bar (Hidden when printed) */}
-        <div className="flex items-center justify-between border-b pb-4 print:hidden">
-          <div className="flex items-center gap-2">
-            <Printer className="h-5 w-5 text-blue-600" />
-            <span className="font-bold text-sm text-slate-800">Teklif Baskı Önizlemesi</span>
+    <div className="fixed inset-0 z-60 flex flex-col bg-slate-950/85 backdrop-blur-md overflow-hidden animate-in fade-in">
+      {/* Top Floating Control Bar */}
+      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900 px-6 py-3 shadow-xl z-20 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">
+            <FileSpreadsheet className="h-5 w-5" />
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition"
-            >
-              <Printer className="h-4 w-4" />
-              <span>Yazdır / PDF Kaydet</span>
-            </button>
-            <button type="button" onClick={onClose} className="rounded-full p-2 text-slate-400 hover:bg-slate-100">
-              <X className="h-4 w-4" />
-            </button>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm text-white">
+                Resmi Teklif Belgesi Önizleme
+              </span>
+              <span className="rounded-md bg-blue-500/20 text-blue-300 border border-blue-400/30 px-2 py-0.5 text-[10px] font-bold">
+                A4 Proforma
+              </span>
+            </div>
+            <p className="text-xs text-slate-400">
+              {quote?.quoteNumber || "TEK-..."} (R{quote?.revisionNumber ?? 0}) • {quote?.customerName || "Yükleniyor..."}
+            </p>
           </div>
         </div>
 
-        {/* Printable Proposal Document */}
-        {quote && (
-          <div className="space-y-6 text-slate-800 font-sans">
-            {/* Header */}
-            <div className="flex justify-between items-start border-b border-slate-200 pb-6">
-              <div>
-                <h1 className="font-extrabold text-2xl text-blue-700 tracking-tight">
-                  {activeTenant?.name || "CRM ŞİRKETİ"}
-                </h1>
-                <p className="text-xs text-slate-500 mt-1">Resmi Satış & Hizmet Teklifi</p>
-              </div>
-              <div className="text-right">
-                <span className="font-mono font-extrabold text-lg text-slate-900 block">
-                  {quote.quoteNumber} (R{quote.revisionNumber})
-                </span>
-                <span className="text-xs text-slate-500 block">
-                  Tarih: {new Date(quote.createdAt).toLocaleDateString("tr-TR")}
-                </span>
-                <span className="text-xs text-slate-500 block">
-                  Geçerlilik: {quote.validUntil ? new Date(quote.validUntil).toLocaleDateString("tr-TR") : "Süresiz"}
-                </span>
-              </div>
-            </div>
+        {/* Center: Zoom Controls */}
+        <div className="hidden md:flex items-center gap-1 bg-slate-800/80 border border-slate-700/80 rounded-xl p-1 text-slate-300">
+          <button
+            type="button"
+            onClick={() => setZoom((prev) => Math.max(60, prev - 10))}
+            className="px-2.5 py-1 text-xs font-bold hover:bg-slate-700 rounded-lg transition"
+            title="Küçült"
+          >
+            -
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoom(100)}
+            className="px-2 py-1 text-xs font-mono font-bold text-blue-400 hover:bg-slate-700 rounded-lg transition"
+            title="Sıfırla (%100)"
+          >
+            %{zoom}
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoom((prev) => Math.min(150, prev + 10))}
+            className="px-2.5 py-1 text-xs font-bold hover:bg-slate-700 rounded-lg transition"
+            title="Büyüt"
+          >
+            +
+          </button>
+          <div className="w-px h-4 bg-slate-700 mx-1" />
+          <button
+            type="button"
+            onClick={() => setZoom(85)}
+            className="px-2 py-1 text-[11px] font-medium hover:bg-slate-700 rounded-lg transition"
+          >
+            Ekrana Sığdır
+          </button>
+        </div>
 
-            {/* Client & Company Details */}
-            <div className="grid grid-cols-2 gap-6 bg-slate-50 p-4 rounded-2xl">
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  MÜŞTERİ / ALICI:
-                </span>
-                <h3 className="font-extrabold text-sm text-slate-900 mt-1">{quote.customerName}</h3>
-                <p className="text-xs text-slate-600 mt-0.5">{quote.title}</p>
-              </div>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={handlePrint}
+            disabled={isLoading || !quote}
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 text-xs font-bold text-white shadow-md hover:bg-blue-500 active:scale-[0.98] transition disabled:opacity-50"
+          >
+            <Printer className="h-4 w-4" />
+            <span>Yazdır / PDF Olarak Kaydet</span>
+          </button>
 
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  TEKLİFİ HAZIRLAYAN:
-                </span>
-                <h3 className="font-bold text-sm text-slate-900 mt-1">{quote.assignedUserName || "Satış Departmanı"}</h3>
-                <p className="text-xs text-slate-600 mt-0.5">{activeTenant?.name}</p>
-              </div>
-            </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition"
+            title="Kapat (ESC)"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
 
-            {/* Line Items Table */}
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-slate-300 bg-slate-100 text-slate-700 font-bold">
-                  <th className="py-2.5 px-3">Sıra</th>
-                  <th className="py-2.5 px-3">Ürün / Hizmet Tanımı</th>
-                  <th className="py-2.5 px-2 text-center">Miktar</th>
-                  <th className="py-2.5 px-2 text-right">Birim Fiyat</th>
-                  <th className="py-2.5 px-2 text-center">İskonto</th>
-                  <th className="py-2.5 px-2 text-center">KDV</th>
-                  <th className="py-2.5 px-3 text-right">Toplam</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                {quote.items.map((item, idx) => (
-                  <tr key={item.id}>
-                    <td className="py-2.5 px-3 text-slate-400">{idx + 1}</td>
-                    <td className="py-2.5 px-3 font-semibold">{item.productName}</td>
-                    <td className="py-2.5 px-2 text-center">{item.quantity} {item.unit}</td>
-                    <td className="py-2.5 px-2 text-right">{formatCurrency(item.unitPrice, quote.currency)}</td>
-                    <td className="py-2.5 px-2 text-center">{item.discountRate > 0 ? `%${item.discountRate}` : "-"}</td>
-                    <td className="py-2.5 px-2 text-center">%{item.taxRate}</td>
-                    <td className="py-2.5 px-3 text-right font-bold">{formatCurrency(item.totalPrice, quote.currency)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Totals */}
-            <div className="flex justify-end pt-2">
-              <div className="w-64 space-y-1.5 text-xs">
-                <div className="flex justify-between text-slate-600">
-                  <span>Ara Toplam:</span>
-                  <span className="font-semibold">{formatCurrency(quote.subtotal, quote.currency)}</span>
+      {/* Scrollable Document Canvas Viewport */}
+      <div className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-8 flex justify-center items-start bg-slate-950/60">
+        {isLoading || !quote ? (
+          <div className="flex flex-col items-center justify-center text-slate-400 py-28">
+            <RefreshCw className="h-8 w-8 animate-spin text-blue-500 mb-3" />
+            <span className="text-xs font-semibold">Teklif belgesi hazırlanıyor...</span>
+          </div>
+        ) : (
+          <div
+            style={{
+              transform: `scale(${zoom / 100})`,
+              transformOrigin: "top center",
+              transition: "transform 0.15s ease-out",
+            }}
+            className="w-full max-w-[210mm] bg-white text-slate-900 rounded-lg shadow-2xl p-8 sm:p-12 border border-slate-300 space-y-6 my-2 shrink-0 select-text"
+          >
+            {/* 1. Header & Branding */}
+            <div className="flex items-start justify-between border-b-2 border-slate-900 pb-5 gap-4">
+              <div className="space-y-1 max-w-sm">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white font-black text-base shadow-xs">
+                    {activeTenant?.name ? activeTenant.name.charAt(0).toUpperCase() : "C"}
+                  </div>
+                  <h1 className="font-black text-xl text-slate-900 tracking-tight uppercase">
+                    {activeTenant?.name || "CRM ŞİRKETİ"}
+                  </h1>
                 </div>
+                <p className="text-[11px] text-slate-500 font-medium">
+                  Kurumsal Satış & Fiyat Teklifi / Proforma Belgesi
+                </p>
+              </div>
+
+              <div className="text-right space-y-1">
+                <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1 rounded-md">
+                  <span className="font-mono font-black text-sm text-slate-900 tracking-wider">
+                    {quote.quoteNumber}
+                  </span>
+                  <span className="rounded bg-blue-600 text-white px-1.5 py-0.2 text-[9px] font-bold">
+                    R{quote.revisionNumber}
+                  </span>
+                </div>
+
+                <div className="text-[11px] text-slate-600 font-medium pt-1 space-y-0.5">
+                  <div><b>Teklif Tarihi:</b> {new Date(quote.createdAt).toLocaleDateString("tr-TR")}</div>
+                  <div>
+                    <b>Son Geçerlilik:</b>{" "}
+                    {quote.validUntil ? (
+                      <span className="font-bold text-slate-900">
+                        {new Date(quote.validUntil).toLocaleDateString("tr-TR")}
+                      </span>
+                    ) : (
+                      "Süresiz"
+                    )}
+                  </div>
+                  <div><b>Para Birimi:</b> {quote.currency}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Client & Issuer Party Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-1">
+                <span className="text-[9px] font-extrabold uppercase tracking-wider text-blue-700 block">
+                  SAYIN / MÜŞTERİ (ALICI)
+                </span>
+                <h3 className="font-extrabold text-sm text-slate-900 leading-snug">
+                  {quote.customerName}
+                </h3>
+                <p className="text-[11px] font-semibold text-slate-700">
+                  Konu: <span className="font-normal text-slate-600">{quote.title}</span>
+                </p>
+                {quote.dealTitle && (
+                  <p className="text-[10px] text-slate-500">
+                    Fırsat Referansı: {quote.dealTitle}
+                  </p>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-1">
+                <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-500 block">
+                  TEKLİFİ VEREN / TEMSİLCİ
+                </span>
+                <h3 className="font-extrabold text-sm text-slate-900 leading-snug">
+                  {quote.assignedUserName || "Satış Departmanı"}
+                </h3>
+                <p className="text-[11px] text-slate-600 font-medium">
+                  Firma: <span className="font-semibold text-slate-800">{activeTenant?.name}</span>
+                </p>
+                <p className="text-[10px] text-slate-500">
+                  Durum: <span className="font-semibold text-slate-700">{quote.status}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* 3. Itemized Products/Services Table */}
+            <div className="rounded-xl border border-slate-300 overflow-hidden">
+              <table className="w-full text-left text-[11px] border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white font-bold text-[10px] uppercase tracking-wider">
+                    <th className="py-2.5 px-3 w-8 text-center">#</th>
+                    <th className="py-2.5 px-3">Ürün / Hizmet Açıklaması</th>
+                    <th className="py-2.5 px-2 text-center w-16">Miktar</th>
+                    <th className="py-2.5 px-2 text-right w-24">Birim Fiyat</th>
+                    <th className="py-2.5 px-2 text-center w-14">İskonto</th>
+                    <th className="py-2.5 px-2 text-center w-12">KDV</th>
+                    <th className="py-2.5 px-3 text-right w-28">Toplam Tutar</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 font-medium text-slate-700">
+                  {quote.items.map((item, idx) => (
+                    <tr
+                      key={item.id}
+                      className={
+                        item.isOptional ? "bg-amber-50/60 opacity-85" : idx % 2 === 1 ? "bg-slate-50/70" : "bg-white"
+                      }
+                    >
+                      <td className="py-2 px-3 text-center text-slate-400 font-bold">
+                        {idx + 1}
+                      </td>
+                      <td className="py-2 px-3">
+                        <span className="font-bold text-slate-900 block leading-tight">
+                          {item.productName}
+                        </span>
+                        {item.sku && (
+                          <span className="text-[9px] font-mono text-slate-500">
+                            Kod: {item.sku}
+                          </span>
+                        )}
+                        {item.description && (
+                          <span className="text-[10px] text-slate-600 block mt-0.5">
+                            {item.description}
+                          </span>
+                        )}
+                        {item.isOptional && (
+                          <span className="inline-block rounded bg-amber-200/80 text-amber-900 px-1.5 py-0.2 text-[8px] font-bold mt-0.5">
+                            Opsiyonel Kalem (Toplama Dahil Değil)
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2 px-2 text-center font-bold text-slate-800 whitespace-nowrap">
+                        {item.quantity} {item.unit}
+                      </td>
+                      <td className="py-2 px-2 text-right font-medium text-slate-700 whitespace-nowrap">
+                        {formatCurrency(item.unitPrice, quote.currency)}
+                      </td>
+                      <td className="py-2 px-2 text-center font-bold text-rose-600 whitespace-nowrap">
+                        {item.discountRate > 0 ? `%${item.discountRate}` : "-"}
+                      </td>
+                      <td className="py-2 px-2 text-center text-slate-600 whitespace-nowrap">
+                        %{item.taxRate}
+                      </td>
+                      <td className="py-2 px-3 text-right font-extrabold text-slate-900 whitespace-nowrap">
+                        {formatCurrency(item.totalPrice, quote.currency)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 4. Financial Calculations & Tax Breakdown Matrix */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              {/* Left: VAT Rate Breakdown Box */}
+              <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3 space-y-2">
+                <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-500 block">
+                  KDV ORAN & MATRAH DAĞILIMI
+                </span>
+                <table className="w-full text-left text-[10px]">
+                  <thead>
+                    <tr className="border-b border-slate-200 text-slate-500 font-bold">
+                      <th className="pb-1">Oran</th>
+                      <th className="pb-1 text-right">Matrah</th>
+                      <th className="pb-1 text-right">KDV Tutarı</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                    {taxBreakdown.map((t) => (
+                      <tr key={t.rate}>
+                        <td className="py-1 font-bold">%{t.rate}</td>
+                        <td className="py-1 text-right">{formatCurrency(t.baseAmount, quote.currency)}</td>
+                        <td className="py-1 text-right font-bold text-slate-900">
+                          {formatCurrency(t.taxAmount, quote.currency)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Right: Totals Box */}
+              <div className="rounded-xl border-2 border-slate-900 bg-slate-50 p-3.5 space-y-1.5 text-xs">
+                <div className="flex justify-between text-slate-600 font-medium">
+                  <span>Ara Toplam (KDV Hariç):</span>
+                  <span className="font-bold text-slate-900">
+                    {formatCurrency(quote.subtotal, quote.currency)}
+                  </span>
+                </div>
+
                 {quote.discountAmount > 0 && (
-                  <div className="flex justify-between text-rose-600">
-                    <span>Toplam İskonto:</span>
-                    <span className="font-semibold">-{formatCurrency(quote.discountAmount, quote.currency)}</span>
+                  <div className="flex justify-between text-rose-600 font-medium">
+                    <span>Toplam İndirim & İskonto:</span>
+                    <span className="font-bold">
+                      -{formatCurrency(quote.discountAmount, quote.currency)}
+                    </span>
                   </div>
                 )}
-                <div className="flex justify-between text-slate-600">
-                  <span>KDV Tutarı:</span>
-                  <span className="font-semibold">{formatCurrency(quote.taxAmount, quote.currency)}</span>
+
+                <div className="flex justify-between text-slate-600 font-medium">
+                  <span>Hesaplanan Toplam KDV:</span>
+                  <span className="font-bold text-slate-900">
+                    {formatCurrency(quote.taxAmount, quote.currency)}
+                  </span>
                 </div>
-                <div className="border-t border-slate-300 pt-1.5 flex justify-between font-extrabold text-sm text-slate-900">
-                  <span>GENEL TOPLAM:</span>
-                  <span className="text-blue-700">{formatCurrency(quote.totalAmount, quote.currency)}</span>
+
+                <div className="border-t-2 border-slate-900 pt-2 flex justify-between items-baseline">
+                  <span className="font-black text-slate-900 text-xs uppercase tracking-wider">
+                    GENEL TOPLAM:
+                  </span>
+                  <span className="font-black text-base text-blue-700">
+                    {formatCurrency(quote.totalAmount, quote.currency)}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Terms and Signatures */}
-            <div className="pt-4 border-t border-slate-200 text-xs space-y-3">
+            {/* 5. Terms & Banking Details */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] text-slate-700">
               {quote.paymentTerms && (
-                <p><b>Ödeme Koşulları:</b> {quote.paymentTerms}</p>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5 space-y-0.5">
+                  <span className="font-bold text-slate-900 uppercase tracking-wider block text-[9px]">
+                    ÖDEME VE VADE KOŞULLARI:
+                  </span>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">
+                    {quote.paymentTerms}
+                  </p>
+                </div>
               )}
+
               {quote.deliveryTerms && (
-                <p><b>Teslimat Şartları:</b> {quote.deliveryTerms}</p>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5 space-y-0.5">
+                  <span className="font-bold text-slate-900 uppercase tracking-wider block text-[9px]">
+                    TESLİMAT VE SEVKİYAT ŞARTLARI:
+                  </span>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">
+                    {quote.deliveryTerms}
+                  </p>
+                </div>
               )}
+
               {quote.bankDetails && (
-                <p className="font-mono"><b>Banka Bilgileri:</b> {quote.bankDetails}</p>
+                <div className="sm:col-span-2 rounded-lg border border-slate-200 bg-slate-50/60 p-2.5 space-y-0.5 font-mono">
+                  <span className="font-bold font-sans text-slate-900 uppercase tracking-wider block text-[9px]">
+                    RESMİ BANKA VE HESAP (IBAN) BİLGİLERİ:
+                  </span>
+                  <p className="text-slate-700 leading-relaxed whitespace-pre-line">
+                    {quote.bankDetails}
+                  </p>
+                </div>
+              )}
+
+              {quote.termsAndConditions && (
+                <div className="sm:col-span-2 rounded-lg border border-slate-200 bg-white p-2.5 space-y-0.5">
+                  <span className="font-bold text-slate-900 uppercase tracking-wider block text-[9px]">
+                    GENEL HÜKÜMLER VE GARANTİ ŞARTLARI:
+                  </span>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">
+                    {quote.termsAndConditions}
+                  </p>
+                </div>
               )}
             </div>
 
-            {/* Stamp / Signature Lines */}
-            <div className="grid grid-cols-2 gap-8 pt-8 text-center text-xs">
-              <div>
-                <p className="font-bold text-slate-700">Teklifi Veren Firma Kaşe / İmza</p>
-                <div className="h-16 mt-2 border-b border-slate-300 border-dashed"></div>
+            {/* 6. Stamp / Signature Box */}
+            <div className="grid grid-cols-2 gap-8 pt-4 text-center text-[10px]">
+              <div className="border border-slate-300 rounded-xl p-3 bg-white">
+                <p className="font-bold text-slate-900 uppercase tracking-wider">
+                  TEKLİFİ DÜZENLEYEN (FİRMA YETKİLİSİ)
+                </p>
+                <p className="text-[9px] text-slate-500 mt-0.5">Yetkili Kaşe & İmza</p>
+                <div className="h-16 mt-2 border-b border-dashed border-slate-300 flex items-end justify-center pb-1">
+                  <span className="text-[9px] text-slate-400">{quote.assignedUserName || activeTenant?.name}</span>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-slate-700">Teklifi Onaylayan Müşteri Kaşe / İmza</p>
-                <div className="h-16 mt-2 border-b border-slate-300 border-dashed"></div>
+
+              <div className="border border-slate-300 rounded-xl p-3 bg-white">
+                <p className="font-bold text-slate-900 uppercase tracking-wider">
+                  TEKLİFİ ONAYLAYAN (MÜŞTERİ YETKİLİSİ)
+                </p>
+                <p className="text-[9px] text-slate-500 mt-0.5">Kabul & Onay İmzası</p>
+                <div className="h-16 mt-2 border-b border-dashed border-slate-300 flex items-end justify-center pb-1">
+                  <span className="text-[9px] text-slate-400">{quote.customerName}</span>
+                </div>
               </div>
+            </div>
+
+            {/* 7. Document Footer Bar */}
+            <div className="border-t border-slate-200 pt-3 mt-6 flex justify-between items-center text-[9px] text-slate-400">
+              <span>Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik olarak üretilmiştir.</span>
+              <span>Belge No: {quote.quoteNumber}-R{quote.revisionNumber} • Sayfa 1 / 1</span>
             </div>
           </div>
         )}
@@ -2528,3 +3308,5 @@ function QuotePrintModal({
     </div>
   );
 }
+
+

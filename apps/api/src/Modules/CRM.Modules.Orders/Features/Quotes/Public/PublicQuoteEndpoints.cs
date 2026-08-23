@@ -244,13 +244,13 @@ public class PublicQuoteHandler(
         {
             var deal = await customersDbContext.Deals
                 .IgnoreQueryFilters()
-                .Include(d => d.Pipeline)
+                .Include(d => d.Pipeline!)
                 .ThenInclude(p => p.Stages)
                 .FirstOrDefaultAsync(d => d.Id == quote.DealId.Value && d.TenantId == quote.TenantId, cancellationToken);
 
             if (deal != null)
             {
-                var wonStage = deal.Pipeline.Stages
+                var wonStage = deal.Pipeline?.Stages
                     .OrderByDescending(s => s.Probability)
                     .ThenByDescending(s => s.OrderIndex)
                     .FirstOrDefault();

@@ -2,6 +2,7 @@ using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
 using CRM.BuildingBlocks.Tenancy;
+using CRM.Modules.Customers.Data;
 using CRM.Modules.Orders.Data;
 using CRM.Modules.Orders.Features.Quotes.DTOs;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ public record GetQuoteByIdQuery(Guid Id) : IQuery<QuoteDetailDto>;
 
 public class GetQuoteByIdHandler(
     OrdersDbContext dbContext,
+    CustomersDbContext customersDbContext,
     ICurrentTenant currentTenant) : IQueryHandler<GetQuoteByIdQuery, QuoteDetailDto>
 {
     public async Task<Result<QuoteDetailDto>> Handle(GetQuoteByIdQuery request, CancellationToken cancellationToken)
@@ -31,12 +33,20 @@ public class GetQuoteByIdHandler(
             .Include(q => q.Activities)
             .Include(q => q.ParentQuote)
             .Include(q => q.ConvertedOrder)
-            .Include(q => q.Deal)
             .FirstOrDefaultAsync(q => q.Id == request.Id && q.TenantId == tenantId, cancellationToken);
 
         if (quote == null)
         {
             throw new NotFoundException($"Quote with ID '{request.Id}' was not found.");
+        }
+
+        string? dealTitle = null;
+        if (quote.DealId.HasValue)
+        {
+            dealTitle = await customersDbContext.Deals
+                .Where(d => d.Id == quote.DealId.Value && d.TenantId == tenantId)
+                .Select(d => d.Title)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         // Fetch revision tree
@@ -66,7 +76,7 @@ public class GetQuoteByIdHandler(
             quote.CustomerId,
             quote.CustomerName,
             quote.DealId,
-            quote.Deal?.Title,
+            dealTitle,
             quote.AssignedUserId,
             quote.AssignedUserName,
             quote.Status,
