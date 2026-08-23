@@ -1,6 +1,9 @@
 import { createClient } from "./supabase/client";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_BASE_URL =
+  typeof window !== "undefined"
+    ? ""
+    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export interface ApiResponse<T> {
   data?: T;

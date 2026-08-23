@@ -90,17 +90,18 @@ builder.Services.AddHealthChecks()
         return factory.CreateConnectionAsync().GetAwaiter().GetResult();
     }, name: "rabbitmq", tags: ["messaging", "ready"]);
 
-// 6. CORS Policy for Frontend (Next.js)
+// 6. CORS Policy for Frontend (Next.js & Tunnel)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+        policy.SetIsOriginAllowed(_ => true)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
+
 
 var app = builder.Build();
 

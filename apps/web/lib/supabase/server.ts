@@ -9,6 +9,9 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM0MjkyMDB9.placeholder",
     {
+      cookieOptions: {
+        name: "sb-crm-auth-token",
+      },
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -26,4 +29,5 @@ export async function createClient() {
       },
     }
   );
+
 }

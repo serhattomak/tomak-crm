@@ -40,12 +40,12 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/");
-      router.refresh();
+      window.location.href = "/";
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
+
   };
 
   const handleGoogleLogin = async () => {

@@ -15,7 +15,9 @@
     "docker:up": "docker compose up -d",
     "format": "turbo format",
     "lint": "turbo lint",
+    "tunnel": "cloudflared tunnel --url http://localhost:3000",
     "typecheck": "turbo typecheck"
+
   },
   "devDependencies": {
     "@workspace/eslint-config": "*",

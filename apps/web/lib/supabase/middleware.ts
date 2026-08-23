@@ -36,6 +36,9 @@ export async function updateSession(request: NextRequest) {
   );
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    cookieOptions: {
+      name: "sb-crm-auth-token",
+    },
     cookies: {
       getAll() {
         return request.cookies.getAll();
@@ -53,6 +56,7 @@ export async function updateSession(request: NextRequest) {
       },
     },
   });
+
 
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/register");
