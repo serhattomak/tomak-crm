@@ -14,14 +14,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Modules.Identity.Features.AssignUserRole;
 
-public record AssignUserRoleCommand(Guid UserId, Guid RoleId) : ICommand;
+public record AssignUserRoleCommand(Guid UserId, Guid? RoleId) : ICommand;
+
+public record AssignUserRoleRequest(Guid? RoleId);
 
 public class AssignUserRoleValidator : AbstractValidator<AssignUserRoleCommand>
 {
     public AssignUserRoleValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.RoleId).NotEmpty();
     }
 }
 
@@ -39,10 +40,31 @@ public class AssignUserRoleHandler(
 
         var tenantId = currentTenant.Id.Value;
 
-        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId && r.TenantId == tenantId, cancellationToken);
+        // If RoleId is null or Guid.Empty, unassign / remove any role for this user
+        if (!request.RoleId.HasValue || request.RoleId.Value == Guid.Empty)
+        {
+            var existing = await dbContext.UserRoles
+                .FirstOrDefaultAsync(ur => ur.TenantId == tenantId && ur.UserId == request.UserId, cancellationToken);
+
+            if (existing is not null)
+            {
+                dbContext.UserRoles.Remove(existing);
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            await publishEndpoint.Publish(new UserRolesChangedIntegrationEvent(
+                tenantId,
+                request.UserId,
+                Guid.NewGuid(),
+                DateTime.UtcNow), cancellationToken);
+
+            return Result.Success();
+        }
+
+        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId.Value && r.TenantId == tenantId, cancellationToken);
         if (role is null)
         {
-            throw new NotFoundException($"Role with ID '{request.RoleId}' was not found in this tenant.");
+            throw new NotFoundException($"Role with ID '{request.RoleId.Value}' was not found in this tenant.");
         }
 
         var existingUserRole = await dbContext.UserRoles
@@ -80,15 +102,11 @@ public class AssignUserRoleEndpoint : IEndpoint
     {
         app.MapPost("/api/identity/users/{userId:guid}/role", async (
             Guid userId,
-            AssignUserRoleCommand command,
+            AssignUserRoleRequest request,
             MediatR.ISender sender,
             CancellationToken ct) =>
         {
-            if (userId != command.UserId)
-            {
-                return Results.BadRequest(ApiResponse<string>.Fail("IdMismatch", "Route userId does not match body userId."));
-            }
-
+            var command = new AssignUserRoleCommand(userId, request?.RoleId);
             var result = await sender.Send(command, ct);
             return Results.Ok(ApiResponse<string>.Ok("User role updated successfully."));
         })

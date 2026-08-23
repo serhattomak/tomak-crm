@@ -3,6 +3,7 @@ using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Identity.Data;
+using CRM.Modules.Identity.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -36,25 +37,58 @@ public class GetTenantUsersHandler(
 
         var tenantId = currentTenant.Id.Value;
 
+        // 1. Fetch all tenant members
+        var tenantMembers = await dbContext.TenantMembers
+            .Where(tm => tm.TenantId == tenantId)
+            .Include(tm => tm.User)
+            .ToListAsync(cancellationToken);
+
+        // 2. Fetch all role assignments in this tenant
         var userRoles = await dbContext.UserRoles
             .Where(ur => ur.TenantId == tenantId)
             .Include(ur => ur.User)
             .Include(ur => ur.Role)
             .ToListAsync(cancellationToken);
 
-        var grouped = userRoles
-            .GroupBy(ur => ur.User!)
-            .Select(g => new TenantUserDto(
-                g.Key.Id,
-                g.Key.Email,
-                g.Key.FullName,
-                g.Key.AvatarUrl,
-                g.Key.IsActive,
-                g.Select(ur => new RoleSummaryDto(ur.Role!.Id, ur.Role.Name)).ToList(),
-                g.Key.CreatedAt))
+        var rolesByUser = userRoles
+            .GroupBy(ur => ur.UserId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Where(ur => ur.Role != null).Select(ur => new RoleSummaryDto(ur.Role!.Id, ur.Role.Name)).ToList()
+            );
+
+        // 3. Collect unique users from both TenantMembers and UserRoles
+        var userMap = new Dictionary<Guid, User>();
+
+        foreach (var member in tenantMembers)
+        {
+            if (member.User is not null && !userMap.ContainsKey(member.User.Id))
+            {
+                userMap[member.User.Id] = member.User;
+            }
+        }
+
+        foreach (var ur in userRoles)
+        {
+            if (ur.User is not null && !userMap.ContainsKey(ur.User.Id))
+            {
+                userMap[ur.User.Id] = ur.User;
+            }
+        }
+
+        var result = userMap.Values
+            .Select(u => new TenantUserDto(
+                u.Id,
+                u.Email,
+                u.FullName,
+                u.AvatarUrl,
+                u.IsActive,
+                rolesByUser.TryGetValue(u.Id, out var roles) ? roles : [],
+                u.CreatedAt))
+            .OrderBy(u => u.FullName ?? u.Email)
             .ToList();
 
-        return Result.Success<IReadOnlyList<TenantUserDto>>(grouped);
+        return Result.Success<IReadOnlyList<TenantUserDto>>(result);
     }
 }
 

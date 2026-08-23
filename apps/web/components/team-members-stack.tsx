@@ -348,17 +348,24 @@ export function TeamMembersStack({ onOpenInvite, className = "" }: TeamMembersSt
                           </div>
 
                           {/* Role Badges */}
-                          {user.roles && user.roles.length > 0 && (
+                          {user.roles && user.roles.length > 0 ? (
                             <div className="mt-1 flex flex-wrap gap-1">
                               {user.roles.map((role) => (
                                 <span
                                   className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-1.5 py-0.2 text-[9px] font-semibold text-slate-700 dark:bg-muted dark:text-slate-300"
                                   key={role.id}
+                                  role="status"
                                 >
                                   <Shield className="h-2.5 w-2.5 text-blue-500" />
                                   {role.name}
                                 </span>
                               ))}
+                            </div>
+                          ) : (
+                            <div className="mt-1 flex flex-wrap gap-1">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-1.5 py-0.2 text-[9px] font-semibold text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                                Rolsüz
+                              </span>
                             </div>
                           )}
                         </div>

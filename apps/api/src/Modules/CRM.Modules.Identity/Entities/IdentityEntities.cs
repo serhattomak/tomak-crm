@@ -67,3 +67,15 @@ public class UserRole : ITenantScopedEntity
     public User? User { get; set; }
     public Role? Role { get; set; }
 }
+
+[Table("tenant_members", Schema = "public")]
+public class TenantMember : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid UserId { get; set; }
+    public bool IsOwner { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public User? User { get; set; }
+}

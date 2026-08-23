@@ -308,13 +308,15 @@ export class ApiClient {
 
   static async assignUserRole(
     userId: string,
-    roleId: string,
+    roleId: string | null,
     tenantId: string
   ): Promise<ApiResponse<string>> {
+    const sanitizedRoleId =
+      roleId && roleId.trim() !== "" && roleId !== "none" ? roleId.trim() : null;
     return ApiClient.request<string>(
       `/api/identity/users/${userId}/role`,
       {
-        body: JSON.stringify({ roleId, userId }),
+        body: JSON.stringify({ roleId: sanitizedRoleId, userId }),
         method: "POST",
       },
       tenantId
