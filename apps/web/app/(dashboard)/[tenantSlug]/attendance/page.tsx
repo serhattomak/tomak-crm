@@ -40,6 +40,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
+import { ComplianceInlineCard } from "@/components/compliance-inline-card";
 import {
   ApiClient,
   type AttendanceCorrectionRequestDto,
@@ -141,6 +142,180 @@ export default function AttendancePage() {
     requestedClockInTime: "09:00",
     requestedClockOutTime: "18:00",
   });
+
+  // Compliance Override States for Modals
+  const [templateOverride, setTemplateOverride] = useState({ allowed: false, reason: "" });
+  const [assignOverride, setAssignOverride] = useState({ allowed: false, reason: "" });
+  const [correctionOverride, setCorrectionOverride] = useState({ allowed: false, reason: "" });
+
+  // Real-time Shift Template Compliance
+  const templateCompliance = useMemo(() => {
+    const startParts = (templateForm.startTime || "09:00:00").split(":").map(Number);
+    const endParts = (templateForm.endTime || "18:00:00").split(":").map(Number);
+    const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
+    const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
+
+    let totalDurationMins = 0;
+    if (endMins >= startMins) {
+      totalDurationMins = endMins - startMins;
+    } else {
+      totalDurationMins = 24 * 60 - startMins + endMins;
+    }
+
+    const totalHours = totalDurationMins / 60;
+    const breakMins = Number(templateForm.breakDurationMinutes) || 0;
+    const netWorkHours = Math.max(0, (totalDurationMins - breakMins) / 60);
+
+    const requiredBreak = totalHours <= 4 ? 15 : totalHours <= 7.5 ? 30 : 60;
+
+    const startH = startParts[0] || 0;
+    const endH = endParts[0] || 0;
+    const isNightPeriod =
+      templateForm.isNightShift ||
+      startH >= 20 ||
+      startH < 6 ||
+      endH > 20 ||
+      endH <= 6;
+
+    const violations: any[] = [];
+    let hasHardBlock = false;
+
+    // 1. Md. 68 Mola
+    if (breakMins < requiredBreak) {
+      violations.push({
+        lawReference: "4857 SK. Md. 68",
+        ruleName: "Yasal Asgari Ara Dinlenme (Mola)",
+        enforcementLevel: "SoftWarning",
+        details: `${totalHours.toFixed(1)} saatlik vardiya için yasal asgari mola süresi en az ${requiredBreak} dakikadır (Mevcut: ${breakMins} dk).`,
+        penaltyRisk: "Dinlenme haklarının ihlali ve fazla çalışma ücreti riski.",
+      });
+    }
+
+    // 2. Md. 63 Günlük 11 Saat Sınırı
+    if (netWorkHours > 11) {
+      hasHardBlock = true;
+      violations.push({
+        lawReference: "4857 SK. Md. 63",
+        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
+        enforcementLevel: "HardBlock",
+        details: `Günlük net çalışma süresi (${netWorkHours.toFixed(1)} saat), kanuni azami sınır olan 11 saati aşamaz.`,
+        penaltyRisk: "4857 SK. Md. 104 uyarınca 15.200 TL idari para cezası.",
+      });
+    }
+
+    // 3. Md. 69 Gece 7.5 Saat Sınırı
+    if (isNightPeriod && netWorkHours > 7.5) {
+      hasHardBlock = true;
+      violations.push({
+        lawReference: "4857 SK. Md. 69",
+        ruleName: "Gece Çalışması Azami Süresi (7.5 Saat)",
+        enforcementLevel: "HardBlock",
+        details: `Gece dönemine (20:00 - 06:00) rastlayan çalışmalarda net süre (${netWorkHours.toFixed(1)} saat) azami 7.5 saati aşamaz.`,
+        penaltyRisk: "4857 SK. Md. 104 uyarınca 18.500 TL idari para cezası.",
+      });
+    }
+
+    return {
+      validationResult: {
+        isCompliant: violations.length === 0,
+        hasHardBlock,
+        violations,
+      },
+      metrics: {
+        totalDurationHours: totalHours,
+        netWorkHours,
+        nightWorkHours: isNightPeriod ? netWorkHours : 0,
+        providedBreakMinutes: breakMins,
+        requiredBreakMinutes: requiredBreak,
+      },
+    };
+  }, [templateForm]);
+
+  // Real-time Shift Assignment Compliance
+  const assignCompliance = useMemo(() => {
+    const selectedTemplate = templates.find((t) => t.id === assignForm.shiftTemplateId);
+    if (!selectedTemplate) return null;
+
+    const startParts = selectedTemplate.startTime.split(":").map(Number);
+    const endParts = selectedTemplate.endTime.split(":").map(Number);
+    const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
+    const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
+
+    let durationMins = endMins >= startMins ? endMins - startMins : 24 * 60 - startMins + endMins;
+    const netShiftHours = Math.max(0, (durationMins - (selectedTemplate.breakDurationMinutes || 0)) / 60);
+
+    let dayCount = 5;
+    if (assignForm.startDate && assignForm.endDate) {
+      const s = new Date(assignForm.startDate);
+      const e = new Date(assignForm.endDate);
+      const diffTime = Math.abs(e.getTime() - s.getTime());
+      dayCount = Math.max(1, Math.min(7, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
+    }
+
+    const projectedWeeklyHours = netShiftHours * Math.min(dayCount, assignForm.repeatOnDays?.length || 5);
+    const violations: any[] = [];
+    let hasHardBlock = false;
+
+    if (projectedWeeklyHours > 45) {
+      violations.push({
+        lawReference: "4857 SK. Md. 63",
+        ruleName: "Haftalık Yasal Çalışma Süresi (45 Saat)",
+        enforcementLevel: "SoftWarning",
+        details: `Planlanan haftalık toplam süre (${projectedWeeklyHours.toFixed(1)} saat), yasal 45 saatlik haftalık tavanı aşıyor (${(projectedWeeklyHours - 45).toFixed(1)} saat fazla mesai).`,
+        penaltyRisk: "Ödenmeyen fazla çalışma ücretlerinde idari para cezası ve faiz riski.",
+      });
+    }
+
+    return {
+      validationResult: {
+        isCompliant: violations.length === 0,
+        hasHardBlock,
+        violations,
+      },
+      metrics: {
+        netWorkHours: netShiftHours,
+        projectedWeeklyHours,
+      },
+    };
+  }, [assignForm, templates]);
+
+  // Real-time Correction Request Compliance
+  const correctionCompliance = useMemo(() => {
+    if (!correctionForm.requestedClockInTime || !correctionForm.requestedClockOutTime) return null;
+
+    const startParts = correctionForm.requestedClockInTime.split(":").map(Number);
+    const endParts = correctionForm.requestedClockOutTime.split(":").map(Number);
+    const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
+    const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
+
+    let durationMins = endMins >= startMins ? endMins - startMins : 24 * 60 - startMins + endMins;
+    const netHours = durationMins / 60;
+
+    const violations: any[] = [];
+    let hasHardBlock = false;
+
+    if (netHours > 11) {
+      hasHardBlock = true;
+      violations.push({
+        lawReference: "4857 SK. Md. 63",
+        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
+        enforcementLevel: "HardBlock",
+        details: `Talep edilen düzeltme süresi (${netHours.toFixed(1)} saat), kanuni azami 11 saatlik günlük sınırı aşmaktadır.`,
+        penaltyRisk: "4857 SK. Md. 104 idari para cezası riski.",
+      });
+    }
+
+    return {
+      validationResult: {
+        isCompliant: violations.length === 0,
+        hasHardBlock,
+        violations,
+      },
+      metrics: {
+        netWorkHours: netHours,
+      },
+    };
+  }, [correctionForm]);
 
   // Clock Widget Live Timer
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
@@ -1627,6 +1802,18 @@ export default function AttendancePage() {
                 />
               </div>
 
+              {/* Real-time Labor Law Compliance Alert */}
+              <ComplianceInlineCard
+                validationResult={templateCompliance.validationResult}
+                metrics={templateCompliance.metrics}
+                allowOverride={true}
+                isOverridden={templateOverride.allowed}
+                overrideReason={templateOverride.reason}
+                onOverrideChange={(allowed, reason) =>
+                  setTemplateOverride({ allowed, reason })
+                }
+              />
+
               <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
                 <Button
                   onClick={() => setIsTemplateModalOpen(false)}
@@ -1636,11 +1823,18 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
-                  disabled={actionLoading}
+                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  disabled={
+                    actionLoading ||
+                    templateCompliance.validationResult.hasHardBlock ||
+                    (!templateCompliance.validationResult.isCompliant &&
+                      !templateOverride.allowed)
+                  }
                   type="submit"
                 >
-                  Şablonu Kaydet
+                  {templateCompliance.validationResult.hasHardBlock
+                    ? "Yasal Engel (Kaydedilemez)"
+                    : "Şablonu Kaydet"}
                 </Button>
               </div>
             </form>
@@ -1786,6 +1980,20 @@ export default function AttendancePage() {
                 </div>
               )}
 
+              {/* Real-time Labor Law Compliance Alert */}
+              {assignCompliance && (
+                <ComplianceInlineCard
+                  validationResult={assignCompliance.validationResult}
+                  metrics={assignCompliance.metrics}
+                  allowOverride={true}
+                  isOverridden={assignOverride.allowed}
+                  overrideReason={assignOverride.reason}
+                  onOverrideChange={(allowed, reason) =>
+                    setAssignOverride({ allowed, reason })
+                  }
+                />
+              )}
+
               <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
                 <Button
                   onClick={() => setIsAssignModalOpen(false)}
@@ -1795,11 +2003,21 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
-                  disabled={actionLoading}
+                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  disabled={
+                    actionLoading ||
+                    Boolean(assignCompliance?.validationResult.hasHardBlock) ||
+                    Boolean(
+                      assignCompliance &&
+                        !assignCompliance.validationResult.isCompliant &&
+                        !assignOverride.allowed
+                    )
+                  }
                   type="submit"
                 >
-                  Vardiyaları Ata
+                  {assignCompliance?.validationResult.hasHardBlock
+                    ? "Yasal Engel (Atanamaz)"
+                    : "Vardiyaları Ata"}
                 </Button>
               </div>
             </form>
@@ -1928,6 +2146,20 @@ export default function AttendancePage() {
                 />
               </div>
 
+              {/* Real-time Labor Law Compliance Alert */}
+              {correctionCompliance && (
+                <ComplianceInlineCard
+                  validationResult={correctionCompliance.validationResult}
+                  metrics={correctionCompliance.metrics}
+                  allowOverride={true}
+                  isOverridden={correctionOverride.allowed}
+                  overrideReason={correctionOverride.reason}
+                  onOverrideChange={(allowed, reason) =>
+                    setCorrectionOverride({ allowed, reason })
+                  }
+                />
+              )}
+
               <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
                 <Button
                   onClick={() => setIsCorrectionModalOpen(false)}
@@ -1937,11 +2169,21 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
-                  disabled={actionLoading}
+                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  disabled={
+                    actionLoading ||
+                    Boolean(correctionCompliance?.validationResult.hasHardBlock) ||
+                    Boolean(
+                      correctionCompliance &&
+                        !correctionCompliance.validationResult.isCompliant &&
+                        !correctionOverride.allowed
+                    )
+                  }
                   type="submit"
                 >
-                  Talebi Gönder
+                  {correctionCompliance?.validationResult.hasHardBlock
+                    ? "Yasal Engel"
+                    : "Talep Gönder"}
                 </Button>
               </div>
             </form>

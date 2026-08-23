@@ -2912,6 +2912,20 @@ export class ApiClient {
     );
   }
 
+  static async validateShiftTemplate(
+    data: ValidateShiftTemplatePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceValidationResultDto>> {
+    return ApiClient.request<ComplianceValidationResultDto>(
+      "/api/compliance/validate-template",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
   static async validateLeave(
     data: ValidateLeavePayload,
     tenantId?: string
@@ -5560,6 +5574,13 @@ export interface ValidateShiftPayload {
   currentWeekTotalHours?: number;
   previousShiftEnd?: string;
   isPregnant?: boolean;
+}
+
+export interface ValidateShiftTemplatePayload {
+  startTime: string;
+  endTime: string;
+  breakMinutes: number;
+  isNightShift?: boolean;
 }
 
 export interface ValidateLeavePayload {

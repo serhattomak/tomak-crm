@@ -6,6 +6,13 @@ public interface IComplianceEngine
 {
     Task EnsureDefaultRulesSeededAsync(CancellationToken cancellationToken = default);
 
+    Task<ComplianceValidationResult> ValidateShiftTemplateAsync(
+        string startTime,
+        string endTime,
+        double breakMinutes,
+        bool isNightShift = false,
+        CancellationToken cancellationToken = default);
+
     Task<ComplianceValidationResult> ValidateShiftScheduleAsync(
         Guid employeeId,
         string employeeName,

@@ -26,8 +26,9 @@ import {
 } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
+import { ComplianceInlineCard } from "@/components/compliance-inline-card";
 import {
   ApiClient,
   type CreateLeaveRequestPayload,
@@ -1228,6 +1229,51 @@ function CreateLeaveModal({
 
   const calculatedDays = calculateDays();
 
+  const [leaveOverride, setLeaveOverride] = useState({ allowed: false, reason: "" });
+
+  const leaveCompliance = useMemo(() => {
+    const violations: any[] = [];
+    let hasHardBlock = false;
+
+    if (leaveType === "Marriage" && calculatedDays > 3) {
+      violations.push({
+        lawReference: "4857 SK. Ek Md. 2",
+        ruleName: "Yasal Evlilik İzni Süresi (3 Gün)",
+        enforcementLevel: "SoftWarning",
+        details: `4857 Sayılı İş Kanunu Ek Madde 2 uyarınca yasal evlilik izni süresi 3 gündür (Talep: ${calculatedDays} gün). Aşan süreler yıllık izinden düşülebilir.`,
+        penaltyRisk: "Yasal sınır kontrolü",
+      });
+    }
+
+    if (leaveType === "Paternity" && calculatedDays > 5) {
+      violations.push({
+        lawReference: "4857 SK. Ek Md. 2",
+        ruleName: "Yasal Babalık İzni Süresi (5 Gün)",
+        enforcementLevel: "SoftWarning",
+        details: `4857 Sayılı İş Kanunu Ek Madde 2 uyarınca babalık izni süresi 5 gündür (Talep: ${calculatedDays} gün).`,
+        penaltyRisk: "Yasal sınır kontrolü",
+      });
+    }
+
+    if (leaveType === "Bereavement" && calculatedDays > 3) {
+      violations.push({
+        lawReference: "4857 SK. Ek Md. 2",
+        ruleName: "Yasal Vefat İzni Süresi (3 Gün)",
+        enforcementLevel: "SoftWarning",
+        details: `4857 Sayılı İş Kanunu Ek Madde 2 uyarınca vefat/ölüm izni süresi 3 gündür (Talep: ${calculatedDays} gün).`,
+        penaltyRisk: "Yasal sınır kontrolü",
+      });
+    }
+
+    return {
+      validationResult: {
+        isCompliant: violations.length === 0,
+        hasHardBlock,
+        violations,
+      },
+    };
+  }, [leaveType, calculatedDays]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!employeeId) {
@@ -1458,6 +1504,17 @@ function CreateLeaveModal({
             />
           </div>
 
+          {/* Real-time Labor Law Compliance Alert */}
+          <ComplianceInlineCard
+            validationResult={leaveCompliance.validationResult}
+            allowOverride={true}
+            isOverridden={leaveOverride.allowed}
+            overrideReason={leaveOverride.reason}
+            onOverrideChange={(allowed, reason) =>
+              setLeaveOverride({ allowed, reason })
+            }
+          />
+
           {/* Footer */}
           <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
@@ -1469,10 +1526,19 @@ function CreateLeaveModal({
             </button>
             <button
               className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
-              disabled={submitting}
+              disabled={
+                submitting ||
+                leaveCompliance.validationResult.hasHardBlock ||
+                (!leaveCompliance.validationResult.isCompliant &&
+                  !leaveOverride.allowed)
+              }
               type="submit"
             >
-              {submitting ? "Talebiniz Gönderiliyor..." : "Talebi Gönder"}
+              {submitting
+                ? "Talebiniz Gönderiliyor..."
+                : leaveCompliance.validationResult.hasHardBlock
+                ? "Yasal Engel"
+                : "Talebi Gönder"}
             </button>
           </div>
         </form>

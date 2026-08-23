@@ -24,6 +24,123 @@ public class ComplianceEngine(
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<ComplianceValidationResult> ValidateShiftTemplateAsync(
+        string startTime,
+        string endTime,
+        double breakMinutes,
+        bool isNightShift = false,
+        CancellationToken cancellationToken = default)
+    {
+        await EnsureDefaultRulesSeededAsync(cancellationToken);
+
+        var result = new ComplianceValidationResult();
+        var rules = await dbContext.Rules
+            .Where(r => r.Category == "WorkingHours" && r.IsActive)
+            .ToListAsync(cancellationToken);
+
+        if (!TimeSpan.TryParse(startTime, out var startTs))
+        {
+            if (DateTime.TryParse(startTime, out var dtStart)) startTs = dtStart.TimeOfDay;
+        }
+        if (!TimeSpan.TryParse(endTime, out var endTs))
+        {
+            if (DateTime.TryParse(endTime, out var dtEnd)) endTs = dtEnd.TimeOfDay;
+        }
+
+        double totalDurationMinutes;
+        if (endTs >= startTs)
+        {
+            totalDurationMinutes = (endTs - startTs).TotalMinutes;
+        }
+        else
+        {
+            // Overnight shift (e.g. 22:00 to 06:00)
+            totalDurationMinutes = (TimeSpan.FromHours(24) - startTs + endTs).TotalMinutes;
+        }
+
+        var totalHours = totalDurationMinutes / 60.0;
+        var netWorkHours = Math.Max(0, (totalDurationMinutes - breakMinutes) / 60.0);
+
+        // 1. Rule: 4857 SK. Md. 68 (Ara Dinlenme / Mola Baremi)
+        double requiredBreakMinutes = totalHours <= 4.0 ? 15.0 : (totalHours <= 7.5 ? 30.0 : 60.0);
+        if (breakMinutes < requiredBreakMinutes)
+        {
+            result.Violations.Add(new ComplianceViolationDetail
+            {
+                RuleCode = "IK-4857-M68-BREAK",
+                LawReference = "4857 Sayılı İş Kanunu Md. 68",
+                RuleName = "Yasal Asgari Ara Dinlenme (Mola) Süresi",
+                Category = "WorkingHours",
+                Severity = "Warning",
+                EnforcementLevel = "SoftWarning",
+                Details = $"{totalHours:F1} saatlik bir çalışma süresi için 4857 SK. Md. 68 gereğince asgari ara dinlenme süresi en az {requiredBreakMinutes:F0} dakika olmalıdır (Girilen: {breakMinutes:F0} dk).",
+                PenaltyRisk = "Yasal dinlenme haklarının kullandırılmaması durumunda idari para cezası ve fazla çalışma tazminatı riski.",
+                ContextData = new()
+                {
+                    ["totalHours"] = totalHours,
+                    ["providedBreakMinutes"] = breakMinutes,
+                    ["requiredBreakMinutes"] = requiredBreakMinutes
+                }
+            });
+        }
+
+        // 2. Rule: Günlük 11 Saat Sınırı (4857 SK. Md. 63)
+        var dailyRule = rules.FirstOrDefault(r => r.Code == "IK-4857-M63-DAILY");
+        if (dailyRule != null && dailyRule.EnforcementLevel != "Disabled")
+        {
+            var threshold = dailyRule.GetThresholdConfig<WorkingHoursThresholdConfig>();
+            if (netWorkHours > threshold.MaxDailyHours)
+            {
+                var isHard = dailyRule.EnforcementLevel == "HardBlock";
+                result.Violations.Add(new ComplianceViolationDetail
+                {
+                    RuleCode = dailyRule.Code,
+                    LawReference = dailyRule.LawReference,
+                    RuleName = dailyRule.Name,
+                    Category = dailyRule.Category,
+                    Severity = isHard ? "CriticalRisk" : "Violation",
+                    EnforcementLevel = dailyRule.EnforcementLevel,
+                    Details = $"Günlük net çalışma süresi ({netWorkHours:F1} saat), yasal azami sınır olan {threshold.MaxDailyHours} saati aşıyor.",
+                    PenaltyRisk = dailyRule.PenaltyDescription,
+                    ContextData = new()
+                    {
+                        ["netWorkHours"] = netWorkHours,
+                        ["maxDailyHours"] = threshold.MaxDailyHours
+                    }
+                });
+                if (isHard) result.HasHardBlock = true;
+            }
+        }
+
+        // 3. Rule: Gece Çalışması 7.5 Saat Sınırı (4857 SK. Md. 69)
+        var nightRule = rules.FirstOrDefault(r => r.Code == "IK-4857-M69-NIGHT");
+        var isNightPeriod = isNightShift || (startTs.Hours >= 20 || startTs.Hours < 6) || (endTs.Hours > 20 || endTs.Hours <= 6);
+        if (isNightPeriod && netWorkHours > 7.5)
+        {
+            var isHard = nightRule == null || nightRule.EnforcementLevel == "HardBlock";
+            result.Violations.Add(new ComplianceViolationDetail
+            {
+                RuleCode = "IK-4857-M69-NIGHT",
+                LawReference = "4857 Sayılı İş Kanunu Md. 69",
+                RuleName = "Gece Çalışması Azami Süresi (7.5 Saat)",
+                Category = "WorkingHours",
+                Severity = "CriticalRisk",
+                EnforcementLevel = isHard ? "HardBlock" : "SoftWarning",
+                Details = $"Gece dönemine (20:00 - 06:00) denk gelen çalışma süresi ({netWorkHours:F1} saat), yasal azami sınır olan 7.5 saati aşamaz.",
+                PenaltyRisk = nightRule?.PenaltyDescription ?? "4857 SK. Md. 104 uyarınca çalışan başına idari para cezası.",
+                ContextData = new()
+                {
+                    ["netWorkHours"] = netWorkHours,
+                    ["maxNightHours"] = 7.5
+                }
+            });
+            if (isHard) result.HasHardBlock = true;
+        }
+
+        result.IsCompliant = result.Violations.Count == 0;
+        return result;
+    }
+
     public async Task<ComplianceValidationResult> ValidateShiftScheduleAsync(
         Guid employeeId,
         string employeeName,
