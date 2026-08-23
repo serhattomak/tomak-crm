@@ -2817,6 +2817,114 @@ export class ApiClient {
       { method: "POST" }
     );
   }
+
+  // ==========================================
+  // Compliance & Turkish Labor Law Engine
+  // ==========================================
+  static async getComplianceScore(
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceScoreResultDto>> {
+    return ApiClient.request<ComplianceScoreResultDto>(
+      "/api/compliance/score",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getComplianceRules(
+    category?: string,
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceRuleDto[]>> {
+    const q = category && category !== "all" ? `?category=${category}` : "";
+    return ApiClient.request<ComplianceRuleDto[]>(
+      `/api/compliance/rules${q}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async updateComplianceRule(
+    id: string,
+    data: UpdateComplianceRulePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceRuleDto>> {
+    return ApiClient.request<ComplianceRuleDto>(
+      `/api/compliance/rules/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async getComplianceViolations(
+    params: {
+      status?: string;
+      moduleSource?: string;
+      severity?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<ComplianceViolationDto>>> {
+    const q = new URLSearchParams();
+    if (params.status && params.status !== "all") q.set("status", params.status);
+    if (params.moduleSource && params.moduleSource !== "all") q.set("moduleSource", params.moduleSource);
+    if (params.severity && params.severity !== "all") q.set("severity", params.severity);
+    if (params.page) q.set("page", String(params.page));
+    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<ComplianceViolationDto>>(
+      `/api/compliance/violations${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async overrideComplianceViolation(
+    id: string,
+    overrideReason: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/compliance/violations/${id}/override`,
+      {
+        body: JSON.stringify({ id, overrideReason }),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async validateShift(
+    data: ValidateShiftPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceValidationResultDto>> {
+    return ApiClient.request<ComplianceValidationResultDto>(
+      "/api/compliance/validate-shift",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async validateLeave(
+    data: ValidateLeavePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ComplianceValidationResultDto>> {
+    return ApiClient.request<ComplianceValidationResultDto>(
+      "/api/compliance/validate-leave",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -5358,5 +5466,110 @@ export interface ExecutionItemDto {
   errorMessage?: string;
   createdAt: string;
 }
+
+// ==========================================
+// Compliance & Labor Law DTOs
+// ==========================================
+export interface ComplianceCategorySummaryDto {
+  category: string;
+  categoryTitle: string;
+  rulesCount: number;
+  activeViolations: number;
+  score: number;
+  status: "Excellent" | "Good" | "Risk" | string;
+}
+
+export interface ComplianceScoreResultDto {
+  healthScore: number;
+  activeViolationsCount: number;
+  hardBlockedAttemptsCount: number;
+  overriddenViolationsCount: number;
+  totalRulesCount: number;
+  estimatedPenaltyExposureTl: number;
+  categorySummaries: ComplianceCategorySummaryDto[];
+}
+
+export interface ComplianceRuleDto {
+  id: string;
+  code: string;
+  lawReference: string;
+  category: string;
+  name: string;
+  description?: string;
+  penaltyRiskLevel: "Low" | "Medium" | "High" | "Critical" | string;
+  penaltyDescription?: string;
+  enforcementLevel: "HardBlock" | "SoftWarning" | "Disabled" | string;
+  thresholdConfigJson: string;
+  isSystemRule: boolean;
+  isActive: boolean;
+  violationCount: number;
+  updatedAt: string;
+}
+
+export interface ComplianceViolationDto {
+  id: string;
+  ruleId?: string;
+  ruleCode: string;
+  lawReference: string;
+  employeeId?: string;
+  employeeName: string;
+  moduleSource: string;
+  entityId?: string;
+  severity: "Warning" | "Violation" | "CriticalRisk" | string;
+  details: string;
+  violationDataJson: string;
+  isOverridden: boolean;
+  overriddenByUserId?: string;
+  overrideReason?: string;
+  overriddenAt?: string;
+  status: "Active" | "Resolved" | "Overridden" | string;
+  createdAt: string;
+}
+
+export interface ComplianceViolationDetailDto {
+  ruleCode: string;
+  lawReference: string;
+  ruleName: string;
+  category: string;
+  severity: string;
+  enforcementLevel: string;
+  details: string;
+  penaltyRisk?: string;
+  contextData: Record<string, any>;
+}
+
+export interface ComplianceValidationResultDto {
+  isCompliant: boolean;
+  hasHardBlock: boolean;
+  violations: ComplianceViolationDetailDto[];
+}
+
+export interface UpdateComplianceRulePayload {
+  id: string;
+  enforcementLevel: "HardBlock" | "SoftWarning" | "Disabled" | string;
+  isActive: boolean;
+  thresholdConfigJson?: string;
+}
+
+export interface ValidateShiftPayload {
+  employeeId: string;
+  employeeName: string;
+  shiftStart: string;
+  shiftEnd: string;
+  breakMinutes: number;
+  currentWeekTotalHours?: number;
+  previousShiftEnd?: string;
+  isPregnant?: boolean;
+}
+
+export interface ValidateLeavePayload {
+  employeeId: string;
+  employeeName: string;
+  leaveType: string;
+  requestedDays: number;
+  seniorityYears: number;
+  age: number;
+}
+
 
 

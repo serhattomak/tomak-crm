@@ -22,6 +22,7 @@ import {
   MessageSquare,
   Network,
   Package,
+  Scale,
   Search,
   Settings,
   Shield,
@@ -605,6 +606,14 @@ function DashboardNavigation({
       permission: "Organization.ViewChart",
       tab: "chart",
       moduleKey: "organization",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/compliance`,
+      icon: Scale,
+      name: getModuleDisplayName("compliance", "Mevzuat & İş Hukuku"),
+      permission: "Compliance.View",
+      moduleKey: "compliance",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
