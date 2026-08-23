@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ChevronRight,
   Clock,
+  FileSpreadsheet,
   Flame,
   HelpCircle,
   Kanban,
@@ -331,6 +332,13 @@ function DashboardNavigation() {
       icon: Kanban,
       name: "Pipeline & Akış",
       permission: "Pipelines.View",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/quotes`,
+      icon: FileSpreadsheet,
+      name: "Teklifler",
+      permission: "Quotes.View",
     },
     {
       badge: null,

@@ -2,7 +2,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CRM.BuildingBlocks\CRM.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Customers\CRM.Modules.Customers.csproj" />
     <ProjectReference Include="..\CRM.Modules.Products\CRM.Modules.Products.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Tenants\CRM.Modules.Tenants.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

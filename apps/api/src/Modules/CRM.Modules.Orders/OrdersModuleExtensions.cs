@@ -1,3 +1,4 @@
+using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Orders.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,10 +17,12 @@ public static class OrdersModuleExtensions
 
         services.AddDbContext<OrdersDbContext>((sp, options) =>
         {
+            var rlsInterceptor = sp.GetRequiredService<NpgsqlRlsConnectionInterceptor>();
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
                 npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory_Orders", "public");
-            });
+            })
+            .AddInterceptors(rlsInterceptor);
         });
 
         return services;

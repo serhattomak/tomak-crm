@@ -2227,6 +2227,258 @@ export class ApiClient {
     const url = `/api/deals/stats${pipelineId ? `?pipelineId=${pipelineId}` : ""}`;
     return ApiClient.request<DealStatsResponse>(url, { method: "GET" }, tenantId);
   }
+
+  // ==========================================
+  // Quotes (Teklifler)
+  // ==========================================
+  static async getQuotes(
+    params: GetQuotesParams = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedQuotesResponse>> {
+    const query = new URLSearchParams();
+    if (params.search) query.set("search", params.search);
+    if (params.status) query.set("status", params.status);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.dealId) query.set("dealId", params.dealId);
+    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
+    if (params.fromDate) query.set("fromDate", params.fromDate);
+    if (params.toDate) query.set("toDate", params.toDate);
+    if (params.page) query.set("page", params.page.toString());
+    if (params.pageSize) query.set("pageSize", params.pageSize.toString());
+
+    const qs = query.toString();
+    return ApiClient.request<PagedQuotesResponse>(
+      `/api/quotes${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getQuoteById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<QuoteDetailDto>> {
+    return ApiClient.request<QuoteDetailDto>(
+      `/api/quotes/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createQuote(
+    data: CreateQuotePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/quotes",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateQuote(
+    id: string,
+    data: UpdateQuotePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/quotes/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async createQuoteRevision(
+    id: string,
+    data: { revisionNotes?: string },
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/quotes/${id}/revisions`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async approveQuote(
+    id: string,
+    data: { isApproved: boolean; approvalNotes?: string },
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/quotes/${id}/approve`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async sendQuote(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/quotes/${id}/send`,
+      { method: "POST" },
+      tenantId
+    );
+  }
+
+  static async acceptQuote(
+    id: string,
+    data: { autoConvertToOrder: boolean } = { autoConvertToOrder: true },
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/quotes/${id}/accept`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async convertQuoteToOrder(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/quotes/${id}/convert-to-order`,
+      { method: "POST" },
+      tenantId
+    );
+  }
+
+  static async rejectQuote(
+    id: string,
+    data: { reason: string },
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/quotes/${id}/reject`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteQuote(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/quotes/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getQuoteStats(
+    tenantId?: string
+  ): Promise<ApiResponse<QuoteStatsResponse>> {
+    return ApiClient.request<QuoteStatsResponse>(
+      "/api/quotes/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getQuoteTemplates(
+    tenantId?: string
+  ): Promise<ApiResponse<QuoteTemplateDto[]>> {
+    return ApiClient.request<QuoteTemplateDto[]>(
+      "/api/quotes/templates",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createQuoteTemplate(
+    data: Partial<QuoteTemplateDto>,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/quotes/templates",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateQuoteTemplate(
+    id: string,
+    data: Partial<QuoteTemplateDto>,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/quotes/templates/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteQuoteTemplate(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/quotes/templates/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // Public quote views (unauthenticated)
+  static async getPublicQuote(
+    token: string
+  ): Promise<ApiResponse<PublicQuoteViewDto>> {
+    return ApiClient.request<PublicQuoteViewDto>(
+      `/api/public/quotes/${token}`,
+      { method: "GET" }
+    );
+  }
+
+  static async publicAcceptQuote(
+    token: string,
+    data: { acceptedByName?: string; customerNotes?: string }
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/public/quotes/${token}/accept`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      }
+    );
+  }
+
+  static async publicRequestRevision(
+    token: string,
+    feedback: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/public/quotes/${token}/request-revision?feedback=${encodeURIComponent(feedback)}`,
+      { method: "POST" }
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -4096,5 +4348,245 @@ export interface DealStatsResponse {
   winRatePercentage: number;
   wonDealsCount: number;
 }
+
+// ==========================================
+// Quote Interfaces
+// ==========================================
+export interface QuoteSummaryDto {
+  acceptedAt?: string;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  convertedOrderId?: string;
+  createdAt: string;
+  currency: string;
+  customerId?: string;
+  customerName: string;
+  dealId?: string;
+  discountAmount: number;
+  discountRate: number;
+  discountType: string;
+  exchangeRate: number;
+  id: string;
+  itemCount: number;
+  parentQuoteId?: string;
+  publicViewToken: string;
+  quoteNumber: string;
+  rejectedAt?: string;
+  revisionNumber: number;
+  sentAt?: string;
+  status: "Draft" | "PendingApproval" | "Approved" | "Sent" | "Viewed" | "Accepted" | "Rejected" | "Expired" | "Revised" | string;
+  subtotal: number;
+  taxAmount: number;
+  tenantId: string;
+  title: string;
+  totalAmount: number;
+  updatedAt: string;
+  validUntil?: string;
+}
+
+export interface QuoteItemDto {
+  description?: string;
+  discountAmount: number;
+  discountRate: number;
+  id: string;
+  isOptional: boolean;
+  isSelected: boolean;
+  orderIndex: number;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  sku?: string;
+  taxAmount: number;
+  taxRate: number;
+  totalPrice: number;
+  unit: string;
+  unitCost: number;
+  unitPrice: number;
+  variantId?: string;
+}
+
+export interface QuoteActivityDto {
+  activityType: string;
+  createdAt: string;
+  description?: string;
+  id: string;
+  newValue?: string;
+  oldValue?: string;
+  title: string;
+  userId?: string;
+  userName?: string;
+}
+
+export interface QuoteRevisionSummaryDto {
+  createdAt: string;
+  currency: string;
+  id: string;
+  quoteNumber: string;
+  revisionNumber: number;
+  status: string;
+  totalAmount: number;
+}
+
+export interface QuoteDetailDto {
+  acceptedAt?: string;
+  activities: QuoteActivityDto[];
+  approvalNotes?: string;
+  approvedAt?: string;
+  approvedByUserId?: string;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  bankDetails?: string;
+  convertedOrderId?: string;
+  convertedOrderNumber?: string;
+  createdAt: string;
+  currency: string;
+  customerId?: string;
+  customerName: string;
+  dealId?: string;
+  dealTitle?: string;
+  deliveryTerms?: string;
+  discountAmount: number;
+  discountRate: number;
+  discountType: string;
+  exchangeRate: number;
+  id: string;
+  items: QuoteItemDto[];
+  notes?: string;
+  parentQuoteId?: string;
+  parentQuoteNumber?: string;
+  paymentTerms?: string;
+  publicViewToken: string;
+  quoteNumber: string;
+  rejectedAt?: string;
+  rejectionReason?: string;
+  revisionNumber: number;
+  revisions: QuoteRevisionSummaryDto[];
+  sentAt?: string;
+  status: "Draft" | "PendingApproval" | "Approved" | "Sent" | "Viewed" | "Accepted" | "Rejected" | "Expired" | "Revised" | string;
+  subtotal: number;
+  taxAmount: number;
+  tenantId: string;
+  termsAndConditions?: string;
+  title: string;
+  totalAmount: number;
+  updatedAt: string;
+  validUntil?: string;
+}
+
+export interface PagedQuotesResponse {
+  items: QuoteSummaryDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface GetQuotesParams {
+  assignedUserId?: string;
+  customerId?: string;
+  dealId?: string;
+  fromDate?: string;
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  status?: string;
+  toDate?: string;
+}
+
+export interface CreateQuoteItemPayload {
+  description?: string;
+  discountAmount?: number;
+  discountRate?: number;
+  isOptional?: boolean;
+  isSelected?: boolean;
+  orderIndex?: number;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  sku?: string;
+  taxRate?: number;
+  unit?: string;
+  unitCost?: number;
+  unitPrice: number;
+  variantId?: string;
+}
+
+export interface CreateQuotePayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  bankDetails?: string;
+  currency?: string;
+  customerId?: string;
+  customerName: string;
+  dealId?: string;
+  deliveryTerms?: string;
+  discountAmount?: number;
+  discountRate?: number;
+  discountType?: string;
+  exchangeRate?: number;
+  items: CreateQuoteItemPayload[];
+  notes?: string;
+  paymentTerms?: string;
+  termsAndConditions?: string;
+  title: string;
+  validUntil?: string;
+}
+
+export interface UpdateQuotePayload extends CreateQuotePayload {
+  id?: string;
+}
+
+export interface QuoteStatsResponse {
+  acceptedCount: number;
+  activeProposalsVolume: number;
+  conversionRate: number;
+  expiredCount: number;
+  pendingApprovalCount: number;
+  rejectedCount: number;
+  sentCount: number;
+  totalQuotes: number;
+}
+
+export interface QuoteTemplateDto {
+  bankDetails?: string;
+  createdAt: string;
+  deliveryTerms?: string;
+  id: string;
+  isDefault: boolean;
+  name: string;
+  paymentTerms?: string;
+  termsAndConditions?: string;
+  updatedAt: string;
+}
+
+export interface PublicQuoteViewDto {
+  acceptedAt?: string;
+  bankDetails?: string;
+  companyAddress?: string;
+  companyEmail?: string;
+  companyLogoUrl?: string;
+  companyName: string;
+  companyPhone?: string;
+  currency: string;
+  customerName: string;
+  deliveryTerms?: string;
+  discountAmount: number;
+  discountRate: number;
+  discountType: string;
+  id: string;
+  items: QuoteItemDto[];
+  notes?: string;
+  paymentTerms?: string;
+  quoteNumber: string;
+  revisionNumber: number;
+  sentAt?: string;
+  status: string;
+  subtotal: number;
+  taxAmount: number;
+  termsAndConditions?: string;
+  title: string;
+  totalAmount: number;
+  validUntil?: string;
+}
+
 
 
