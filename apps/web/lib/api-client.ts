@@ -12,6 +12,13 @@ export interface ApiResponse<T> {
   success: boolean;
 }
 
+export interface PagedResult<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
 export interface TenantDto {
   createdAt: string;
   id: string;
@@ -1851,6 +1858,120 @@ export class ApiClient {
     return ApiClient.request<Customer360ChatContextDto>(
       `/api/chat/support/customer-context/${customerId}`,
       { method: "GET" },
+      tenantId
+    );
+  }
+
+  // --- HelpDesk & Ticket Management ---
+  static async getTickets(
+    params: {
+      assignedUserId?: string;
+      category?: string;
+      departmentId?: string;
+      page?: number;
+      pageSize?: number;
+      priority?: string;
+      queue?: string;
+      search?: string;
+      status?: string;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<TicketListDto>>> {
+    const q = new URLSearchParams();
+    if (params.status) q.set("status", params.status);
+    if (params.priority) q.set("priority", params.priority);
+    if (params.category) q.set("category", params.category);
+    if (params.departmentId) q.set("departmentId", params.departmentId);
+    if (params.assignedUserId) q.set("assignedUserId", params.assignedUserId);
+    if (params.queue) q.set("queue", params.queue);
+    if (params.search) q.set("search", params.search);
+    if (params.page) q.set("page", params.page.toString());
+    if (params.pageSize) q.set("pageSize", params.pageSize.toString());
+
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<TicketListDto>>(
+      `/api/tickets${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getTicketStats(
+    tenantId?: string
+  ): Promise<ApiResponse<TicketStatsDto>> {
+    return ApiClient.request<TicketStatsDto>(
+      "/api/tickets/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getTicketById(
+    ticketId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<TicketDetailDto>> {
+    return ApiClient.request<TicketDetailDto>(
+      `/api/tickets/${ticketId}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createTicket(
+    data: CreateTicketPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<CreateTicketResultDto>> {
+    return ApiClient.request<CreateTicketResultDto>(
+      "/api/tickets",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateTicket(
+    ticketId: string,
+    data: UpdateTicketPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/tickets/${ticketId}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async addTicketMessage(
+    ticketId: string,
+    data: AddTicketMessagePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<ChatMessageDto>> {
+    return ApiClient.request<ChatMessageDto>(
+      `/api/tickets/${ticketId}/messages`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async convertChatToTicket(
+    channelId: string,
+    data: ConvertChatToTicketPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<CreateTicketResultDto>> {
+    return ApiClient.request<CreateTicketResultDto>(
+      `/api/chat/channels/${channelId}/convert-to-ticket`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
       tenantId
     );
   }
@@ -4724,6 +4845,171 @@ export interface PublicQuoteViewDto {
   title: string;
   totalAmount: number;
   validUntil?: string;
+}
+
+// --- HelpDesk & Ticket DTOs ---
+export interface TicketListDto {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category: string;
+  channelId?: string;
+  closedAt?: string;
+  createdAt: string;
+  customerId: string;
+  customerEmail?: string;
+  customerName: string;
+  customerPhone?: string;
+  departmentId?: string;
+  departmentName?: string;
+  description?: string;
+  firstResponseAt?: string;
+  id: string;
+  isSlaBreached: boolean;
+  lastMessageAt?: string;
+  linkedEntityId?: string;
+  linkedEntityTitle?: string;
+  linkedEntityType?: string;
+  messageCount: number;
+  priority: "Low" | "Medium" | "High" | "Urgent" | string;
+  resolutionNotes?: string;
+  resolvedAt?: string;
+  satisfactionRating?: number;
+  slaFirstResponseDueAt?: string;
+  slaResolutionDueAt?: string;
+  source: string;
+  status:
+    | "New"
+    | "InProgress"
+    | "PendingCustomer"
+    | "OnHold"
+    | "Resolved"
+    | "Closed"
+    | string;
+  subject: string;
+  tags: string[];
+  ticketNumber: string;
+  updatedAt: string;
+}
+
+export interface TicketStatsDto {
+  inProgressTickets: number;
+  newTickets: number;
+  pendingCustomerTickets: number;
+  resolvedTodayCount: number;
+  slaComplianceRate: number;
+  slaBreachedTickets: number;
+  totalOpenTickets: number;
+  totalTickets: number;
+  urgentTickets: number;
+}
+
+export interface TicketActivityDto {
+  actionType: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  newValue?: string;
+  oldValue?: string;
+  userId?: string;
+  userName: string;
+}
+
+export interface PreviousTicketBriefDto {
+  createdAt: string;
+  id: string;
+  priority: string;
+  status: string;
+  subject: string;
+  ticketNumber: string;
+}
+
+export interface Customer360BriefDto {
+  customerId: string;
+  customerName: string;
+  email?: string;
+  openTicketsCount: number;
+  phone?: string;
+  recentTickets: PreviousTicketBriefDto[];
+  totalTicketsCount: number;
+}
+
+export interface TicketDetailDto extends TicketListDto {
+  activities: TicketActivityDto[];
+  customer360: Customer360BriefDto;
+  messages: ChatMessageDto[];
+  satisfactionFeedback?: string;
+}
+
+export interface CreateTicketPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category: string;
+  customerId: string;
+  customerEmail?: string;
+  customerName: string;
+  customerPhone?: string;
+  departmentId?: string;
+  departmentName?: string;
+  description?: string;
+  linkedEntityId?: string;
+  linkedEntityTitle?: string;
+  linkedEntityType?: string;
+  priority: string;
+  source?: string;
+  subject: string;
+  tags?: string[];
+}
+
+export interface CreateTicketResultDto {
+  channelId?: string;
+  id: string;
+  ticketNumber: string;
+}
+
+export interface UpdateTicketPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  departmentId?: string;
+  departmentName?: string;
+  priority?: string;
+  resolutionNotes?: string;
+  satisfactionFeedback?: string;
+  satisfactionRating?: number;
+  status?: string;
+  tags?: string[];
+}
+
+export interface AddTicketMessagePayload {
+  attachments?: {
+    fileName: string;
+    fileSizeBytes: number;
+    fileType: string;
+    fileUrl: string;
+  }[];
+  content: string;
+  entityEmbeds?: {
+    entityId: string;
+    entityStatus?: string;
+    entitySubtitle?: string;
+    entityTitle: string;
+    entityType: string;
+    metadataJson?: string;
+  }[];
+  isInternalNote?: boolean;
+  replyToMessageId?: string;
+}
+
+export interface ConvertChatToTicketPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category: string;
+  departmentId?: string;
+  departmentName?: string;
+  linkedEntityId?: string;
+  linkedEntityTitle?: string;
+  linkedEntityType?: string;
+  priority: string;
+  subject: string;
 }
 
 export const apiClient = {

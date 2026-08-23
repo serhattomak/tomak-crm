@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Kanban,
   LayoutDashboard,
+  LifeBuoy,
   LogOut,
   Mail,
   Menu,
@@ -462,6 +463,7 @@ function DashboardNavigation({
     ) {
       setOpenSections((prev) => ({ ...prev, hr: true }));
     } else if (
+      pathname.startsWith(`/${tenantSlug}/tickets`) ||
       pathname.startsWith(`/${tenantSlug}/messages`) ||
       pathname.startsWith(`/${tenantSlug}/email`) ||
       pathname.startsWith(`/${tenantSlug}/automation`) ||
@@ -608,6 +610,14 @@ function DashboardNavigation({
 
   // 3. İletişim & Araçlar
   const toolsMenu: NavItem[] = [
+    {
+      badge: null,
+      href: `/${tenantSlug}/tickets`,
+      icon: LifeBuoy,
+      name: getModuleDisplayName("tickets", "Destek Masası"),
+      permission: "Tickets.View",
+      moduleKey: "tickets",
+    },
     {
       badge: "33",
       href: `/${tenantSlug}/messages`,

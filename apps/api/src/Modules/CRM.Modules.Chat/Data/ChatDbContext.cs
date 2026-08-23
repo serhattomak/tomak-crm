@@ -15,6 +15,8 @@ public class ChatDbContext(
     public DbSet<ChatEntityEmbed> EntityEmbeds => Set<ChatEntityEmbed>();
     public DbSet<CannedResponse> CannedResponses => Set<CannedResponse>();
     public DbSet<CustomerSupportSession> SupportSessions => Set<CustomerSupportSession>();
+    public DbSet<HelpdeskTicket> Tickets => Set<HelpdeskTicket>();
+    public DbSet<HelpdeskTicketActivity> TicketActivities => Set<HelpdeskTicketActivity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +57,11 @@ public class ChatDbContext(
                 .WithOne(s => s.Channel)
                 .HasForeignKey<CustomerSupportSession>(s => s.ChannelId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(e => e.Tickets)
+                .WithOne(t => t.Channel)
+                .HasForeignKey(t => t.ChannelId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });
@@ -189,6 +196,72 @@ public class ChatDbContext(
             entity.Property(e => e.ClosedAt).HasColumnName("closed_at");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 8. HelpdeskTicket
+        modelBuilder.Entity<HelpdeskTicket>(entity =>
+        {
+            entity.ToTable("helpdesk_tickets");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.TicketNumber).HasColumnName("ticket_number").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.ChannelId).HasColumnName("channel_id");
+            entity.Property(e => e.CustomerId).HasColumnName("customer_id").IsRequired();
+            entity.Property(e => e.CustomerName).HasColumnName("customer_name").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.CustomerEmail).HasColumnName("customer_email").HasMaxLength(255);
+            entity.Property(e => e.CustomerPhone).HasColumnName("customer_phone").HasMaxLength(50);
+            entity.Property(e => e.Subject).HasColumnName("subject").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Category).HasColumnName("category").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Source).HasColumnName("source").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Priority).HasColumnName("priority").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
+            entity.Property(e => e.DepartmentName).HasColumnName("department_name").HasMaxLength(200);
+            entity.Property(e => e.AssignedUserId).HasColumnName("assigned_user_id");
+            entity.Property(e => e.AssignedUserName).HasColumnName("assigned_user_name").HasMaxLength(255);
+            entity.Property(e => e.CreatedByUserId).HasColumnName("created_by_user_id");
+            entity.Property(e => e.SlaFirstResponseDueAt).HasColumnName("sla_first_response_due_at");
+            entity.Property(e => e.SlaResolutionDueAt).HasColumnName("sla_resolution_due_at");
+            entity.Property(e => e.FirstResponseAt).HasColumnName("first_response_at");
+            entity.Property(e => e.ResolvedAt).HasColumnName("resolved_at");
+            entity.Property(e => e.ClosedAt).HasColumnName("closed_at");
+            entity.Property(e => e.ResolutionNotes).HasColumnName("resolution_notes");
+            entity.Property(e => e.LinkedEntityType).HasColumnName("linked_entity_type").HasMaxLength(50);
+            entity.Property(e => e.LinkedEntityId).HasColumnName("linked_entity_id");
+            entity.Property(e => e.LinkedEntityTitle).HasColumnName("linked_entity_title").HasMaxLength(255);
+            entity.Property(e => e.SatisfactionRating).HasColumnName("satisfaction_rating");
+            entity.Property(e => e.SatisfactionFeedback).HasColumnName("satisfaction_feedback");
+            entity.Property(e => e.Tags).HasColumnName("tags");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasMany(e => e.Activities)
+                .WithOne(a => a.Ticket)
+                .HasForeignKey(a => a.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 9. HelpdeskTicketActivity
+        modelBuilder.Entity<HelpdeskTicketActivity>(entity =>
+        {
+            entity.ToTable("helpdesk_ticket_activities");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.TicketId).HasColumnName("ticket_id").IsRequired();
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.UserName).HasColumnName("user_name").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.ActionType).HasColumnName("action_type").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Description).HasColumnName("description").IsRequired();
+            entity.Property(e => e.OldValue).HasColumnName("old_value").HasMaxLength(255);
+            entity.Property(e => e.NewValue).HasColumnName("new_value").HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });

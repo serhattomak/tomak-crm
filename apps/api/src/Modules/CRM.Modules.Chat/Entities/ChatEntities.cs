@@ -41,6 +41,7 @@ public class ChatChannel : ITenantScopedEntity
     public ICollection<ChatParticipant> Participants { get; set; } = new List<ChatParticipant>();
     public ICollection<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
     public CustomerSupportSession? SupportSession { get; set; }
+    public ICollection<HelpdeskTicket> Tickets { get; set; } = new List<HelpdeskTicket>();
 }
 
 [Table("chat_participants", Schema = "public")]
@@ -141,7 +142,7 @@ public class ChatEntityEmbed : ITenantScopedEntity
     public ChatMessage Message { get; set; } = null!;
 
     [MaxLength(50)]
-    public string EntityType { get; set; } = "Customer"; // Customer, Order, Product, LeaveRequest, ShiftSchedule, AttendanceRecord
+    public string EntityType { get; set; } = "Customer"; // Customer, Order, Product, LeaveRequest, ShiftSchedule, AttendanceRecord, Quote
 
     public Guid EntityId { get; set; }
 
@@ -226,4 +227,110 @@ public class CustomerSupportSession : ITenantScopedEntity
     public DateTime? ClosedAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}
+
+[Table("helpdesk_tickets", Schema = "public")]
+public class HelpdeskTicket : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+
+    [MaxLength(50)]
+    public string TicketNumber { get; set; } = string.Empty; // TICK-1001
+
+    public Guid? ChannelId { get; set; }
+    public ChatChannel? Channel { get; set; }
+
+    public Guid CustomerId { get; set; }
+
+    [MaxLength(255)]
+    public string CustomerName { get; set; } = string.Empty;
+
+    [MaxLength(255)]
+    public string? CustomerEmail { get; set; }
+
+    [MaxLength(50)]
+    public string? CustomerPhone { get; set; }
+
+    [MaxLength(255)]
+    public string Subject { get; set; } = string.Empty;
+
+    public string? Description { get; set; }
+
+    [MaxLength(100)]
+    public string Category { get; set; } = "Genel"; // Teknik, Satış, Fatura, Kargo, İade, Genel
+
+    [MaxLength(50)]
+    public string Source { get; set; } = "Web"; // LiveChat, Email, Phone, Web, Internal
+
+    [MaxLength(50)]
+    public string Status { get; set; } = "New"; // New, InProgress, PendingCustomer, OnHold, Resolved, Closed
+
+    [MaxLength(50)]
+    public string Priority { get; set; } = "Medium"; // Low, Medium, High, Urgent
+
+    public Guid? DepartmentId { get; set; }
+
+    [MaxLength(200)]
+    public string? DepartmentName { get; set; }
+
+    public Guid? AssignedUserId { get; set; }
+
+    [MaxLength(255)]
+    public string? AssignedUserName { get; set; }
+
+    public Guid? CreatedByUserId { get; set; }
+
+    public DateTime? SlaFirstResponseDueAt { get; set; }
+    public DateTime? SlaResolutionDueAt { get; set; }
+    public DateTime? FirstResponseAt { get; set; }
+    public DateTime? ResolvedAt { get; set; }
+    public DateTime? ClosedAt { get; set; }
+    public string? ResolutionNotes { get; set; }
+
+    [MaxLength(50)]
+    public string? LinkedEntityType { get; set; } // Order, Quote, Product
+
+    public Guid? LinkedEntityId { get; set; }
+
+    [MaxLength(255)]
+    public string? LinkedEntityTitle { get; set; }
+
+    public int? SatisfactionRating { get; set; }
+    public string? SatisfactionFeedback { get; set; }
+
+    public List<string> Tags { get; set; } = new List<string>();
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<HelpdeskTicketActivity> Activities { get; set; } = new List<HelpdeskTicketActivity>();
+}
+
+[Table("helpdesk_ticket_activities", Schema = "public")]
+public class HelpdeskTicketActivity : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+
+    public Guid TicketId { get; set; }
+    public HelpdeskTicket Ticket { get; set; } = null!;
+
+    public Guid? UserId { get; set; }
+
+    [MaxLength(255)]
+    public string UserName { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string ActionType { get; set; } = "Created"; // Created, StatusChanged, PriorityChanged, Assigned, InternalNoteAdded, PublicReplyAdded, Resolved, Closed
+
+    public string Description { get; set; } = string.Empty;
+
+    [MaxLength(255)]
+    public string? OldValue { get; set; }
+
+    [MaxLength(255)]
+    public string? NewValue { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

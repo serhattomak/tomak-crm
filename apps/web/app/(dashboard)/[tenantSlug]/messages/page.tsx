@@ -20,6 +20,7 @@ import {
   Hash,
   Headphones,
   Info,
+  LifeBuoy,
   Lock,
   MessageSquare,
   MessageSquarePlus,
@@ -477,6 +478,32 @@ export default function MessagesPage() {
       }
     } catch {
       toast.error("Destek talebi oluşturulamadı.");
+    }
+  };
+
+  // Convert Chat to HelpDesk Ticket
+  const handleConvertToTicket = async () => {
+    if (!activeTenant || !selectedChannel) return;
+    try {
+      const res = await ApiClient.convertChatToTicket(
+        selectedChannel.id,
+        {
+          subject: selectedChannel.title || `${selectedChannel.customerName} Canlı Destek Talebi`,
+          category: "Teknik Destek",
+          priority: selectedChannel.supportSession?.priority || "Medium",
+        },
+        activeTenant.id
+      );
+
+      if (res.success && res.data) {
+        toast.success(`Destek talebi #${res.data.ticketNumber} başarıyla oluşturuldu!`);
+        router.push(`/${tenantSlug}/tickets/${res.data.id}`);
+      } else {
+        toast.error(res.message || "Bilete dönüştürülemedi.");
+      }
+    } catch (err) {
+      console.error("Error converting chat to ticket:", err);
+      toast.error("İşlem sırasında bir hata oluştu.");
     }
   };
 
@@ -952,6 +979,17 @@ export default function MessagesPage() {
                     >
                       <Info className="h-3.5 w-3.5 sm:mr-1.5" />
                       <span className="hidden sm:inline">Müşteri 360°</span>
+                    </Button>
+
+                    {/* Convert to HelpDesk Ticket Button */}
+                    <Button
+                      className="h-8 px-2 font-semibold text-xs text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:text-indigo-300 sm:px-3"
+                      onClick={() => handleConvertToTicket()}
+                      size="sm"
+                      title="Destek Talebine Dönüştür"
+                    >
+                      <LifeBuoy className="h-3.5 w-3.5 sm:mr-1.5 text-indigo-600" />
+                      <span className="hidden sm:inline">Destek Talebi Yap</span>
                     </Button>
                   </>
                 )}
