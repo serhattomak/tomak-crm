@@ -1,4 +1,6 @@
+using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Customers.Data;
+using CRM.Modules.Customers.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,11 +14,16 @@ public static class CustomersModuleExtensions
         var connectionString = configuration.GetConnectionString("Database")
             ?? throw new InvalidOperationException("Connection string 'Database' not found.");
 
-        services.AddDbContext<CustomersDbContext>(options =>
+        services.AddDbContext<CustomersDbContext>((sp, options) =>
         {
-            options.UseNpgsql(connectionString);
+            var rlsInterceptor = sp.GetRequiredService<NpgsqlRlsConnectionInterceptor>();
+            options.UseNpgsql(connectionString)
+                   .AddInterceptors(rlsInterceptor);
         });
+
+        services.AddScoped<IPipelineAssignmentService, PipelineAssignmentService>();
 
         return services;
     }
 }
+

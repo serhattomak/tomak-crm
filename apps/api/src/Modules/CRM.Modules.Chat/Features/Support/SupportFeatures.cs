@@ -5,6 +5,9 @@ using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Chat.Data;
 using CRM.Modules.Chat.Entities;
 using CRM.Modules.Chat.Features.Channels;
+using CRM.Modules.Customers.Data;
+using CRM.Modules.Customers.Entities;
+using CRM.Modules.Customers.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -148,6 +151,8 @@ public record CreateCustomerSupportSessionCommand(
 
 public class CreateCustomerSupportSessionHandler(
     ChatDbContext dbContext,
+    CustomersDbContext custDbContext,
+    IPipelineAssignmentService assignmentService,
     ICurrentTenant currentTenant) : ICommandHandler<CreateCustomerSupportSessionCommand, ChatChannelDto>
 {
     public async Task<Result<ChatChannelDto>> Handle(CreateCustomerSupportSessionCommand request, CancellationToken cancellationToken)
@@ -155,9 +160,32 @@ public class CreateCustomerSupportSessionHandler(
         if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
             throw new ForbiddenException("Tenant context is required.");
 
+        var tenantId = currentTenant.Id.Value;
+
+        // Auto-assign if not explicitly passed
+        Guid? assignedUserId = request.AssignedUserId;
+        string? assignedUserName = request.AssignedUserName;
+
+        // Find Support Pipeline or Default Pipeline
+        var pipeline = await custDbContext.Pipelines
+            .Include(p => p.Stages)
+            .FirstOrDefaultAsync(p => p.TenantId == tenantId && (p.Code == "live_support" || p.IsDefault), cancellationToken);
+
+        var firstStage = pipeline?.Stages.OrderBy(s => s.OrderIndex).FirstOrDefault();
+
+        if ((!assignedUserId.HasValue || assignedUserId.Value == Guid.Empty) && pipeline != null && firstStage != null)
+        {
+            var (autoId, autoName) = await assignmentService.DetermineNextAssigneeAsync(tenantId, pipeline.Id, firstStage.Id, cancellationToken);
+            if (autoId.HasValue)
+            {
+                assignedUserId = autoId;
+                assignedUserName = autoName;
+            }
+        }
+
         var channel = new ChatChannel
         {
-            TenantId = currentTenant.Id.Value,
+            TenantId = tenantId,
             Type = "CustomerSupport",
             Title = $"Destek: {request.CustomerName}",
             Description = request.Subject,
@@ -171,7 +199,7 @@ public class CreateCustomerSupportSessionHandler(
 
         var session = new CustomerSupportSession
         {
-            TenantId = currentTenant.Id.Value,
+            TenantId = tenantId,
             CustomerId = request.CustomerId,
             CustomerName = request.CustomerName,
             CustomerEmail = request.CustomerEmail,
@@ -181,8 +209,8 @@ public class CreateCustomerSupportSessionHandler(
             Status = "Open",
             DepartmentId = request.DepartmentId,
             DepartmentName = request.DepartmentName,
-            AssignedUserId = request.AssignedUserId,
-            AssignedUserName = request.AssignedUserName,
+            AssignedUserId = assignedUserId,
+            AssignedUserName = assignedUserName,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -190,13 +218,13 @@ public class CreateCustomerSupportSessionHandler(
         channel.SupportSession = session;
 
         // If assigned user, add as participant
-        if (request.AssignedUserId.HasValue)
+        if (assignedUserId.HasValue)
         {
             channel.Participants.Add(new ChatParticipant
             {
-                TenantId = currentTenant.Id.Value,
-                UserId = request.AssignedUserId.Value,
-                UserName = request.AssignedUserName ?? "Temsilci",
+                TenantId = tenantId,
+                UserId = assignedUserId.Value,
+                UserName = assignedUserName ?? "Temsilci",
                 Role = "Agent",
                 JoinedAt = DateTime.UtcNow
             });
@@ -207,7 +235,7 @@ public class CreateCustomerSupportSessionHandler(
         {
             channel.Messages.Add(new ChatMessage
             {
-                TenantId = currentTenant.Id.Value,
+                TenantId = tenantId,
                 SenderName = request.CustomerName,
                 SenderType = "Customer",
                 Content = request.InitialMessage,
@@ -222,6 +250,45 @@ public class CreateCustomerSupportSessionHandler(
 
         dbContext.Channels.Add(channel);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        // Create linked Deal in Pipeline if pipeline exists
+        if (pipeline != null && firstStage != null)
+        {
+            var deal = new Deal
+            {
+                TenantId = tenantId,
+                PipelineId = pipeline.Id,
+                StageId = firstStage.Id,
+                CustomerId = request.CustomerId,
+                Title = $"[Canlı Destek] {request.Subject}",
+                Priority = string.IsNullOrWhiteSpace(request.Priority) ? "Medium" : request.Priority,
+                Status = "Open",
+                AssignedUserId = assignedUserId,
+                AssignedUserName = assignedUserName,
+                Source = "LiveChat",
+                SourceReferenceId = session.Id.ToString(),
+                ContactName = request.CustomerName,
+                ContactEmail = request.CustomerEmail,
+                ContactPhone = request.CustomerPhone,
+                StageEnteredAt = DateTime.UtcNow,
+                LastActivityAt = DateTime.UtcNow,
+                SlaDueDate = firstStage.SlaHours.HasValue ? DateTime.UtcNow.AddHours(firstStage.SlaHours.Value) : null,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            deal.Activities.Add(new DealActivity
+            {
+                TenantId = tenantId,
+                ActivityType = "ChatLinked",
+                Title = "Canlı Destek Oturumu Başlatıldı",
+                Description = $"Destek konusu: '{request.Subject}'",
+                CreatedAt = DateTime.UtcNow
+            });
+
+            custDbContext.Deals.Add(deal);
+            await custDbContext.SaveChangesAsync(cancellationToken);
+        }
 
         return Result<ChatChannelDto>.Success(new ChatChannelDto(
             channel.Id,
@@ -274,6 +341,7 @@ public record UpdateSupportSessionStatusCommand(
 
 public class UpdateSupportSessionStatusHandler(
     ChatDbContext dbContext,
+    CustomersDbContext custDbContext,
     ICurrentTenant currentTenant) : ICommandHandler<UpdateSupportSessionStatusCommand, CustomerSupportSessionDto>
 {
     public async Task<Result<CustomerSupportSessionDto>> Handle(UpdateSupportSessionStatusCommand request, CancellationToken cancellationToken)
@@ -320,6 +388,37 @@ public class UpdateSupportSessionStatusHandler(
             session.ClosedAt = DateTime.UtcNow;
 
         session.UpdatedAt = DateTime.UtcNow;
+
+        // Sync linked Deal if exists
+        var sessionIdStr = session.Id.ToString();
+        var linkedDeal = await custDbContext.Deals
+            .Include(d => d.Pipeline)
+            .ThenInclude(p => p!.Stages)
+            .FirstOrDefaultAsync(d => d.TenantId == currentTenant.Id.Value && d.SourceReferenceId == sessionIdStr, cancellationToken);
+
+        if (linkedDeal != null)
+        {
+            if (request.AssignedUserId.HasValue)
+            {
+                linkedDeal.AssignedUserId = request.AssignedUserId.Value;
+                linkedDeal.AssignedUserName = request.AssignedUserName;
+            }
+
+            if (request.Status == "Resolved" || request.Status == "Closed")
+            {
+                var wonStage = linkedDeal.Pipeline?.Stages.FirstOrDefault(s => s.IsWonStage);
+                if (wonStage != null)
+                {
+                    linkedDeal.StageId = wonStage.Id;
+                }
+                linkedDeal.Status = "Won";
+                linkedDeal.WonReason = request.ResolutionNotes ?? "Destek oturumu çözüldü";
+            }
+
+            linkedDeal.LastActivityAt = DateTime.UtcNow;
+            linkedDeal.UpdatedAt = DateTime.UtcNow;
+            await custDbContext.SaveChangesAsync(cancellationToken);
+        }
 
         // Add system message
         var sysMsg = new ChatMessage

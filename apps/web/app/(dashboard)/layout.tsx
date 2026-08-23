@@ -13,6 +13,7 @@ import {
   Clock,
   Flame,
   HelpCircle,
+  Kanban,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -148,6 +149,10 @@ export default function DashboardLayout({
           e.preventDefault();
           router.push(`/${tenantSlug}/shipments`);
           keyBuffer = [];
+        } else if (seq === "gp") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/pipelines`);
+          keyBuffer = [];
         } else if (seq === "ga") {
           e.preventDefault();
           router.push(`/${tenantSlug}/settings`);
@@ -157,6 +162,10 @@ export default function DashboardLayout({
         else if (seq === "nm") {
           e.preventDefault();
           router.push(`/${tenantSlug}/customers?create=true`);
+          keyBuffer = [];
+        } else if (seq === "np") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/pipelines?create=true`);
           keyBuffer = [];
         } else if (seq === "ns") {
           e.preventDefault();
@@ -315,6 +324,13 @@ function DashboardNavigation() {
       href: `/${tenantSlug}`,
       icon: LayoutDashboard,
       name: "Dashboard",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/pipelines`,
+      icon: Kanban,
+      name: "Pipeline & Akış",
+      permission: "Pipelines.View",
     },
     {
       badge: null,

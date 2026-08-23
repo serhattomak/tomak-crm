@@ -128,7 +128,7 @@ public class NpgsqlRlsConnectionInterceptor(ICurrentTenant currentTenant) : DbCo
         if (currentTenant.Id.HasValue && currentTenant.Id.Value != Guid.Empty)
         {
             using var command = connection.CreateCommand();
-            command.CommandText = $"SET LOCAL app.current_tenant_id = '{currentTenant.Id.Value}';";
+            command.CommandText = $"SET app.current_tenant_id = '{currentTenant.Id.Value}';";
             await command.ExecuteNonQueryAsync(cancellationToken);
         }
 

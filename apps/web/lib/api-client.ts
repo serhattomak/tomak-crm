@@ -2047,6 +2047,186 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Pipelines & Deals
+  // ==========================================
+  static async getPipelines(
+    tenantId?: string
+  ): Promise<ApiResponse<PipelineDto[]>> {
+    return ApiClient.request<PipelineDto[]>("/api/pipelines", {}, tenantId);
+  }
+
+  static async createPipeline(
+    data: CreatePipelinePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/pipelines",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updatePipeline(
+    id: string,
+    data: UpdatePipelinePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/pipelines/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deletePipeline(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/pipelines/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getDeals(
+    params: GetDealsParams = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedDealsResponse>> {
+    const query = new URLSearchParams();
+    if (params.pipelineId) query.set("pipelineId", params.pipelineId);
+    if (params.stageId) query.set("stageId", params.stageId);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
+    if (params.status) query.set("status", params.status);
+    if (params.priority) query.set("priority", params.priority);
+    if (params.source) query.set("source", params.source);
+    if (params.onlyMyDeals) query.set("onlyMyDeals", "true");
+    if (params.onlyUnassigned) query.set("onlyUnassigned", "true");
+    if (params.onlySlaBreached) query.set("onlySlaBreached", "true");
+    if (params.search) query.set("search", params.search);
+    if (params.page) query.set("page", params.page.toString());
+    if (params.pageSize) query.set("pageSize", params.pageSize.toString());
+
+    const qs = query.toString();
+    return ApiClient.request<PagedDealsResponse>(
+      `/api/deals${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getDealById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<DealDetailDto>> {
+    return ApiClient.request<DealDetailDto>(
+      `/api/deals/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createDeal(
+    data: CreateDealPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/deals",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateDeal(
+    id: string,
+    data: UpdateDealPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/deals/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async moveDealStage(
+    id: string,
+    data: MoveDealStagePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/deals/${id}/move-stage`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async assignDeal(
+    id: string,
+    data: AssignDealPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/deals/${id}/assign`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async addDealNote(
+    id: string,
+    data: AddDealNotePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/deals/${id}/notes`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteDeal(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/deals/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getDealStats(
+    pipelineId?: string,
+    tenantId?: string
+  ): Promise<ApiResponse<DealStatsResponse>> {
+    const url = `/api/deals/stats${pipelineId ? `?pipelineId=${pipelineId}` : ""}`;
+    return ApiClient.request<DealStatsResponse>(url, { method: "GET" }, tenantId);
+  }
 }
 
 export interface CustomerListDto {
@@ -3632,4 +3812,289 @@ export interface UpdateReturnStatusPayload {
   inspectionNotes?: string;
   status: "Requested" | "InTransit" | "Received" | "Inspected" | "Rejected" | "Restocked" | string;
 }
+
+// ==========================================
+// Pipeline & Deal Interfaces
+// ==========================================
+export interface PipelineStageDto {
+  color?: string;
+  createdAt: string;
+  dealsCount: number;
+  dealsTotalValue: number;
+  id: string;
+  isLostStage: boolean;
+  isWonStage: boolean;
+  name: string;
+  orderIndex: number;
+  pipelineId: string;
+  probability: number;
+  routingRuleOverride?: string;
+  slaHours?: number;
+  updatedAt: string;
+}
+
+export interface PipelineDto {
+  code: string;
+  color?: string;
+  createdAt: string;
+  description?: string;
+  icon?: string;
+  id: string;
+  isActive: boolean;
+  isDefault: boolean;
+  name: string;
+  routingStrategy: "RoundRobin" | "LeastLoaded" | "OnlineOnly" | "Manual" | string;
+  stages: PipelineStageDto[];
+  targetDepartmentId?: string;
+  tenantId: string;
+  totalDealsCount: number;
+  totalDealsValue: number;
+  updatedAt: string;
+}
+
+export interface CreatePipelineStagePayload {
+  color?: string;
+  isLostStage: boolean;
+  isWonStage: boolean;
+  name: string;
+  orderIndex: number;
+  probability: number;
+  routingRuleOverride?: string;
+  slaHours?: number;
+}
+
+export interface CreatePipelinePayload {
+  code: string;
+  color?: string;
+  description?: string;
+  icon?: string;
+  isDefault: boolean;
+  name: string;
+  routingStrategy: string;
+  stages?: CreatePipelineStagePayload[];
+  targetDepartmentId?: string;
+}
+
+export interface UpdatePipelineStagePayload {
+  color?: string;
+  id?: string;
+  isLostStage: boolean;
+  isWonStage: boolean;
+  name: string;
+  orderIndex: number;
+  probability: number;
+  routingRuleOverride?: string;
+  slaHours?: number;
+}
+
+export interface UpdatePipelinePayload {
+  color?: string;
+  description?: string;
+  icon?: string;
+  id: string;
+  isActive: boolean;
+  isDefault: boolean;
+  name: string;
+  routingStrategy: string;
+  stages?: UpdatePipelineStagePayload[];
+  targetDepartmentId?: string;
+}
+
+export interface DealSummaryDto {
+  activitiesCount: number;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  contactEmail?: string;
+  contactName?: string;
+  contactPhone?: string;
+  createdAt: string;
+  currency: string;
+  customerId?: string;
+  customerName?: string;
+  customerType?: string;
+  id: string;
+  isSlaBreached: boolean;
+  lastActivityAt: string;
+  lostReason?: string;
+  notesCount: number;
+  pipelineId: string;
+  priority: "Low" | "Medium" | "High" | "Urgent" | string;
+  slaDueDate?: string;
+  slaHours?: number;
+  source: "LiveChat" | "WebForm" | "Campaign" | "InboundEmail" | "Manual" | "Api" | string;
+  sourceReferenceId?: string;
+  stageColor?: string;
+  stageId: string;
+  stageName: string;
+  stageOrderIndex: number;
+  status: "Open" | "Won" | "Lost" | "Abandoned" | string;
+  tags?: string[];
+  tenantId: string;
+  title: string;
+  updatedAt: string;
+  value: number;
+  wonReason?: string;
+}
+
+export interface PagedDealsResponse {
+  items: DealSummaryDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalValue: number;
+}
+
+export interface GetDealsParams {
+  assignedUserId?: string;
+  customerId?: string;
+  onlyMyDeals?: boolean;
+  onlySlaBreached?: boolean;
+  onlyUnassigned?: boolean;
+  page?: number;
+  pageSize?: number;
+  pipelineId?: string;
+  priority?: string;
+  search?: string;
+  source?: string;
+  stageId?: string;
+  status?: string;
+}
+
+export interface DealActivityDto {
+  activityType: string;
+  createdAt: string;
+  description?: string;
+  id: string;
+  newValue?: string;
+  oldValue?: string;
+  title: string;
+  userId?: string;
+  userName?: string;
+}
+
+export interface DealNoteDto {
+  content: string;
+  createdAt: string;
+  id: string;
+  isPinned: boolean;
+  updatedAt: string;
+  userId?: string;
+  userName?: string;
+}
+
+export interface DealDetailDto {
+  activities: DealActivityDto[];
+  assignedUserId?: string;
+  assignedUserName?: string;
+  contactEmail?: string;
+  contactName?: string;
+  contactPhone?: string;
+  createdAt: string;
+  currency: string;
+  customerId?: string;
+  customerEmail?: string;
+  customerName?: string;
+  customerPhone?: string;
+  customerType?: string;
+  id: string;
+  isSlaBreached: boolean;
+  lastActivityAt: string;
+  lostReason?: string;
+  metadataJson?: string;
+  notes: DealNoteDto[];
+  pipelineId: string;
+  pipelineName: string;
+  priority: string;
+  slaDueDate?: string;
+  slaHours?: number;
+  source: string;
+  sourceReferenceId?: string;
+  stageColor?: string;
+  stageId: string;
+  stageName: string;
+  stageOrderIndex: number;
+  status: string;
+  tags?: string[];
+  tenantId: string;
+  title: string;
+  updatedAt: string;
+  value: number;
+  wonReason?: string;
+}
+
+export interface CreateDealPayload {
+  assignedUserId?: string;
+  contactEmail?: string;
+  contactName?: string;
+  contactPhone?: string;
+  currency?: string;
+  customerId?: string;
+  initialNote?: string;
+  pipelineId: string;
+  priority?: string;
+  source?: string;
+  sourceReferenceId?: string;
+  stageId?: string;
+  tags?: string[];
+  title: string;
+  value?: number;
+}
+
+export interface UpdateDealPayload {
+  contactEmail?: string;
+  contactName?: string;
+  contactPhone?: string;
+  currency: string;
+  id: string;
+  priority: string;
+  tags?: string[];
+  title: string;
+  value: number;
+}
+
+export interface MoveDealStagePayload {
+  dealId: string;
+  lostReason?: string;
+  targetStageId: string;
+  wonReason?: string;
+}
+
+export interface AssignDealPayload {
+  assignedUserId?: string;
+  dealId: string;
+}
+
+export interface AddDealNotePayload {
+  content: string;
+  dealId: string;
+  isPinned?: boolean;
+}
+
+export interface SourceStatDto {
+  count: number;
+  source: string;
+  totalValue: number;
+}
+
+export interface PriorityStatDto {
+  count: number;
+  priority: string;
+}
+
+export interface DealStatsResponse {
+  byPriority: PriorityStatDto[];
+  bySource: SourceStatDto[];
+  currency: string;
+  lostDealsCount: number;
+  openDealsCount: number;
+  slaBreachedCount: number;
+  totalDealsCount: number;
+  totalLostValue: number;
+  totalOpenValue: number;
+  totalWonValue: number;
+  unassignedCount: number;
+  winRatePercentage: number;
+  wonDealsCount: number;
+}
+
 
