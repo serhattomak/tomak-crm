@@ -1,6 +1,7 @@
 "use client";
 
-import { Clock, DollarSign, FileSpreadsheet, FileText, PhoneCall, RefreshCw, ShoppingCart, UserPlus } from "lucide-react";
+import { Clock, DollarSign, FileSpreadsheet, FileText, PhoneCall, Plus, RefreshCw, ShoppingCart, UserPlus } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
@@ -15,8 +16,7 @@ export function ActivityTimelineWidget() {
     if (!activeTenant?.id) return;
     setIsLoading(true);
     try {
-      // Fetch recent quotes to get live activity events
-      const quotesRes = await ApiClient.getQuotes({ pageSize: 5 }, activeTenant.id);
+      const quotesRes = await ApiClient.getQuotes({ pageSize: 6 }, activeTenant.id);
       const items: ActivityItem[] = [];
 
       if (quotesRes.success && quotesRes.data?.items) {
@@ -51,47 +51,9 @@ export function ActivityTimelineWidget() {
         }
       }
 
-      if (items.length > 0) {
-        setActivities(items);
-      } else {
-        // Fallback default activities
-        setActivities([
-          {
-            action: "yeni bir teklif oluşturdu",
-            id: "act-1",
-            target: "Acme Holding (₺125.000)",
-            timestamp: "12 dk önce",
-            type: "deal",
-            user: { initials: "AY", name: "Ahmet Yılmaz" },
-          },
-          {
-            action: "telefon görüşmesi kaydetti",
-            id: "act-2",
-            target: "TechNova CTO'su ile 24 dk",
-            timestamp: "45 dk önce",
-            type: "call",
-            user: { initials: "SK", name: "Selin Kaya" },
-          },
-          {
-            action: "anlaşmayı başarıyla kapattı",
-            id: "act-3",
-            target: "Vortex Lojistik (₺94.500)",
-            timestamp: "2 saat önce",
-            type: "deal",
-            user: { initials: "MD", name: "Mehmet Demir" },
-          },
-          {
-            action: "web sitesinden yeni lead yakaladı",
-            id: "act-4",
-            target: "Argeus Enerji A.Ş.",
-            timestamp: "3 saat önce",
-            type: "lead",
-            user: { initials: "SB", name: "Sistem Botu" },
-          },
-        ]);
-      }
+      setActivities(items);
     } catch {
-      // ignore
+      setActivities([]);
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +96,14 @@ export function ActivityTimelineWidget() {
             </div>
           </div>
 
-          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
+          <button
+            onClick={() => fetchLiveActivities()}
+            title="Yenile"
+            type="button"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition"
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
+          </button>
         </div>
 
         {/* Timeline List */}
@@ -144,14 +113,30 @@ export function ActivityTimelineWidget() {
               <div key={i} className="h-10 w-full animate-pulse rounded-xl bg-slate-50" />
             ))}
           </div>
+        ) : activities.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-2.5 shadow-2xs">
+              <Clock className="h-6 w-6" />
+            </div>
+            <h4 className="font-bold text-slate-800 text-xs">Henüz aktivite veya işlem kaydı bulunmuyor</h4>
+            <p className="text-slate-400 text-[11px] mt-0.5 max-w-xs">
+              Oluşturulan teklifler, onaylar ve müşteri etkileşimleri otomatik olarak bu akışta toplanır.
+            </p>
+            <Link
+              href={`/${activeTenant?.slug || "workspace"}/quotes`}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-amber-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-amber-700 transition"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Teklif Oluştur</span>
+            </Link>
+          </div>
         ) : (
-          <div className="relative space-y-3.5 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
+          <div className="relative space-y-3.5 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100 max-h-72 overflow-y-auto pr-1">
             {activities.map((act) => (
               <div
                 className="relative flex items-start gap-3 text-xs"
                 key={act.id}
               >
-                {/* User / Action Avatar */}
                 <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white bg-slate-900 font-bold text-[10px] text-white shadow-2xs">
                   {act.user.initials}
                 </div>
@@ -177,11 +162,16 @@ export function ActivityTimelineWidget() {
         )}
       </div>
 
-      <div className="mt-4 border-slate-100 border-t pt-3 text-center">
-        <span className="font-bold text-amber-600 text-xs hover:text-amber-700 cursor-pointer transition">
-          Tüm İşlem Geçmişini İncele →
-        </span>
-      </div>
+      {activities.length > 0 && (
+        <div className="mt-4 border-slate-100 border-t pt-3 text-center">
+          <Link
+            href={`/${activeTenant?.slug || "workspace"}/quotes`}
+            className="font-bold text-amber-600 text-xs hover:text-amber-700 transition"
+          >
+            Tüm İşlem Geçmişini İncele →
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

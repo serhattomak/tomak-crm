@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Filter, Layers } from "lucide-react";
+import { ArrowRight, Filter, Layers, Plus } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
@@ -55,7 +55,7 @@ export function PipelineFunnelWidget({
             const val = s.dealsTotalValue || 0;
             sumVal += val;
             sumCount += count;
-            const pct = Math.max(15, Math.round((count / maxDeals) * 100));
+            const pct = Math.max(10, Math.round((count / maxDeals) * 100));
             return {
               id: s.id,
               name: s.name,
@@ -82,17 +82,7 @@ export function PipelineFunnelWidget({
     fetchPipelineStages();
   }, [fetchPipelineStages]);
 
-  const defaultMockStages: FunnelStage[] = [
-    { id: "s1", name: "1. Yeni Talep / Keşif", count: 12, value: 180000, conversion: "100%", color: "bg-blue-500" },
-    { id: "s2", name: "2. İletişim & Değerlendirme", count: 8, value: 140000, conversion: "75%", color: "bg-indigo-500" },
-    { id: "s3", name: "3. Teklif Hazırlandı", count: 6, value: 95000, conversion: "55%", color: "bg-violet-500" },
-    { id: "s4", name: "4. Müzakere & Sözleşme", count: 4, value: 72000, conversion: "35%", color: "bg-fuchsia-500" },
-    { id: "s5", name: "5. Başarıyla Kazanıldı", count: 3, value: 65000, conversion: "25%", color: "bg-emerald-500" },
-  ];
-
-  const displayStages = stages.length > 0 ? stages : defaultMockStages;
-  const displayTotalValue = totalValue > 0 ? totalValue : displayStages.reduce((acc, s) => acc + s.value, 0);
-  const displayTotalCount = totalCount > 0 ? totalCount : displayStages.reduce((acc, s) => acc + s.count, 0);
+  const hasData = totalCount > 0 || totalValue > 0;
 
   return (
     <div className="flex h-full flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs transition-all hover:border-slate-300">
@@ -104,29 +94,50 @@ export function PipelineFunnelWidget({
             </div>
             <div>
               <span className="font-bold text-slate-900 text-sm">
-                Satış Hunisi (Pipeline Stages)
+                Satış Hunisi (Pipeline Aşamaları)
               </span>
               <div className="text-[11px] text-slate-500 font-medium">
-                Toplam Hacim: ₺{displayTotalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                {hasData
+                  ? `Toplam Hacim: ₺${totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`
+                  : "Aşamalardaki aktif satış fırsatları"}
               </div>
             </div>
           </div>
 
-          <span className="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1 font-bold text-[11px] text-slate-700 shadow-2xs">
-            {displayTotalCount} Aktif Fırsat
-          </span>
+          {hasData && (
+            <span className="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1 font-bold text-[11px] text-slate-700 shadow-2xs">
+              {totalCount} Aktif Fırsat
+            </span>
+          )}
         </div>
 
         {/* Funnel Visualizer */}
         {isLoading ? (
           <div className="space-y-3 py-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-10 w-full animate-pulse rounded-xl bg-slate-50" />
+              <div key={i} className="h-10 w-full animate-pulse rounded-2xl bg-slate-50" />
             ))}
+          </div>
+        ) : !hasData ? (
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-2.5 shadow-2xs">
+              <Layers className="h-6 w-6" />
+            </div>
+            <h4 className="font-bold text-slate-800 text-xs">Henüz satış fırsatı bulunmuyor</h4>
+            <p className="text-slate-400 text-[11px] mt-0.5 max-w-xs">
+              Pipeline aşamalarınıza yeni fırsatlar ekleyerek dönüşüm oranlarınızı ve satış huninizi takip edin.
+            </p>
+            <Link
+              href={`/${activeTenant?.slug || "workspace"}/pipelines`}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-indigo-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-indigo-700 transition"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Satış Fırsatı Ekle</span>
+            </Link>
           </div>
         ) : (
           <div className="space-y-2.5 pt-2">
-            {displayStages.map((stage) => (
+            {stages.map((stage) => (
               <div
                 className="group rounded-2xl p-2 transition-colors hover:bg-slate-50"
                 key={stage.id}
@@ -161,18 +172,17 @@ export function PipelineFunnelWidget({
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 text-xs">
-        <span className="text-[11px] text-slate-500 font-medium">
-          Dönüşüm Oranı: <strong className="text-slate-800 font-bold">%28.4</strong>
-        </span>
-        <Link
-          href={`/${activeTenant?.slug || "workspace"}/pipelines`}
-          className="flex items-center gap-1 font-bold text-indigo-600 hover:text-indigo-700 transition"
-        >
-          <span>Pipeline Kanbanını Aç</span>
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      </div>
+      {hasData && (
+        <div className="mt-4 border-slate-100 border-t pt-3 text-center">
+          <Link
+            href={`/${activeTenant?.slug || "workspace"}/pipelines`}
+            className="flex items-center justify-center gap-1 font-bold text-indigo-600 text-xs hover:text-indigo-700 transition"
+          >
+            <span>Pipeline Kanban Görünümünü Aç</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
