@@ -50,6 +50,19 @@ export function QuickCreateModal({
     value: "",
   });
 
+  // Close on Escape key - called unconditionally at top level
+  useEffect(() => {
+    if (!(isOpen && type)) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, type, onClose]);
+
   if (!(isOpen && type)) {
     return null;
   }
@@ -131,17 +144,6 @@ export function QuickCreateModal({
       setIsSubmitting(false);
     }
   };
-
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
