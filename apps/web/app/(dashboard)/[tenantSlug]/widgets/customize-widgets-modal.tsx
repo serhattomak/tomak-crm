@@ -6,6 +6,7 @@ import {
   Calendar,
   CheckSquare,
   Clock,
+  FileSpreadsheet,
   Filter,
   Gauge,
   PieChart,
@@ -76,6 +77,8 @@ export function CustomizeWidgetsModal({
         return <Clock className="h-4 w-4 text-amber-600" />;
       case "Trophy":
         return <Trophy className="h-4 w-4 text-amber-600" />;
+      case "FileSpreadsheet":
+        return <FileSpreadsheet className="h-4 w-4 text-amber-600" />;
       case "Zap":
         return <Zap className="h-4 w-4 text-amber-500" />;
       default:

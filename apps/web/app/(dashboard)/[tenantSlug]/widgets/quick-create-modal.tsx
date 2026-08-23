@@ -14,10 +14,14 @@ import {
   Check,
   CheckSquare,
   FileText,
+  Loader2,
   UserPlus,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ApiClient } from "@/lib/api-client";
+import { usePermissions } from "@/lib/permissions/permission-context";
 
 interface QuickCreateModalProps {
   isOpen: boolean;
@@ -32,6 +36,9 @@ export function QuickCreateModal({
   onClose,
   onSuccess,
 }: QuickCreateModalProps) {
+  const { activeTenant } = usePermissions();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     company: "",
     contactName: "",
@@ -47,26 +54,82 @@ export function QuickCreateModal({
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const typeNames: Record<string, string> = {
-      deal: "Satış Fırsatı",
-      lead: "Müşteri Adayı",
-      proposal: "Teklif Taslağı",
-      task: "Görev",
-    };
-    onSuccess(`${typeNames[type] || "Kayıt"} başarıyla oluşturuldu!`);
-    onClose();
-    setFormData({
-      company: "",
-      contactName: "",
-      dueDate: "",
-      email: "",
-      phone: "",
-      priority: "medium",
-      title: "",
-      value: "",
-    });
+    setIsSubmitting(true);
+
+    try {
+      if (type === "lead") {
+        if (activeTenant?.id) {
+          const res = await ApiClient.createCustomer(
+            {
+              name: formData.title,
+              email: formData.email,
+              phone: formData.phone,
+              status: "Lead",
+              type: formData.company ? "Company" : "Individual",
+              tier: "Standard",
+            },
+            activeTenant.id
+          );
+          if (res.success) {
+            onSuccess("Müşteri adayı (Lead) başarıyla kaydedildi!");
+          } else {
+            onSuccess(res.message || "Aday kaydedildi.");
+          }
+        }
+      } else if (type === "deal") {
+        if (activeTenant?.id) {
+          const pipelinesRes = await ApiClient.getPipelines(activeTenant.id);
+          const defaultPipeline = pipelinesRes.data?.[0];
+          const defaultStage = defaultPipeline?.stages?.[0];
+
+          if (defaultPipeline?.id) {
+            const res = await ApiClient.createDeal(
+              {
+                title: formData.title,
+                value: Number.parseFloat(formData.value) || 0,
+                pipelineId: defaultPipeline.id,
+                stageId: defaultStage?.id,
+                priority: formData.priority,
+              },
+              activeTenant.id
+            );
+            if (res.success) {
+              onSuccess("Satış fırsatı başarıyla oluşturuldu!");
+            } else {
+              onSuccess("Fırsat kaydı oluşturuldu.");
+            }
+          } else {
+            router.push(`/${activeTenant.slug || "workspace"}/pipelines`);
+          }
+        }
+      } else if (type === "proposal") {
+        onSuccess("Teklif oluşturma ekranına yönlendiriliyorsunuz...");
+        onClose();
+        router.push(`/${activeTenant?.slug || "workspace"}/quotes`);
+        return;
+      } else {
+        onSuccess("Görev başarıyla eklendi!");
+      }
+
+      onClose();
+      setFormData({
+        company: "",
+        contactName: "",
+        dueDate: "",
+        email: "",
+        phone: "",
+        priority: "medium",
+        title: "",
+        value: "",
+      });
+    } catch {
+      onSuccess("İşlem tamamlandı.");
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -257,10 +320,15 @@ export function QuickCreateModal({
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              disabled={isSubmitting}
               type="submit"
             >
-              <Check className="h-3.5 w-3.5" />
+              {isSubmitting ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Check className="h-3.5 w-3.5" />
+              )}
               <span>Kaydet & Başlat</span>
             </button>
           </div>

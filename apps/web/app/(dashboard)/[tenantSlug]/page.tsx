@@ -23,6 +23,7 @@ import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget";
 import { LeadSourcesWidget } from "./widgets/lead-sources-widget";
 import { PipelineFunnelWidget } from "./widgets/pipeline-funnel-widget";
 import { QuickCreateModal } from "./widgets/quick-create-modal";
+import { QuotesSummaryWidget } from "./widgets/quotes-summary-widget";
 import { RevenueChartWidget } from "./widgets/revenue-chart-widget";
 import { SalesGaugeWidget } from "./widgets/sales-gauge-widget";
 import { TasksChecklistWidget } from "./widgets/tasks-checklist-widget";
@@ -154,6 +155,13 @@ export default function WorkspaceOverviewPage() {
         return (
           <div className="col-span-12 lg:col-span-6" key="deals-table">
             <DealsTableWidget />
+          </div>
+        );
+
+      case "quotes-summary":
+        return (
+          <div className="col-span-12 lg:col-span-6" key="quotes-summary">
+            <QuotesSummaryWidget />
           </div>
         );
 
