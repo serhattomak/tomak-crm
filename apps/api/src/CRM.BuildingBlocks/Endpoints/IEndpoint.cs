@@ -52,4 +52,14 @@ public static class EndpointExtensions
             return await filter.InvokeAsync(context, next);
         });
     }
+
+    public static RouteHandlerBuilder RequireSuperAdmin(this RouteHandlerBuilder builder)
+    {
+        return builder.AddEndpointFilter(async (context, next) =>
+        {
+            var filter = new Security.RequireSuperAdminFilter(
+                context.HttpContext.RequestServices.GetRequiredService<Security.IPermissionService>());
+            return await filter.InvokeAsync(context, next);
+        });
+    }
 }

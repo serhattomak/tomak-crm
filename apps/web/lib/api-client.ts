@@ -4723,3 +4723,23 @@ export interface PublicQuoteViewDto {
   totalAmount: number;
   validUntil?: string;
 }
+
+export const apiClient = {
+  get: <T>(endpoint: string, tenantId?: string) =>
+    ApiClient.request<T>(endpoint, { method: "GET" }, tenantId),
+  post: <T>(endpoint: string, body?: unknown, tenantId?: string) =>
+    ApiClient.request<T>(
+      endpoint,
+      { method: "POST", body: body !== undefined ? JSON.stringify(body) : undefined },
+      tenantId
+    ),
+  put: <T>(endpoint: string, body?: unknown, tenantId?: string) =>
+    ApiClient.request<T>(
+      endpoint,
+      { method: "PUT", body: body !== undefined ? JSON.stringify(body) : undefined },
+      tenantId
+    ),
+  delete: <T>(endpoint: string, tenantId?: string) =>
+    ApiClient.request<T>(endpoint, { method: "DELETE" }, tenantId),
+};
+

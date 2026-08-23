@@ -86,7 +86,7 @@ public class PermissionService(
         }
     }
 
-    private async Task<bool> IsSuperAdminAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<bool> IsSuperAdminAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var cacheKey = $"user:{userId}:is_super_admin";
 

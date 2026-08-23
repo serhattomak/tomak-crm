@@ -39,6 +39,7 @@ public interface IPermissionService
 {
     Task<bool> HasPermissionAsync(Guid userId, Guid tenantId, string permissionCode, CancellationToken cancellationToken = default);
     Task<IReadOnlySet<string>> GetUserPermissionsAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default);
+    Task<bool> IsSuperAdminAsync(Guid userId, CancellationToken cancellationToken = default);
     Task InvalidateUserPermissionsCacheAsync(Guid tenantId, Guid? userId = null, CancellationToken cancellationToken = default);
 }
 
@@ -75,6 +76,28 @@ public class RequirePermissionFilter(string permissionCode, IPermissionService p
         if (!hasPermission)
         {
             throw new ForbiddenException($"Missing required permission: '{permissionCode}'.");
+        }
+
+        return await next(context);
+    }
+}
+
+public class RequireSuperAdminFilter(IPermissionService permissionService) : IEndpointFilter
+{
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
+    {
+        var httpContext = context.HttpContext;
+        var currentUser = httpContext.RequestServices.GetService(typeof(ICurrentUser)) as ICurrentUser;
+
+        if (currentUser?.IsAuthenticated != true || !currentUser.Id.HasValue)
+        {
+            throw new UnauthorizedException("You must be authenticated to access this endpoint.");
+        }
+
+        var isSuperAdmin = await permissionService.IsSuperAdminAsync(currentUser.Id.Value, httpContext.RequestAborted);
+        if (!isSuperAdmin)
+        {
+            throw new ForbiddenException("Super Admin access is required for this action.");
         }
 
         return await next(context);
