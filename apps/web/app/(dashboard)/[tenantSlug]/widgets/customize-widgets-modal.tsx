@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  ArrowDown,
-  ArrowUp,
   BarChart3,
   Briefcase,
   Calendar,
@@ -13,7 +11,6 @@ import {
   FileSpreadsheet,
   Filter,
   Gauge,
-  GripVertical,
   PieChart,
   RotateCcw,
   Search,
@@ -32,9 +29,9 @@ interface CustomizeWidgetsModalProps {
   activeWidgetIds: string[];
   isOpen: boolean;
   onClose: () => void;
+  onMoveWidget?: (widgetId: string, direction: "up" | "down") => void;
   onResetDefaults: () => void;
   onToggleWidget: (widgetId: string) => void;
-  onMoveWidget?: (widgetId: string, direction: "up" | "down") => void;
 }
 
 export function CustomizeWidgetsModal({
@@ -97,9 +94,15 @@ export function CustomizeWidgetsModal({
   const sortedWidgets = [...WIDGET_REGISTRY].sort((a, b) => {
     const aIndex = activeWidgetIds.indexOf(a.id);
     const bIndex = activeWidgetIds.indexOf(b.id);
-    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-    if (aIndex !== -1) return -1;
-    if (bIndex !== -1) return 1;
+    if (aIndex !== -1 && bIndex !== -1) {
+      return aIndex - bIndex;
+    }
+    if (aIndex !== -1) {
+      return -1;
+    }
+    if (bIndex !== -1) {
+      return 1;
+    }
     return 0;
   });
 
@@ -124,35 +127,36 @@ export function CustomizeWidgetsModal({
   }, [onClose]);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
       {/* Backdrop with Click-to-Close */}
       <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 flex max-h-[88vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl my-auto overflow-hidden">
+      <div className="relative z-10 my-auto flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-4 sm:p-5 shrink-0">
-          <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b p-4 sm:p-5">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-800 shadow-2xs">
               <SlidersHorizontal className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="font-bold text-sm sm:text-base text-slate-900 truncate">
+              <h2 className="truncate font-bold text-slate-900 text-sm sm:text-base">
                 Dashboard Widget Düzenini Özelleştir
               </h2>
-              <p className="text-slate-500 text-xs truncate">
+              <p className="truncate text-slate-500 text-xs">
                 <strong className="font-semibold text-violet-600">
                   {activeTab}
                 </strong>{" "}
-                sekmesinde görüntülenecek panelleri ve yerleşim sırasını belirleyin ({activeWidgetIds.length} aktif)
+                sekmesinde görüntülenecek panelleri ve yerleşim sırasını
+                belirleyin ({activeWidgetIds.length} aktif)
               </p>
             </div>
           </div>
 
           <button
-            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 shrink-0"
+            className="shrink-0 rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
             onClick={onClose}
             type="button"
           >
@@ -205,20 +209,20 @@ export function CustomizeWidgetsModal({
                 className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all duration-150 ${
                   isActive
                     ? "border-violet-200 bg-violet-50/30 shadow-2xs"
-                    : "border-slate-200/80 bg-white hover:border-slate-300 opacity-80"
+                    : "border-slate-200/80 bg-white opacity-80 hover:border-slate-300"
                 }`}
                 key={widget.id}
               >
-                <div className="flex items-start gap-3 min-w-0">
+                <div className="flex min-w-0 items-start gap-3">
                   {/* Reorder Buttons (only for active widgets) */}
                   {isActive && onMoveWidget ? (
                     <div className="flex flex-col items-center gap-0.5 pt-0.5">
                       <button
-                        onClick={() => onMoveWidget(widget.id, "up")}
+                        className="rounded-md p-1 text-slate-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30"
                         disabled={isFirst}
+                        onClick={() => onMoveWidget(widget.id, "up")}
                         title="Yukarı Taşı"
                         type="button"
-                        className="rounded-md p-1 text-slate-400 hover:bg-violet-100 hover:text-violet-700 disabled:opacity-30 disabled:pointer-events-none transition"
                       >
                         <ChevronUp className="h-3.5 w-3.5" />
                       </button>
@@ -226,11 +230,11 @@ export function CustomizeWidgetsModal({
                         #{activeIndex + 1}
                       </span>
                       <button
-                        onClick={() => onMoveWidget(widget.id, "down")}
+                        className="rounded-md p-1 text-slate-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30"
                         disabled={isLast}
+                        onClick={() => onMoveWidget(widget.id, "down")}
                         title="Aşağı Taşı"
                         type="button"
-                        className="rounded-md p-1 text-slate-400 hover:bg-violet-100 hover:text-violet-700 disabled:opacity-30 disabled:pointer-events-none transition"
                       >
                         <ChevronDown className="h-3.5 w-3.5" />
                       </button>
@@ -244,21 +248,21 @@ export function CustomizeWidgetsModal({
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 text-xs truncate">
+                      <span className="truncate font-bold text-slate-900 text-xs">
                         {widget.title}
                       </span>
                       <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-bold text-[9px] text-slate-500">
                         {widget.category}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-[11px] text-slate-500 leading-snug truncate">
+                    <p className="mt-0.5 truncate text-[11px] text-slate-500 leading-snug">
                       {widget.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Toggle Switch */}
-                <div className="flex items-center gap-2 flex-none">
+                <div className="flex flex-none items-center gap-2">
                   <button
                     className={`flex h-6 w-11 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none ${
                       isActive ? "bg-violet-600" : "bg-slate-200"

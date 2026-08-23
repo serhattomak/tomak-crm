@@ -40,7 +40,6 @@ export default function LoginPage() {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
-
   };
 
   const handleGoogleLogin = async () => {

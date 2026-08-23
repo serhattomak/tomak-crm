@@ -42,5 +42,3 @@ export function createClient() {
 
   return browserClient;
 }
-
-

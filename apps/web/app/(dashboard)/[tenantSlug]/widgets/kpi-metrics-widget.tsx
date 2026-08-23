@@ -5,10 +5,7 @@ import {
   ArrowUpRight,
   DollarSign,
   FileSpreadsheet,
-  RefreshCw,
-  ShoppingCart,
   Target,
-  TrendingUp,
   Users,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -29,26 +26,45 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
   const [dealStats, setDealStats] = useState<any>(null);
 
   const fetchLiveStats = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
-      const [quotesRes, ordersRes, customersRes, dealsRes] = await Promise.allSettled([
-        ApiClient.getQuoteStats(activeTenant.id),
-        ApiClient.getOrderStats(activeTenant.id),
-        ApiClient.getCustomerStats(activeTenant.id),
-        ApiClient.getDealStats(undefined, activeTenant.id),
-      ]);
+      const [quotesRes, ordersRes, customersRes, dealsRes] =
+        await Promise.allSettled([
+          ApiClient.getQuoteStats(activeTenant.id),
+          ApiClient.getOrderStats(activeTenant.id),
+          ApiClient.getCustomerStats(activeTenant.id),
+          ApiClient.getDealStats(undefined, activeTenant.id),
+        ]);
 
-      if (quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data) {
+      if (
+        quotesRes.status === "fulfilled" &&
+        quotesRes.value.success &&
+        quotesRes.value.data
+      ) {
         setQuoteStats(quotesRes.value.data);
       }
-      if (ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data) {
+      if (
+        ordersRes.status === "fulfilled" &&
+        ordersRes.value.success &&
+        ordersRes.value.data
+      ) {
         setOrderStats(ordersRes.value.data);
       }
-      if (customersRes.status === "fulfilled" && customersRes.value.success && customersRes.value.data) {
+      if (
+        customersRes.status === "fulfilled" &&
+        customersRes.value.success &&
+        customersRes.value.data
+      ) {
         setCustomerStats(customersRes.value.data);
       }
-      if (dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data) {
+      if (
+        dealsRes.status === "fulfilled" &&
+        dealsRes.value.success &&
+        dealsRes.value.data
+      ) {
         setDealStats(dealsRes.value.data);
       }
     } catch {
@@ -63,7 +79,11 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
   }, [fetchLiveStats]);
 
   // Derived Metrics
-  const totalRevenue = (orderStats?.totalRevenue || 0) + (quoteStats?.activeProposalsVolume ? Number(quoteStats.activeProposalsVolume) : 0);
+  const totalRevenue =
+    (orderStats?.totalRevenue || 0) +
+    (quoteStats?.activeProposalsVolume
+      ? Number(quoteStats.activeProposalsVolume)
+      : 0);
   const customersCount = customerStats?.totalCustomers ?? 0;
   const winRate = dealStats?.winRate ?? quoteStats?.conversionRate ?? 0;
   const activeQuotesCount = quoteStats?.totalQuotes ?? 0;
@@ -71,52 +91,60 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
 
   const metrics = [
     {
-      id: "revenue",
-      title: "Toplam Gelir & Teklif Hacmi",
-      value: `₺${totalRevenue.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      subtitle: `${orderStats?.totalOrders ?? 0} Sipariş + ${activeQuotesCount} Teklif`,
-      change: "+14.2%",
-      isPositive: true,
-      icon: DollarSign,
-      color: "from-emerald-500/20 to-teal-500/10 text-emerald-600 dark:text-emerald-400",
       accent: "bg-emerald-500",
+      change: "+14.2%",
+      color:
+        "from-emerald-500/20 to-teal-500/10 text-emerald-600 dark:text-emerald-400",
+      icon: DollarSign,
+      id: "revenue",
+      isPositive: true,
       sparkline: [35, 42, 45, 58, 62, 75, 88],
+      subtitle: `${orderStats?.totalOrders ?? 0} Sipariş + ${activeQuotesCount} Teklif`,
+      title: "Toplam Gelir & Teklif Hacmi",
+      value: `₺${totalRevenue.toLocaleString("tr-TR", { maximumFractionDigits: 2, minimumFractionDigits: 2 })}`,
     },
     {
+      accent: "bg-violet-500",
+      change: `+${customerStats?.leadCustomers ?? 0} Aday`,
+      color:
+        "from-violet-500/20 to-purple-500/10 text-violet-600 dark:text-violet-400",
+      icon: Users,
       id: "customers",
+      isPositive: true,
+      sparkline: [20, 28, 35, 30, 48, 55, 68],
+      subtitle: `${customerStats?.activeCustomers ?? 0} Aktif Müşteri`,
       title: "Müşteriler & Adaylar",
       value: customersCount.toString(),
-      subtitle: `${customerStats?.activeCustomers ?? 0} Aktif Müşteri`,
-      change: `+${customerStats?.leadCustomers ?? 0} Aday`,
-      isPositive: true,
-      icon: Users,
-      color: "from-violet-500/20 to-purple-500/10 text-violet-600 dark:text-violet-400",
-      accent: "bg-violet-500",
-      sparkline: [20, 28, 35, 30, 48, 55, 68],
     },
     {
+      accent: "bg-blue-500",
+      change: quoteStats?.expiredCount
+        ? `${quoteStats.expiredCount} Süresi Dolan`
+        : "Stabil",
+      color: "from-blue-500/20 to-cyan-500/10 text-blue-600 dark:text-blue-400",
+      icon: Target,
       id: "winRate",
+      isPositive: true,
+      sparkline: [52, 55, 58, 56, 61, 63, 65],
+      subtitle: `${quoteStats?.acceptedCount ?? 0} Onaylanan Teklif`,
       title: "Teklif & Satış Kazanma",
       value: `%${winRate}`,
-      subtitle: `${quoteStats?.acceptedCount ?? 0} Onaylanan Teklif`,
-      change: quoteStats?.expiredCount ? `${quoteStats.expiredCount} Süresi Dolan` : "Stabil",
-      isPositive: true,
-      icon: Target,
-      color: "from-blue-500/20 to-cyan-500/10 text-blue-600 dark:text-blue-400",
-      accent: "bg-blue-500",
-      sparkline: [52, 55, 58, 56, 61, 63, 65],
     },
     {
+      accent: "bg-amber-500",
+      change: pendingApproval > 0 ? `${pendingApproval} Onay` : "Güncel",
+      color:
+        "from-amber-500/20 to-orange-500/10 text-amber-600 dark:text-amber-400",
+      icon: FileSpreadsheet,
       id: "proposals",
+      isPositive: pendingApproval === 0,
+      sparkline: [12, 15, 18, 14, 16, 15, 17],
+      subtitle:
+        pendingApproval > 0
+          ? `${pendingApproval} Yönetici Onayı Bekliyor`
+          : "Onay bekleyen yok",
       title: "Açık Teklifler & Onay",
       value: `${activeQuotesCount} Teklif`,
-      subtitle: pendingApproval > 0 ? `${pendingApproval} Yönetici Onayı Bekliyor` : "Onay bekleyen yok",
-      change: pendingApproval > 0 ? `${pendingApproval} Onay` : "Güncel",
-      isPositive: pendingApproval === 0,
-      icon: FileSpreadsheet,
-      color: "from-amber-500/20 to-orange-500/10 text-amber-600 dark:text-amber-400",
-      accent: "bg-amber-500",
-      sparkline: [12, 15, 18, 14, 16, 15, 17],
     },
   ];
 
@@ -159,8 +187,8 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
                 <span
                   className={`inline-flex items-center gap-0.5 rounded-lg px-2 py-0.5 font-bold text-[10px] ${
                     m.isPositive
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
-                      : "bg-amber-50 text-amber-700 border border-amber-200/60"
+                      ? "border border-emerald-200/60 bg-emerald-50 text-emerald-700"
+                      : "border border-amber-200/60 bg-amber-50 text-amber-700"
                   }`}
                 >
                   {m.isPositive ? (
@@ -170,7 +198,9 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
                   )}
                   {m.change}
                 </span>
-                <span className="text-[11px] text-slate-400 font-medium">{m.subtitle}</span>
+                <span className="font-medium text-[11px] text-slate-400">
+                  {m.subtitle}
+                </span>
               </div>
 
               {/* Sparkline Visualizer */}

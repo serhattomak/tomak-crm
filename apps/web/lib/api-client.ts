@@ -1,9 +1,9 @@
 import { createClient } from "./supabase/client";
 
 const API_BASE_URL =
-  typeof window !== "undefined"
-    ? ""
-    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  typeof window === "undefined"
+    ? process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+    : "";
 
 export interface ApiResponse<T> {
   data?: T;
@@ -1866,12 +1866,24 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<ShipmentDto[]>> {
     const query = new URLSearchParams();
-    if (params.status) query.set("status", params.status);
-    if (params.type) query.set("type", params.type);
-    if (params.carrierId) query.set("carrierId", params.carrierId);
-    if (params.customerId) query.set("customerId", params.customerId);
-    if (params.orderId) query.set("orderId", params.orderId);
-    if (params.search) query.set("search", params.search);
+    if (params.status) {
+      query.set("status", params.status);
+    }
+    if (params.type) {
+      query.set("type", params.type);
+    }
+    if (params.carrierId) {
+      query.set("carrierId", params.carrierId);
+    }
+    if (params.customerId) {
+      query.set("customerId", params.customerId);
+    }
+    if (params.orderId) {
+      query.set("orderId", params.orderId);
+    }
+    if (params.search) {
+      query.set("search", params.search);
+    }
     const qs = query.toString();
     return ApiClient.request<ShipmentDto[]>(
       `/api/shipping/shipments${qs ? `?${qs}` : ""}`,
@@ -1975,9 +1987,15 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<ReturnShipmentDto[]>> {
     const query = new URLSearchParams();
-    if (params.status) query.set("status", params.status);
-    if (params.customerId) query.set("customerId", params.customerId);
-    if (params.search) query.set("search", params.search);
+    if (params.status) {
+      query.set("status", params.status);
+    }
+    if (params.customerId) {
+      query.set("customerId", params.customerId);
+    }
+    if (params.search) {
+      query.set("search", params.search);
+    }
     const qs = query.toString();
     return ApiClient.request<ReturnShipmentDto[]>(
       `/api/shipping/returns${qs ? `?${qs}` : ""}`,
@@ -2102,19 +2120,45 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedDealsResponse>> {
     const query = new URLSearchParams();
-    if (params.pipelineId) query.set("pipelineId", params.pipelineId);
-    if (params.stageId) query.set("stageId", params.stageId);
-    if (params.customerId) query.set("customerId", params.customerId);
-    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
-    if (params.status) query.set("status", params.status);
-    if (params.priority) query.set("priority", params.priority);
-    if (params.source) query.set("source", params.source);
-    if (params.onlyMyDeals) query.set("onlyMyDeals", "true");
-    if (params.onlyUnassigned) query.set("onlyUnassigned", "true");
-    if (params.onlySlaBreached) query.set("onlySlaBreached", "true");
-    if (params.search) query.set("search", params.search);
-    if (params.page) query.set("page", params.page.toString());
-    if (params.pageSize) query.set("pageSize", params.pageSize.toString());
+    if (params.pipelineId) {
+      query.set("pipelineId", params.pipelineId);
+    }
+    if (params.stageId) {
+      query.set("stageId", params.stageId);
+    }
+    if (params.customerId) {
+      query.set("customerId", params.customerId);
+    }
+    if (params.assignedUserId) {
+      query.set("assignedUserId", params.assignedUserId);
+    }
+    if (params.status) {
+      query.set("status", params.status);
+    }
+    if (params.priority) {
+      query.set("priority", params.priority);
+    }
+    if (params.source) {
+      query.set("source", params.source);
+    }
+    if (params.onlyMyDeals) {
+      query.set("onlyMyDeals", "true");
+    }
+    if (params.onlyUnassigned) {
+      query.set("onlyUnassigned", "true");
+    }
+    if (params.onlySlaBreached) {
+      query.set("onlySlaBreached", "true");
+    }
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.page) {
+      query.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      query.set("pageSize", params.pageSize.toString());
+    }
 
     const qs = query.toString();
     return ApiClient.request<PagedDealsResponse>(
@@ -2225,7 +2269,11 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<DealStatsResponse>> {
     const url = `/api/deals/stats${pipelineId ? `?pipelineId=${pipelineId}` : ""}`;
-    return ApiClient.request<DealStatsResponse>(url, { method: "GET" }, tenantId);
+    return ApiClient.request<DealStatsResponse>(
+      url,
+      { method: "GET" },
+      tenantId
+    );
   }
 
   // ==========================================
@@ -2236,15 +2284,33 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedQuotesResponse>> {
     const query = new URLSearchParams();
-    if (params.search) query.set("search", params.search);
-    if (params.status) query.set("status", params.status);
-    if (params.customerId) query.set("customerId", params.customerId);
-    if (params.dealId) query.set("dealId", params.dealId);
-    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
-    if (params.fromDate) query.set("fromDate", params.fromDate);
-    if (params.toDate) query.set("toDate", params.toDate);
-    if (params.page) query.set("page", params.page.toString());
-    if (params.pageSize) query.set("pageSize", params.pageSize.toString());
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.status) {
+      query.set("status", params.status);
+    }
+    if (params.customerId) {
+      query.set("customerId", params.customerId);
+    }
+    if (params.dealId) {
+      query.set("dealId", params.dealId);
+    }
+    if (params.assignedUserId) {
+      query.set("assignedUserId", params.assignedUserId);
+    }
+    if (params.fromDate) {
+      query.set("fromDate", params.fromDate);
+    }
+    if (params.toDate) {
+      query.set("toDate", params.toDate);
+    }
+    if (params.page) {
+      query.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      query.set("pageSize", params.pageSize.toString());
+    }
 
     const qs = query.toString();
     return ApiClient.request<PagedQuotesResponse>(
@@ -2461,13 +2527,10 @@ export class ApiClient {
     token: string,
     data: { acceptedByName?: string; customerNotes?: string }
   ): Promise<ApiResponse<boolean>> {
-    return ApiClient.request<boolean>(
-      `/api/public/quotes/${token}/accept`,
-      {
-        body: JSON.stringify(data),
-        method: "POST",
-      }
-    );
+    return ApiClient.request<boolean>(`/api/public/quotes/${token}/accept`, {
+      body: JSON.stringify(data),
+      method: "POST",
+    });
   }
 
   static async publicRequestRevision(
@@ -3944,7 +4007,14 @@ export interface ShipmentStatusHistoryDto {
   description?: string;
   id: string;
   location?: string;
-  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+  status:
+    | "Preparing"
+    | "Dispatched"
+    | "InTransit"
+    | "Delivered"
+    | "FailedDelivery"
+    | "Cancelled"
+    | string;
 }
 
 export interface ShipmentDto {
@@ -3970,7 +4040,14 @@ export interface ShipmentDto {
   recipientPhone?: string;
   shipmentNumber: string;
   shippingCost: number;
-  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+  status:
+    | "Preparing"
+    | "Dispatched"
+    | "InTransit"
+    | "Delivered"
+    | "FailedDelivery"
+    | "Cancelled"
+    | string;
   statusHistories: ShipmentStatusHistoryDto[];
   totalDesi: number;
   totalWeightKg: number;
@@ -4004,7 +4081,14 @@ export interface ReturnShipmentDto {
   originalShipmentId?: string;
   reason: string;
   returnCode: string;
-  status: "Requested" | "InTransit" | "Received" | "Inspected" | "Rejected" | "Restocked" | string;
+  status:
+    | "Requested"
+    | "InTransit"
+    | "Received"
+    | "Inspected"
+    | "Rejected"
+    | "Restocked"
+    | string;
   trackingNumber?: string;
   updatedAt: string;
 }
@@ -4013,7 +4097,13 @@ export interface CreateShipmentPayload {
   carrierId?: string;
   customerId?: string;
   customerName: string;
-  items?: { productId?: string; productName: string; quantity: number; sku?: string; unit?: string }[];
+  items?: {
+    productId?: string;
+    productName: string;
+    quantity: number;
+    sku?: string;
+    unit?: string;
+  }[];
   notes?: string;
   orderId?: string;
   orderNumber?: string;
@@ -4036,7 +4126,14 @@ export interface UpdateShipmentStatusPayload {
   changedByUserId?: string;
   description?: string;
   location?: string;
-  status: "Preparing" | "Dispatched" | "InTransit" | "Delivered" | "FailedDelivery" | "Cancelled" | string;
+  status:
+    | "Preparing"
+    | "Dispatched"
+    | "InTransit"
+    | "Delivered"
+    | "FailedDelivery"
+    | "Cancelled"
+    | string;
 }
 
 export interface CreateCarrierPayload {
@@ -4062,7 +4159,14 @@ export interface UpdateReturnStatusPayload {
   inspectedByName?: string;
   inspectedByUserId?: string;
   inspectionNotes?: string;
-  status: "Requested" | "InTransit" | "Received" | "Inspected" | "Rejected" | "Restocked" | string;
+  status:
+    | "Requested"
+    | "InTransit"
+    | "Received"
+    | "Inspected"
+    | "Rejected"
+    | "Restocked"
+    | string;
 }
 
 // ==========================================
@@ -4095,7 +4199,12 @@ export interface PipelineDto {
   isActive: boolean;
   isDefault: boolean;
   name: string;
-  routingStrategy: "RoundRobin" | "LeastLoaded" | "OnlineOnly" | "Manual" | string;
+  routingStrategy:
+    | "RoundRobin"
+    | "LeastLoaded"
+    | "OnlineOnly"
+    | "Manual"
+    | string;
   stages: PipelineStageDto[];
   targetDepartmentId?: string;
   tenantId: string;
@@ -4173,7 +4282,14 @@ export interface DealSummaryDto {
   priority: "Low" | "Medium" | "High" | "Urgent" | string;
   slaDueDate?: string;
   slaHours?: number;
-  source: "LiveChat" | "WebForm" | "Campaign" | "InboundEmail" | "Manual" | "Api" | string;
+  source:
+    | "LiveChat"
+    | "WebForm"
+    | "Campaign"
+    | "InboundEmail"
+    | "Manual"
+    | "Api"
+    | string;
   sourceReferenceId?: string;
   stageColor?: string;
   stageId: string;
@@ -4243,8 +4359,8 @@ export interface DealDetailDto {
   contactPhone?: string;
   createdAt: string;
   currency: string;
-  customerId?: string;
   customerEmail?: string;
+  customerId?: string;
   customerName?: string;
   customerPhone?: string;
   customerType?: string;
@@ -4374,7 +4490,17 @@ export interface QuoteSummaryDto {
   rejectedAt?: string;
   revisionNumber: number;
   sentAt?: string;
-  status: "Draft" | "PendingApproval" | "Approved" | "Sent" | "Viewed" | "Accepted" | "Rejected" | "Expired" | "Revised" | string;
+  status:
+    | "Draft"
+    | "PendingApproval"
+    | "Approved"
+    | "Sent"
+    | "Viewed"
+    | "Accepted"
+    | "Rejected"
+    | "Expired"
+    | "Revised"
+    | string;
   subtotal: number;
   taxAmount: number;
   tenantId: string;
@@ -4462,7 +4588,17 @@ export interface QuoteDetailDto {
   revisionNumber: number;
   revisions: QuoteRevisionSummaryDto[];
   sentAt?: string;
-  status: "Draft" | "PendingApproval" | "Approved" | "Sent" | "Viewed" | "Accepted" | "Rejected" | "Expired" | "Revised" | string;
+  status:
+    | "Draft"
+    | "PendingApproval"
+    | "Approved"
+    | "Sent"
+    | "Viewed"
+    | "Accepted"
+    | "Rejected"
+    | "Expired"
+    | "Revised"
+    | string;
   subtotal: number;
   taxAmount: number;
   tenantId: string;
@@ -4587,6 +4723,3 @@ export interface PublicQuoteViewDto {
   totalAmount: number;
   validUntil?: string;
 }
-
-
-

@@ -20,7 +20,9 @@ export function SalesGaugeWidget({
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchStats = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
       const [ordersRes, quotesRes] = await Promise.allSettled([
@@ -44,10 +46,17 @@ export function SalesGaugeWidget({
     fetchStats();
   }, [fetchStats]);
 
-  const totalRevenue = (orderStats?.totalRevenue || 0) + (quoteStats?.activeProposalsVolume ? Number(quoteStats.activeProposalsVolume) : 0);
+  const totalRevenue =
+    (orderStats?.totalRevenue || 0) +
+    (quoteStats?.activeProposalsVolume
+      ? Number(quoteStats.activeProposalsVolume)
+      : 0);
   const totalOrders = orderStats?.totalOrders || 0;
-  const targetRevenue = 250000; // Benchmark period target
-  const currentScore = targetRevenue > 0 ? Math.min(100, Math.round((totalRevenue / targetRevenue) * 100)) : 0;
+  const targetRevenue = 250_000; // Benchmark period target
+  const currentScore =
+    targetRevenue > 0
+      ? Math.min(100, Math.round((totalRevenue / targetRevenue) * 100))
+      : 0;
   const hasData = totalRevenue > 0 || totalOrders > 0;
 
   return (
@@ -62,7 +71,7 @@ export function SalesGaugeWidget({
               <span className="font-bold text-slate-900 text-sm">
                 Satış Hedef Performansı
               </span>
-              <div className="text-[11px] text-slate-500 font-medium">
+              <div className="font-medium text-[11px] text-slate-500">
                 Dönemsel Kota & Hedef Takibi
               </div>
             </div>
@@ -77,33 +86,22 @@ export function SalesGaugeWidget({
         </div>
 
         {isLoading ? (
-          <div className="h-40 flex items-center justify-center">
+          <div className="flex h-40 items-center justify-center">
             <div className="h-28 w-full animate-pulse rounded-2xl bg-slate-50" />
           </div>
-        ) : !hasData ? (
-          <div className="flex flex-col items-center justify-center py-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-3 shadow-2xs">
-              <Target className="h-6 w-6" />
-            </div>
-            <h3 className="font-bold text-slate-800 text-sm">Henüz kota veya sipariş verisi yok</h3>
-            <p className="text-slate-500 text-xs mt-1 max-w-xs">
-              İlk siparişinizi oluşturarak veya teklifleri kapatıp dönemsel hedef yüzdenizi takip etmeye başlayın.
-            </p>
-            <Link
-              href={`/${activeTenant?.slug || "workspace"}/orders`}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-fuchsia-600 px-3.5 py-2 font-bold text-white text-xs shadow-xs hover:bg-fuchsia-700 transition"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Sipariş / Teklif Oluştur</span>
-            </Link>
-          </div>
-        ) : (
+        ) : hasData ? (
           <>
             {/* Speedometer Radial Gauge */}
             <div className="relative my-3 flex flex-col items-center justify-center">
               <svg className="w-48 overflow-visible" viewBox="0 0 200 120">
                 <defs>
-                  <linearGradient id="salesGaugeGrad" x1="0%" x2="100%" y1="100%" y2="0%">
+                  <linearGradient
+                    id="salesGaugeGrad"
+                    x1="0%"
+                    x2="100%"
+                    y1="100%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#06b6d4" />
                     <stop offset="50%" stopColor="#8b5cf6" />
                     <stop offset="100%" stopColor="#ec4899" />
@@ -136,7 +134,11 @@ export function SalesGaugeWidget({
                   </span>
                 </div>
                 <span className="font-medium text-[11px] text-slate-400">
-                  Gerçekleşen: ₺{totalRevenue.toLocaleString("tr-TR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  Gerçekleşen: ₺
+                  {totalRevenue.toLocaleString("tr-TR", {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  })}
                 </span>
               </div>
             </div>
@@ -144,8 +146,12 @@ export function SalesGaugeWidget({
             {/* Motivational message & Highlights */}
             <div className="mt-2 space-y-2 rounded-2xl bg-slate-50 p-3 text-xs">
               <div className="flex items-center justify-between">
-                <span className="font-medium text-slate-600">Tamamlanan Siparişler:</span>
-                <span className="font-bold text-slate-900">{totalOrders} Adet</span>
+                <span className="font-medium text-slate-600">
+                  Tamamlanan Siparişler:
+                </span>
+                <span className="font-bold text-slate-900">
+                  {totalOrders} Adet
+                </span>
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
                 <div
@@ -153,18 +159,38 @@ export function SalesGaugeWidget({
                   style={{ width: `${Math.max(5, currentScore)}%` }}
                 />
               </div>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+              <p className="font-medium text-[11px] text-slate-500 leading-relaxed">
                 Dönemsel hedefin %{currentScore}&apos;una ulaşıldı.
               </p>
             </div>
           </>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-6 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
+              <Target className="h-6 w-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-sm">
+              Henüz kota veya sipariş verisi yok
+            </h3>
+            <p className="mt-1 max-w-xs text-slate-500 text-xs">
+              İlk siparişinizi oluşturarak veya teklifleri kapatıp dönemsel
+              hedef yüzdenizi takip etmeye başlayın.
+            </p>
+            <Link
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-fuchsia-600 px-3.5 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-fuchsia-700"
+              href={`/${activeTenant?.slug || "workspace"}/orders`}
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Sipariş / Teklif Oluştur</span>
+            </Link>
+          </div>
         )}
       </div>
 
       {hasData && (
         <Link
-          href={`/${activeTenant?.slug || "workspace"}/orders`}
           className="mt-4 flex items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white py-2.5 font-bold text-slate-800 text-xs shadow-2xs transition-colors hover:bg-slate-50 hover:text-fuchsia-600"
+          href={`/${activeTenant?.slug || "workspace"}/orders`}
         >
           <span>Sipariş ve Hedef Detayları</span>
           <ArrowRight className="h-3.5 w-3.5" />

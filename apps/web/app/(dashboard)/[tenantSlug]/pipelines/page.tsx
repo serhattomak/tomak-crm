@@ -4,55 +4,34 @@ import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Activity,
-  AlertCircle,
   AlertTriangle,
   ArrowLeft,
-  ArrowRight,
   Award,
-  Building,
   Building2,
-  Calendar,
   Check,
-  CheckCircle2,
-  ChevronDown,
-  ChevronRight,
   Clock,
-  Download,
   ExternalLink,
-  Eye,
-  Filter,
   Flame,
-  HelpCircle,
   Kanban,
   Layers,
-  List,
-  Mail,
   MessageSquare,
-  MoreHorizontal,
-  MoveRight,
-  Phone,
   Plus,
   RefreshCw,
   Search,
   Settings,
-  Sparkles,
   Table as TableIcon,
-  Tag,
   Trash2,
-  TrendingDown,
   TrendingUp,
   User,
   UserCheck,
-  UserPlus,
   Users,
   X,
-  XCircle,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { PermissionGate } from "@/components/permission-gate";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ApiClient,
   type DealDetailDto,
@@ -60,7 +39,6 @@ import {
   type DealSummaryDto,
   type EmployeeDto,
   type PipelineDto,
-  type PipelineStageDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
@@ -85,7 +63,9 @@ export default function PipelinesPage() {
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState<"all" | "my" | "unassigned" | "sla">("all");
+  const [filterType, setFilterType] = useState<
+    "all" | "my" | "unassigned" | "sla"
+  >("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [userFilter, setUserFilter] = useState<string>("all");
 
@@ -111,17 +91,23 @@ export default function PipelinesPage() {
 
   // Load Pipelines and Employees
   const loadInitialData = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
       const [pipeRes, empRes] = await Promise.all([
         ApiClient.getPipelines(activeTenant.id),
-        ApiClient.getEmployees({ pageSize: 100, status: "Active" }, activeTenant.id),
+        ApiClient.getEmployees(
+          { pageSize: 100, status: "Active" },
+          activeTenant.id
+        ),
       ]);
 
       if (pipeRes.success && pipeRes.data && pipeRes.data.length > 0) {
         setPipelines(pipeRes.data);
-        const defaultPipe = pipeRes.data.find((p) => p.isDefault) || pipeRes.data[0];
+        const defaultPipe =
+          pipeRes.data.find((p) => p.isDefault) || pipeRes.data[0];
         if (defaultPipe) {
           setSelectedPipelineId((prev) => (prev ? prev : defaultPipe.id));
         }
@@ -139,11 +125,16 @@ export default function PipelinesPage() {
 
   // Load Deals & Stats for selected pipeline
   const loadDeals = useCallback(async () => {
-    if (!activeTenant?.id || !selectedPipelineId) return;
+    if (!(activeTenant?.id && selectedPipelineId)) {
+      return;
+    }
     setIsRefreshing(true);
     try {
       const [dealsRes, statsRes] = await Promise.all([
-        ApiClient.getDeals({ pipelineId: selectedPipelineId, pageSize: 200 }, activeTenant.id),
+        ApiClient.getDeals(
+          { pageSize: 200, pipelineId: selectedPipelineId },
+          activeTenant.id
+        ),
         ApiClient.getDealStats(selectedPipelineId, activeTenant.id),
       ]);
 
@@ -172,9 +163,10 @@ export default function PipelinesPage() {
     }
   }, [selectedPipelineId, activeTenant?.id, loadDeals]);
 
-  const activePipeline = useMemo(() => {
-    return pipelines.find((p) => p.id === selectedPipelineId) || pipelines[0];
-  }, [pipelines, selectedPipelineId]);
+  const activePipeline = useMemo(
+    () => pipelines.find((p) => p.id === selectedPipelineId) || pipelines[0],
+    [pipelines, selectedPipelineId]
+  );
 
   // Filtered deals
   const filteredDeals = useMemo(() => {
@@ -187,18 +179,30 @@ export default function PipelinesPage() {
         const matchesContact = deal.contactName?.toLowerCase().includes(q);
         const matchesEmail = deal.contactEmail?.toLowerCase().includes(q);
         const matchesPhone = deal.contactPhone?.includes(q);
-        if (!matchesTitle && !matchesCustomer && !matchesContact && !matchesEmail && !matchesPhone) {
+        if (
+          !(
+            matchesTitle ||
+            matchesCustomer ||
+            matchesContact ||
+            matchesEmail ||
+            matchesPhone
+          )
+        ) {
           return false;
         }
       }
 
       // 2. Filter Type
       if (filterType === "my") {
-        if (!profile?.id || deal.assignedUserId !== profile.id) return false;
+        if (!profile?.id || deal.assignedUserId !== profile.id) {
+          return false;
+        }
       } else if (filterType === "unassigned") {
-        if (deal.assignedUserId) return false;
-      } else if (filterType === "sla") {
-        if (!deal.isSlaBreached) return false;
+        if (deal.assignedUserId) {
+          return false;
+        }
+      } else if (filterType === "sla" && !deal.isSlaBreached) {
+        return false;
       }
 
       // 3. Priority
@@ -257,10 +261,14 @@ export default function PipelinesPage() {
     const dealId = e.dataTransfer.getData("text/plain") || draggedDealId;
     setDraggedDealId(null);
 
-    if (!dealId || !targetStageId || !activeTenant?.id) return;
+    if (!(dealId && targetStageId && activeTenant?.id)) {
+      return;
+    }
 
     const currentDeal = deals.find((d) => d.id === dealId);
-    if (!currentDeal || currentDeal.stageId === targetStageId) return;
+    if (!currentDeal || currentDeal.stageId === targetStageId) {
+      return;
+    }
 
     // Optimistic UI update
     const previousStageId = currentDeal.stageId;
@@ -281,13 +289,17 @@ export default function PipelinesPage() {
       } else {
         // Revert
         setDeals((prev) =>
-          prev.map((d) => (d.id === dealId ? { ...d, stageId: previousStageId } : d))
+          prev.map((d) =>
+            d.id === dealId ? { ...d, stageId: previousStageId } : d
+          )
         );
         toast.error(res.message || "Aşama güncellenirken hata oluştu");
       }
     } catch {
       setDeals((prev) =>
-        prev.map((d) => (d.id === dealId ? { ...d, stageId: previousStageId } : d))
+        prev.map((d) =>
+          d.id === dealId ? { ...d, stageId: previousStageId } : d
+        )
       );
       toast.error("İşlem gerçekleştirilemedi");
     }
@@ -296,7 +308,7 @@ export default function PipelinesPage() {
   // Claim deal (Assign to me)
   const handleClaimDeal = async (dealId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!profile?.id || !activeTenant?.id) {
+    if (!(profile?.id && activeTenant?.id)) {
       toast.error("Kullanıcı profiliniz bulunamadı");
       return;
     }
@@ -304,7 +316,7 @@ export default function PipelinesPage() {
     try {
       const res = await ApiClient.assignDeal(
         dealId,
-        { dealId, assignedUserId: profile.id },
+        { assignedUserId: profile.id, dealId },
         activeTenant.id
       );
       if (res.success) {
@@ -318,13 +330,12 @@ export default function PipelinesPage() {
     }
   };
 
-  const formatCurrency = (val: number, cur = "TRY") => {
-    return new Intl.NumberFormat("tr-TR", {
-      style: "currency",
+  const formatCurrency = (val: number, cur = "TRY") =>
+    new Intl.NumberFormat("tr-TR", {
       currency: cur === "TRY" ? "TRY" : cur,
       maximumFractionDigits: 0,
+      style: "currency",
     }).format(val);
-  };
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
@@ -395,9 +406,9 @@ export default function PipelinesPage() {
             {/* Pipeline Selector */}
             <div className="flex items-center gap-1.5">
               <select
-                value={selectedPipelineId}
-                onChange={(e) => setSelectedPipelineId(e.target.value)}
                 className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-bold text-slate-800 text-xs shadow-2xs hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) => setSelectedPipelineId(e.target.value)}
+                value={selectedPipelineId}
               >
                 {pipelines.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -407,17 +418,18 @@ export default function PipelinesPage() {
               </select>
 
               <button
-                type="button"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-2xs transition hover:bg-slate-50 hover:text-slate-800"
                 onClick={() => setIsSettingsModalOpen(true)}
                 title="Pipeline Ayarları ve Aşamaları Düzenle"
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-2xs hover:bg-slate-50 hover:text-slate-800 transition"
+                type="button"
               >
                 <Settings className="h-4 w-4" />
               </button>
             </div>
           </div>
           <p className="mt-1 text-slate-500 text-xs">
-            {activePipeline?.description || "Müşteri ve canlı destek taleplerini aşamalara göre takip edin, çalışanlara akıllı dağıtın."}
+            {activePipeline?.description ||
+              "Müşteri ve canlı destek taleplerini aşamalara göre takip edin, çalışanlara akıllı dağıtın."}
           </p>
         </div>
 
@@ -425,37 +437,39 @@ export default function PipelinesPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Refresh */}
           <button
-            type="button"
-            onClick={loadDeals}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition hover:bg-slate-50"
             disabled={isRefreshing}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs hover:bg-slate-50 transition"
+            onClick={loadDeals}
             title="Yenile"
+            type="button"
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
           </button>
 
           {/* View Mode Switcher */}
           <div className="flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1 shadow-2xs">
             <button
-              type="button"
-              onClick={() => setViewMode("kanban")}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "kanban"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
+              onClick={() => setViewMode("kanban")}
+              type="button"
             >
               <Kanban className="h-3.5 w-3.5" />
               <span>Pano</span>
             </button>
             <button
-              type="button"
-              onClick={() => setViewMode("table")}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "table"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
+              onClick={() => setViewMode("table")}
+              type="button"
             >
               <TableIcon className="h-3.5 w-3.5" />
               <span>Tablo</span>
@@ -464,9 +478,9 @@ export default function PipelinesPage() {
 
           {/* Create Deal Button */}
           <button
-            type="button"
-            onClick={() => setIsCreateModalOpen(true)}
             className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+            onClick={() => setIsCreateModalOpen(true)}
+            type="button"
           >
             <Plus className="h-4 w-4" />
             <span>Yeni Fırsat Ekle</span>
@@ -484,7 +498,10 @@ export default function PipelinesPage() {
                 Açık Fırsat Hacmi
               </span>
               <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
-                {formatCurrency(stats?.totalOpenValue ?? 0, stats?.currency ?? "TRY")}
+                {formatCurrency(
+                  stats?.totalOpenValue ?? 0,
+                  stats?.currency ?? "TRY"
+                )}
               </div>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
@@ -565,51 +582,51 @@ export default function PipelinesPage() {
           {/* Quick Filter Buttons */}
           <div className="flex flex-wrap items-center gap-2">
             <button
-              type="button"
-              onClick={() => setFilterType("all")}
               className={`rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "all"
-                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                  ? "border border-blue-200 bg-blue-50 text-blue-700"
                   : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
               }`}
+              onClick={() => setFilterType("all")}
+              type="button"
             >
               Tüm Fırsatlar ({deals.length})
             </button>
 
             <button
-              type="button"
-              onClick={() => setFilterType("my")}
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "my"
-                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                  ? "border border-blue-200 bg-blue-50 text-blue-700"
                   : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
               }`}
+              onClick={() => setFilterType("my")}
+              type="button"
             >
               <UserCheck className="h-3.5 w-3.5" />
               Bana Atananlar
             </button>
 
             <button
-              type="button"
-              onClick={() => setFilterType("unassigned")}
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "unassigned"
-                  ? "bg-amber-50 text-amber-700 border border-amber-200"
+                  ? "border border-amber-200 bg-amber-50 text-amber-700"
                   : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
               }`}
+              onClick={() => setFilterType("unassigned")}
+              type="button"
             >
               <Users className="h-3.5 w-3.5" />
               Açık Havuz ({deals.filter((d) => !d.assignedUserId).length})
             </button>
 
             <button
-              type="button"
-              onClick={() => setFilterType("sla")}
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "sla"
-                  ? "bg-rose-50 text-rose-700 border border-rose-200"
+                  ? "border border-rose-200 bg-rose-50 text-rose-700"
                   : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
               }`}
+              onClick={() => setFilterType("sla")}
+              type="button"
             >
               <Flame className="h-3.5 w-3.5 text-rose-500" />
               SLA Aşanlar ({deals.filter((d) => d.isSlaBreached).length})
@@ -620,19 +637,19 @@ export default function PipelinesPage() {
           <div className="flex flex-wrap items-center gap-2">
             {/* Search Input */}
             <div className="relative min-w-[240px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+              <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
               <input
-                type="text"
-                placeholder="Fırsat, müşteri veya iletişim ara..."
-                value={searchQuery}
+                className="w-full rounded-xl border border-slate-200 bg-white py-1.5 pr-8 pl-9 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-1.5 font-medium text-slate-900 placeholder-slate-400 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                placeholder="Fırsat, müşteri veya iletişim ara..."
+                type="text"
+                value={searchQuery}
               />
               {searchQuery && (
                 <button
-                  type="button"
+                  className="absolute top-1/2 right-2.5 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  type="button"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -641,9 +658,9 @@ export default function PipelinesPage() {
 
             {/* Priority filter */}
             <select
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
               className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-700 text-xs shadow-2xs hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              onChange={(e) => setPriorityFilter(e.target.value)}
+              value={priorityFilter}
             >
               <option value="all">Öncelik: Tümü</option>
               <option value="Urgent">Acil</option>
@@ -654,9 +671,9 @@ export default function PipelinesPage() {
 
             {/* User filter */}
             <select
-              value={userFilter}
-              onChange={(e) => setUserFilter(e.target.value)}
               className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-700 text-xs shadow-2xs hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              onChange={(e) => setUserFilter(e.target.value)}
+              value={userFilter}
             >
               <option value="all">Temsilci: Tümü</option>
               {employees.map((emp) => (
@@ -681,7 +698,7 @@ export default function PipelinesPage() {
         </div>
       ) : viewMode === "kanban" ? (
         /* Kanban Board View */
-        <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+        <div className="custom-scrollbar flex gap-4 overflow-x-auto pb-4">
           {activePipeline?.stages?.map((stage) => {
             const stageDeals = dealsByStage[stage.id] || [];
             const stageTotal = stageDeals.reduce((sum, d) => sum + d.value, 0);
@@ -689,24 +706,24 @@ export default function PipelinesPage() {
 
             return (
               <div
-                key={stage.id}
-                onDragOver={(e) => handleDragOver(e, stage.id)}
-                onDragLeave={handleDragLeave}
-                onDrop={(e) => handleDrop(e, stage.id)}
-                className={`flex w-80 shrink-0 flex-col rounded-3xl border transition-all duration-200 p-3 shadow-2xs ${
+                className={`flex w-80 shrink-0 flex-col rounded-3xl border p-3 shadow-2xs transition-all duration-200 ${
                   isDragOver
-                    ? "bg-blue-50/80 border-blue-400 ring-2 ring-blue-500/20"
-                    : "bg-slate-50/70 border-slate-200/80"
+                    ? "border-blue-400 bg-blue-50/80 ring-2 ring-blue-500/20"
+                    : "border-slate-200/80 bg-slate-50/70"
                 }`}
+                key={stage.id}
+                onDragLeave={handleDragLeave}
+                onDragOver={(e) => handleDragOver(e, stage.id)}
+                onDrop={(e) => handleDrop(e, stage.id)}
               >
                 {/* Column Header */}
                 <div className="mb-2.5 flex items-center justify-between border-slate-200 border-b px-1 pb-2.5">
-                  <div className="flex items-center gap-2 min-w-0">
+                  <div className="flex min-w-0 items-center gap-2">
                     <div
-                      className="h-3 w-3 rounded-full flex-none shadow-xs"
+                      className="h-3 w-3 flex-none rounded-full shadow-xs"
                       style={{ backgroundColor: stage.color || "#3B82F6" }}
                     />
-                    <span className="font-bold text-slate-900 text-xs truncate">
+                    <span className="truncate font-bold text-slate-900 text-xs">
                       {stage.name}
                     </span>
                     <span className="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-[10px] text-slate-700">
@@ -720,7 +737,7 @@ export default function PipelinesPage() {
                 </div>
 
                 {/* Stage Probability & SLA Sub-header */}
-                <div className="mb-3 flex items-center justify-between rounded-xl bg-white border border-slate-200/60 px-2.5 py-1 text-[10px] text-slate-500 shadow-2xs">
+                <div className="mb-3 flex items-center justify-between rounded-xl border border-slate-200/60 bg-white px-2.5 py-1 text-[10px] text-slate-500 shadow-2xs">
                   <span className="flex items-center gap-1 font-semibold text-slate-600">
                     <Award className="h-3 w-3 text-blue-600" />
                     Kazanma: %{stage.probability}
@@ -736,26 +753,26 @@ export default function PipelinesPage() {
                 </div>
 
                 {/* Card Drop List */}
-                <div className="flex-1 space-y-3 overflow-y-auto max-h-[calc(100vh-320px)] custom-scrollbar pr-0.5">
+                <div className="custom-scrollbar max-h-[calc(100vh-320px)] flex-1 space-y-3 overflow-y-auto pr-0.5">
                   {stageDeals.map((deal) => {
                     return (
                       <div
-                        key={deal.id}
+                        className="group relative cursor-pointer rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.99]"
                         draggable
-                        onDragStart={(e) => handleDragStart(e, deal.id)}
+                        key={deal.id}
                         onClick={() => setSelectedDealId(deal.id)}
-                        className="group relative rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md cursor-pointer active:scale-[0.99]"
+                        onDragStart={(e) => handleDragStart(e, deal.id)}
                       >
                         {/* SLA Breach Warning */}
                         {deal.isSlaBreached && (
-                          <div className="mb-2.5 flex items-center gap-1.5 rounded-lg bg-rose-50 border border-rose-200 px-2 py-1 text-[10px] font-bold text-rose-700">
-                            <AlertTriangle className="h-3.5 w-3.5 text-rose-600 flex-none" />
+                          <div className="mb-2.5 flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 font-bold text-[10px] text-rose-700">
+                            <AlertTriangle className="h-3.5 w-3.5 flex-none text-rose-600" />
                             <span>Aşama SLA Süresi Aşıldı!</span>
                           </div>
                         )}
 
                         {/* Top row: Source & Priority */}
-                        <div className="flex items-center justify-between gap-2 mb-2">
+                        <div className="mb-2 flex items-center justify-between gap-2">
                           {/* Source pill */}
                           <span
                             className={`inline-flex items-center gap-1 rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getSourceBadge(
@@ -779,17 +796,17 @@ export default function PipelinesPage() {
                         </div>
 
                         {/* Deal Title */}
-                        <h4 className="font-bold text-slate-900 text-xs group-hover:text-blue-600 transition-colors line-clamp-2 mb-1.5">
+                        <h4 className="mb-1.5 line-clamp-2 font-bold text-slate-900 text-xs transition-colors group-hover:text-blue-600">
                           {deal.title}
                         </h4>
 
                         {/* Customer / Company */}
                         {deal.customerName && (
-                          <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mb-2.5">
+                          <div className="mb-2.5 flex items-center gap-1.5 text-[11px] text-slate-500">
                             {deal.customerType === "Company" ? (
-                              <Building2 className="h-3.5 w-3.5 text-slate-400 flex-none" />
+                              <Building2 className="h-3.5 w-3.5 flex-none text-slate-400" />
                             ) : (
-                              <User className="h-3.5 w-3.5 text-slate-400 flex-none" />
+                              <User className="h-3.5 w-3.5 flex-none text-slate-400" />
                             )}
                             <span className="truncate font-medium text-slate-700">
                               {deal.customerName}
@@ -798,35 +815,37 @@ export default function PipelinesPage() {
                         )}
 
                         {/* Financial Value & Tags */}
-                        <div className="flex items-center justify-between border-slate-100 border-t pt-2.5 mb-2.5">
+                        <div className="mb-2.5 flex items-center justify-between border-slate-100 border-t pt-2.5">
                           <span className="font-extrabold text-slate-900 text-xs">
                             {formatCurrency(deal.value, deal.currency)}
                           </span>
                           {deal.tags && deal.tags.length > 0 && (
-                            <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+                            <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-[10px] text-slate-600">
                               #{deal.tags[0]}
                             </span>
                           )}
                         </div>
 
                         {/* Card Footer: Assignee & Action */}
-                        <div className="flex items-center justify-between pt-2 border-slate-100 border-t text-[11px]">
+                        <div className="flex items-center justify-between border-slate-100 border-t pt-2 text-[11px]">
                           {deal.assignedUserId ? (
                             <div className="flex items-center gap-1.5 text-slate-700">
                               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 font-bold text-[10px] text-blue-700">
                                 {deal.assignedUserName
-                                  ? deal.assignedUserName.charAt(0).toUpperCase()
+                                  ? deal.assignedUserName
+                                      .charAt(0)
+                                      .toUpperCase()
                                   : "U"}
                               </div>
-                              <span className="truncate max-w-[130px] font-medium text-xs">
+                              <span className="max-w-[130px] truncate font-medium text-xs">
                                 {deal.assignedUserName || "Temsilci"}
                               </span>
                             </div>
                           ) : (
                             <button
-                              type="button"
+                              className="inline-flex items-center gap-1 rounded-lg bg-amber-500 px-2.5 py-1 font-bold text-[10px] text-white shadow-2xs transition hover:bg-amber-600"
                               onClick={(e) => handleClaimDeal(deal.id, e)}
-                              className="inline-flex items-center gap-1 rounded-lg bg-amber-500 px-2.5 py-1 font-bold text-[10px] text-white shadow-2xs hover:bg-amber-600 transition"
+                              type="button"
                             >
                               <Zap className="h-2.5 w-2.5" />
                               Üzerime Al
@@ -834,7 +853,7 @@ export default function PipelinesPage() {
                           )}
 
                           {/* Counters */}
-                          <div className="flex items-center gap-2 text-slate-400 text-[10px]">
+                          <div className="flex items-center gap-2 text-[10px] text-slate-400">
                             {deal.notesCount > 0 && (
                               <span className="flex items-center gap-0.5 font-medium">
                                 <MessageSquare className="h-3 w-3" />
@@ -855,11 +874,11 @@ export default function PipelinesPage() {
 
                   {stageDeals.length === 0 && (
                     <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 border-dashed bg-white/60 p-8 text-center">
-                      <Kanban className="h-6 w-6 text-slate-300 mb-1.5" />
+                      <Kanban className="mb-1.5 h-6 w-6 text-slate-300" />
                       <p className="font-semibold text-slate-500 text-xs">
                         Bu aşamada kart yok
                       </p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">
+                      <p className="mt-0.5 text-[10px] text-slate-400">
                         Kart sürükleyip bırakabilirsiniz
                       </p>
                     </div>
@@ -890,21 +909,22 @@ export default function PipelinesPage() {
               <tbody className="divide-y divide-slate-100">
                 {filteredDeals.map((deal) => (
                   <tr
+                    className="group cursor-pointer transition-colors hover:bg-slate-50/80"
                     key={deal.id}
                     onClick={() => setSelectedDealId(deal.id)}
-                    className="group transition-colors hover:bg-slate-50/80 cursor-pointer"
                   >
                     <td className="py-4 pr-4 pl-6 font-bold text-slate-900 group-hover:text-blue-600">
                       {deal.title}
                     </td>
-                    <td className="px-4 py-4 text-slate-700 font-medium">
+                    <td className="px-4 py-4 font-medium text-slate-700">
                       {deal.customerName || "-"}
                     </td>
                     <td className="px-4 py-4">
                       <span
                         className="inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-[10px]"
                         style={{
-                          backgroundColor: `${deal.stageColor}15` || "#3B82F615",
+                          backgroundColor:
+                            `${deal.stageColor}15` || "#3B82F615",
                           borderColor: `${deal.stageColor}35` || "#3B82F635",
                           color: deal.stageColor || "#1E40AF",
                         }}
@@ -941,19 +961,19 @@ export default function PipelinesPage() {
                           </span>
                         </div>
                       ) : (
-                        <span className="inline-flex items-center rounded-lg bg-amber-50 px-2 py-0.5 font-bold text-[10px] text-amber-700 border border-amber-200">
+                        <span className="inline-flex items-center rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-[10px] text-amber-700">
                           Açık Havuz
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-4">
                       {deal.isSlaBreached ? (
-                        <span className="inline-flex items-center gap-1 text-rose-600 font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 font-bold text-[10px] text-rose-600">
                           <AlertTriangle className="h-3.5 w-3.5" />
                           SLA Aşıldı
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-emerald-600 font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 font-bold text-[10px] text-emerald-600">
                           <Check className="h-3.5 w-3.5" />
                           Normal
                         </span>
@@ -964,12 +984,12 @@ export default function PipelinesPage() {
                     </td>
                     <td className="py-4 pr-6 pl-4 text-right">
                       <button
-                        type="button"
+                        className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedDealId(deal.id);
                         }}
-                        className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50 transition"
+                        type="button"
                       >
                         Detay
                       </button>
@@ -978,7 +998,10 @@ export default function PipelinesPage() {
                 ))}
                 {filteredDeals.length === 0 && (
                   <tr>
-                    <td colSpan={9} className="py-12 text-center text-slate-500">
+                    <td
+                      className="py-12 text-center text-slate-500"
+                      colSpan={9}
+                    >
                       Arama kriterlerinize uygun fırsat bulunamadı.
                     </td>
                   </tr>
@@ -992,40 +1015,40 @@ export default function PipelinesPage() {
       {/* 5. Deal Detail Slide-Over Drawer */}
       {selectedDealId && (
         <DealDetailDrawer
+          activePipeline={activePipeline}
           dealId={selectedDealId}
-          tenantSlug={tenantSlug}
+          employees={employees}
           onClose={() => setSelectedDealId(null)}
           onUpdated={loadDeals}
-          employees={employees}
-          activePipeline={activePipeline}
+          tenantSlug={tenantSlug}
         />
       )}
 
       {/* 6. Create Deal Modal */}
       {isCreateModalOpen && (
         <CreateDealModal
-          tenantSlug={tenantSlug}
           activePipeline={activePipeline}
-          pipelines={pipelines}
           employees={employees}
           onClose={() => setIsCreateModalOpen(false)}
           onCreated={() => {
             setIsCreateModalOpen(false);
             loadDeals();
           }}
+          pipelines={pipelines}
+          tenantSlug={tenantSlug}
         />
       )}
 
       {/* 7. Pipeline & Stages Settings Modal */}
       {isSettingsModalOpen && (
         <PipelineSettingsModal
-          pipeline={activePipeline}
-          tenantSlug={tenantSlug}
           onClose={() => setIsSettingsModalOpen(false)}
           onUpdated={() => {
             setIsSettingsModalOpen(false);
             loadInitialData();
           }}
+          pipeline={activePipeline}
+          tenantSlug={tenantSlug}
         />
       )}
     </div>
@@ -1060,7 +1083,9 @@ function DealDetailDrawer({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchDetail = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await ApiClient.getDealById(dealId, activeTenant.id);
@@ -1082,7 +1107,9 @@ function DealDetailDrawer({
 
   // Stage change directly from drawer stepper
   const handleStageChange = async (targetStageId: string) => {
-    if (!activeTenant?.id || !deal || deal.stageId === targetStageId) return;
+    if (!(activeTenant?.id && deal) || deal.stageId === targetStageId) {
+      return;
+    }
 
     try {
       const res = await ApiClient.moveDealStage(
@@ -1104,13 +1131,15 @@ function DealDetailDrawer({
 
   // Re-assign representative
   const handleAssignUser = async (userId: string) => {
-    if (!activeTenant?.id || !deal) return;
+    if (!(activeTenant?.id && deal)) {
+      return;
+    }
     const targetUserId = userId === "unassigned" ? undefined : userId;
 
     try {
       const res = await ApiClient.assignDeal(
         deal.id,
-        { dealId: deal.id, assignedUserId: targetUserId },
+        { assignedUserId: targetUserId, dealId: deal.id },
         activeTenant.id
       );
       if (res.success) {
@@ -1128,13 +1157,15 @@ function DealDetailDrawer({
   // Add internal note
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newNote.trim() || !activeTenant?.id || !deal) return;
+    if (!(newNote.trim() && activeTenant?.id && deal)) {
+      return;
+    }
 
     setIsSubmittingNote(true);
     try {
       const res = await ApiClient.addDealNote(
         deal.id,
-        { dealId: deal.id, content: newNote.trim() },
+        { content: newNote.trim(), dealId: deal.id },
         activeTenant.id
       );
       if (res.success) {
@@ -1154,7 +1185,9 @@ function DealDetailDrawer({
 
   // Confirm Delete Deal
   const handleConfirmDelete = async () => {
-    if (!activeTenant?.id || !deal) return;
+    if (!(activeTenant?.id && deal)) {
+      return;
+    }
     setIsDeleting(true);
     try {
       const res = await ApiClient.deleteDeal(deal.id, activeTenant.id);
@@ -1185,7 +1218,7 @@ function DealDetailDrawer({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end animate-in fade-in">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end">
       {/* Backdrop with Click-to-Close */}
       <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
@@ -1194,46 +1227,46 @@ function DealDetailDrawer({
 
       {/* Design System Confirm Dialog */}
       <ConfirmDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        title="Fırsat Kartını Sil"
-        description={`"${deal?.title || "Bu fırsat"}" başlıklı kart kalıcı olarak silinecektir. Bu işlem geri alınamaz.`}
-        confirmText="Evet, Sil"
         cancelText="Vazgeç"
-        variant="destructive"
+        confirmText="Evet, Sil"
+        description={`"${deal?.title || "Bu fırsat"}" başlıklı kart kalıcı olarak silinecektir. Bu işlem geri alınamaz.`}
         loading={isDeleting}
         onConfirm={handleConfirmDelete}
+        onOpenChange={setIsDeleteDialogOpen}
+        open={isDeleteDialogOpen}
+        title="Fırsat Kartını Sil"
+        variant="destructive"
       />
 
-      <div className="relative z-10 w-full md:max-w-2xl bg-white border-l border-slate-200 h-full flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-right duration-200">
+      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-slate-200 border-l bg-white shadow-2xl duration-200 md:max-w-2xl">
         {/* Drawer Header */}
-        <div className="p-3.5 sm:p-5 border-b border-slate-200/80 bg-slate-50/80 sticky top-0 z-20 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2.5 min-w-0">
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-slate-200/80 border-b bg-slate-50/80 p-3.5 sm:p-5">
+          <div className="flex min-w-0 items-center gap-2.5">
             <button
-              type="button"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-2xs transition hover:bg-slate-100 hover:text-slate-900 active:scale-95"
               onClick={onClose}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-2xs hover:bg-slate-100 hover:text-slate-900 transition active:scale-95"
               title="Kapat & Geri Dön"
+              type="button"
             >
               <ArrowLeft className="h-4.5 w-4.5 sm:hidden" />
-              <X className="h-4.5 w-4.5 hidden sm:block" />
+              <X className="hidden h-4.5 w-4.5 sm:block" />
             </button>
             <div className="min-w-0">
-              <span className="font-semibold text-[11px] text-slate-500 block truncate">
+              <span className="block truncate font-semibold text-[11px] text-slate-500">
                 {deal?.pipelineName || "Pipeline Fırsatı"}
               </span>
-              <h2 className="font-bold text-sm sm:text-base text-slate-900 leading-tight truncate max-w-[200px] sm:max-w-md">
+              <h2 className="max-w-[200px] truncate font-bold text-slate-900 text-sm leading-tight sm:max-w-md sm:text-base">
                 {deal?.title || "Fırsat Detayı"}
               </h2>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
-              type="button"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
               onClick={() => setIsDeleteDialogOpen(true)}
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 transition"
               title="Fırsatı Sil"
+              type="button"
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -1242,34 +1275,34 @@ function DealDetailDrawer({
 
         {/* Drawer Body */}
         {isLoading || !deal ? (
-          <div className="flex-1 flex items-center justify-center text-slate-500">
-            <RefreshCw className="h-6 w-6 animate-spin text-blue-600 mr-2" />
-            <span className="text-xs font-medium">Detaylar yükleniyor...</span>
+          <div className="flex flex-1 items-center justify-center text-slate-500">
+            <RefreshCw className="mr-2 h-6 w-6 animate-spin text-blue-600" />
+            <span className="font-medium text-xs">Detaylar yükleniyor...</span>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-6 pb-28 sm:pb-8 custom-scrollbar">
+          <div className="custom-scrollbar flex-1 space-y-6 overflow-y-auto p-4 pb-28 sm:p-5 sm:pb-8">
             {/* 1. Stage Progression Stepper */}
             <div>
-              <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-2">
+              <label className="mb-2 block font-bold text-[11px] text-slate-700 uppercase tracking-wider">
                 Aşama İlerlemesi (Tıklayarak Değiştirin)
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50/70 p-2.5 rounded-2xl border border-slate-200/80">
+              <div className="grid grid-cols-2 gap-2 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-2.5 sm:grid-cols-4">
                 {activePipeline?.stages?.map((stage) => {
                   const isCurrent = deal.stageId === stage.id;
                   return (
                     <button
-                      key={stage.id}
-                      type="button"
-                      onClick={() => handleStageChange(stage.id)}
-                      className={`px-3 py-2.5 rounded-xl text-left text-xs font-semibold transition-all flex flex-col justify-between ${
+                      className={`flex flex-col justify-between rounded-xl px-3 py-2.5 text-left font-semibold text-xs transition-all ${
                         isCurrent
                           ? "bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/30"
-                          : "bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+                          : "border border-slate-200/80 bg-white text-slate-700 hover:bg-slate-100"
                       }`}
+                      key={stage.id}
+                      onClick={() => handleStageChange(stage.id)}
+                      type="button"
                     >
                       <span className="truncate">{stage.name}</span>
                       <span
-                        className={`text-[10px] mt-1 font-medium ${
+                        className={`mt-1 font-medium text-[10px] ${
                           isCurrent ? "text-blue-100" : "text-slate-400"
                         }`}
                       >
@@ -1283,13 +1316,13 @@ function DealDetailDrawer({
 
             {/* 2. Live Chat Integration Banner (if deal from chat) */}
             {deal.source === "LiveChat" && (
-              <div className="rounded-2xl border border-purple-200 bg-purple-50/70 p-4 flex items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-purple-200 bg-purple-50/70 p-4 shadow-2xs">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-700">
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-purple-900">
+                    <h4 className="font-bold text-purple-900 text-xs">
                       Canlı Destek Oturumu Bağlantılı
                     </h4>
                     <p className="text-[11px] text-purple-700">
@@ -1299,8 +1332,8 @@ function DealDetailDrawer({
                 </div>
 
                 <Link
+                  className="flex items-center gap-1.5 rounded-xl border border-purple-300/60 bg-purple-100 px-3 py-1.5 font-semibold text-purple-700 text-xs transition hover:bg-purple-200 hover:text-purple-900"
                   href={`/${tenantSlug}/messages`}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-100 hover:bg-purple-200 border border-purple-300/60 px-3 py-1.5 rounded-xl transition"
                 >
                   <span>Sohbete Git</span>
                   <ExternalLink className="h-3.5 w-3.5" />
@@ -1309,43 +1342,49 @@ function DealDetailDrawer({
             )}
 
             {/* 3. Core Properties Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
+            <div className="grid grid-cols-2 gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs sm:grid-cols-3">
               {/* Value */}
               <div>
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">Tutar</span>
-                <p className="text-base font-extrabold text-slate-900 mt-0.5">
+                <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                  Tutar
+                </span>
+                <p className="mt-0.5 font-extrabold text-base text-slate-900">
                   {new Intl.NumberFormat("tr-TR", {
-                    style: "currency",
                     currency: deal.currency || "TRY",
+                    style: "currency",
                   }).format(deal.value)}
                 </p>
               </div>
 
               {/* Priority */}
               <div>
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">Öncelik</span>
+                <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                  Öncelik
+                </span>
                 <p className="mt-1">
                   <span
                     className={`inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-[10px] ${
                       deal.priority === "Urgent"
-                        ? "bg-rose-50 text-rose-700 border-rose-200"
+                        ? "border-rose-200 bg-rose-50 text-rose-700"
                         : deal.priority === "High"
-                        ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : "bg-blue-50 text-blue-700 border-blue-200"
+                          ? "border-amber-200 bg-amber-50 text-amber-700"
+                          : "border-blue-200 bg-blue-50 text-blue-700"
                     }`}
                   >
                     {deal.priority === "Urgent"
                       ? "Acil"
                       : deal.priority === "High"
-                      ? "Yüksek"
-                      : "Orta"}
+                        ? "Yüksek"
+                        : "Orta"}
                   </span>
                 </p>
               </div>
 
               {/* SLA Status */}
               <div>
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">SLA Durumu</span>
+                <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                  SLA Durumu
+                </span>
                 <p className="mt-1">
                   {deal.isSlaBreached ? (
                     <span className="inline-flex items-center gap-1 font-bold text-[10px] text-rose-600">
@@ -1360,15 +1399,15 @@ function DealDetailDrawer({
               </div>
 
               {/* Assigned Representative */}
-              <div className="col-span-2 sm:col-span-3 pt-3 border-slate-100 border-t">
+              <div className="col-span-2 border-slate-100 border-t pt-3 sm:col-span-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700">
+                  <span className="font-bold text-slate-700 text-xs">
                     Sorumlu Çalışan / Temsilci
                   </span>
                   <select
-                    value={deal.assignedUserId || "unassigned"}
-                    onChange={(e) => handleAssignUser(e.target.value)}
                     className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-800 text-xs shadow-2xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => handleAssignUser(e.target.value)}
+                    value={deal.assignedUserId || "unassigned"}
                   >
                     <option value="unassigned">Açık Havuz (Atanmamış)</option>
                     {employees.map((emp) => (
@@ -1382,35 +1421,54 @@ function DealDetailDrawer({
             </div>
 
             {/* 4. Customer / Contact Details */}
-            {(deal.customerName || deal.contactName || deal.contactEmail || deal.contactPhone) && (
-              <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs space-y-3">
-                <h4 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+            {(deal.customerName ||
+              deal.contactName ||
+              deal.contactEmail ||
+              deal.contactPhone) && (
+              <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
+                <h4 className="flex items-center gap-1.5 font-bold text-slate-900 text-xs">
                   <User className="h-4 w-4 text-blue-600" />
                   Müşteri & İletişim Bilgileri
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                   {deal.customerName && (
                     <div>
-                      <span className="text-slate-400 font-medium">Müşteri / Şirket:</span>
-                      <p className="font-bold text-slate-800">{deal.customerName}</p>
+                      <span className="font-medium text-slate-400">
+                        Müşteri / Şirket:
+                      </span>
+                      <p className="font-bold text-slate-800">
+                        {deal.customerName}
+                      </p>
                     </div>
                   )}
                   {deal.contactName && (
                     <div>
-                      <span className="text-slate-400 font-medium">İlgili Kişi:</span>
-                      <p className="font-bold text-slate-800">{deal.contactName}</p>
+                      <span className="font-medium text-slate-400">
+                        İlgili Kişi:
+                      </span>
+                      <p className="font-bold text-slate-800">
+                        {deal.contactName}
+                      </p>
                     </div>
                   )}
                   {deal.contactEmail && (
                     <div>
-                      <span className="text-slate-400 font-medium">E-Posta:</span>
-                      <p className="font-semibold text-blue-600">{deal.contactEmail}</p>
+                      <span className="font-medium text-slate-400">
+                        E-Posta:
+                      </span>
+                      <p className="font-semibold text-blue-600">
+                        {deal.contactEmail}
+                      </p>
                     </div>
                   )}
                   {deal.contactPhone && (
                     <div>
-                      <span className="text-slate-400 font-medium">Telefon:</span>
-                      <p className="font-bold text-slate-800">{deal.contactPhone}</p>
+                      <span className="font-medium text-slate-400">
+                        Telefon:
+                      </span>
+                      <p className="font-bold text-slate-800">
+                        {deal.contactPhone}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -1419,27 +1477,27 @@ function DealDetailDrawer({
 
             {/* 5. Tabs: Timeline (Aktiviteler) & Notes (Notlar) */}
             <div>
-              <div className="flex border-b border-slate-200 mb-4">
+              <div className="mb-4 flex border-slate-200 border-b">
                 <button
-                  type="button"
-                  onClick={() => setActiveTab("timeline")}
-                  className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold border-b-2 transition ${
+                  className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "timeline"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-slate-500 hover:text-slate-800"
                   }`}
+                  onClick={() => setActiveTab("timeline")}
+                  type="button"
                 >
                   <Activity className="h-3.5 w-3.5" />
                   Aktiviteler ({deal.activities?.length || 0})
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setActiveTab("notes")}
-                  className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold border-b-2 transition ${
+                  className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "notes"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-slate-500 hover:text-slate-800"
                   }`}
+                  onClick={() => setActiveTab("notes")}
+                  type="button"
                 >
                   <MessageSquare className="h-3.5 w-3.5" />
                   Notlar ({deal.notes?.length || 0})
@@ -1451,27 +1509,31 @@ function DealDetailDrawer({
                 <div className="space-y-3">
                   {deal.activities?.map((act) => (
                     <div
+                      className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5 text-xs"
                       key={act.id}
-                      className="flex items-start gap-3 text-xs bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200/80"
                     >
-                      <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-blue-50 text-blue-600 flex-none mt-0.5">
+                      <div className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                         <Activity className="h-3.5 w-3.5" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900">{act.title}</span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="font-bold text-slate-900">
+                            {act.title}
+                          </span>
+                          <span className="font-medium text-[10px] text-slate-400">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
                         {act.description && (
-                          <p className="text-slate-600 mt-1">{act.description}</p>
+                          <p className="mt-1 text-slate-600">
+                            {act.description}
+                          </p>
                         )}
                       </div>
                     </div>
                   ))}
                   {(!deal.activities || deal.activities.length === 0) && (
-                    <p className="text-xs text-slate-400 text-center py-6">
+                    <p className="py-6 text-center text-slate-400 text-xs">
                       Henüz aktivite kaydı yok.
                     </p>
                   )}
@@ -1480,19 +1542,19 @@ function DealDetailDrawer({
                 /* Notes Tab */
                 <div className="space-y-4">
                   {/* Note Creator Form */}
-                  <form onSubmit={handleAddNote} className="space-y-2">
+                  <form className="space-y-2" onSubmit={handleAddNote}>
                     <textarea
-                      rows={3}
-                      value={newNote}
+                      className="w-full rounded-xl border border-slate-200 bg-white p-3 font-medium text-slate-900 text-xs placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                       onChange={(e) => setNewNote(e.target.value)}
                       placeholder="Bu fırsat için dahili bir not ekleyin..."
-                      className="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs font-medium text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      rows={3}
+                      value={newNote}
                     />
                     <div className="flex justify-end">
                       <button
-                        type="submit"
+                        className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
                         disabled={isSubmittingNote || !newNote.trim()}
-                        className="rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold px-4 py-2 transition shadow-xs"
+                        type="submit"
                       >
                         {isSubmittingNote ? "Ekleniyor..." : "Not Ekle"}
                       </button>
@@ -1503,18 +1565,20 @@ function DealDetailDrawer({
                   <div className="space-y-2.5">
                     {deal.notes?.map((n) => (
                       <div
+                        className="rounded-2xl border border-slate-200/80 bg-white p-3.5 text-xs shadow-2xs"
                         key={n.id}
-                        className="rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-2xs text-xs"
                       >
-                        <div className="flex items-center justify-between mb-1.5">
+                        <div className="mb-1.5 flex items-center justify-between">
                           <span className="font-bold text-blue-700">
                             {n.userName || "Kullanıcı"}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="font-medium text-[10px] text-slate-400">
                             {new Date(n.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
-                        <p className="text-slate-700 whitespace-pre-wrap">{n.content}</p>
+                        <p className="whitespace-pre-wrap text-slate-700">
+                          {n.content}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -1547,7 +1611,9 @@ function CreateDealModal({
   onCreated: () => void;
 }) {
   const { activeTenant } = usePermissions();
-  const [pipelineId, setPipelineId] = useState(activePipeline?.id || pipelines[0]?.id || "");
+  const [pipelineId, setPipelineId] = useState(
+    activePipeline?.id || pipelines[0]?.id || ""
+  );
   const [stageId, setStageId] = useState("");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState<number>(0);
@@ -1561,7 +1627,8 @@ function CreateDealModal({
   const [initialNote, setInitialNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const currentPipe = pipelines.find((p) => p.id === pipelineId) || activePipeline;
+  const currentPipe =
+    pipelines.find((p) => p.id === pipelineId) || activePipeline;
 
   useEffect(() => {
     const firstStage = currentPipe?.stages?.[0];
@@ -1572,7 +1639,7 @@ function CreateDealModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !pipelineId || !activeTenant?.id) {
+    if (!(title.trim() && pipelineId && activeTenant?.id)) {
       toast.error("Lütfen zorunlu alanları doldurun");
       return;
     }
@@ -1581,18 +1648,21 @@ function CreateDealModal({
     try {
       const res = await ApiClient.createDeal(
         {
+          assignedUserId:
+            assignedUserId === "auto" || assignedUserId === "unassigned"
+              ? undefined
+              : assignedUserId,
+          contactEmail: contactEmail.trim() || undefined,
+          contactName: contactName.trim() || undefined,
+          contactPhone: contactPhone.trim() || undefined,
+          currency,
+          initialNote: initialNote.trim() || undefined,
           pipelineId,
+          priority,
+          source,
           stageId: stageId || undefined,
           title: title.trim(),
           value: Number(value) || 0,
-          currency,
-          priority,
-          assignedUserId: assignedUserId === "auto" || assignedUserId === "unassigned" ? undefined : assignedUserId,
-          source,
-          contactName: contactName.trim() || undefined,
-          contactEmail: contactEmail.trim() || undefined,
-          contactPhone: contactPhone.trim() || undefined,
-          initialNote: initialNote.trim() || undefined,
         },
         activeTenant.id
       );
@@ -1622,41 +1692,46 @@ function CreateDealModal({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in overflow-y-auto">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-lg rounded-3xl border border-slate-200/80 bg-white shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b bg-slate-50/50 p-5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <Plus className="h-5 w-5" />
             </div>
-            <h3 className="font-bold text-base text-slate-900">Yeni Fırsat Kartı Ekle</h3>
+            <h3 className="font-bold text-base text-slate-900">
+              Yeni Fırsat Kartı Ekle
+            </h3>
           </div>
           <button
-            type="button"
-            onClick={onClose}
             className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-100"
+            onClick={onClose}
+            type="button"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto custom-scrollbar">
+        <form
+          className="custom-scrollbar space-y-4 overflow-y-auto p-6"
+          onSubmit={handleSubmit}
+        >
           {/* Pipeline & Stage */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Pipeline
               </label>
               <select
-                value={pipelineId}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-800 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setPipelineId(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                value={pipelineId}
               >
                 {pipelines.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -1667,13 +1742,13 @@ function CreateDealModal({
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Başlangıç Aşaması
               </label>
               <select
-                value={stageId}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-800 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setStageId(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                value={stageId}
               >
                 {currentPipe?.stages?.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -1686,38 +1761,38 @@ function CreateDealModal({
 
           {/* Title */}
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">
+            <label className="mb-1 block font-bold text-slate-700 text-xs">
               Fırsat / İş Başlığı *
             </label>
             <input
-              type="text"
-              required
-              placeholder="örn: Kurumsal Yazılım Lisans Teklifi"
-              value={title}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              placeholder="örn: Kurumsal Yazılım Lisans Teklifi"
+              required
+              type="text"
+              value={title}
             />
           </div>
 
           {/* Value & Currency & Priority */}
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-2">
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Tahmini Tutar
               </label>
               <div className="flex gap-2">
                 <input
-                  type="number"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   min="0"
-                  step="100"
-                  value={value}
                   onChange={(e) => setValue(Number(e.target.value))}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  step="100"
+                  type="number"
+                  value={value}
                 />
                 <select
-                  value={currency}
+                  className="rounded-xl border border-slate-200 bg-white px-2.5 font-bold text-slate-700 text-xs shadow-2xs"
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-700 shadow-2xs"
+                  value={currency}
                 >
                   <option value="TRY">₺ TRY</option>
                   <option value="USD">$ USD</option>
@@ -1727,13 +1802,13 @@ function CreateDealModal({
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Öncelik
               </label>
               <select
-                value={priority}
+                className="w-full rounded-xl border border-slate-200 bg-white px-2 py-2 font-bold text-slate-700 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-2 py-2 text-xs font-bold text-slate-700 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                value={priority}
               >
                 <option value="Low">Düşük</option>
                 <option value="Medium">Orta</option>
@@ -1745,15 +1820,17 @@ function CreateDealModal({
 
           {/* Representative Assignment */}
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">
+            <label className="mb-1 block font-bold text-slate-700 text-xs">
               Atama Kuralı / Sorumlu Çalışan
             </label>
             <select
-              value={assignedUserId}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-800 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               onChange={(e) => setAssignedUserId(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              value={assignedUserId}
             >
-              <option value="auto">⚡ Otomatik Dağıtım (Round-Robin / Yük Dengesi)</option>
+              <option value="auto">
+                ⚡ Otomatik Dağıtım (Round-Robin / Yük Dengesi)
+              </option>
               <option value="unassigned">Açık Havuzda Bırak (Atanmamış)</option>
               {employees.map((emp) => (
                 <option key={emp.id} value={emp.userId || emp.id}>
@@ -1764,48 +1841,48 @@ function CreateDealModal({
           </div>
 
           {/* Contact Information (Lead) */}
-          <div className="pt-3 border-slate-100 border-t space-y-3">
-            <h4 className="text-xs font-bold text-blue-700">
+          <div className="space-y-3 border-slate-100 border-t pt-3">
+            <h4 className="font-bold text-blue-700 text-xs">
               Potansiyel Müşteri / Kontak Bilgisi
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <input
-                type="text"
-                placeholder="İsim / Şirket Adı"
-                value={contactName}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setContactName(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                placeholder="İsim / Şirket Adı"
+                type="text"
+                value={contactName}
               />
               <input
-                type="email"
-                placeholder="E-Posta"
-                value={contactEmail}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setContactEmail(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                placeholder="E-Posta"
+                type="email"
+                value={contactEmail}
               />
               <input
-                type="tel"
-                placeholder="Telefon"
-                value={contactPhone}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setContactPhone(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                placeholder="Telefon"
+                type="tel"
+                value={contactPhone}
               />
             </div>
           </div>
 
           {/* Actions */}
-          <div className="pt-4 border-slate-100 border-t flex items-center justify-end gap-2">
+          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
-              type="button"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
               onClick={onClose}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50 transition"
+              type="button"
             >
               Vazgeç
             </button>
             <button
-              type="submit"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
               disabled={isSubmitting}
-              className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-5 py-2 transition shadow-xs disabled:opacity-50"
+              type="submit"
             >
               {isSubmitting ? "Kaydediliyor..." : "Fırsatı Oluştur"}
             </button>
@@ -1833,7 +1910,9 @@ function PipelineSettingsModal({
   const { activeTenant } = usePermissions();
   const [name, setName] = useState(pipeline?.name || "");
   const [description, setDescription] = useState(pipeline?.description || "");
-  const [routingStrategy, setRoutingStrategy] = useState(pipeline?.routingStrategy || "RoundRobin");
+  const [routingStrategy, setRoutingStrategy] = useState(
+    pipeline?.routingStrategy || "RoundRobin"
+  );
   const [stages, setStages] = useState<
     {
       id?: string;
@@ -1847,14 +1926,14 @@ function PipelineSettingsModal({
     }[]
   >(
     pipeline?.stages?.map((s) => ({
+      color: s.color || "#3B82F6",
       id: s.id,
+      isLostStage: s.isLostStage,
+      isWonStage: s.isWonStage,
       name: s.name,
       orderIndex: s.orderIndex,
-      color: s.color || "#3B82F6",
       probability: s.probability,
       slaHours: s.slaHours || undefined,
-      isWonStage: s.isWonStage,
-      isLostStage: s.isLostStage,
     })) || []
   );
   const [isSaving, setIsSaving] = useState(false);
@@ -1863,12 +1942,12 @@ function PipelineSettingsModal({
     setStages((prev) => [
       ...prev,
       {
+        color: "#3B82F6",
+        isLostStage: false,
+        isWonStage: false,
         name: "Yeni Aşama",
         orderIndex: prev.length,
-        color: "#3B82F6",
         probability: 50,
-        isWonStage: false,
-        isLostStage: false,
       },
     ]);
   };
@@ -1879,18 +1958,20 @@ function PipelineSettingsModal({
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !activeTenant?.id || !pipeline?.id) return;
+    if (!(name.trim() && activeTenant?.id && pipeline?.id)) {
+      return;
+    }
 
     setIsSaving(true);
     try {
       const res = await ApiClient.updatePipeline(
         pipeline.id,
         {
-          id: pipeline.id,
-          name: name.trim(),
           description: description.trim() || undefined,
+          id: pipeline.id,
           isActive: true,
           isDefault: pipeline.isDefault,
+          name: name.trim(),
           routingStrategy,
           stages: stages.map((s, idx) => ({
             ...s,
@@ -1914,81 +1995,92 @@ function PipelineSettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in">
-      <div className="w-full max-w-2xl rounded-3xl border border-slate-200/80 bg-white shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-slate-100 border-b bg-slate-50/50 p-5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <Settings className="h-5 w-5" />
             </div>
-            <h3 className="font-bold text-base text-slate-900">Pipeline ve Aşama Yapılandırması</h3>
+            <h3 className="font-bold text-base text-slate-900">
+              Pipeline ve Aşama Yapılandırması
+            </h3>
           </div>
           <button
-            type="button"
-            onClick={onClose}
             className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-100"
+            onClick={onClose}
+            type="button"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSave} className="flex-1 overflow-y-auto p-6 space-y-5 custom-scrollbar">
+        <form
+          className="custom-scrollbar flex-1 space-y-5 overflow-y-auto p-6"
+          onSubmit={handleSave}
+        >
           {/* General Pipeline Settings */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Pipeline Adı
               </label>
               <input
-                type="text"
-                required
-                value={name}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                required
+                type="text"
+                value={name}
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Otomatik Dağıtım Algoritması (Routing)
               </label>
               <select
-                value={routingStrategy}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-800 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 onChange={(e) => setRoutingStrategy(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                value={routingStrategy}
               >
-                <option value="RoundRobin">Round-Robin (Sırayla Eşit Dağıtım)</option>
-                <option value="LeastLoaded">İş Yükü Dengeli (En Az İşi Olana)</option>
-                <option value="OnlineOnly">Sadece Çevrimiçi / Aktif Personele</option>
+                <option value="RoundRobin">
+                  Round-Robin (Sırayla Eşit Dağıtım)
+                </option>
+                <option value="LeastLoaded">
+                  İş Yükü Dengeli (En Az İşi Olana)
+                </option>
+                <option value="OnlineOnly">
+                  Sadece Çevrimiçi / Aktif Personele
+                </option>
                 <option value="Manual">Manuel / Açık Havuz Modeli</option>
               </select>
             </div>
 
             <div className="sm:col-span-2">
-              <label className="text-xs font-bold text-slate-700 block mb-1">
+              <label className="mb-1 block font-bold text-slate-700 text-xs">
                 Açıklama
               </label>
               <input
-                type="text"
-                value={description}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-900 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Pipeline'ın kullanım amacını belirtin"
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                type="text"
+                value={description}
               />
             </div>
           </div>
 
           {/* Stages Configuration */}
-          <div className="space-y-3 pt-4 border-slate-100 border-t">
+          <div className="space-y-3 border-slate-100 border-t pt-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+              <h4 className="flex items-center gap-1.5 font-bold text-slate-900 text-xs">
                 <Layers className="h-4 w-4 text-blue-600" />
                 Pipeline Aşamaları ({stages.length})
               </h4>
               <button
-                type="button"
+                className="flex items-center gap-1 rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 font-semibold text-blue-600 text-xs transition hover:bg-blue-100 hover:text-blue-700"
                 onClick={handleAddStage}
-                className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl border border-blue-200 transition"
+                type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Aşama Ekle
@@ -1998,83 +2090,99 @@ function PipelineSettingsModal({
             <div className="space-y-2.5">
               {stages.map((stage, idx) => (
                 <div
+                  className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5 shadow-2xs sm:flex-nowrap"
                   key={idx}
-                  className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5 flex items-center flex-wrap sm:flex-nowrap gap-3 shadow-2xs"
                 >
-                  <span className="text-xs font-bold text-slate-400 w-4">{idx + 1}.</span>
+                  <span className="w-4 font-bold text-slate-400 text-xs">
+                    {idx + 1}.
+                  </span>
 
                   {/* Stage Name */}
                   <input
-                    type="text"
-                    required
-                    value={stage.name}
+                    className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-900 text-xs focus:border-blue-500 focus:outline-none"
                     onChange={(e) => {
                       const val = e.target.value;
                       setStages((prev) =>
-                        prev.map((s, i) => (i === idx ? { ...s, name: val } : s))
+                        prev.map((s, i) =>
+                          i === idx ? { ...s, name: val } : s
+                        )
                       );
                     }}
                     placeholder="Aşama Adı"
-                    className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-900 focus:border-blue-500 focus:outline-none"
+                    required
+                    type="text"
+                    value={stage.name}
                   />
 
                   {/* Probability */}
-                  <div className="w-24 flex items-center gap-1">
-                    <span className="text-[10px] font-bold text-slate-400">%</span>
+                  <div className="flex w-24 items-center gap-1">
+                    <span className="font-bold text-[10px] text-slate-400">
+                      %
+                    </span>
                     <input
-                      type="number"
-                      min="0"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-right font-bold text-slate-800 text-xs"
                       max="100"
-                      value={stage.probability}
+                      min="0"
                       onChange={(e) => {
                         const val = Number(e.target.value);
                         setStages((prev) =>
-                          prev.map((s, i) => (i === idx ? { ...s, probability: val } : s))
+                          prev.map((s, i) =>
+                            i === idx ? { ...s, probability: val } : s
+                          )
                         );
                       }}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-800 text-right"
+                      type="number"
+                      value={stage.probability}
                     />
                   </div>
 
                   {/* SLA Hours */}
-                  <div className="w-28 flex items-center gap-1">
-                    <span className="text-[10px] font-bold text-slate-400">SLA(s):</span>
+                  <div className="flex w-28 items-center gap-1">
+                    <span className="font-bold text-[10px] text-slate-400">
+                      SLA(s):
+                    </span>
                     <input
-                      type="number"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-right font-bold text-slate-800 text-xs"
                       min="1"
-                      placeholder="Yok"
-                      value={stage.slaHours || ""}
                       onChange={(e) => {
-                        const val = e.target.value ? Number(e.target.value) : undefined;
+                        const val = e.target.value
+                          ? Number(e.target.value)
+                          : undefined;
                         setStages((prev) =>
-                          prev.map((s, i) => (i === idx ? { ...s, slaHours: val } : s))
+                          prev.map((s, i) =>
+                            i === idx ? { ...s, slaHours: val } : s
+                          )
                         );
                       }}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-800 text-right"
+                      placeholder="Yok"
+                      type="number"
+                      value={stage.slaHours || ""}
                     />
                   </div>
 
                   {/* Color Picker */}
                   <input
-                    type="color"
-                    value={stage.color}
+                    className="h-8 w-8 cursor-pointer rounded-xl border border-slate-200 bg-white p-0.5"
                     onChange={(e) => {
                       const val = e.target.value;
                       setStages((prev) =>
-                        prev.map((s, i) => (i === idx ? { ...s, color: val } : s))
+                        prev.map((s, i) =>
+                          i === idx ? { ...s, color: val } : s
+                        )
                       );
                     }}
-                    className="h-8 w-8 rounded-xl border border-slate-200 bg-white cursor-pointer p-0.5"
                     title="Aşama Rengi"
+                    type="color"
+                    value={stage.color}
                   />
 
                   {/* Remove stage button */}
                   {stages.length > 2 && (
                     <button
-                      type="button"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                       onClick={() => handleRemoveStage(idx)}
-                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 transition"
                       title="Aşamayı Kaldır"
+                      type="button"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -2085,18 +2193,18 @@ function PipelineSettingsModal({
           </div>
 
           {/* Save Button */}
-          <div className="pt-4 border-slate-100 border-t flex items-center justify-end gap-2">
+          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
             <button
-              type="button"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
               onClick={onClose}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50 transition"
+              type="button"
             >
               Vazgeç
             </button>
             <button
-              type="submit"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
               disabled={isSaving}
-              className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-5 py-2 transition shadow-xs disabled:opacity-50"
+              type="submit"
             >
               {isSaving ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
             </button>

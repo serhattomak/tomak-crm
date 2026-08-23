@@ -45,7 +45,6 @@ export default function RegisterPage() {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
-
   };
 
   const handleGoogleLogin = async () => {

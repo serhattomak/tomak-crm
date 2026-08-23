@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: [
+    "*.trycloudflare.com",
+    "localhost:3000",
+    "127.0.0.1:3000",
+  ],
   async headers() {
     return [
       {
@@ -26,10 +31,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  allowedDevOrigins: ["*.trycloudflare.com", "localhost:3000", "127.0.0.1:3000"],
   transpilePackages: ["@workspace/ui"],
-
 };
 
 export default nextConfig;
-

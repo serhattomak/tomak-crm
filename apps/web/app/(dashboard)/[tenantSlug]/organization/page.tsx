@@ -2345,7 +2345,10 @@ function EmployeeDetailDrawer({
   if (!employeeDetail && isLoading) {
     return (
       <div className="fixed inset-0 z-50 flex justify-end">
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs" onClick={onClose} />
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+          onClick={onClose}
+        />
         <div className="relative z-10 flex h-full w-full max-w-md items-center justify-center bg-white p-8">
           <Loader2 className="h-8 w-8 animate-spin text-fuchsia-500" />
         </div>
@@ -2365,7 +2368,7 @@ function EmployeeDetailDrawer({
         onClick={onClose}
       />
 
-      <div className="relative z-10 slide-in-from-right flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-4 sm:p-6 pb-28 sm:pb-8 shadow-2xl duration-300">
+      <div className="slide-in-from-right relative z-10 flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-4 pb-28 shadow-2xl duration-300 sm:p-6 sm:pb-8">
         <div>
           {/* Top Close & Edit actions */}
           <div className="flex items-center justify-between border-slate-100 border-b pb-4">

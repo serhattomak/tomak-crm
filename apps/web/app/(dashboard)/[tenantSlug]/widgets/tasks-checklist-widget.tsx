@@ -36,7 +36,9 @@ export function TasksChecklistWidget() {
   };
 
   const toggleTask = (id: string) => {
-    const updated = tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
+    const updated = tasks.map((t) =>
+      t.id === id ? { ...t, completed: !t.completed } : t
+    );
     saveTasks(updated);
   };
 
@@ -65,7 +67,8 @@ export function TasksChecklistWidget() {
   };
 
   const completedCount = tasks.filter((t) => t.completed).length;
-  const progressPct = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
+  const progressPct =
+    tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
 
   const getPriorityBadge = (priority: TaskItem["priority"]) => {
     switch (priority) {
@@ -105,7 +108,7 @@ export function TasksChecklistWidget() {
               <span className="font-bold text-slate-900 text-sm">
                 Görevler & Checklist
               </span>
-              <div className="text-[11px] text-slate-500 font-medium">
+              <div className="font-medium text-[11px] text-slate-500">
                 {tasks.length > 0
                   ? `${tasks.length} görevden ${completedCount} tanesi tamamlandı (%${progressPct})`
                   : "Kişisel ve ekip içi yapılacak işler"}
@@ -126,7 +129,7 @@ export function TasksChecklistWidget() {
         {/* Quick Add Task Input */}
         <form className="mb-4 flex gap-2" onSubmit={handleAddTask}>
           <input
-            className="flex-1 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-xs placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none transition"
+            className="flex-1 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-2 text-xs transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none"
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="Hızlı yeni görev yaz ve Enter'a bas..."
             type="text"
@@ -143,101 +146,113 @@ export function TasksChecklistWidget() {
         </form>
 
         {/* Task Items List */}
-        {!isLoaded ? (
-          <div className="space-y-2 py-3">
-            {[1, 2].map((i) => (
-              <div key={i} className="h-10 w-full animate-pulse rounded-2xl bg-slate-50" />
-            ))}
-          </div>
-        ) : tasks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-2.5 shadow-2xs">
-              <CheckSquare className="h-6 w-6" />
+        {isLoaded ? (
+          tasks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="mb-2.5 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
+                <CheckSquare className="h-6 w-6" />
+              </div>
+              <h4 className="font-bold text-slate-800 text-xs">
+                Henüz planlanan görev bulunmuyor
+              </h4>
+              <p className="mt-0.5 text-[11px] text-slate-400">
+                Yukarıdaki alana bir görev yazarak listenizi oluşturabilirsiniz.
+              </p>
             </div>
-            <h4 className="font-bold text-slate-800 text-xs">Henüz planlanan görev bulunmuyor</h4>
-            <p className="text-slate-400 text-[11px] mt-0.5">
-              Yukarıdaki alana bir görev yazarak listenizi oluşturabilirsiniz.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
-            {tasks.map((task) => (
-              <div
-                className={`group flex items-center justify-between gap-3 rounded-2xl border p-3 transition-all ${
-                  task.completed
-                    ? "border-slate-100 bg-slate-50/60 opacity-60"
-                    : "border-slate-200/80 bg-white hover:border-slate-300 shadow-2xs"
-                }`}
-                key={task.id}
-              >
-                <div className="flex items-center gap-3 truncate">
-                  <button
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border transition-all ${
-                      task.completed
-                        ? "border-emerald-500 bg-emerald-500 text-white"
-                        : "border-slate-300 bg-white hover:border-emerald-500"
-                    }`}
-                    onClick={() => toggleTask(task.id)}
-                    type="button"
-                  >
-                    {task.completed && (
-                      <Check className="h-3.5 w-3.5 stroke-[3]" />
-                    )}
-                  </button>
-
-                  <div className="space-y-0.5 truncate">
-                    <p
-                      className={`font-semibold text-slate-800 text-xs truncate ${
-                        task.completed ? "text-slate-400 line-through" : ""
+          ) : (
+            <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
+              {tasks.map((task) => (
+                <div
+                  className={`group flex items-center justify-between gap-3 rounded-2xl border p-3 transition-all ${
+                    task.completed
+                      ? "border-slate-100 bg-slate-50/60 opacity-60"
+                      : "border-slate-200/80 bg-white shadow-2xs hover:border-slate-300"
+                  }`}
+                  key={task.id}
+                >
+                  <div className="flex items-center gap-3 truncate">
+                    <button
+                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border transition-all ${
+                        task.completed
+                          ? "border-emerald-500 bg-emerald-500 text-white"
+                          : "border-slate-300 bg-white hover:border-emerald-500"
                       }`}
+                      onClick={() => toggleTask(task.id)}
+                      type="button"
                     >
-                      {task.title}
-                    </p>
-                    <div className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {task.dueDate}
-                      </span>
-                      {task.category && (
-                        <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-bold text-slate-600 text-[9px]">
-                          {task.category}
-                        </span>
+                      {task.completed && (
+                        <Check className="h-3.5 w-3.5 stroke-[3]" />
                       )}
+                    </button>
+
+                    <div className="space-y-0.5 truncate">
+                      <p
+                        className={`truncate font-semibold text-slate-800 text-xs ${
+                          task.completed ? "text-slate-400 line-through" : ""
+                        }`}
+                      >
+                        {task.title}
+                      </p>
+                      <div className="flex items-center gap-2 font-medium text-[10px] text-slate-400">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {task.dueDate}
+                        </span>
+                        {task.category && (
+                          <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-bold text-[9px] text-slate-600">
+                            {task.category}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2 flex-none">
-                  <span
-                    className={`shrink-0 rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getPriorityBadge(
-                      task.priority
-                    )}`}
-                  >
-                    {getPriorityLabel(task.priority)}
-                  </span>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-600 p-1 transition"
-                    title="Sil"
-                    type="button"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                  <div className="flex flex-none items-center gap-2">
+                    <span
+                      className={`shrink-0 rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getPriorityBadge(
+                        task.priority
+                      )}`}
+                    >
+                      {getPriorityLabel(task.priority)}
+                    </span>
+                    <button
+                      className="p-1 text-slate-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100"
+                      onClick={() => deleteTask(task.id)}
+                      title="Sil"
+                      type="button"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <div className="space-y-2 py-3">
+            {[1, 2].map((i) => (
+              <div
+                className="h-10 w-full animate-pulse rounded-2xl bg-slate-50"
+                key={i}
+              />
             ))}
           </div>
         )}
       </div>
 
       {tasks.length > 0 && (
-        <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 text-slate-500 text-xs font-medium">
+        <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 font-medium text-slate-500 text-xs">
           <span>
             Kalan acil görevler:{" "}
-            <strong className="text-slate-800">{tasks.filter((t) => !t.completed && t.priority === "urgent").length}</strong>
+            <strong className="text-slate-800">
+              {
+                tasks.filter((t) => !t.completed && t.priority === "urgent")
+                  .length
+              }
+            </strong>
           </span>
           <button
-            className="font-bold text-emerald-600 hover:text-emerald-700 transition"
+            className="font-bold text-emerald-600 transition hover:text-emerald-700"
             onClick={() => saveTasks(tasks.filter((t) => !t.completed))}
             type="button"
           >

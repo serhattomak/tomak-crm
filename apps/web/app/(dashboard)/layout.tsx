@@ -9,10 +9,8 @@ import {
   Building2,
   Calendar,
   ChevronDown,
-  ChevronRight,
   Clock,
   FileSpreadsheet,
-  Flame,
   HelpCircle,
   Kanban,
   LayoutDashboard,
@@ -101,9 +99,15 @@ export default function DashboardLayout({
 
       // 3. Escape closes modals
       if (e.key === "Escape") {
-        if (isCommandPaletteOpen) setIsCommandPaletteOpen(false);
-        if (isShortcutsHelpOpen) setIsShortcutsHelpOpen(false);
-        if (isMobileDrawerOpen) setIsMobileDrawerOpen(false);
+        if (isCommandPaletteOpen) {
+          setIsCommandPaletteOpen(false);
+        }
+        if (isShortcutsHelpOpen) {
+          setIsShortcutsHelpOpen(false);
+        }
+        if (isMobileDrawerOpen) {
+          setIsMobileDrawerOpen(false);
+        }
         return;
       }
 
@@ -113,7 +117,7 @@ export default function DashboardLayout({
         e.target instanceof HTMLTextAreaElement ||
         (e.target as HTMLElement)?.isContentEditable;
 
-      if (!isInput && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      if (!(isInput || e.metaKey || e.ctrlKey || e.altKey)) {
         keyBuffer.push(e.key.toLowerCase());
 
         if (bufferTimeout) {
@@ -189,26 +193,41 @@ export default function DashboardLayout({
         clearTimeout(bufferTimeout);
       }
     };
-  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen, isMobileDrawerOpen]);
+  }, [
+    router,
+    tenantSlug,
+    isCommandPaletteOpen,
+    isShortcutsHelpOpen,
+    isMobileDrawerOpen,
+  ]);
 
   // Bottom navigation items on mobile
   const mobileBottomNav = [
-    { href: `/${tenantSlug}`, icon: LayoutDashboard, label: "Anasayfa", exact: true },
+    {
+      exact: true,
+      href: `/${tenantSlug}`,
+      icon: LayoutDashboard,
+      label: "Anasayfa",
+    },
     { href: `/${tenantSlug}/pipelines`, icon: Kanban, label: "Fırsatlar" },
-    { href: `/${tenantSlug}/quotes`, icon: FileSpreadsheet, label: "Teklifler" },
+    {
+      href: `/${tenantSlug}/quotes`,
+      icon: FileSpreadsheet,
+      label: "Teklifler",
+    },
     { href: `/${tenantSlug}/customers`, icon: Users2, label: "Müşteriler" },
   ];
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
       <Toaster position="top-right" richColors />
-      <div className="flex h-screen w-full flex-col md:flex-row gap-0 md:gap-3 overflow-hidden bg-[#f4f5f8] md:p-3 font-sans text-slate-900 antialiased">
+      <div className="flex h-screen w-full flex-col gap-0 overflow-hidden bg-[#f4f5f8] font-sans text-slate-900 antialiased md:flex-row md:gap-3 md:p-3">
         {/* Mobile Top Header Bar */}
-        <header className="flex md:hidden items-center justify-between px-3 py-2.5 bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-2xs">
-          <div className="flex items-center gap-2 min-w-0">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-slate-200/80 border-b bg-white px-3 py-2.5 shadow-2xs md:hidden">
+          <div className="flex min-w-0 items-center gap-2">
             <button
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 shadow-2xs transition hover:bg-slate-200 active:scale-95"
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition active:scale-95 shadow-2xs"
               title="Menüyü Aç"
               type="button"
             >
@@ -218,10 +237,10 @@ export default function DashboardLayout({
               <TenantSwitcher />
             </div>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 active:scale-95"
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition active:scale-95"
               title="Arama (⌘K)"
               type="button"
             >
@@ -235,19 +254,19 @@ export default function DashboardLayout({
           <div className="fixed inset-0 z-50 flex md:hidden">
             {/* Backdrop */}
             <div
-              className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm animate-in fade-in transition-opacity"
+              className="fade-in fixed inset-0 animate-in bg-slate-950/60 backdrop-blur-sm transition-opacity"
               onClick={() => setIsMobileDrawerOpen(false)}
             />
 
             {/* Drawer Content */}
-            <div className="relative flex w-4/5 max-w-xs flex-1 flex-col justify-between overflow-y-auto bg-white p-4 shadow-2xl animate-in slide-in-from-left duration-200 z-10">
+            <div className="slide-in-from-left relative z-10 flex w-4/5 max-w-xs flex-1 animate-in flex-col justify-between overflow-y-auto bg-white p-4 shadow-2xl duration-200">
               <div className="space-y-4">
                 {/* Header & Close */}
                 <div className="flex items-center justify-between border-slate-100 border-b pb-3">
                   <TenantSwitcher />
                   <button
+                    className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                     onClick={() => setIsMobileDrawerOpen(false)}
-                    className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -265,12 +284,16 @@ export default function DashboardLayout({
                 >
                   <div className="flex items-center gap-2">
                     <Search className="h-4 w-4 text-slate-400" />
-                    <span className="font-medium text-slate-400">Hızlı Arama (⌘K)...</span>
+                    <span className="font-medium text-slate-400">
+                      Hızlı Arama (⌘K)...
+                    </span>
                   </div>
                 </button>
 
                 {/* Full Menus */}
-                <DashboardNavigation onItemClick={() => setIsMobileDrawerOpen(false)} />
+                <DashboardNavigation
+                  onItemClick={() => setIsMobileDrawerOpen(false)}
+                />
               </div>
 
               {/* User Account / Signout */}
@@ -282,7 +305,7 @@ export default function DashboardLayout({
         )}
 
         {/* Desktop Left Floating Sidebar */}
-        <aside className="hidden md:flex w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm">
+        <aside className="hidden w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm md:flex">
           <div className="space-y-4">
             {/* Workspace Switcher Header */}
             <div className="flex items-center justify-between gap-2">
@@ -322,25 +345,31 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content Viewport */}
-        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none md:rounded-[28px] border-0 md:border border-slate-200/80 bg-white shadow-none md:shadow-sm">
-          <div className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8">{children}</div>
+        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-slate-200/80 bg-white shadow-none md:rounded-[28px] md:border md:shadow-sm">
+          <div className="flex-1 p-3.5 pb-24 sm:p-6 md:p-8 md:pb-8">
+            {children}
+          </div>
         </div>
 
         {/* Mobile Bottom Navigation Bar */}
-        <nav className="fixed bottom-0 left-0 right-0 z-40 flex md:hidden items-center justify-around border-t border-slate-200/90 bg-white/95 backdrop-blur-lg px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] safe-bottom">
+        <nav className="safe-bottom fixed right-0 bottom-0 left-0 z-40 flex items-center justify-around border-slate-200/90 border-t bg-white/95 px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] backdrop-blur-lg md:hidden">
           {mobileBottomNav.map((item) => {
-            const isActive = item.exact ? pathname === item.href : pathname?.startsWith(item.href);
+            const isActive = item.exact
+              ? pathname === item.href
+              : pathname?.startsWith(item.href);
             return (
               <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 text-[10px] font-semibold transition-all ${
+                className={`flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] transition-all ${
                   isActive
-                    ? "text-blue-600 font-bold"
+                    ? "font-bold text-blue-600"
                     : "text-slate-500 hover:text-slate-800"
                 }`}
+                href={item.href}
+                key={item.href}
               >
-                <div className={`p-1 rounded-lg transition-all ${isActive ? "bg-blue-50 text-blue-600 shadow-2xs" : ""}`}>
+                <div
+                  className={`rounded-lg p-1 transition-all ${isActive ? "bg-blue-50 text-blue-600 shadow-2xs" : ""}`}
+                >
                   <item.icon className="h-4 w-4" />
                 </div>
                 <span>{item.label}</span>
@@ -349,11 +378,11 @@ export default function DashboardLayout({
           })}
           {/* Menu Drawer Opener */}
           <button
+            className="flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] text-slate-500 transition-all hover:text-slate-800"
             onClick={() => setIsMobileDrawerOpen(true)}
-            className="flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all"
             type="button"
           >
-            <div className="p-1 rounded-lg">
+            <div className="rounded-lg p-1">
               <Menu className="h-4 w-4" />
             </div>
             <span>Daha Fazla</span>
@@ -378,11 +407,11 @@ export default function DashboardLayout({
 }
 
 interface NavItem {
-  name: string;
-  href: string;
-  icon: any;
   badge?: string | null;
   exact?: boolean;
+  href: string;
+  icon: any;
+  name: string;
   permission?: string;
   tab?: string;
 }
@@ -639,7 +668,7 @@ function DashboardNavigation({
                 <Link
                   className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      ? "translate-y-[-0.5px] border border-slate-200/90 bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.02]"
                       : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
@@ -648,12 +677,14 @@ function DashboardNavigation({
                   prefetch={false}
                 >
                   {isActive && (
-                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                    <span className="absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
                   )}
                   <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
                       className={`h-4 w-4 transition-colors ${
-                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                        isActive
+                          ? "text-blue-600"
+                          : "text-slate-400 group-hover:text-slate-600"
                       }`}
                     />
                     <span>{item.name}</span>
@@ -704,7 +735,7 @@ function DashboardNavigation({
                 <Link
                   className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      ? "translate-y-[-0.5px] border border-slate-200/90 bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.02]"
                       : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
@@ -713,12 +744,14 @@ function DashboardNavigation({
                   prefetch={false}
                 >
                   {isActive && (
-                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                    <span className="absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
                   )}
                   <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
                       className={`h-4 w-4 transition-colors ${
-                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                        isActive
+                          ? "text-blue-600"
+                          : "text-slate-400 group-hover:text-slate-600"
                       }`}
                     />
                     <span>{item.name}</span>
@@ -775,7 +808,7 @@ function DashboardNavigation({
                 <Link
                   className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      ? "translate-y-[-0.5px] border border-slate-200/90 bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.02]"
                       : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
@@ -784,12 +817,14 @@ function DashboardNavigation({
                   prefetch={false}
                 >
                   {isActive && (
-                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                    <span className="absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
                   )}
                   <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
                       className={`h-4 w-4 transition-colors ${
-                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                        isActive
+                          ? "text-blue-600"
+                          : "text-slate-400 group-hover:text-slate-600"
                       }`}
                     />
                     <span>{item.name}</span>
@@ -836,7 +871,7 @@ function DashboardNavigation({
                 <Link
                   className={`group relative flex items-center justify-between rounded-2xl px-3 py-2 text-xs transition-all duration-200 ${
                     isActive
-                      ? "bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/90 ring-1 ring-black/[0.02] translate-y-[-0.5px]"
+                      ? "translate-y-[-0.5px] border border-slate-200/90 bg-white font-bold text-blue-700 shadow-[0_3px_10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.02]"
                       : "font-medium text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                   href={item.href}
@@ -845,12 +880,14 @@ function DashboardNavigation({
                   prefetch={false}
                 >
                   {isActive && (
-                    <span className="absolute left-1 top-1/2 -translate-y-1/2 h-4 w-1 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
+                    <span className="absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-blue-600 shadow-blue-500/50 shadow-xs" />
                   )}
                   <div className="flex items-center gap-2.5 pl-1.5">
                     <item.icon
                       className={`h-4 w-4 transition-colors ${
-                        isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                        isActive
+                          ? "text-blue-600"
+                          : "text-slate-400 group-hover:text-slate-600"
                       }`}
                     />
                     <span>{item.name}</span>
@@ -910,34 +947,34 @@ function DashboardBottom() {
   return (
     <div className="space-y-3 border-slate-100 border-t pt-3">
       {/* User Profile & Account Card */}
-      <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-2.5 shadow-2xs transition-all hover:bg-slate-100/70 hover:border-slate-300">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-xs text-white shadow-2xs">
+      <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-2.5 shadow-2xs transition-all hover:border-slate-300 hover:bg-slate-100/70">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-white text-xs shadow-2xs">
             {userInitials}
           </div>
           <div className="min-w-0 truncate">
-            <div className="font-bold text-xs text-slate-900 truncate">
+            <div className="truncate font-bold text-slate-900 text-xs">
               {profile?.fullName || "Serhat Dev"}
             </div>
-            <div className="text-[10px] text-slate-500 font-medium truncate">
+            <div className="truncate font-medium text-[10px] text-slate-500">
               {activeTenant?.name || "Ana Çalışma Alanı"}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-0.5 flex-none">
+        <div className="flex flex-none items-center gap-0.5">
           <Link
+            className="rounded-lg p-1.5 text-slate-400 transition hover:bg-white hover:text-slate-800 hover:shadow-2xs"
             href={`/${tenantSlug || "workspace"}/settings`}
             title="Şirket & Hesap Ayarları"
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-white hover:text-slate-800 hover:shadow-2xs transition"
           >
             <Settings className="h-4 w-4" />
           </Link>
           <button
+            className="rounded-lg p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600"
             onClick={handleLogout}
             title="Güvenli Çıkış Yap"
             type="button"
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
           >
             <LogOut className="h-4 w-4" />
           </button>
@@ -945,7 +982,7 @@ function DashboardBottom() {
       </div>
 
       {/* Help & Feedback Footer Links */}
-      <div className="flex items-center justify-between px-2 text-[11px] font-medium text-slate-400">
+      <div className="flex items-center justify-between px-2 font-medium text-[11px] text-slate-400">
         <Link
           className="flex items-center gap-1 transition-colors hover:text-slate-700"
           href="#help"

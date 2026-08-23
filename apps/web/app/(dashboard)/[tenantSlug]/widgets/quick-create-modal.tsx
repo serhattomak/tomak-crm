@@ -63,12 +63,12 @@ export function QuickCreateModal({
         if (activeTenant?.id) {
           const res = await ApiClient.createCustomer(
             {
-              name: formData.title,
               email: formData.email,
+              name: formData.title,
               phone: formData.phone,
               status: "Lead",
-              type: formData.company ? "Company" : "Individual",
               tier: "Standard",
+              type: formData.company ? "Company" : "Individual",
             },
             activeTenant.id
           );
@@ -87,11 +87,11 @@ export function QuickCreateModal({
           if (defaultPipeline?.id) {
             const res = await ApiClient.createDeal(
               {
+                pipelineId: defaultPipeline.id,
+                priority: formData.priority,
+                stageId: defaultStage?.id,
                 title: formData.title,
                 value: Number.parseFloat(formData.value) || 0,
-                pipelineId: defaultPipeline.id,
-                stageId: defaultStage?.id,
-                priority: formData.priority,
               },
               activeTenant.id
             );
@@ -144,17 +144,17 @@ export function QuickCreateModal({
   }, [onClose]);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl my-auto overflow-hidden">
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-4 sm:p-5 shrink-0">
-          <div className="flex items-center gap-3 min-w-0">
+        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b p-4 sm:p-5">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
               {type === "lead" && <UserPlus className="h-5 w-5" />}
               {type === "deal" && <Briefcase className="h-5 w-5" />}
@@ -162,19 +162,19 @@ export function QuickCreateModal({
               {type === "proposal" && <FileText className="h-5 w-5" />}
             </div>
             <div className="min-w-0">
-              <h2 className="font-bold text-slate-900 text-sm truncate">
+              <h2 className="truncate font-bold text-slate-900 text-sm">
                 {type === "lead" && "Hızlı Müşteri Adayı (Lead) Ekle"}
                 {type === "deal" && "Yeni Satış Fırsatı Oluştur"}
                 {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
                 {type === "proposal" && "Yeni Teklif Taslağı Başlat"}
               </h2>
-              <p className="text-slate-500 text-xs truncate">
+              <p className="truncate text-slate-500 text-xs">
                 Temel bilgileri girerek saniyeler içinde kaydedin
               </p>
             </div>
           </div>
           <button
-            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 shrink-0"
+            className="shrink-0 rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100"
             onClick={onClose}
             type="button"
           >

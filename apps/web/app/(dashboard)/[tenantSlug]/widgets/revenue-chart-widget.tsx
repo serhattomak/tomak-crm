@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Download, FileSpreadsheet, Info, Plus } from "lucide-react";
+import { BarChart3, Info, Plus } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
@@ -15,13 +15,17 @@ export function RevenueChartWidget({
   dateRange: _dateRange,
 }: RevenueChartWidgetProps) {
   const { activeTenant } = usePermissions();
-  const [activeMetric, setActiveMetric] = useState<"revenue" | "deals" | "margin">("revenue");
+  const [activeMetric, setActiveMetric] = useState<
+    "revenue" | "deals" | "margin"
+  >("revenue");
   const [isLoading, setIsLoading] = useState(true);
   const [orderStats, setOrderStats] = useState<any>(null);
   const [quoteStats, setQuoteStats] = useState<any>(null);
 
   const fetchStats = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
       const [ordersRes, quotesRes] = await Promise.allSettled([
@@ -45,7 +49,11 @@ export function RevenueChartWidget({
     fetchStats();
   }, [fetchStats]);
 
-  const totalRevenue = (orderStats?.totalRevenue || 0) + (quoteStats?.activeProposalsVolume ? Number(quoteStats.activeProposalsVolume) : 0);
+  const totalRevenue =
+    (orderStats?.totalRevenue || 0) +
+    (quoteStats?.activeProposalsVolume
+      ? Number(quoteStats.activeProposalsVolume)
+      : 0);
   const totalOrders = orderStats?.totalOrders || 0;
   const hasData = totalRevenue > 0 || totalOrders > 0;
 
@@ -63,7 +71,7 @@ export function RevenueChartWidget({
                 <span>Gelir & Satış Performansı</span>
                 <Info className="h-3.5 w-3.5 text-slate-400" />
               </div>
-              <span className="text-[11px] text-slate-500 font-medium">
+              <span className="font-medium text-[11px] text-slate-500">
                 Dönemsel gerçekleşen satış ve teklif analitiği
               </span>
             </div>
@@ -99,53 +107,82 @@ export function RevenueChartWidget({
 
         {/* Content Area */}
         {isLoading ? (
-          <div className="h-48 flex items-center justify-center">
+          <div className="flex h-48 items-center justify-center">
             <div className="h-32 w-full animate-pulse rounded-2xl bg-slate-50" />
           </div>
-        ) : !hasData ? (
+        ) : hasData ? (
+          <div className="relative pt-6 pb-2">
+            <div className="grid grid-cols-2 gap-3 py-4 sm:grid-cols-4">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
+                <span className="block font-semibold text-[11px] text-slate-500">
+                  Toplam Sipariş Geliri
+                </span>
+                <span className="mt-1 block font-extrabold text-slate-900 text-xl">
+                  ₺
+                  {(orderStats?.totalRevenue || 0).toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
+                <span className="block font-semibold text-[11px] text-slate-500">
+                  Tahsil Edilen
+                </span>
+                <span className="mt-1 block font-extrabold text-emerald-600 text-xl">
+                  ₺
+                  {(orderStats?.paidRevenue || 0).toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
+                <span className="block font-semibold text-[11px] text-slate-500">
+                  Aktif Teklif Hacmi
+                </span>
+                <span className="mt-1 block font-extrabold text-violet-600 text-xl">
+                  ₺
+                  {Number(
+                    quoteStats?.activeProposalsVolume || 0
+                  ).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
+                <span className="block font-semibold text-[11px] text-slate-500">
+                  Toplam Sipariş
+                </span>
+                <span className="mt-1 block font-extrabold text-slate-900 text-xl">
+                  {totalOrders} Adet
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
           <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-3 shadow-2xs">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
               <BarChart3 className="h-6 w-6" />
             </div>
-            <h3 className="font-bold text-slate-800 text-sm">Henüz satış veya ciro kaydı bulunmuyor</h3>
-            <p className="text-slate-500 text-xs mt-1 max-w-sm">
-              Müşterilerinize teklif hazırlayarak veya onaylanan teklifleri siparişe dönüştürerek gelir grafiklerinizi buradan takip edebilirsiniz.
+            <h3 className="font-bold text-slate-800 text-sm">
+              Henüz satış veya ciro kaydı bulunmuyor
+            </h3>
+            <p className="mt-1 max-w-sm text-slate-500 text-xs">
+              Müşterilerinize teklif hazırlayarak veya onaylanan teklifleri
+              siparişe dönüştürerek gelir grafiklerinizi buradan takip
+              edebilirsiniz.
             </p>
             <div className="mt-4 flex items-center gap-2">
               <Link
+                className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
                 href={`/${activeTenant?.slug || "workspace"}/quotes`}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 transition"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Teklif Oluştur</span>
               </Link>
               <Link
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 font-bold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
                 href={`/${activeTenant?.slug || "workspace"}/orders`}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 font-bold text-slate-700 text-xs shadow-2xs hover:bg-slate-50 transition"
               >
                 <span>Siparişler</span>
               </Link>
-            </div>
-          </div>
-        ) : (
-          <div className="relative pt-6 pb-2">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
-              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
-                <span className="text-[11px] text-slate-500 font-semibold block">Toplam Sipariş Geliri</span>
-                <span className="text-xl font-extrabold text-slate-900 mt-1 block">₺{(orderStats?.totalRevenue || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
-                <span className="text-[11px] text-slate-500 font-semibold block">Tahsil Edilen</span>
-                <span className="text-xl font-extrabold text-emerald-600 mt-1 block">₺{(orderStats?.paidRevenue || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
-                <span className="text-[11px] text-slate-500 font-semibold block">Aktif Teklif Hacmi</span>
-                <span className="text-xl font-extrabold text-violet-600 mt-1 block">₺{Number(quoteStats?.activeProposalsVolume || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
-                <span className="text-[11px] text-slate-500 font-semibold block">Toplam Sipariş</span>
-                <span className="text-xl font-extrabold text-slate-900 mt-1 block">{totalOrders} Adet</span>
-              </div>
             </div>
           </div>
         )}
@@ -155,13 +192,20 @@ export function RevenueChartWidget({
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-slate-100 border-t pt-4 text-xs">
           <div className="flex items-center gap-6">
             <div>
-              <span className="text-[11px] text-slate-400 font-medium">Toplam İşlem:</span>
+              <span className="font-medium text-[11px] text-slate-400">
+                Toplam İşlem:
+              </span>
               <div className="font-bold text-slate-900 text-sm">
-                ₺{totalRevenue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                ₺
+                {totalRevenue.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
               </div>
             </div>
             <div>
-              <span className="text-[11px] text-slate-400 font-medium">Teslim Edilen:</span>
+              <span className="font-medium text-[11px] text-slate-400">
+                Teslim Edilen:
+              </span>
               <div className="font-bold text-emerald-600 text-sm">
                 {orderStats?.deliveredOrders ?? 0} Sipariş
               </div>
@@ -169,8 +213,8 @@ export function RevenueChartWidget({
           </div>
 
           <Link
+            className="flex items-center gap-1 font-bold text-violet-600 transition hover:text-violet-700"
             href={`/${activeTenant?.slug || "workspace"}/orders`}
-            className="flex items-center gap-1 font-bold text-violet-600 hover:text-violet-700 transition"
           >
             <span>Tüm Siparişleri İncele →</span>
           </Link>

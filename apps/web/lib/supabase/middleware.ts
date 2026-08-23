@@ -57,7 +57,6 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/register");
   const isPublicPage =

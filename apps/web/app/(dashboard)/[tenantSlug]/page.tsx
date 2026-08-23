@@ -94,13 +94,20 @@ export default function WorkspaceOverviewPage() {
 
   const handleMoveWidget = (widgetId: string, direction: "up" | "down") => {
     const currentIndex = currentTabWidgets.indexOf(widgetId);
-    if (currentIndex === -1) return;
-    const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
-    if (targetIndex < 0 || targetIndex >= currentTabWidgets.length) return;
+    if (currentIndex === -1) {
+      return;
+    }
+    const targetIndex =
+      direction === "up" ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= currentTabWidgets.length) {
+      return;
+    }
 
     const updated = [...currentTabWidgets];
     const removed = updated.splice(currentIndex, 1)[0];
-    if (!removed) return;
+    if (!removed) {
+      return;
+    }
     updated.splice(targetIndex, 0, removed);
 
     const newLayout = {
@@ -154,7 +161,9 @@ export default function WorkspaceOverviewPage() {
         );
 
       case "revenue-chart": {
-        const spanClass = isSalesGaugeActive ? "col-span-12 lg:col-span-8" : "col-span-12";
+        const spanClass = isSalesGaugeActive
+          ? "col-span-12 lg:col-span-8"
+          : "col-span-12";
         return (
           <div className={spanClass} key="revenue-chart">
             <RevenueChartWidget dateRange={dateRange} />
@@ -163,7 +172,9 @@ export default function WorkspaceOverviewPage() {
       }
 
       case "sales-gauge": {
-        const spanClass = isRevenueChartActive ? "col-span-12 lg:col-span-4" : "col-span-12 lg:col-span-6";
+        const spanClass = isRevenueChartActive
+          ? "col-span-12 lg:col-span-4"
+          : "col-span-12 lg:col-span-6";
         return (
           <div className={spanClass} key="sales-gauge">
             <SalesGaugeWidget dateRange={dateRange} />
@@ -193,7 +204,9 @@ export default function WorkspaceOverviewPage() {
         );
 
       case "lead-sources": {
-        const spanClass = isTasksActive ? "col-span-12 lg:col-span-4" : "col-span-12 lg:col-span-6";
+        const spanClass = isTasksActive
+          ? "col-span-12 lg:col-span-4"
+          : "col-span-12 lg:col-span-6";
         return (
           <div className={spanClass} key="lead-sources">
             <LeadSourcesWidget dateRange={dateRange} />
@@ -202,7 +215,9 @@ export default function WorkspaceOverviewPage() {
       }
 
       case "tasks-checklist": {
-        const spanClass = isLeadSourcesActive ? "col-span-12 lg:col-span-8" : "col-span-12";
+        const spanClass = isLeadSourcesActive
+          ? "col-span-12 lg:col-span-8"
+          : "col-span-12";
         return (
           <div className={spanClass} key="tasks-checklist">
             <TasksChecklistWidget />
@@ -412,7 +427,7 @@ export default function WorkspaceOverviewPage() {
       </div>
 
       {/* 3. Main Dynamic Grid of Widgets with Dense Auto-Fill */}
-      <div className="grid grid-cols-12 gap-6 grid-flow-dense">
+      <div className="grid grid-flow-dense grid-cols-12 gap-6">
         {currentTabWidgets.length === 0 ? (
           <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-slate-50/50 p-12 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-xs">
@@ -455,9 +470,9 @@ export default function WorkspaceOverviewPage() {
         activeWidgetIds={currentTabWidgets}
         isOpen={isCustomizeModalOpen}
         onClose={() => setIsCustomizeModalOpen(false)}
+        onMoveWidget={handleMoveWidget}
         onResetDefaults={handleResetDefaults}
         onToggleWidget={handleToggleWidget}
-        onMoveWidget={handleMoveWidget}
       />
 
       {/* Quick Create Lead / Deal / Task Modal */}

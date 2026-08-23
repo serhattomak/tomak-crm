@@ -1,7 +1,36 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
-import { ApiClient } from "@/lib/api-client";
+import {
+  AlertCircle,
+  Building2,
+  Check,
+  CheckCircle2,
+  Clock,
+  Copy,
+  ExternalLink,
+  Eye,
+  History,
+  MapPin,
+  Package,
+  PackageCheck,
+  PackagePlus,
+  PackageSearch,
+  Plus,
+  Printer,
+  RefreshCw,
+  RotateCcw,
+  Search,
+  Send,
+  Shield,
+  Trash2,
+  TrendingUp,
+  Truck,
+  X,
+} from "lucide-react";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import type {
   CarrierDto,
   CreateCarrierPayload,
@@ -13,51 +42,7 @@ import type {
   UpdateReturnStatusPayload,
   UpdateShipmentStatusPayload,
 } from "@/lib/api-client";
-import {
-  AlertCircle,
-  ArrowDownLeft,
-  ArrowUpRight,
-  Barcode,
-  Building2,
-  Calendar,
-  Check,
-  CheckCircle2,
-  ChevronDown,
-  Clock,
-  Copy,
-  ExternalLink,
-  Eye,
-  FileSpreadsheet,
-  FileText,
-  Filter,
-  History,
-  Layers,
-  MapPin,
-  Package,
-  PackageCheck,
-  PackagePlus,
-  PackageSearch,
-  Phone,
-  Plus,
-  Printer,
-  QrCode,
-  RefreshCw,
-  RotateCcw,
-  Search,
-  Send,
-  Shield,
-  Tag,
-  TrendingUp,
-  Trash2,
-  Truck,
-  User,
-  Users,
-  X,
-  Zap,
-} from "lucide-react";
-import { useParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { ApiClient } from "@/lib/api-client";
 
 // Status Badges Configuration
 interface StatusBadgeInfo {
@@ -69,96 +54,97 @@ interface StatusBadgeInfo {
 }
 
 const SHIPMENT_STATUS_CONFIG: Record<string, StatusBadgeInfo> = {
-  Preparing: {
-    label: "Hazırlanıyor (Paketleniyor)",
-    bg: "bg-amber-50 dark:bg-amber-950/40",
-    text: "text-amber-700 dark:text-amber-300",
-    border: "border-amber-200 dark:border-amber-800/60",
-    icon: Clock,
-  },
-  Dispatched: {
-    label: "Kargoya Verildi",
-    bg: "bg-blue-50 dark:bg-blue-950/40",
-    text: "text-blue-700 dark:text-blue-300",
-    border: "border-blue-200 dark:border-blue-800/60",
-    icon: Send,
-  },
-  InTransit: {
-    label: "Dağıtımda / Yolda",
-    bg: "bg-indigo-50 dark:bg-indigo-950/40",
-    text: "text-indigo-700 dark:text-indigo-300",
-    border: "border-indigo-200 dark:border-indigo-800/60",
-    icon: Truck,
-  },
-  Delivered: {
-    label: "Teslim Edildi",
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    text: "text-emerald-700 dark:text-emerald-300",
-    border: "border-emerald-200 dark:border-emerald-800/60",
-    icon: CheckCircle2,
-  },
-  FailedDelivery: {
-    label: "Teslim Edilemedi / Şubede",
-    bg: "bg-rose-50 dark:bg-rose-950/40",
-    text: "text-rose-700 dark:text-rose-300",
-    border: "border-rose-200 dark:border-rose-800/60",
-    icon: AlertCircle,
-  },
   Cancelled: {
-    label: "İptal Edildi",
     bg: "bg-slate-100 dark:bg-slate-800",
-    text: "text-slate-600 dark:text-slate-400",
     border: "border-slate-200 dark:border-slate-700",
     icon: X,
+    label: "İptal Edildi",
+    text: "text-slate-600 dark:text-slate-400",
+  },
+  Delivered: {
+    bg: "bg-emerald-50 dark:bg-emerald-950/40",
+    border: "border-emerald-200 dark:border-emerald-800/60",
+    icon: CheckCircle2,
+    label: "Teslim Edildi",
+    text: "text-emerald-700 dark:text-emerald-300",
+  },
+  Dispatched: {
+    bg: "bg-blue-50 dark:bg-blue-950/40",
+    border: "border-blue-200 dark:border-blue-800/60",
+    icon: Send,
+    label: "Kargoya Verildi",
+    text: "text-blue-700 dark:text-blue-300",
+  },
+  FailedDelivery: {
+    bg: "bg-rose-50 dark:bg-rose-950/40",
+    border: "border-rose-200 dark:border-rose-800/60",
+    icon: AlertCircle,
+    label: "Teslim Edilemedi / Şubede",
+    text: "text-rose-700 dark:text-rose-300",
+  },
+  InTransit: {
+    bg: "bg-indigo-50 dark:bg-indigo-950/40",
+    border: "border-indigo-200 dark:border-indigo-800/60",
+    icon: Truck,
+    label: "Dağıtımda / Yolda",
+    text: "text-indigo-700 dark:text-indigo-300",
+  },
+  Preparing: {
+    bg: "bg-amber-50 dark:bg-amber-950/40",
+    border: "border-amber-200 dark:border-amber-800/60",
+    icon: Clock,
+    label: "Hazırlanıyor (Paketleniyor)",
+    text: "text-amber-700 dark:text-amber-300",
   },
 };
 
 const RETURN_STATUS_CONFIG: Record<string, StatusBadgeInfo> = {
-  Requested: {
-    label: "İade Talebi Alındı",
-    bg: "bg-amber-50 dark:bg-amber-950/40",
-    text: "text-amber-700 dark:text-amber-300",
-    border: "border-amber-200 dark:border-amber-800/60",
-    icon: Clock,
-  },
-  InTransit: {
-    label: "Müşteriden Yolda",
-    bg: "bg-indigo-50 dark:bg-indigo-950/40",
-    text: "text-indigo-700 dark:text-indigo-300",
-    border: "border-indigo-200 dark:border-indigo-800/60",
-    icon: Truck,
-  },
-  Received: {
-    label: "Depoda Teslim Alındı",
-    bg: "bg-blue-50 dark:bg-blue-950/40",
-    text: "text-blue-700 dark:text-blue-300",
-    border: "border-blue-200 dark:border-blue-800/60",
-    icon: PackageCheck,
-  },
   Inspected: {
-    label: "Kalite Kontrolden Geçti",
     bg: "bg-teal-50 dark:bg-teal-950/40",
-    text: "text-teal-700 dark:text-teal-300",
     border: "border-teal-200 dark:border-teal-800/60",
     icon: Shield,
+    label: "Kalite Kontrolden Geçti",
+    text: "text-teal-700 dark:text-teal-300",
   },
-  Restocked: {
-    label: "Stoka İade Edildi",
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    text: "text-emerald-700 dark:text-emerald-300",
-    border: "border-emerald-200 dark:border-emerald-800/60",
-    icon: CheckCircle2,
+  InTransit: {
+    bg: "bg-indigo-50 dark:bg-indigo-950/40",
+    border: "border-indigo-200 dark:border-indigo-800/60",
+    icon: Truck,
+    label: "Müşteriden Yolda",
+    text: "text-indigo-700 dark:text-indigo-300",
+  },
+  Received: {
+    bg: "bg-blue-50 dark:bg-blue-950/40",
+    border: "border-blue-200 dark:border-blue-800/60",
+    icon: PackageCheck,
+    label: "Depoda Teslim Alındı",
+    text: "text-blue-700 dark:text-blue-300",
   },
   Rejected: {
-    label: "İade Reddedildi",
     bg: "bg-rose-50 dark:bg-rose-950/40",
-    text: "text-rose-700 dark:text-rose-300",
     border: "border-rose-200 dark:border-rose-800/60",
     icon: X,
+    label: "İade Reddedildi",
+    text: "text-rose-700 dark:text-rose-300",
+  },
+  Requested: {
+    bg: "bg-amber-50 dark:bg-amber-950/40",
+    border: "border-amber-200 dark:border-amber-800/60",
+    icon: Clock,
+    label: "İade Talebi Alındı",
+    text: "text-amber-700 dark:text-amber-300",
+  },
+  Restocked: {
+    bg: "bg-emerald-50 dark:bg-emerald-950/40",
+    border: "border-emerald-200 dark:border-emerald-800/60",
+    icon: CheckCircle2,
+    label: "Stoka İade Edildi",
+    text: "text-emerald-700 dark:text-emerald-300",
   },
 };
 
-const DEFAULT_SHIPMENT_STATUS: StatusBadgeInfo = SHIPMENT_STATUS_CONFIG.Preparing!;
+const DEFAULT_SHIPMENT_STATUS: StatusBadgeInfo =
+  SHIPMENT_STATUS_CONFIG.Preparing!;
 const DEFAULT_RETURN_STATUS: StatusBadgeInfo = RETURN_STATUS_CONFIG.Requested!;
 
 function getShipmentStatusConfig(status: string): StatusBadgeInfo {
@@ -244,44 +230,53 @@ export default function ShipmentsPage() {
   }, [loadData]);
 
   // Filtered Shipments
-  const filteredShipments = useMemo(() => {
-    return shipments.filter((s) => {
-      const matchesSearch =
-        searchQuery === "" ||
-        s.shipmentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (s.trackingNumber &&
-          s.trackingNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (s.orderNumber &&
-          s.orderNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        s.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.recipientName.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredShipments = useMemo(
+    () =>
+      shipments.filter((s) => {
+        const matchesSearch =
+          searchQuery === "" ||
+          s.shipmentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (s.trackingNumber &&
+            s.trackingNumber
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())) ||
+          (s.orderNumber &&
+            s.orderNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          s.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          s.recipientName.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesStatus =
-        selectedStatus === "ALL" || s.status === selectedStatus;
-      const matchesCarrier =
-        selectedCarrierFilter === "ALL" || s.carrierId === selectedCarrierFilter;
+        const matchesStatus =
+          selectedStatus === "ALL" || s.status === selectedStatus;
+        const matchesCarrier =
+          selectedCarrierFilter === "ALL" ||
+          s.carrierId === selectedCarrierFilter;
 
-      return matchesSearch && matchesStatus && matchesCarrier;
-    });
-  }, [shipments, searchQuery, selectedStatus, selectedCarrierFilter]);
+        return matchesSearch && matchesStatus && matchesCarrier;
+      }),
+    [shipments, searchQuery, selectedStatus, selectedCarrierFilter]
+  );
 
   // Filtered Returns
-  const filteredReturns = useMemo(() => {
-    return returns.filter((r) => {
-      const matchesSearch =
-        searchQuery === "" ||
-        r.returnCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (r.trackingNumber &&
-          r.trackingNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        r.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.reason.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredReturns = useMemo(
+    () =>
+      returns.filter((r) => {
+        const matchesSearch =
+          searchQuery === "" ||
+          r.returnCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (r.trackingNumber &&
+            r.trackingNumber
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())) ||
+          r.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.reason.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesStatus =
-        selectedStatus === "ALL" || r.status === selectedStatus;
+        const matchesStatus =
+          selectedStatus === "ALL" || r.status === selectedStatus;
 
-      return matchesSearch && matchesStatus;
-    });
-  }, [returns, searchQuery, selectedStatus]);
+        return matchesSearch && matchesStatus;
+      }),
+    [returns, searchQuery, selectedStatus]
+  );
 
   const [confirmDialog, setConfirmDialog] = useState<{
     cancelText?: string;
@@ -327,7 +322,11 @@ export default function ShipmentsPage() {
         } catch {
           toast.error("Kargo silinirken bir hata meydana geldi.");
         } finally {
-          setConfirmDialog((prev) => ({ ...prev, loading: false, open: false }));
+          setConfirmDialog((prev) => ({
+            ...prev,
+            loading: false,
+            open: false,
+          }));
         }
       },
       open: true,
@@ -353,7 +352,11 @@ export default function ShipmentsPage() {
         } catch {
           toast.error("İade talebi silinirken hata oluştu.");
         } finally {
-          setConfirmDialog((prev) => ({ ...prev, loading: false, open: false }));
+          setConfirmDialog((prev) => ({
+            ...prev,
+            loading: false,
+            open: false,
+          }));
         }
       },
       open: true,
@@ -379,7 +382,11 @@ export default function ShipmentsPage() {
         } catch {
           toast.error("Kargo firması silinirken hata oluştu.");
         } finally {
-          setConfirmDialog((prev) => ({ ...prev, loading: false, open: false }));
+          setConfirmDialog((prev) => ({
+            ...prev,
+            loading: false,
+            open: false,
+          }));
         }
       },
       open: true,
@@ -398,7 +405,7 @@ export default function ShipmentsPage() {
               <Truck className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-xl text-slate-900 tracking-tight dark:text-foreground">
+              <h1 className="font-bold text-slate-900 text-xl tracking-tight dark:text-foreground">
                 Kargo & Sevkiyat Yönetimi
               </h1>
               <p className="text-slate-500 text-xs dark:text-muted-foreground">
@@ -479,7 +486,9 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-indigo-600 dark:text-indigo-400">
             {stats?.inTransitCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-slate-400">Kurye / Taşıyıcıda</div>
+          <div className="mt-1 text-[11px] text-slate-400">
+            Kurye / Taşıyıcıda
+          </div>
         </div>
 
         <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs dark:border-slate-800 dark:bg-card">
@@ -492,7 +501,9 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-emerald-600 dark:text-emerald-400">
             {stats?.deliveredTodayCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-slate-400">Başarılı teslimat</div>
+          <div className="mt-1 text-[11px] text-slate-400">
+            Başarılı teslimat
+          </div>
         </div>
 
         <div className="col-span-2 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs sm:col-span-1 dark:border-slate-800 dark:bg-card">
@@ -705,10 +716,10 @@ export default function ShipmentsPage() {
                                   "tr-TR",
                                   {
                                     day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric",
                                     hour: "2-digit",
                                     minute: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
                                   }
                                 )}
                               </span>
@@ -862,7 +873,9 @@ export default function ShipmentsPage() {
                               {/* Delete Shipment */}
                               <button
                                 className="rounded-lg border border-slate-200 bg-white p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:bg-card dark:text-rose-400 dark:hover:bg-rose-950/40"
-                                onClick={() => handleDeleteShipment(s.id, s.shipmentNumber)}
+                                onClick={() =>
+                                  handleDeleteShipment(s.id, s.shipmentNumber)
+                                }
                                 title="Kargo Kaydını Sil"
                                 type="button"
                               >
@@ -1044,7 +1057,9 @@ export default function ShipmentsPage() {
 
                               <button
                                 className="rounded-lg border border-slate-200 bg-white p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:bg-card dark:text-rose-400 dark:hover:bg-rose-950/40"
-                                onClick={() => handleDeleteReturn(r.id, r.returnCode)}
+                                onClick={() =>
+                                  handleDeleteReturn(r.id, r.returnCode)
+                                }
                                 title="İade Talebini Sil"
                                 type="button"
                               >
@@ -1068,8 +1083,8 @@ export default function ShipmentsPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-slate-500 text-xs dark:text-muted-foreground">
-              Anlaşmalı kargo şirketleri, şube kodları ve canlı takip entegrasyon
-              şablonları.
+              Anlaşmalı kargo şirketleri, şube kodları ve canlı takip
+              entegrasyon şablonları.
             </p>
             <button
               className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
@@ -1090,7 +1105,7 @@ export default function ShipmentsPage() {
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 font-bold text-xs dark:bg-slate-800 dark:text-slate-200">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-700 text-xs dark:bg-slate-800 dark:text-slate-200">
                         {c.code.slice(0, 3)}
                       </div>
                       <div>
@@ -1406,28 +1421,30 @@ function CreateShipmentModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerName || !recipientName || !recipientAddress) {
-      toast.error("Lütfen müşteri adı, alıcı adı ve adres bilgilerini giriniz.");
+    if (!(customerName && recipientName && recipientAddress)) {
+      toast.error(
+        "Lütfen müşteri adı, alıcı adı ve adres bilgilerini giriniz."
+      );
       return;
     }
 
     try {
       setIsSubmitting(true);
       const payload: CreateShipmentPayload = {
+        carrierId: carrierId || undefined,
         customerId,
         customerName,
+        items: items.filter((i) => i.productName.trim().length > 0),
         orderNumber: orderNumber || undefined,
-        carrierId: carrierId || undefined,
-        trackingNumber: trackingNumber || undefined,
         packageCount: Number(packageCount),
-        totalWeightKg: Number(totalWeightKg),
-        totalDesi: Number(totalDesi),
-        recipientName,
-        recipientPhone,
         recipientAddress,
         recipientCity,
         recipientDistrict,
-        items: items.filter((i) => i.productName.trim().length > 0),
+        recipientName,
+        recipientPhone,
+        totalDesi: Number(totalDesi),
+        totalWeightKg: Number(totalWeightKg),
+        trackingNumber: trackingNumber || undefined,
       };
 
       const res = await ApiClient.createShipment(payload, tenantSlug);
@@ -1832,9 +1849,9 @@ function UpdateStatusModal({
 
       // Update status
       const payload: UpdateShipmentStatusPayload = {
-        status,
-        location,
         description: description || undefined,
+        location,
+        status,
       };
 
       const res = await ApiClient.updateShipmentStatus(
@@ -2037,7 +2054,7 @@ function PrintLabelModal({
                   SEVKİYAT İRSALİYE ETİKETİ
                 </span>
               </div>
-              <div className="text-right font-mono font-bold text-xs">
+              <div className="text-right font-bold font-mono text-xs">
                 <div>PAKET: {shipment.packageCount} KOLİ</div>
                 <div>
                   DESİ: {shipment.totalDesi} | {shipment.totalWeightKg} KG
@@ -2083,7 +2100,7 @@ function PrintLabelModal({
                 <span className="font-bold text-base text-slate-900">
                   {shipment.recipientName}
                 </span>
-                <p className="mt-0.5 text-xs text-slate-800 leading-tight">
+                <p className="mt-0.5 text-slate-800 text-xs leading-tight">
                   {shipment.recipientAddress}
                 </p>
                 <span className="font-bold text-xs">
@@ -2105,7 +2122,8 @@ function PrintLabelModal({
               </div>
               <div>
                 <span>
-                  TARİH: {new Date(shipment.createdAt).toLocaleDateString("tr-TR")}
+                  TARİH:{" "}
+                  {new Date(shipment.createdAt).toLocaleDateString("tr-TR")}
                 </span>
               </div>
             </div>
@@ -2243,7 +2261,7 @@ function ShipmentDetailDrawer({
               <History className="h-3.5 w-3.5 text-indigo-600" />
               <span>Kargo Hareket & Durum Tarihçesi</span>
             </h3>
-            <div className="space-y-3 border-slate-200 border-l-2 pl-4 ml-2 dark:border-slate-800">
+            <div className="ml-2 space-y-3 border-slate-200 border-l-2 pl-4 dark:border-slate-800">
               {shipment.statusHistories?.map((h) => (
                 <div className="relative" key={h.id}>
                   <div className="absolute top-1 -left-[21px] h-2.5 w-2.5 rounded-full bg-blue-600 ring-4 ring-white dark:ring-card" />
@@ -2253,9 +2271,9 @@ function ShipmentDetailDrawer({
                   <span className="ml-2 text-[10px] text-slate-400">
                     {new Date(h.createdAt).toLocaleDateString("tr-TR", {
                       day: "2-digit",
-                      month: "2-digit",
                       hour: "2-digit",
                       minute: "2-digit",
+                      month: "2-digit",
                     })}
                   </span>
                   {h.location && (
@@ -2323,7 +2341,7 @@ function CreateReturnModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerName || !reason) {
+    if (!(customerName && reason)) {
       toast.error("Lütfen müşteri adı ve iade sebebini giriniz.");
       return;
     }
@@ -2331,11 +2349,11 @@ function CreateReturnModal({
     try {
       setIsSubmitting(true);
       const payload: CreateReturnShipmentPayload = {
+        carrierId: carrierId || undefined,
         customerId,
         customerName,
-        carrierId: carrierId || undefined,
-        trackingNumber: trackingNumber || undefined,
         reason,
+        trackingNumber: trackingNumber || undefined,
       };
 
       const res = await ApiClient.createReturnShipment(payload, tenantSlug);
@@ -2414,7 +2432,9 @@ function CreateReturnModal({
               <option value="Cayma Hakkı / Beğenmeme">
                 Cayma Hakkı / Beğenmeme
               </option>
-              <option value="Beden / Ebat Değişimi">Beden / Ebat Değişimi</option>
+              <option value="Beden / Ebat Değişimi">
+                Beden / Ebat Değişimi
+              </option>
               <option value="Diğer">Diğer</option>
             </select>
           </div>
@@ -2509,8 +2529,8 @@ function UpdateReturnStatusModal({
     try {
       setIsSubmitting(true);
       const payload: UpdateReturnStatusPayload = {
-        status,
         inspectionNotes,
+        status,
       };
 
       const res = await ApiClient.updateReturnStatus(
@@ -2641,7 +2661,7 @@ function CreateCarrierModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code || !name) {
+    if (!(code && name)) {
       toast.error("Lütfen firma kodu ve adını giriniz.");
       return;
     }
@@ -2649,12 +2669,12 @@ function CreateCarrierModal({
     try {
       setIsSubmitting(true);
       const payload: CreateCarrierPayload = {
-        code,
-        name,
-        customerAccountNumber: customerAccountNumber || undefined,
         branchCode: branchCode || undefined,
-        trackingUrlTemplate: trackingUrlTemplate || undefined,
+        code,
+        customerAccountNumber: customerAccountNumber || undefined,
         isDefault,
+        name,
+        trackingUrlTemplate: trackingUrlTemplate || undefined,
       };
 
       const res = await ApiClient.createShippingCarrier(payload, tenantSlug);

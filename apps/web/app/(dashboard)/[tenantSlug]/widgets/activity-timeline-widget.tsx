@@ -1,6 +1,14 @@
 "use client";
 
-import { Clock, DollarSign, FileSpreadsheet, FileText, PhoneCall, Plus, RefreshCw, ShoppingCart, UserPlus } from "lucide-react";
+import {
+  Clock,
+  DollarSign,
+  FileSpreadsheet,
+  PhoneCall,
+  Plus,
+  RefreshCw,
+  UserPlus,
+} from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
@@ -13,17 +21,27 @@ export function ActivityTimelineWidget() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchLiveActivities = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
-      const quotesRes = await ApiClient.getQuotes({ pageSize: 6 }, activeTenant.id);
+      const quotesRes = await ApiClient.getQuotes(
+        { pageSize: 6 },
+        activeTenant.id
+      );
       const items: ActivityItem[] = [];
 
       if (quotesRes.success && quotesRes.data?.items) {
         for (const q of quotesRes.data.items) {
           const dateStr = q.updatedAt || q.createdAt;
-          const timeFormatted = dateStr ? new Date(dateStr).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) : "Bugün";
-          
+          const timeFormatted = dateStr
+            ? new Date(dateStr).toLocaleTimeString("tr-TR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "Bugün";
+
           let action = "yeni teklif oluşturdu";
           let type: ActivityItem["type"] = "deal";
           if (q.status === "RevisionRequested") {
@@ -38,14 +56,16 @@ export function ActivityTimelineWidget() {
           }
 
           items.push({
-            id: `quote-${q.id}`,
             action,
+            id: `quote-${q.id}`,
             target: `${q.quoteNumber} - ${q.customerName} (₺${(q.totalAmount || 0).toLocaleString("tr-TR")})`,
             timestamp: timeFormatted,
             type,
             user: {
+              initials: (q.assignedUserName || "S")
+                .substring(0, 2)
+                .toUpperCase(),
               name: q.assignedUserName || "Sistem",
-              initials: (q.assignedUserName || "S").substring(0, 2).toUpperCase(),
             },
           });
         }
@@ -90,17 +110,17 @@ export function ActivityTimelineWidget() {
               <span className="font-bold text-slate-900 text-sm">
                 Canlı Aktivite Akışı
               </span>
-              <div className="text-[11px] text-slate-500 font-medium">
+              <div className="font-medium text-[11px] text-slate-500">
                 Ekip içi son teklif, müşteri ve satış hareketleri
               </div>
             </div>
           </div>
 
           <button
+            className="rounded-xl p-1.5 text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
             onClick={() => fetchLiveActivities()}
             title="Yenile"
             type="button"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition"
           >
             <RefreshCw className="h-3.5 w-3.5" />
           </button>
@@ -110,28 +130,34 @@ export function ActivityTimelineWidget() {
         {isLoading ? (
           <div className="space-y-3 py-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-10 w-full animate-pulse rounded-xl bg-slate-50" />
+              <div
+                className="h-10 w-full animate-pulse rounded-xl bg-slate-50"
+                key={i}
+              />
             ))}
           </div>
         ) : activities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-2.5 shadow-2xs">
+            <div className="mb-2.5 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
               <Clock className="h-6 w-6" />
             </div>
-            <h4 className="font-bold text-slate-800 text-xs">Henüz aktivite veya işlem kaydı bulunmuyor</h4>
-            <p className="text-slate-400 text-[11px] mt-0.5 max-w-xs">
-              Oluşturulan teklifler, onaylar ve müşteri etkileşimleri otomatik olarak bu akışta toplanır.
+            <h4 className="font-bold text-slate-800 text-xs">
+              Henüz aktivite veya işlem kaydı bulunmuyor
+            </h4>
+            <p className="mt-0.5 max-w-xs text-[11px] text-slate-400">
+              Oluşturulan teklifler, onaylar ve müşteri etkileşimleri otomatik
+              olarak bu akışta toplanır.
             </p>
             <Link
+              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-amber-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-amber-700"
               href={`/${activeTenant?.slug || "workspace"}/quotes`}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-amber-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-amber-700 transition"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Teklif Oluştur</span>
             </Link>
           </div>
         ) : (
-          <div className="relative space-y-3.5 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100 max-h-72 overflow-y-auto pr-1">
+          <div className="relative max-h-72 space-y-3.5 overflow-y-auto pr-1 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
             {activities.map((act) => (
               <div
                 className="relative flex items-start gap-3 text-xs"
@@ -151,9 +177,11 @@ export function ActivityTimelineWidget() {
                       {act.timestamp}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-[11px] text-slate-600 font-medium">
+                  <p className="mt-0.5 font-medium text-[11px] text-slate-600">
                     {act.action}:{" "}
-                    <strong className="text-slate-800 font-bold">{act.target}</strong>
+                    <strong className="font-bold text-slate-800">
+                      {act.target}
+                    </strong>
                   </p>
                 </div>
               </div>
@@ -165,8 +193,8 @@ export function ActivityTimelineWidget() {
       {activities.length > 0 && (
         <div className="mt-4 border-slate-100 border-t pt-3 text-center">
           <Link
+            className="font-bold text-amber-600 text-xs transition hover:text-amber-700"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
-            className="font-bold text-amber-600 text-xs hover:text-amber-700 transition"
           >
             Tüm İşlem Geçmişini İncele →
           </Link>

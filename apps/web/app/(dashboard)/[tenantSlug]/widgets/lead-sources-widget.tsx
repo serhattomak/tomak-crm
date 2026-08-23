@@ -19,7 +19,9 @@ export function LeadSourcesWidget({
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchStats = useCallback(async () => {
-    if (!activeTenant?.id) return;
+    if (!activeTenant?.id) {
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await ApiClient.getCustomerStats(activeTenant.id);
@@ -47,11 +49,11 @@ export function LeadSourcesWidget({
   const hasData = totalCustomers > 0;
 
   const segments = [
-    { name: "Aktif Müşteriler", count: activeCount, color: "#10b981" },
-    { name: "Müşteri Adayları (Lead)", count: leadCount, color: "#8b5cf6" },
-    { name: "VIP / Stratejik", count: vipCount, color: "#f59e0b" },
-    { name: "Kurumsal Firmalar", count: companiesCount, color: "#06b6d4" },
-    { name: "Bireysel Müşteriler", count: individualsCount, color: "#ec4899" },
+    { color: "#10b981", count: activeCount, name: "Aktif Müşteriler" },
+    { color: "#8b5cf6", count: leadCount, name: "Müşteri Adayları (Lead)" },
+    { color: "#f59e0b", count: vipCount, name: "VIP / Stratejik" },
+    { color: "#06b6d4", count: companiesCount, name: "Kurumsal Firmalar" },
+    { color: "#ec4899", count: individualsCount, name: "Bireysel Müşteriler" },
   ].filter((s) => s.count > 0);
 
   return (
@@ -66,7 +68,7 @@ export function LeadSourcesWidget({
               <span className="font-bold text-slate-900 text-sm">
                 Müşteri & Lead Dağılımı
               </span>
-              <div className="text-[11px] text-slate-500 font-medium">
+              <div className="font-medium text-[11px] text-slate-500">
                 Segment ve portföy kırılımı
               </div>
             </div>
@@ -76,34 +78,17 @@ export function LeadSourcesWidget({
         </div>
 
         {isLoading ? (
-          <div className="h-40 flex items-center justify-center">
+          <div className="flex h-40 items-center justify-center">
             <div className="h-28 w-full animate-pulse rounded-2xl bg-slate-50" />
           </div>
-        ) : !hasData ? (
-          <div className="flex flex-col items-center justify-center py-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 mb-3 shadow-2xs">
-              <Users className="h-6 w-6" />
-            </div>
-            <h3 className="font-bold text-slate-800 text-sm">Henüz müşteri veya lead kaydı yok</h3>
-            <p className="text-slate-500 text-xs mt-1 max-w-xs">
-              İlk müşteri veya aday kaydınızı oluşturarak portföy dağılımınızı buradan inceleyebilirsiniz.
-            </p>
-            <Link
-              href={`/${activeTenant?.slug || "workspace"}/customers`}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3.5 py-2 font-bold text-white text-xs shadow-xs hover:bg-purple-700 transition"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Müşteri / Aday Ekle</span>
-            </Link>
-          </div>
-        ) : (
+        ) : hasData ? (
           <>
             {/* Donut Summary */}
             <div className="my-3 flex items-center justify-center">
               <div className="relative flex h-28 w-28 items-center justify-center">
-                <div className="h-full w-full rounded-full border-8 border-purple-500/20 border-t-purple-600 animate-in" />
+                <div className="h-full w-full animate-in rounded-full border-8 border-purple-500/20 border-t-purple-600" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-extrabold text-slate-900 text-2xl">
+                  <span className="font-extrabold text-2xl text-slate-900">
                     {totalCustomers}
                   </span>
                   <span className="font-semibold text-[10px] text-slate-400">
@@ -116,37 +101,63 @@ export function LeadSourcesWidget({
             {/* Segments list */}
             <div className="space-y-2 pt-2 text-xs">
               {segments.map((s) => {
-                const pct = totalCustomers > 0 ? Math.round((s.count / totalCustomers) * 100) : 0;
+                const pct =
+                  totalCustomers > 0
+                    ? Math.round((s.count / totalCustomers) * 100)
+                    : 0;
                 return (
-                  <div className="flex items-center justify-between" key={s.name}>
+                  <div
+                    className="flex items-center justify-between"
+                    key={s.name}
+                  >
                     <div className="flex items-center gap-2">
                       <span
-                        className="h-2.5 w-2.5 rounded-full flex-none"
+                        className="h-2.5 w-2.5 flex-none rounded-full"
                         style={{ backgroundColor: s.color }}
                       />
-                      <span className="text-[11px] text-slate-600 font-medium">{s.name}</span>
+                      <span className="font-medium text-[11px] text-slate-600">
+                        {s.name}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold">
                       <span className="font-bold text-[11px] text-slate-900">
                         {s.count}
                       </span>
-                      <span className="text-[10px] text-slate-400">
-                        %{pct}
-                      </span>
+                      <span className="text-[10px] text-slate-400">%{pct}</span>
                     </div>
                   </div>
                 );
               })}
             </div>
           </>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-6 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
+              <Users className="h-6 w-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-sm">
+              Henüz müşteri veya lead kaydı yok
+            </h3>
+            <p className="mt-1 max-w-xs text-slate-500 text-xs">
+              İlk müşteri veya aday kaydınızı oluşturarak portföy dağılımınızı
+              buradan inceleyebilirsiniz.
+            </p>
+            <Link
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3.5 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-purple-700"
+              href={`/${activeTenant?.slug || "workspace"}/customers`}
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Müşteri / Aday Ekle</span>
+            </Link>
+          </div>
         )}
       </div>
 
       {hasData && (
         <div className="mt-4 border-slate-100 border-t pt-3 text-center">
           <Link
+            className="font-bold text-purple-600 text-xs transition hover:text-purple-700"
             href={`/${activeTenant?.slug || "workspace"}/customers`}
-            className="font-bold text-purple-600 text-xs hover:text-purple-700 transition"
           >
             Tüm Müşteri Portföyünü İncele →
           </Link>
