@@ -61,7 +61,6 @@ public class PublicQuoteHandler(
         var quote = await dbContext.Quotes
             .IgnoreQueryFilters()
             .Include(q => q.Items)
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.PublicViewToken == request.Token && q.IsActive, cancellationToken);
 
         if (quote == null)
@@ -73,7 +72,7 @@ public class PublicQuoteHandler(
         if (quote.Status == "Sent")
         {
             quote.Status = "Viewed";
-            quote.Activities.Add(new QuoteActivity
+            dbContext.QuoteActivities.Add(new QuoteActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = quote.TenantId,
@@ -148,7 +147,6 @@ public class PublicQuoteHandler(
         var quote = await dbContext.Quotes
             .IgnoreQueryFilters()
             .Include(q => q.Items)
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.PublicViewToken == request.Token && q.IsActive, cancellationToken);
 
         if (quote == null)
@@ -168,7 +166,7 @@ public class PublicQuoteHandler(
         var acceptedBy = !string.IsNullOrWhiteSpace(request.Request.AcceptedByName) ? request.Request.AcceptedByName.Trim() : quote.CustomerName;
         var note = !string.IsNullOrWhiteSpace(request.Request.CustomerNotes) ? request.Request.CustomerNotes.Trim() : "Onaylandı";
 
-        quote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = quote.TenantId,
@@ -290,7 +288,6 @@ public class PublicQuoteHandler(
     {
         var quote = await dbContext.Quotes
             .IgnoreQueryFilters()
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.PublicViewToken == request.Token && q.IsActive, cancellationToken);
 
         if (quote == null)
@@ -298,7 +295,7 @@ public class PublicQuoteHandler(
             throw new NotFoundException("Teklif bulunamadı.");
         }
 
-        quote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = quote.TenantId,

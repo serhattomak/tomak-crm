@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Data;
 using System.Data.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -34,70 +35,70 @@ public class CurrentTenantAccessor : ICurrentTenant
     }
 }
 
-public class TenantContextMiddleware(RequestDelegate next)
+public class TenantContextMiddleware(
+    RequestDelegate next,
+    IConfiguration configuration)
 {
-    private static readonly ConcurrentDictionary<string, Guid> TenantSlugCache = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly ConcurrentDictionary<string, Guid> TenantSlugCache = new();
 
-    public async Task InvokeAsync(HttpContext context, ICurrentTenant currentTenant, IConfiguration configuration)
+    public async Task InvokeAsync(HttpContext context, ICurrentTenant currentTenant)
     {
-        string? candidateSlug = null;
         Guid? resolvedTenantId = null;
+        string? candidateSlug = null;
 
-        // 1. Try reading from X-Tenant-Id header
+        // 1. Try resolving from custom header "X-Tenant-Id"
         if (context.Request.Headers.TryGetValue("X-Tenant-Id", out var tenantHeader) &&
-            !string.IsNullOrWhiteSpace(tenantHeader))
+            Guid.TryParse(tenantHeader.ToString(), out var headerTenantId))
         {
-            var headerVal = tenantHeader.ToString().Trim();
-            if (Guid.TryParse(headerVal, out var tid))
-            {
-                resolvedTenantId = tid;
-            }
-            else
-            {
-                candidateSlug = headerVal;
-            }
+            resolvedTenantId = headerTenantId;
         }
 
-        // 2. Or from X-Tenant-Slug header
-        if (!resolvedTenantId.HasValue &&
-            context.Request.Headers.TryGetValue("X-Tenant-Slug", out var slugHeader) &&
-            !string.IsNullOrWhiteSpace(slugHeader))
+        // 2. Try resolving from subdomain or URL segment (e.g. /api/{tenant}/...)
+        if (!resolvedTenantId.HasValue)
         {
-            candidateSlug = slugHeader.ToString().Trim();
-        }
-
-        // 3. Resolve slug to Guid if needed
-        if (!resolvedTenantId.HasValue && !string.IsNullOrWhiteSpace(candidateSlug))
-        {
-            if (TenantSlugCache.TryGetValue(candidateSlug, out var cachedId))
+            var host = context.Request.Host.Host;
+            var parts = host.Split('.');
+            if (parts.Length > 2 && parts[0] != "www" && parts[0] != "api")
             {
-                resolvedTenantId = cachedId;
+                candidateSlug = parts[0];
             }
-            else
+            else if (context.Request.Headers.TryGetValue("X-Tenant-Slug", out var slugHeader))
             {
-                var connStr = configuration?.GetConnectionString("Database") ??
-                              configuration?.GetConnectionString("DefaultConnection");
+                candidateSlug = slugHeader.ToString();
+            }
 
-                if (!string.IsNullOrEmpty(connStr))
+            if (!string.IsNullOrEmpty(candidateSlug))
+            {
+                if (TenantSlugCache.TryGetValue(candidateSlug, out var cachedId))
                 {
-                    try
+                    resolvedTenantId = cachedId;
+                }
+                else
+                {
+                    // Query database directly to resolve tenant slug
+                    var connStr = configuration.GetConnectionString("Database");
+
+                    if (!string.IsNullOrEmpty(connStr))
                     {
-                        await using var conn = new NpgsqlConnection(connStr);
-                        await conn.OpenAsync(context.RequestAborted);
-                        await using var cmd = new NpgsqlCommand(
-                            "SELECT id FROM public.tenants WHERE slug = @slug OR id::text = @slug LIMIT 1;",
-                            conn);
-                        cmd.Parameters.AddWithValue("slug", candidateSlug);
-                        var result = await cmd.ExecuteScalarAsync(context.RequestAborted);
-                        if (result is Guid g)
+                        try
                         {
-                            resolvedTenantId = g;
-                            TenantSlugCache[candidateSlug] = g;
+                            await using var conn = new NpgsqlConnection(connStr);
+                            await conn.OpenAsync(context.RequestAborted);
+                            await using var cmd = new NpgsqlCommand(
+                                "SELECT id FROM public.tenants WHERE slug = @slug OR id::text = @slug LIMIT 1;",
+                                conn);
+                            cmd.Parameters.AddWithValue("slug", candidateSlug);
+                            var result = await cmd.ExecuteScalarAsync(context.RequestAborted);
+                            if (result is Guid g)
+                            {
+                                resolvedTenantId = g;
+                                TenantSlugCache[candidateSlug] = g;
+                            }
                         }
-                    }
-                    catch
-                    {
-                        // Ignore DB errors during tenant slug resolution
+                        catch
+                        {
+                            // Ignore DB errors during tenant slug resolution
+                        }
                     }
                 }
             }
@@ -118,20 +119,96 @@ public class TenantContextMiddleware(RequestDelegate next)
     }
 }
 
-public class NpgsqlRlsConnectionInterceptor(ICurrentTenant currentTenant) : DbConnectionInterceptor
+public class NpgsqlRlsConnectionInterceptor(ICurrentTenant currentTenant) : DbCommandInterceptor
 {
-    public override async Task ConnectionOpenedAsync(
-        DbConnection connection,
-        ConnectionEndEventData eventData,
+    public override async ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<DbDataReader> result,
         CancellationToken cancellationToken = default)
     {
-        if (currentTenant.Id.HasValue && currentTenant.Id.Value != Guid.Empty)
-        {
-            using var command = connection.CreateCommand();
-            command.CommandText = $"SET app.current_tenant_id = '{currentTenant.Id.Value}';";
-            await command.ExecuteNonQueryAsync(cancellationToken);
-        }
+        await SetTenantSessionAsync(command, cancellationToken);
+        return await base.ReaderExecutingAsync(command, eventData, result, cancellationToken);
+    }
 
-        await base.ConnectionOpenedAsync(connection, eventData, cancellationToken);
+    public override async ValueTask<InterceptionResult<int>> NonQueryExecutingAsync(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
+    {
+        await SetTenantSessionAsync(command, cancellationToken);
+        return await base.NonQueryExecutingAsync(command, eventData, result, cancellationToken);
+    }
+
+    public override async ValueTask<InterceptionResult<object>> ScalarExecutingAsync(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<object> result,
+        CancellationToken cancellationToken = default)
+    {
+        await SetTenantSessionAsync(command, cancellationToken);
+        return await base.ScalarExecutingAsync(command, eventData, result, cancellationToken);
+    }
+
+    public override InterceptionResult<DbDataReader> ReaderExecuting(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<DbDataReader> result)
+    {
+        SetTenantSession(command);
+        return base.ReaderExecuting(command, eventData, result);
+    }
+
+    public override InterceptionResult<int> NonQueryExecuting(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<int> result)
+    {
+        SetTenantSession(command);
+        return base.NonQueryExecuting(command, eventData, result);
+    }
+
+    public override InterceptionResult<object> ScalarExecuting(
+        DbCommand command,
+        CommandEventData eventData,
+        InterceptionResult<object> result)
+    {
+        SetTenantSession(command);
+        return base.ScalarExecuting(command, eventData, result);
+    }
+
+    private void SetTenantSession(DbCommand command)
+    {
+        if (currentTenant.Id.HasValue && currentTenant.Id.Value != Guid.Empty && command.Connection != null)
+        {
+            if (command.CommandText.StartsWith("SET app.current_tenant_id", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            if (command.Connection.State == ConnectionState.Open)
+            {
+                using var setCmd = command.Connection.CreateCommand();
+                setCmd.Transaction = command.Transaction;
+                setCmd.CommandText = $"SET app.current_tenant_id = '{currentTenant.Id.Value}';";
+                setCmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    private async Task SetTenantSessionAsync(DbCommand command, CancellationToken cancellationToken)
+    {
+        if (currentTenant.Id.HasValue && currentTenant.Id.Value != Guid.Empty && command.Connection != null)
+        {
+            if (command.CommandText.StartsWith("SET app.current_tenant_id", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            if (command.Connection.State == ConnectionState.Open)
+            {
+                await using var setCmd = command.Connection.CreateCommand();
+                setCmd.Transaction = command.Transaction;
+                setCmd.CommandText = $"SET app.current_tenant_id = '{currentTenant.Id.Value}';";
+                await setCmd.ExecuteNonQueryAsync(cancellationToken);
+            }
+        }
     }
 }

@@ -29,7 +29,6 @@ public class ApproveQuoteHandler(
         var tenantId = currentTenant.Id.Value;
 
         var quote = await dbContext.Quotes
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.Id == request.Id && q.TenantId == tenantId, cancellationToken);
 
         if (quote == null)
@@ -44,7 +43,7 @@ public class ApproveQuoteHandler(
             quote.ApprovalNotes = request.Request.ApprovalNotes;
             quote.UpdatedAt = DateTime.UtcNow;
 
-            quote.Activities.Add(new QuoteActivity
+            dbContext.QuoteActivities.Add(new QuoteActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,
@@ -61,7 +60,7 @@ public class ApproveQuoteHandler(
             quote.ApprovalNotes = request.Request.ApprovalNotes;
             quote.UpdatedAt = DateTime.UtcNow;
 
-            quote.Activities.Add(new QuoteActivity
+            dbContext.QuoteActivities.Add(new QuoteActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,
@@ -87,7 +86,6 @@ public class ApproveQuoteHandler(
         var tenantId = currentTenant.Id.Value;
 
         var quote = await dbContext.Quotes
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.Id == request.Id && q.TenantId == tenantId, cancellationToken);
 
         if (quote == null)
@@ -104,7 +102,7 @@ public class ApproveQuoteHandler(
         quote.SentAt = DateTime.UtcNow;
         quote.UpdatedAt = DateTime.UtcNow;
 
-        quote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,

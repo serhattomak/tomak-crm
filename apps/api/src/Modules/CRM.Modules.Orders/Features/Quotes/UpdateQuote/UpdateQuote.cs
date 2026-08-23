@@ -41,7 +41,6 @@ public class UpdateQuoteHandler(
 
         var quote = await dbContext.Quotes
             .Include(q => q.Items)
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.Id == request.Id && q.TenantId == tenantId, cancellationToken);
 
         if (quote == null)
@@ -58,40 +57,32 @@ public class UpdateQuoteHandler(
         var exchangeRate = req.ExchangeRate > 0 ? req.ExchangeRate : 1.0000m;
 
         decimal subtotal = 0.00m;
+        decimal itemsDiscount = 0.00m;
         decimal totalTax = 0.00m;
-        decimal totalItemDiscount = 0.00m;
-        bool requiresApproval = false;
 
         // Clear existing items
         dbContext.QuoteItems.RemoveRange(quote.Items);
 
         var newItems = new List<QuoteItem>();
-        int index = 0;
+        int orderIndex = 0;
 
         foreach (var item in req.Items)
         {
-            var qty = item.Quantity > 0 ? item.Quantity : 1.00m;
-            var unitPrice = item.UnitPrice >= 0 ? item.UnitPrice : 0.00m;
-            var unitCost = item.UnitCost >= 0 ? item.UnitCost : 0.00m;
-            var taxRate = item.TaxRate >= 0 ? item.TaxRate : 20.00m;
-            var discountRate = item.DiscountRate >= 0 ? item.DiscountRate : 0.00m;
+            var qty = item.Quantity > 0 ? item.Quantity : 1;
+            var unitPrice = item.UnitPrice >= 0 ? item.UnitPrice : 0;
+            var itemSubtotal = qty * unitPrice;
+            var discRate = Math.Clamp(item.DiscountRate, 0, 100);
+            var itemDisc = itemSubtotal * (discRate / 100m);
+            var taxable = itemSubtotal - itemDisc;
+            var taxRate = Math.Clamp(item.TaxRate, 0, 100);
+            var itemTax = taxable * (taxRate / 100m);
+            var itemTotal = taxable + itemTax;
 
-            if (discountRate > 20.00m)
+            if (item.IsSelected)
             {
-                requiresApproval = true;
-            }
-
-            var rawPrice = unitPrice * qty;
-            var itemDiscount = discountRate > 0 ? (rawPrice * (discountRate / 100.00m)) : item.DiscountAmount;
-            var priceAfterDiscount = Math.Max(0, rawPrice - itemDiscount);
-            var itemTax = taxRate > 0 ? (priceAfterDiscount * (taxRate / 100.00m)) : 0.00m;
-            var totalPrice = priceAfterDiscount + itemTax;
-
-            if (item.IsSelected && !item.IsOptional)
-            {
-                subtotal += priceAfterDiscount;
+                subtotal += itemSubtotal;
+                itemsDiscount += itemDisc;
                 totalTax += itemTax;
-                totalItemDiscount += itemDiscount;
             }
 
             newItems.Add(new QuoteItem
@@ -107,39 +98,44 @@ public class UpdateQuoteHandler(
                 Quantity = qty,
                 Unit = !string.IsNullOrWhiteSpace(item.Unit) ? item.Unit.Trim() : "Adet",
                 UnitPrice = unitPrice,
-                UnitCost = unitCost,
-                DiscountRate = discountRate,
-                DiscountAmount = itemDiscount,
+                UnitCost = item.UnitCost,
+                DiscountRate = discRate,
+                DiscountAmount = itemDisc,
                 TaxRate = taxRate,
                 TaxAmount = itemTax,
-                TotalPrice = totalPrice,
+                TotalPrice = itemTotal,
                 IsOptional = item.IsOptional,
                 IsSelected = item.IsSelected,
-                OrderIndex = index++,
+                OrderIndex = orderIndex++,
                 CreatedAt = DateTime.UtcNow
             });
         }
 
-        // General discount
-        decimal generalDiscountAmount = 0.00m;
-        if (req.DiscountType == "Percentage" && req.DiscountRate > 0)
+        decimal globalDiscountAmount = 0.00m;
+        var discountType = req.DiscountType is "Percentage" or "Amount" ? req.DiscountType : "Percentage";
+
+        if (discountType == "Percentage")
         {
-            generalDiscountAmount = subtotal * (req.DiscountRate / 100.00m);
-            if (req.DiscountRate > 15.00m)
-            {
-                requiresApproval = true;
-            }
+            var discRate = Math.Clamp(req.DiscountRate, 0, 100);
+            globalDiscountAmount = (subtotal - itemsDiscount) * (discRate / 100m);
         }
-        else if (req.DiscountType == "Amount" && req.DiscountAmount > 0)
+        else
         {
-            generalDiscountAmount = req.DiscountAmount;
-            if (subtotal > 0 && (generalDiscountAmount / subtotal) > 0.15m)
-            {
-                requiresApproval = true;
-            }
+            globalDiscountAmount = Math.Clamp(req.DiscountAmount, 0, subtotal - itemsDiscount);
         }
 
-        var totalAmount = Math.Max(0, (subtotal - generalDiscountAmount) + totalTax);
+        var totalDiscount = itemsDiscount + globalDiscountAmount;
+        var totalAmount = (subtotal - totalDiscount) + totalTax;
+
+        bool requiresApproval = false;
+        if (discountType == "Percentage" && req.DiscountRate > 15m)
+        {
+            requiresApproval = true;
+        }
+        else if (subtotal > 0 && (totalDiscount / subtotal) > 0.15m)
+        {
+            requiresApproval = true;
+        }
 
         quote.Title = req.Title.Trim();
         quote.CustomerId = req.CustomerId;
@@ -150,9 +146,9 @@ public class UpdateQuoteHandler(
         quote.Currency = currency;
         quote.ExchangeRate = exchangeRate;
         quote.Subtotal = subtotal;
-        quote.DiscountType = req.DiscountType ?? "Percentage";
+        quote.DiscountType = discountType;
         quote.DiscountRate = req.DiscountRate;
-        quote.DiscountAmount = totalItemDiscount + generalDiscountAmount;
+        quote.DiscountAmount = totalDiscount;
         quote.TaxAmount = totalTax;
         quote.TotalAmount = totalAmount;
         quote.ValidUntil = req.ValidUntil;
@@ -169,7 +165,7 @@ public class UpdateQuoteHandler(
             quote.Status = "PendingApproval";
         }
 
-        quote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,

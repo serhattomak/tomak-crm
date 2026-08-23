@@ -43,7 +43,6 @@ public class ConvertToOrderHandler(
 
         var quote = await dbContext.Quotes
             .Include(q => q.Items)
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.Id == quoteId && q.TenantId == tenantId, cancellationToken);
 
         if (quote == null)
@@ -116,7 +115,7 @@ public class ConvertToOrderHandler(
                 Items = orderItems
             };
 
-            order.Activities.Add(new OrderActivity
+            dbContext.OrderActivities.Add(new OrderActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,
@@ -130,7 +129,7 @@ public class ConvertToOrderHandler(
             dbContext.Orders.Add(order);
             quote.ConvertedOrderId = orderId;
 
-            quote.Activities.Add(new QuoteActivity
+            dbContext.QuoteActivities.Add(new QuoteActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,
@@ -143,7 +142,7 @@ public class ConvertToOrderHandler(
         }
         else
         {
-            quote.Activities.Add(new QuoteActivity
+            dbContext.QuoteActivities.Add(new QuoteActivity
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,

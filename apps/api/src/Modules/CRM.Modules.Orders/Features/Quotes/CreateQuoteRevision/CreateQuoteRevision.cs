@@ -29,7 +29,6 @@ public class CreateQuoteRevisionHandler(
 
         var parentQuote = await dbContext.Quotes
             .Include(q => q.Items)
-            .Include(q => q.Activities)
             .FirstOrDefaultAsync(q => q.Id == request.Id && q.TenantId == tenantId, cancellationToken);
 
         if (parentQuote == null)
@@ -41,7 +40,7 @@ public class CreateQuoteRevisionHandler(
         parentQuote.Status = "Revised";
         parentQuote.UpdatedAt = DateTime.UtcNow;
 
-        parentQuote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
@@ -116,7 +115,7 @@ public class CreateQuoteRevisionHandler(
             Items = newItems
         };
 
-        newQuote.Activities.Add(new QuoteActivity
+        dbContext.QuoteActivities.Add(new QuoteActivity
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
