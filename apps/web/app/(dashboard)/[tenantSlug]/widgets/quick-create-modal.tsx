@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
@@ -132,32 +132,49 @@ export function QuickCreateModal({
     }
   };
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl my-auto overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+        <div className="flex items-center justify-between border-slate-100 border-b p-4 sm:p-5 shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
               {type === "lead" && <UserPlus className="h-5 w-5" />}
               {type === "deal" && <Briefcase className="h-5 w-5" />}
               {type === "task" && <CheckSquare className="h-5 w-5" />}
               {type === "proposal" && <FileText className="h-5 w-5" />}
             </div>
-            <div>
-              <h2 className="font-bold text-slate-900 text-sm">
+            <div className="min-w-0">
+              <h2 className="font-bold text-slate-900 text-sm truncate">
                 {type === "lead" && "Hızlı Müşteri Adayı (Lead) Ekle"}
                 {type === "deal" && "Yeni Satış Fırsatı Oluştur"}
                 {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
                 {type === "proposal" && "Yeni Teklif Taslağı Başlat"}
               </h2>
-              <p className="text-slate-500 text-xs">
+              <p className="text-slate-500 text-xs truncate">
                 Temel bilgileri girerek saniyeler içinde kaydedin
               </p>
             </div>
           </div>
           <button
-            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100"
+            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 shrink-0"
             onClick={onClose}
             type="button"
           >

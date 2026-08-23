@@ -2331,10 +2331,22 @@ function EmployeeDetailDrawer({
   onEdit: () => void;
   onSelectEmployee: (id: string) => void;
 }) {
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   if (!employeeDetail && isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex justify-end bg-black/30 backdrop-blur-xs">
-        <div className="flex h-full w-full max-w-md items-center justify-center bg-white p-8">
+      <div className="fixed inset-0 z-50 flex justify-end">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs" onClick={onClose} />
+        <div className="relative z-10 flex h-full w-full max-w-md items-center justify-center bg-white p-8">
           <Loader2 className="h-8 w-8 animate-spin text-fuchsia-500" />
         </div>
       </div>
@@ -2346,8 +2358,14 @@ function EmployeeDetailDrawer({
   }
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end bg-black/40 backdrop-blur-xs duration-200">
-      <div className="slide-in-from-right flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl duration-300">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end duration-200">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
+        onClick={onClose}
+      />
+
+      <div className="relative z-10 slide-in-from-right flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-4 sm:p-6 pb-28 sm:pb-8 shadow-2xl duration-300">
         <div>
           {/* Top Close & Edit actions */}
           <div className="flex items-center justify-between border-slate-100 border-b pb-4">

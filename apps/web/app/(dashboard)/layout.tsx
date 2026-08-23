@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Menu,
   MessageCircleQuestion,
   MessageSquare,
   Network,
@@ -30,6 +31,7 @@ import {
   UserCheck,
   Users,
   Users2,
+  X,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
@@ -57,11 +59,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const params = useParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
 
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+
+  // Close mobile drawer when pathname changes
+  useEffect(() => {
+    setIsMobileDrawerOpen(false);
+  }, [pathname]);
 
   // Global Keyboard Navigation & Shortcuts Listener
   useEffect(() => {
@@ -69,113 +78,99 @@ export default function DashboardLayout({
     let bufferTimeout: NodeJS.Timeout | null = null;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // 1. Command Palette: Cmd+K or Ctrl+K
+      // 1. Command Palette Toggle (⌘K / Ctrl+K)
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setIsCommandPaletteOpen((prev) => !prev);
         return;
       }
 
-      // Check if user is actively typing in an editable field
-      const target = e.target as HTMLElement;
-      const isInput =
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.tagName === "SELECT" ||
-        target.isContentEditable;
-
-      if (isInput) {
-        return;
-      }
-
-      // 2. Slash (/) to focus Command Palette
-      if (e.key === "/" && !isCommandPaletteOpen && !isShortcutsHelpOpen) {
-        e.preventDefault();
-        setIsCommandPaletteOpen(true);
-        return;
-      }
-
-      // 3. Question mark (?) to toggle Shortcuts Help Modal
-      if (e.key === "?" && !isCommandPaletteOpen) {
+      // 2. Shortcuts Help (? key)
+      if (
+        e.key === "?" &&
+        !isCommandPaletteOpen &&
+        !(
+          e.target instanceof HTMLInputElement ||
+          e.target instanceof HTMLTextAreaElement
+        )
+      ) {
         e.preventDefault();
         setIsShortcutsHelpOpen((prev) => !prev);
         return;
       }
 
-      // 4. Sequence Shortcuts (e.g. G then D, G then M, N then M)
-      const key = e.key.toLowerCase();
-      if (key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        keyBuffer.push(key);
+      // 3. Escape closes modals
+      if (e.key === "Escape") {
+        if (isCommandPaletteOpen) setIsCommandPaletteOpen(false);
+        if (isShortcutsHelpOpen) setIsShortcutsHelpOpen(false);
+        if (isMobileDrawerOpen) setIsMobileDrawerOpen(false);
+        return;
+      }
+
+      // 4. Two-key sequence shortcuts (G+H, G+P, G+Q, etc.)
+      const isInput =
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.isContentEditable;
+
+      if (!isInput && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        keyBuffer.push(e.key.toLowerCase());
 
         if (bufferTimeout) {
           clearTimeout(bufferTimeout);
         }
+
         bufferTimeout = setTimeout(() => {
           keyBuffer = [];
-        }, 800);
+        }, 1000);
 
         const seq = keyBuffer.join("");
 
-        // Navigation Sequence (g + key)
-        if (seq === "gd") {
+        if (seq === "gh") {
           e.preventDefault();
           router.push(`/${tenantSlug}`);
-          keyBuffer = [];
-        } else if (seq === "gm") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/customers`);
-          keyBuffer = [];
-        } else if (seq === "gs") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/orders`);
-          keyBuffer = [];
-        } else if (seq === "gu") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/products`);
-          keyBuffer = [];
-        } else if (seq === "gi") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/leaves`);
-          keyBuffer = [];
-        } else if (seq === "gb") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/payroll`);
-          keyBuffer = [];
-        } else if (seq === "gv") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/attendance`);
-          keyBuffer = [];
-        } else if (seq === "go") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/organization`);
-          keyBuffer = [];
-        } else if (seq === "gk") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/shipments`);
           keyBuffer = [];
         } else if (seq === "gp") {
           e.preventDefault();
           router.push(`/${tenantSlug}/pipelines`);
           keyBuffer = [];
-        } else if (seq === "ga") {
+        } else if (seq === "gq") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/quotes`);
+          keyBuffer = [];
+        } else if (seq === "gc") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/customers`);
+          keyBuffer = [];
+        } else if (seq === "go") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/orders`);
+          keyBuffer = [];
+        } else if (seq === "gt") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/attendance`);
+          keyBuffer = [];
+        } else if (seq === "gl") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/leaves`);
+          keyBuffer = [];
+        } else if (seq === "gs") {
           e.preventDefault();
           router.push(`/${tenantSlug}/settings`);
           keyBuffer = [];
-        }
-        // Creation Sequence (n + key)
-        else if (seq === "nm") {
+        } else if (seq === "nc") {
           e.preventDefault();
           router.push(`/${tenantSlug}/customers?create=true`);
           keyBuffer = [];
-        } else if (seq === "np") {
+        } else if (seq === "nq") {
+          e.preventDefault();
+          router.push(`/${tenantSlug}/quotes?create=true`);
+          keyBuffer = [];
+        } else if (seq === "nd") {
           e.preventDefault();
           router.push(`/${tenantSlug}/pipelines?create=true`);
           keyBuffer = [];
-        } else if (seq === "ns") {
-          e.preventDefault();
-          router.push(`/${tenantSlug}/orders?create=true`);
-          keyBuffer = [];
-        } else if (seq === "ni") {
+        } else if (seq === "nl") {
           e.preventDefault();
           router.push(`/${tenantSlug}/leaves?create=true`);
           keyBuffer = [];
@@ -194,14 +189,100 @@ export default function DashboardLayout({
         clearTimeout(bufferTimeout);
       }
     };
-  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen]);
+  }, [router, tenantSlug, isCommandPaletteOpen, isShortcutsHelpOpen, isMobileDrawerOpen]);
+
+  // Bottom navigation items on mobile
+  const mobileBottomNav = [
+    { href: `/${tenantSlug}`, icon: LayoutDashboard, label: "Anasayfa", exact: true },
+    { href: `/${tenantSlug}/pipelines`, icon: Kanban, label: "Fırsatlar" },
+    { href: `/${tenantSlug}/quotes`, icon: FileSpreadsheet, label: "Teklifler" },
+    { href: `/${tenantSlug}/customers`, icon: Users2, label: "Müşteriler" },
+  ];
 
   return (
     <PermissionProvider initialTenantSlug={tenantSlug}>
       <Toaster position="top-right" richColors />
-      <div className="flex h-screen gap-3 overflow-hidden bg-[#f4f5f8] p-2 font-sans text-slate-900 antialiased sm:p-3">
-        {/* Left Floating Sidebar */}
-        <aside className="flex w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm">
+      <div className="flex h-screen w-full flex-col md:flex-row gap-0 md:gap-3 overflow-hidden bg-[#f4f5f8] md:p-3 font-sans text-slate-900 antialiased">
+        {/* Mobile Top Header Bar */}
+        <header className="flex md:hidden items-center justify-between px-3 py-2.5 bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-2xs">
+          <div className="flex items-center gap-2 min-w-0">
+            <button
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition active:scale-95 shadow-2xs"
+              title="Menüyü Aç"
+              type="button"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="min-w-0">
+              <TenantSwitcher />
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={() => setIsCommandPaletteOpen(true)}
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition active:scale-95"
+              title="Arama (⌘K)"
+              type="button"
+            >
+              <Search className="h-4.5 w-4.5" />
+            </button>
+          </div>
+        </header>
+
+        {/* Mobile Off-Canvas Sliding Drawer / Sheet */}
+        {isMobileDrawerOpen && (
+          <div className="fixed inset-0 z-50 flex md:hidden">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm animate-in fade-in transition-opacity"
+              onClick={() => setIsMobileDrawerOpen(false)}
+            />
+
+            {/* Drawer Content */}
+            <div className="relative flex w-4/5 max-w-xs flex-1 flex-col justify-between overflow-y-auto bg-white p-4 shadow-2xl animate-in slide-in-from-left duration-200 z-10">
+              <div className="space-y-4">
+                {/* Header & Close */}
+                <div className="flex items-center justify-between border-slate-100 border-b pb-3">
+                  <TenantSwitcher />
+                  <button
+                    onClick={() => setIsMobileDrawerOpen(false)}
+                    className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Quick Search */}
+                <button
+                  className="flex w-full items-center justify-between rounded-xl border border-slate-200/90 bg-slate-50/90 py-2 pr-2.5 pl-3 text-slate-500 text-xs shadow-2xs"
+                  onClick={() => {
+                    setIsMobileDrawerOpen(false);
+                    setIsCommandPaletteOpen(true);
+                  }}
+                  type="button"
+                >
+                  <div className="flex items-center gap-2">
+                    <Search className="h-4 w-4 text-slate-400" />
+                    <span className="font-medium text-slate-400">Hızlı Arama (⌘K)...</span>
+                  </div>
+                </button>
+
+                {/* Full Menus */}
+                <DashboardNavigation onItemClick={() => setIsMobileDrawerOpen(false)} />
+              </div>
+
+              {/* User Account / Signout */}
+              <div className="pt-4">
+                <DashboardBottom />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Desktop Left Floating Sidebar */}
+        <aside className="hidden md:flex w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white p-3.5 shadow-sm">
           <div className="space-y-4">
             {/* Workspace Switcher Header */}
             <div className="flex items-center justify-between gap-2">
@@ -229,21 +310,55 @@ export default function DashboardLayout({
             {/* Navigation Menus */}
             <Suspense
               fallback={
-                <div className="h-48 animate-pulse rounded-2xl bg-slate-50" />
+                <div className="h-48 animate-pulse rounded-2xl bg-slate-5" />
               }
             >
               <DashboardNavigation />
             </Suspense>
           </div>
 
-          {/* Bottom Sidebar Actions & Upgrade Card */}
+          {/* Bottom User Profile */}
           <DashboardBottom />
         </aside>
 
         {/* Main Content Viewport */}
-        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-[28px] border border-slate-200/80 bg-white shadow-sm">
-          <div className="flex-1 p-6 md:p-8">{children}</div>
+        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none md:rounded-[28px] border-0 md:border border-slate-200/80 bg-white shadow-none md:shadow-sm">
+          <div className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8">{children}</div>
         </div>
+
+        {/* Mobile Bottom Navigation Bar */}
+        <nav className="fixed bottom-0 left-0 right-0 z-40 flex md:hidden items-center justify-around border-t border-slate-200/90 bg-white/95 backdrop-blur-lg px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] safe-bottom">
+          {mobileBottomNav.map((item) => {
+            const isActive = item.exact ? pathname === item.href : pathname?.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 text-[10px] font-semibold transition-all ${
+                  isActive
+                    ? "text-blue-600 font-bold"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <div className={`p-1 rounded-lg transition-all ${isActive ? "bg-blue-50 text-blue-600 shadow-2xs" : ""}`}>
+                  <item.icon className="h-4 w-4" />
+                </div>
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+          {/* Menu Drawer Opener */}
+          <button
+            onClick={() => setIsMobileDrawerOpen(true)}
+            className="flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all"
+            type="button"
+          >
+            <div className="p-1 rounded-lg">
+              <Menu className="h-4 w-4" />
+            </div>
+            <span>Daha Fazla</span>
+          </button>
+        </nav>
       </div>
 
       {/* Global Command Palette */}
@@ -272,7 +387,11 @@ interface NavItem {
   tab?: string;
 }
 
-function DashboardNavigation() {
+function DashboardNavigation({
+  onItemClick,
+}: {
+  onItemClick?: () => void;
+} = {}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = useParams();
@@ -525,6 +644,7 @@ function DashboardNavigation() {
                   }`}
                   href={item.href}
                   key={item.name}
+                  onClick={onItemClick}
                   prefetch={false}
                 >
                   {isActive && (
@@ -589,6 +709,7 @@ function DashboardNavigation() {
                   }`}
                   href={item.href}
                   key={item.name}
+                  onClick={onItemClick}
                   prefetch={false}
                 >
                   {isActive && (
@@ -659,6 +780,7 @@ function DashboardNavigation() {
                   }`}
                   href={item.href}
                   key={item.name}
+                  onClick={onItemClick}
                   prefetch={false}
                 >
                   {isActive && (
@@ -719,6 +841,7 @@ function DashboardNavigation() {
                   }`}
                   href={item.href}
                   key={item.name}
+                  onClick={onItemClick}
                   prefetch={false}
                 >
                   {isActive && (

@@ -23,7 +23,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { DashboardTab } from "./dashboard-types";
 import { WIDGET_REGISTRY } from "./widget-registry";
 
@@ -112,20 +112,37 @@ export function CustomizeWidgetsModal({
     return matchesCategory && matchesSearch;
   });
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      {/* Backdrop with Click-to-Close */}
+      <div
+        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+
+      <div className="relative z-10 flex max-h-[88vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl my-auto overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-100 text-slate-800 shadow-2xs">
+        <div className="flex items-center justify-between border-slate-100 border-b p-4 sm:p-5 shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-800 shadow-2xs">
               <SlidersHorizontal className="h-5 w-5" />
             </div>
-            <div>
-              <h2 className="font-bold text-base text-slate-900">
+            <div className="min-w-0">
+              <h2 className="font-bold text-sm sm:text-base text-slate-900 truncate">
                 Dashboard Widget Düzenini Özelleştir
               </h2>
-              <p className="text-slate-500 text-xs">
+              <p className="text-slate-500 text-xs truncate">
                 <strong className="font-semibold text-violet-600">
                   {activeTab}
                 </strong>{" "}
@@ -135,7 +152,7 @@ export function CustomizeWidgetsModal({
           </div>
 
           <button
-            className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 shrink-0"
             onClick={onClose}
             type="button"
           >
