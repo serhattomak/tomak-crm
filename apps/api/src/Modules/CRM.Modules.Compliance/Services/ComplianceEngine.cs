@@ -30,6 +30,15 @@ public class ComplianceEngine(
         double breakMinutes,
         bool isNightShift = false,
         CancellationToken cancellationToken = default)
+        => await ValidateShiftTemplateAsync(startTime, endTime, breakMinutes, isNightShift, null, cancellationToken);
+
+    public async Task<ComplianceValidationResult> ValidateShiftTemplateAsync(
+        string startTime,
+        string endTime,
+        double breakMinutes,
+        bool isNightShift,
+        IReadOnlyList<BreakPeriod>? breaks,
+        CancellationToken cancellationToken = default)
     {
         await EnsureDefaultRulesSeededAsync(cancellationToken);
 
@@ -58,12 +67,14 @@ public class ComplianceEngine(
             totalDurationMinutes = (TimeSpan.FromHours(24) - startTs + endTs).TotalMinutes;
         }
 
-        var totalHours = totalDurationMinutes / 60.0;
-        var netWorkHours = Math.Max(0, (totalDurationMinutes - breakMinutes) / 60.0);
+        var totalBreakMinutes = ComputeTotalBreakMinutes(breaks, breakMinutes);
 
-        // 1. Rule: 4857 SK. Md. 68 (Ara Dinlenme / Mola Baremi)
+        var totalHours = totalDurationMinutes / 60.0;
+        var netWorkHours = Math.Max(0, (totalDurationMinutes - totalBreakMinutes) / 60.0);
+
+        // 1. Rule: 4857 SK. Md. 68 (Ara Dinlenme / Mola Baremi) — total from breaks or fallback
         double requiredBreakMinutes = totalHours <= 4.0 ? 15.0 : (totalHours <= 7.5 ? 30.0 : 60.0);
-        if (breakMinutes < requiredBreakMinutes)
+        if (totalBreakMinutes < requiredBreakMinutes)
         {
             result.Violations.Add(new ComplianceViolationDetail
             {
@@ -73,15 +84,82 @@ public class ComplianceEngine(
                 Category = "WorkingHours",
                 Severity = "Warning",
                 EnforcementLevel = "SoftWarning",
-                Details = $"{totalHours:F1} saatlik bir çalışma süresi için 4857 SK. Md. 68 gereğince asgari ara dinlenme süresi en az {requiredBreakMinutes:F0} dakika olmalıdır (Girilen: {breakMinutes:F0} dk).",
+                Details = $"{totalHours:F1} saatlik bir çalışma süresi için 4857 SK. Md. 68 gereğince asgari ara dinlenme süresi en az {requiredBreakMinutes:F0} dakika olmalıdır (Girilen: {totalBreakMinutes:F0} dk).",
                 PenaltyRisk = "Yasal dinlenme haklarının kullandırılmaması durumunda idari para cezası ve fazla çalışma tazminatı riski.",
                 ContextData = new()
                 {
                     ["totalHours"] = totalHours,
-                    ["providedBreakMinutes"] = breakMinutes,
-                    ["requiredBreakMinutes"] = requiredBreakMinutes
+                    ["providedBreakMinutes"] = totalBreakMinutes,
+                    ["requiredBreakMinutes"] = requiredBreakMinutes,
+                    ["breakCount"] = breaks?.Count ?? 0
                 }
             });
+        }
+
+        // 1b. Break overlap & range validations (only when explicit breaks provided)
+        if (breaks != null && breaks.Count > 0)
+        {
+            var normalized = NormalizeBreaks(breaks, startTs, endTs);
+
+            // Overlap detection: sorted by start
+            var hasOverlap = false;
+            var sorted = normalized.OrderBy(n => n.StartMinutes).ToList();
+            for (var i = 1; i < sorted.Count; i++)
+            {
+                if (sorted[i].StartMinutes < sorted[i - 1].EndMinutes)
+                {
+                    hasOverlap = true;
+                    break;
+                }
+            }
+
+            if (hasOverlap)
+            {
+                result.Violations.Add(new ComplianceViolationDetail
+                {
+                    RuleCode = "IK-SHIFT-BREAK-OVERLAP",
+                    LawReference = "4857 Sayılı İş Kanunu Md. 68 / Vardiya Yönetmeliği",
+                    RuleName = "Mola Periyotları Çakışması",
+                    Category = "WorkingHours",
+                    Severity = "Warning",
+                    EnforcementLevel = "SoftWarning",
+                    Details = "Tanımlı mola periyotları birbiriyle çakışıyor; molalar çakışmamalı ve sıralı olmalıdır.",
+                    PenaltyRisk = "Çakışan mola planlaması fiili dinlenme süresini azaltabilir ve denetimde uygunsuzluk sayılabilir.",
+                    ContextData = new()
+                    {
+                        ["breakCount"] = breaks.Count,
+                        ["breaks"] = breaks.Select(b => new { start = b.Start.ToString("HH:mm"), end = b.End.ToString("HH:mm") }).ToList()
+                    }
+                });
+            }
+
+            // Out-of-range detection: each break must be within [shiftStart, shiftEnd)
+            var shiftStartMins = startTs.TotalMinutes;
+            var shiftEndMins = endTs >= startTs ? endTs.TotalMinutes : endTs.TotalMinutes + 1440;
+            var outOfRangeBreaks = normalized.Where(n => n.StartMinutes < shiftStartMins || n.EndMinutes > shiftEndMins).ToList();
+
+            if (outOfRangeBreaks.Count > 0)
+            {
+                result.Violations.Add(new ComplianceViolationDetail
+                {
+                    RuleCode = "IK-SHIFT-BREAK-RANGE",
+                    LawReference = "4857 Sayılı İş Kanunu Md. 68 / Vardiya Yönetmeliği",
+                    RuleName = "Mola Vardiya Aralığı Dışında",
+                    Category = "WorkingHours",
+                    Severity = "Warning",
+                    EnforcementLevel = "SoftWarning",
+                    Details = $"Molalar vardiya aralığı [{startTs:hh\\:mm} - {endTs:hh\\:mm}] dışında olamaz ({outOfRangeBreaks.Count} mola aralık dışında).",
+                    PenaltyRisk = "Vardiya dışına taşan mola planlaması çalışma süresi hesabını bozar ve denetimde uygunsuzluk sayılabilir.",
+                    ContextData = new()
+                    {
+                        ["shiftStart"] = startTs.ToString(@"hh\:mm"),
+                        ["shiftEnd"] = endTs.ToString(@"hh\:mm"),
+                        ["isOvernight"] = endTs < startTs,
+                        ["outOfRangeCount"] = outOfRangeBreaks.Count,
+                        ["breaks"] = breaks.Select(b => new { start = b.Start.ToString("HH:mm"), end = b.End.ToString("HH:mm") }).ToList()
+                    }
+                });
+            }
         }
 
         // 2. Rule: Günlük 11 Saat Sınırı (4857 SK. Md. 63)
@@ -309,6 +387,7 @@ public class ComplianceEngine(
         int requestedDays,
         int employeeSeniorityYears,
         int employeeAge,
+        bool isHalfDay = false,
         CancellationToken cancellationToken = default)
     {
         await EnsureDefaultRulesSeededAsync(cancellationToken);
@@ -317,6 +396,35 @@ public class ComplianceEngine(
         var rules = await dbContext.Rules
             .Where(r => r.Category == "Leaves" && r.IsActive)
             .ToListAsync(cancellationToken);
+
+        // 0. Half-day type restriction: only Casual/Sick allowed (Mazeret/Hastalık)
+        if (isHalfDay)
+        {
+            var normalizedLeaveType = leaveType?.Trim().ToLowerInvariant() ?? string.Empty;
+            // Allowed half-day types: Casual (Mazeret) and Sick (Hastalık) — both English and Turkish variants
+            var halfDayAllowed = normalizedLeaveType is "casual" or "sick" or "mazeret" or "hastalık" or "hastalik";
+            if (!halfDayAllowed)
+            {
+                result.Violations.Add(new ComplianceViolationDetail
+                {
+                    RuleCode = "IK-LEAVE-HALFDAY-TYPE",
+                    LawReference = "4857 Sayılı İş Kanunu / Şirket İzin Politikası",
+                    RuleName = "Yarım Gün İzin Türü Kısıtlaması",
+                    Category = "Leaves",
+                    Severity = "Violation",
+                    EnforcementLevel = "HardBlock",
+                    Details = $"Yarım gün izin yalnızca Mazeret (Casual) ve Hastalık (Sick) izin türlerinde kullanılabilir. Seçilen tür: {leaveType} için yarım gün talebi uygun değildir.",
+                    PenaltyRisk = "Yıllık, Ücretsiz, Evlilik, Doğum, Babalık ve Vefat izinlerinde yarım gün kullanımı mevzuata ve politika kurallarına aykırıdır.",
+                    ContextData = new()
+                    {
+                        ["leaveType"] = leaveType,
+                        ["isHalfDay"] = true,
+                        ["allowedTypes"] = new[] { "Casual", "Sick" }
+                    }
+                });
+                result.HasHardBlock = true;
+            }
+        }
 
         // 1. Annual Leave Minimum Floor Check (4857 SK. Md. 53)
         if (string.Equals(leaveType, "Annual", StringComparison.OrdinalIgnoreCase) ||
@@ -560,6 +668,52 @@ public class ComplianceEngine(
         dbContext.Violations.Add(violation);
         await dbContext.SaveChangesAsync(cancellationToken);
         return violation;
+    }
+
+    private static double ComputeTotalBreakMinutes(IReadOnlyList<BreakPeriod>? breaks, double fallbackMinutes)
+    {
+        if (breaks == null || breaks.Count == 0) return fallbackMinutes;
+        double sum = 0;
+        foreach (var b in breaks)
+        {
+            var s = b.Start.ToTimeSpan();
+            var e = b.End.ToTimeSpan();
+            double dur;
+            if (e > s) dur = (e - s).TotalMinutes;
+            else if (e < s) dur = (TimeSpan.FromHours(24) - s + e).TotalMinutes;
+            else dur = 0;
+            sum += dur;
+        }
+        return sum;
+    }
+
+    private record NormalizedBreak(double StartMinutes, double EndMinutes);
+
+    private static List<NormalizedBreak> NormalizeBreaks(IReadOnlyList<BreakPeriod> breaks, TimeSpan shiftStart, TimeSpan shiftEnd)
+    {
+        var isOvernight = shiftEnd < shiftStart;
+        var shiftStartMins = shiftStart.TotalMinutes;
+        var list = new List<NormalizedBreak>(breaks.Count);
+        foreach (var b in breaks)
+        {
+            var rawStart = b.Start.ToTimeSpan().TotalMinutes;
+            var rawEnd = b.End.ToTimeSpan().TotalMinutes;
+            // Handle break spanning midnight (e.g. 23:30-00:30)
+            if (rawEnd <= rawStart) rawEnd += 1440;
+
+            double normStart = rawStart;
+            double normEnd = rawEnd;
+
+            // For overnight shifts, breaks after midnight (e.g. 02:00) have raw < shiftStart -> shift to next day
+            if (isOvernight && rawStart < shiftStartMins)
+            {
+                normStart += 1440;
+                normEnd += 1440;
+            }
+
+            list.Add(new NormalizedBreak(normStart, normEnd));
+        }
+        return list;
     }
 
     private static List<ComplianceRule> GetDefaultTurkishLaborLawRules(Guid tenantId)

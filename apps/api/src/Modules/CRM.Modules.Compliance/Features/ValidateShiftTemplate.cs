@@ -15,7 +15,8 @@ public record ValidateShiftTemplateCommand(
     string StartTime,
     string EndTime,
     double BreakMinutes,
-    bool IsNightShift = false
+    bool IsNightShift = false,
+    IReadOnlyList<BreakPeriod>? Breaks = null
 ) : ICommand<ComplianceValidationResult>;
 
 public class ValidateShiftTemplateHandler(
@@ -34,6 +35,7 @@ public class ValidateShiftTemplateHandler(
             request.EndTime,
             request.BreakMinutes,
             request.IsNightShift,
+            request.Breaks,
             cancellationToken);
 
         return Result.Success(result);

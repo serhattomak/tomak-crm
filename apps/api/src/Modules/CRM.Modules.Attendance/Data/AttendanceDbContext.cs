@@ -15,6 +15,7 @@ public class AttendanceDbContext(
     public DbSet<AttendanceDevice> AttendanceDevices => Set<AttendanceDevice>();
     public DbSet<AttendanceCorrectionRequest> AttendanceCorrectionRequests => Set<AttendanceCorrectionRequest>();
     public DbSet<ShiftSwapRequest> ShiftSwapRequests => Set<ShiftSwapRequest>();
+    public DbSet<ShiftTemplateBreak> ShiftTemplateBreaks => Set<ShiftTemplateBreak>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -214,6 +215,38 @@ public class AttendanceDbContext(
             entity.Property(e => e.ManagerApprovedAt).HasColumnName("manager_approved_at");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 8. ShiftTemplateBreak — multiple break periods per shift template
+        modelBuilder.Entity<ShiftTemplateBreak>(entity =>
+        {
+            entity.ToTable("shift_template_breaks", t => t.HasCheckConstraint("chk_shift_template_breaks_time_range", "end_time > start_time"));
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.ShiftTemplateId).HasColumnName("shift_template_id").IsRequired();
+            entity.Property(e => e.Label).HasColumnName("label").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.StartTime)
+                .HasColumnName("start_time")
+                .HasColumnType("time without time zone")
+                .IsRequired();
+            entity.Property(e => e.EndTime)
+                .HasColumnName("end_time")
+                .HasColumnType("time without time zone")
+                .IsRequired();
+            entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasOne(e => e.ShiftTemplate)
+                .WithMany(st => st.Breaks)
+                .HasForeignKey(e => e.ShiftTemplateId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.ShiftTemplateId).HasDatabaseName("idx_shift_template_breaks_template");
+            entity.HasIndex(e => new { e.TenantId, e.ShiftTemplateId }).HasDatabaseName("idx_shift_template_breaks_tenant_template");
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });

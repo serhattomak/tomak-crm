@@ -17,7 +17,8 @@ public record ValidateLeaveCommand(
     string LeaveType,
     int RequestedDays,
     int SeniorityYears,
-    int Age
+    int Age,
+    bool IsHalfDay = false
 ) : ICommand<ComplianceValidationResult>;
 
 public class ValidateLeaveHandler(
@@ -38,6 +39,7 @@ public class ValidateLeaveHandler(
             request.RequestedDays,
             request.SeniorityYears,
             request.Age,
+            request.IsHalfDay,
             cancellationToken);
 
         foreach (var v in result.Violations)

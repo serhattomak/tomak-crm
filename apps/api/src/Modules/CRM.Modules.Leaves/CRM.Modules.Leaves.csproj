@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CRM.BuildingBlocks\CRM.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Compliance\CRM.Modules.Compliance.csproj" />
     <ProjectReference Include="..\CRM.Modules.Organization\CRM.Modules.Organization.csproj" />
   </ItemGroup>
 

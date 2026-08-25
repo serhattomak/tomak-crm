@@ -13,7 +13,10 @@ public class ShiftTemplate : ITenantScopedEntity
     public string ColorHex { get; set; } = "#3B82F6";
     public TimeSpan StartTime { get; set; }
     public TimeSpan EndTime { get; set; }
+
+    /// <summary>DEPRECATED: Use <see cref="ShiftTemplateBreak"/> collection for multiple breaks. Retained for backward compatibility as fallback when no break rows exist.</summary>
     public int BreakDurationMinutes { get; set; } = 60;
+
     public int GracePeriodMinutes { get; set; } = 15; // Arrival grace tolerance
     public bool IsNightShift { get; set; } = false;
     public bool IsFlexible { get; set; } = false;
@@ -23,6 +26,22 @@ public class ShiftTemplate : ITenantScopedEntity
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<ShiftSchedule> Schedules { get; set; } = [];
+    public ICollection<ShiftTemplateBreak> Breaks { get; set; } = [];
+}
+
+[Table("shift_template_breaks", Schema = "public")]
+public class ShiftTemplateBreak : ITenantScopedEntity
+{
+    public Guid Id { get; set; }
+    public Guid TenantId { get; set; }
+    public Guid ShiftTemplateId { get; set; }
+    public ShiftTemplate? ShiftTemplate { get; set; }
+    public string Label { get; set; } = "Mola";
+    public TimeOnly StartTime { get; set; }
+    public TimeOnly EndTime { get; set; }
+    public int SortOrder { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }
 
 [Table("shift_schedules", Schema = "public")]

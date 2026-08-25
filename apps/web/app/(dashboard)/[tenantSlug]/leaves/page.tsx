@@ -41,6 +41,8 @@ import {
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
+const ALLOWED_HALF_DAY_TYPES = ["Casual", "Sick"] as const;
+
 export default function LeavesPage() {
   const params = useParams();
   const searchParams = useSearchParams();
@@ -1185,6 +1187,18 @@ function CreateLeaveModal({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const isHalfDayAllowed = (
+    ALLOWED_HALF_DAY_TYPES as readonly string[]
+  ).includes(leaveType);
+
+  const handleLeaveTypeChange = (value: string) => {
+    setLeaveType(value);
+    if (!(ALLOWED_HALF_DAY_TYPES as readonly string[]).includes(value)) {
+      setIsHalfDay(false);
+      setHalfDayPeriod("Afternoon");
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -1201,9 +1215,9 @@ function CreateLeaveModal({
     }
   };
 
-  // Calculate business days
+  // Calculate business days — half-day only valid for Casual/Sick
   const calculateDays = () => {
-    if (isHalfDay) {
+    if (isHalfDayAllowed && isHalfDay) {
       return 0.5;
     }
     if (!(startDate && endDate)) {
@@ -1288,15 +1302,16 @@ function CreateLeaveModal({
     setSubmitting(true);
     setError(null);
     try {
+      const effectiveIsHalfDay = isHalfDayAllowed && isHalfDay;
       const payload: CreateLeaveRequestPayload = {
         departmentId: departmentId || undefined,
         departmentName: departmentName || undefined,
         emergencyContact: emergencyContact.trim() || undefined,
         employeeId,
         employeeName,
-        endDate: isHalfDay ? startDate : endDate,
-        halfDayPeriod: isHalfDay ? halfDayPeriod : undefined,
-        isHalfDay,
+        endDate: effectiveIsHalfDay ? startDate : endDate,
+        halfDayPeriod: effectiveIsHalfDay ? halfDayPeriod : undefined,
+        isHalfDay: effectiveIsHalfDay,
         leaveType,
         reason: reason.trim() || undefined,
         startDate,
@@ -1372,7 +1387,7 @@ function CreateLeaveModal({
               <label className="mb-1 block font-medium text-slate-700">
                 İzin Türü *
               </label>
-              <Select onValueChange={setLeaveType} value={leaveType}>
+              <Select onValueChange={handleLeaveTypeChange} value={leaveType}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -1395,18 +1410,21 @@ function CreateLeaveModal({
               </Select>
             </div>
 
-            {/* Half Day Option */}
-            <div className="flex flex-col justify-end">
-              <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 transition-colors hover:bg-slate-100">
-                <input
-                  checked={isHalfDay}
-                  className="rounded text-blue-600 focus:ring-0"
-                  onChange={(e) => setIsHalfDay(e.target.checked)}
-                  type="checkbox"
-                />
-                <span className="font-semibold text-xs">Yarım Gün İzin</span>
-              </label>
-            </div>
+            {/* Half Day Option — only for Casual/Sick */}
+            {isHalfDayAllowed && (
+              <div className="flex flex-col justify-end">
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 transition-colors hover:bg-slate-100">
+                  <input
+                    aria-label="Yarım Gün İzin"
+                    checked={isHalfDay}
+                    className="rounded text-blue-600 focus:ring-0"
+                    onChange={(e) => setIsHalfDay(e.target.checked)}
+                    type="checkbox"
+                  />
+                  <span className="font-semibold text-xs">Yarım Gün İzin</span>
+                </label>
+              </div>
+            )}
           </div>
 
           {/* Date Picker Grid */}
@@ -1418,7 +1436,10 @@ function CreateLeaveModal({
               <DatePicker
                 onChange={(dateStr) => {
                   setStartDate(dateStr);
-                  if (isHalfDay || dateStr > endDate) {
+                  if (
+                    (isHalfDayAllowed && isHalfDay) ||
+                    dateStr > endDate
+                  ) {
                     setEndDate(dateStr);
                   }
                 }}
@@ -1426,7 +1447,7 @@ function CreateLeaveModal({
               />
             </div>
 
-            {isHalfDay ? (
+            {isHalfDayAllowed && isHalfDay ? (
               <div>
                 <label className="mb-1 block font-medium text-slate-700">
                   Yarım Gün Periyodu

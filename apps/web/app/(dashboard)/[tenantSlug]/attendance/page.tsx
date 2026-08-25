@@ -109,8 +109,21 @@ export default function AttendancePage() {
   const [actionLoading, setActionLoading] = useState(false);
 
   // Form States - Shift Template
-  const [templateForm, setTemplateForm] = useState({
+  const [templateForm, setTemplateForm] = useState<{
+    breakDurationMinutes: number;
+    breaks: { label: string; startTime: string; endTime: string }[];
+    code: string;
+    colorHex: string;
+    endTime: string;
+    gracePeriodMinutes: number;
+    isFlexible: boolean;
+    isNightShift: boolean;
+    minWorkingHours: number;
+    name: string;
+    startTime: string;
+  }>({
     breakDurationMinutes: 60,
+    breaks: [],
     code: "",
     colorHex: "#3B82F6",
     endTime: "18:00:00",
@@ -148,12 +161,22 @@ export default function AttendancePage() {
   const [assignOverride, setAssignOverride] = useState({ allowed: false, reason: "" });
   const [correctionOverride, setCorrectionOverride] = useState({ allowed: false, reason: "" });
 
-  // Real-time Shift Template Compliance
+  // Real-time Shift Template Compliance — derived from breaks array (multi-break)
   const templateCompliance = useMemo(() => {
+    const toMinutes = (t: string): number => {
+      const parts = (t || "00:00:00").split(":").map(Number);
+      const h = parts[0] || 0;
+      const m = parts[1] || 0;
+      return h * 60 + m;
+    };
+
     const startParts = (templateForm.startTime || "09:00:00").split(":").map(Number);
     const endParts = (templateForm.endTime || "18:00:00").split(":").map(Number);
     const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
     const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
+    const startTsMins = startMins;
+    const endTsMins = endMins;
+    const isOvernight = endTsMins < startTsMins;
 
     let totalDurationMins = 0;
     if (endMins >= startMins) {
@@ -163,9 +186,25 @@ export default function AttendancePage() {
     }
 
     const totalHours = totalDurationMins / 60;
-    const breakMins = Number(templateForm.breakDurationMinutes) || 0;
-    const netWorkHours = Math.max(0, (totalDurationMins - breakMins) / 60);
 
+    // Total break minutes: sum of break durations when breaks defined, else fallback to deprecated field
+    let totalBreakMinutes = 0;
+    if (templateForm.breaks.length > 0) {
+      for (const b of templateForm.breaks) {
+        const s = toMinutes(b.startTime);
+        const e = toMinutes(b.endTime);
+        let dur = 0;
+        if (e > s) dur = e - s;
+        else if (e < s) dur = 24 * 60 - s + e;
+        else dur = 0;
+        totalBreakMinutes += dur;
+      }
+    } else {
+      totalBreakMinutes = Number(templateForm.breakDurationMinutes) || 0;
+    }
+
+    const breakMins = totalBreakMinutes;
+    const netWorkHours = Math.max(0, (totalDurationMins - breakMins) / 60);
     const requiredBreak = totalHours <= 4 ? 15 : totalHours <= 7.5 ? 30 : 60;
 
     const startH = startParts[0] || 0;
@@ -180,7 +219,7 @@ export default function AttendancePage() {
     const violations: any[] = [];
     let hasHardBlock = false;
 
-    // 1. Md. 68 Mola
+    // 1. Md. 68 Mola — total
     if (breakMins < requiredBreak) {
       violations.push({
         lawReference: "4857 SK. Md. 68",
@@ -189,6 +228,77 @@ export default function AttendancePage() {
         details: `${totalHours.toFixed(1)} saatlik vardiya için yasal asgari mola süresi en az ${requiredBreak} dakikadır (Mevcut: ${breakMins} dk).`,
         penaltyRisk: "Dinlenme haklarının ihlali ve fazla çalışma ücreti riski.",
       });
+    }
+
+    // 1b. Per-row end > start validation (SoftWarning)
+    if (templateForm.breaks.length > 0) {
+      for (const [idx, b] of templateForm.breaks.entries()) {
+        const s = toMinutes(b.startTime);
+        const e = toMinutes(b.endTime);
+        // Break spanning midnight is not allowed for per-row check — require end > start
+        if (e <= s) {
+          const labelFallback = b.label || `Mola ${idx + 1}`;
+          violations.push({
+            lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
+            ruleName: `Mola #${idx + 1} Geçersiz Saat Aralığı`,
+            enforcementLevel: "SoftWarning",
+            details: `"` + labelFallback + `" için bitiş saati başlangıç saatinden sonra olmalıdır (` + (b.startTime || "--:--") + ` → ` + (b.endTime || "--:--") + `).`,
+            penaltyRisk: "Geçersiz mola aralığı çalışma süresi hesabını bozar.",
+          });
+        }
+      }
+
+      // Normalize breaks for overlap/range (mirrors backend NormalizeBreaks)
+      const shiftStartMins = startTsMins;
+      const shiftEndMins = isOvernight ? endTsMins + 1440 : endTsMins;
+      type Norm = { start: number; end: number; idx: number };
+      const normalized: Norm[] = templateForm.breaks.map((b, idx) => {
+        let rawStart = toMinutes(b.startTime);
+        let rawEnd = toMinutes(b.endTime);
+        if (rawEnd <= rawStart) rawEnd += 1440;
+        let normStart = rawStart;
+        let normEnd = rawEnd;
+        if (isOvernight && rawStart < shiftStartMins) {
+          normStart += 1440;
+          normEnd += 1440;
+        }
+        return { start: normStart, end: normEnd, idx };
+      });
+
+      // Overlap detection (sorted by start)
+      const sorted = [...normalized].sort((a, b) => a.start - b.start);
+      let hasOverlap = false;
+      for (let i = 1; i < sorted.length; i++) {
+        const prev = sorted[i - 1];
+        const cur = sorted[i];
+        if (prev && cur && cur.start < prev.end) {
+          hasOverlap = true;
+          break;
+        }
+      }
+      if (hasOverlap) {
+        violations.push({
+          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
+          ruleName: "Mola Periyotları Çakışması",
+          enforcementLevel: "SoftWarning",
+          details: "Tanımlı mola periyotları birbiriyle çakışıyor; molalar çakışmamalı ve sıralı olmalıdır.",
+          penaltyRisk: "Çakışan mola planlaması fiili dinlenme süresini azaltabilir ve denetimde uygunsuzluk sayılabilir.",
+        });
+      }
+
+      // Out-of-range: break outside shift window
+      const outOfRange = normalized.filter(
+        (n) => n.start < shiftStartMins || n.end > shiftEndMins
+      );
+      if (outOfRange.length > 0) {
+        violations.push({
+          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
+          ruleName: "Mola Vardiya Aralığı Dışında",
+          enforcementLevel: "SoftWarning",
+          details: `Molalar vardiya aralığı [${templateForm.startTime.slice(0, 5)} - ${templateForm.endTime.slice(0, 5)}] dışında olamaz (${outOfRange.length} mola aralık dışında).`,
+          penaltyRisk: "Vardiya dışına taşan mola planlaması çalışma süresi hesabını bozar.",
+        });
+      }
     }
 
     // 2. Md. 63 Günlük 11 Saat Sınırı
@@ -478,7 +588,7 @@ export default function AttendancePage() {
     }
   };
 
-  // Handle Create Template
+  // Handle Create Template — maps breaks[] to API (sort_order = index)
   const handleCreateTemplate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -487,10 +597,33 @@ export default function AttendancePage() {
       toast.error("Lütfen zorunlu alanları doldurunuz.");
       return;
     }
+    // Per-row validation: end > start
+    const invalidBreak = templateForm.breaks.find((b) => {
+      const toMin = (t: string) => {
+        const p = (t || "").split(":").map(Number);
+        return (p[0] || 0) * 60 + (p[1] || 0);
+      };
+      return toMin(b.endTime) <= toMin(b.startTime);
+    });
+    if (invalidBreak) {
+      toast.error(`"${invalidBreak.label || "Mola"}" için bitiş saati başlangıçtan sonra olmalıdır.`);
+      return;
+    }
     setActionLoading(true);
     try {
+      const payload = {
+        ...templateForm,
+        breaks: templateForm.breaks.map((b, idx) => ({
+          label: b.label.trim() || `Mola ${idx + 1}`,
+          startTime: b.startTime.length === 5 ? `${b.startTime}:00` : b.startTime,
+          endTime: b.endTime.length === 5 ? `${b.endTime}:00` : b.endTime,
+          sortOrder: idx,
+        })),
+        // Keep breakDurationMinutes as deprecated fallback for backward compat
+        breakDurationMinutes: templateForm.breakDurationMinutes,
+      };
       const res = await ApiClient.createShiftTemplate(
-        templateForm,
+        payload as unknown as Parameters<typeof ApiClient.createShiftTemplate>[0],
         activeTenant.id
       );
       if (res.success && res.data) {
@@ -498,6 +631,7 @@ export default function AttendancePage() {
         setIsTemplateModalOpen(false);
         setTemplateForm({
           breakDurationMinutes: 60,
+          breaks: [],
           code: "",
           colorHex: "#3B82F6",
           endTime: "18:00:00",
@@ -1745,38 +1879,165 @@ export default function AttendancePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Mola Süresi (dk)
+              {/* Multi-break editor — replaces single breakDurationMinutes for new breaks; deprecated field kept readonly */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="block font-semibold text-foreground text-xs">
+                    Molalar
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setTemplateForm({
-                        ...templateForm,
-                        breakDurationMinutes: Number(e.target.value),
-                      })
-                    }
-                    type="number"
-                    value={templateForm.breakDurationMinutes}
-                  />
+                  <span className="text-[10px] text-muted-foreground">
+                    Toplam: {templateCompliance.metrics.providedBreakMinutes} dk (Asgari:{" "}
+                    {templateCompliance.metrics.requiredBreakMinutes} dk)
+                  </span>
                 </div>
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Giriş Toleransı (dk)
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setTemplateForm({
-                        ...templateForm,
-                        gracePeriodMinutes: Number(e.target.value),
-                      })
-                    }
-                    type="number"
-                    value={templateForm.gracePeriodMinutes}
-                  />
+                {templateForm.breaks.length === 0 ? (
+                  <p className="rounded-xl border border-dashed border-border bg-muted/20 px-3 py-2 text-center text-muted-foreground text-xs">
+                    Henüz mola eklenmedi. &quot;Mola Ekle&quot; ile birden fazla mola
+                    tanımlayın (her mola başlangıç–bitiş saatleri ile).
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {templateForm.breaks.map((brk, idx) => (
+                      <div
+                        className="flex items-center gap-2 rounded-xl border border-border bg-muted/20 p-2"
+                        key={idx}
+                      >
+                        <div className="flex-1">
+                          <label
+                            className="sr-only"
+                            htmlFor={`break-label-${idx}`}
+                          >
+                            Mola {idx + 1} etiketi
+                          </label>
+                          <input
+                            className="w-full rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                            id={`break-label-${idx}`}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              const next = [...templateForm.breaks];
+                              const cur = next[idx];
+                              if (!cur) return;
+                              next[idx] = { ...cur, label: e.target.value };
+                              setTemplateForm({ ...templateForm, breaks: next });
+                            }}
+                            placeholder={`Mola ${idx + 1}`}
+                            value={brk.label}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="sr-only"
+                            htmlFor={`break-start-${idx}`}
+                          >
+                            Mola {idx + 1} başlangıç
+                          </label>
+                          <input
+                            aria-label={`Mola ${idx + 1} başlangıç saati`}
+                            className="rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                            id={`break-start-${idx}`}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              const next = [...templateForm.breaks];
+                              const cur = next[idx];
+                              if (!cur) return;
+                              next[idx] = { ...cur, startTime: e.target.value };
+                              setTemplateForm({ ...templateForm, breaks: next });
+                            }}
+                            type="time"
+                            value={brk.startTime.slice(0, 5)}
+                          />
+                        </div>
+                        <div>
+                          <label className="sr-only" htmlFor={`break-end-${idx}`}>
+                            Mola {idx + 1} bitiş
+                          </label>
+                          <input
+                            aria-label={`Mola ${idx + 1} bitiş saati`}
+                            className="rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                            id={`break-end-${idx}`}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              const next = [...templateForm.breaks];
+                              const cur = next[idx];
+                              if (!cur) return;
+                              next[idx] = { ...cur, endTime: e.target.value };
+                              setTemplateForm({ ...templateForm, breaks: next });
+                            }}
+                            type="time"
+                            value={brk.endTime.slice(0, 5)}
+                          />
+                        </div>
+                        <button
+                          aria-label={`Mola ${idx + 1} kaldır`}
+                          className="rounded-full p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
+                          onClick={() => {
+                            const next = templateForm.breaks.filter((_, i) => i !== idx);
+                            setTemplateForm({ ...templateForm, breaks: next });
+                          }}
+                          onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              const next = templateForm.breaks.filter((_, i) => i !== idx);
+                              setTemplateForm({ ...templateForm, breaks: next });
+                            }
+                          }}
+                          type="button"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <Button
+                  className="w-full font-medium"
+                  onClick={() => {
+                    setTemplateForm({
+                      ...templateForm,
+                      breaks: [
+                        ...templateForm.breaks,
+                        {
+                          label: `Mola ${templateForm.breaks.length + 1}`,
+                          startTime: "12:00",
+                          endTime: "13:00",
+                        },
+                      ],
+                    });
+                  }}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  <Plus className="mr-1 h-4 w-4" />
+                  Mola Ekle
+                </Button>
+                {/* Deprecated fallback + grace period */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="mb-1 block font-semibold text-foreground text-xs opacity-60">
+                      Mola Süresi (dk) — deprecated
+                    </label>
+                    <input
+                      aria-label="Mola süresi deprecated fallback"
+                      className="w-full rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground"
+                      readOnly
+                      type="number"
+                      value={templateForm.breakDurationMinutes}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-semibold text-foreground text-xs">
+                      Giriş Toleransı (dk)
+                    </label>
+                    <input
+                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setTemplateForm({
+                          ...templateForm,
+                          gracePeriodMinutes: Number(e.target.value),
+                        })
+                      }
+                      type="number"
+                      value={templateForm.gracePeriodMinutes}
+                    />
+                  </div>
                 </div>
               </div>
 

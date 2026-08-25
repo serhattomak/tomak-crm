@@ -2,6 +2,7 @@ using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
 using CRM.BuildingBlocks.Tenancy;
+using CRM.Modules.Compliance.Services;
 using CRM.Modules.Leaves.Data;
 using CRM.Modules.Leaves.Entities;
 using FluentValidation;
@@ -39,7 +40,8 @@ public class CreateLeaveRequestValidator : AbstractValidator<CreateLeaveRequestC
 
 public class CreateLeaveRequestHandler(
     LeavesDbContext dbContext,
-    ICurrentTenant currentTenant) : ICommandHandler<CreateLeaveRequestCommand, Guid>
+    ICurrentTenant currentTenant,
+    IComplianceEngine complianceEngine) : ICommandHandler<CreateLeaveRequestCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
     {
@@ -50,7 +52,7 @@ public class CreateLeaveRequestHandler(
 
         var tenantId = currentTenant.Id.Value;
 
-        // Calculate business days
+        // Calculate business days (preserve existing half-day flow)
         decimal totalDays;
         if (request.IsHalfDay)
         {
@@ -66,9 +68,34 @@ public class CreateLeaveRequestHandler(
                 {
                     daysCount++;
                 }
+
                 cur = cur.AddDays(1);
             }
+
             totalDays = Math.Max(1.00m, daysCount);
+        }
+
+        // Compliance: half-day only allowed for Casual/Sick (Mazeret/Hastalık)
+        var requestedDaysForCompliance = request.IsHalfDay ? 1 : (int)Math.Ceiling(totalDays);
+        var complianceResult = await complianceEngine.ValidateLeaveRequestAsync(
+            request.EmployeeId,
+            request.EmployeeName,
+            request.LeaveType,
+            requestedDaysForCompliance,
+            0,
+            0,
+            request.IsHalfDay,
+            cancellationToken);
+
+        var halfDayViolation = complianceResult.Violations.FirstOrDefault(v => v.RuleCode == "IK-LEAVE-HALFDAY-TYPE");
+        if (halfDayViolation != null || complianceResult.HasHardBlock)
+        {
+            // If the specific half-day violation is present, surface it as a failure; otherwise check generic hard block
+            var violation = halfDayViolation ?? complianceResult.Violations.FirstOrDefault();
+            if (violation != null)
+            {
+                return Result.Failure<Guid>(new Error(violation.RuleCode, violation.Details));
+            }
         }
 
         var leaveRequestId = Guid.NewGuid();
@@ -141,7 +168,9 @@ public class CreateLeaveRequestEndpoint : IEndpoint
             CancellationToken ct) =>
         {
             var result = await sender.Send(command, ct);
-            return Results.Ok(ApiResponse<Guid>.Ok(result.Value));
+            return result.IsSuccess
+                ? Results.Ok(ApiResponse<Guid>.Ok(result.Value))
+                : Results.BadRequest(ApiResponse<Guid>.Fail(result.Error.Code, result.Error.Description));
         })
         .RequireAuthorization()
         .RequirePermission("Leaves.Create")

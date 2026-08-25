@@ -2,6 +2,8 @@ using CRM.Modules.Compliance.Entities;
 
 namespace CRM.Modules.Compliance.Services;
 
+public record BreakPeriod(TimeOnly Start, TimeOnly End);
+
 public interface IComplianceEngine
 {
     Task EnsureDefaultRulesSeededAsync(CancellationToken cancellationToken = default);
@@ -11,6 +13,14 @@ public interface IComplianceEngine
         string endTime,
         double breakMinutes,
         bool isNightShift = false,
+        CancellationToken cancellationToken = default);
+
+    Task<ComplianceValidationResult> ValidateShiftTemplateAsync(
+        string startTime,
+        string endTime,
+        double breakMinutes,
+        bool isNightShift,
+        IReadOnlyList<BreakPeriod>? breaks,
         CancellationToken cancellationToken = default);
 
     Task<ComplianceValidationResult> ValidateShiftScheduleAsync(
@@ -31,6 +41,7 @@ public interface IComplianceEngine
         int requestedDays,
         int employeeSeniorityYears,
         int employeeAge,
+        bool isHalfDay = false,
         CancellationToken cancellationToken = default);
 
     Task<ComplianceValidationResult> ValidateHealthSafetyAsync(
