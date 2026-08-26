@@ -460,7 +460,9 @@ function DashboardNavigation({
       pathname.startsWith(`/${tenantSlug}/attendance`) ||
       pathname.startsWith(`/${tenantSlug}/leaves`) ||
       pathname.startsWith(`/${tenantSlug}/payroll`) ||
-      pathname.startsWith(`/${tenantSlug}/organization`)
+      pathname.startsWith(`/${tenantSlug}/organization`) ||
+      pathname.startsWith(`/${tenantSlug}/recruitment`) ||
+      pathname.startsWith(`/${tenantSlug}/compliance`)
     ) {
       setOpenSections((prev) => ({ ...prev, hr: true }));
     } else if (
@@ -614,6 +616,13 @@ function DashboardNavigation({
       name: getModuleDisplayName("compliance", "Mevzuat & İş Hukuku"),
       permission: "Compliance.View",
       moduleKey: "compliance",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/recruitment`,
+      icon: Briefcase,
+      name: "İşe Alım",
+      permission: "Recruitment.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 

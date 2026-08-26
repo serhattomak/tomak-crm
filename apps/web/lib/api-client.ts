@@ -2939,6 +2939,503 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Recruitment - Requisitions
+  // ==========================================
+  static async getRequisitions(
+    params: {
+      search?: string;
+      status?: string;
+      departmentId?: string;
+      isPublished?: boolean;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedRequisitionsResponse>> {
+    const query = new URLSearchParams();
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.status) {
+      query.set("status", params.status);
+    }
+    if (params.departmentId) {
+      query.set("departmentId", params.departmentId);
+    }
+    if (params.isPublished !== undefined) {
+      query.set("isPublished", String(params.isPublished));
+    }
+    if (params.page) {
+      query.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      query.set("pageSize", params.pageSize.toString());
+    }
+    const qs = query.toString();
+    const url = `/api/recruitment/requisitions${qs ? `?${qs}` : ""}`;
+    return ApiClient.request<PagedRequisitionsResponse>(url, {}, tenantId);
+  }
+
+  static async getRequisitionById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<RequisitionDto>> {
+    return ApiClient.request<RequisitionDto>(
+      `/api/recruitment/requisitions/${id}`,
+      {},
+      tenantId
+    );
+  }
+
+  static async createRequisition(
+    data: CreateRequisitionPayload,
+    tenantId: string
+  ): Promise<ApiResponse<RequisitionDto>> {
+    return ApiClient.request<RequisitionDto>(
+      "/api/recruitment/requisitions",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateRequisition(
+    id: string,
+    data: UpdateRequisitionPayload,
+    tenantId: string
+  ): Promise<ApiResponse<RequisitionDto>> {
+    return ApiClient.request<RequisitionDto>(
+      `/api/recruitment/requisitions/${id}`,
+      {
+        body: JSON.stringify({ ...data, id }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteRequisition(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/recruitment/requisitions/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  static async publishRequisition(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<RequisitionDto>> {
+    return ApiClient.request<RequisitionDto>(
+      `/api/recruitment/requisitions/${id}/publish`,
+      {
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async closeRequisition(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<RequisitionDto>> {
+    return ApiClient.request<RequisitionDto>(
+      `/api/recruitment/requisitions/${id}/close`,
+      {
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  // ==========================================
+  // Recruitment - Candidates
+  // ==========================================
+  static async getCandidates(
+    params: {
+      search?: string;
+      source?: string;
+      tag?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedCandidatesResponse>> {
+    const query = new URLSearchParams();
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.source) {
+      query.set("source", params.source);
+    }
+    if (params.tag) {
+      query.set("tag", params.tag);
+    }
+    if (params.page) {
+      query.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      query.set("pageSize", params.pageSize.toString());
+    }
+    const qs = query.toString();
+    const url = `/api/recruitment/candidates${qs ? `?${qs}` : ""}`;
+    return ApiClient.request<PagedCandidatesResponse>(url, {}, tenantId);
+  }
+
+  static async getCandidateById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<CandidateDto>> {
+    return ApiClient.request<CandidateDto>(
+      `/api/recruitment/candidates/${id}`,
+      {},
+      tenantId
+    );
+  }
+
+  static async createCandidate(
+    data: CreateCandidatePayload,
+    tenantId: string
+  ): Promise<ApiResponse<CandidateDto>> {
+    return ApiClient.request<CandidateDto>(
+      "/api/recruitment/candidates",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateCandidate(
+    id: string,
+    data: UpdateCandidatePayload,
+    tenantId: string
+  ): Promise<ApiResponse<CandidateDto>> {
+    return ApiClient.request<CandidateDto>(
+      `/api/recruitment/candidates/${id}`,
+      {
+        body: JSON.stringify({ ...data, id }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteCandidate(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/recruitment/candidates/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  static async hardDeleteCandidate(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/recruitment/candidates/${id}/hard`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  static async uploadCv(
+    candidateId: string,
+    file: File,
+    tenantId: string
+  ): Promise<ApiResponse<CvUploadResponse>> {
+    const token = await ApiClient.getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    if (tenantId) {
+      headers["X-Tenant-Id"] = tenantId;
+      headers["X-Tenant-Slug"] = tenantId;
+    }
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(
+      `${API_BASE_URL}/api/recruitment/candidates/${candidateId}/cv`,
+      {
+        body: formData,
+        headers,
+        method: "POST",
+      }
+    );
+    if (!res.ok) {
+      try {
+        const errorJson = await res.json();
+        return {
+          errorCode:
+            errorJson.errorCode || errorJson.title || `HTTP_${res.status}`,
+          message: errorJson.message || errorJson.detail || "An error occurred",
+          success: false,
+        };
+      } catch {
+        return {
+          errorCode: `HTTP_${res.status}`,
+          message: res.statusText || "Request failed",
+          success: false,
+        };
+      }
+    }
+    return (await res.json()) as ApiResponse<CvUploadResponse>;
+  }
+
+  static async importCandidates(
+    rows: CsvImportRowPayload[],
+    tenantId: string
+  ): Promise<ApiResponse<CsvImportResponse>> {
+    return ApiClient.request<CsvImportResponse>(
+      "/api/recruitment/candidates/import",
+      {
+        body: JSON.stringify(rows),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async importCandidatesCsv(
+    file: File,
+    tenantId: string
+  ): Promise<ApiResponse<CsvImportResponse>> {
+    const token = await ApiClient.getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    if (tenantId) {
+      headers["X-Tenant-Id"] = tenantId;
+      headers["X-Tenant-Slug"] = tenantId;
+    }
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`${API_BASE_URL}/api/recruitment/candidates/import`, {
+      body: formData,
+      headers,
+      method: "POST",
+    });
+    if (!res.ok) {
+      try {
+        const errorJson = await res.json();
+        return {
+          errorCode:
+            errorJson.errorCode || errorJson.title || `HTTP_${res.status}`,
+          message: errorJson.message || errorJson.detail || "An error occurred",
+          success: false,
+        };
+      } catch {
+        return {
+          errorCode: `HTTP_${res.status}`,
+          message: res.statusText || "Request failed",
+          success: false,
+        };
+      }
+    }
+    return (await res.json()) as ApiResponse<CsvImportResponse>;
+  }
+
+  // ==========================================
+  // Recruitment - Applications
+  // ==========================================
+  static async getApplications(
+    params: {
+      requisitionId?: string;
+      stageId?: string;
+      candidateId?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId: string
+  ): Promise<ApiResponse<PagedApplicationsResponse>> {
+    const query = new URLSearchParams();
+    if (params.requisitionId) {
+      query.set("requisitionId", params.requisitionId);
+    }
+    if (params.stageId) {
+      query.set("stageId", params.stageId);
+    }
+    if (params.candidateId) {
+      query.set("candidateId", params.candidateId);
+    }
+    if (params.page) {
+      query.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      query.set("pageSize", params.pageSize.toString());
+    }
+    const qs = query.toString();
+    const url = `/api/recruitment/applications${qs ? `?${qs}` : ""}`;
+    return ApiClient.request<PagedApplicationsResponse>(url, {}, tenantId);
+  }
+
+  static async getApplicationById(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<ApplicationDto>> {
+    return ApiClient.request<ApplicationDto>(
+      `/api/recruitment/applications/${id}`,
+      {},
+      tenantId
+    );
+  }
+
+  static async createApplication(
+    data: CreateApplicationPayload,
+    tenantId: string
+  ): Promise<ApiResponse<ApplicationDto>> {
+    return ApiClient.request<ApplicationDto>(
+      "/api/recruitment/applications",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateApplication(
+    id: string,
+    data: UpdateApplicationPayload,
+    tenantId: string
+  ): Promise<ApiResponse<ApplicationDto>> {
+    return ApiClient.request<ApplicationDto>(
+      `/api/recruitment/applications/${id}`,
+      {
+        body: JSON.stringify({ ...data, id }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async moveApplicationStage(
+    id: string,
+    stageId: string,
+    tenantId: string
+  ): Promise<ApiResponse<ApplicationDto>> {
+    return ApiClient.request<ApplicationDto>(
+      `/api/recruitment/applications/${id}/move`,
+      {
+        body: JSON.stringify({ id, stageId }),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteApplication(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/recruitment/applications/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  // ==========================================
+  // Recruitment - Stages
+  // ==========================================
+  static async getStages(
+    tenantId: string,
+    isActive?: boolean
+  ): Promise<ApiResponse<StageDto[]>> {
+    const qs = isActive !== undefined ? `?isActive=${isActive}` : "";
+    return ApiClient.request<StageDto[]>(
+      `/api/recruitment/stages${qs}`,
+      {},
+      tenantId
+    );
+  }
+
+  static async createStage(
+    data: CreateStagePayload,
+    tenantId: string
+  ): Promise<ApiResponse<StageDto>> {
+    return ApiClient.request<StageDto>(
+      "/api/recruitment/stages",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateStage(
+    id: string,
+    data: UpdateStagePayload,
+    tenantId: string
+  ): Promise<ApiResponse<StageDto>> {
+    return ApiClient.request<StageDto>(
+      `/api/recruitment/stages/${id}`,
+      {
+        body: JSON.stringify({ ...data, id }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteStage(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/recruitment/stages/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  static async reorderStages(
+    items: { id: string; sortOrder: number }[],
+    tenantId: string
+  ): Promise<ApiResponse<StageDto[]>> {
+    return ApiClient.request<StageDto[]>(
+      "/api/recruitment/stages/reorder",
+      {
+        body: JSON.stringify({ items }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async publicApply(
+    data: PublicApplyPayload
+  ): Promise<ApiResponse<PublicApplyResponse>> {
+    return ApiClient.request<PublicApplyResponse>("/api/recruitment/public/apply", {
+      body: JSON.stringify(data),
+      method: "POST",
+    });
+  }
 }
 
 export interface CustomerListDto {
@@ -5590,6 +6087,237 @@ export interface ValidateLeavePayload {
   requestedDays: number;
   seniorityYears: number;
   age: number;
+}
+
+// ==========================================
+// Recruitment Module DTOs
+// ==========================================
+export interface RequisitionDto {
+  id: string;
+  tenantId: string;
+  title: string;
+  departmentId?: string;
+  departmentName?: string;
+  jobPositionId?: string;
+  jobPositionTitle?: string;
+  headcount: number;
+  employmentType?: string;
+  workModel?: string;
+  location?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  currency: string;
+  description?: string;
+  requirements?: string;
+  status: string;
+  isPublished: boolean;
+  publishedAt?: string;
+  closingDate?: string;
+  hiringManagerId?: string;
+  hiringManagerName?: string;
+  priority: string;
+  applicationCount: number;
+  hiredCount: number;
+  headcountWarning?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PagedRequisitionsResponse {
+  items: RequisitionDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface CreateRequisitionPayload {
+  title: string;
+  departmentId?: string;
+  jobPositionId?: string;
+  headcount: number;
+  employmentType?: string;
+  workModel?: string;
+  location?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  currency: string;
+  description?: string;
+  requirements?: string;
+  closingDate?: string;
+  hiringManagerId?: string;
+  priority: string;
+}
+
+export interface UpdateRequisitionPayload extends CreateRequisitionPayload {
+  id?: string;
+}
+
+export interface CandidateDto {
+  id: string;
+  tenantId: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  phone?: string;
+  birthDate?: string;
+  address?: string;
+  source: string;
+  tags?: string[];
+  cvFileUrl?: string;
+  cvFileName?: string;
+  consentGiven: boolean;
+  consentGivenAt?: string;
+  notes?: string;
+  deletedAt?: string;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+  applicationCount: number;
+}
+
+export interface PagedCandidatesResponse {
+  items: CandidateDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface CreateCandidatePayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  birthDate?: string;
+  address?: string;
+  source: string;
+  tags?: string[];
+  cvFileUrl?: string;
+  cvFileName?: string;
+  consentGiven: boolean;
+  notes?: string;
+}
+
+export interface UpdateCandidatePayload extends CreateCandidatePayload {
+  id?: string;
+}
+
+export interface CvUploadResponse {
+  candidateId: string;
+  cvFileUrl: string;
+  cvFileName: string;
+  sizeBytes: number;
+  message: string;
+}
+
+export interface CsvImportRowPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  source?: string;
+  tagsRaw?: string;
+  consentGiven?: boolean;
+}
+
+export interface CsvImportResponse {
+  imported: number;
+  skippedDuplicates: number;
+  skippedEmails: string[];
+  errors: { row: number; email: string; error: string }[];
+}
+
+export interface ApplicationDto {
+  id: string;
+  tenantId: string;
+  candidateId: string;
+  candidateName: string;
+  candidateEmail: string;
+  requisitionId: string;
+  requisitionTitle: string;
+  stageId?: string;
+  stageName?: string;
+  stageColorHex?: string;
+  status: string;
+  score?: number;
+  notes?: string;
+  headcountWarning?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PagedApplicationsResponse {
+  items: ApplicationDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface CreateApplicationPayload {
+  candidateId: string;
+  requisitionId: string;
+  stageId?: string;
+  score?: number;
+  notes?: string;
+}
+
+export interface UpdateApplicationPayload {
+  score?: number;
+  notes?: string;
+}
+
+export interface StageDto {
+  id: string;
+  tenantId: string;
+  name: string;
+  slug: string;
+  sortOrder: number;
+  colorHex: string;
+  isDefault: boolean;
+  stageType: string;
+  isActive: boolean;
+  applicationCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateStagePayload {
+  name: string;
+  slug?: string;
+  colorHex: string;
+  stageType: string;
+  isActive: boolean;
+}
+
+export interface UpdateStagePayload extends CreateStagePayload {
+  id?: string;
+}
+
+export interface PublicApplyPayload {
+  requisitionId?: string;
+  requisitionSlug?: string;
+  tenantSlug?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  cvBase64?: string;
+  cvFileName?: string;
+  consentGiven: boolean;
+  honeypot?: string;
+  website?: string;
+}
+
+export interface PublicApplyResponse {
+  candidateId: string;
+  applicationId: string;
+  candidateEmail: string;
+  requisitionId: string;
+  requisitionTitle: string;
+  stageId?: string;
+  status: string;
+  cvFileUrl?: string;
+  message: string;
 }
 
 

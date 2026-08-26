@@ -19,6 +19,7 @@ public static class ModuleRegistry
         new("payroll", "Bordro & Maaşlar", "HR"),
         new("leaves", "İzinler & Takvim", "HR"),
         new("attendance", "Vardiya & PDKS", "HR"),
+        new("recruitment", "İşe Alım", "HR"),
 
         // Communication & Tools
         new("chat", "Mesajlar", "Tools"),

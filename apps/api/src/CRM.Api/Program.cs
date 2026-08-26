@@ -15,6 +15,7 @@ using CRM.Modules.Chat;
 using CRM.Modules.Shipping;
 using CRM.Modules.Automations;
 using CRM.Modules.Compliance;
+using CRM.Modules.Recruitment;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
@@ -46,8 +47,9 @@ var chatAssembly = typeof(ChatModuleExtensions).Assembly;
 var shippingAssembly = typeof(ShippingModuleExtensions).Assembly;
 var automationsAssembly = typeof(AutomationsModuleExtensions).Assembly;
 var complianceAssembly = typeof(ComplianceModuleExtensions).Assembly;
+var recruitmentAssembly = typeof(RecruitmentModuleExtensions).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -61,6 +63,7 @@ builder.Services.AddChatModule(builder.Configuration);
 builder.Services.AddShippingModule(builder.Configuration);
 builder.Services.AddAutomationsModule(builder.Configuration);
 builder.Services.AddComplianceModule(builder.Configuration);
+builder.Services.AddRecruitmentModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>
