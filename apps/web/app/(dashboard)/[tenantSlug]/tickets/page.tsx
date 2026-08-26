@@ -37,7 +37,6 @@ import {
   type CustomerListDto,
   type DepartmentDto,
   type OrderListDto,
-  type ProductListDto,
   type TenantUserDto,
   type TicketListDto,
   type TicketStatsDto,
@@ -66,7 +65,6 @@ export default function TicketsDashboardPage() {
   const [users, setUsers] = useState<TenantUserDto[]>([]);
   const [departments, setDepartments] = useState<DepartmentDto[]>([]);
   const [orders, setOrders] = useState<OrderListDto[]>([]);
-  const [products, setProducts] = useState<ProductListDto[]>([]);
 
   // Create Ticket Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -84,7 +82,7 @@ export default function TicketsDashboardPage() {
     setIsLoading(true);
 
     try {
-      const [ticketsRes, statsRes, customersRes, usersRes, deptsRes, ordersRes, productsRes] =
+      const [ticketsRes, statsRes, customersRes, usersRes, deptsRes, ordersRes] =
         await Promise.all([
           ApiClient.getTickets(
             {
@@ -102,7 +100,6 @@ export default function TicketsDashboardPage() {
           ApiClient.getTenantUsers(activeTenant.id),
           ApiClient.getDepartments(activeTenant.id),
           ApiClient.getOrders({ pageSize: 100 }, activeTenant.id),
-          ApiClient.getProducts({ pageSize: 100 }, activeTenant.id),
         ]);
 
       if (ticketsRes.success && ticketsRes.data) {
@@ -122,9 +119,6 @@ export default function TicketsDashboardPage() {
       }
       if (ordersRes.success && ordersRes.data) {
         setOrders(ordersRes.data.items || []);
-      }
-      if (productsRes.success && productsRes.data) {
-        setProducts(productsRes.data.items || []);
       }
     } catch (err) {
       console.error("Error loading tickets data:", err);

@@ -7,12 +7,11 @@ import {
   Filter,
   Plus,
   RotateCcw,
-  Share2,
   SlidersHorizontal,
   UserPlus,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DashboardSharePopover } from "@/components/dashboard-share-popover";
 import { NotificationCenter } from "@/components/notification-center";
 import { TeamMembersStack, InviteMemberModal } from "@/components/team-members-stack";
@@ -51,22 +50,20 @@ export default function WorkspaceOverviewPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Widget layouts stored per tab and tenant
-  const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(
-    DEFAULT_WIDGET_IDS_BY_TAB
-  );
-
-  // Load configuration from LocalStorage
-  useEffect(() => {
-    try {
-      const storageKey = `crm_dashboard_layout_${tenantSlug}`;
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        setWidgetsByTab(JSON.parse(saved));
+  const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const storageKey = `crm_dashboard_layout_${tenantSlug}`;
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      } catch {
+        // ignore storage errors
       }
-    } catch {
-      // ignore storage errors
     }
-  }, [tenantSlug]);
+    return DEFAULT_WIDGET_IDS_BY_TAB;
+  });
 
   // Save layout helper
   const saveWidgets = (newLayout: Record<string, string[]>) => {

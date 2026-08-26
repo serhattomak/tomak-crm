@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   Zap,
@@ -11,26 +11,16 @@ import {
   Clock,
   Sparkles,
   Search,
-  Filter,
-  MoreVertical,
   Activity,
   ArrowRight,
   TrendingUp,
   AlertCircle,
-  Copy,
   Trash2,
-  Edit,
   SlidersHorizontal,
-  Flame,
-  Crown,
-  UserCheck,
-  Star,
-  ExternalLink,
   RefreshCw,
   Layers,
   ChevronRight,
   ShieldCheck,
-  Check,
   X,
 } from "lucide-react";
 import {
@@ -59,7 +49,6 @@ export default function AutomationsPage() {
   const [executions, setExecutions] = useState<ExecutionItemDto[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isPending, startTransition] = useTransition();
 
   // Recipe Drawer State
   const [isRecipeDrawerOpen, setIsRecipeDrawerOpen] = useState(false);
@@ -69,7 +58,7 @@ export default function AutomationsPage() {
   const [isSimulating, setIsSimulating] = useState(false);
 
   // Load Data
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [statsRes, workflowsRes, templatesRes, executionsRes] = await Promise.all([
@@ -98,16 +87,16 @@ export default function AutomationsPage() {
       if (executionsRes.success && executionsRes.data) {
         setExecutions(executionsRes.data.items || []);
       }
-    } catch (err: any) {
+    } catch {
       toast.error("Otomasyon verileri yüklenirken hata oluştu.");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tenantSlug, selectedCategory, statusFilter, searchQuery]);
 
   useEffect(() => {
     loadData();
-  }, [tenantSlug, selectedCategory, statusFilter]);
+  }, [loadData]);
 
   // Search debounce / trigger
   const handleSearch = (e: React.FormEvent) => {
@@ -435,7 +424,7 @@ export default function AutomationsPage() {
             {/* Status Filter */}
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
+              onChange={(e) => setStatusFilter(e.target.value as "all" | "active" | "inactive")}
               className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium bg-white text-slate-700 focus:outline-none focus:border-blue-500"
             >
               <option value="all">Tüm Durumlar</option>

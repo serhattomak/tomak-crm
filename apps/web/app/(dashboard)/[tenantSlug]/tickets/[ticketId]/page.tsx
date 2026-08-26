@@ -36,8 +36,6 @@ import {
   ApiClient,
   type AddTicketMessagePayload,
   type CannedResponseDto,
-  type DepartmentDto,
-  type OrderListDto,
   type TenantUserDto,
   type TicketDetailDto,
 } from "@/lib/api-client";
@@ -55,9 +53,7 @@ export default function TicketDetailPage() {
 
   // References
   const [users, setUsers] = useState<TenantUserDto[]>([]);
-  const [departments, setDepartments] = useState<DepartmentDto[]>([]);
   const [cannedResponses, setCannedResponses] = useState<CannedResponseDto[]>([]);
-  const [orders, setOrders] = useState<OrderListDto[]>([]);
 
   // Composer State
   const [messageMode, setMessageMode] = useState<"public" | "internal">("public");
@@ -76,12 +72,10 @@ export default function TicketDetailPage() {
     setIsLoading(true);
 
     try {
-      const [ticketRes, usersRes, deptsRes, cannedRes, ordersRes] = await Promise.all([
+      const [ticketRes, usersRes, cannedRes] = await Promise.all([
         ApiClient.getTicketById(ticketId, activeTenant.id),
         ApiClient.getTenantUsers(activeTenant.id),
-        ApiClient.getDepartments(activeTenant.id),
         ApiClient.getCannedResponses({}, activeTenant.id),
-        ApiClient.getOrders({}, activeTenant.id),
       ]);
 
       if (ticketRes.success && ticketRes.data) {
@@ -93,14 +87,8 @@ export default function TicketDetailPage() {
       if (usersRes.success && usersRes.data) {
         setUsers(usersRes.data);
       }
-      if (deptsRes.success && deptsRes.data) {
-        setDepartments(deptsRes.data);
-      }
       if (cannedRes.success && cannedRes.data) {
         setCannedResponses(cannedRes.data);
-      }
-      if (ordersRes.success && ordersRes.data) {
-        setOrders(ordersRes.data.items || []);
       }
     } catch (err) {
       console.error("Error loading ticket detail:", err);

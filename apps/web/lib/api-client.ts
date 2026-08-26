@@ -5858,7 +5858,7 @@ export interface WorkflowActionStepDto {
   title: string;
   order: number;
   delayMinutes?: number;
-  config: Record<string, any>;
+  config: Record<string, unknown>;
 }
 
 export interface ExecutionStepLogDto {
@@ -5869,7 +5869,7 @@ export interface ExecutionStepLogDto {
   message: string;
   timestamp: string;
   executionDurationMs: number;
-  outputData?: Record<string, any>;
+  outputData?: Record<string, unknown>;
 }
 
 export interface ExecutionSummaryDto {
@@ -5949,7 +5949,7 @@ export interface TestWorkflowPayload {
   id: string;
   entityType?: string;
   entityId?: string;
-  mockContext?: Record<string, any>;
+  mockContext?: Record<string, unknown>;
 }
 
 export interface AutomationExecutionResultDto {
@@ -6046,7 +6046,7 @@ export interface ComplianceViolationDetailDto {
   enforcementLevel: string;
   details: string;
   penaltyRisk?: string;
-  contextData: Record<string, any>;
+  contextData: Record<string, unknown>;
 }
 
 export interface ComplianceValidationResultDto {

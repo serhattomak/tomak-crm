@@ -3,16 +3,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  Zap,
   ArrowLeft,
   Save,
   Play,
   Plus,
   Trash2,
-  SlidersHorizontal,
   Bell,
-  Mail,
-  MessageSquare,
   Globe,
   Clock,
   UserCheck,
@@ -22,19 +18,12 @@ import {
   FileEdit,
   Layers,
   ChevronDown,
-  Sparkles,
-  HelpCircle,
-  Check,
   X,
   RefreshCw,
-  Eye,
-  Info,
 } from "lucide-react";
 import {
   ApiClient,
-  WorkflowDetailDto,
   WorkflowConditionGroupDto,
-  WorkflowConditionRuleDto,
   WorkflowActionStepDto,
   WorkflowTriggerConfigDto,
   AutomationExecutionResultDto,
@@ -50,7 +39,6 @@ export default function WorkflowBuilderPage() {
 
   const [isLoading, setIsLoading] = useState<boolean>(!isNew);
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<"builder" | "executions">("builder");
 
   // Workflow State
   const [name, setName] = useState<string>("Yeni Otomasyon Akışı");
@@ -88,13 +76,11 @@ export default function WorkflowBuilderPage() {
     },
   ]);
 
-  const [recentExecutions, setRecentExecutions] = useState<any[]>([]);
-
   // Simulation Modal State
   const [isSimulationOpen, setIsSimulationOpen] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationResult, setSimulationResult] = useState<AutomationExecutionResultDto | null>(null);
-  const [mockContext, setMockContext] = useState<Record<string, any>>({
+  const [mockContext, setMockContext] = useState<Record<string, unknown>>({
     customerName: "Ahmet Yılmaz (Örnek)",
     tier: "VIP",
     totalAmount: 12500,
@@ -104,36 +90,46 @@ export default function WorkflowBuilderPage() {
 
   // Load existing workflow
   useEffect(() => {
-    if (!isNew && workflowId) {
-      setIsLoading(true);
-      ApiClient.getWorkflowById(workflowId, tenantSlug)
-        .then((res) => {
-          if (res.success && res.data) {
-            const data = res.data;
-            setName(data.name);
-            setDescription(data.description || "");
-            setCategory(data.category || "General");
-            setIcon(data.icon || "Zap");
-            setColor(data.color || "blue");
-            setIsActive(data.isActive);
-            setTriggerType(data.triggerType);
-            setTriggerConfig(data.triggerConfig || {});
-            setConditions(data.conditions || []);
-            setActions(data.actions || []);
-            setRecentExecutions(data.recentExecutions || []);
-          } else {
-            toast.error("Akış detayları bulunamadı.");
-            router.push(`/${tenantSlug}/automations`);
-          }
-        })
-        .catch(() => {
-          toast.error("Akış yüklenirken hata oluştu.");
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+    if (isNew || !workflowId) {
+      return;
     }
-  }, [workflowId, isNew, tenantSlug, router]);
+
+    let isMounted = true;
+    ApiClient.getWorkflowById(workflowId, tenantSlug)
+      .then((res) => {
+        if (!isMounted) return;
+        if (res.success && res.data) {
+          const data = res.data;
+          setName(data.name);
+          setDescription(data.description || "");
+          setCategory(data.category || "General");
+          setIcon(data.icon || "Zap");
+          setColor(data.color || "blue");
+          setIsActive(data.isActive);
+          setTriggerType(data.triggerType);
+          setTriggerConfig(data.triggerConfig || {});
+          setConditions(data.conditions || []);
+          setActions(data.actions || []);
+        } else {
+          toast.error("Akış detayları bulunamadı.");
+          router.push(`/${tenantSlug}/automations`);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          toast.error("Akış yüklenirken hata oluştu.");
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isNew, workflowId, tenantSlug, router]);
 
   // Save or Create Workflow
   const handleSave = async () => {
@@ -300,49 +296,54 @@ export default function WorkflowBuilderPage() {
   // Action Handlers
   const addAction = (type: string) => {
     const newId = `act-${Date.now()}`;
-    let newAction: WorkflowActionStepDto = {
-      id: newId,
-      type,
-      title: "Yeni Aksiyon",
-      order: actions.length + 1,
-      config: {},
-    };
+    let title = "Yeni Aksiyon";
+    let config: Record<string, unknown> = {};
+    let delayMinutes: number | undefined;
 
     switch (type) {
       case "notification":
-        newAction.title = "Otomatik Bildirim Gönder";
-        newAction.config = {
+        title = "Otomatik Bildirim Gönder";
+        config = {
           channel: "InApp",
           title: "Sistem Bildirimi",
           message: "{customerName} için işlem gerçekleşti.",
         };
         break;
       case "updateRecord":
-        newAction.title = "CRM Kaydını Güncelle";
-        newAction.config = {
+        title = "CRM Kaydını Güncelle";
+        config = {
           field: "status",
           value: "Active",
         };
         break;
       case "createRecord":
-        newAction.title = "Yeni Takip Görevi Aç";
-        newAction.config = {
+        title = "Yeni Takip Görevi Aç";
+        config = {
           entityType: "Task",
           title: "Müşteri Takibi - {customerName}",
         };
         break;
       case "webhook":
-        newAction.title = "Harici Webhook Çağrısı (HTTP POST)";
-        newAction.config = {
+        title = "Harici Webhook Çağrısı (HTTP POST)";
+        config = {
           url: "https://api.ornekwebhook.com/crm/events",
         };
         break;
       case "delay":
-        newAction.title = "Zamanlayıcı / Gecikme";
-        newAction.delayMinutes = 30;
-        newAction.config = {};
+        title = "Zamanlayıcı / Gecikme";
+        delayMinutes = 30;
+        config = {};
         break;
     }
+
+    const newAction: WorkflowActionStepDto = {
+      id: newId,
+      type,
+      title,
+      order: actions.length + 1,
+      delayMinutes,
+      config,
+    };
 
     setActions((prev) => [...prev, newAction]);
   };
@@ -351,7 +352,7 @@ export default function WorkflowBuilderPage() {
     setActions((prev) => prev.filter((a) => a.id !== id));
   };
 
-  const updateActionConfig = (id: string, key: string, val: any) => {
+  const updateActionConfig = (id: string, key: string, val: unknown) => {
     setActions((prev) =>
       prev.map((a) => {
         if (a.id !== id) return a;
@@ -810,7 +811,7 @@ export default function WorkflowBuilderPage() {
                         <div>
                           <label className="block text-[11px] font-semibold text-slate-600 mb-1">Kanal</label>
                           <select
-                            value={act.config.channel || "InApp"}
+                            value={(act.config.channel as string) || "InApp"}
                             onChange={(e) => updateActionConfig(act.id, "channel", e.target.value)}
                             className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-medium"
                           >
@@ -823,7 +824,7 @@ export default function WorkflowBuilderPage() {
                           <label className="block text-[11px] font-semibold text-slate-600 mb-1">Başlık</label>
                           <input
                             type="text"
-                            value={act.config.title || ""}
+                            value={(act.config.title as string) || ""}
                             onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
                             placeholder="Bildirim başlığı..."
                             className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg"
@@ -836,7 +837,7 @@ export default function WorkflowBuilderPage() {
                         </label>
                         <textarea
                           rows={2}
-                          value={act.config.message || ""}
+                          value={(act.config.message as string) || ""}
                           onChange={(e) => updateActionConfig(act.id, "message", e.target.value)}
                           placeholder="Mesaj metni..."
                           className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs"
@@ -850,7 +851,7 @@ export default function WorkflowBuilderPage() {
                       <label className="block text-[11px] font-semibold text-slate-600">Görev / Not Başlığı</label>
                       <input
                         type="text"
-                        value={act.config.title || ""}
+                        value={(act.config.title as string) || ""}
                         onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
                         placeholder="Örn: VIP Müşteri Takip Araması - {customerName}"
                         className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg"
@@ -864,7 +865,7 @@ export default function WorkflowBuilderPage() {
                         <label className="block text-[11px] font-semibold text-slate-600 mb-1">Güncellenecek Alan</label>
                         <input
                           type="text"
-                          value={act.config.field || "status"}
+                          value={(act.config.field as string) || "status"}
                           onChange={(e) => updateActionConfig(act.id, "field", e.target.value)}
                           className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
                         />
@@ -873,7 +874,7 @@ export default function WorkflowBuilderPage() {
                         <label className="block text-[11px] font-semibold text-slate-600 mb-1">Yeni Değer</label>
                         <input
                           type="text"
-                          value={act.config.value || ""}
+                          value={(act.config.value as string) || ""}
                           onChange={(e) => updateActionConfig(act.id, "value", e.target.value)}
                           className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
                         />
@@ -886,7 +887,7 @@ export default function WorkflowBuilderPage() {
                       <label className="block text-[11px] font-semibold text-slate-600">Hedef URL (POST Endpoint)</label>
                       <input
                         type="url"
-                        value={act.config.url || ""}
+                        value={(act.config.url as string) || ""}
                         onChange={(e) => updateActionConfig(act.id, "url", e.target.value)}
                         placeholder="https://api.hariciservis.com/webhook"
                         className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
@@ -949,7 +950,7 @@ export default function WorkflowBuilderPage() {
                   <label className="text-[10px] text-slate-500 font-semibold">customerName</label>
                   <input
                     type="text"
-                    value={mockContext.customerName || ""}
+                    value={(mockContext.customerName as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, customerName: e.target.value })}
                     className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
                   />
@@ -958,7 +959,7 @@ export default function WorkflowBuilderPage() {
                   <label className="text-[10px] text-slate-500 font-semibold">tier</label>
                   <input
                     type="text"
-                    value={mockContext.tier || ""}
+                    value={(mockContext.tier as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, tier: e.target.value })}
                     className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
                   />
@@ -967,7 +968,7 @@ export default function WorkflowBuilderPage() {
                   <label className="text-[10px] text-slate-500 font-semibold">totalAmount</label>
                   <input
                     type="number"
-                    value={mockContext.totalAmount || 0}
+                    value={(mockContext.totalAmount as number) ?? 0}
                     onChange={(e) => setMockContext({ ...mockContext, totalAmount: Number(e.target.value) })}
                     className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
                   />
@@ -976,7 +977,7 @@ export default function WorkflowBuilderPage() {
                   <label className="text-[10px] text-slate-500 font-semibold">status</label>
                   <input
                     type="text"
-                    value={mockContext.status || ""}
+                    value={(mockContext.status as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, status: e.target.value })}
                     className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
                   />

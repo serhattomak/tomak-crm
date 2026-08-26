@@ -69,10 +69,7 @@ export default function DashboardLayout({
   const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
-  // Close mobile drawer when pathname changes
-  useEffect(() => {
-    setIsMobileDrawerOpen(false);
-  }, [pathname]);
+
 
   // Global Keyboard Navigation & Shortcuts Listener
   useEffect(() => {
@@ -417,7 +414,7 @@ interface NavItem {
   badge?: string | null;
   exact?: boolean;
   href: string;
-  icon: any;
+  icon: React.ElementType;
   name: string;
   permission?: string;
   tab?: string;
@@ -435,59 +432,17 @@ function DashboardNavigation({
   const tenantSlug = (params?.tenantSlug as string) || "";
   const currentTab = searchParams.get("tab") || "chart";
 
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    hr: true,
-    management: true,
-    sales: true,
-    tools: true,
-  });
-
-  // Ensure the section containing the active page is always open
-  useEffect(() => {
-    if (!pathname) {
-      return;
-    }
-
-    if (
-      pathname === `/${tenantSlug}` ||
-      pathname.startsWith(`/${tenantSlug}/customers`) ||
-      pathname.startsWith(`/${tenantSlug}/orders`) ||
-      pathname.startsWith(`/${tenantSlug}/products`) ||
-      pathname.startsWith(`/${tenantSlug}/shipments`)
-    ) {
-      setOpenSections((prev) => ({ ...prev, sales: true }));
-    } else if (
-      pathname.startsWith(`/${tenantSlug}/attendance`) ||
-      pathname.startsWith(`/${tenantSlug}/leaves`) ||
-      pathname.startsWith(`/${tenantSlug}/payroll`) ||
-      pathname.startsWith(`/${tenantSlug}/organization`) ||
-      pathname.startsWith(`/${tenantSlug}/recruitment`) ||
-      pathname.startsWith(`/${tenantSlug}/compliance`)
-    ) {
-      setOpenSections((prev) => ({ ...prev, hr: true }));
-    } else if (
-      pathname.startsWith(`/${tenantSlug}/tickets`) ||
-      pathname.startsWith(`/${tenantSlug}/messages`) ||
-      pathname.startsWith(`/${tenantSlug}/email`) ||
-      pathname.startsWith(`/${tenantSlug}/automation`) ||
-      pathname.startsWith(`/${tenantSlug}/analytics`) ||
-      pathname.startsWith(`/${tenantSlug}/integration`)
-    ) {
-      setOpenSections((prev) => ({ ...prev, tools: true }));
-    } else if (
-      pathname.startsWith(`/${tenantSlug}/users`) ||
-      pathname.startsWith(`/${tenantSlug}/roles`) ||
-      pathname.startsWith(`/${tenantSlug}/settings`)
-    ) {
-      setOpenSections((prev) => ({ ...prev, management: true }));
-    }
-  }, [pathname, tenantSlug]);
+  const [closedSections, setClosedSections] = useState<Record<string, boolean>>({});
 
   const toggleSection = (sectionKey: string) => {
-    setOpenSections((prev) => ({
+    setClosedSections((prev) => ({
       ...prev,
-      [sectionKey]: !prev[sectionKey],
+      [sectionKey]: !(prev[sectionKey] ?? false),
     }));
+  };
+
+  const isSectionOpen = (sectionKey: string) => {
+    return !closedSections[sectionKey];
   };
 
   const { getModuleDisplayName, isModuleEnabled } = useLabels();
@@ -704,12 +659,12 @@ function DashboardNavigation({
           <span>Genel & Satış CRM</span>
           <ChevronDown
             className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
-              openSections.sales ? "rotate-0 transform" : "-rotate-90"
+              isSectionOpen("sales") ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
         </button>
 
-        {openSections.sales && (
+        {isSectionOpen("sales") && (
           <div className="mt-1 space-y-1">
             {salesMenu.map((item) => {
               const isActive = item.exact
@@ -769,12 +724,12 @@ function DashboardNavigation({
           <span>İnsan Kaynakları & Bordro</span>
           <ChevronDown
             className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
-              openSections.hr ? "rotate-0 transform" : "-rotate-90"
+              isSectionOpen("hr") ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
         </button>
 
-        {openSections.hr && (
+        {isSectionOpen("hr") && (
           <div className="mt-1 space-y-1">
             {hrMenu.map((item) => {
               const isOrgPage = pathname === `/${tenantSlug}/organization`;
@@ -846,12 +801,12 @@ function DashboardNavigation({
           <span>İletişim & Araçlar</span>
           <ChevronDown
             className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
-              openSections.tools ? "rotate-0 transform" : "-rotate-90"
+              isSectionOpen("tools") ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
         </button>
 
-        {openSections.tools && (
+        {isSectionOpen("tools") && (
           <div className="mt-1 space-y-1">
             {toolsMenu.map((item) => {
               const isActive = pathname === item.href;
@@ -909,12 +864,12 @@ function DashboardNavigation({
           <span>Sistem & Yönetim</span>
           <ChevronDown
             className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${
-              openSections.management ? "rotate-0 transform" : "-rotate-90"
+              isSectionOpen("management") ? "rotate-0 transform" : "-rotate-90"
             }`}
           />
         </button>
 
-        {openSections.management && (
+        {isSectionOpen("management") && (
           <div className="mt-1 space-y-1">
             {managementMenu.map((item) => {
               const isActive = pathname === item.href;

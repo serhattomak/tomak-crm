@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useSyncExternalStore } from "react"
 import { useRouter, useParams } from "next/navigation"
 import {
   Share2,
@@ -11,10 +11,13 @@ import {
   Printer,
   Download,
   X,
-  ExternalLink,
-  Sparkles,
 } from "lucide-react"
 import { toast } from "@workspace/ui/components/sonner"
+
+const noopSubscribe = () => () => {}
+const checkCanShare = () => typeof navigator !== "undefined" && "share" in navigator
+const getClientCanShare = () => checkCanShare()
+const getServerCanShare = () => false
 
 interface DashboardSharePopoverProps {
   activeTab?: string
@@ -35,14 +38,8 @@ export function DashboardSharePopover({
 
   const [isOpen, setIsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [canShare, setCanShare] = useState(false)
+  const canShare = useSyncExternalStore(noopSubscribe, getClientCanShare, getServerCanShare)
   const popoverRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && "share" in navigator) {
-      setCanShare(true)
-    }
-  }, [])
 
   // Click outside & Escape handler
   useEffect(() => {

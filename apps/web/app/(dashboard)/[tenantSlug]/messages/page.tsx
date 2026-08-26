@@ -41,7 +41,7 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ApiClient,
   type CannedResponseDto,
@@ -59,6 +59,7 @@ export default function MessagesPage() {
   const router = useRouter();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
+  const activeTenantId = activeTenant?.id;
 
   // State
   const [activeTab, setActiveTab] = useState<"team" | "support">("team");
@@ -129,23 +130,24 @@ export default function MessagesPage() {
   };
 
   // Load Channels
-  const fetchChannels = async () => {
+  const fetchChannels = useCallback(async () => {
     try {
-      setLoadingChannels(true);
-      const res = await ApiClient.getChatChannels({}, activeTenant?.id);
+      const res = await ApiClient.getChatChannels({}, activeTenantId);
       if (res.success && res.data) {
-        setChannels(res.data);
-        if (!selectedChannel && res.data.length > 0) {
-          // Only auto-select first channel on desktop so mobile displays conversation list initially
-          if (typeof window !== "undefined" && window.innerWidth >= 768) {
+        const channelsData = res.data;
+        setChannels(channelsData);
+        // Only auto-select first channel on desktop so mobile displays conversation list initially
+        if (typeof window !== "undefined" && window.innerWidth >= 768) {
+          setSelectedChannel((prev) => {
+            if (prev) return prev;
             const defaultChannel =
               activeTab === "team"
-                ? res.data.find((c) => c.type !== "CustomerSupport") ||
-                  res.data[0]
-                : res.data.find((c) => c.type === "CustomerSupport") ||
-                  res.data[0];
-            setSelectedChannel(defaultChannel || null);
-          }
+                ? channelsData.find((c) => c.type !== "CustomerSupport") ||
+                  channelsData[0]
+                : channelsData.find((c) => c.type === "CustomerSupport") ||
+                  channelsData[0];
+            return defaultChannel || null;
+          });
         }
       }
     } catch {
@@ -153,7 +155,34 @@ export default function MessagesPage() {
     } finally {
       setLoadingChannels(false);
     }
-  };
+  }, [activeTenantId, activeTab]);
+
+  const fetchCannedResponses = useCallback(async () => {
+    try {
+      const res = await ApiClient.getCannedResponses({}, activeTenantId);
+      if (res.success && res.data) {
+        setCannedResponses(res.data);
+      }
+    } catch {
+      // ignore
+    }
+  }, [activeTenantId]);
+
+  const fetchCustomerContext = useCallback(async (customerId: string) => {
+    try {
+      const res = await ApiClient.getCustomer360ChatContext(
+        customerId,
+        activeTenantId
+      );
+      if (res.success && res.data) {
+        setCustomerContext(res.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoadingCustomerContext(false);
+    }
+  }, [activeTenantId]);
 
   // Global Escape key handler
   useEffect(() => {
@@ -173,7 +202,7 @@ export default function MessagesPage() {
   useEffect(() => {
     fetchChannels();
     fetchCannedResponses();
-  }, [activeTenant?.id]);
+  }, [fetchChannels, fetchCannedResponses]);
 
   // Load Messages when selectedChannel changes
   useEffect(() => {
@@ -183,11 +212,10 @@ export default function MessagesPage() {
 
     const fetchMessages = async () => {
       try {
-        setLoadingMessages(true);
         const res = await ApiClient.getChatMessages(
           selectedChannel.id,
           100,
-          activeTenant?.id
+          activeTenantId
         );
         if (res.success && res.data) {
           setMessages(res.data);
@@ -209,35 +237,7 @@ export default function MessagesPage() {
     ) {
       fetchCustomerContext(selectedChannel.customerId);
     }
-  }, [selectedChannel?.id, activeTenant?.id]);
-
-  const fetchCustomerContext = async (customerId: string) => {
-    try {
-      setLoadingCustomerContext(true);
-      const res = await ApiClient.getCustomer360ChatContext(
-        customerId,
-        activeTenant?.id
-      );
-      if (res.success && res.data) {
-        setCustomerContext(res.data);
-      }
-    } catch {
-      // ignore
-    } finally {
-      setLoadingCustomerContext(false);
-    }
-  };
-
-  const fetchCannedResponses = async () => {
-    try {
-      const res = await ApiClient.getCannedResponses({}, activeTenant?.id);
-      if (res.success && res.data) {
-        setCannedResponses(res.data);
-      }
-    } catch {
-      // ignore
-    }
-  };
+  }, [selectedChannel, activeTenantId, fetchCustomerContext]);
 
   // Handle Send Message
   const handleSendMessage = async (embedData?: {
@@ -459,7 +459,7 @@ export default function MessagesPage() {
           customerName: newSupportCustomerName.trim(),
           initialMessage:
             newSupportInitialMsg.trim() || "Müşteri canlı destek başlattı.",
-          priority: newSupportPriority as any,
+          priority: newSupportPriority,
           subject: newSupportSubject.trim(),
         },
         activeTenant?.id
@@ -508,14 +508,13 @@ export default function MessagesPage() {
   };
 
   // Load Entities for Picker Modal
-  const loadEntities = async () => {
-    if (!activeTenant?.id) {
+  const loadEntities = useCallback(async () => {
+    if (!activeTenantId) {
       return;
     }
     try {
-      setLoadingEntities(true);
       if (entityType === "Customer") {
-        const res = await ApiClient.getCustomers(activeTenant.id, {
+        const res = await ApiClient.getCustomers(activeTenantId, {
           search: entitySearch,
         });
         if (res.success && res.data) {
@@ -524,7 +523,7 @@ export default function MessagesPage() {
       } else if (entityType === "Order") {
         const res = await ApiClient.getOrders(
           { search: entitySearch },
-          activeTenant.id
+          activeTenantId
         );
         if (res.success && res.data) {
           setOrdersList(res.data.items || []);
@@ -532,7 +531,7 @@ export default function MessagesPage() {
       } else if (entityType === "Product") {
         const res = await ApiClient.getProducts(
           { search: entitySearch },
-          activeTenant.id
+          activeTenantId
         );
         if (res.success && res.data) {
           setProductsList(res.data.items || []);
@@ -543,13 +542,13 @@ export default function MessagesPage() {
     } finally {
       setLoadingEntities(false);
     }
-  };
+  }, [activeTenantId, entityType, entitySearch]);
 
   useEffect(() => {
     if (isEntityPickerOpen) {
       loadEntities();
     }
-  }, [isEntityPickerOpen, entityType, entitySearch]);
+  }, [isEntityPickerOpen, loadEntities]);
 
   // Filtered Channels
   const filteredChannels = useMemo(() => {
@@ -951,7 +950,7 @@ export default function MessagesPage() {
                   <>
                     {/* Status Dropdown */}
                     <Select
-                      onValueChange={(val: any) => handleUpdateStatus(val)}
+                      onValueChange={(val: "Open" | "Pending" | "Resolved" | "Closed") => handleUpdateStatus(val)}
                       value={selectedChannel.supportSession?.status || "Open"}
                     >
                       <SelectTrigger className="h-8 w-24 font-semibold text-[11px] sm:w-32 sm:text-xs">

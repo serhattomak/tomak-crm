@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter, useParams } from "next/navigation"
 import {
   Users,
@@ -44,8 +44,7 @@ function getAvatarColor(idOrName: string) {
   for (let i = 0; i < idOrName.length; i++) {
     hash = idOrName.charCodeAt(i) + ((hash << 5) - hash)
   }
-  const index = Math.abs(hash) % AVATAR_BG_COLORS.length
-  return AVATAR_BG_COLORS[index]
+  return AVATAR_BG_COLORS[Math.abs(hash) % AVATAR_BG_COLORS.length]
 }
 
 function getInitials(name?: string, email?: string) {
@@ -68,45 +67,37 @@ function getInitials(name?: string, email?: string) {
   return "U"
 }
 
-// Fallback demo users if tenant users are empty or loading
+// Fallback demo users if API is unreachable or returns empty
 const FALLBACK_USERS: TenantUserDto[] = [
   {
-    id: "usr-1",
-    fullName: "Serhat Dev",
-    email: "serhat@acmecrm.com",
+    id: "u-1",
+    email: "can.ozkan@sirket.com",
+    fullName: "Can Özkan",
     isActive: true,
     createdAt: new Date().toISOString(),
     roles: [{ id: "r-1", name: "Admin" }],
   },
   {
-    id: "usr-2",
-    fullName: "Ahmet Yılmaz",
-    email: "ahmet@acmecrm.com",
+    id: "u-2",
+    email: "elif.kaya@sirket.com",
+    fullName: "Elif Kaya",
     isActive: true,
     createdAt: new Date().toISOString(),
     roles: [{ id: "r-2", name: "Satış Temsilcisi" }],
   },
   {
-    id: "usr-3",
-    fullName: "Selin Kaya",
-    email: "selin@acmecrm.com",
+    id: "u-3",
+    email: "burak.yilmaz@sirket.com",
+    fullName: "Burak Yılmaz",
     isActive: true,
     createdAt: new Date().toISOString(),
-    roles: [{ id: "r-3", name: "Müşteri Destek" }],
+    roles: [{ id: "r-3", name: "Destek Uzmanı" }],
   },
   {
-    id: "usr-4",
-    fullName: "Can Demir",
-    email: "can@acmecrm.com",
+    id: "u-4",
+    email: "merve.demir@sirket.com",
+    fullName: "Merve Demir",
     isActive: true,
-    createdAt: new Date().toISOString(),
-    roles: [{ id: "r-4", name: "Pazarlama" }],
-  },
-  {
-    id: "usr-5",
-    fullName: "Elif Öztürk",
-    email: "elif@acmecrm.com",
-    isActive: false,
     createdAt: new Date().toISOString(),
     roles: [{ id: "r-2", name: "Satış Temsilcisi" }],
   },
@@ -123,38 +114,48 @@ export function TeamMembersStack({ onOpenInvite, className = "" }: TeamMembersSt
   const tenantSlug = (params?.tenantSlug as string) || ""
   const { activeTenant } = usePermissions()
 
-  const [users, setUsers] = useState<TenantUserDto[]>([])
-  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState<TenantUserDto[]>(FALLBACK_USERS)
+  const [loading, setLoading] = useState(Boolean(activeTenant?.id))
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
   const popoverRef = useRef<HTMLDivElement>(null)
 
-  const fetchUsers = useCallback(async () => {
-    if (!activeTenant?.id) {
-      setUsers(FALLBACK_USERS)
-      setLoading(false)
+  const tenantId = activeTenant?.id
+
+  useEffect(() => {
+    if (!tenantId) {
       return
     }
 
-    try {
-      const res = await ApiClient.getTenantUsers(activeTenant.id)
-      if (res.success && res.data && res.data.length > 0) {
-        setUsers(res.data)
-      } else {
-        setUsers(FALLBACK_USERS)
-      }
-    } catch {
-      setUsers(FALLBACK_USERS)
-    } finally {
-      setLoading(false)
-    }
-  }, [activeTenant?.id])
+    let isMounted = true
 
-  useEffect(() => {
-    fetchUsers()
-  }, [fetchUsers])
+    ApiClient.getTenantUsers(tenantId)
+      .then((res) => {
+        if (!isMounted) return
+        if (res.success && res.data && res.data.length > 0) {
+          setUsers(res.data)
+        } else {
+          setUsers(FALLBACK_USERS)
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setUsers(FALLBACK_USERS)
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false)
+        }
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [tenantId, refreshKey])
 
   // Click outside & Escape handler
   useEffect(() => {
@@ -188,7 +189,7 @@ export function TeamMembersStack({ onOpenInvite, className = "" }: TeamMembersSt
     setTimeout(() => setCopiedEmail(null), 2000)
   }
 
-  const navigateToChat = (userName?: string, e?: React.MouseEvent) => {
+  const navigateToChat = (_userName?: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
     setIsOpen(false)
     router.push(`/${tenantSlug}/messages`)
@@ -424,7 +425,7 @@ export function TeamMembersStack({ onOpenInvite, className = "" }: TeamMembersSt
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
         onSuccess={() => {
-          fetchUsers()
+          setRefreshKey((k) => k + 1)
         }}
       />
     </>
@@ -438,8 +439,6 @@ interface InviteMemberModalProps {
 }
 
 export function InviteMemberModal({ isOpen, onClose, onSuccess }: InviteMemberModalProps) {
-  const params = useParams()
-  const tenantSlug = (params?.tenantSlug as string) || ""
   const { activeTenant } = usePermissions()
 
   const [email, setEmail] = useState("")
