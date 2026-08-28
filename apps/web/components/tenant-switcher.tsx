@@ -168,7 +168,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
                 />
                 <div className="flex justify-end gap-1">
                   <button
-                    className="px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    className="px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                     onClick={() => setIsCreating(false)}
                     type="button"
                   >

@@ -405,7 +405,7 @@ export function TeamMembersStack({ onOpenInvite, className = "" }: TeamMembersSt
             {/* Footer: Manage Users Link */}
             <div className="border-t border-slate-100 bg-slate-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
               <button
-                className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
                 onClick={() => {
                   setIsOpen(false)
                   router.push(`/${tenantSlug}/users`)

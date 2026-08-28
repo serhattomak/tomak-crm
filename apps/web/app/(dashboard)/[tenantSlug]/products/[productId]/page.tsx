@@ -231,7 +231,7 @@ export default function ProductDetailPage() {
       <div className="flex flex-col justify-between gap-4 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             href={`/${tenantSlug}/products`}
             title="Kataloğa Dön"
           >
@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
           {product.trackInventory && (
             <PermissionGate permission="Products.StockAdjust">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
@@ -477,7 +477,7 @@ export default function ProductDetailPage() {
                 className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                   activeTab === tab.id
                     ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                    : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
@@ -653,7 +653,7 @@ export default function ProductDetailPage() {
                     <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                       {product.variants.map((v) => (
                         <tr
-                          className="transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
+                          className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                           key={v.id}
                         >
                           <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
@@ -935,7 +935,7 @@ function StockAdjustModal({
             Stok Hareketi Ekle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1017,7 +1017,7 @@ function StockAdjustModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1101,7 +1101,7 @@ function AddVariantModal({
             Yeni Varyant Ekle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1196,7 +1196,7 @@ function AddVariantModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1301,7 +1301,7 @@ function EditProductModal({
             Ürün / Hizmet Bilgilerini Düzenle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1409,7 +1409,7 @@ function EditProductModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

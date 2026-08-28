@@ -116,7 +116,7 @@ export function DealsTableWidget() {
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Tümünü Gör</span>

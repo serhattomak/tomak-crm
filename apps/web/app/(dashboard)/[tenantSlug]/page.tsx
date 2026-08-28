@@ -378,7 +378,7 @@ export default function WorkspaceOverviewPage() {
               className={`rounded-lg px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === tab.id
                   ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
               }`}
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -388,7 +388,7 @@ export default function WorkspaceOverviewPage() {
             </button>
           ))}
           <button
-            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:bg-white/50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200"
+            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:bg-white/50 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -418,7 +418,7 @@ export default function WorkspaceOverviewPage() {
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left font-medium text-xs transition-colors ${
                       dateRange === range
                         ? "bg-violet-50 font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
-                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                     }`}
                     key={range}
                     onClick={() => {

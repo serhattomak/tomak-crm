@@ -200,7 +200,7 @@ export function TeamLeaderboardWidget() {
       {members.length > 0 && (
         <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400"
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/orders`}
           >
             Tüm Satışları Görüntüle →

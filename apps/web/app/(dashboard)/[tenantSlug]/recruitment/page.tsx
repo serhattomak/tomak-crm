@@ -609,7 +609,7 @@ function RecruitmentPageContent() {
 
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={openCandModalForCreate}
             type="button"
           >
@@ -635,7 +635,7 @@ function RecruitmentPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "ilanlar"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("ilanlar")}
             type="button"
@@ -649,7 +649,7 @@ function RecruitmentPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "adaylar"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("adaylar")}
             type="button"
@@ -663,7 +663,7 @@ function RecruitmentPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "basvurular"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("basvurular")}
             type="button"
@@ -677,7 +677,7 @@ function RecruitmentPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "ayarlar"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("ayarlar")}
             type="button"
@@ -688,7 +688,7 @@ function RecruitmentPageContent() {
         </div>
 
         <button
-          className="flex items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-medium text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50 disabled:opacity-50"
+          className="flex items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-medium text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 disabled:opacity-50"
           disabled={isLoading}
           onClick={loadData}
           type="button"
@@ -773,7 +773,7 @@ function RecruitmentPageContent() {
                   <>
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs">
-                        <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                        <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                           <tr>
                             <th className="px-6 py-3.5">İlan Başlığı</th>
                             <th className="px-6 py-3.5">Departman</th>
@@ -786,7 +786,7 @@ function RecruitmentPageContent() {
                         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                           {pagedRequisitions.map((req) => (
                             <tr
-                              className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                              className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                               key={req.id}
                             >
                               <td className="px-6 py-4">
@@ -859,7 +859,7 @@ function RecruitmentPageContent() {
                               <td className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                     onClick={() => openReqModalForEdit(req)}
                                     type="button"
                                   >
@@ -966,7 +966,7 @@ function RecruitmentPageContent() {
                   <>
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs">
-                        <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                        <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                           <tr>
                             <th className="px-6 py-3.5">Aday</th>
                             <th className="px-6 py-3.5">E-posta / Telefon</th>
@@ -978,7 +978,7 @@ function RecruitmentPageContent() {
                         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                           {pagedCandidates.map((c) => (
                             <tr
-                              className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                              className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                               key={c.id}
                             >
                               <td className="px-6 py-4">
@@ -1038,14 +1038,14 @@ function RecruitmentPageContent() {
                               <td className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                     onClick={() => setSelectedCandidateId(c.id)}
                                     type="button"
                                   >
                                     Görüntüle
                                   </button>
                                   <button
-                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                    className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                     onClick={() => openCandModalForEdit(c)}
                                     type="button"
                                   >
@@ -1146,7 +1146,7 @@ function RecruitmentPageContent() {
                           applicationsByStage.map.get(stage.id) || [];
                         return (
                           <div
-                            className="flex w-72 shrink-0 flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50/60"
+                            className="flex w-72 shrink-0 flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                             key={stage.id}
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={() => {
@@ -1194,7 +1194,7 @@ function RecruitmentPageContent() {
                                       <div className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                                         {app.candidateName}
                                       </div>
-                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-slate-300 group-hover:text-zinc-500 dark:text-zinc-400" />
+                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-slate-300 group-hover:text-zinc-500 dark:hover:text-zinc-400" />
                                     </div>
                                     <div className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                                       {app.candidateEmail}
@@ -1302,7 +1302,7 @@ function RecruitmentPageContent() {
                     <>
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-xs">
-                          <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                          <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                             <tr>
                               <th className="px-6 py-3.5">Aday</th>
                               <th className="px-6 py-3.5">İlan</th>
@@ -1314,7 +1314,7 @@ function RecruitmentPageContent() {
                           <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                             {pagedApplications.map((app) => (
                               <tr
-                                className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                                className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                                 key={app.id}
                               >
                                 <td className="px-6 py-4">
@@ -1376,7 +1376,7 @@ function RecruitmentPageContent() {
                                 <td className="px-6 py-4 text-right">
                                   <div className="flex items-center justify-end gap-1">
                                     <button
-                                      className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                      className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-600 dark:text-zinc-400 text-[11px] hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                       onClick={() => setSelectedApplicationId(app.id)}
                                       type="button"
                                     >
@@ -1467,7 +1467,7 @@ function RecruitmentPageContent() {
                       </thead>
                       <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                         {sortedStages.map((s, idx) => (
-                          <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={s.id}>
+                          <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50" key={s.id}>
                             <td className="px-3 py-3">
                               <div className="flex items-center gap-1">
                                 <span className="font-mono text-zinc-500 dark:text-zinc-400">
@@ -1476,7 +1476,7 @@ function RecruitmentPageContent() {
                                 <div className="flex flex-col">
                                   <button
                                     aria-label="Yukarı taşı"
-                                    className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300 disabled:opacity-30"
+                                    className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 disabled:opacity-30"
                                     disabled={idx === 0}
                                     onClick={() => handleReorderStage(idx, "up")}
                                     type="button"
@@ -1485,7 +1485,7 @@ function RecruitmentPageContent() {
                                   </button>
                                   <button
                                     aria-label="Aşağı taşı"
-                                    className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300 disabled:opacity-30"
+                                    className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 disabled:opacity-30"
                                     disabled={idx === sortedStages.length - 1}
                                     onClick={() => handleReorderStage(idx, "down")}
                                     type="button"
@@ -1540,7 +1540,7 @@ function RecruitmentPageContent() {
                             <td className="px-3 py-3 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
-                                  className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                  className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                   onClick={() => openStageModalForEdit(s)}
                                   type="button"
                                 >
@@ -1719,7 +1719,7 @@ function Pagination({
       </span>
       <div className="flex items-center gap-1.5">
         <button
-          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50 disabled:opacity-40"
+          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 disabled:opacity-40"
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
           type="button"
@@ -1727,7 +1727,7 @@ function Pagination({
           Önceki
         </button>
         <button
-          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50 disabled:opacity-40"
+          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 disabled:opacity-40"
           disabled={currentPage >= totalPages}
           onClick={() => onPageChange(currentPage + 1)}
           type="button"
@@ -1823,7 +1823,7 @@ function RequisitionModal({
             {requisition?.id ? "İlanı Düzenle" : "Yeni İş İlanı"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2000,7 +2000,7 @@ function RequisitionModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2150,7 +2150,7 @@ function CandidateModal({
             {candidate?.id ? "Adayı Düzenle" : "Yeni Aday Ekle"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2285,7 +2285,7 @@ function CandidateModal({
               CV Yükle (PDF/DOC/DOCX, max 5MB)
             </label>
             <div className="flex items-center gap-2">
-              <label className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50">
+              <label className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
                 <Upload className="h-3.5 w-3.5" />
                 <span>Dosya Seç</span>
                 <input
@@ -2349,7 +2349,7 @@ function CandidateModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2426,7 +2426,7 @@ function ApplicationModal({
             Yeni Başvuru
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2507,7 +2507,7 @@ function ApplicationModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2581,7 +2581,7 @@ function StageModal({
             {stage?.id ? "Aşamayı Düzenle" : "Yeni Aşama Ekle"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2654,7 +2654,7 @@ function StageModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2712,7 +2712,7 @@ function CandidateDetailDrawer({
               Düzenle
             </button>
             <button
-              className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+              className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
               onClick={onClose}
               type="button"
             >
@@ -2863,7 +2863,7 @@ function ApplicationDetailDrawer({
         <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
           <span className="font-mono font-bold text-zinc-400 dark:text-zinc-500 text-xs">BAŞVURU DETAYI</span>
           <button
-            className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+            className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2938,7 +2938,7 @@ function ApplicationDetailDrawer({
           )}
 
           {candidate && (
-            <div className="rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50/60 p-3">
+            <div className="rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-3">
               <div className="font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase">Aday KVKK & Etiketler</div>
               <div className="mt-1 flex flex-wrap gap-1">
                 <span className={`rounded-full px-2 py-0.5 font-bold text-[11px] ${candidate.consentGiven ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>

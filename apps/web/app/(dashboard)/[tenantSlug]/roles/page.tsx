@@ -244,7 +244,7 @@ export default function RolesManagementPage() {
                     className={`cursor-pointer rounded-xl border p-3 transition-all ${
                       isSelected
                         ? "border-fuchsia-200 bg-fuchsia-50/70 text-fuchsia-950 shadow-2xs"
-                        : "border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                        : "border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                     }`}
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
@@ -324,7 +324,7 @@ export default function RolesManagementPage() {
                             className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${
                               isChecked
                                 ? "border-fuchsia-200 bg-fuchsia-50/50 text-zinc-900 dark:text-zinc-100 shadow-2xs"
-                                : "border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                                : "border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                             }`}
                             key={perm.id}
                           >
@@ -397,7 +397,7 @@ export default function RolesManagementPage() {
                 Create Custom Role
               </h2>
               <button
-                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 onClick={() => setIsCreateOpen(false)}
               >
                 <X className="h-4 w-4" />
@@ -438,7 +438,7 @@ export default function RolesManagementPage() {
 
               <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <button
-                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:text-zinc-100"
+                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:hover:text-zinc-100"
                   onClick={() => setIsCreateOpen(false)}
                   type="button"
                 >

@@ -1440,7 +1440,7 @@ function EditCustomerModal({
                   Sorumlu Satış Temsilcisi
                 </label>
                 <button
-                  className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:text-violet-400"
+                  className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:hover:text-violet-400"
                   onClick={() => setIsAddSalesRepOpen(true)}
                   type="button"
                 >

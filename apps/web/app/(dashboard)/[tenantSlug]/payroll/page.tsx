@@ -638,7 +638,7 @@ export default function PayrollPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() => {
               handleSimulate();
               setActiveTab("simulator");
@@ -731,7 +731,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "runs"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("runs")}
         >
@@ -746,7 +746,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "puantaj"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("puantaj")}
         >
@@ -758,7 +758,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "payslip"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("payslip")}
         >
@@ -770,7 +770,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "icmal"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => {
             if (selectedRunId) {
@@ -788,7 +788,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "simulator"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("simulator")}
         >
@@ -800,7 +800,7 @@ export default function PayrollPage() {
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "parameters"
               ? "bg-blue-600 text-white shadow-xs"
-              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("parameters")}
         >
@@ -814,7 +814,7 @@ export default function PayrollPage() {
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xs">
             <table className="w-full text-left text-xs">
-              <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-[11px] text-zinc-500 dark:text-zinc-400 uppercase">
+              <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase">
                 <tr>
                   <th className="px-4 py-3">Dönem</th>
                   <th className="px-4 py-3">Başlık</th>
@@ -846,7 +846,7 @@ export default function PayrollPage() {
 
                   return (
                     <tr
-                      className={`transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50/75 ${
+                      className={`transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${
                         isSelected ? "bg-zinc-50 dark:bg-zinc-800/50 font-medium" : ""
                       }`}
                       key={run.id}
@@ -891,7 +891,7 @@ export default function PayrollPage() {
                       <td className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                            className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                             onClick={() => {
                               setSelectedRunId(run.id);
                               setActiveTab("puantaj");
@@ -901,7 +901,7 @@ export default function PayrollPage() {
                           </button>
 
                           <button
-                            className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                            className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                             onClick={() => handleFetchIcmal(run.id)}
                             title="İcmal Tablosu"
                           >
@@ -1043,7 +1043,7 @@ export default function PayrollPage() {
           {/* Interactive Puantaj Table */}
           <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xs">
             <table className="w-full min-w-[1000px] text-left text-xs">
-              <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+              <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[10px] text-zinc-600 dark:text-zinc-300 uppercase">
                 <tr>
                   <th className="px-3 py-2.5">Personel</th>
                   <th className="px-2 py-2.5">Sözleşme</th>
@@ -1064,7 +1064,7 @@ export default function PayrollPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {filteredEmployees.map((emp) => (
                   <tr
-                    className="transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50/75"
+                    className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                     key={emp.id}
                   >
                     <td className="px-3 py-3">
@@ -1145,14 +1145,14 @@ export default function PayrollPage() {
                     <td className="px-3 py-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
-                          className="rounded-lg p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+                          className="rounded-lg p-1.5 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
                           onClick={() => openEditPuantaj(emp)}
                           title="Puantaj Düzenle"
                         >
                           <Edit3 className="h-3.5 w-3.5" />
                         </button>
                         <button
-                          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300 shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                          className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300 shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                           onClick={() => handleSelectPayslip(emp.id)}
                         >
                           Pusula
@@ -1625,7 +1625,7 @@ export default function PayrollPage() {
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 font-medium">
                   {icmalData.rows.map((row, idx) => (
-                    <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/75" key={idx}>
+                    <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50" key={idx}>
                       <td className="px-3 py-2.5 font-mono text-zinc-500 dark:text-zinc-400">
                         {row.employeeNumber}
                       </td>
@@ -1725,7 +1725,7 @@ export default function PayrollPage() {
                   className={`rounded-lg py-1.5 font-bold text-xs transition-all ${
                     simForm.contractSalaryType === "Gross"
                       ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                   }`}
                   onClick={() =>
                     setSimForm((prev) => ({
@@ -1741,7 +1741,7 @@ export default function PayrollPage() {
                   className={`rounded-lg py-1.5 font-bold text-xs transition-all ${
                     simForm.contractSalaryType === "Net"
                       ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                   }`}
                   onClick={() =>
                     setSimForm((prev) => ({
@@ -2239,7 +2239,7 @@ export default function PayrollPage() {
                 Yeni Aylık Bordro Dönemi Başlat
               </h3>
               <button
-                className="rounded-full p-1.5 text-zinc-400 dark:text-zinc-500 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                className="rounded-full p-1.5 text-zinc-400 dark:text-zinc-500 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                 onClick={() => setShowCreateRunModal(false)}
                 type="button"
               >
@@ -2324,7 +2324,7 @@ export default function PayrollPage() {
 
               <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <button
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                   onClick={() => setShowCreateRunModal(false)}
                   type="button"
                 >
@@ -2356,7 +2356,7 @@ export default function PayrollPage() {
                 </p>
               </div>
               <button
-                className="rounded-full p-1.5 text-zinc-400 dark:text-zinc-500 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                className="rounded-full p-1.5 text-zinc-400 dark:text-zinc-500 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                 onClick={() => setShowEditPuantajModal(false)}
                 type="button"
               >
@@ -2639,7 +2639,7 @@ export default function PayrollPage() {
 
               <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <button
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                   onClick={() => setShowEditPuantajModal(false)}
                   type="button"
                 >

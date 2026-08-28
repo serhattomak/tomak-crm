@@ -288,7 +288,7 @@ export function CustomizeWidgetsModal({
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-zinc-100 p-4 dark:border-zinc-800">
           <button
-            className="flex items-center gap-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+            className="flex items-center gap-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
             onClick={onResetDefaults}
             type="button"
           >

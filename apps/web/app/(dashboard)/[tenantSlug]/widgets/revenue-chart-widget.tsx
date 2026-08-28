@@ -84,7 +84,7 @@ export function RevenueChartWidget({
                 className={`rounded-lg px-3 py-1 font-semibold transition-all ${
                   activeMetric === "revenue"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
                 onClick={() => setActiveMetric("revenue")}
                 type="button"
@@ -95,7 +95,7 @@ export function RevenueChartWidget({
                 className={`rounded-lg px-3 py-1 font-semibold transition-all ${
                   activeMetric === "deals"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
                 onClick={() => setActiveMetric("deals")}
                 type="button"
@@ -214,7 +214,7 @@ export function RevenueChartWidget({
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 transition hover:text-violet-700 dark:text-violet-400 text-xs"
+            className="flex items-center gap-1 font-bold text-violet-600 transition hover:text-violet-700 dark:hover:text-violet-400 text-xs"
             href={`/${activeTenant?.slug || "workspace"}/orders`}
           >
             <span>Tüm Siparişleri İncele →</span>

@@ -324,7 +324,7 @@ export function NotificationCenter({
                 className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all ${
                   activeFilter === "all"
                     ? "bg-white text-slate-900 shadow-2xs dark:bg-card dark:text-foreground"
-                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-foreground"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
                 }`}
                 onClick={() => setActiveFilter("all")}
                 type="button"
@@ -335,7 +335,7 @@ export function NotificationCenter({
                 className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all ${
                   activeFilter === "unread"
                     ? "bg-white text-fuchsia-600 shadow-2xs dark:bg-card dark:text-fuchsia-400"
-                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-foreground"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
                 }`}
                 onClick={() => setActiveFilter("unread")}
                 type="button"
@@ -375,7 +375,7 @@ export function NotificationCenter({
                   className={`group relative flex items-start gap-3 p-3.5 transition-all cursor-pointer select-none ${
                     item.read
                       ? "hover:bg-slate-50/80 dark:hover:bg-muted/30"
-                      : "bg-fuchsia-50/30 hover:bg-fuchsia-50/60 dark:bg-fuchsia-950/20 dark:hover:bg-fuchsia-950/40"
+                      : "bg-fuchsia-50/30 hover:bg-fuchsia-50/60 dark:hover:bg-fuchsia-950/20 dark:hover:bg-fuchsia-950/40"
                   }`}
                   key={item.id}
                   onClick={() => handleNotificationClick(item)}
@@ -454,7 +454,7 @@ export function NotificationCenter({
           {/* Footer */}
           <div className="border-t border-slate-100 bg-slate-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
             <button
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
               onClick={() => {
                 setIsOpen(false)
                 router.push(`/${tenantSlug}/quotes`)

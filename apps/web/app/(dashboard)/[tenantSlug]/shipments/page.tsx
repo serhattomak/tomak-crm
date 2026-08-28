@@ -59,7 +59,7 @@ const SHIPMENT_STATUS_CONFIG: Record<string, StatusBadgeInfo> = {
     border: "border-slate-200 dark:border-slate-700",
     icon: X,
     label: "İptal Edildi",
-    text: "text-slate-600 dark:text-zinc-400 dark:text-zinc-500",
+    text: "text-slate-600 dark:text-zinc-400",
   },
   Delivered: {
     bg: "bg-emerald-50 dark:bg-emerald-950/40",
@@ -528,7 +528,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "outbound"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
           }`}
           onClick={() => {
             setActiveTab("outbound");
@@ -547,7 +547,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "returns"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
           }`}
           onClick={() => {
             setActiveTab("returns");
@@ -566,7 +566,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "carriers"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
           }`}
           onClick={() => setActiveTab("carriers")}
           type="button"
@@ -582,7 +582,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "analytics"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
           }`}
           onClick={() => setActiveTab("analytics")}
           type="button"
@@ -610,7 +610,7 @@ export default function ShipmentsPage() {
               />
               {searchQuery && (
                 <button
-                  className="absolute top-2.5 right-3 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400"
+                  className="absolute top-2.5 right-3 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
                 >
@@ -654,7 +654,7 @@ export default function ShipmentsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400 dark:text-zinc-500">
+                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400">
                     <th className="px-4 py-3.5">Gönderi No / Tarih</th>
                     <th className="px-4 py-3.5">Sipariş & Müşteri</th>
                     <th className="px-4 py-3.5">Taşıyıcı & Takip No</th>
@@ -702,7 +702,7 @@ export default function ShipmentsPage() {
 
                       return (
                         <tr
-                          className="transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50/60 dark:hover:bg-slate-900/30"
+                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 dark:hover:bg-slate-900/30"
                           key={s.id}
                         >
                           {/* 1. Shipment Number & Date */}
@@ -756,7 +756,7 @@ export default function ShipmentsPage() {
                                     {s.trackingNumber}
                                   </span>
                                   <button
-                                    className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400"
+                                    className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
                                     onClick={() =>
                                       copyToClipboard(
                                         s.trackingNumber!,
@@ -808,7 +808,7 @@ export default function ShipmentsPage() {
                                 {s.recipientName}
                               </span>
                               <span
-                                className="truncate text-[11px] text-slate-500 dark:text-zinc-400 dark:text-zinc-500"
+                                className="truncate text-[11px] text-slate-500 dark:text-zinc-400"
                                 title={s.recipientAddress}
                               >
                                 {s.recipientCity
@@ -859,7 +859,7 @@ export default function ShipmentsPage() {
 
                               {/* Advance Status */}
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-[11px] text-blue-700 hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
+                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-[11px] text-blue-700 hover:bg-blue-100 dark:hover:bg-blue-950/60 dark:text-blue-300"
                                 onClick={() => {
                                   setSelectedShipmentForStatus(s);
                                   setIsUpdateStatusModalOpen(true);
@@ -940,7 +940,7 @@ export default function ShipmentsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400 dark:text-zinc-500">
+                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400">
                     <th className="px-4 py-3.5">İade Kodu / Tarih</th>
                     <th className="px-4 py-3.5">Müşteri</th>
                     <th className="px-4 py-3.5">İade Sebebi</th>
@@ -981,7 +981,7 @@ export default function ShipmentsPage() {
 
                       return (
                         <tr
-                          className="transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50/60 dark:hover:bg-slate-900/30"
+                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 dark:hover:bg-slate-900/30"
                           key={r.id}
                         >
                           <td className="px-4 py-3.5">
@@ -991,7 +991,7 @@ export default function ShipmentsPage() {
                                   {r.returnCode}
                                 </span>
                                 <button
-                                  className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400"
+                                  className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
                                   onClick={() =>
                                     copyToClipboard(r.returnCode, "İade Kodu")
                                   }
@@ -1044,7 +1044,7 @@ export default function ShipmentsPage() {
                           <td className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:bg-amber-950/60 dark:text-amber-300"
+                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:hover:bg-amber-950/60 dark:text-amber-300"
                                 onClick={() => {
                                   setSelectedReturnForStatus(r);
                                   setIsUpdateReturnModalOpen(true);
@@ -1474,7 +1474,7 @@ function CreateShipmentModal({
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >
@@ -1885,7 +1885,7 @@ function UpdateStatusModal({
             </span>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >
@@ -2029,7 +2029,7 @@ function PrintLabelModal({
               <span>Yazdır (A6 / Termal)</span>
             </button>
             <button
-              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
               onClick={onClose}
               type="button"
             >
@@ -2218,7 +2218,7 @@ function ShipmentDetailDrawer({
               {shipment.recipientName}{" "}
               {shipment.recipientPhone && `(${shipment.recipientPhone})`}
             </p>
-            <p className="text-slate-600 dark:text-zinc-400 dark:text-zinc-500">
+            <p className="text-slate-600 dark:text-zinc-400">
               {shipment.recipientAddress}
             </p>
             <p className="text-zinc-500 dark:text-zinc-400">
@@ -2383,7 +2383,7 @@ function CreateReturnModal({
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >
@@ -2564,7 +2564,7 @@ function UpdateReturnStatusModal({
             </span>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >
@@ -2702,7 +2702,7 @@ function CreateCarrierModal({
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >

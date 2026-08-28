@@ -316,7 +316,7 @@ export default function TicketsDashboardPage() {
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
                 viewMode === "table"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               type="button"
             >
@@ -328,7 +328,7 @@ export default function TicketsDashboardPage() {
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
                 viewMode === "kanban"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               type="button"
             >
@@ -341,7 +341,7 @@ export default function TicketsDashboardPage() {
             variant="outline"
             size="sm"
             onClick={() => loadData()}
-            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           </Button>
@@ -436,7 +436,7 @@ export default function TicketsDashboardPage() {
               className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-medium transition-all ${
                 activeQueue === q.id
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/70 hover:text-zinc-900 dark:text-zinc-100"
+                  : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/70 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               type="button"
             >
@@ -542,7 +542,7 @@ export default function TicketsDashboardPage() {
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-zinc-600 dark:text-zinc-400">
+              <thead className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50 font-semibold text-zinc-600 dark:text-zinc-400">
                 <tr>
                   <th className="px-4 py-3.5">Talep No & Konu</th>
                   <th className="px-4 py-3.5">Müşteri</th>
@@ -559,7 +559,7 @@ export default function TicketsDashboardPage() {
                   <tr
                     key={t.id}
                     onClick={() => router.push(`/${tenantSlug}/tickets/${t.id}`)}
-                    className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
+                    className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                   >
                     <td className="px-4 py-3.5">
                       <div className="space-y-1">
@@ -740,7 +740,7 @@ export default function TicketsDashboardPage() {
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="rounded-full p-1 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                className="rounded-full p-1 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                 type="button"
               >
                 <X className="h-5 w-5" />

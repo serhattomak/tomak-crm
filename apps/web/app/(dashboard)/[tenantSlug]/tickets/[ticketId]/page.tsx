@@ -266,7 +266,7 @@ export default function TicketDetailPage() {
             variant="outline"
             size="sm"
             onClick={() => router.push(`/${tenantSlug}/tickets`)}
-            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Tüm Talepler</span>
@@ -352,7 +352,7 @@ export default function TicketDetailPage() {
             variant="outline"
             size="sm"
             onClick={() => loadTicket()}
-            className="h-9 rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="h-9 rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
@@ -370,7 +370,7 @@ export default function TicketDetailPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "conversation"
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               }`}
               type="button"
             >
@@ -383,7 +383,7 @@ export default function TicketDetailPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "activities"
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               }`}
               type="button"
             >
@@ -395,7 +395,7 @@ export default function TicketDetailPage() {
           {activeTab === "conversation" ? (
             <div className="flex flex-col rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden min-h-[500px]">
               {/* Messages Stream Container */}
-              <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-800/50/40 max-h-[520px]">
+              <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-800/50 max-h-[520px]">
                 {/* Initial Description if no messages */}
                 {ticket.messages.length === 0 && (
                   <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-xs shadow-2xs">
@@ -535,7 +535,7 @@ export default function TicketDetailPage() {
                       className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
                         messageMode === "public"
                           ? "bg-white dark:bg-zinc-900 text-blue-700 shadow-xs"
-                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                       }`}
                     >
                       <MessageSquare className="h-3.5 w-3.5" />
@@ -547,7 +547,7 @@ export default function TicketDetailPage() {
                       className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
                         messageMode === "internal"
                           ? "bg-amber-100 text-amber-900 shadow-xs"
-                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                       }`}
                     >
                       <Lock className="h-3.5 w-3.5 text-amber-600" />

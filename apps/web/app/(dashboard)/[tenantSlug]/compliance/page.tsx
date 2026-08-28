@@ -318,7 +318,7 @@ export default function CompliancePage() {
           <button
             onClick={loadData}
             title="Yenile"
-            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 shadow-xs"
+            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 shadow-xs"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -438,7 +438,7 @@ export default function CompliancePage() {
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "rules"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             Mevzuat Kütüphanesi & Kurallar ({rules.length})
@@ -448,7 +448,7 @@ export default function CompliancePage() {
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "violations"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             İhlal & Denetim Günlüğü ({violations.length})
@@ -458,7 +458,7 @@ export default function CompliancePage() {
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "simulator"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             Canlı Mevzuat Simülatörü
@@ -586,7 +586,7 @@ export default function CompliancePage() {
             </div>
             <button
               onClick={loadData}
-              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-white dark:bg-zinc-900"
+              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-900"
             >
               <RefreshCw className="h-3 w-3" />
               <span>Yenile</span>
@@ -615,7 +615,7 @@ export default function CompliancePage() {
                   </tr>
                 ) : (
                   violations.map((v) => (
-                    <tr key={v.id} className="hover:bg-zinc-50/80 dark:bg-zinc-800/50 transition-colors">
+                    <tr key={v.id} className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 transition-colors">
                       <td className="py-3 px-4 whitespace-nowrap font-mono text-zinc-500 dark:text-zinc-400">
                         {new Date(v.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(v.createdAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
@@ -694,7 +694,7 @@ export default function CompliancePage() {
                 className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                   simulatorMode === "shift"
                     ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
               >
                 Vardiya / Çalışma (4857)
@@ -704,7 +704,7 @@ export default function CompliancePage() {
                 className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                   simulatorMode === "leave"
                     ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
               >
                 İzin Hak Ediş (Md. 53)
@@ -937,7 +937,7 @@ export default function CompliancePage() {
                 </div>
                 <button
                   onClick={() => setEditingRule(null)}
-                  className="p-1.5 rounded-full hover:bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500"
+                  className="p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 dark:text-zinc-500"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -1046,7 +1046,7 @@ export default function CompliancePage() {
             <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-2">
               <button
                 onClick={() => setEditingRule(null)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
                 Vazgeç
               </button>
@@ -1078,7 +1078,7 @@ export default function CompliancePage() {
               </div>
               <button
                 onClick={() => setOverridingViolation(null)}
-                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 rounded-full"
+                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>

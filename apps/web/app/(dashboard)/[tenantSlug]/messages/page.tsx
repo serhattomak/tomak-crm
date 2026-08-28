@@ -626,7 +626,7 @@ export default function MessagesPage() {
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-semibold text-xs transition-all sm:px-3 ${
                 activeTab === "team"
                   ? "bg-white dark:bg-zinc-900 text-blue-600 shadow-xs dark:bg-card dark:text-blue-400"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-slate-900 dark:text-slate-400 dark:hover:text-foreground"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
               }`}
               onClick={() => {
                 setActiveTab("team");
@@ -652,7 +652,7 @@ export default function MessagesPage() {
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-semibold text-xs transition-all sm:px-3 ${
                 activeTab === "support"
                   ? "bg-white dark:bg-zinc-900 text-blue-600 shadow-xs dark:bg-card dark:text-blue-400"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-slate-900 dark:text-slate-400 dark:hover:text-foreground"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
               }`}
               onClick={() => {
                 setActiveTab("support");
@@ -731,7 +731,7 @@ export default function MessagesPage() {
                   className={`rounded-lg px-2 py-1 font-medium transition-colors ${
                     supportFilter === "all"
                       ? "bg-slate-900 text-white dark:bg-foreground dark:text-background"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200 dark:bg-muted dark:text-muted-foreground"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200 dark:hover:bg-muted dark:text-muted-foreground"
                   }`}
                   onClick={() => setSupportFilter("all")}
                   type="button"
@@ -742,7 +742,7 @@ export default function MessagesPage() {
                   className={`rounded-lg px-2 py-1 font-medium transition-colors ${
                     supportFilter === "open"
                       ? "bg-emerald-600 text-white"
-                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300"
+                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-950/40 dark:text-emerald-300"
                   }`}
                   onClick={() => setSupportFilter("open")}
                   type="button"
@@ -753,7 +753,7 @@ export default function MessagesPage() {
                   className={`rounded-lg px-2 py-1 font-medium transition-colors ${
                     supportFilter === "pending"
                       ? "bg-amber-600 text-white"
-                      : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300"
+                      : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:hover:bg-amber-950/40 dark:text-amber-300"
                   }`}
                   onClick={() => setSupportFilter("pending")}
                   type="button"
@@ -764,7 +764,7 @@ export default function MessagesPage() {
                   className={`rounded-lg px-2 py-1 font-medium transition-colors ${
                     supportFilter === "resolved"
                       ? "bg-blue-600 text-white"
-                      : "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-300"
+                      : "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:hover:bg-blue-950/40 dark:text-blue-300"
                   }`}
                   onClick={() => setSupportFilter("resolved")}
                   type="button"
@@ -879,7 +879,7 @@ export default function MessagesPage() {
                                 ? "bg-red-100 font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
                                 : priority === "High"
                                   ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                                  : "bg-zinc-100 dark:bg-zinc-800 text-slate-600 dark:bg-muted dark:text-zinc-400 dark:text-zinc-500"
+                                  : "bg-zinc-100 dark:bg-zinc-800 text-slate-600 dark:bg-muted dark:text-zinc-400"
                             }`}
                           >
                             {priority === "Urgent"
@@ -920,7 +920,7 @@ export default function MessagesPage() {
                   ) : selectedChannel.type === "Direct" ? (
                     <User className="h-4.5 w-4.5 text-violet-600 sm:h-5 sm:w-5 dark:text-violet-400" />
                   ) : (
-                    <Hash className="h-4.5 w-4.5 text-zinc-600 dark:text-zinc-400 sm:h-5 sm:w-5 dark:text-zinc-400 dark:text-zinc-500" />
+                    <Hash className="h-4.5 w-4.5 text-zinc-600 dark:text-zinc-400 sm:h-5 sm:w-5 dark:text-zinc-400" />
                   )}
                 </div>
 
@@ -982,7 +982,7 @@ export default function MessagesPage() {
 
                     {/* Convert to HelpDesk Ticket Button */}
                     <Button
-                      className="h-8 px-2 font-semibold text-xs text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:text-indigo-300 sm:px-3"
+                      className="h-8 px-2 font-semibold text-xs text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 dark:text-indigo-300 sm:px-3"
                       onClick={() => handleConvertToTicket()}
                       size="sm"
                       title="Destek Talebine Dönüştür"
@@ -1160,7 +1160,7 @@ export default function MessagesPage() {
                         className={`flex max-w-lg flex-col ${isMe ? "items-end" : "items-start"}`}
                       >
                         <div className="mb-1 flex items-center gap-2">
-                          <span className="font-semibold text-[11px] text-slate-600 dark:text-zinc-400 dark:text-zinc-500">
+                          <span className="font-semibold text-[11px] text-slate-600 dark:text-zinc-400">
                             {msg.senderName}
                           </span>
                           <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -1186,7 +1186,7 @@ export default function MessagesPage() {
                               }`}
                             >
                               <button
-                                className="rounded-md p-1 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-800 dark:hover:bg-muted"
+                                className="rounded-md p-1 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-800 dark:hover:bg-muted"
                                 onClick={() => handleCopyMessage(msg)}
                                 title="Mesajı Kopyala"
                                 type="button"
@@ -1200,7 +1200,7 @@ export default function MessagesPage() {
 
                               {isMe && msg.senderType !== "Customer" && (
                                 <button
-                                  className="rounded-md p-1 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-blue-600 dark:hover:bg-muted"
+                                  className="rounded-md p-1 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:bg-muted"
                                   onClick={() => handleStartEdit(msg)}
                                   title="Mesajı Düzenle"
                                   type="button"
@@ -1259,7 +1259,7 @@ export default function MessagesPage() {
                                       İptal
                                     </button>
                                     <button
-                                      className="rounded bg-white dark:bg-zinc-900 px-2 py-0.5 font-bold text-blue-700 hover:bg-zinc-100 dark:bg-zinc-800"
+                                      className="rounded bg-white dark:bg-zinc-900 px-2 py-0.5 font-bold text-blue-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                                       disabled={savingEdit || !editInput.trim()}
                                       onClick={() => handleSaveEdit(msg.id)}
                                       type="button"
@@ -1424,7 +1424,7 @@ export default function MessagesPage() {
                       className={`h-7 gap-1.5 px-2 font-medium text-[11px] sm:h-8 sm:px-3 sm:text-xs ${
                         isInternalNote
                           ? "bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
-                          : "text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:text-zinc-400 dark:text-zinc-500"
+                          : "text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-zinc-400"
                       }`}
                       onClick={() => setIsInternalNote(!isInternalNote)}
                       size="sm"
@@ -1515,7 +1515,7 @@ export default function MessagesPage() {
                   Müşteri 360° Özeti
                 </h3>
                 <button
-                  className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
+                  className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
                   onClick={() => setShowCustomer360(false)}
                   type="button"
                 >
@@ -1647,7 +1647,7 @@ export default function MessagesPage() {
                 </p>
               </div>
               <button
-                className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
+                className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
                 onClick={() => setIsEntityPickerOpen(false)}
                 type="button"
               >
@@ -1842,7 +1842,7 @@ export default function MessagesPage() {
                 </p>
               </div>
               <button
-                className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
+                className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
                 onClick={() => setIsCannedResponsesOpen(false)}
                 type="button"
               >
@@ -1904,7 +1904,7 @@ export default function MessagesPage() {
                   Yeni Sohbet Kanalı Oluştur
                 </h3>
                 <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
                   onClick={() => setIsCreateChannelOpen(false)}
                   type="button"
                 >
@@ -2012,7 +2012,7 @@ export default function MessagesPage() {
                   Yeni Destek Talebi Oluştur
                 </h3>
                 <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-muted"
                   onClick={() => setIsNewSupportModalOpen(false)}
                   type="button"
                 >

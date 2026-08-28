@@ -194,7 +194,7 @@ export default function OrderDetailPage() {
       <div className="flex flex-col justify-between gap-4 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             href={`/${tenantSlug}/orders`}
             title="Siparişlere Dön"
           >
@@ -248,7 +248,7 @@ export default function OrderDetailPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={handlePrint}
             title="Siparişi Yazdır / PDF"
             type="button"
@@ -467,7 +467,7 @@ export default function OrderDetailPage() {
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "items"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() => setActiveTab("items")}
               type="button"
@@ -478,7 +478,7 @@ export default function OrderDetailPage() {
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "payments"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() => setActiveTab("payments")}
               type="button"
@@ -489,7 +489,7 @@ export default function OrderDetailPage() {
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "timeline"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() => setActiveTab("timeline")}
               type="button"
@@ -521,7 +521,7 @@ export default function OrderDetailPage() {
                   </thead>
                   <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {order.items.map((item) => (
-                      <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={item.id}>
+                      <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50" key={item.id}>
                         <td className="px-3.5 py-3.5">
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {item.productName}
@@ -771,7 +771,7 @@ function ChangeStatusModal({
             Sipariş Durumunu Değiştir
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -815,7 +815,7 @@ function ChangeStatusModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -902,7 +902,7 @@ function AddPaymentModal({
             </p>
           </div>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -986,7 +986,7 @@ function AddPaymentModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

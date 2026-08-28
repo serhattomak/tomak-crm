@@ -406,7 +406,7 @@ export default function PipelinesPage() {
             {/* Pipeline Selector */}
             <div className="flex items-center gap-1.5">
               <select
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-bold text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-bold text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) => setSelectedPipelineId(e.target.value)}
                 value={selectedPipelineId}
               >
@@ -418,7 +418,7 @@ export default function PipelinesPage() {
               </select>
 
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50 hover:text-zinc-800 dark:text-zinc-200"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-800 dark:hover:text-zinc-200"
                 onClick={() => setIsSettingsModalOpen(true)}
                 title="Pipeline Ayarları ve Aşamaları Düzenle"
                 type="button"
@@ -437,7 +437,7 @@ export default function PipelinesPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Refresh */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             disabled={isRefreshing}
             onClick={loadDeals}
             title="Yenile"
@@ -454,7 +454,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "kanban"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
               }`}
               onClick={() => setViewMode("kanban")}
               type="button"
@@ -466,7 +466,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "table"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
               }`}
               onClick={() => setViewMode("table")}
               type="button"
@@ -585,7 +585,7 @@ export default function PipelinesPage() {
               className={`rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "all"
                   ? "border border-blue-200 bg-blue-50 text-blue-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("all")}
               type="button"
@@ -597,7 +597,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "my"
                   ? "border border-blue-200 bg-blue-50 text-blue-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("my")}
               type="button"
@@ -610,7 +610,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "unassigned"
                   ? "border border-amber-200 bg-amber-50 text-amber-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("unassigned")}
               type="button"
@@ -623,7 +623,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "sla"
                   ? "border border-rose-200 bg-rose-50 text-rose-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("sla")}
               type="button"
@@ -647,7 +647,7 @@ export default function PipelinesPage() {
               />
               {searchQuery && (
                 <button
-                  className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400"
+                  className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
                 >
@@ -658,7 +658,7 @@ export default function PipelinesPage() {
 
             {/* Priority filter */}
             <select
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               onChange={(e) => setPriorityFilter(e.target.value)}
               value={priorityFilter}
             >
@@ -671,7 +671,7 @@ export default function PipelinesPage() {
 
             {/* User filter */}
             <select
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               onChange={(e) => setUserFilter(e.target.value)}
               value={userFilter}
             >
@@ -726,7 +726,7 @@ export default function PipelinesPage() {
                     <span className="truncate font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                       {stage.name}
                     </span>
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
+                    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700 px-2 py-0.5 font-bold text-[10px] text-zinc-800 dark:text-zinc-100 shadow-2xs">
                       {stageDeals.length}
                     </span>
                   </div>
@@ -909,7 +909,7 @@ export default function PipelinesPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {filteredDeals.map((deal) => (
                   <tr
-                    className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
+                    className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                     key={deal.id}
                     onClick={() => setSelectedDealId(deal.id)}
                   >
@@ -984,7 +984,7 @@ export default function PipelinesPage() {
                     </td>
                     <td className="py-4 pr-6 pl-4 text-right">
                       <button
-                        className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50"
+                        className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedDealId(deal.id);
@@ -1243,7 +1243,7 @@ function DealDetailDrawer({
         <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/80 dark:bg-zinc-800/50 p-3.5 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
             <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100 active:scale-95"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-95"
               onClick={onClose}
               title="Kapat & Geri Dön"
               type="button"
@@ -1294,7 +1294,7 @@ function DealDetailDrawer({
                       className={`flex flex-col justify-between rounded-xl px-3 py-2.5 text-left font-semibold text-xs transition-all ${
                         isCurrent
                           ? "bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/30"
-                          : "border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:bg-zinc-800"
+                          : "border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                       }`}
                       key={stage.id}
                       onClick={() => handleStageChange(stage.id)}
@@ -1482,7 +1482,7 @@ function DealDetailDrawer({
                   className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "timeline"
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
                   }`}
                   onClick={() => setActiveTab("timeline")}
                   type="button"
@@ -1494,7 +1494,7 @@ function DealDetailDrawer({
                   className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "notes"
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
                   }`}
                   onClick={() => setActiveTab("notes")}
                   type="button"
@@ -1710,7 +1710,7 @@ function CreateDealModal({
             </h3>
           </div>
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1873,7 +1873,7 @@ function CreateDealModal({
           {/* Actions */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -2007,7 +2007,7 @@ function PipelineSettingsModal({
             </h3>
           </div>
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -2195,7 +2195,7 @@ function PipelineSettingsModal({
           {/* Save Button */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

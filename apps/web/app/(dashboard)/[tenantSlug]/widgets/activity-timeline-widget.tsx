@@ -168,7 +168,7 @@ export function ActivityTimelineWidget() {
                   {act.user.initials}
                 </div>
 
-                <div className="flex-1 rounded-xl bg-zinc-50/70 p-2.5 transition-colors hover:bg-zinc-100/80 dark:bg-zinc-800/50 dark:hover:bg-zinc-800/80">
+                <div className="flex-1 rounded-xl bg-zinc-50/70 p-2.5 transition-colors hover:bg-zinc-100/80 dark:hover:bg-zinc-800/50 dark:hover:bg-zinc-800/80">
                   <div className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100">
                       {getActionIcon(act.type)}
@@ -194,7 +194,7 @@ export function ActivityTimelineWidget() {
       {activities.length > 0 && (
         <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             Tüm İşlem Geçmişini İncele →

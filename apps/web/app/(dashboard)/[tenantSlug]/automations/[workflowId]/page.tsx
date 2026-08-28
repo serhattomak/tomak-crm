@@ -391,7 +391,7 @@ export default function WorkflowBuilderPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push(`/${tenantSlug}/automations`)}
-            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 transition-colors"
+            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -758,7 +758,7 @@ export default function WorkflowBuilderPage() {
                 </button>
                 <button
                   onClick={() => addAction("delay")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:bg-zinc-800 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2"
                 >
                   <Clock className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
                   <span>Gecikme / Beklet (Delay)</span>
@@ -936,7 +936,7 @@ export default function WorkflowBuilderPage() {
               </div>
               <button
                 onClick={() => setIsSimulationOpen(false)}
-                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 rounded-full"
+                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>

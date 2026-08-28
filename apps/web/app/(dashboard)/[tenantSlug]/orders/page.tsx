@@ -255,7 +255,7 @@ export default function OrdersPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() =>
               showToast("Siparişler Excel / CSV olarak dışa aktarılıyor...")
             }
@@ -444,7 +444,7 @@ export default function OrdersPage() {
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("table")}
               title="Tablo Görünümü"
@@ -456,7 +456,7 @@ export default function OrdersPage() {
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "kanban"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("kanban")}
               title="Kanban Pipeline Görünümü"
@@ -521,7 +521,7 @@ export default function OrdersPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {orders.map((o) => (
                   <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                     key={o.id}
                   >
                     <td className="py-4 pr-4 pl-6">
@@ -603,7 +603,7 @@ export default function OrdersPage() {
                     <td className="py-4 pr-6 pl-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-800 dark:text-zinc-200"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200"
                           href={`/${tenantSlug}/orders/${o.id}`}
                           title="Sipariş Detayı"
                         >
@@ -648,7 +648,7 @@ export default function OrdersPage() {
                     <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                       {col.label}
                     </span>
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
+                    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700 px-2 py-0.5 font-bold text-[10px] text-zinc-800 dark:text-zinc-100 shadow-2xs">
                       {colOrders.length}
                     </span>
                   </div>
@@ -743,7 +743,7 @@ export default function OrdersPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={() => setDeletingOrder(null)}
                 type="button"
               >
@@ -938,7 +938,7 @@ function CreateOrderWizardModal({
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1067,7 +1067,7 @@ function CreateOrderWizardModal({
                       const lineTotal = taxable + tax;
 
                       return (
-                        <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={idx}>
+                        <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50" key={idx}>
                           <td className="px-3 py-2.5">
                             <span className="font-bold text-zinc-900 dark:text-zinc-100">
                               {item.productName}
@@ -1335,7 +1335,7 @@ function CreateOrderWizardModal({
           {/* Footer */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

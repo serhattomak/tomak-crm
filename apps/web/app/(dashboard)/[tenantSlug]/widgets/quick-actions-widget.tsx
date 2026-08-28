@@ -274,14 +274,14 @@ export function QuickActionsWidget({
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400">
+                    <div className="font-semibold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
                       {act.title}
                     </div>
                     <div className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
                       {act.description}
                     </div>
                   </div>
-                  <Plus className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-700 dark:text-zinc-500 dark:group-hover:text-zinc-200" />
+                  <Plus className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-700 dark:hover:text-zinc-500 dark:group-hover:text-zinc-200" />
                 </button>
               );
             })
@@ -363,7 +363,7 @@ export function QuickActionsWidget({
 
             <div className="flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
               <button
-                className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                 onClick={handleResetDefaults}
                 type="button"
               >

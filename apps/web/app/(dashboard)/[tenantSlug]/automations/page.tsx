@@ -378,7 +378,7 @@ export default function AutomationsPage() {
             className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === "workflows"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             İş Akışlarım ({workflows.length})
@@ -388,7 +388,7 @@ export default function AutomationsPage() {
             className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === "executions"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             Çalışma Günlüğü & Denetim ({executions.length})
@@ -398,7 +398,7 @@ export default function AutomationsPage() {
             className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === "templates"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
           >
             Hazır Tarifler ({templates.length})
@@ -447,7 +447,7 @@ export default function AutomationsPage() {
             <button
               onClick={loadData}
               title="Yenile"
-              className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400"
+              className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400"
             >
               <RefreshCw className="h-3.5 w-3.5" />
             </button>
@@ -475,7 +475,7 @@ export default function AutomationsPage() {
               <div className="flex items-center justify-center gap-3">
                 <button
                   onClick={() => setIsRecipeDrawerOpen(true)}
-                  className="px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 font-medium text-sm"
+                  className="px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 font-medium text-sm"
                 >
                   Tarif Kütüphanesine Göz At
                 </button>
@@ -496,7 +496,7 @@ export default function AutomationsPage() {
                   className={`group relative bg-white dark:bg-zinc-900 rounded-2xl border transition-all duration-200 hover:shadow-md cursor-pointer p-5 flex flex-col justify-between ${
                     wf.isActive
                       ? "border-zinc-200 dark:border-zinc-800/90 hover:border-blue-300"
-                      : "border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-800/50/40 opacity-80"
+                      : "border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-800/50 opacity-80"
                   }`}
                 >
                   {/* Top Bar: Icon, Title, Status Toggle */}
@@ -628,7 +628,7 @@ export default function AutomationsPage() {
             </div>
             <button
               onClick={loadData}
-              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-white dark:bg-zinc-900"
+              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-900"
             >
               <RefreshCw className="h-3 w-3" />
               <span>Yenile</span>
@@ -657,7 +657,7 @@ export default function AutomationsPage() {
                   </tr>
                 ) : (
                   executions.map((exec) => (
-                    <tr key={exec.id} className="hover:bg-zinc-50/80 dark:bg-zinc-800/50 transition-colors">
+                    <tr key={exec.id} className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 transition-colors">
                       <td className="py-3 px-4 whitespace-nowrap font-mono text-zinc-500 dark:text-zinc-400">
                         {new Date(exec.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(exec.createdAt).toLocaleTimeString("tr-TR")}
@@ -790,7 +790,7 @@ export default function AutomationsPage() {
                 </div>
                 <button
                   onClick={() => setIsRecipeDrawerOpen(false)}
-                  className="p-1.5 rounded-full hover:bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400"
+                  className="p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -828,7 +828,7 @@ export default function AutomationsPage() {
             <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
               <button
                 onClick={() => setIsRecipeDrawerOpen(false)}
-                className="w-full py-2 text-center text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                className="w-full py-2 text-center text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
               >
                 Kapat
               </button>
@@ -853,7 +853,7 @@ export default function AutomationsPage() {
               </div>
               <button
                 onClick={() => setSimulatingWorkflow(null)}
-                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 rounded-full"
+                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>

@@ -198,7 +198,7 @@ export function PipelineFunnelWidget({
       {hasData && (
         <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="flex items-center justify-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center justify-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Pipeline Kanban Görünümünü Aç</span>

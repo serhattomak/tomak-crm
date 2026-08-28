@@ -253,7 +253,7 @@ export function TasksChecklistWidget() {
             </strong>
           </span>
           <button
-            className="font-bold text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400"
+            className="font-bold text-emerald-600 transition hover:text-emerald-700 dark:hover:text-emerald-400"
             onClick={() => saveTasks(tasks.filter((t) => !t.completed))}
             type="button"
           >

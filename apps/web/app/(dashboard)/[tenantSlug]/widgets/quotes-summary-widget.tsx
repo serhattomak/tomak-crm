@@ -129,7 +129,7 @@ export function QuotesSummaryWidget() {
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             <span>Tekliflere Git</span>
@@ -181,7 +181,7 @@ export function QuotesSummaryWidget() {
               Kayıtlı teklif bulunamadı.
             </p>
             <Link
-              className="mt-2 inline-flex items-center gap-1 font-bold text-violet-600 text-xs hover:text-violet-700 dark:text-violet-400"
+              className="mt-2 inline-flex items-center gap-1 font-bold text-violet-600 text-xs hover:text-violet-700 dark:hover:text-violet-400"
               href={`/${activeTenant?.slug || "workspace"}/quotes`}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -228,7 +228,7 @@ export function QuotesSummaryWidget() {
 
       <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
         <Link
-          className="inline-flex items-center gap-1.5 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+          className="inline-flex items-center gap-1.5 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
           href={`/${activeTenant?.slug || "workspace"}/quotes`}
         >
           <Plus className="h-3.5 w-3.5" />

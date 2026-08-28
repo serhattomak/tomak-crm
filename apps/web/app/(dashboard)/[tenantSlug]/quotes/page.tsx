@@ -178,7 +178,7 @@ export default function QuotesPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50 hover:text-zinc-900 dark:text-zinc-100"
+            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100"
             onClick={() => setIsTemplatesOpen(true)}
             type="button"
           >
@@ -187,7 +187,7 @@ export default function QuotesPage() {
           </button>
 
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50 hover:text-zinc-800 dark:text-zinc-200"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-800 dark:hover:text-zinc-200"
             onClick={() => {
               fetchQuotes();
               fetchStats();
@@ -330,7 +330,7 @@ export default function QuotesPage() {
                 className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                   isSelected
                     ? "bg-blue-600 text-white shadow-xs"
-                    : "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100"
+                    : "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
                 key={tab.key}
                 onClick={() => setSelectedStatus(tab.key)}
@@ -356,7 +356,7 @@ export default function QuotesPage() {
           <div className="relative w-full flex-1">
             <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50/60 py-2 pr-4 pl-10 text-zinc-900 dark:text-zinc-100 text-xs transition placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-10 text-zinc-900 dark:text-zinc-100 text-xs transition placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Teklif no, başlık veya müşteri adına göre ara..."
               type="text"
@@ -472,7 +472,7 @@ export default function QuotesPage() {
                         <LinkIcon className="h-3.5 w-3.5" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                         onClick={() => setPrintQuoteId(quote.id)}
                         title="PDF"
                         type="button"
@@ -603,7 +603,7 @@ export default function QuotesPage() {
                         >
                           <div className="flex items-center justify-end gap-1.5">
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                               onClick={() => setSelectedQuoteId(quote.id)}
                               title="Detay & İncele"
                               type="button"
@@ -612,7 +612,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                               onClick={() => setPrintQuoteId(quote.id)}
                               title="Yazdır / PDF"
                               type="button"
@@ -1133,7 +1133,7 @@ function CreateQuoteModal({
 
       <div className="relative z-10 my-auto flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50/60 p-4 sm:p-6">
+        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50 p-4 sm:p-6">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs">
               <FileSpreadsheet className="h-5 w-5" />
@@ -1149,7 +1149,7 @@ function CreateQuoteModal({
           </div>
 
           <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-600 dark:text-zinc-400"
+            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-600 dark:hover:text-zinc-400"
             onClick={onClose}
             type="button"
           >
@@ -1163,7 +1163,7 @@ function CreateQuoteModal({
           onSubmit={handleSubmit}
         >
           {/* Section 1: Customer & Deal Linking */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50/40 p-4">
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
             <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
               <Building2 className="h-4 w-4 text-blue-600" />
               <span>1. Müşteri & Fırsat Bilgileri</span>
@@ -1325,7 +1325,7 @@ function CreateQuoteModal({
 
                     return (
                       <tr
-                        className={`hover:bg-zinc-50 dark:bg-zinc-800/50/60 ${item.isOptional ? "bg-zinc-50 dark:bg-zinc-800/50/30 opacity-60" : ""}`}
+                        className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${item.isOptional ? "bg-zinc-50 dark:bg-zinc-800/50 opacity-60" : ""}`}
                         key={idx}
                       >
                         {/* Product Picker or Free Text */}
@@ -1510,7 +1510,7 @@ function CreateQuoteModal({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left: General Discount & Approval warning */}
             <div className="space-y-3">
-              <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50/40 p-4">
+              <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
                 <h4 className="font-bold text-zinc-700 dark:text-zinc-300 text-xs">
                   Genel Teklif İskontosu
                 </h4>
@@ -1623,7 +1623,7 @@ function CreateQuoteModal({
           </div>
 
           {/* Section 4: Terms, Delivery, Bank Details Templates */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50/40 p-4">
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
                 <FileText className="h-4 w-4 text-blue-600" />
@@ -1711,7 +1711,7 @@ function CreateQuoteModal({
           {/* Footer Actions */}
           <div className="flex items-center justify-end gap-3 border-zinc-200 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs transition hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1957,7 +1957,7 @@ function QuoteDetailDrawer({
           <div className="flex min-w-0 items-center gap-2.5">
             {/* Back / Close Button */}
             <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-900 dark:text-zinc-100 active:scale-95"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-95"
               onClick={onClose}
               title="Kapat & Geri Dön"
               type="button"
@@ -1984,7 +1984,7 @@ function QuoteDetailDrawer({
 
           <div className="flex shrink-0 items-center gap-1">
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-50 dark:bg-zinc-800/50 sm:px-2.5"
+              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 sm:px-2.5"
               onClick={() => quote && onPrint(quote.id)}
               title="Yazdır / PDF"
               type="button"
@@ -2200,7 +2200,7 @@ function QuoteDetailDrawer({
               )}
 
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-100 dark:bg-zinc-800"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 onClick={() => setIsRevisionOpen(true)}
                 type="button"
               >
@@ -2269,7 +2269,7 @@ function QuoteDetailDrawer({
                   className={`-mb-px border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === tab.key
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:text-zinc-200"
+                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
                   }`}
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
@@ -2343,7 +2343,7 @@ function QuoteDetailDrawer({
 
                 {/* Subtotals Box */}
                 <div className="flex justify-end">
-                  <div className="w-72 space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50/60 p-3.5 text-xs">
+                  <div className="w-72 space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-3.5 text-xs">
                     <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                       <span>Ara Toplam:</span>
                       <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -2428,7 +2428,7 @@ function QuoteDetailDrawer({
                       className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${
                         isCurrent
                           ? "border-blue-300 bg-blue-50/70 ring-2 ring-blue-500/20"
-                          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                       }`}
                       key={rev.id}
                     >
@@ -2516,7 +2516,7 @@ function QuoteDetailDrawer({
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
-                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:bg-zinc-800"
+                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 onClick={() => setIsApproveOpen(false)}
                 type="button"
               >
@@ -2571,7 +2571,7 @@ function QuoteDetailDrawer({
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
-                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:bg-zinc-800"
+                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 onClick={() => setIsRevisionOpen(false)}
                 type="button"
               >
@@ -2744,7 +2744,7 @@ function QuoteTemplatesModal({
             </div>
           </div>
           <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -3853,7 +3853,7 @@ function QuotePrintModal({
                 )}
 
                 {quote.bankDetails && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50/60 p-2 font-mono sm:col-span-2">
+                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 font-mono sm:col-span-2">
                     <span className="block font-bold font-sans text-[8px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
                       RESMİ BANKA VE HESAP (IBAN) BİLGİLERİ:
                     </span>

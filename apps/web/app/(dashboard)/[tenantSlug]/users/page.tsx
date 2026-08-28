@@ -152,7 +152,7 @@ export default function UsersManagementPage() {
           </div>
         ) : (
           <table className="w-full text-left text-xs">
-            <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -164,7 +164,7 @@ export default function UsersManagementPage() {
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {users.map((user) => (
                 <tr
-                  className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                  className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                   key={user.id}
                 >
                   <td className="px-6 py-4">
@@ -241,7 +241,7 @@ export default function UsersManagementPage() {
                 Invite New Member
               </h2>
               <button
-                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 onClick={() => setIsInviteOpen(false)}
               >
                 <X className="h-4 w-4" />
@@ -290,7 +290,7 @@ export default function UsersManagementPage() {
 
               <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <button
-                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:text-zinc-100"
+                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:hover:text-zinc-100"
                   onClick={() => setIsInviteOpen(false)}
                   type="button"
                 >

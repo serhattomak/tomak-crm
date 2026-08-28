@@ -497,7 +497,7 @@ export default function DashboardLayout({
                   className={`flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] transition-all ${
                     isActive
                       ? "font-bold text-violet-600 dark:text-violet-400"
-                      : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                      : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                   }`}
                   href={item.href}
                   key={item.href}
@@ -516,7 +516,7 @@ export default function DashboardLayout({
               );
             })}
             <button
-              className="flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] text-zinc-500 transition-all hover:text-zinc-800 dark:text-zinc-400"
+              className="flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] text-zinc-500 transition-all hover:text-zinc-800 dark:hover:text-zinc-400"
               onClick={() => setIsMobileDrawerOpen(true)}
               type="button"
             >
@@ -802,7 +802,7 @@ function DashboardNavigation({
           } transition-all duration-150 ${
             isActive
               ? "bg-violet-50 font-bold text-violet-700 shadow-2xs dark:bg-violet-950/60 dark:text-violet-300 border border-violet-200/70 dark:border-violet-800/60"
-              : "font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/70 dark:hover:text-zinc-200"
+              : "font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800/70 dark:hover:text-zinc-200"
           }`}
           href={item.href}
           key={item.name}
@@ -822,7 +822,7 @@ function DashboardNavigation({
               className={`h-4 w-4 shrink-0 transition-colors ${
                 isActive
                   ? "text-violet-600 dark:text-violet-400"
-                  : "text-zinc-400 group-hover:text-zinc-700 dark:text-zinc-500 dark:group-hover:text-zinc-300"
+                  : "text-zinc-400 group-hover:text-zinc-700 dark:hover:text-zinc-500 dark:group-hover:text-zinc-300"
               }`}
             />
             {!isCollapsed && (
@@ -861,7 +861,7 @@ function DashboardNavigation({
       <div>
         {!isCollapsed && (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
             onClick={() => toggleSection("sales")}
             type="button"
           >
@@ -885,7 +885,7 @@ function DashboardNavigation({
       <div>
         {!isCollapsed && (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
             onClick={() => toggleSection("hr")}
             type="button"
           >
@@ -909,7 +909,7 @@ function DashboardNavigation({
       <div>
         {!isCollapsed && (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
             onClick={() => toggleSection("tools")}
             type="button"
           >
@@ -933,7 +933,7 @@ function DashboardNavigation({
       <div>
         {!isCollapsed && (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
             onClick={() => toggleSection("management")}
             type="button"
           >
@@ -1016,7 +1016,7 @@ function DashboardBottom({
       {/* Theme and Shortcuts quick bar */}
       <div className="flex items-center justify-between px-1">
         <button
-          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           type="button"
         >
@@ -1035,7 +1035,7 @@ function DashboardBottom({
 
         {onOpenShortcuts && (
           <button
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
             onClick={onOpenShortcuts}
             title="Klavye Kısayolları (?)"
             type="button"

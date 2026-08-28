@@ -205,7 +205,7 @@ export function DatePicker({
           {/* Header Month / Year Navigation */}
           <div className="flex items-center justify-between border-b border-zinc-100 pb-2 dark:border-zinc-800">
             <button
-              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={handlePrevMonth}
               type="button"
             >
@@ -217,7 +217,7 @@ export function DatePicker({
             </div>
 
             <button
-              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={handleNextMonth}
               type="button"
             >
@@ -245,7 +245,7 @@ export function DatePicker({
                     !d.isCurrentMonth && "text-zinc-300 dark:text-zinc-600",
                     d.isCurrentMonth &&
                       !isSelected &&
-                      "text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300",
+                      "text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300",
                     isToday &&
                       !isSelected &&
                       "border border-violet-300 bg-violet-50/50 font-bold text-violet-700 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300",
@@ -265,14 +265,14 @@ export function DatePicker({
           {/* Quick Preset Footers */}
           <div className="mt-2 flex items-center justify-between border-t border-zinc-100 pt-2.5 text-[11px] dark:border-zinc-800">
             <button
-              className="font-bold text-violet-600 hover:text-violet-700 dark:text-violet-400"
+              className="font-bold text-violet-600 hover:text-violet-700 dark:hover:text-violet-400"
               onClick={handleSetToday}
               type="button"
             >
               Bugün
             </button>
             <button
-              className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
               onClick={() => {
                 onChange?.("");
                 setOpen(false);
@@ -379,35 +379,35 @@ export function DateRangePicker({
           </div>
           <div className="space-y-1 font-semibold text-xs">
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("today")}
               type="button"
             >
               Bugün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("thisMonth")}
               type="button"
             >
               Bu Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("lastMonth")}
               type="button"
             >
               Geçen Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("last30Days")}
               type="button"
             >
               Son 30 Gün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("thisYear")}
               type="button"
             >

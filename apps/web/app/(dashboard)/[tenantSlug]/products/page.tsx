@@ -226,7 +226,7 @@ export default function ProductsPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() => setIsCategoryModalOpen(true)}
             type="button"
           >
@@ -235,7 +235,7 @@ export default function ProductsPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() => showToast("Katalog CSV olarak dışa aktarılıyor...")}
             type="button"
           >
@@ -448,7 +448,7 @@ export default function ProductsPage() {
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("table")}
               title="Tablo Görünümü"
@@ -460,7 +460,7 @@ export default function ProductsPage() {
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "grid"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("grid")}
               title="Görsel Kart Görünümü"
@@ -525,7 +525,7 @@ export default function ProductsPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {products.map((p) => (
                   <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                     key={p.id}
                   >
                     <td className="py-4 pr-4 pl-6">
@@ -675,7 +675,7 @@ export default function ProductsPage() {
                         {p.trackInventory && (
                           <PermissionGate permission="Products.StockAdjust">
                             <button
-                              className="flex h-7 items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 font-semibold text-[10px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+                              className="flex h-7 items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 font-semibold text-[10px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                               onClick={() => setStockAdjustProduct(p)}
                               title="Stok Hareketi Ekle"
                               type="button"
@@ -686,7 +686,7 @@ export default function ProductsPage() {
                           </PermissionGate>
                         )}
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-800 dark:text-zinc-200"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200"
                           href={`/${tenantSlug}/products/${p.id}`}
                           title="Detay Görüntüle"
                         >
@@ -874,7 +874,7 @@ export default function ProductsPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={() => setDeletingProduct(null)}
                 type="button"
               >
@@ -1005,7 +1005,7 @@ function CreateProductModal({
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1029,7 +1029,7 @@ function CreateProductModal({
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Physical"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1046,7 +1046,7 @@ function CreateProductModal({
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Service"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1063,7 +1063,7 @@ function CreateProductModal({
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Digital"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1080,7 +1080,7 @@ function CreateProductModal({
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Subscription"
                   ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1365,7 +1365,7 @@ function CreateProductModal({
           {/* Footer */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1455,7 +1455,7 @@ function QuickStockAdjustModal({
             </p>
           </div>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1570,7 +1570,7 @@ function QuickStockAdjustModal({
 
           <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1670,7 +1670,7 @@ function CategoryManagerModal({
             </p>
           </div>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >

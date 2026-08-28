@@ -101,7 +101,7 @@ export function UpcomingMeetingsWidget() {
           </div>
 
           <button
-            className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
+            className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:hover:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
             onClick={() => setShowAddForm(!showAddForm)}
             type="button"
           >
@@ -131,7 +131,7 @@ export function UpcomingMeetingsWidget() {
                   className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition-colors ${
                     newDate === d
                       ? "bg-violet-600 text-white"
-                      : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600"
+                      : "bg-white text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600"
                   }`}
                   key={d}
                   onClick={() => setNewDate(d)}
@@ -212,7 +212,7 @@ export function UpcomingMeetingsWidget() {
                           {meeting.date} {meeting.time}
                         </span>
                       </div>
-                      <h4 className="font-bold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400">
+                      <h4 className="font-bold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
                         {meeting.title}
                       </h4>
                       <p className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -250,7 +250,7 @@ export function UpcomingMeetingsWidget() {
 
       {meetings.length > 0 && (
         <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
-          <span className="cursor-pointer font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400">
+          <span className="cursor-pointer font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400">
             {meetings.length} Görüşme Kayıtlı
           </span>
         </div>

@@ -522,7 +522,7 @@ export default function LeavesPage() {
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "calendar"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("calendar")}
           type="button"
@@ -535,7 +535,7 @@ export default function LeavesPage() {
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "pending"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("pending")}
           type="button"
@@ -553,7 +553,7 @@ export default function LeavesPage() {
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "all"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("all")}
           type="button"
@@ -566,7 +566,7 @@ export default function LeavesPage() {
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "my"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("my")}
           type="button"
@@ -583,7 +583,7 @@ export default function LeavesPage() {
           <div className="flex flex-col justify-between gap-3 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={handlePrevMonth}
                 type="button"
               >
@@ -593,14 +593,14 @@ export default function LeavesPage() {
                 {monthNames[calendarDate.month - 1]} {calendarDate.year}
               </h2>
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={handleNextMonth}
                 type="button"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
               <button
-                className="ml-2 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="ml-2 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={handleCurrentMonth}
                 type="button"
               >
@@ -652,7 +652,7 @@ export default function LeavesPage() {
                   if (!cell.day) {
                     return (
                       <div
-                        className="h-28 rounded-2xl border border-zinc-100 dark:border-zinc-800 border-dashed bg-zinc-50 dark:bg-zinc-800/50/30 p-2"
+                        className="h-28 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 border-dashed bg-zinc-50/50 dark:bg-zinc-900/30 p-2"
                         key={idx}
                       />
                     );
@@ -900,7 +900,7 @@ export default function LeavesPage() {
                     </tr>
                   ) : (
                     leaves.map((l) => (
-                      <tr className="hover:bg-zinc-50/80 dark:bg-zinc-800/50" key={l.id}>
+                      <tr className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50" key={l.id}>
                         <td className="py-3.5 pr-4 pl-6">
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {l.employeeName}
@@ -1015,7 +1015,7 @@ export default function LeavesPage() {
                   </tr>
                 ) : (
                   leaves.map((l) => (
-                    <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={l.id}>
+                    <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50" key={l.id}>
                       <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
@@ -1112,7 +1112,7 @@ export default function LeavesPage() {
 
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 onClick={() => setRejectingLeave(null)}
                 type="button"
               >
@@ -1343,7 +1343,7 @@ function CreateLeaveModal({
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1413,7 +1413,7 @@ function CreateLeaveModal({
             {/* Half Day Option — only for Casual/Sick */}
             {isHalfDayAllowed && (
               <div className="flex flex-col justify-end">
-                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-800 dark:text-zinc-200 transition-colors hover:bg-zinc-100 dark:bg-zinc-800">
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-800 dark:text-zinc-200 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800">
                   <input
                     aria-label="Yarım Gün İzin"
                     checked={isHalfDay}
@@ -1539,7 +1539,7 @@ function CreateLeaveModal({
           {/* Footer */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

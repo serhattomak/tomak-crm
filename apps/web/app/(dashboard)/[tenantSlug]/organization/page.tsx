@@ -257,7 +257,7 @@ function OrganizationPageContent() {
         {/* Global Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() => {
               setEditingDept(null);
               setIsDeptModalOpen(true);
@@ -269,7 +269,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             onClick={() => {
               setEditingPos(null);
               setIsPosModalOpen(true);
@@ -301,7 +301,7 @@ function OrganizationPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "chart"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("chart")}
             type="button"
@@ -314,7 +314,7 @@ function OrganizationPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "departments"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("departments")}
             type="button"
@@ -327,7 +327,7 @@ function OrganizationPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "employees"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("employees")}
             type="button"
@@ -340,7 +340,7 @@ function OrganizationPageContent() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "positions"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
             }`}
             onClick={() => handleTabChange("positions")}
             type="button"
@@ -352,7 +352,7 @@ function OrganizationPageContent() {
 
         {/* Refresh button */}
         <button
-          className="flex items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-medium text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+          className="flex items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-medium text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
           disabled={isLoading}
           onClick={loadData}
           type="button"
@@ -652,7 +652,7 @@ function OrgChartTab({
       {/* Chart Canvas Controls */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/95 p-1.5 shadow-md backdrop-blur-sm">
         <button
-          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           onClick={() => setZoom((z) => Math.min(z + 0.15, 1.8))}
           title="Yakınlaştır"
           type="button"
@@ -663,7 +663,7 @@ function OrgChartTab({
           {Math.round(zoom * 100)}%
         </span>
         <button
-          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           onClick={() => setZoom((z) => Math.max(z - 0.15, 0.4))}
           title="Uzaklaştır"
           type="button"
@@ -671,7 +671,7 @@ function OrgChartTab({
           <ZoomOut className="h-4 w-4" />
         </button>
         <button
-          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           onClick={() => setZoom(1)}
           title="Sıfırla"
           type="button"
@@ -815,7 +815,7 @@ function OrgNodeItem({
                 className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${
                   isCollapsed
                     ? "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
-                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 }`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -944,7 +944,7 @@ function DepartmentsTab({
 
                 <div className="flex items-center gap-1">
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                     onClick={() => onEdit(dept)}
                     title="Düzenle"
                     type="button"
@@ -1134,14 +1134,14 @@ function EmployeesTab({
           {/* Toggle View */}
           <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 p-0.5">
             <button
-              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
             >
               <List className="h-3.5 w-3.5" />
             </button>
             <button
-              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("grid")}
               type="button"
             >
@@ -1165,7 +1165,7 @@ function EmployeesTab({
       ) : viewMode === "table" ? (
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <table className="w-full text-left text-xs">
-            <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">Çalışan</th>
                 <th className="px-6 py-3.5">Departman & Pozisyon</th>
@@ -1178,7 +1178,7 @@ function EmployeesTab({
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {employees.map((emp) => (
                 <tr
-                  className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                  className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                   key={emp.id}
                 >
                   <td className="px-6 py-4">
@@ -1247,7 +1247,7 @@ function EmployeesTab({
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                         onClick={() => onView(emp)}
                         title="Profili Gör"
                         type="button"
@@ -1255,7 +1255,7 @@ function EmployeesTab({
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                         onClick={() => onEdit(emp)}
                         title="Düzenle"
                         type="button"
@@ -1346,14 +1346,14 @@ function EmployeesTab({
                 </span>
                 <div className="flex items-center gap-1">
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                     onClick={() => onView(emp)}
                     type="button"
                   >
                     <Eye className="h-4 w-4" />
                   </button>
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                     onClick={() => onEdit(emp)}
                     type="button"
                   >
@@ -1387,7 +1387,7 @@ function PositionsTab({
     <div className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
         <table className="w-full text-left text-xs">
-          <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+          <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
             <tr>
               <th className="px-6 py-3.5">Pozisyon / Ünvan</th>
               <th className="px-6 py-3.5">Kariyer Kademesi</th>
@@ -1400,7 +1400,7 @@ function PositionsTab({
           <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
             {positions.map((pos) => (
               <tr
-                className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
+                className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                 key={pos.id}
               >
                 <td className="px-6 py-4">
@@ -1430,7 +1430,7 @@ function PositionsTab({
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
-                      className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                      className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                       onClick={() => onEdit(pos)}
                       type="button"
                     >
@@ -1522,7 +1522,7 @@ function DepartmentModal({
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1637,7 +1637,7 @@ function DepartmentModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1728,7 +1728,7 @@ function PositionModal({
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1839,7 +1839,7 @@ function PositionModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1994,7 +1994,7 @@ function EmployeeModal({
               : "Yeni Çalışan / Personel Kartı Aç"}
           </h2>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2296,7 +2296,7 @@ function EmployeeModal({
 
           <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2385,7 +2385,7 @@ function EmployeeDetailDrawer({
                 <span>Düzenle</span>
               </button>
               <button
-                className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
+                className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
                 onClick={onClose}
                 type="button"
               >
@@ -2470,7 +2470,7 @@ function EmployeeDetailDrawer({
               </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
                 <div
-                  className="flex cursor-pointer items-center gap-3 rounded-xl p-1.5 transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl p-1.5 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                   onClick={() => onSelectEmployee(employeeDetail.managerId!)}
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500 font-bold text-white text-xs">

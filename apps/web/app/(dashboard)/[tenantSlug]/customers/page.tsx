@@ -511,7 +511,7 @@ export default function CustomersPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400">
+                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
                             {c.name}
                           </div>
                           <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -656,7 +656,7 @@ export default function CustomersPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-zinc-900 text-sm transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400"
+                        className="font-bold text-zinc-900 text-sm transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400"
                         href={`/${tenantSlug}/customers/${c.id}`}
                       >
                         {c.name}
@@ -920,7 +920,7 @@ function CreateCustomerModal({
                 className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
                   formData.type === "Company"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
                 onClick={() => setFormData({ ...formData, type: "Company" })}
                 type="button"
@@ -931,7 +931,7 @@ function CreateCustomerModal({
                 className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
                   formData.type === "Individual"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
                 onClick={() => setFormData({ ...formData, type: "Individual" })}
                 type="button"
@@ -1047,7 +1047,7 @@ function CreateCustomerModal({
                     Sorumlu Temsilci
                   </label>
                   <button
-                    className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:text-violet-400"
+                    className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:hover:text-violet-400"
                     onClick={() => setIsAddSalesRepOpen(true)}
                     type="button"
                   >
