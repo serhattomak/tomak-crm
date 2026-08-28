@@ -40,6 +40,7 @@ import {
   type EmployeeDto,
   type PipelineDto,
 } from "@/lib/api-client";
+import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function PipelinesPage() {
@@ -1400,22 +1401,16 @@ function DealDetailDrawer({
 
               {/* Assigned Representative */}
               <div className="col-span-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 sm:col-span-3">
-                <div className="flex items-center justify-between">
+                <div className="space-y-1.5">
                   <span className="font-bold text-zinc-700 dark:text-zinc-300 text-xs">
-                    Sorumlu Çalışan / Temsilci
+                    Sorumlu Çalışan / Satış Temsilcisi
                   </span>
-                  <select
-                    className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={(e) => handleAssignUser(e.target.value)}
-                    value={deal.assignedUserId || "unassigned"}
-                  >
-                    <option value="unassigned">Açık Havuz (Atanmamış)</option>
-                    {employees.map((emp) => (
-                      <option key={emp.id} value={emp.userId || emp.id}>
-                        {emp.fullName} ({emp.departmentName || "Genel"})
-                      </option>
-                    ))}
-                  </select>
+                  <SalesRepPicker
+                    employees={employees}
+                    onChange={(empId) => handleAssignUser(empId || "unassigned")}
+                    placeholder="Temsilci arayın veya seçin..."
+                    value={deal.assignedUserId || ""}
+                  />
                 </div>
               </div>
             </div>

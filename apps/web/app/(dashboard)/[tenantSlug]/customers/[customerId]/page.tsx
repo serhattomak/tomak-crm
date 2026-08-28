@@ -36,6 +36,7 @@ import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
 import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
+import { SalesRepPicker } from "@/components/entity-picker-modal";
 import {
   type AddCustomerActivityRequest,
   type AddCustomerContactRequest,
@@ -1435,46 +1436,21 @@ function EditCustomerModal({
             </div>
 
             <div>
-              <div className="mb-1 flex items-center justify-between">
-                <label className="block font-medium text-zinc-700 dark:text-zinc-300">
-                  Sorumlu Satış Temsilcisi
-                </label>
-                <button
-                  className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:hover:text-violet-400"
-                  onClick={() => setIsAddSalesRepOpen(true)}
-                  type="button"
-                >
-                  <Plus className="h-3 w-3" />
-                  <span>Yeni Temsilci Ekle</span>
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      assignedEmployeeId: e.target.value,
-                    })
-                  }
-                  value={formData.assignedEmployeeId}
-                >
-                  <option value="">Temsilci Seçin (Opsiyonel)</option>
-                  {employeesList.map((emp) => (
-                    <option key={emp.id} value={emp.id}>
-                      {emp.fullName} ({emp.title || "Temsilci"})
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-violet-200 bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 transition-all hover:bg-violet-100 active:scale-95 dark:border-violet-800/80 dark:bg-violet-950/60 dark:text-violet-400"
-                  onClick={() => setIsAddSalesRepOpen(true)}
-                  title="Yeni Satış Temsilcisi Oluştur"
-                  type="button"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Sorumlu Satış Temsilcisi
+              </label>
+              <SalesRepPicker
+                employees={employeesList}
+                onAddNew={() => setIsAddSalesRepOpen(true)}
+                onChange={(empId) =>
+                  setFormData({
+                    ...formData,
+                    assignedEmployeeId: empId,
+                  })
+                }
+                placeholder="Temsilci arayın veya seçin..."
+                value={formData.assignedEmployeeId}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-2">
