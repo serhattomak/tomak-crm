@@ -75,10 +75,23 @@ export function EntityPickerModal<T = unknown>({
 
   useEffect(() => {
     if (isOpen) {
-      setSearch("");
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
+
+  const handleClose = () => {
+    setSearch("");
+    onClose();
+  };
+
+  const handleSelect = (item: EntityPickerOption<T>) => {
+    setSearch("");
+    onSelect(item);
+    onClose();
+  };
 
   const filteredItems = useMemo(() => {
     if (!search.trim()) return items;
@@ -96,12 +109,11 @@ export function EntityPickerModal<T = unknown>({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
-      onClose();
+      handleClose();
     } else if (e.key === "Enter" && filteredItems.length > 0) {
       const first = filteredItems[0];
       if (first) {
-        onSelect(first);
-        onClose();
+        handleSelect(first);
       }
     }
   };
@@ -109,7 +121,7 @@ export function EntityPickerModal<T = unknown>({
   return (
     <div
       className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
-      onClick={onClose}
+      onClick={handleClose}
       onKeyDown={handleKeyDown}
     >
       <div
@@ -133,7 +145,7 @@ export function EntityPickerModal<T = unknown>({
               <button
                 className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1.5 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
                 onClick={() => {
-                  onClose();
+                  handleClose();
                   onAddNew();
                 }}
                 type="button"
@@ -144,7 +156,7 @@ export function EntityPickerModal<T = unknown>({
             )}
             <button
               className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-              onClick={onClose}
+              onClick={handleClose}
               type="button"
             >
               <X className="h-4 w-4" />
@@ -187,7 +199,7 @@ export function EntityPickerModal<T = unknown>({
                 <button
                   className="mt-2 inline-flex items-center gap-1 font-bold text-xs text-violet-600 hover:underline dark:text-violet-400"
                   onClick={() => {
-                    onClose();
+                    handleClose();
                     onAddNew();
                   }}
                   type="button"
@@ -211,14 +223,12 @@ export function EntityPickerModal<T = unknown>({
                       : "hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 border border-transparent"
                   }`}
                   key={item.id}
-                  onClick={() => {
-                    onSelect(item);
-                    onClose();
-                  }}
+                  onClick={() => handleSelect(item)}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     {/* Avatar */}
                     {item.avatar?.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         alt={item.label}
                         className="h-8 w-8 rounded-xl object-cover shrink-0"
@@ -286,7 +296,7 @@ export function EntityPickerModal<T = unknown>({
               className="font-semibold text-rose-600 hover:underline dark:text-rose-400"
               onClick={() => {
                 onSelect(null);
-                onClose();
+                handleClose();
               }}
               type="button"
             >

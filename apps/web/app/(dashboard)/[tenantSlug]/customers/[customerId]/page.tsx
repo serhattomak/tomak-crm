@@ -1,4 +1,3 @@
-/* Hallmark · component: customer-detail-360 · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {
@@ -7,7 +6,6 @@ import {
   Building2,
   Check,
   CheckCircle2,
-  Clock,
   DollarSign,
   Edit,
   Edit2,
@@ -21,11 +19,8 @@ import {
   PinOff,
   Plus,
   Send,
-  Shield,
-  Trash2,
   TrendingUp,
   User,
-  UserPlus,
   Video,
   X,
 } from "lucide-react";
@@ -33,7 +28,6 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
-import { PermissionGate } from "@/components/permission-gate";
 import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
 import { SalesRepPicker } from "@/components/entity-picker-modal";
@@ -86,7 +80,6 @@ export default function CustomerDetailPage() {
     if (!(activeTenant && customerId)) {
       return;
     }
-    setLoading(true);
     try {
       const [custRes, empRes] = await Promise.all([
         ApiClient.getCustomerById(customerId, activeTenant.id),
@@ -111,8 +104,39 @@ export default function CustomerDetailPage() {
   }, [activeTenant, customerId, tenantSlug, router]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    let ignore = false;
+    async function init() {
+      if (!(activeTenant && customerId)) return;
+      try {
+        const [custRes, empRes] = await Promise.all([
+          ApiClient.getCustomerById(customerId, activeTenant.id),
+          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
+        ]);
+
+        if (!ignore) {
+          if (custRes.success && custRes.data) {
+            setCustomer(custRes.data);
+          } else {
+            showToast("Müşteri bulunamadı.");
+            router.push(`/${tenantSlug}/customers`);
+          }
+
+          if (empRes.success && empRes.data) {
+            setEmployees(empRes.data.items);
+          }
+        }
+      } catch {
+        if (!ignore) showToast("Müşteri bilgileri yüklenirken hata oluştu.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    init();
+    return () => {
+      ignore = true;
+    };
+  }, [activeTenant, customerId, tenantSlug, router]);
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -454,7 +478,17 @@ export default function CustomerDetailPage() {
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() =>
+                  setActiveTab(
+                    tab.id as
+                      | "overview"
+                      | "contacts"
+                      | "timeline"
+                      | "deals"
+                      | "notes"
+                      | "finance"
+                  )
+                }
                 type="button"
               >
                 {tab.label}

@@ -12,6 +12,7 @@ function ThemeProvider({
       attribute="class"
       defaultTheme="light"
       disableTransitionOnChange
+      enableColorScheme={false}
       enableSystem={false}
       storageKey="crm_app_theme_mode"
       {...props}

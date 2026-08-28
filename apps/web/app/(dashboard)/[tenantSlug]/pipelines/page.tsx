@@ -29,7 +29,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -45,10 +45,9 @@ import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function PipelinesPage() {
   const params = useParams();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
-  const { activeTenant, profile, hasPermission } = usePermissions();
+  const { activeTenant, profile } = usePermissions();
 
   // State
   const [pipelines, setPipelines] = useState<PipelineDto[]>([]);
@@ -70,25 +69,18 @@ export default function PipelinesPage() {
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [userFilter, setUserFilter] = useState<string>("all");
 
-  // Modals & Drawers
-  const [selectedDealId, setSelectedDealId] = useState<string | null>(null);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // Modals & Panels
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(
+    () => searchParams.get("create") === "true"
+  );
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [selectedDealId, setSelectedDealId] = useState<string | null>(
+    () => searchParams.get("dealId") || null
+  );
 
   // Drag & drop state
   const [draggedDealId, setDraggedDealId] = useState<string | null>(null);
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
-
-  // Check URL query params for ?create=true or ?dealId=...
-  useEffect(() => {
-    if (searchParams.get("create") === "true") {
-      setIsCreateModalOpen(true);
-    }
-    const dealIdParam = searchParams.get("dealId");
-    if (dealIdParam) {
-      setSelectedDealId(dealIdParam);
-    }
-  }, [searchParams]);
 
   // Load Pipelines and Employees
   const loadInitialData = useCallback(async () => {
@@ -122,7 +114,7 @@ export default function PipelinesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [activeTenant?.id]);
+  }, [activeTenant]);
 
   // Load Deals & Stats for selected pipeline
   const loadDeals = useCallback(async () => {
@@ -150,7 +142,7 @@ export default function PipelinesPage() {
     } finally {
       setIsRefreshing(false);
     }
-  }, [activeTenant?.id, selectedPipelineId]);
+  }, [activeTenant, selectedPipelineId]);
 
   useEffect(() => {
     if (activeTenant?.id) {
@@ -218,7 +210,7 @@ export default function PipelinesPage() {
 
       return true;
     });
-  }, [deals, searchQuery, filterType, priorityFilter, userFilter, profile?.id]);
+  }, [deals, searchQuery, filterType, priorityFilter, userFilter, profile]);
 
   // Stage grouped deals for Kanban
   const dealsByStage = useMemo(() => {
@@ -924,9 +916,12 @@ export default function PipelinesPage() {
                       <span
                         className="inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-[10px]"
                         style={{
-                          backgroundColor:
-                            `${deal.stageColor}15` || "#3B82F615",
-                          borderColor: `${deal.stageColor}35` || "#3B82F635",
+                          backgroundColor: deal.stageColor
+                            ? `${deal.stageColor}15`
+                            : "#3B82F615",
+                          borderColor: deal.stageColor
+                            ? `${deal.stageColor}35`
+                            : "#3B82F635",
                           color: deal.stageColor || "#1E40AF",
                         }}
                       >
@@ -1074,7 +1069,7 @@ function DealDetailDrawer({
   employees: EmployeeDto[];
   activePipeline?: PipelineDto;
 }) {
-  const { activeTenant, profile } = usePermissions();
+  const { activeTenant } = usePermissions();
   const [deal, setDeal] = useState<DealDetailDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"timeline" | "notes">("timeline");
@@ -1100,7 +1095,7 @@ function DealDetailDrawer({
     } finally {
       setIsLoading(false);
     }
-  }, [activeTenant?.id, dealId]);
+  }, [activeTenant, dealId]);
 
   useEffect(() => {
     fetchDetail();
@@ -1591,7 +1586,7 @@ function DealDetailDrawer({
 // CREATE DEAL QUICK MODAL (Design System Uyumlu)
 // ============================================================================
 function CreateDealModal({
-  tenantSlug,
+  tenantSlug: _tenantSlug,
   activePipeline,
   pipelines,
   employees,
@@ -1609,28 +1604,22 @@ function CreateDealModal({
   const [pipelineId, setPipelineId] = useState(
     activePipeline?.id || pipelines[0]?.id || ""
   );
-  const [stageId, setStageId] = useState("");
+  const currentPipe =
+    pipelines.find((p) => p.id === pipelineId) || activePipeline;
+  const [stageId, setStageId] = useState(
+    () => currentPipe?.stages?.[0]?.id || ""
+  );
   const [title, setTitle] = useState("");
   const [value, setValue] = useState<number>(0);
   const [currency, setCurrency] = useState("TRY");
   const [priority, setPriority] = useState("Medium");
   const [assignedUserId, setAssignedUserId] = useState<string>("auto");
-  const [source, setSource] = useState("Manual");
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [source, setSource] = useState("Manual");
   const [initialNote, setInitialNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const currentPipe =
-    pipelines.find((p) => p.id === pipelineId) || activePipeline;
-
-  useEffect(() => {
-    const firstStage = currentPipe?.stages?.[0];
-    if (firstStage) {
-      setStageId(firstStage.id);
-    }
-  }, [currentPipe]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1725,7 +1714,14 @@ function CreateDealModal({
               </label>
               <select
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                onChange={(e) => setPipelineId(e.target.value)}
+                onChange={(e) => {
+                  const nextPipeId = e.target.value;
+                  setPipelineId(nextPipeId);
+                  const pipe = pipelines.find((p) => p.id === nextPipeId);
+                  if (pipe?.stages?.[0]) {
+                    setStageId(pipe.stages[0].id);
+                  }
+                }}
                 value={pipelineId}
               >
                 {pipelines.map((p) => (
@@ -1865,6 +1861,40 @@ function CreateDealModal({
             </div>
           </div>
 
+          {/* Source & Initial Note */}
+          <div className="space-y-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <div>
+                <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                  Kaynak
+                </label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setSource(e.target.value)}
+                  value={source}
+                >
+                  <option value="Manual">Manuel Giriş</option>
+                  <option value="Website">Web Sitesi / Form</option>
+                  <option value="Referral">Tavsiye / Referans</option>
+                  <option value="Campaign">Pazarlama Kampanyası</option>
+                  <option value="InboundCall">Gelen Arama</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                  İlk Not / Açıklama
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setInitialNote(e.target.value)}
+                  placeholder="Müşteri ihtiyacı veya ilk temas detayları..."
+                  type="text"
+                  value={initialNote}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Actions */}
           <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
@@ -1893,7 +1923,7 @@ function CreateDealModal({
 // ============================================================================
 function PipelineSettingsModal({
   pipeline,
-  tenantSlug,
+  tenantSlug: _tenantSlug,
   onClose,
   onUpdated,
 }: {

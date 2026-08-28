@@ -50,7 +50,7 @@ export default function CustomersPage() {
   const [employees, setEmployees] = useState<EmployeeDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [pageSize] = useState(25);
 
   // Filters
@@ -61,16 +61,12 @@ export default function CustomersPage() {
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
 
   // Modals & Messages
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(
+    () => searchParams.get("create") === "true"
+  );
   const [deletingCustomer, setDeletingCustomer] =
     useState<CustomerListDto | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (searchParams.get("create") === "true") {
-      setIsCreateModalOpen(true);
-    }
-  }, [searchParams]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -81,7 +77,6 @@ export default function CustomersPage() {
     if (!activeTenant) {
       return;
     }
-    setLoading(true);
     try {
       const [custRes, statsRes, empRes] = await Promise.all([
         ApiClient.getCustomers(activeTenant.id, {
@@ -122,8 +117,55 @@ export default function CustomersPage() {
   ]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    let ignore = false;
+    async function fetchData() {
+      if (!activeTenant) return;
+      try {
+        const [custRes, statsRes, empRes] = await Promise.all([
+          ApiClient.getCustomers(activeTenant.id, {
+            page,
+            pageSize,
+            search: search.trim() || undefined,
+            status: statusFilter || undefined,
+            tier: tierFilter || undefined,
+            type: typeFilter || undefined,
+          }),
+          ApiClient.getCustomerStats(activeTenant.id),
+          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
+        ]);
+
+        if (!ignore) {
+          if (custRes.success && custRes.data) {
+            setCustomers(custRes.data.items);
+            setTotalCount(custRes.data.totalCount);
+          }
+          if (statsRes.success && statsRes.data) {
+            setStats(statsRes.data);
+          }
+          if (empRes.success && empRes.data) {
+            setEmployees(empRes.data.items);
+          }
+        }
+      } catch {
+        if (!ignore) showToast("Müşteri verileri yüklenirken bir hata oluştu.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    fetchData();
+    return () => {
+      ignore = true;
+    };
+  }, [
+    activeTenant,
+    page,
+    pageSize,
+    search,
+    statusFilter,
+    typeFilter,
+    tierFilter,
+  ]);
 
   const handleDelete = async () => {
     if (!(activeTenant && deletingCustomer)) {

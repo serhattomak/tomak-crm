@@ -50,7 +50,7 @@ import {
 } from "next/navigation";
 import { useTheme } from "next-themes";
 import type React from "react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationCenter } from "@/components/notification-center";
 import { PermissionGate } from "@/components/permission-gate";
@@ -73,23 +73,28 @@ export default function DashboardLayout({
   const params = useParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isShortcutsHelpOpen, setIsShortcutsHelpOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-  // Load saved sidebar collapsed preference
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("crm_sidebar_collapsed");
-      if (saved !== null) {
-        setIsSidebarCollapsed(saved === "true");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("crm_sidebar_collapsed");
+        if (saved !== null) {
+          return saved === "true";
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore storage errors
     }
-  }, []);
+    return false;
+  });
 
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed((prev) => {
@@ -321,13 +326,13 @@ export default function DashboardLayout({
                 onClick={() =>
                   setTheme(resolvedTheme === "dark" ? "light" : "dark")
                 }
-                title={resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
+                title={mounted && resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
                 type="button"
               >
-                {resolvedTheme === "dark" ? (
+                {mounted && resolvedTheme === "dark" ? (
                   <Sun className="h-4 w-4 text-amber-400" />
                 ) : (
-                  <Moon className="h-4 w-4 text-zinc-600" />
+                  <Moon className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                 )}
               </button>
               <NotificationCenter buttonClassName="relative flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300" />
