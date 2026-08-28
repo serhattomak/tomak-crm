@@ -341,7 +341,7 @@ export default function QuotesPage() {
                   className={`rounded-full px-1.5 py-0.2 font-bold text-[10px] ${
                     isSelected
                       ? "bg-blue-500 text-white"
-                      : "bg-slate-200 text-zinc-700 dark:text-zinc-300"
+                      : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
                   }`}
                 >
                   {statusCounts[tab.key as keyof typeof statusCounts] ?? 0}
@@ -406,7 +406,7 @@ export default function QuotesPage() {
                 <div
                   className={`cursor-pointer p-4 transition active:bg-zinc-50 dark:bg-zinc-800/50 ${
                     quote.status === "RevisionRequested"
-                      ? "border-l-4 border-l-amber-500 bg-amber-50/40"
+                      ? "border-l-4 border-l-amber-500 bg-amber-50/40 dark:bg-amber-950/20"
                       : ""
                   }`}
                   key={quote.id}
@@ -504,9 +504,9 @@ export default function QuotesPage() {
                   {quotes.map((quote) => {
                     return (
                       <tr
-                        className={`group cursor-pointer transition hover:bg-blue-50/40 ${
+                        className={`group cursor-pointer transition hover:bg-blue-50/40 dark:hover:bg-zinc-800/40 ${
                           quote.status === "RevisionRequested"
-                            ? "border-l-4 border-l-amber-500 bg-amber-50/50"
+                            ? "border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
                             : ""
                         }`}
                         key={quote.id}
@@ -697,8 +697,8 @@ function QuoteStatusBadge({ status }: { status: string }) {
   switch (status) {
     case "RevisionRequested":
       return (
-        <span className="inline-flex animate-pulse items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/15 px-2.5 py-0.5 font-extrabold text-[10px] text-amber-700 shadow-2xs">
-          <RefreshCw className="h-3 w-3 animate-spin text-amber-600" />
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 dark:text-amber-300 shadow-2xs">
+          <RefreshCw className="h-3 w-3 text-amber-600 dark:text-amber-400" />
           Revizyon İstendi
         </span>
       );
@@ -710,49 +710,49 @@ function QuoteStatusBadge({ status }: { status: string }) {
       );
     case "PendingApproval":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 font-bold text-[10px] text-amber-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 dark:text-amber-300">
           <AlertCircle className="h-3 w-3" />
           Onay Bekliyor
         </span>
       );
     case "Approved":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:text-emerald-300">
           <CheckCircle2 className="h-3 w-3" />
           Onaylandı
         </span>
       );
     case "Sent":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-bold text-[10px] text-blue-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-[10px] text-blue-700 dark:text-blue-300">
           <Send className="h-3 w-3" />
           Müşteride
         </span>
       );
     case "Viewed":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-0.5 font-bold text-[10px] text-purple-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-purple-200 dark:border-purple-800/60 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-0.5 font-bold text-[10px] text-purple-700 dark:text-purple-300">
           <Eye className="h-3 w-3" />
           İncelendi
         </span>
       );
     case "Accepted":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:text-emerald-300">
           <Award className="h-3 w-3" />
           Kabul Edildi
         </span>
       );
     case "Rejected":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-0.5 font-bold text-[10px] text-rose-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 font-bold text-[10px] text-rose-700 dark:text-rose-300">
           <XCircle className="h-3 w-3" />
           Reddedildi
         </span>
       );
     case "Expired":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-2.5 py-0.5 font-bold text-[10px] text-red-700">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-red-200 dark:border-red-800/60 bg-red-50 dark:bg-red-950/60 px-2.5 py-0.5 font-bold text-[10px] text-red-700 dark:text-red-300">
           <Clock className="h-3 w-3" />
           Süresi Doldu
         </span>
@@ -2034,22 +2034,22 @@ function QuoteDetailDrawer({
               quote.activities?.some(
                 (a) => a.activityType === "RevisionRequested"
               )) && (
-              <div className="space-y-3 rounded-2xl border-2 border-amber-400 bg-amber-50/95 p-4.5 shadow-md">
+              <div className="space-y-3 rounded-2xl border-2 border-amber-400/80 dark:border-amber-500/40 bg-amber-50/90 dark:bg-amber-950/40 p-4.5 shadow-md">
                 <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-10 w-10 flex-none animate-bounce items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs">
+                    <div className="mt-0.5 flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs">
                       <RefreshCw className="h-5 w-5" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-extrabold text-amber-950 text-sm">
+                        <h4 className="font-extrabold text-amber-950 dark:text-amber-200 text-sm">
                           Müşteri Revizyon / Değişiklik Talebinde Bulundu!
                         </h4>
-                        <span className="rounded-full border border-amber-300 bg-amber-200/90 px-2 py-0.5 font-bold text-[10px] text-amber-900">
+                        <span className="rounded-full border border-amber-300 dark:border-amber-700/60 bg-amber-200/80 dark:bg-amber-900/60 px-2 py-0.5 font-bold text-[10px] text-amber-900 dark:text-amber-200">
                           Yeni Versiyon Bekleniyor
                         </span>
                       </div>
-                      <p className="mt-1 font-medium text-amber-800 text-xs">
+                      <p className="mt-1 font-medium text-amber-800 dark:text-amber-300/90 text-xs">
                         Müşteri dijital teklif sayfası üzerinden revizyon ve
                         güncelleme talebinde bulundu.
                       </p>
@@ -2093,17 +2093,17 @@ function QuoteDetailDrawer({
                     return null;
                   }
                   return (
-                    <div className="rounded-xl border border-amber-300 bg-white dark:bg-zinc-900/90 p-3.5 text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs">
+                    <div className="rounded-xl border border-amber-300/80 dark:border-amber-800/60 bg-white/90 dark:bg-zinc-900/90 p-3.5 text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs">
                       <div className="mb-1.5 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5 font-bold text-[11px] text-amber-900 uppercase tracking-wider">
-                          <FileText className="h-3.5 w-3.5 text-amber-600" />
+                        <span className="flex items-center gap-1.5 font-bold text-[11px] text-amber-900 dark:text-amber-300 uppercase tracking-wider">
+                          <FileText className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                           Müşterinin İlettiği Talep Notu:
                         </span>
                         <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           {new Date(revAct.createdAt).toLocaleString("tr-TR")}
                         </span>
                       </div>
-                      <p className="rounded-lg border border-amber-200/60 bg-amber-50/60 p-2.5 font-semibold text-zinc-900 dark:text-zinc-100 text-xs leading-relaxed">
+                      <p className="rounded-lg border border-amber-200/60 dark:border-amber-800/40 bg-amber-50/60 dark:bg-amber-950/30 p-2.5 font-semibold text-zinc-900 dark:text-zinc-100 text-xs leading-relaxed">
                         "
                         {revAct.description?.replace(
                           /^Müşterinin ilettiği revizyon.*?:\s*/,
@@ -2119,16 +2119,16 @@ function QuoteDetailDrawer({
 
             {/* 1. Action Alert / Banner based on status */}
             {quote.status === "PendingApproval" && (
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 shadow-2xs">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-amber-50/80 dark:bg-amber-950/40 p-4 shadow-2xs">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-amber-900 text-xs">
+                    <h4 className="font-bold text-amber-900 dark:text-amber-200 text-xs">
                       Yönetici İskonto / Limit Onayı Bekliyor
                     </h4>
-                    <p className="text-[11px] text-amber-700">
+                    <p className="text-[11px] text-amber-700 dark:text-amber-300/80">
                       Bu teklif iskonto eşiğini aştığı için yönetici onayı
                       gerektirir.
                     </p>
@@ -2146,16 +2146,16 @@ function QuoteDetailDrawer({
             )}
 
             {quote.status === "Accepted" && quote.convertedOrderId && (
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 shadow-2xs">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/80 dark:bg-emerald-950/40 p-4 shadow-2xs">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300">
                     <ShoppingCart className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-emerald-900 text-xs">
+                    <h4 className="font-bold text-emerald-900 dark:text-emerald-200 text-xs">
                       Teklif Kabul Edildi & Siparişe Dönüştü
                     </h4>
-                    <p className="text-[11px] text-emerald-700">
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-300/80">
                       Sipariş No:{" "}
                       <b>{quote.convertedOrderNumber || "Aktif Sipariş"}</b>
                     </p>
@@ -2163,7 +2163,7 @@ function QuoteDetailDrawer({
                 </div>
 
                 <Link
-                  className="flex items-center gap-1.5 rounded-xl border border-emerald-300/60 bg-emerald-100 px-3 py-1.5 font-semibold text-emerald-700 text-xs transition hover:bg-emerald-200 hover:text-emerald-900"
+                  className="flex items-center gap-1.5 rounded-xl border border-emerald-300/60 dark:border-emerald-700/60 bg-emerald-100 dark:bg-emerald-900/60 px-3 py-1.5 font-semibold text-emerald-700 dark:text-emerald-200 text-xs transition hover:bg-emerald-200 dark:hover:bg-emerald-800 hover:text-emerald-900"
                   href={`/${activeTenant?.slug}/orders`}
                 >
                   <span>Siparişe Git</span>
