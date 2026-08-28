@@ -73,23 +73,23 @@ export default function OrderDetailPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Draft":
-        return "bg-slate-100 text-slate-700 border-slate-200";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
       case "PendingApproval":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Confirmed":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Processing":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Shipped":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
       case "Delivered":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "Cancelled":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Refunded":
         return "bg-orange-50 text-orange-700 border-orange-200";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -119,15 +119,15 @@ export default function OrderDetailPage() {
   const getPaymentBadge = (status: string) => {
     switch (status) {
       case "Paid":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "PartiallyPaid":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Unpaid":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Refunded":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -165,10 +165,10 @@ export default function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="font-medium text-slate-500 text-xs">
+          <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
             Sipariş detayları yükleniyor...
           </span>
         </div>
@@ -191,10 +191,10 @@ export default function OrderDetailPage() {
       )}
 
       {/* 1. Header Bar */}
-      <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-4 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
             href={`/${tenantSlug}/orders`}
             title="Siparişlere Dön"
           >
@@ -202,13 +202,13 @@ export default function OrderDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 font-bold text-base text-blue-600 shadow-xs">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 font-bold text-base text-blue-600 shadow-xs">
               <ShoppingCart className="h-6 w-6" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-extrabold text-slate-900 text-xl tracking-tight sm:text-2xl">
+                <h1 className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xl tracking-tight sm:text-2xl">
                   {order.orderNumber}
                 </h1>
                 <span
@@ -226,8 +226,8 @@ export default function OrderDetailPage() {
                   {getPaymentLabel(order.paymentStatus)}
                 </span>
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-slate-500 text-xs">
-                <span className="font-bold text-slate-800">
+              <div className="mt-0.5 flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-xs">
+                <span className="font-bold text-zinc-800 dark:text-zinc-200">
                   {order.customerName}
                 </span>
                 <span>•</span>
@@ -248,12 +248,12 @@ export default function OrderDetailPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-colors hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={handlePrint}
             title="Siparişi Yazdır / PDF"
             type="button"
           >
-            <Printer className="h-3.5 w-3.5 text-slate-500" />
+            <Printer className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>Yazdır / Proforma</span>
           </button>
 
@@ -286,15 +286,15 @@ export default function OrderDetailPage() {
         {/* Left Column: Customer, Delivery, & Financial Summary (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Financial Summary */}
-          <div className="space-y-3 rounded-3xl border border-slate-200/80 bg-white p-5 text-xs shadow-xs">
-            <h3 className="font-bold text-slate-900 text-xs">
+          <div className="space-y-3 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 text-xs shadow-xs">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
               Sipariş Tutarı & Ödeme Özeti
             </h3>
 
-            <div className="space-y-2 border-slate-100 border-b pb-3">
+            <div className="space-y-2 border-zinc-100 dark:border-zinc-800 border-b pb-3">
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">Ara Toplam:</span>
-                <span className="font-semibold text-slate-800">
+                <span className="text-zinc-500 dark:text-zinc-400">Ara Toplam:</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   ₺
                   {order.subtotal.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -315,8 +315,8 @@ export default function OrderDetailPage() {
               )}
 
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">Hesaplanan KDV:</span>
-                <span className="font-semibold text-slate-800">
+                <span className="text-zinc-500 dark:text-zinc-400">Hesaplanan KDV:</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   ₺
                   {order.taxAmount.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -326,8 +326,8 @@ export default function OrderDetailPage() {
 
               {order.shippingFee > 0 && (
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Kargo & Sevkiyat:</span>
-                  <span className="font-semibold text-slate-800">
+                  <span className="text-zinc-500 dark:text-zinc-400">Kargo & Sevkiyat:</span>
+                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                     ₺
                     {order.shippingFee.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -339,7 +339,7 @@ export default function OrderDetailPage() {
 
             {/* Grand Total */}
             <div className="flex items-center justify-between pt-1">
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                 GENEL TOPLAM:
               </span>
               <span className="font-extrabold text-base text-blue-600">
@@ -351,9 +351,9 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Paid & Remaining */}
-            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-50 p-3 pt-2">
+            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3 pt-2">
               <div>
-                <span className="font-medium text-[10px] text-slate-400 uppercase">
+                <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500 uppercase">
                   Tahsil Edilen
                 </span>
                 <div className="font-bold text-emerald-600 text-sm">
@@ -364,14 +364,14 @@ export default function OrderDetailPage() {
                 </div>
               </div>
               <div>
-                <span className="font-medium text-[10px] text-slate-400 uppercase">
+                <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500 uppercase">
                   Kalan Bakiye
                 </span>
                 <div
                   className={`font-bold text-sm ${
                     order.remainingAmount > 0
                       ? "text-rose-600"
-                      : "text-slate-700"
+                      : "text-zinc-700 dark:text-zinc-300"
                   }`}
                 >
                   ₺
@@ -382,36 +382,36 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
-            <div className="flex justify-between pt-1 text-[11px] text-slate-500">
+            <div className="flex justify-between pt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
               <span>Ödeme Yöntemi:</span>
-              <span className="font-semibold text-slate-800">
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {getPaymentMethodLabel(order.paymentMethod)}
               </span>
             </div>
           </div>
 
           {/* Card: Customer & Delivery Info */}
-          <div className="space-y-3 rounded-3xl border border-slate-200/80 bg-white p-5 text-xs shadow-xs">
-            <h3 className="font-bold text-slate-900">
+          <div className="space-y-3 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 text-xs shadow-xs">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
               Müşteri & Sevkiyat Bilgileri
             </h3>
 
-            <div className="space-y-2.5 text-slate-600">
+            <div className="space-y-2.5 text-zinc-600 dark:text-zinc-400">
               <div>
-                <span className="block text-[10px] text-slate-400">
+                <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
                   Müşteri / Firma
                 </span>
-                <span className="font-bold text-slate-900 text-sm">
+                <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                   {order.customerName}
                 </span>
               </div>
 
               {order.shippingAddress && (
                 <div>
-                  <span className="block text-[10px] text-slate-400">
+                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
                     Teslimat Adresi
                   </span>
-                  <p className="mt-0.5 rounded-xl bg-slate-50 p-2.5 text-slate-800 leading-relaxed">
+                  <p className="mt-0.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2.5 text-zinc-800 dark:text-zinc-200 leading-relaxed">
                     {order.shippingAddress}
                   </p>
                 </div>
@@ -419,10 +419,10 @@ export default function OrderDetailPage() {
 
               {order.billingAddress && (
                 <div>
-                  <span className="block text-[10px] text-slate-400">
+                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
                     Fatura Adresi
                   </span>
-                  <p className="mt-0.5 rounded-xl bg-slate-50 p-2.5 text-slate-800 leading-relaxed">
+                  <p className="mt-0.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2.5 text-zinc-800 dark:text-zinc-200 leading-relaxed">
                     {order.billingAddress}
                   </p>
                 </div>
@@ -449,10 +449,10 @@ export default function OrderDetailPage() {
 
               {order.notes && (
                 <div>
-                  <span className="block text-[10px] text-slate-400">
+                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
                     Sipariş Notu
                   </span>
-                  <p className="text-slate-700 italic">{order.notes}</p>
+                  <p className="text-zinc-700 dark:text-zinc-300 italic">{order.notes}</p>
                 </div>
               )}
             </div>
@@ -462,12 +462,12 @@ export default function OrderDetailPage() {
         {/* Right Column: Tabbed Views (Items, Payments, Timeline) (8 Cols) */}
         <div className="space-y-6 lg:col-span-8">
           {/* Pill Tabs */}
-          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
+          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 dark:bg-zinc-800/90 p-1">
             <button
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "items"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() => setActiveTab("items")}
               type="button"
@@ -477,8 +477,8 @@ export default function OrderDetailPage() {
             <button
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "payments"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() => setActiveTab("payments")}
               type="button"
@@ -488,8 +488,8 @@ export default function OrderDetailPage() {
             <button
               className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 activeTab === "timeline"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() => setActiveTab("timeline")}
               type="button"
@@ -500,14 +500,14 @@ export default function OrderDetailPage() {
 
           {/* TAB 1: ORDER ITEMS TABLE */}
           {activeTab === "items" && (
-            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
-              <h4 className="font-bold text-slate-900 text-xs">
+            <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+              <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                 Sipariş Edilen Ürün ve Hizmetler
               </h4>
 
-              <div className="overflow-x-auto rounded-2xl border border-slate-200">
+              <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-slate-200 border-b bg-slate-50 font-medium text-[11px] text-slate-500">
+                  <thead className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                     <tr>
                       <th className="px-3.5 py-3">Kalem / Ürün</th>
                       <th className="px-3 py-3 text-center">Miktar</th>
@@ -519,34 +519,34 @@ export default function OrderDetailPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {order.items.map((item) => (
-                      <tr className="hover:bg-slate-50/60" key={item.id}>
+                      <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={item.id}>
                         <td className="px-3.5 py-3.5">
-                          <div className="font-bold text-slate-900">
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {item.productName}
                           </div>
                           {item.sku && (
-                            <div className="font-mono text-[10px] text-slate-400">
+                            <div className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
                               SKU: {item.sku}
                             </div>
                           )}
                           {item.optionsOrNotes && (
-                            <div className="mt-0.5 text-[10px] text-slate-500 italic">
+                            <div className="mt-0.5 text-[10px] text-zinc-500 dark:text-zinc-400 italic">
                               {item.optionsOrNotes}
                             </div>
                           )}
                         </td>
-                        <td className="px-3 py-3.5 text-center font-extrabold text-slate-900">
+                        <td className="px-3 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
                           {item.quantity} {item.unit}
                         </td>
-                        <td className="px-3 py-3.5 text-right font-medium text-slate-700">
+                        <td className="px-3 py-3.5 text-right font-medium text-zinc-700 dark:text-zinc-300">
                           ₺
                           {item.unitPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}
                         </td>
-                        <td className="px-3 py-3.5 text-center text-slate-600">
+                        <td className="px-3 py-3.5 text-center text-zinc-600 dark:text-zinc-400">
                           %{item.taxRate}
                         </td>
                         <td className="px-3 py-3.5 text-center font-medium text-rose-600">
@@ -554,7 +554,7 @@ export default function OrderDetailPage() {
                             ? `-%${item.discountRate}`
                             : "—"}
                         </td>
-                        <td className="py-3.5 pr-4 pl-3 text-right font-extrabold text-slate-900">
+                        <td className="py-3.5 pr-4 pl-3 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                           ₺
                           {item.totalPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -570,9 +570,9 @@ export default function OrderDetailPage() {
 
           {/* TAB 2: PAYMENTS LIST */}
           {activeTab === "payments" && (
-            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+            <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-900 text-xs">
+                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                   Tahsilat & Ödeme Kayıtları
                 </h4>
                 <PermissionGate permission="Orders.PaymentRecord">
@@ -588,25 +588,25 @@ export default function OrderDetailPage() {
               </div>
 
               {order.payments.length === 0 ? (
-                <div className="rounded-2xl border border-slate-200 border-dashed p-8 text-center text-slate-400 text-xs">
+                <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 border-dashed p-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                   Bu sipariş için henüz tahsilat kaydedilmedi.
                 </div>
               ) : (
                 <div className="space-y-2.5">
                   {order.payments.map((p) => (
                     <div
-                      className="flex items-center justify-between rounded-2xl bg-slate-50 p-3.5 text-xs"
+                      className="flex items-center justify-between rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3.5 text-xs"
                       key={p.id}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
                           <Banknote className="h-4 w-4" />
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900">
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getPaymentMethodLabel(p.paymentMethod)}
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                             {p.referenceNumber
                               ? `Dekont / Ref: ${p.referenceNumber}`
                               : "Referans girilmedi"}
@@ -622,7 +622,7 @@ export default function OrderDetailPage() {
                             minimumFractionDigits: 2,
                           })}
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           {new Date(p.paymentDate).toLocaleDateString("tr-TR")}
                         </div>
                       </div>
@@ -635,43 +635,43 @@ export default function OrderDetailPage() {
 
           {/* TAB 3: TIMELINE & ACTIVITIES */}
           {activeTab === "timeline" && (
-            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
-              <h4 className="font-bold text-slate-900 text-xs">
+            <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+              <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                 Sipariş Yaşam Döngüsü & Etkinlik Defteri
               </h4>
 
               {order.activities.length === 0 ? (
-                <div className="rounded-2xl border border-slate-200 border-dashed p-8 text-center text-slate-400 text-xs">
+                <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 border-dashed p-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                   Etkinlik kaydı bulunmuyor.
                 </div>
               ) : (
-                <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
+                <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-zinc-100 dark:bg-zinc-800">
                   {order.activities.map((act) => (
                     <div
                       className="relative flex items-start gap-3 text-xs"
                       key={act.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-slate-100">
+                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white dark:bg-zinc-900 shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
                         {act.activityType === "StatusChange" ? (
                           <RotateCcw className="h-3.5 w-3.5 text-blue-600" />
                         ) : act.activityType === "PaymentAdded" ? (
                           <Banknote className="h-3.5 w-3.5 text-emerald-600" />
                         ) : (
-                          <CheckCircle2 className="h-3.5 w-3.5 text-slate-600" />
+                          <CheckCircle2 className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
                         )}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
+                      <div className="flex-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900">
+                          <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {act.title}
                           </span>
-                          <span className="font-medium text-[10px] text-slate-400">
+                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
                         {act.description && (
-                          <p className="mt-1 rounded-xl bg-slate-50 p-2 text-[11px] text-slate-600 leading-relaxed">
+                          <p className="mt-1 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2 text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
                             {act.description}
                           </p>
                         )}
@@ -764,14 +764,14 @@ function ChangeStatusModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
-          <h3 className="font-bold text-base text-slate-900">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Sipariş Durumunu Değiştir
           </h3>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -781,11 +781,11 @@ function ChangeStatusModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Yeni Aşama / Durum *
             </label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-bold text-slate-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none"
               onChange={(e) => setNewStatus(e.target.value)}
               value={newStatus}
             >
@@ -801,11 +801,11 @@ function ChangeStatusModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Açıklama / Durum Notu
             </label>
             <textarea
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-900 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2.5 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Örn: Müşteri arandı, sevkiyat yarın yola çıkacak..."
               rows={3}
@@ -813,9 +813,9 @@ function ChangeStatusModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -890,19 +890,19 @@ function AddPaymentModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Tahsilat Kaydet
             </h3>
-            <p className="max-w-xs truncate text-slate-500 text-xs">
+            <p className="max-w-xs truncate text-zinc-500 dark:text-zinc-400 text-xs">
               {order.orderNumber} - {order.customerName}
             </p>
           </div>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -925,11 +925,11 @@ function AddPaymentModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Tahsil Edilen Tutar (₺) *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 font-extrabold text-slate-900 text-sm focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2.5 font-extrabold text-zinc-900 dark:text-zinc-100 text-sm focus:bg-white dark:bg-zinc-900 focus:outline-none"
               min="0.01"
               onChange={(e) =>
                 setAmount(Number.parseFloat(e.target.value) || 0)
@@ -942,11 +942,11 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Ödeme Yöntemi
             </label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) => setPaymentMethod(e.target.value)}
               value={paymentMethod}
             >
@@ -959,11 +959,11 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Dekont / İşlem Referans No
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) => setReferenceNumber(e.target.value)}
               placeholder="Örn: TR849000..."
               type="text"
@@ -972,11 +972,11 @@ function AddPaymentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Tahsilat Notu
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Örn: Kalan bakiyenin ilk taksiti..."
               type="text"
@@ -984,9 +984,9 @@ function AddPaymentModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

@@ -1,3 +1,4 @@
+/* Hallmark · component: shortcuts-help-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { HelpCircle, Keyboard, X } from "lucide-react";
@@ -19,7 +20,7 @@ export function ShortcutsHelpModal({
     {
       items: [
         { keys: ["⌘", "K"], label: "Komut Paleti / Hızlı Arama (veya Ctrl+K)" },
-        { keys: ["/"], label: "Arama Çubuğuna Odaklan" },
+        { keys: ["/"], label: "Komut Paletini Aç" },
         { keys: ["?"], label: "Klavye Kısayolları Kılavuzu" },
         { keys: ["Esc"], label: "Açık Modalı / Menüyü Kapat" },
       ],
@@ -28,22 +29,25 @@ export function ShortcutsHelpModal({
     {
       items: [
         { keys: ["G", "D"], label: "Dashboard / Ana Sayfa" },
-        { keys: ["G", "M"], label: "Müşteriler" },
-        { keys: ["G", "S"], label: "Siparişler" },
+        { keys: ["G", "P"], label: "Fırsatlar & Pipeline" },
+        { keys: ["G", "Q"], label: "Teklifler" },
+        { keys: ["G", "M"], label: "Müşteriler (veya G+C)" },
+        { keys: ["G", "S"], label: "Siparişler (veya G+O)" },
         { keys: ["G", "U"], label: "Ürün & Hizmetler" },
-        { keys: ["G", "I"], label: "İzinler & Takvim" },
-        { keys: ["G", "V"], label: "Vardiya & PDKS" },
+        { keys: ["G", "I"], label: "İzinler & Takvim (veya G+L)" },
+        { keys: ["G", "V"], label: "Vardiya & PDKS (veya G+T)" },
         { keys: ["G", "B"], label: "Bordro & Maaşlar" },
         { keys: ["G", "O"], label: "Organizasyon" },
-        { keys: ["G", "A"], label: "Ayarlar" },
+        { keys: ["G", "A"], label: "Şirket Ayarları (veya G+S)" },
       ],
       title: "Hızlı Sayfa Geçişleri (Sırasıyla)",
     },
     {
       items: [
-        { keys: ["N", "M"], label: "Yeni Müşteri Ekle" },
-        { keys: ["N", "S"], label: "Yeni Sipariş Oluştur" },
-        { keys: ["N", "I"], label: "Yeni İzin Talebi" },
+        { keys: ["N", "M"], label: "Yeni Müşteri Ekle (veya N+C)" },
+        { keys: ["N", "D"], label: "Yeni Fırsat Başlat" },
+        { keys: ["N", "Q"], label: "Yeni Teklif Hazırla" },
+        { keys: ["N", "I"], label: "Yeni İzin Talebi (veya N+L)" },
         { keys: ["N", "U"], label: "Yeni Ürün / Hizmet Ekle" },
       ],
       title: "Hızlı Eylemler (Sırasıyla)",
@@ -51,25 +55,25 @@ export function ShortcutsHelpModal({
   ];
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-3xl border border-slate-200/80 bg-white p-6 text-xs shadow-2xl">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/70 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-2xl border border-zinc-200/80 bg-white p-5 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
+        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3.5 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-              <Keyboard className="h-5 w-5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+              <Keyboard className="h-4.5 w-4.5" />
             </div>
             <div>
-              <h3 className="font-bold text-base text-slate-900">
+              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Klavye Kısayolları Kılavuzu
               </h3>
-              <p className="text-slate-500 text-xs">
+              <p className="text-zinc-500 text-[11px] dark:text-zinc-400">
                 CRM içinde hızlı ve etkili gezinme için klavye komutları
               </p>
             </div>
           </div>
           <button
-            className="rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={onClose}
             type="button"
           >
@@ -78,25 +82,25 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Content */}
-        <div className="flex-1 space-y-5 overflow-y-auto pr-1">
+        <div className="flex-1 space-y-4 overflow-y-auto pr-1">
           {shortcutSections.map((section) => (
-            <div className="space-y-2" key={section.title}>
-              <div className="font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+            <div className="space-y-1.5" key={section.title}>
+              <div className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                 {section.title}
               </div>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
                 {section.items.map((item, idx) => (
                   <div
-                    className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2"
+                    className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/70 px-3 py-2 dark:border-zinc-800/80 dark:bg-zinc-800/40"
                     key={idx}
                   >
-                    <span className="font-medium text-slate-700 text-xs">
+                    <span className="font-medium text-zinc-700 text-xs dark:text-zinc-300">
                       {item.label}
                     </span>
                     <div className="ml-2 flex shrink-0 items-center gap-1">
                       {item.keys.map((k, kIdx) => (
                         <kbd
-                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-slate-200 bg-white px-1.5 font-bold font-mono text-[10px] text-slate-700 shadow-2xs"
+                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-zinc-200 bg-white px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                           key={kIdx}
                         >
                           {k}
@@ -111,16 +115,16 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-4 text-[11px] text-slate-400">
+        <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
           <div className="flex items-center gap-1.5">
-            <HelpCircle className="h-3.5 w-3.5 text-blue-600" />
+            <HelpCircle className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
             <span>
               Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu
-              pencereyi açabilirsiniz.
+              kılavuzu açabilirsiniz.
             </span>
           </div>
           <button
-            className="rounded-xl border border-slate-200 bg-white px-4 py-1.5 font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+            className="rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={onClose}
             type="button"
           >

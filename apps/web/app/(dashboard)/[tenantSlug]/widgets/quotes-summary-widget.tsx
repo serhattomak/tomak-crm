@@ -1,3 +1,4 @@
+/* Hallmark · component: quotes-summary · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { ArrowRight, FileSpreadsheet, Plus } from "lucide-react";
@@ -76,17 +77,17 @@ export function QuotesSummaryWidget() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "RevisionRequested":
-        return "bg-amber-100 text-amber-800 border-amber-300 font-bold animate-pulse";
+        return "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800 font-bold animate-pulse";
       case "Accepted":
-        return "bg-emerald-100 text-emerald-800 border-emerald-300 font-bold";
+        return "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800 font-bold";
       case "Sent":
-        return "bg-blue-100 text-blue-800 border-blue-300";
+        return "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "PendingApproval":
-        return "bg-purple-100 text-purple-800 border-purple-300";
+        return "bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Rejected":
-        return "bg-rose-100 text-rose-800 border-rose-300";
+        return "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       default:
-        return "bg-slate-100 text-slate-700 border-slate-200";
+        return "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
     }
   };
 
@@ -108,18 +109,18 @@ export function QuotesSummaryWidget() {
   };
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs transition-all hover:border-slate-300">
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-2xs">
-              <FileSpreadsheet className="h-4.5 w-4.5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+              <FileSpreadsheet className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
                 Teklif Yönetimi & Süreçler
               </span>
-              <div className="font-medium text-[11px] text-slate-500">
+              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 {quoteStats
                   ? `${quoteStats.totalQuotes} Toplam Teklif · ₺${Number(quoteStats.activeProposalsVolume || 0).toLocaleString("tr-TR")} Hacim`
                   : "Güncel tekliflerin durumları"}
@@ -128,7 +129,7 @@ export function QuotesSummaryWidget() {
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-amber-600 text-xs transition hover:text-amber-700"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             <span>Tekliflere Git</span>
@@ -137,28 +138,28 @@ export function QuotesSummaryWidget() {
         </div>
 
         {/* Quick Stats Pills */}
-        <div className="mb-4 grid grid-cols-3 gap-2">
-          <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-2.5 text-center">
-            <span className="block font-semibold text-[10px] text-slate-400 uppercase">
+        <div className="mb-3.5 grid grid-cols-3 gap-2">
+          <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-2 text-center dark:border-zinc-800/80 dark:bg-zinc-800/50">
+            <span className="block font-semibold text-[9px] text-zinc-400 uppercase dark:text-zinc-500">
               Onay Bekleyen
             </span>
-            <span className="font-extrabold text-purple-700 text-sm">
+            <span className="font-bold text-purple-600 text-xs dark:text-purple-400">
               {quoteStats?.pendingApprovalCount ?? 0}
             </span>
           </div>
-          <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-2.5 text-center">
-            <span className="block font-semibold text-[10px] text-slate-400 uppercase">
+          <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-2 text-center dark:border-zinc-800/80 dark:bg-zinc-800/50">
+            <span className="block font-semibold text-[9px] text-zinc-400 uppercase dark:text-zinc-500">
               Müşteride
             </span>
-            <span className="font-extrabold text-blue-700 text-sm">
+            <span className="font-bold text-blue-600 text-xs dark:text-blue-400">
               {quoteStats?.sentCount ?? 0}
             </span>
           </div>
-          <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-2.5 text-center">
-            <span className="block font-semibold text-[10px] text-slate-400 uppercase">
+          <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-2 text-center dark:border-zinc-800/80 dark:bg-zinc-800/50">
+            <span className="block font-semibold text-[9px] text-zinc-400 uppercase dark:text-zinc-500">
               Kabul Edilen
             </span>
-            <span className="font-extrabold text-emerald-700 text-sm">
+            <span className="font-bold text-emerald-600 text-xs dark:text-emerald-400">
               {quoteStats?.acceptedCount ?? 0}
             </span>
           </div>
@@ -166,21 +167,21 @@ export function QuotesSummaryWidget() {
 
         {/* List of Quotes */}
         {isLoading ? (
-          <div className="space-y-2.5 py-2">
+          <div className="space-y-2 py-2">
             {[1, 2, 3].map((i) => (
               <div
-                className="h-10 w-full animate-pulse rounded-xl bg-slate-50"
+                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
                 key={i}
               />
             ))}
           </div>
         ) : quotes.length === 0 ? (
           <div className="py-6 text-center">
-            <p className="font-semibold text-slate-500 text-xs">
+            <p className="font-semibold text-zinc-500 text-xs dark:text-zinc-400">
               Kayıtlı teklif bulunamadı.
             </p>
             <Link
-              className="mt-2 inline-flex items-center gap-1 font-bold text-amber-600 text-xs hover:text-amber-700"
+              className="mt-2 inline-flex items-center gap-1 font-bold text-violet-600 text-xs hover:text-violet-700 dark:text-violet-400"
               href={`/${activeTenant?.slug || "workspace"}/quotes`}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -188,33 +189,33 @@ export function QuotesSummaryWidget() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {quotes.map((q) => (
               <div
-                className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/40 p-2.5 transition-colors hover:bg-slate-50"
+                className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-2.5 transition-colors hover:bg-zinc-50 dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70"
                 key={q.id}
               >
                 <div className="truncate pr-2">
-                  <div className="flex items-center gap-1.5 font-bold text-slate-900 text-xs">
-                    <span className="font-mono text-slate-500">
+                  <div className="flex items-center gap-1.5 font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                    <span className="font-mono text-zinc-400 dark:text-zinc-500 text-[11px]">
                       {q.quoteNumber} (R{q.revisionNumber})
                     </span>
                     <span className="truncate">{q.title}</span>
                   </div>
-                  <div className="mt-0.5 truncate font-medium text-[11px] text-slate-500">
+                  <div className="mt-0.5 truncate font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                     {q.customerName}
                   </div>
                 </div>
 
-                <div className="flex flex-none items-center gap-2.5">
-                  <span className="font-extrabold text-slate-900 text-xs">
+                <div className="flex flex-none items-center gap-2">
+                  <span className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
                     ₺
                     {q.totalAmount.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
                     })}
                   </span>
                   <span
-                    className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getStatusBadge(q.status)}`}
+                    className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] ${getStatusBadge(q.status)}`}
                   >
                     {getStatusLabel(q.status)}
                   </span>
@@ -225,9 +226,9 @@ export function QuotesSummaryWidget() {
         )}
       </div>
 
-      <div className="mt-4 border-slate-100 border-t pt-3 text-center">
+      <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
         <Link
-          className="inline-flex items-center gap-1.5 font-bold text-amber-600 text-xs transition hover:text-amber-700"
+          className="inline-flex items-center gap-1.5 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
           href={`/${activeTenant?.slug || "workspace"}/quotes`}
         >
           <Plus className="h-3.5 w-3.5" />

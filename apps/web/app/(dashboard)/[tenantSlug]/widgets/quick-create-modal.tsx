@@ -1,3 +1,4 @@
+/* Hallmark · component: quick-create-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { DatePicker } from "@workspace/ui/components/date-picker";
@@ -11,23 +12,29 @@ import {
 } from "@workspace/ui/components/select";
 import {
   Briefcase,
+  Calendar,
   Check,
   CheckSquare,
   FileText,
   Loader2,
+  Package,
+  Palmtree,
+  User,
   UserPlus,
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PhoneInput } from "@/components/phone-input";
 import { ApiClient } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+import type { QuickActionType } from "./quick-actions-widget";
 
 interface QuickCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (message: string) => void;
-  type: "lead" | "deal" | "task" | "proposal" | null;
+  type: QuickActionType | null;
 }
 
 export function QuickCreateModal({
@@ -72,23 +79,27 @@ export function QuickCreateModal({
     setIsSubmitting(true);
 
     try {
-      if (type === "lead") {
+      if (type === "lead" || type === "customer") {
         if (activeTenant?.id) {
           const res = await ApiClient.createCustomer(
             {
               email: formData.email,
               name: formData.title,
               phone: formData.phone,
-              status: "Lead",
+              status: type === "lead" ? "Lead" : "Active",
               tier: "Standard",
               type: formData.company ? "Company" : "Individual",
             },
             activeTenant.id
           );
           if (res.success) {
-            onSuccess("Müşteri adayı (Lead) başarıyla kaydedildi!");
+            onSuccess(
+              type === "lead"
+                ? "Müşteri adayı (Lead) başarıyla kaydedildi!"
+                : "Müşteri kaydı başarıyla oluşturuldu!"
+            );
           } else {
-            onSuccess(res.message || "Aday kaydedildi.");
+            onSuccess(res.message || "Kayıt tamamlandı.");
           }
         }
       } else if (type === "deal") {
@@ -122,6 +133,16 @@ export function QuickCreateModal({
         onClose();
         router.push(`/${activeTenant?.slug || "workspace"}/quotes`);
         return;
+      } else if (type === "order") {
+        onSuccess("Siparişler ekranına yönlendiriliyorsunuz...");
+        onClose();
+        router.push(`/${activeTenant?.slug || "workspace"}/orders`);
+        return;
+      } else if (type === "leave") {
+        onSuccess("İzin talep ekranına yönlendiriliyorsunuz...");
+        onClose();
+        router.push(`/${activeTenant?.slug || "workspace"}/leaves?create=true`);
+        return;
       } else {
         onSuccess("Görev başarıyla eklendi!");
       }
@@ -149,59 +170,69 @@ export function QuickCreateModal({
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b p-4 sm:p-5">
+        <div className="flex shrink-0 items-center justify-between border-b border-zinc-100 p-4 sm:p-5 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-              {type === "lead" && <UserPlus className="h-5 w-5" />}
-              {type === "deal" && <Briefcase className="h-5 w-5" />}
-              {type === "task" && <CheckSquare className="h-5 w-5" />}
-              {type === "proposal" && <FileText className="h-5 w-5" />}
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+              {type === "lead" && <UserPlus className="h-4.5 w-4.5" />}
+              {type === "deal" && <Briefcase className="h-4.5 w-4.5" />}
+              {type === "task" && <CheckSquare className="h-4.5 w-4.5" />}
+              {type === "proposal" && <FileText className="h-4.5 w-4.5" />}
+              {type === "customer" && <User className="h-4.5 w-4.5" />}
+              {type === "order" && <Package className="h-4.5 w-4.5" />}
+              {type === "meeting" && <Calendar className="h-4.5 w-4.5" />}
+              {type === "leave" && <Palmtree className="h-4.5 w-4.5" />}
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-slate-900 text-sm">
+              <h2 className="truncate font-bold text-zinc-900 text-sm dark:text-zinc-100">
                 {type === "lead" && "Hızlı Müşteri Adayı (Lead) Ekle"}
                 {type === "deal" && "Yeni Satış Fırsatı Oluştur"}
                 {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
                 {type === "proposal" && "Yeni Teklif Taslağı Başlat"}
+                {type === "customer" && "Yeni Müşteri Ekle"}
+                {type === "order" && "Yeni Sipariş Oluştur"}
+                {type === "meeting" && "Randevu & Toplantı Planla"}
+                {type === "leave" && "Yeni İzin Talebi"}
               </h2>
-              <p className="truncate text-slate-500 text-xs">
+              <p className="truncate text-zinc-500 text-xs dark:text-zinc-400">
                 Temel bilgileri girerek saniyeler içinde kaydedin
               </p>
             </div>
           </div>
           <button
-            className="shrink-0 rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100"
+            className="shrink-0 rounded-xl p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={onClose}
             type="button"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Form Body */}
         <form
-          className="flex-1 space-y-4 overflow-y-auto p-6"
+          className="flex-1 space-y-4 overflow-y-auto p-5"
           onSubmit={handleSubmit}
         >
           <div className="space-y-3">
             {/* Title / Name */}
             <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                {type === "lead" ? "Aday Adı & Soyadı *" : "Başlık / İsim *"}
+              <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                {type === "lead" || type === "customer"
+                  ? "Ad & Soyad / Müşteri Adı *"
+                  : "Başlık / İsim *"}
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
                 placeholder={
-                  type === "lead"
+                  type === "lead" || type === "customer"
                     ? "Örn: Ahmet Yılmaz"
                     : "Örn: ERP Yazılım Lisans Satışı"
                 }
@@ -213,11 +244,11 @@ export function QuickCreateModal({
 
             {/* Company */}
             <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
+              <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                 Firma / Kuruluş
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 onChange={(e) =>
                   setFormData({ ...formData, company: e.target.value })
                 }
@@ -228,10 +259,10 @@ export function QuickCreateModal({
             </div>
 
             {/* Value & Dates */}
-            {(type === "deal" || type === "proposal") && (
+            {(type === "deal" || type === "proposal" || type === "order") && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     Tahmini Tutar (₺)
                   </label>
                   <NumberInput
@@ -243,7 +274,7 @@ export function QuickCreateModal({
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     Kapanış Tarihi
                   </label>
                   <DatePicker
@@ -256,15 +287,15 @@ export function QuickCreateModal({
               </div>
             )}
 
-            {/* Lead Specific: Contact */}
-            {type === "lead" && (
+            {/* Lead & Customer Specific: Contact */}
+            {(type === "lead" || type === "customer") && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     E-Posta Adresi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
@@ -274,16 +305,14 @@ export function QuickCreateModal({
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     Telefon Numarası
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
+                  <PhoneInput
+                    onChange={(val) =>
+                      setFormData({ ...formData, phone: val })
                     }
-                    placeholder="+90 555 ..."
-                    type="tel"
+                    placeholder="+90 (5XX) XXX XX XX"
                     value={formData.phone}
                   />
                 </div>
@@ -294,7 +323,7 @@ export function QuickCreateModal({
             {type === "task" && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     Öncelik Seviyesi
                   </label>
                   <Select
@@ -315,7 +344,7 @@ export function QuickCreateModal({
                   </Select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700 text-xs">
+                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
                     Teslim Tarihi
                   </label>
                   <DatePicker
@@ -330,16 +359,16 @@ export function QuickCreateModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t p-5">
+          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs transition-colors hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-semibold text-zinc-600 text-xs transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-violet-700 active:scale-95 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >

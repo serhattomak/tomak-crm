@@ -214,7 +214,7 @@ export default function TicketsDashboardPage() {
         );
       case "Low":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 font-medium text-[11px] text-slate-600">
+          <span className="inline-flex items-center gap-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-2 py-0.5 font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
             Düşük
           </span>
         );
@@ -265,13 +265,13 @@ export default function TicketsDashboardPage() {
         );
       case "Closed":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-slate-100 px-2.5 py-0.5 font-medium text-[11px] text-slate-700">
+          <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
             Kapatıldı
           </span>
         );
       default:
         return (
-          <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-slate-600">
+          <span className="rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-2 py-0.5 text-xs text-zinc-600 dark:text-zinc-400">
             {status}
           </span>
         );
@@ -298,10 +298,10 @@ export default function TicketsDashboardPage() {
               <LifeBuoy className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-2xl text-slate-900 tracking-tight">
+              <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
                 Destek Masası & Talepler
               </h1>
-              <p className="text-slate-500 text-xs sm:text-sm">
+              <p className="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
                 Müşteri yardım biletleri, SLA süreleri ve çok kanallı iletişim yönetimi
               </p>
             </div>
@@ -310,13 +310,13 @@ export default function TicketsDashboardPage() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* View Switcher */}
-          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-100/80 p-1 shadow-2xs">
+          <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/80 p-1 shadow-2xs">
             <button
               onClick={() => setViewMode("table")}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
                 viewMode === "table"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               type="button"
             >
@@ -327,8 +327,8 @@ export default function TicketsDashboardPage() {
               onClick={() => setViewMode("kanban")}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
                 viewMode === "kanban"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               type="button"
             >
@@ -341,7 +341,7 @@ export default function TicketsDashboardPage() {
             variant="outline"
             size="sm"
             onClick={() => loadData()}
-            className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           </Button>
@@ -358,24 +358,24 @@ export default function TicketsDashboardPage() {
 
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-500 text-xs">Toplam Açık Talep</span>
+            <span className="font-semibold text-zinc-500 dark:text-zinc-400 text-xs">Toplam Açık Talep</span>
             <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
               <FolderOpen className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-slate-900 tracking-tight">
+            <span className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
               {stats?.totalOpenTickets ?? 0}
             </span>
-            <span className="text-slate-400 text-xs">({stats?.newTickets ?? 0} yeni)</span>
+            <span className="text-zinc-400 dark:text-zinc-500 text-xs">({stats?.newTickets ?? 0} yeni)</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-500 text-xs">Yanıt Bekleyenler</span>
+            <span className="font-semibold text-zinc-500 dark:text-zinc-400 text-xs">Yanıt Bekleyenler</span>
             <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
               <Clock className="h-4 w-4" />
             </div>
@@ -388,9 +388,9 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-500 text-xs">SLA Aşımı / Risk</span>
+            <span className="font-semibold text-zinc-500 dark:text-zinc-400 text-xs">SLA Aşımı / Risk</span>
             <div className="rounded-xl bg-red-50 p-2 text-red-600">
               <Flame className="h-4 w-4 animate-pulse" />
             </div>
@@ -403,9 +403,9 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-500 text-xs">SLA Başarı Oranı</span>
+            <span className="font-semibold text-zinc-500 dark:text-zinc-400 text-xs">SLA Başarı Oranı</span>
             <div className="rounded-xl bg-emerald-50 p-2 text-emerald-600">
               <CheckCircle2 className="h-4 w-4" />
             </div>
@@ -422,7 +422,7 @@ export default function TicketsDashboardPage() {
       {/* 3. Queue Tabs & Filter Bar */}
       <div className="space-y-3">
         {/* Queues */}
-        <div className="flex items-center gap-1.5 overflow-x-auto border-slate-200 border-b pb-2 text-xs scrollbar-none">
+        <div className="flex items-center gap-1.5 overflow-x-auto border-zinc-200 dark:border-zinc-800 border-b pb-2 text-xs scrollbar-none">
           {[
             { id: "all", label: "Tüm Talepler", count: stats?.totalTickets },
             { id: "my", label: "Bana Atananlar" },
@@ -436,7 +436,7 @@ export default function TicketsDashboardPage() {
               className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-medium transition-all ${
                 activeQueue === q.id
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "bg-slate-100/80 text-slate-600 hover:bg-slate-200/70 hover:text-slate-900"
+                  : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/70 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               type="button"
             >
@@ -445,8 +445,8 @@ export default function TicketsDashboardPage() {
                 <span
                   className={`rounded-full px-1.5 py-0.2 font-bold text-[10px] ${
                     activeQueue === q.id
-                      ? "bg-white/20 text-white"
-                      : q.badgeColor || "bg-slate-200 text-slate-700"
+                      ? "bg-white dark:bg-zinc-900/20 text-white"
+                      : q.badgeColor || "bg-slate-200 text-zinc-700 dark:text-zinc-300"
                   }`}
                 >
                   {q.count}
@@ -459,18 +459,18 @@ export default function TicketsDashboardPage() {
         {/* Filter Controls */}
         <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Bilet no (#TICK-1001), müşteri adı veya konu ara..."
-              className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-              <SelectTrigger className="h-9 w-[130px] rounded-xl border-slate-200 bg-white text-xs">
+              <SelectTrigger className="h-9 w-[130px] rounded-xl border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs">
                 <SelectValue placeholder="Durum" />
               </SelectTrigger>
               <SelectContent>
@@ -484,7 +484,7 @@ export default function TicketsDashboardPage() {
             </Select>
 
             <Select value={selectedPriority} onValueChange={setSelectedPriority}>
-              <SelectTrigger className="h-9 w-[120px] rounded-xl border-slate-200 bg-white text-xs">
+              <SelectTrigger className="h-9 w-[120px] rounded-xl border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs">
                 <SelectValue placeholder="Öncelik" />
               </SelectTrigger>
               <SelectContent>
@@ -497,7 +497,7 @@ export default function TicketsDashboardPage() {
             </Select>
 
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="h-9 w-[130px] rounded-xl border-slate-200 bg-white text-xs">
+              <SelectTrigger className="h-9 w-[130px] rounded-xl border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs">
                 <SelectValue placeholder="Kategori" />
               </SelectTrigger>
               <SelectContent>
@@ -516,17 +516,17 @@ export default function TicketsDashboardPage() {
 
       {/* 4. Main View (Table vs. Kanban) */}
       {isLoading ? (
-        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200/80 bg-white p-8">
+        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-8">
           <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-          <span className="font-medium text-slate-500 text-sm">Destek biletleri yükleniyor...</span>
+          <span className="font-medium text-zinc-500 dark:text-zinc-400 text-sm">Destek biletleri yükleniyor...</span>
         </div>
       ) : tickets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-12 text-center">
           <div className="rounded-2xl bg-blue-50 p-4 text-blue-600">
             <LifeBuoy className="h-8 w-8" />
           </div>
-          <h3 className="mt-4 font-semibold text-base text-slate-900">Destek Talebi Bulunamadı</h3>
-          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+          <h3 className="mt-4 font-semibold text-base text-zinc-900 dark:text-zinc-100">Destek Talebi Bulunamadı</h3>
+          <p className="mt-1 max-w-sm text-zinc-500 dark:text-zinc-400 text-xs">
             Seçili filtrelere uygun destek talebi bulunmuyor. Yeni bir bilet oluşturabilir veya filtreleri temizleyebilirsiniz.
           </p>
           <Button
@@ -539,10 +539,10 @@ export default function TicketsDashboardPage() {
         </div>
       ) : viewMode === "table" ? (
         /* TABLE VIEW */
-        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-200/80 border-b bg-slate-50/75 font-semibold text-slate-600">
+              <thead className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50/75 font-semibold text-zinc-600 dark:text-zinc-400">
                 <tr>
                   <th className="px-4 py-3.5">Talep No & Konu</th>
                   <th className="px-4 py-3.5">Müşteri</th>
@@ -554,12 +554,12 @@ export default function TicketsDashboardPage() {
                   <th className="px-4 py-3.5 text-right">İşlem</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {tickets.map((t) => (
                   <tr
                     key={t.id}
                     onClick={() => router.push(`/${tenantSlug}/tickets/${t.id}`)}
-                    className="group cursor-pointer transition-colors hover:bg-slate-50/80"
+                    className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
                   >
                     <td className="px-4 py-3.5">
                       <div className="space-y-1">
@@ -567,7 +567,7 @@ export default function TicketsDashboardPage() {
                           <span className="font-bold text-blue-600 text-xs group-hover:underline">
                             #{t.ticketNumber}
                           </span>
-                          <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-[10px] text-slate-600">
+                          <span className="rounded-md bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:text-zinc-400">
                             {t.category}
                           </span>
                           {t.linkedEntityTitle && (
@@ -577,16 +577,16 @@ export default function TicketsDashboardPage() {
                             </span>
                           )}
                         </div>
-                        <p className="font-semibold text-slate-800 text-xs line-clamp-1">
+                        <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-xs line-clamp-1">
                           {t.subject}
                         </p>
                       </div>
                     </td>
 
                     <td className="px-4 py-3.5">
-                      <div className="font-medium text-slate-800">{t.customerName}</div>
+                      <div className="font-medium text-zinc-800 dark:text-zinc-200">{t.customerName}</div>
                       {t.customerEmail && (
-                        <div className="text-[11px] text-slate-400">{t.customerEmail}</div>
+                        <div className="text-[11px] text-zinc-400 dark:text-zinc-500">{t.customerEmail}</div>
                       )}
                     </td>
 
@@ -596,10 +596,10 @@ export default function TicketsDashboardPage() {
 
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-1.5">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 font-bold text-[10px] text-slate-600">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
                           {t.assignedUserName ? t.assignedUserName.charAt(0).toUpperCase() : "?"}
                         </div>
-                        <span className="font-medium text-slate-700 text-xs">
+                        <span className="font-medium text-zinc-700 dark:text-zinc-300 text-xs">
                           {t.assignedUserName || "Atanmamış"}
                         </span>
                       </div>
@@ -612,20 +612,20 @@ export default function TicketsDashboardPage() {
                           SLA Aşıldı
                         </span>
                       ) : t.slaResolutionDueAt ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
-                          <Timer className="h-3 w-3 text-slate-400" />
+                        <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                          <Timer className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
                           {new Date(t.slaResolutionDueAt).toLocaleTimeString("tr-TR", {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
                       ) : (
-                        <span className="text-slate-400 text-xs">-</span>
+                        <span className="text-zinc-400 dark:text-zinc-500 text-xs">-</span>
                       )}
                     </td>
 
                     <td className="px-4 py-3.5">
-                      <div className="flex items-center gap-1 text-slate-500">
+                      <div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
                         <MessageSquare className="h-3.5 w-3.5" />
                         <span>{t.messageCount}</span>
                       </div>
@@ -635,7 +635,7 @@ export default function TicketsDashboardPage() {
                       <Link
                         href={`/${tenantSlug}/tickets/${t.id}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-slate-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+                        className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-zinc-600 dark:text-zinc-400 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
                       >
                         <span>Detay</span>
                         <ExternalLink className="h-3 w-3" />
@@ -662,15 +662,15 @@ export default function TicketsDashboardPage() {
             return (
               <div
                 key={col.id}
-                className={`flex flex-col rounded-2xl border border-slate-200/80 ${col.bg} p-3.5 shadow-2xs min-h-[500px]`}
+                className={`flex flex-col rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 ${col.bg} p-3.5 shadow-2xs min-h-[500px]`}
               >
                 {/* Column Header */}
-                <div className="flex items-center justify-between border-slate-200/80 border-b pb-2.5">
+                <div className="flex items-center justify-between border-zinc-200/80 dark:border-zinc-800/90 border-b pb-2.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-800 text-xs tracking-tight">
+                    <span className="font-bold text-zinc-800 dark:text-zinc-200 text-xs tracking-tight">
                       {col.title}
                     </span>
-                    <span className="rounded-full bg-white px-2 py-0.5 font-bold text-[10px] text-slate-600 shadow-2xs">
+                    <span className="rounded-full bg-white dark:bg-zinc-900 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400 shadow-2xs">
                       {colTickets.length}
                     </span>
                   </div>
@@ -679,7 +679,7 @@ export default function TicketsDashboardPage() {
                 {/* Column Cards */}
                 <div className="mt-3 flex-1 space-y-3 overflow-y-auto">
                   {colTickets.length === 0 ? (
-                    <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-slate-200/80 p-4 text-center text-slate-400 text-xs">
+                    <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-zinc-200/80 dark:border-zinc-800/90 p-4 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                       Bu aşamada talep yok
                     </div>
                   ) : (
@@ -687,7 +687,7 @@ export default function TicketsDashboardPage() {
                       <div
                         key={ticket.id}
                         onClick={() => router.push(`/${tenantSlug}/tickets/${ticket.id}`)}
-                        className="group cursor-pointer rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md"
+                        className="group cursor-pointer rounded-xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-3.5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md"
                       >
                         <div className="flex items-start justify-between gap-2">
                           <span className="font-bold text-blue-600 text-xs">
@@ -696,16 +696,16 @@ export default function TicketsDashboardPage() {
                           {getPriorityBadge(ticket.priority)}
                         </div>
 
-                        <h4 className="mt-1.5 font-semibold text-slate-900 text-xs line-clamp-2 group-hover:text-blue-600">
+                        <h4 className="mt-1.5 font-semibold text-zinc-900 dark:text-zinc-100 text-xs line-clamp-2 group-hover:text-blue-600">
                           {ticket.subject}
                         </h4>
 
-                        <div className="mt-2.5 flex items-center justify-between border-slate-100 border-t pt-2 text-[11px] text-slate-500">
-                          <span className="font-medium text-slate-700 truncate max-w-[120px]">
+                        <div className="mt-2.5 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                          <span className="font-medium text-zinc-700 dark:text-zinc-300 truncate max-w-[120px]">
                             {ticket.customerName}
                           </span>
                           <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-0.5 text-slate-400">
+                            <span className="flex items-center gap-0.5 text-zinc-400 dark:text-zinc-500">
                               <MessageSquare className="h-3 w-3" />
                               {ticket.messageCount}
                             </span>
@@ -727,20 +727,20 @@ export default function TicketsDashboardPage() {
       {/* 5. Create Ticket Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-slate-100 border-b pb-3">
+          <div className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Plus className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-slate-900">Yeni Destek Talebi Aç</h3>
-                  <p className="text-slate-500 text-xs">Müşteri adına yeni bir yardım bileti oluşturun</p>
+                  <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Yeni Destek Talebi Aç</h3>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Müşteri adına yeni bir yardım bileti oluşturun</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-full p-1 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -750,14 +750,14 @@ export default function TicketsDashboardPage() {
             <form onSubmit={handleCreateTicket} className="mt-4 space-y-4 text-xs">
               {/* Customer Selector */}
               <div>
-                <label className="mb-1 block font-semibold text-slate-700">
+                <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                   Müşteri <span className="text-red-500">*</span>
                 </label>
                 <Select
                   value={newTicket.customerId || ""}
                   onValueChange={(val) => setNewTicket((prev) => ({ ...prev, customerId: val }))}
                 >
-                  <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                  <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                     <SelectValue placeholder="Müşteri seçin..." />
                   </SelectTrigger>
                   <SelectContent className="max-h-56">
@@ -772,7 +772,7 @@ export default function TicketsDashboardPage() {
 
               {/* Subject */}
               <div>
-                <label className="mb-1 block font-semibold text-slate-700">
+                <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                   Talep Konusu <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -780,19 +780,19 @@ export default function TicketsDashboardPage() {
                   value={newTicket.subject || ""}
                   onChange={(e) => setNewTicket((prev) => ({ ...prev, subject: e.target.value }))}
                   placeholder="Örn: Sipariş teslimatı gecikmesi hakkında"
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 text-xs focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               {/* Category & Priority */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">Kategori</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">Kategori</label>
                   <Select
                     value={newTicket.category || "Teknik Destek"}
                     onValueChange={(val) => setNewTicket((prev) => ({ ...prev, category: val }))}
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Kategori seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -807,12 +807,12 @@ export default function TicketsDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">Öncelik Seviyesi</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">Öncelik Seviyesi</label>
                   <Select
                     value={newTicket.priority || "Medium"}
                     onValueChange={(val) => setNewTicket((prev) => ({ ...prev, priority: val }))}
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Öncelik" />
                     </SelectTrigger>
                     <SelectContent>
@@ -828,7 +828,7 @@ export default function TicketsDashboardPage() {
               {/* Assigned Agent & Department */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">Atanan Temsilci</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">Atanan Temsilci</label>
                   <Select
                     value={newTicket.assignedUserId || "unassigned"}
                     onValueChange={(val) =>
@@ -838,7 +838,7 @@ export default function TicketsDashboardPage() {
                       }))
                     }
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Temsilci ata" />
                     </SelectTrigger>
                     <SelectContent>
@@ -853,7 +853,7 @@ export default function TicketsDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">Departman</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">Departman</label>
                   <Select
                     value={newTicket.departmentId || "none"}
                     onValueChange={(val) =>
@@ -863,7 +863,7 @@ export default function TicketsDashboardPage() {
                       }))
                     }
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Departman seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -881,7 +881,7 @@ export default function TicketsDashboardPage() {
               {/* Linked Entity (Optional Order or Product) */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">İlişkili Sipariş (Opsiyonel)</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">İlişkili Sipariş (Opsiyonel)</label>
                   <Select
                     value={newTicket.linkedEntityId || "none"}
                     onValueChange={(val) => {
@@ -903,7 +903,7 @@ export default function TicketsDashboardPage() {
                       }
                     }}
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Sipariş bağla..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-48">
@@ -918,12 +918,12 @@ export default function TicketsDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-semibold text-slate-700">İletişim Kanalı</label>
+                  <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">İletişim Kanalı</label>
                   <Select
                     value={newTicket.source || "Web"}
                     onValueChange={(val) => setNewTicket((prev) => ({ ...prev, source: val }))}
                   >
-                    <SelectTrigger className="rounded-xl border-slate-200 text-xs">
+                    <SelectTrigger className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs">
                       <SelectValue placeholder="Kanal" />
                     </SelectTrigger>
                     <SelectContent>
@@ -939,23 +939,23 @@ export default function TicketsDashboardPage() {
 
               {/* Description */}
               <div>
-                <label className="mb-1 block font-semibold text-slate-700">Açıklama / İlk Mesaj</label>
+                <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">Açıklama / İlk Mesaj</label>
                 <textarea
                   rows={3}
                   value={newTicket.description || ""}
                   onChange={(e) => setNewTicket((prev) => ({ ...prev, description: e.target.value }))}
                   placeholder="Müşterinin sorunu veya talebinin detayları..."
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2.5 text-xs focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-3">
+              <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsCreateModalOpen(false)}
-                  className="rounded-xl border-slate-200 text-xs"
+                  className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs"
                 >
                   İptal
                 </Button>

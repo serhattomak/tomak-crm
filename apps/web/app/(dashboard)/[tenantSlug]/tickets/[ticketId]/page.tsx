@@ -233,19 +233,19 @@ export default function TicketDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200/80 bg-white p-8">
+      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-8">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="font-medium text-slate-500 text-sm">Destek talebi ayrıntıları yükleniyor...</span>
+        <span className="font-medium text-zinc-500 dark:text-zinc-400 text-sm">Destek talebi ayrıntıları yükleniyor...</span>
       </div>
     );
   }
 
   if (!ticket) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-12 text-center">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-12 text-center">
         <AlertCircle className="h-10 w-10 text-red-500" />
-        <h3 className="mt-4 font-bold text-lg text-slate-900">Talep Bulunamadı</h3>
-        <p className="mt-1 text-slate-500 text-xs">Aradığınız bilet silinmiş veya mevcut olmayabilir.</p>
+        <h3 className="mt-4 font-bold text-lg text-zinc-900 dark:text-zinc-100">Talep Bulunamadı</h3>
+        <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">Aradığınız bilet silinmiş veya mevcut olmayabilir.</p>
         <Button
           onClick={() => router.push(`/${tenantSlug}/tickets`)}
           className="mt-4 gap-2 rounded-xl bg-blue-600 text-white"
@@ -260,13 +260,13 @@ export default function TicketDetailPage() {
   return (
     <div className="space-y-4">
       {/* 1. Top Bar & Navigation */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Button
             variant="outline"
             size="sm"
             onClick={() => router.push(`/${tenantSlug}/tickets`)}
-            className="rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50"
+            className="rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Tüm Talepler</span>
@@ -279,7 +279,7 @@ export default function TicketDetailPage() {
               <span className="font-bold text-blue-600 text-sm">
                 #{ticket.ticketNumber}
               </span>
-              <span className="rounded-md bg-slate-100 px-2 py-0.5 font-medium text-[11px] text-slate-700">
+              <span className="rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                 {ticket.category}
               </span>
               {ticket.isSlaBreached ? (
@@ -294,7 +294,7 @@ export default function TicketDetailPage() {
                 </span>
               ) : null}
             </div>
-            <h1 className="font-bold text-base text-slate-900 line-clamp-1">
+            <h1 className="font-bold text-base text-zinc-900 dark:text-zinc-100 line-clamp-1">
               {ticket.subject}
             </h1>
           </div>
@@ -304,7 +304,7 @@ export default function TicketDetailPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Status Selector */}
           <Select value={ticket.status} onValueChange={handleStatusChange}>
-            <SelectTrigger className="h-9 w-[140px] rounded-xl border-slate-200 font-medium text-xs">
+            <SelectTrigger className="h-9 w-[140px] rounded-xl border-zinc-200 dark:border-zinc-800 font-medium text-xs">
               <SelectValue placeholder="Durum" />
             </SelectTrigger>
             <SelectContent>
@@ -319,7 +319,7 @@ export default function TicketDetailPage() {
 
           {/* Priority Selector */}
           <Select value={ticket.priority} onValueChange={handlePriorityChange}>
-            <SelectTrigger className="h-9 w-[120px] rounded-xl border-slate-200 font-medium text-xs">
+            <SelectTrigger className="h-9 w-[120px] rounded-xl border-zinc-200 dark:border-zinc-800 font-medium text-xs">
               <SelectValue placeholder="Öncelik" />
             </SelectTrigger>
             <SelectContent>
@@ -335,7 +335,7 @@ export default function TicketDetailPage() {
             value={ticket.assignedUserId || "unassigned"}
             onValueChange={handleAssigneeChange}
           >
-            <SelectTrigger className="h-9 w-[150px] rounded-xl border-slate-200 font-medium text-xs">
+            <SelectTrigger className="h-9 w-[150px] rounded-xl border-zinc-200 dark:border-zinc-800 font-medium text-xs">
               <SelectValue placeholder="Temsilci" />
             </SelectTrigger>
             <SelectContent>
@@ -352,7 +352,7 @@ export default function TicketDetailPage() {
             variant="outline"
             size="sm"
             onClick={() => loadTicket()}
-            className="h-9 rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+            className="h-9 rounded-xl border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:bg-zinc-800/50"
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
@@ -364,13 +364,13 @@ export default function TicketDetailPage() {
         {/* Left / Center: Conversation Flow (8 Cols) */}
         <div className="space-y-4 lg:col-span-8">
           {/* Tabs for Conversation / Activity Audit */}
-          <div className="flex items-center gap-2 border-slate-200 border-b pb-2">
+          <div className="flex items-center gap-2 border-zinc-200 dark:border-zinc-800 border-b pb-2">
             <button
               onClick={() => setActiveTab("conversation")}
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "conversation"
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "text-slate-600 hover:bg-slate-100"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               }`}
               type="button"
             >
@@ -383,7 +383,7 @@ export default function TicketDetailPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "activities"
                   ? "bg-slate-900 text-white shadow-2xs"
-                  : "text-slate-600 hover:bg-slate-100"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               }`}
               type="button"
             >
@@ -393,19 +393,19 @@ export default function TicketDetailPage() {
           </div>
 
           {activeTab === "conversation" ? (
-            <div className="flex flex-col rounded-2xl border border-slate-200/80 bg-white shadow-xs overflow-hidden min-h-[500px]">
+            <div className="flex flex-col rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden min-h-[500px]">
               {/* Messages Stream Container */}
-              <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6 bg-slate-50/40 max-h-[520px]">
+              <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-800/50/40 max-h-[520px]">
                 {/* Initial Description if no messages */}
                 {ticket.messages.length === 0 && (
-                  <div className="rounded-2xl border border-slate-200 bg-white p-4 text-xs shadow-2xs">
-                    <div className="flex items-center justify-between font-semibold text-slate-700">
+                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-xs shadow-2xs">
+                    <div className="flex items-center justify-between font-semibold text-zinc-700 dark:text-zinc-300">
                       <span>{ticket.customerName} (İlk Talep)</span>
-                      <span className="text-slate-400 text-[10px]">
+                      <span className="text-zinc-400 dark:text-zinc-500 text-[10px]">
                         {new Date(ticket.createdAt).toLocaleString("tr-TR")}
                       </span>
                     </div>
-                    <p className="mt-2 text-slate-800 leading-relaxed whitespace-pre-wrap">
+                    <p className="mt-2 text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
                       {ticket.description || ticket.subject}
                     </p>
                   </div>
@@ -420,7 +420,7 @@ export default function TicketDetailPage() {
                   if (isSystem) {
                     return (
                       <div key={m.id} className="flex justify-center my-2">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-200/70 px-3 py-1 text-[11px] text-slate-600 shadow-2xs">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-200/70 px-3 py-1 text-[11px] text-zinc-600 dark:text-zinc-400 shadow-2xs">
                           <Info className="h-3 w-3" />
                           {m.content}
                         </span>
@@ -464,7 +464,7 @@ export default function TicketDetailPage() {
                       className={`flex gap-3 ${isCustomer ? "justify-start" : "justify-end"}`}
                     >
                       {isCustomer && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 font-bold text-xs text-slate-700">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 font-bold text-xs text-zinc-700 dark:text-zinc-300">
                           {m.senderName.charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -472,14 +472,14 @@ export default function TicketDetailPage() {
                       <div
                         className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${
                           isCustomer
-                            ? "border border-slate-200 bg-white text-slate-900"
+                            ? "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100"
                             : "border border-blue-600 bg-blue-600 text-white"
                         }`}
                       >
                         <div
                           className={`flex items-center justify-between gap-3 text-[10px] pb-1.5 border-b ${
                             isCustomer
-                              ? "border-slate-100 text-slate-500"
+                              ? "border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400"
                               : "border-blue-500/80 text-blue-100"
                           }`}
                         >
@@ -499,7 +499,7 @@ export default function TicketDetailPage() {
                           <div
                             key={e.id}
                             className={`mt-2.5 flex items-center gap-2 rounded-xl p-2.5 ${
-                              isCustomer ? "bg-slate-50 border border-slate-200" : "bg-blue-700/60 border border-blue-400/40"
+                              isCustomer ? "bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800" : "bg-blue-700/60 border border-blue-400/40"
                             }`}
                           >
                             <Package className="h-4 w-4 shrink-0" />
@@ -525,17 +525,17 @@ export default function TicketDetailPage() {
               </div>
 
               {/* Two-Mode Response Composer */}
-              <div className="border-slate-200 border-t bg-white p-3.5">
+              <div className="border-zinc-200 dark:border-zinc-800 border-t bg-white dark:bg-zinc-900 p-3.5">
                 {/* Mode Selector & Quick Tools */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5">
-                  <div className="flex items-center rounded-xl border border-slate-200 bg-slate-100 p-0.5 text-xs">
+                  <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 p-0.5 text-xs">
                     <button
                       type="button"
                       onClick={() => setMessageMode("public")}
                       className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
                         messageMode === "public"
-                          ? "bg-white text-blue-700 shadow-xs"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-zinc-900 text-blue-700 shadow-xs"
+                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
                       }`}
                     >
                       <MessageSquare className="h-3.5 w-3.5" />
@@ -547,7 +547,7 @@ export default function TicketDetailPage() {
                       className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
                         messageMode === "internal"
                           ? "bg-amber-100 text-amber-900 shadow-xs"
-                          : "text-slate-600 hover:text-slate-900"
+                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
                       }`}
                     >
                       <Lock className="h-3.5 w-3.5 text-amber-600" />
@@ -561,7 +561,7 @@ export default function TicketDetailPage() {
                       const found = cannedResponses.find((c) => c.id === val);
                       if (found) applyCannedResponse(found);
                     }}>
-                      <SelectTrigger className="h-7 w-[160px] rounded-lg border-slate-200 text-[11px]">
+                      <SelectTrigger className="h-7 w-[160px] rounded-lg border-zinc-200 dark:border-zinc-800 text-[11px]">
                         <Zap className="mr-1 h-3 w-3 text-amber-500" />
                         <SelectValue placeholder="Hazır Şablonlar" />
                       </SelectTrigger>
@@ -589,12 +589,12 @@ export default function TicketDetailPage() {
                     className={`w-full rounded-2xl border p-3 text-xs focus:outline-none transition-all ${
                       messageMode === "internal"
                         ? "border-amber-300 bg-amber-50/40 text-amber-950 focus:border-amber-500"
-                        : "border-slate-200 bg-white text-slate-900 focus:border-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-blue-500"
                     }`}
                   />
 
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                       {messageMode === "internal" ? (
                         <span className="text-amber-700 font-medium">⚠️ Bu not müşteriye iletilmez</span>
                       ) : (
@@ -626,17 +626,17 @@ export default function TicketDetailPage() {
             </div>
           ) : (
             /* ACTIVITY AUDIT LOG */
-            <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-              <h3 className="font-bold text-sm text-slate-900 mb-3">İşlem ve Durum Günlüğü</h3>
-              <div className="relative border-l border-slate-200 ml-3 space-y-4">
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 mb-3">İşlem ve Durum Günlüğü</h3>
+              <div className="relative border-l border-zinc-200 dark:border-zinc-800 ml-3 space-y-4">
                 {ticket.activities.map((act) => (
                   <div key={act.id} className="relative pl-6 text-xs">
                     <div className="absolute -left-1.5 top-1 h-3 w-3 rounded-full border-2 border-white bg-blue-500 shadow-xs" />
-                    <div className="flex items-center justify-between text-[11px] text-slate-400">
-                      <span className="font-semibold text-slate-700">{act.userName}</span>
+                    <div className="flex items-center justify-between text-[11px] text-zinc-400 dark:text-zinc-500">
+                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">{act.userName}</span>
                       <span>{new Date(act.createdAt).toLocaleString("tr-TR")}</span>
                     </div>
-                    <p className="mt-0.5 text-slate-800">{act.description}</p>
+                    <p className="mt-0.5 text-zinc-800 dark:text-zinc-200">{act.description}</p>
                   </div>
                 ))}
               </div>
@@ -647,9 +647,9 @@ export default function TicketDetailPage() {
         {/* Right Panel: Customer 360 & Context (4 Cols) */}
         <div className="space-y-4 lg:col-span-4">
           {/* Customer Profile Card */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center justify-between border-slate-100 border-b pb-2.5">
-              <span className="font-bold text-xs text-slate-800">Müşteri Profili</span>
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+            <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-2.5">
+              <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">Müşteri Profili</span>
               <Link
                 href={`/${tenantSlug}/customers/${ticket.customerId}`}
                 className="inline-flex items-center gap-1 font-semibold text-blue-600 text-xs hover:underline"
@@ -665,34 +665,34 @@ export default function TicketDetailPage() {
                   {ticket.customerName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-900 text-xs">{ticket.customerName}</h4>
-                  <span className="text-[11px] text-slate-400">Kayıtlı Müşteri</span>
+                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">{ticket.customerName}</h4>
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">Kayıtlı Müşteri</span>
                 </div>
               </div>
 
               {ticket.customerEmail && (
-                <div className="flex items-center gap-2 text-slate-600">
-                  <Mail className="h-3.5 w-3.5 text-slate-400" />
+                <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+                  <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                   <span className="truncate">{ticket.customerEmail}</span>
                 </div>
               )}
 
               {ticket.customerPhone && (
-                <div className="flex items-center gap-2 text-slate-600">
-                  <Phone className="h-3.5 w-3.5 text-slate-400" />
+                <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+                  <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                   <span>{ticket.customerPhone}</span>
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-2 border-slate-100 border-t pt-2.5 text-center">
-                <div className="rounded-xl bg-slate-50 p-2">
-                  <span className="text-[10px] text-slate-400 block">Toplam Talep</span>
-                  <span className="font-bold text-sm text-slate-800">
+              <div className="grid grid-cols-2 gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2.5 text-center">
+                <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2">
+                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500 block">Toplam Talep</span>
+                  <span className="font-bold text-sm text-zinc-800 dark:text-zinc-200">
                     {ticket.customer360?.totalTicketsCount ?? 1}
                   </span>
                 </div>
-                <div className="rounded-xl bg-slate-50 p-2">
-                  <span className="text-[10px] text-slate-400 block">Açık Talepler</span>
+                <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2">
+                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500 block">Açık Talepler</span>
                   <span className="font-bold text-sm text-blue-600">
                     {ticket.customer360?.openTicketsCount ?? 1}
                   </span>
@@ -703,8 +703,8 @@ export default function TicketDetailPage() {
 
           {/* Linked CRM Entity (e.g. Order or Product) */}
           {ticket.linkedEntityTitle && (
-            <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-              <span className="font-bold text-xs text-slate-800 block mb-2">
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+              <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200 block mb-2">
                 İlişkili CRM Kaydı
               </span>
               <div className="flex items-center justify-between rounded-xl bg-blue-50/70 p-3 text-xs border border-blue-100">
@@ -725,8 +725,8 @@ export default function TicketDetailPage() {
           )}
 
           {/* Previous Tickets History */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <span className="font-bold text-xs text-slate-800 block mb-2.5">
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+            <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200 block mb-2.5">
               Müşterinin Geçmiş Talepleri
             </span>
             {ticket.customer360?.recentTickets && ticket.customer360.recentTickets.length > 0 ? (
@@ -735,20 +735,20 @@ export default function TicketDetailPage() {
                   <Link
                     key={pt.id}
                     href={`/${tenantSlug}/tickets/${pt.id}`}
-                    className="flex items-center justify-between rounded-xl border border-slate-100 p-2.5 text-xs transition hover:border-blue-200 hover:bg-blue-50/40"
+                    className="flex items-center justify-between rounded-xl border border-zinc-100 dark:border-zinc-800 p-2.5 text-xs transition hover:border-blue-200 hover:bg-blue-50/40"
                   >
                     <div className="space-y-0.5 max-w-[170px]">
                       <span className="font-bold text-blue-600 text-[11px]">#{pt.ticketNumber}</span>
-                      <p className="font-medium text-slate-800 line-clamp-1 text-[11px]">{pt.subject}</p>
+                      <p className="font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 text-[11px]">{pt.subject}</p>
                     </div>
-                    <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-[10px] text-slate-600">
+                    <span className="rounded-md bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:text-zinc-400">
                       {pt.status}
                     </span>
                   </Link>
                 ))}
               </div>
             ) : (
-              <p className="text-slate-400 text-xs">Müşterinin başka bir geçmiş talebi yok.</p>
+              <p className="text-zinc-400 dark:text-zinc-500 text-xs">Müşterinin başka bir geçmiş talebi yok.</p>
             )}
           </div>
         </div>
@@ -757,20 +757,20 @@ export default function TicketDetailPage() {
       {/* Resolution Notes Modal */}
       {isResolveModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95">
-            <div className="flex items-center gap-2.5 border-slate-100 border-b pb-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+          <div className="relative w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl animate-in fade-in zoom-in-95">
+            <div className="flex items-center gap-2.5 border-zinc-100 dark:border-zinc-800 border-b pb-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="font-bold text-base text-slate-900">Talebi Çözüldü Olarak İşaretle</h3>
-                <p className="text-slate-500 text-xs">Çözüm detaylarını ve notlarınızı ekleyin</p>
+                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Talebi Çözüldü Olarak İşaretle</h3>
+                <p className="text-zinc-500 dark:text-zinc-400 text-xs">Çözüm detaylarını ve notlarınızı ekleyin</p>
               </div>
             </div>
 
             <div className="mt-4 space-y-3 text-xs">
               <div>
-                <label className="mb-1 block font-semibold text-slate-700">
+                <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                   Çözüm Notu / Açıklaması
                 </label>
                 <textarea
@@ -778,7 +778,7 @@ export default function TicketDetailPage() {
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
                   placeholder="Müşteriye sunulan çözüm veya yapılan işlem..."
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-xs focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2.5 text-xs focus:border-emerald-500 focus:outline-none"
                 />
               </div>
 
@@ -787,7 +787,7 @@ export default function TicketDetailPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setIsResolveModalOpen(false)}
-                  className="rounded-xl border-slate-200 text-xs"
+                  className="rounded-xl border-zinc-200 dark:border-zinc-800 text-xs"
                 >
                   İptal
                 </Button>

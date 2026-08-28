@@ -108,11 +108,11 @@ export default function UsersManagementPage() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-slate-900 tracking-tight">
+          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
             <Users className="h-6 w-6 text-fuchsia-500" />
             Team Members
           </h1>
-          <p className="mt-1 text-slate-500 text-xs">
+          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
             Manage workspace members and their access roles.
           </p>
         </div>
@@ -144,15 +144,15 @@ export default function UsersManagementPage() {
       )}
 
       {/* Users Table */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
         {isLoading ? (
-          <div className="flex items-center justify-center gap-2 p-8 text-center text-slate-400 text-xs">
+          <div className="flex items-center justify-center gap-2 p-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
             <Loader2 className="h-4 w-4 animate-spin text-fuchsia-500" />
             Loading team members...
           </div>
         ) : (
           <table className="w-full text-left text-xs">
-            <thead className="border-slate-100 border-b bg-slate-50/60 font-bold text-[11px] text-slate-400 uppercase tracking-wider">
+            <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -161,10 +161,10 @@ export default function UsersManagementPage() {
                 <th className="px-6 py-3.5">Joined</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {users.map((user) => (
                 <tr
-                  className="transition-colors hover:bg-slate-50/70"
+                  className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
                   key={user.id}
                 >
                   <td className="px-6 py-4">
@@ -172,18 +172,18 @@ export default function UsersManagementPage() {
                       <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-fuchsia-100 font-bold text-fuchsia-700 text-xs">
                         {(user.fullName || user.email).charAt(0).toUpperCase()}
                       </div>
-                      <span className="font-semibold text-slate-900">
+                      <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                         {user.fullName || "—"}
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-mono text-slate-500">
+                  <td className="px-6 py-4 font-mono text-zinc-500 dark:text-zinc-400">
                     {user.email}
                   </td>
                   <td className="px-6 py-4">
                     <PermissionGate
                       fallback={
-                        <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-medium text-slate-700 text-xs">
+                        <span className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 font-medium text-zinc-700 dark:text-zinc-300 text-xs">
                           {user.roles.map((r) => r.name).join(", ") ||
                             "No Role"}
                         </span>
@@ -215,13 +215,13 @@ export default function UsersManagementPage() {
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
                         user.isActive
                           ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-                          : "bg-slate-100 text-slate-500"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
                       }`}
                     >
                       {user.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-slate-400">
+                  <td className="px-6 py-4 text-zinc-400 dark:text-zinc-500">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
@@ -234,14 +234,14 @@ export default function UsersManagementPage() {
       {/* Invite Modal */}
       {isInviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-slate-100 border-b pb-3">
-              <h2 className="flex items-center gap-2 font-bold text-base text-slate-900">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+              <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <UserPlus className="h-4 w-4 text-indigo-500" />
                 Invite New Member
               </h2>
               <button
-                className="text-slate-400 hover:text-slate-700"
+                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
                 onClick={() => setIsInviteOpen(false)}
               >
                 <X className="h-4 w-4" />
@@ -254,13 +254,13 @@ export default function UsersManagementPage() {
               onSubmit={handleInvite}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 dark:text-zinc-200 text-xs">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute top-3 left-3 h-4 w-4 text-slate-400" />
+                  <Mail className="absolute top-3 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-3 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2.5 pr-3 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder="teammate@company.com"
                     required
@@ -271,11 +271,11 @@ export default function UsersManagementPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 dark:text-zinc-200 text-xs">
                   Initial Role
                 </label>
                 <Select onValueChange={setInviteRoleId} value={inviteRoleId}>
-                  <SelectTrigger className="bg-white">
+                  <SelectTrigger className="bg-white dark:bg-zinc-900">
                     <SelectValue placeholder="Rol Seçiniz" />
                   </SelectTrigger>
                   <SelectContent>
@@ -288,9 +288,9 @@ export default function UsersManagementPage() {
                 </Select>
               </div>
 
-              <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
+              <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <button
-                  className="px-4 py-2 font-semibold text-slate-600 text-xs hover:text-slate-900"
+                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:text-zinc-100"
                   onClick={() => setIsInviteOpen(false)}
                   type="button"
                 >

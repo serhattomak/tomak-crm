@@ -822,7 +822,7 @@ export default function AttendancePage() {
       {/* 1. Header & Live Clock Quick Bar */}
       <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
         <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/50 dark:text-blue-400">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs dark:bg-blue-950/50 dark:text-blue-400">
             <Clock className="h-6 w-6" />
           </div>
           <div>
@@ -1677,7 +1677,7 @@ export default function AttendancePage() {
               <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                       <Wifi className="h-5 w-5" />
                     </div>
                     <div>
@@ -1713,7 +1713,7 @@ export default function AttendancePage() {
               <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
                       <Smartphone className="h-5 w-5" />
                     </div>
                     <div>
@@ -1749,7 +1749,7 @@ export default function AttendancePage() {
               <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
                       <MapPin className="h-5 w-5" />
                     </div>
                     <div>

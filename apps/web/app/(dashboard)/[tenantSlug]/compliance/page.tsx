@@ -254,11 +254,11 @@ export default function CompliancePage() {
       case "critical":
         return <span className="bg-red-50 text-red-700 border-red-200 border px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1"><AlertOctagon className="h-3 w-3" /> Kritik Ceza Riski</span>;
       case "high":
-        return <span className="bg-amber-50 text-amber-700 border-amber-200 border px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Yüksek Risk</span>;
+        return <span className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800 border px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Yüksek Risk</span>;
       case "medium":
-        return <span className="bg-blue-50 text-blue-700 border-blue-200 border px-2 py-0.5 rounded-full text-xs font-semibold">Orta Risk</span>;
+        return <span className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800 border px-2 py-0.5 rounded-full text-xs font-semibold">Orta Risk</span>;
       default:
-        return <span className="bg-slate-100 text-slate-600 border-slate-200 border px-2 py-0.5 rounded-full text-xs font-semibold">Düşük</span>;
+        return <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 border px-2 py-0.5 rounded-full text-xs font-semibold">Düşük</span>;
     }
   };
 
@@ -269,7 +269,7 @@ export default function CompliancePage() {
       case "SoftWarning":
         return <span className="bg-amber-500 text-white px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Uyar (Soft Warning)</span>;
       default:
-        return <span className="bg-slate-300 text-slate-700 px-2 py-0.5 rounded-md text-[11px] font-semibold flex items-center gap-1"><Unlock className="h-3 w-3" /> Devre Dışı</span>;
+        return <span className="bg-slate-300 text-zinc-700 dark:text-zinc-300 px-2 py-0.5 rounded-md text-[11px] font-semibold flex items-center gap-1"><Unlock className="h-3 w-3" /> Devre Dışı</span>;
     }
   };
 
@@ -287,20 +287,20 @@ export default function CompliancePage() {
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 max-w-7xl mx-auto">
       {/* 1. Header Hero Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="p-2.5 bg-gradient-to-tr from-amber-600 to-red-600 text-white rounded-2xl shadow-md shadow-amber-500/20">
               <Scale className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2">
                 Mevzuat & İş Hukuku Uyum Motoru
                 <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                   <ShieldCheck className="h-3.5 w-3.5" /> 4857 / 5510 / 6331 Uyumlu
                 </span>
               </h1>
-              <p className="text-sm text-slate-500 mt-0.5">
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
                 Vardiya, izin, bordro ve İSG işlemlerinde Türkiye Cumhuriyeti çalışma mevzuatı kuralları ve cezai risk denetimi.
               </p>
             </div>
@@ -318,7 +318,7 @@ export default function CompliancePage() {
           <button
             onClick={loadData}
             title="Yenile"
-            className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 shadow-xs"
+            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 shadow-xs"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -328,13 +328,13 @@ export default function CompliancePage() {
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Score Card */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+            <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-1">
               UYUM SAĞLIK SKORU
             </span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-3xl font-extrabold text-slate-900">
+              <span className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-100">
                 %{scoreData?.healthScore ?? 100}
               </span>
             </div>
@@ -371,28 +371,28 @@ export default function CompliancePage() {
         </div>
 
         {/* Violations Count */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold mb-1">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 shadow-xs">
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-semibold mb-1">
+            <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               AKTİF İHLALLER
             </span>
             <AlertTriangle className="h-4 w-4 text-amber-500" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-900">
+            <span className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-100">
               {scoreData?.activeViolationsCount ?? 0}
             </span>
             <span className="text-xs text-red-600 font-bold">
               ({scoreData?.hardBlockedAttemptsCount ?? 0} Kritik)
             </span>
           </div>
-          <span className="text-xs text-slate-500 mt-1 block">
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 block">
             Denetime takılan kayıtlar
           </span>
         </div>
 
         {/* Financial Risk Exposure */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs bg-gradient-to-br from-red-50/40 via-white to-amber-50/40">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 shadow-xs bg-gradient-to-br from-red-50/40 via-white to-amber-50/40">
           <div className="flex items-center justify-between text-red-600 text-xs font-semibold mb-1">
             <span className="text-[11px] font-bold text-red-500 uppercase tracking-wider">
               CEZA RİSK MARUZİYETİ
@@ -405,15 +405,15 @@ export default function CompliancePage() {
             </span>
             <span className="text-xs text-red-600 font-bold">TL</span>
           </div>
-          <span className="text-[11px] text-slate-500 mt-1 block">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 block">
             Müfettiş denetimi olası ceza tutarı
           </span>
         </div>
 
         {/* Overridden Exceptions */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold mb-1">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 shadow-xs">
+          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-semibold mb-1">
+            <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               ONAYLANAN İSTİSNALAR
             </span>
             <FileCheck className="h-4 w-4 text-blue-500" />
@@ -422,7 +422,7 @@ export default function CompliancePage() {
             <span className="text-3xl font-extrabold text-blue-600">
               {scoreData?.overriddenViolationsCount ?? 0}
             </span>
-            <span className="text-xs text-slate-400">kayıt</span>
+            <span className="text-xs text-zinc-400 dark:text-zinc-500">kayıt</span>
           </div>
           <span className="text-xs text-blue-600 font-medium mt-1 block">
             Gerekçeli yönetici onayı
@@ -431,14 +431,14 @@ export default function CompliancePage() {
       </div>
 
       {/* 3. Navigation Tabs Toolbar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-2 rounded-2xl border border-slate-200/80 shadow-xs">
-        <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white dark:bg-zinc-900 p-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 shadow-xs">
+        <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800/80 p-1 rounded-xl">
           <button
             onClick={() => setActiveTab("rules")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "rules"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
           >
             Mevzuat Kütüphanesi & Kurallar ({rules.length})
@@ -447,8 +447,8 @@ export default function CompliancePage() {
             onClick={() => setActiveTab("violations")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "violations"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
           >
             İhlal & Denetim Günlüğü ({violations.length})
@@ -457,8 +457,8 @@ export default function CompliancePage() {
             onClick={() => setActiveTab("simulator")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === "simulator"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
           >
             Canlı Mevzuat Simülatörü
@@ -470,7 +470,7 @@ export default function CompliancePage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white text-slate-700"
+              className="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300"
             >
               <option value="all">Tüm Yasal Alanlar</option>
               <option value="WorkingHours">Çalışma Süreleri & Vardiya (4857 SK.)</option>
@@ -485,9 +485,9 @@ export default function CompliancePage() {
                 placeholder="Kanun maddesi veya kural ara..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-56 pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:border-amber-500"
+                className="w-56 pl-8 pr-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900 focus:outline-none focus:border-amber-500"
               />
-              <Search className="h-3.5 w-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+              <Search className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500 absolute left-2.5 top-2.5" />
             </div>
           </div>
         )}
@@ -497,7 +497,7 @@ export default function CompliancePage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white text-slate-700"
+              className="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300"
             >
               <option value="all">Tüm Durumlar</option>
               <option value="Active">Sadece Aktif İhlaller</option>
@@ -511,16 +511,16 @@ export default function CompliancePage() {
       {activeTab === "rules" && (
         <div className="space-y-3">
           {isLoading ? (
-            <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center">
+            <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-12 text-center">
               <RefreshCw className="h-6 w-6 text-amber-600 animate-spin mx-auto mb-3" />
-              <p className="text-xs font-semibold text-slate-600">Yasal mevzuat kuralları yükleniyor...</p>
+              <p className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Yasal mevzuat kuralları yükleniyor...</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredRules.map((rule) => (
                 <div
                   key={rule.id}
-                  className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-xs hover:border-amber-300 transition-all flex flex-col justify-between"
+                  className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800/90 p-5 shadow-xs hover:border-amber-300 transition-all flex flex-col justify-between"
                 >
                   <div>
                     {/* Header: Law Reference & Risk */}
@@ -529,23 +529,23 @@ export default function CompliancePage() {
                         <span className="text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md inline-block mb-1">
                           {rule.lawReference}
                         </span>
-                        <h3 className="text-base font-bold text-slate-900">{rule.name}</h3>
+                        <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">{rule.name}</h3>
                       </div>
                       {getRiskBadge(rule.penaltyRiskLevel)}
                     </div>
 
-                    <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
                       {rule.description}
                     </p>
 
                     {/* Penalty Notice Box */}
                     {rule.penaltyDescription && (
-                      <div className="bg-slate-50 rounded-2xl p-3 border border-slate-100 mb-4 text-xs text-slate-600 space-y-1">
-                        <span className="font-bold text-slate-700 flex items-center gap-1 text-[11px]">
+                      <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl p-3 border border-zinc-100 dark:border-zinc-800 mb-4 text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
+                        <span className="font-bold text-zinc-700 dark:text-zinc-300 flex items-center gap-1 text-[11px]">
                           <AlertTriangle className="h-3 w-3 text-amber-500" />
                           Yasal Yaptırım / Ceza Uyarısı:
                         </span>
-                        <p className="text-[11px] text-slate-500 leading-normal">
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-normal">
                           {rule.penaltyDescription}
                         </p>
                       </div>
@@ -553,15 +553,15 @@ export default function CompliancePage() {
                   </div>
 
                   {/* Bottom Bar: Mode & Edit Button */}
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+                  <div className="flex items-center justify-between pt-3 border-t border-zinc-100 dark:border-zinc-800 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-400 text-[11px] font-medium">Denetim Modu:</span>
+                      <span className="text-zinc-400 dark:text-zinc-500 text-[11px] font-medium">Denetim Modu:</span>
                       {getEnforcementBadge(rule.enforcementLevel)}
                     </div>
 
                     <button
                       onClick={() => handleOpenEditRule(rule)}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-amber-300 hover:bg-amber-50 text-slate-700 hover:text-amber-800 font-semibold text-xs transition-all"
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-amber-300 hover:bg-amber-50 text-zinc-700 dark:text-zinc-300 hover:text-amber-800 font-semibold text-xs transition-all"
                     >
                       <Edit className="h-3 w-3" />
                       <span>Eşikleri Düzenle</span>
@@ -576,17 +576,17 @@ export default function CompliancePage() {
 
       {/* 5. Tab 2: Violations & Compliance Audit Log */}
       {activeTab === "violations" && (
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
-          <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-xs">
+          <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-800/30">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Mevzuat İhlal & İstisna Denetim Kütüğü (Audit Trail)</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Mevzuat İhlal & İstisna Denetim Kütüğü (Audit Trail)</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Sistem genelinde tespit edilen mevzuat aykırılıkları ve onaylanan yönetici istisnaları.
               </p>
             </div>
             <button
               onClick={loadData}
-              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-white"
+              className="flex items-center gap-1 px-3 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-white dark:bg-zinc-900"
             >
               <RefreshCw className="h-3 w-3" />
               <span>Yenile</span>
@@ -594,8 +594,8 @@ export default function CompliancePage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 text-slate-500 uppercase font-bold border-b border-slate-200 text-[11px]">
+            <table className="w-full text-left text-xs text-zinc-600 dark:text-zinc-400">
+              <thead className="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 uppercase font-bold border-b border-zinc-200 dark:border-zinc-800 text-[11px]">
                 <tr>
                   <th className="py-3 px-4">Tarih</th>
                   <th className="py-3 px-4">Personel</th>
@@ -606,21 +606,21 @@ export default function CompliancePage() {
                   <th className="py-3 px-4 text-right">İşlem</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {violations.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-12 text-center text-slate-400">
+                    <td colSpan={7} className="py-12 text-center text-zinc-400 dark:text-zinc-500">
                       Kayıtlı herhangi bir mevzuat ihlali bulunmuyor. Tüm işlemler yasal sınırlara uygun!
                     </td>
                   </tr>
                 ) : (
                   violations.map((v) => (
-                    <tr key={v.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-3 px-4 whitespace-nowrap font-mono text-slate-500">
+                    <tr key={v.id} className="hover:bg-zinc-50/80 dark:bg-zinc-800/50 transition-colors">
+                      <td className="py-3 px-4 whitespace-nowrap font-mono text-zinc-500 dark:text-zinc-400">
                         {new Date(v.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(v.createdAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
                       </td>
-                      <td className="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">
+                      <td className="py-3 px-4 font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
                         {v.employeeName}
                       </td>
                       <td className="py-3 px-4">
@@ -629,11 +629,11 @@ export default function CompliancePage() {
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[11px] font-medium">
+                        <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-0.5 rounded-md text-[11px] font-medium">
                           {v.moduleSource}
                         </span>
                       </td>
-                      <td className="py-3 px-4 max-w-xs truncate text-slate-700 font-medium" title={v.details}>
+                      <td className="py-3 px-4 max-w-xs truncate text-zinc-700 dark:text-zinc-300 font-medium" title={v.details}>
                         {v.details}
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
@@ -659,7 +659,7 @@ export default function CompliancePage() {
                             İstisna Tanımla
                           </button>
                         ) : (
-                          <span className="text-[11px] text-slate-400 font-mono" title={v.overrideReason || ""}>
+                          <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-mono" title={v.overrideReason || ""}>
                             Onaylandı
                           </span>
                         )}
@@ -677,24 +677,24 @@ export default function CompliancePage() {
       {activeTab === "simulator" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Controls Form */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-zinc-100 dark:border-zinc-800">
               <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
                 <Play className="h-4 w-4 fill-current" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-sm">Canlı Mevzuat Testi</h3>
-                <p className="text-xs text-slate-500">Simülasyon tipini ve verilerini girin</p>
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Canlı Mevzuat Testi</h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">Simülasyon tipini ve verilerini girin</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-xl">
+            <div className="grid grid-cols-2 gap-1 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
               <button
                 onClick={() => setSimulatorMode("shift")}
                 className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                   simulatorMode === "shift"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
                 }`}
               >
                 Vardiya / Çalışma (4857)
@@ -703,8 +703,8 @@ export default function CompliancePage() {
                 onClick={() => setSimulatorMode("leave")}
                 className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                   simulatorMode === "leave"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
                 }`}
               >
                 İzin Hak Ediş (Md. 53)
@@ -713,12 +713,12 @@ export default function CompliancePage() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Personel Adı</label>
+                <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Personel Adı</label>
                 <input
                   type="text"
                   value={simEmployeeName}
                   onChange={(e) => setSimEmployeeName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"
+                  className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                 />
               </div>
 
@@ -726,42 +726,42 @@ export default function CompliancePage() {
                 <>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Vardiya Giriş</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Vardiya Giriş</label>
                       <input
                         type="datetime-local"
                         value={simShiftStart}
                         onChange={(e) => setSimShiftStart(e.target.value)}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Vardiya Çıkış</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Vardiya Çıkış</label>
                       <input
                         type="datetime-local"
                         value={simShiftEnd}
                         onChange={(e) => setSimShiftEnd(e.target.value)}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Ara Dinlenme (Dk)</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Ara Dinlenme (Dk)</label>
                       <input
                         type="number"
                         value={simBreakMinutes}
                         onChange={(e) => setSimBreakMinutes(Number(e.target.value))}
-                        className="w-full px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Haftalık Mevcut Süre (Saat)</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Haftalık Mevcut Süre (Saat)</label>
                       <input
                         type="number"
                         value={simCurrentWeeklyHours}
                         onChange={(e) => setSimCurrentWeeklyHours(Number(e.target.value))}
-                        className="w-full px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                   </div>
@@ -772,9 +772,9 @@ export default function CompliancePage() {
                       id="simPregnant"
                       checked={simIsPregnant}
                       onChange={(e) => setSimIsPregnant(e.target.checked)}
-                      className="rounded border-slate-300 text-amber-600"
+                      className="rounded border-zinc-300 dark:border-zinc-700 text-amber-600"
                     />
-                    <label htmlFor="simPregnant" className="text-slate-700 font-semibold cursor-pointer">
+                    <label htmlFor="simPregnant" className="text-zinc-700 dark:text-zinc-300 font-semibold cursor-pointer">
                       Gebe veya Emziren Çalışan
                     </label>
                   </div>
@@ -782,11 +782,11 @@ export default function CompliancePage() {
               ) : (
                 <>
                   <div>
-                    <label className="block text-slate-700 font-semibold mb-1">İzin Tipi</label>
+                    <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">İzin Tipi</label>
                     <select
                       value={simLeaveType}
                       onChange={(e) => setSimLeaveType(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"
+                      className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                     >
                       <option value="Annual">Yıllık Ücretli İzin (Md. 53)</option>
                       <option value="Evlilik">Evlilik İzni (3 gün - Ek Md. 2)</option>
@@ -796,30 +796,30 @@ export default function CompliancePage() {
 
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Talep Gün</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Talep Gün</label>
                       <input
                         type="number"
                         value={simLeaveDays}
                         onChange={(e) => setSimLeaveDays(Number(e.target.value))}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Kıdem (Yıl)</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Kıdem (Yıl)</label>
                       <input
                         type="number"
                         value={simSeniorityYears}
                         onChange={(e) => setSimSeniorityYears(Number(e.target.value))}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                     <div>
-                      <label className="block text-slate-700 font-semibold mb-1">Yaş</label>
+                      <label className="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Yaş</label>
                       <input
                         type="number"
                         value={simEmployeeAge}
                         onChange={(e) => setSimEmployeeAge(Number(e.target.value))}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50"
                       />
                     </div>
                   </div>
@@ -838,15 +838,15 @@ export default function CompliancePage() {
           </div>
 
           {/* Results Box */}
-          <div className="md:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between">
+          <div className="md:col-span-2 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-xs flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-                <h3 className="font-bold text-slate-900 text-sm">Doğrulama Sonuç Raporu</h3>
-                <span className="text-xs text-slate-400">Gerçek zamanlı kural denetimi</span>
+              <div className="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-4">
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Doğrulama Sonuç Raporu</h3>
+                <span className="text-xs text-zinc-400 dark:text-zinc-500">Gerçek zamanlı kural denetimi</span>
               </div>
 
               {!simResult ? (
-                <div className="py-16 text-center text-slate-400 space-y-2">
+                <div className="py-16 text-center text-zinc-400 dark:text-zinc-500 space-y-2">
                   <Scale className="h-10 w-10 mx-auto text-slate-300" />
                   <p className="text-xs font-semibold">
                     Doğrulama sonucunu görüntülemek için sol paneldeki parametreleri belirleyip butona tıklayın.
@@ -894,7 +894,7 @@ export default function CompliancePage() {
                     {simResult.violations.map((v, idx) => (
                       <div
                         key={idx}
-                        className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 space-y-1.5"
+                        className="p-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 space-y-1.5"
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-[11px] font-bold text-amber-800 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-md">
@@ -902,10 +902,10 @@ export default function CompliancePage() {
                           </span>
                           {getEnforcementBadge(v.enforcementLevel)}
                         </div>
-                        <h5 className="font-bold text-slate-900 text-xs">{v.ruleName}</h5>
-                        <p className="text-xs text-slate-600">{v.details}</p>
+                        <h5 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">{v.ruleName}</h5>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400">{v.details}</p>
                         {v.penaltyRisk && (
-                          <div className="text-[11px] text-red-600 font-semibold bg-white p-2 rounded-lg border border-red-100">
+                          <div className="text-[11px] text-red-600 font-semibold bg-white dark:bg-zinc-900 p-2 rounded-lg border border-red-100">
                             🚨 Ceza Riski: {v.penaltyRisk}
                           </div>
                         )}
@@ -916,7 +916,7 @@ export default function CompliancePage() {
               )}
             </div>
 
-            <div className="pt-4 border-t border-slate-100 text-[11px] text-slate-400">
+            <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 text-[11px] text-zinc-400 dark:text-zinc-500">
               * Doğrulama motoru 4857 Sayılı Kanun ve alt yönetmelikler çerçevesinde hesaplama yapmaktadır.
             </div>
           </div>
@@ -925,38 +925,38 @@ export default function CompliancePage() {
 
       {/* 7. Rule Edit Drawer Modal */}
       {editingRule && (
-        <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-950/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white w-full max-w-lg h-full shadow-2xl p-6 overflow-y-auto flex flex-col justify-between slide-in-from-right animate-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-zinc-900 w-full max-w-lg h-full shadow-2xl p-6 overflow-y-auto flex flex-col justify-between slide-in-from-right animate-in">
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
                 <div>
                   <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md">
                     {editingRule.lawReference}
                   </span>
-                  <h3 className="text-base font-bold text-slate-900 mt-1">{editingRule.name}</h3>
+                  <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">{editingRule.name}</h3>
                 </div>
                 <button
                   onClick={() => setEditingRule(null)}
-                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400"
+                  className="p-1.5 rounded-full hover:bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 {editingRule.description}
               </p>
 
               {/* Enforcement Level Selection */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">Denetim Modu</label>
+                <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300">Denetim Modu</label>
                 <div className="space-y-2">
                   <label
                     onClick={() => setEditEnforcement("HardBlock")}
                     className={`flex items-start gap-3 p-3 rounded-2xl border cursor-pointer transition-all ${
                       editEnforcement === "HardBlock"
                         ? "border-red-500 bg-red-50/50"
-                        : "border-slate-200 hover:border-slate-300"
+                        : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:border-zinc-700"
                     }`}
                   >
                     <input
@@ -967,10 +967,10 @@ export default function CompliancePage() {
                       className="mt-0.5 text-red-600"
                     />
                     <div>
-                      <span className="font-bold text-xs text-slate-900 block">
+                      <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 block">
                         Engelle (Hard Block - Kesin Yasak)
                       </span>
-                      <span className="text-[11px] text-slate-500">
+                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                         Kural ihlal edildiğinde işlemin kaydedilmesini kesinlikle engeller.
                       </span>
                     </div>
@@ -981,7 +981,7 @@ export default function CompliancePage() {
                     className={`flex items-start gap-3 p-3 rounded-2xl border cursor-pointer transition-all ${
                       editEnforcement === "SoftWarning"
                         ? "border-amber-500 bg-amber-50/50"
-                        : "border-slate-200 hover:border-slate-300"
+                        : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:border-zinc-700"
                     }`}
                   >
                     <input
@@ -992,10 +992,10 @@ export default function CompliancePage() {
                       className="mt-0.5 text-amber-600"
                     />
                     <div>
-                      <span className="font-bold text-xs text-slate-900 block">
+                      <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 block">
                         Uyar (Soft Warning - Yönetici İstisnasıyla Geçilebilir)
                       </span>
-                      <span className="text-[11px] text-slate-500">
+                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                         Uyarı verir, ihlal loguna kaydeder ancak yönetici onayına izin verir.
                       </span>
                     </div>
@@ -1005,8 +1005,8 @@ export default function CompliancePage() {
                     onClick={() => setEditEnforcement("Disabled")}
                     className={`flex items-start gap-3 p-3 rounded-2xl border cursor-pointer transition-all ${
                       editEnforcement === "Disabled"
-                        ? "border-slate-400 bg-slate-100"
-                        : "border-slate-200 hover:border-slate-300"
+                        ? "border-slate-400 bg-zinc-100 dark:bg-zinc-800"
+                        : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:border-zinc-700"
                     }`}
                   >
                     <input
@@ -1014,13 +1014,13 @@ export default function CompliancePage() {
                       name="enforcement"
                       checked={editEnforcement === "Disabled"}
                       onChange={() => setEditEnforcement("Disabled")}
-                      className="mt-0.5 text-slate-600"
+                      className="mt-0.5 text-zinc-600 dark:text-zinc-400"
                     />
                     <div>
-                      <span className="font-bold text-xs text-slate-900 block">
+                      <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 block">
                         Devre Dışı (Disabled)
                       </span>
-                      <span className="text-[11px] text-slate-500">
+                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                         Bu kural için denetim yapılmaz.
                       </span>
                     </div>
@@ -1030,23 +1030,23 @@ export default function CompliancePage() {
 
               {/* Threshold Config Editor */}
               <div className="space-y-1.5 pt-2">
-                <label className="block text-xs font-bold text-slate-700 flex items-center justify-between">
+                <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 flex items-center justify-between">
                   <span>Parametrik Eşik Değerleri (JSON)</span>
-                  <span className="text-[10px] text-slate-400 font-normal">İşçi lehine esnetilebilir</span>
+                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-normal">İşçi lehine esnetilebilir</span>
                 </label>
                 <textarea
                   rows={6}
                   value={editThresholdJson}
                   onChange={(e) => setEditThresholdJson(e.target.value)}
-                  className="w-full p-3 font-mono text-xs rounded-xl border border-slate-200 bg-slate-900 text-emerald-400 focus:outline-none focus:border-amber-500"
+                  className="w-full p-3 font-mono text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-slate-900 text-emerald-400 focus:outline-none focus:border-amber-500"
                 />
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2">
+            <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-2">
               <button
                 onClick={() => setEditingRule(null)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               >
                 Vazgeç
               </button>
@@ -1064,21 +1064,21 @@ export default function CompliancePage() {
 
       {/* 8. Override Violation Modal */}
       {overridingViolation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
+                <div className="p-2 bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 rounded-xl">
                   <FileCheck className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm">Yönetici İstisnası & Onay</h3>
-                  <p className="text-xs text-slate-500">{overridingViolation.lawReference}</p>
+                  <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Yönetici İstisnası & Onay</h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{overridingViolation.lawReference}</p>
                 </div>
               </div>
               <button
                 onClick={() => setOverridingViolation(null)}
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-full"
+                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -1092,7 +1092,7 @@ export default function CompliancePage() {
             </div>
 
             <div className="space-y-1.5 text-xs">
-              <label className="block font-bold text-slate-700">
+              <label className="block font-bold text-zinc-700 dark:text-zinc-300">
                 Onay Gerekçesi (Zorunlu)
               </label>
               <textarea
@@ -1100,9 +1100,9 @@ export default function CompliancePage() {
                 value={overrideReason}
                 onChange={(e) => setOverrideReason(e.target.value)}
                 placeholder="Örn: Acil operasyonel gereklilik nedeniyle çalışan rızası alınarak fazla mesaiye onay verilmiştir."
-                className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:border-amber-500"
+                className="w-full p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900 focus:outline-none focus:border-amber-500"
               />
-              <span className="text-[10px] text-slate-400 block">
+              <span className="text-[10px] text-zinc-400 dark:text-zinc-500 block">
                 * Bu gerekçe ve kullanıcı kimliğiniz denetim günlüğüne (audit log) silinmez şekilde işlenecektir.
               </span>
             </div>
@@ -1110,7 +1110,7 @@ export default function CompliancePage() {
             <div className="pt-2 flex justify-end gap-2">
               <button
                 onClick={() => setOverridingViolation(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-slate-200 text-zinc-700 dark:text-zinc-300 text-xs font-semibold"
               >
                 İptal
               </button>

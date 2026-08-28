@@ -1,3 +1,4 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md · designed-as-app */
 "use client";
 
 import {
@@ -5,9 +6,11 @@ import {
   ChevronDown,
   Download,
   Filter,
+  LayoutGrid,
   Plus,
   RotateCcw,
   SlidersHorizontal,
+  Sparkles,
   UserPlus,
 } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -23,6 +26,7 @@ import { DealsTableWidget } from "./widgets/deals-table-widget";
 import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget";
 import { LeadSourcesWidget } from "./widgets/lead-sources-widget";
 import { PipelineFunnelWidget } from "./widgets/pipeline-funnel-widget";
+import { QuickActionsWidget, type QuickActionType } from "./widgets/quick-actions-widget";
 import { QuickCreateModal } from "./widgets/quick-create-modal";
 import { QuotesSummaryWidget } from "./widgets/quotes-summary-widget";
 import { RevenueChartWidget } from "./widgets/revenue-chart-widget";
@@ -44,9 +48,7 @@ export default function WorkspaceOverviewPage() {
   // Modals state
   const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const [quickCreateType, setQuickCreateType] = useState<
-    "lead" | "deal" | "task" | "proposal" | null
-  >(null);
+  const [quickCreateType, setQuickCreateType] = useState<QuickActionType | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Widget layouts stored per tab and tenant
@@ -252,49 +254,50 @@ export default function WorkspaceOverviewPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-clip">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:bg-white dark:text-zinc-900">
+          <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
       )}
+
       {/* Executive Printable Report Header (Visible Only When Printing) */}
-      <div className="hidden print:block border-b-2 border-slate-900 pb-5 mb-8">
+      <div className="hidden print:block border-b-2 border-zinc-900 pb-5 mb-8">
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white font-black text-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-white font-black text-lg">
                 {(activeTenant?.name || tenantSlug || "C").slice(0, 2).toUpperCase()}
               </div>
               <div>
-                <h1 className="font-black text-2xl text-slate-900 tracking-tight">
+                <h1 className="font-black text-2xl text-zinc-900 tracking-tight">
                   {activeTenant?.name || tenantSlug.toUpperCase()}
                 </h1>
-                <p className="text-xs font-semibold text-slate-600">
+                <p className="text-xs font-semibold text-zinc-600">
                   CRM Pano Yönetici & Performans Raporu
                 </p>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-4 text-xs text-slate-700 font-medium">
+            <div className="mt-4 flex items-center gap-4 text-xs text-zinc-700 font-medium">
               <div>
                 Pano Sekmesi:{" "}
-                <strong className="text-slate-900 font-bold">
+                <strong className="text-zinc-900 font-bold">
                   {tabs.find((t) => t.id === activeTab)?.label || activeTab}
                 </strong>
               </div>
               <div>
                 Dönem:{" "}
-                <strong className="text-slate-900 font-bold">
+                <strong className="text-zinc-900 font-bold">
                   {dateRangeLabels[dateRange]}
                 </strong>
               </div>
             </div>
           </div>
 
-          <div className="text-right text-xs text-slate-600">
-            <div className="font-bold text-slate-900">Rapor Tarihi</div>
+          <div className="text-right text-xs text-zinc-600">
+            <div className="font-bold text-zinc-900">Rapor Tarihi</div>
             <div>
               {new Date().toLocaleDateString("tr-TR", {
                 day: "2-digit",
@@ -302,37 +305,38 @@ export default function WorkspaceOverviewPage() {
                 year: "numeric",
               })}
             </div>
-            <div className="text-[11px] text-slate-400 mt-1">
+            <div className="text-[11px] text-zinc-400 mt-1">
               Hazırlayan: {profile?.fullName || "Yetkili Kullanıcı"}
             </div>
-            <div className="mt-2 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-[9px] font-bold text-slate-600 uppercase tracking-wider">
+            <div className="mt-2 inline-block rounded-md bg-zinc-100 px-2 py-0.5 text-[9px] font-bold text-zinc-600 uppercase tracking-wider">
               Gizli & Kurum İçi
             </div>
           </div>
         </div>
       </div>
 
-      {/* 1. Top Header Row (Hidden on Print) */}
+      {/* 1. Top Header Row (Tactile Linear Style) */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center print:hidden">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100 sm:text-3xl">
               Dashboard
             </h1>
-            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700">
+            <span className="inline-flex items-center gap-1 rounded-full border border-violet-200/70 bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300">
+              <Sparkles className="h-3 w-3 text-violet-500" />
               {activeTenant?.name || "Ana Çalışma Alanı"}
             </span>
           </div>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 text-xs dark:text-zinc-400">
             Hoş geldiniz,{" "}
-            <span className="font-semibold text-slate-800">
+            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
               {profile?.fullName || "Serhat Dev"}
             </span>
             . Bugünün CRM özet ve performans durumu.
           </p>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls Toolbar */}
         <div className="flex flex-wrap items-center gap-2 print:hidden">
           {/* Interactive Share Dashboard Popover */}
           <DashboardSharePopover activeTab={activeTab} dateRange={dateRange} />
@@ -345,16 +349,17 @@ export default function WorkspaceOverviewPage() {
 
           {/* Quick Invite Button */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-all hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 active:scale-95"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 shadow-2xs transition-all hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={() => setIsInviteModalOpen(true)}
             title="Ekip Arkadaşı Davet Et"
             type="button"
           >
-            <UserPlus className="h-4 w-4" />
+            <UserPlus className="h-3.5 w-3.5" />
           </button>
 
+          {/* Customize Widgets Button */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-colors hover:bg-slate-50 hover:text-violet-600"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition-colors hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-violet-300"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -364,16 +369,16 @@ export default function WorkspaceOverviewPage() {
         </div>
       </div>
 
-      {/* 2. Subheader Tabs & Filters Bar (Hidden on Print) */}
-      <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center print:hidden">
+      {/* 2. Subheader Tabs & Filters Bar */}
+      <div className="flex flex-col justify-between gap-3 border-b border-zinc-200/70 pb-3.5 dark:border-zinc-800 sm:flex-row sm:items-center print:hidden">
         {/* Pill Tabs */}
-        <div className="flex w-fit items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
+        <div className="flex w-fit items-center gap-1 rounded-xl bg-zinc-100/80 p-1 dark:bg-zinc-800/60">
           {tabs.map((tab) => (
             <button
-              className={`rounded-xl px-4 py-1.5 font-semibold text-xs transition-all ${
+              className={`rounded-lg px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === tab.id
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
+                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
               }`}
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -383,7 +388,7 @@ export default function WorkspaceOverviewPage() {
             </button>
           ))}
           <button
-            className="flex items-center gap-1 rounded-xl px-3 py-1.5 font-semibold text-slate-600 text-xs transition-colors hover:bg-white/50 hover:text-slate-900"
+            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:bg-white/50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -397,23 +402,23 @@ export default function WorkspaceOverviewPage() {
           {/* Dynamic Date Range Dropdown */}
           <div className="relative">
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
               onClick={() => setShowDateDropdown(!showDateDropdown)}
               type="button"
             >
-              <Filter className="h-3.5 w-3.5 text-slate-400" />
+              <Filter className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
               <span>{dateRangeLabels[dateRange]}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+              <ChevronDown className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             </button>
 
             {showDateDropdown && (
-              <div className="fade-in absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-2xl border border-slate-200/80 bg-white p-1.5 shadow-xl">
+              <div className="fade-in absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-xl border border-zinc-200/80 bg-white p-1.5 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
                 {(Object.keys(dateRangeLabels) as DateRange[]).map((range) => (
                   <button
-                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left font-medium text-xs transition-colors ${
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left font-medium text-xs transition-colors ${
                       dateRange === range
-                        ? "bg-violet-50 font-bold text-violet-700"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                        ? "bg-violet-50 font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
+                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                     }`}
                     key={range}
                     onClick={() => {
@@ -424,7 +429,7 @@ export default function WorkspaceOverviewPage() {
                   >
                     <span>{dateRangeLabels[range]}</span>
                     {dateRange === range && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-violet-600" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-violet-600 dark:bg-violet-400" />
                     )}
                   </button>
                 ))}
@@ -434,7 +439,7 @@ export default function WorkspaceOverviewPage() {
 
           {/* Quick PDF / Print Export */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={() => window.print()}
             type="button"
           >
@@ -444,17 +449,24 @@ export default function WorkspaceOverviewPage() {
         </div>
       </div>
 
-      {/* 3. Main Dynamic Grid of Widgets with Dense Auto-Fill */}
-      <div className="grid grid-flow-dense grid-cols-12 gap-6 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
+      {/* 3. Quick Action Dock (Visible in Overview Tab) */}
+      {activeTab === "Overview" && (
+        <QuickActionsWidget
+          onOpenQuickCreate={(type) => setQuickCreateType(type)}
+        />
+      )}
+
+      {/* 4. Main Dynamic Bento Grid of Widgets */}
+      <div className="grid grid-flow-dense grid-cols-12 gap-5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
         {currentTabWidgets.length === 0 ? (
-          <div className="col-span-12 flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-slate-50/50 p-12 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-xs">
-              <SlidersHorizontal className="h-6 w-6" />
+          <div className="col-span-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/50 dark:bg-zinc-800/40 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
+              <LayoutGrid className="h-6 w-6" />
             </div>
-            <h3 className="mt-3 font-bold text-slate-900 text-sm">
+            <h3 className="mt-3 font-bold text-zinc-900 text-sm dark:text-zinc-100">
               Bu sekmede henüz aktif widget yok
             </h3>
-            <p className="mt-1 max-w-sm text-slate-500 text-xs">
+            <p className="mt-1 max-w-sm text-zinc-500 text-xs dark:text-zinc-400">
               Widget kataloğunu açarak bu sekmeye dilediğiniz CRM bileşenlerini
               ekleyebilirsiniz.
             </p>
@@ -468,7 +480,7 @@ export default function WorkspaceOverviewPage() {
                 <span>Widget Kataloğunu Aç</span>
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onClick={handleResetDefaults}
                 type="button"
               >

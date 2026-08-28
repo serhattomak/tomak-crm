@@ -1,3 +1,4 @@
+/* Hallmark · component: customize-widgets-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {
@@ -75,31 +76,31 @@ export function CustomizeWidgetsModal({
   const getWidgetIcon = (iconName: string) => {
     switch (iconName) {
       case "TrendingUp":
-        return <TrendingUp className="h-4 w-4 text-emerald-600" />;
+        return <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "BarChart3":
-        return <BarChart3 className="h-4 w-4 text-violet-600" />;
+        return <BarChart3 className="h-4 w-4 text-violet-600 dark:text-violet-400" />;
       case "Gauge":
-        return <Gauge className="h-4 w-4 text-fuchsia-600" />;
+        return <Gauge className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />;
       case "Filter":
-        return <Filter className="h-4 w-4 text-indigo-600" />;
+        return <Filter className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
       case "Briefcase":
-        return <Briefcase className="h-4 w-4 text-cyan-600" />;
+        return <Briefcase className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />;
       case "PieChart":
-        return <PieChart className="h-4 w-4 text-purple-600" />;
+        return <PieChart className="h-4 w-4 text-purple-600 dark:text-purple-400" />;
       case "CheckSquare":
-        return <CheckSquare className="h-4 w-4 text-emerald-600" />;
+        return <CheckSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "Calendar":
-        return <Calendar className="h-4 w-4 text-blue-600" />;
+        return <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
       case "Clock":
-        return <Clock className="h-4 w-4 text-amber-600" />;
+        return <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "Trophy":
-        return <Trophy className="h-4 w-4 text-amber-600" />;
+        return <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "FileSpreadsheet":
-        return <FileSpreadsheet className="h-4 w-4 text-amber-600" />;
+        return <FileSpreadsheet className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "Zap":
-        return <Zap className="h-4 w-4 text-amber-500" />;
+        return <Zap className="h-4 w-4 text-amber-500 dark:text-amber-400" />;
       default:
-        return <SlidersHorizontal className="h-4 w-4 text-slate-600" />;
+        return <SlidersHorizontal className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />;
     }
   };
 
@@ -132,23 +133,23 @@ export function CustomizeWidgetsModal({
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
       {/* Backdrop with Click-to-Close */}
       <div
-        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+      <div className="relative z-10 my-auto flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b p-4 sm:p-5">
+        <div className="flex shrink-0 items-center justify-between border-b border-zinc-100 p-4 sm:p-5 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-800 shadow-2xs">
-              <SlidersHorizontal className="h-5 w-5" />
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-800 shadow-2xs dark:bg-zinc-800 dark:text-zinc-200">
+              <SlidersHorizontal className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-slate-900 text-sm sm:text-base">
+              <h2 className="truncate font-bold text-zinc-900 text-sm sm:text-base dark:text-zinc-100">
                 Dashboard Widget Düzenini Özelleştir
               </h2>
-              <p className="truncate text-slate-500 text-xs">
-                <strong className="font-semibold text-violet-600">
+              <p className="truncate text-zinc-500 text-xs dark:text-zinc-400">
+                <strong className="font-semibold text-violet-600 dark:text-violet-400">
                   {activeTab}
                 </strong>{" "}
                 sekmesinde görüntülenecek panelleri ve yerleşim sırasını
@@ -158,20 +159,20 @@ export function CustomizeWidgetsModal({
           </div>
 
           <button
-            className="shrink-0 rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="shrink-0 rounded-xl p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={onClose}
             type="button"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="space-y-3 border-slate-100 border-b bg-slate-50/50 p-5">
+        <div className="space-y-2.5 border-b border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <div className="relative">
-            <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+            <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-4 pl-9 text-xs placeholder:text-slate-400 focus:border-slate-400 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Widget ara..."
               type="text"
@@ -183,10 +184,10 @@ export function CustomizeWidgetsModal({
           <div className="flex flex-wrap gap-1.5">
             {categories.map((cat) => (
               <button
-                className={`rounded-xl px-3 py-1 font-semibold text-xs transition-all ${
+                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                   selectedCategory === cat.id
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
+                    ? "bg-zinc-900 text-white shadow-2xs dark:bg-zinc-100 dark:text-zinc-900"
+                    : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
                 }`}
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
@@ -199,7 +200,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Widget Grid List */}
-        <div className="flex-1 space-y-2.5 overflow-y-auto p-5">
+        <div className="flex-1 space-y-2 overflow-y-auto p-4">
           {filteredWidgets.map((widget) => {
             const activeIndex = activeWidgetIds.indexOf(widget.id);
             const isActive = activeIndex !== -1;
@@ -208,56 +209,56 @@ export function CustomizeWidgetsModal({
 
             return (
               <div
-                className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all duration-150 ${
+                className={`flex items-center justify-between gap-3 rounded-xl border p-3 transition-all duration-150 ${
                   isActive
-                    ? "border-violet-200 bg-violet-50/30 shadow-2xs"
-                    : "border-slate-200/80 bg-white opacity-80 hover:border-slate-300"
+                    ? "border-violet-200 bg-violet-50/40 shadow-2xs dark:border-violet-800/60 dark:bg-violet-950/30"
+                    : "border-zinc-200/80 bg-white opacity-80 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:border-zinc-700"
                 }`}
                 key={widget.id}
               >
-                <div className="flex min-w-0 items-start gap-3">
+                <div className="flex min-w-0 items-start gap-2.5">
                   {/* Reorder Buttons (only for active widgets) */}
                   {isActive && onMoveWidget ? (
                     <div className="flex flex-col items-center gap-0.5 pt-0.5">
                       <button
-                        className="rounded-md p-1 text-slate-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30"
+                        className="rounded p-0.5 text-zinc-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-violet-900/60 dark:hover:text-violet-300"
                         disabled={isFirst}
                         onClick={() => onMoveWidget(widget.id, "up")}
                         title="Yukarı Taşı"
                         type="button"
                       >
-                        <ChevronUp className="h-3.5 w-3.5" />
+                        <ChevronUp className="h-3 w-3" />
                       </button>
-                      <span className="font-bold text-[10px] text-violet-700">
+                      <span className="font-bold text-[9px] text-violet-700 dark:text-violet-300">
                         #{activeIndex + 1}
                       </span>
                       <button
-                        className="rounded-md p-1 text-slate-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30"
+                        className="rounded p-0.5 text-zinc-400 transition hover:bg-violet-100 hover:text-violet-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-violet-900/60 dark:hover:text-violet-300"
                         disabled={isLast}
                         onClick={() => onMoveWidget(widget.id, "down")}
                         title="Aşağı Taşı"
                         type="button"
                       >
-                        <ChevronDown className="h-3.5 w-3.5" />
+                        <ChevronDown className="h-3 w-3" />
                       </button>
                     </div>
                   ) : (
-                    <div className="w-5" />
+                    <div className="w-4" />
                   )}
 
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-slate-200/80 bg-white shadow-2xs">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-700 dark:bg-zinc-800">
                     {getWidgetIcon(widget.iconName)}
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="truncate font-bold text-slate-900 text-xs">
+                      <span className="truncate font-bold text-zinc-900 text-xs dark:text-zinc-100">
                         {widget.title}
                       </span>
-                      <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-bold text-[9px] text-slate-500">
+                      <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-[9px] text-zinc-500 dark:bg-zinc-700 dark:text-zinc-300">
                         {widget.category}
                       </span>
                     </div>
-                    <p className="mt-0.5 truncate text-[11px] text-slate-500 leading-snug">
+                    <p className="mt-0.5 truncate text-[11px] text-zinc-500 leading-snug dark:text-zinc-400">
                       {widget.description}
                     </p>
                   </div>
@@ -266,15 +267,15 @@ export function CustomizeWidgetsModal({
                 {/* Toggle Switch */}
                 <div className="flex flex-none items-center gap-2">
                   <button
-                    className={`flex h-6 w-11 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none ${
-                      isActive ? "bg-violet-600" : "bg-slate-200"
+                    className={`flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none ${
+                      isActive ? "bg-violet-600" : "bg-zinc-300 dark:bg-zinc-700"
                     }`}
                     onClick={() => onToggleWidget(widget.id)}
                     type="button"
                   >
                     <div
-                      className={`h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-200 ${
-                        isActive ? "translate-x-5" : "translate-x-0"
+                      className={`h-4 w-4 transform rounded-full bg-white shadow-xs transition-transform duration-200 ${
+                        isActive ? "translate-x-4" : "translate-x-0"
                       }`}
                     />
                   </button>
@@ -285,9 +286,9 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-slate-100 border-t p-5">
+        <div className="flex items-center justify-between border-t border-zinc-100 p-4 dark:border-zinc-800">
           <button
-            className="flex items-center gap-1.5 font-semibold text-slate-500 text-xs transition-colors hover:text-slate-800"
+            className="flex items-center gap-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
             onClick={onResetDefaults}
             type="button"
           >
@@ -296,7 +297,7 @@ export function CustomizeWidgetsModal({
           </button>
 
           <button
-            className="rounded-2xl bg-violet-600 px-5 py-2 font-bold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
+            className="rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-95"
             onClick={onClose}
             type="button"
           >

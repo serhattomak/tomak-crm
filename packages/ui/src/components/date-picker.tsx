@@ -1,3 +1,4 @@
+/* Hallmark · component: date-picker · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { cn } from "@workspace/ui/lib/utils";
@@ -168,15 +169,15 @@ export function DatePicker({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-800 text-xs shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700",
             className
           )}
           type="button"
         >
           <div className="flex items-center gap-2 truncate">
-            <CalendarIcon className="h-4 w-4 shrink-0 text-slate-400" />
+            <CalendarIcon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
             <span
-              className={cn("truncate", !value && "font-normal text-slate-400")}
+              className={cn("truncate", !value && "font-normal text-zinc-400 dark:text-zinc-500")}
             >
               {displayFormatted || placeholder}
             </span>
@@ -185,7 +186,7 @@ export function DatePicker({
           <div className="flex shrink-0 items-center gap-1">
             {clearable && value && (
               <span
-                className="rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={handleClear}
               >
                 <X className="h-3.5 w-3.5" />
@@ -198,25 +199,25 @@ export function DatePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-72 animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 text-slate-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out"
+          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-72 animate-in overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 data-[state=closed]:animate-out"
           sideOffset={4}
         >
           {/* Header Month / Year Navigation */}
-          <div className="flex items-center justify-between border-slate-100 border-b pb-2">
+          <div className="flex items-center justify-between border-b border-zinc-100 pb-2 dark:border-zinc-800">
             <button
-              className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={handlePrevMonth}
               type="button"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
 
-            <div className="font-bold text-slate-900 text-xs">
+            <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
               {TURKISH_MONTHS[viewMonth]} {viewYear}
             </div>
 
             <button
-              className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={handleNextMonth}
               type="button"
             >
@@ -225,7 +226,7 @@ export function DatePicker({
           </div>
 
           {/* Days of week */}
-          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-[10px] text-slate-400">
+          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-[10px] text-zinc-400 dark:text-zinc-500">
             {TURKISH_DAYS_SHORT.map((day) => (
               <div key={day}>{day}</div>
             ))}
@@ -241,15 +242,15 @@ export function DatePicker({
                 <button
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-xl font-semibold text-xs transition-all",
-                    !d.isCurrentMonth && "text-slate-300",
+                    !d.isCurrentMonth && "text-zinc-300 dark:text-zinc-600",
                     d.isCurrentMonth &&
                       !isSelected &&
-                      "text-slate-700 hover:bg-blue-50 hover:text-blue-700",
+                      "text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300",
                     isToday &&
                       !isSelected &&
-                      "border border-blue-300 bg-blue-50/50 font-bold text-blue-700",
+                      "border border-violet-300 bg-violet-50/50 font-bold text-violet-700 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300",
                     isSelected &&
-                      "bg-blue-600 font-bold text-white shadow-xs hover:bg-blue-700"
+                      "bg-violet-600 font-bold text-white shadow-xs hover:bg-violet-700"
                   )}
                   key={idx}
                   onClick={() => handleSelectDay(d.dateStr)}
@@ -262,16 +263,16 @@ export function DatePicker({
           </div>
 
           {/* Quick Preset Footers */}
-          <div className="mt-2 flex items-center justify-between border-slate-100 border-t pt-2.5 text-[11px]">
+          <div className="mt-2 flex items-center justify-between border-t border-zinc-100 pt-2.5 text-[11px] dark:border-zinc-800">
             <button
-              className="font-bold text-blue-600 hover:text-blue-700"
+              className="font-bold text-violet-600 hover:text-violet-700 dark:text-violet-400"
               onClick={handleSetToday}
               type="button"
             >
               Bugün
             </button>
             <button
-              className="text-slate-400 hover:text-slate-600"
+              className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
               onClick={() => {
                 onChange?.("");
                 setOpen(false);
@@ -357,12 +358,12 @@ export function DateRangePicker({
       <PopoverPrimitive.Trigger asChild>
         <button
           className={cn(
-            "flex h-9 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
+            "flex h-9 items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-800 text-xs shadow-2xs outline-none transition-all hover:border-zinc-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700",
             className
           )}
           type="button"
         >
-          <CalendarIcon className="h-4 w-4 text-slate-400" />
+          <CalendarIcon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <span>{displayString}</span>
         </button>
       </PopoverPrimitive.Trigger>
@@ -370,43 +371,43 @@ export function DateRangePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          className="z-50 w-64 overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 text-slate-900 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
+          className="z-50 w-64 overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
           sideOffset={4}
         >
-          <div className="mb-2 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+          <div className="mb-2 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Hızlı Tarih Filtreleri
           </div>
           <div className="space-y-1 font-semibold text-xs">
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("today")}
               type="button"
             >
               Bugün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("thisMonth")}
               type="button"
             >
               Bu Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("lastMonth")}
               type="button"
             >
               Geçen Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("last30Days")}
               type="button"
             >
               Son 30 Gün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
               onClick={() => handleQuickPreset("thisYear")}
               type="button"
             >

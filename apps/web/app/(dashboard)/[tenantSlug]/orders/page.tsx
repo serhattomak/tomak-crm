@@ -139,23 +139,23 @@ export default function OrdersPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Draft":
-        return "bg-slate-100 text-slate-700 border-slate-200";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
       case "PendingApproval":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Confirmed":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Processing":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Shipped":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
       case "Delivered":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "Cancelled":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Refunded":
         return "bg-orange-50 text-orange-700 border-orange-200";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -185,15 +185,15 @@ export default function OrdersPage() {
   const getPaymentBadge = (status: string) => {
     switch (status) {
       case "Paid":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "PartiallyPaid":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Unpaid":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Refunded":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -213,7 +213,7 @@ export default function OrdersPage() {
   };
 
   const kanbanColumns = [
-    { color: "border-slate-300", id: "Draft", label: "Taslaklar" },
+    { color: "border-zinc-300 dark:border-zinc-700", id: "Draft", label: "Taslaklar" },
     {
       color: "border-amber-300",
       id: "PendingApproval",
@@ -239,14 +239,14 @@ export default function OrdersPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
               Sipariş & Satış Yönetimi
             </h1>
             <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
               {totalCount} Sipariş
             </span>
           </div>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 dark:text-zinc-400 text-xs">
             Müşterilerinizin siparişlerini oluşturun, onaylayın, teslimat ve
             parçalı tahsilatlarını takip edin.
           </p>
@@ -255,13 +255,13 @@ export default function OrdersPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={() =>
               showToast("Siparişler Excel / CSV olarak dışa aktarılıyor...")
             }
             type="button"
           >
-            <Download className="h-3.5 w-3.5 text-slate-500" />
+            <Download className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>Dışa Aktar</span>
           </button>
 
@@ -281,33 +281,33 @@ export default function OrdersPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Orders & Total Revenue */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Toplam Satış Cirosu
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
                 ₺
                 {(stats?.totalRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>{stats?.totalOrders ?? 0} Toplam Sipariş Kaydı</span>
           </div>
         </div>
 
         {/* Collected / Paid Revenue */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Tahsil Edilen Tutar
               </span>
               <div className="mt-1 font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl">
@@ -317,11 +317,11 @@ export default function OrdersPage() {
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>
               Tahsilat Oranı: %
               {stats && stats.totalRevenue > 0
@@ -332,21 +332,21 @@ export default function OrdersPage() {
         </div>
 
         {/* Pending Approval / Preparation */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Bekleyen & Hazırlanan
               </span>
               <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
                 {(stats?.pendingOrders ?? 0) + (stats?.processingOrders ?? 0)}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>
               {stats?.confirmedOrders ?? 0} Onaylandı •{" "}
               {stats?.shippedOrders ?? 0} Yolda
@@ -355,10 +355,10 @@ export default function OrdersPage() {
         </div>
 
         {/* Unpaid Balance */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Bekleyen Tahsilat (Açık Bakiye)
               </span>
               <div className="mt-1 font-extrabold text-2xl text-rose-600 tracking-tight sm:text-3xl">
@@ -368,23 +368,23 @@ export default function OrdersPage() {
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Ödenmesi gereken açık alacaklar</span>
           </div>
         </div>
       </div>
 
       {/* 3. Filters & View Switcher Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs md:flex-row md:items-center">
         {/* Search */}
         <div className="relative max-w-md flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Sipariş no, Müşteri adı, Fatura no veya Takip no ara..."
             type="text"
@@ -396,7 +396,7 @@ export default function OrdersPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -412,7 +412,7 @@ export default function OrdersPage() {
 
           {/* Payment Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setPaymentStatusFilter(e.target.value)}
             value={paymentStatusFilter}
           >
@@ -439,12 +439,12 @@ export default function OrdersPage() {
           )}
 
           {/* View Switcher */}
-          <div className="flex items-center rounded-xl bg-slate-100 p-0.5">
+          <div className="flex items-center rounded-xl bg-zinc-100 dark:bg-zinc-800 p-0.5">
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
               }`}
               onClick={() => setViewMode("table")}
               title="Tablo Görünümü"
@@ -455,8 +455,8 @@ export default function OrdersPage() {
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "kanban"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
               }`}
               onClick={() => setViewMode("kanban")}
               title="Kanban Pipeline Görünümü"
@@ -470,23 +470,23 @@ export default function OrdersPage() {
 
       {/* 4. Orders View (Table or Kanban) */}
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="font-medium text-slate-500 text-xs">
+            <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
               Siparişler yükleniyor...
             </span>
           </div>
         </div>
       ) : orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-white p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-12 text-center shadow-xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
             <ShoppingCart className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-slate-900 text-sm">
+          <h3 className="mt-3 font-bold text-zinc-900 dark:text-zinc-100 text-sm">
             Sipariş Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+          <p className="mt-1 max-w-sm text-zinc-500 dark:text-zinc-400 text-xs">
             Arama kriterlerinize uygun sipariş bulunamadı veya henüz bir sipariş
             oluşturulmadı.
           </p>
@@ -503,10 +503,10 @@ export default function OrdersPage() {
         </div>
       ) : viewMode === "table" ? (
         /* Table View */
-        <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
+              <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Sipariş No & Tarih</th>
                   <th className="px-4 py-3.5">Müşteri</th>
@@ -518,30 +518,30 @@ export default function OrdersPage() {
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {orders.map((o) => (
                   <tr
-                    className="group transition-colors hover:bg-slate-50/80"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
                     key={o.id}
                   >
                     <td className="py-4 pr-4 pl-6">
                       <Link
-                        className="block font-bold text-slate-900 transition-colors group-hover:text-blue-600"
+                        className="block font-bold text-zinc-900 dark:text-zinc-100 transition-colors group-hover:text-blue-600"
                         href={`/${tenantSlug}/orders/${o.id}`}
                       >
                         {o.orderNumber}
                       </Link>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                       </div>
                     </td>
 
                     <td className="px-4 py-4">
-                      <div className="font-bold text-slate-900 text-xs">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                         {o.customerName}
                       </div>
                       {o.invoiceNumber && (
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           Fat: {o.invoiceNumber}
                         </div>
                       )}
@@ -567,18 +567,18 @@ export default function OrdersPage() {
                       </span>
                     </td>
 
-                    <td className="px-4 py-4 text-center font-bold text-slate-700">
+                    <td className="px-4 py-4 text-center font-bold text-zinc-700 dark:text-zinc-300">
                       {o.itemsCount} Kalem
                     </td>
 
                     <td className="px-4 py-4 text-right">
-                      <div className="font-extrabold text-slate-900 text-xs">
+                      <div className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
                         ₺
                         {o.totalAmount.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="font-medium text-[10px] text-slate-400">
+                      <div className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                         KDV Dahil
                       </div>
                     </td>
@@ -603,7 +603,7 @@ export default function OrdersPage() {
                     <td className="py-4 pr-6 pl-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-800 dark:text-zinc-200"
                           href={`/${tenantSlug}/orders/${o.id}`}
                           title="Sipariş Detayı"
                         >
@@ -611,7 +611,7 @@ export default function OrdersPage() {
                         </Link>
                         <PermissionGate permission="Orders.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-500 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                             onClick={() => setDeletingOrder(o)}
                             title="Siparişi Sil"
                             type="button"
@@ -639,20 +639,20 @@ export default function OrdersPage() {
 
             return (
               <div
-                className="flex w-72 shrink-0 flex-col rounded-3xl border border-slate-200/80 bg-slate-50/70 p-3 shadow-2xs"
+                className="flex w-72 shrink-0 flex-col rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-3 shadow-2xs"
                 key={col.id}
               >
                 {/* Column Header */}
-                <div className="mb-3 flex items-center justify-between border-slate-200 border-b px-1 pb-3">
+                <div className="mb-3 flex items-center justify-between border-zinc-200 dark:border-zinc-800 border-b px-1 pb-3">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 text-xs">
+                    <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                       {col.label}
                     </span>
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-[10px] text-slate-700">
+                    <span className="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
                       {colOrders.length}
                     </span>
                   </div>
-                  <span className="font-bold text-[11px] text-slate-600">
+                  <span className="font-bold text-[11px] text-zinc-600 dark:text-zinc-400">
                     ₺
                     {colTotal.toLocaleString("tr-TR", {
                       minimumFractionDigits: 0,
@@ -663,19 +663,19 @@ export default function OrdersPage() {
                 {/* Column Orders */}
                 <div className="max-h-[600px] flex-1 space-y-2.5 overflow-y-auto">
                   {colOrders.length === 0 ? (
-                    <div className="rounded-2xl border border-slate-200/60 border-dashed p-6 text-center text-[11px] text-slate-400">
+                    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800/60 border-dashed p-6 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
                       Bu aşamada sipariş yok
                     </div>
                   ) : (
                     colOrders.map((o) => (
                       <Link
-                        className="group block flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 shadow-2xs transition-all hover:border-slate-300 hover:shadow-xs"
+                        className="group block flex flex-col justify-between rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-700 hover:shadow-xs"
                         href={`/${tenantSlug}/orders/${o.id}`}
                         key={o.id}
                       >
                         <div>
                           <div className="flex items-start justify-between gap-1">
-                            <span className="font-bold text-slate-900 text-xs transition-colors group-hover:text-blue-600">
+                            <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs transition-colors group-hover:text-blue-600">
                               {o.orderNumber}
                             </span>
                             <span
@@ -687,16 +687,16 @@ export default function OrdersPage() {
                             </span>
                           </div>
 
-                          <div className="mt-1 truncate font-semibold text-slate-700 text-xs">
+                          <div className="mt-1 truncate font-semibold text-zinc-700 dark:text-zinc-300 text-xs">
                             {o.customerName}
                           </div>
                         </div>
 
-                        <div className="mt-3 flex items-center justify-between border-slate-100 border-t pt-2 text-[11px]">
-                          <span className="font-medium text-slate-400">
+                        <div className="mt-3 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px]">
+                          <span className="font-medium text-zinc-400 dark:text-zinc-500">
                             {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                           </span>
-                          <span className="font-extrabold text-slate-900 text-xs">
+                          <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
                             ₺
                             {o.totalAmount.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
@@ -731,11 +731,11 @@ export default function OrdersPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingOrder && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <h3 className="font-bold text-base text-slate-900">Siparişi Sil</h3>
-            <p className="mt-2 text-slate-600 text-xs leading-relaxed">
-              <strong className="font-semibold text-slate-900">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Siparişi Sil</h3>
+            <p className="mt-2 text-zinc-600 dark:text-zinc-400 text-xs leading-relaxed">
+              <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {deletingOrder.orderNumber}
               </strong>{" "}
               numaralı siparişi ve buna bağlı tüm kalemleri/tahsilat kayıtlarını
@@ -743,7 +743,7 @@ export default function OrdersPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={() => setDeletingOrder(null)}
                 type="button"
               >
@@ -924,21 +924,21 @@ function CreateOrderWizardModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">
+            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Sipariş Oluştur
             </h2>
-            <p className="text-slate-500 text-xs">
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
               Müşteri seçin, ürün/hizmet kalemlerini ekleyin ve otomatik
               KDV/İndirim hesaplamasını yapın
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -957,13 +957,13 @@ function CreateOrderWizardModal({
           )}
 
           {/* 1. Customer & Status Section */}
-          <div className="grid grid-cols-1 gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-4 sm:grid-cols-3">
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Müşteri Seçin *
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => handleCustomerChange(e.target.value)}
                 value={selectedCustomerId}
               >
@@ -977,11 +977,11 @@ function CreateOrderWizardModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Başlangıç Durumu
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setStatus(e.target.value)}
                 value={status}
               >
@@ -993,15 +993,15 @@ function CreateOrderWizardModal({
           </div>
 
           {/* 2. Item Picker & Cart */}
-          <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-white p-4">
-            <h4 className="font-bold text-slate-900">
+          <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
+            <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
               Sipariş Kalemleri (Ürün / Hizmet Sepeti)
             </h4>
 
             {/* Quick Item Add Strip */}
-            <div className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-50 p-2.5">
+            <div className="flex flex-wrap items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2.5">
               <select
-                className="min-w-[200px] flex-1 rounded-lg border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
+                className="min-w-[200px] flex-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:outline-none"
                 onChange={(e) => setPickerProdId(e.target.value)}
                 value={pickerProdId}
               >
@@ -1015,7 +1015,7 @@ function CreateOrderWizardModal({
               </select>
 
               <input
-                className="w-20 rounded-lg border border-slate-200 bg-white p-2 text-center text-slate-900 focus:outline-none"
+                className="w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-center text-zinc-900 dark:text-zinc-100 focus:outline-none"
                 min="1"
                 onChange={(e) =>
                   setPickerQty(Number.parseFloat(e.target.value) || 1)
@@ -1037,13 +1037,13 @@ function CreateOrderWizardModal({
 
             {/* Cart Table */}
             {items.length === 0 ? (
-              <div className="rounded-xl border border-slate-200 border-dashed p-6 text-center text-slate-400">
+              <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 border-dashed p-6 text-center text-zinc-400 dark:text-zinc-500">
                 Henüz sepete ürün veya hizmet eklenmedi.
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-slate-200">
+              <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-b bg-slate-50 font-medium text-[11px] text-slate-500">
+                  <thead className="border-b bg-zinc-50 dark:bg-zinc-800/50 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                     <tr>
                       <th className="px-3 py-2.5">Kalem Adı</th>
                       <th className="px-3 py-2.5 text-center">Miktar</th>
@@ -1054,7 +1054,7 @@ function CreateOrderWizardModal({
                       <th className="px-3 py-2.5 text-center">Sil</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {items.map((item, idx) => {
                       const raw = item.unitPrice * item.quantity;
                       const disc = item.discountRate
@@ -1067,20 +1067,20 @@ function CreateOrderWizardModal({
                       const lineTotal = taxable + tax;
 
                       return (
-                        <tr className="hover:bg-slate-50/60" key={idx}>
+                        <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={idx}>
                           <td className="px-3 py-2.5">
-                            <span className="font-bold text-slate-900">
+                            <span className="font-bold text-zinc-900 dark:text-zinc-100">
                               {item.productName}
                             </span>
                             {item.sku && (
-                              <span className="ml-1 text-[10px] text-slate-400">
+                              <span className="ml-1 text-[10px] text-zinc-400 dark:text-zinc-500">
                                 ({item.sku})
                               </span>
                             )}
                           </td>
                           <td className="px-3 py-2.5 text-center">
                             <input
-                              className="w-16 rounded-md border border-slate-200 p-1 text-center font-bold text-slate-900"
+                              className="w-16 rounded-md border border-zinc-200 dark:border-zinc-800 p-1 text-center font-bold text-zinc-900 dark:text-zinc-100"
                               min="0.01"
                               onChange={(e) => {
                                 const newItems = [...items];
@@ -1096,18 +1096,18 @@ function CreateOrderWizardModal({
                               value={item.quantity}
                             />
                           </td>
-                          <td className="px-3 py-2.5 text-right font-medium text-slate-800">
+                          <td className="px-3 py-2.5 text-right font-medium text-zinc-800 dark:text-zinc-200">
                             ₺
                             {item.unitPrice.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
                             })}
                           </td>
-                          <td className="px-3 py-2.5 text-center text-slate-600">
+                          <td className="px-3 py-2.5 text-center text-zinc-600 dark:text-zinc-400">
                             %{item.taxRate}
                           </td>
                           <td className="px-3 py-2.5 text-center">
                             <input
-                              className="w-14 rounded-md border border-slate-200 p-1 text-center text-slate-900"
+                              className="w-14 rounded-md border border-zinc-200 dark:border-zinc-800 p-1 text-center text-zinc-900 dark:text-zinc-100"
                               max="100"
                               min="0"
                               onChange={(e) => {
@@ -1123,7 +1123,7 @@ function CreateOrderWizardModal({
                               value={item.discountRate || 0}
                             />
                           </td>
-                          <td className="px-3 py-2.5 text-right font-extrabold text-slate-900">
+                          <td className="px-3 py-2.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                             ₺
                             {lineTotal.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
@@ -1131,7 +1131,7 @@ function CreateOrderWizardModal({
                           </td>
                           <td className="px-3 py-2.5 text-center">
                             <button
-                              className="p-1 text-slate-400 hover:text-rose-600"
+                              className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-rose-600"
                               onClick={() => handleRemoveItem(idx)}
                               type="button"
                             >
@@ -1150,11 +1150,11 @@ function CreateOrderWizardModal({
           {/* 3. Address & Delivery */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Teslimat Adresi
               </label>
               <textarea
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setShippingAddress(e.target.value)}
                 placeholder="Teslimat / Sevkiyat adresi..."
                 rows={2}
@@ -1162,11 +1162,11 @@ function CreateOrderWizardModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Fatura Adresi
               </label>
               <textarea
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setBillingAddress(e.target.value)}
                 placeholder="Fatura adresi..."
                 rows={2}
@@ -1176,16 +1176,16 @@ function CreateOrderWizardModal({
           </div>
 
           {/* 4. Financial Controls & Summary Section */}
-          <div className="grid grid-cols-1 gap-4 rounded-3xl border border-slate-200/80 bg-slate-50/50 p-5 lg:grid-cols-12">
+          <div className="grid grid-cols-1 gap-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-5 lg:grid-cols-12">
             {/* Left Options (7 cols) */}
             <div className="space-y-3 lg:col-span-7">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700">
+                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                     Ödeme Yöntemi
                   </label>
                   <select
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     value={paymentMethod}
                   >
@@ -1198,15 +1198,15 @@ function CreateOrderWizardModal({
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700">
+                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                     Kargo Bedeli (₺)
                   </label>
                   <div className="relative">
-                    <span className="absolute top-2 left-3 font-semibold text-slate-400">
+                    <span className="absolute top-2 left-3 font-semibold text-zinc-400 dark:text-zinc-500">
                       ₺
                     </span>
                     <input
-                      className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-7 font-medium text-slate-900 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pr-3 pl-7 font-medium text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                       min="0"
                       onChange={(e) =>
                         setShippingFee(Number.parseFloat(e.target.value) || 0)
@@ -1222,15 +1222,15 @@ function CreateOrderWizardModal({
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700">
+                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                     Genel İskonto / İndirim (₺)
                   </label>
                   <div className="relative">
-                    <span className="absolute top-2 left-3 font-semibold text-slate-400">
+                    <span className="absolute top-2 left-3 font-semibold text-zinc-400 dark:text-zinc-500">
                       ₺
                     </span>
                     <input
-                      className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-7 font-medium text-slate-900 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pr-3 pl-7 font-medium text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                       min="0"
                       onChange={(e) =>
                         setGeneralDiscount(
@@ -1246,11 +1246,11 @@ function CreateOrderWizardModal({
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-medium text-slate-700">
+                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                     Sipariş Notu
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Siparişe özel not ekleyin..."
                     type="text"
@@ -1261,11 +1261,11 @@ function CreateOrderWizardModal({
             </div>
 
             {/* Right Financial Summary Card (5 cols) */}
-            <div className="flex flex-col justify-between space-y-2 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs lg:col-span-5">
+            <div className="flex flex-col justify-between space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs lg:col-span-5">
               <div className="space-y-1.5 text-[11px]">
-                <div className="flex items-center justify-between text-slate-600">
+                <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
                   <span>Ara Toplam (KDV Hariç):</span>
-                  <span className="font-semibold text-slate-900">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                     ₺
                     {subtotal.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -1285,9 +1285,9 @@ function CreateOrderWizardModal({
                   </div>
                 )}
 
-                <div className="flex items-center justify-between text-slate-600">
+                <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
                   <span>Hesaplanan KDV (%):</span>
-                  <span className="font-semibold text-slate-900">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                     ₺
                     {totalTax.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -1296,9 +1296,9 @@ function CreateOrderWizardModal({
                 </div>
 
                 {shippingFee > 0 && (
-                  <div className="flex items-center justify-between text-slate-600">
+                  <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
                     <span>Kargo / Sevkiyat:</span>
-                    <span className="font-semibold text-slate-900">
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                       ₺
                       {Number(shippingFee).toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,
@@ -1309,13 +1309,13 @@ function CreateOrderWizardModal({
               </div>
 
               {/* Grand Total Highlight */}
-              <div className="mt-1 border-slate-100 border-t pt-2.5">
+              <div className="mt-1 border-zinc-100 dark:border-zinc-800 border-t pt-2.5">
                 <div className="flex items-baseline justify-between">
                   <div>
-                    <span className="block font-bold text-slate-900 text-xs uppercase tracking-wider">
+                    <span className="block font-bold text-zinc-900 dark:text-zinc-100 text-xs uppercase tracking-wider">
                       Genel Toplam
                     </span>
-                    <span className="font-medium text-[10px] text-slate-400">
+                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                       Tüm Vergiler Dahil
                     </span>
                   </div>
@@ -1333,9 +1333,9 @@ function CreateOrderWizardModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

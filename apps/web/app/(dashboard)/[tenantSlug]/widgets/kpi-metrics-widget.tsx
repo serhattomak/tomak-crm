@@ -1,3 +1,4 @@
+/* Hallmark · component: kpi-metrics · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {
@@ -154,41 +155,41 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
         const Icon = m.icon;
         return (
           <div
-            className="group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+            className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-4.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700"
             key={m.id}
           >
             {/* Background subtle gradient glow */}
             <div
-              className={`absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br ${m.color} opacity-60 blur-2xl transition-opacity group-hover:opacity-100`}
+              className={`absolute -top-10 -right-10 h-28 w-28 rounded-full bg-gradient-to-br ${m.color} opacity-40 blur-2xl transition-opacity group-hover:opacity-80 dark:opacity-20 dark:group-hover:opacity-40`}
             />
 
             <div className="relative flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-semibold text-slate-500 text-xs">
+                <span className="font-semibold text-zinc-500 text-xs dark:text-zinc-400">
                   {m.title}
                 </span>
-                <div className="font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+                <div className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100 sm:text-3xl">
                   {isLoading ? (
-                    <span className="inline-block h-8 w-28 animate-pulse rounded-lg bg-slate-100" />
+                    <span className="inline-block h-8 w-28 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
                   ) : (
                     m.value
                   )}
                 </div>
               </div>
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${m.color} border border-white/60 shadow-xs`}
+                className={`flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${m.color} border border-zinc-200/60 shadow-2xs dark:border-zinc-700/60`}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4.5 w-4.5" />
               </div>
             </div>
 
-            <div className="relative mt-4 flex items-center justify-between border-slate-100 border-t pt-3">
-              <div className="flex items-center gap-1.5">
+            <div className="relative mt-3.5 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800/80">
+              <div className="flex items-center gap-1.5 min-w-0">
                 <span
-                  className={`inline-flex items-center gap-0.5 rounded-lg px-2 py-0.5 font-bold text-[10px] ${
+                  className={`inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 font-bold text-[10px] ${
                     m.isPositive
-                      ? "border border-emerald-200/60 bg-emerald-50 text-emerald-700"
-                      : "border border-amber-200/60 bg-amber-50 text-amber-700"
+                      ? "border border-emerald-200/60 bg-emerald-50 text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300"
+                      : "border border-amber-200/60 bg-amber-50 text-amber-700 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300"
                   }`}
                 >
                   {m.isPositive ? (
@@ -198,13 +199,13 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
                   )}
                   {m.change}
                 </span>
-                <span className="font-medium text-[11px] text-slate-400">
+                <span className="truncate font-medium text-[11px] text-zinc-400 dark:text-zinc-500">
                   {m.subtitle}
                 </span>
               </div>
 
               {/* Sparkline Visualizer */}
-              <div className="flex h-5 items-end gap-0.5">
+              <div className="flex h-5 shrink-0 items-end gap-0.5 pl-2">
                 {m.sparkline.map((val, idx) => {
                   const heightPct = Math.max(20, Math.min(100, val));
                   return (

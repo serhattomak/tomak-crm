@@ -1,3 +1,4 @@
+/* Hallmark · component: deals-table · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { ArrowRight, Building2, FileSpreadsheet, Plus } from "lucide-react";
@@ -97,25 +98,25 @@ export function DealsTableWidget() {
   const totalValue = deals.reduce((acc, d) => acc + d.value, 0);
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs transition-all hover:border-slate-300">
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 shadow-2xs">
-              <Building2 className="h-4.5 w-4.5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+              <Building2 className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
                 Sıcak Fırsatlar & Teklifler
               </span>
-              <div className="font-medium text-[11px] text-slate-500">
+              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 En yüksek potansiyelli anlaşmalar ve teklifler
               </div>
             </div>
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-cyan-600 text-xs transition hover:text-cyan-700"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Tümünü Gör</span>
@@ -125,25 +126,25 @@ export function DealsTableWidget() {
 
         {/* Deals Table */}
         {isLoading ? (
-          <div className="space-y-3 py-4">
+          <div className="space-y-2.5 py-3">
             {[1, 2, 3].map((i) => (
               <div
-                className="h-12 w-full animate-pulse rounded-xl bg-slate-50"
+                className="h-11 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
                 key={i}
               />
             ))}
           </div>
         ) : deals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <FileSpreadsheet className="mb-2 h-8 w-8 text-slate-300" />
-            <p className="font-semibold text-slate-700 text-xs">
+          <div className="flex flex-col items-center justify-center py-7 text-center">
+            <FileSpreadsheet className="mb-2 h-7 w-7 text-zinc-300 dark:text-zinc-600" />
+            <p className="font-semibold text-zinc-700 text-xs dark:text-zinc-300">
               Henüz fırsat veya teklif bulunmuyor
             </p>
-            <p className="mt-0.5 text-[11px] text-slate-400">
+            <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
               Satış hunisinden yeni anlaşmalar ekleyebilirsiniz.
             </p>
             <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-cyan-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-cyan-700"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
               href={`/${activeTenant?.slug || "workspace"}/pipelines`}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -154,32 +155,32 @@ export function DealsTableWidget() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-slate-100 border-b font-semibold text-[11px] text-slate-400 uppercase tracking-wider">
-                  <th className="pb-2.5">Anlaşma & Müşteri</th>
-                  <th className="pb-2.5">Tutar</th>
-                  <th className="pb-2.5">Aşama</th>
-                  <th className="pb-2.5">Olasılık</th>
-                  <th className="pb-2.5 text-right">Temsilci</th>
+                <tr className="border-b border-zinc-100 font-semibold text-[10px] text-zinc-400 uppercase tracking-wider dark:border-zinc-800">
+                  <th className="pb-2">Anlaşma & Müşteri</th>
+                  <th className="pb-2">Tutar</th>
+                  <th className="pb-2">Aşama</th>
+                  <th className="pb-2">Olasılık</th>
+                  <th className="pb-2 text-right">Temsilci</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                 {deals.map((deal) => (
                   <tr
-                    className="group transition-colors hover:bg-slate-50/80"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                     key={deal.id}
                   >
-                    <td className="py-3 pr-3">
-                      <div className="max-w-[160px] truncate font-bold text-slate-900 sm:max-w-xs">
+                    <td className="py-2.5 pr-3">
+                      <div className="max-w-[160px] truncate font-bold text-zinc-900 dark:text-zinc-100 sm:max-w-xs">
                         {deal.title}
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-slate-500">
-                        <Building2 className="h-3 w-3 flex-none text-slate-400" />
+                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <Building2 className="h-3 w-3 flex-none text-zinc-400 dark:text-zinc-500" />
                         <span className="truncate">{deal.customerName}</span>
                       </div>
                     </td>
 
-                    <td className="whitespace-nowrap py-3 pr-3">
-                      <span className="font-extrabold text-slate-900">
+                    <td className="whitespace-nowrap py-2.5 pr-3">
+                      <span className="font-bold text-zinc-900 dark:text-zinc-100">
                         ₺
                         {deal.value.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -187,30 +188,30 @@ export function DealsTableWidget() {
                       </span>
                     </td>
 
-                    <td className="whitespace-nowrap py-3 pr-3">
-                      <span className="inline-flex items-center rounded-lg border border-cyan-200 bg-cyan-50 px-2 py-0.5 font-bold text-[10px] text-cyan-700">
+                    <td className="whitespace-nowrap py-2.5 pr-3">
+                      <span className="inline-flex items-center rounded-md border border-violet-200/70 bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300">
                         {deal.stageName}
                       </span>
                     </td>
 
-                    <td className="whitespace-nowrap py-3 pr-3">
+                    <td className="whitespace-nowrap py-2.5 pr-3">
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-12 overflow-hidden rounded-full bg-slate-100">
+                        <div className="h-1.5 w-12 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                           <div
-                            className="h-full rounded-full bg-cyan-500"
+                            className="h-full rounded-full bg-violet-500 dark:bg-violet-400"
                             style={{ width: `${deal.probability}%` }}
                           />
                         </div>
-                        <span className="font-bold text-[11px] text-slate-600">
+                        <span className="font-bold text-[11px] text-zinc-600 dark:text-zinc-400">
                           %{deal.probability}
                         </span>
                       </div>
                     </td>
 
-                    <td className="whitespace-nowrap py-3 text-right">
+                    <td className="whitespace-nowrap py-2.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <div
-                          className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 font-bold text-[10px] text-white shadow-2xs"
+                          className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 font-bold text-[10px] text-white shadow-2xs dark:bg-zinc-100 dark:text-zinc-900"
                           title={deal.assignedUserName || "Temsilci"}
                         >
                           {(deal.assignedUserName || "T")
@@ -227,9 +228,9 @@ export function DealsTableWidget() {
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3 font-medium text-[11px] text-slate-400">
+      <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2.5 font-medium text-[11px] text-zinc-400 dark:border-zinc-800/80 dark:text-zinc-500">
         <span>{deals.length} anlaşmanın potansiyeli:</span>
-        <strong className="font-bold text-slate-800">
+        <strong className="font-bold text-zinc-800 dark:text-zinc-200">
           ₺{totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
         </strong>
       </div>

@@ -145,10 +145,10 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="font-medium text-slate-500 text-xs">
+          <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
             Ürün detayları yükleniyor...
           </span>
         </div>
@@ -173,15 +173,15 @@ export default function ProductDetailPage() {
   const getTypeBadge = (type: string) => {
     switch (type) {
       case "Physical":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Service":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Digital":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
       case "Subscription":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -195,7 +195,7 @@ export default function ProductDetailPage() {
       case "Adjustment":
         return <RotateCcw className="h-3.5 w-3.5 text-blue-600" />;
       default:
-        return <History className="h-3.5 w-3.5 text-slate-600" />;
+        return <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />;
     }
   };
 
@@ -228,10 +228,10 @@ export default function ProductDetailPage() {
       )}
 
       {/* 1. Header Section */}
-      <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-4 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition-colors hover:bg-slate-50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
             href={`/${tenantSlug}/products`}
             title="Kataloğa Dön"
           >
@@ -239,7 +239,7 @@ export default function ProductDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 font-bold text-base text-blue-600 shadow-xs">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 font-bold text-base text-blue-600 shadow-xs">
               {product.type === "Physical" ? (
                 <Package className="h-6 w-6" />
               ) : (
@@ -249,7 +249,7 @@ export default function ProductDetailPage() {
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-extrabold text-slate-900 text-xl tracking-tight sm:text-2xl">
+                <h1 className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xl tracking-tight sm:text-2xl">
                   {product.name}
                 </h1>
                 <span
@@ -265,7 +265,7 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-slate-500 text-xs">
+              <div className="mt-0.5 flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-xs">
                 <span>{product.categoryName || "Kategorisiz"}</span>
                 {product.brand && (
                   <>
@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
           {product.trackInventory && (
             <PermissionGate permission="Products.StockAdjust">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-colors hover:bg-slate-50"
+                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
@@ -317,9 +317,9 @@ export default function ProductDetailPage() {
         {/* Left Column: Summary Info & Cards (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Pricing & Margins */}
-          <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+          <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-slate-900 text-xs">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                 Fiyatlandırma & Karlılık
               </h3>
               <span
@@ -336,9 +336,9 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between border-slate-100 border-b py-1.5">
-                <span className="text-slate-500">Satış Fiyatı (KDV Hariç)</span>
-                <span className="font-extrabold text-slate-900 text-sm">
+              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
+                <span className="text-zinc-500 dark:text-zinc-400">Satış Fiyatı (KDV Hariç)</span>
+                <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-sm">
                   ₺
                   {product.sellingPrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -346,9 +346,9 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-slate-100 border-b py-1.5">
-                <span className="text-slate-500">KDV Oranı & Dahil Fiyat</span>
-                <span className="font-semibold text-slate-800">
+              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
+                <span className="text-zinc-500 dark:text-zinc-400">KDV Oranı & Dahil Fiyat</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   %{product.taxRate} (₺
                   {taxInclusivePrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -357,9 +357,9 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-slate-100 border-b py-1.5">
-                <span className="text-slate-500">Alış / Maliyet Fiyatı</span>
-                <span className="font-semibold text-slate-600">
+              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
+                <span className="text-zinc-500 dark:text-zinc-400">Alış / Maliyet Fiyatı</span>
+                <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                   ₺
                   {product.costPrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -368,7 +368,7 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center justify-between py-1.5 pt-2">
-                <span className="font-bold text-slate-700">
+                <span className="font-bold text-zinc-700 dark:text-zinc-300">
                   Birim Başına Brüt Kar
                 </span>
                 <span className="font-extrabold text-emerald-600 text-sm">
@@ -383,8 +383,8 @@ export default function ProductDetailPage() {
 
           {/* Card: Inventory Stock Status */}
           {product.trackInventory && product.type === "Physical" && (
-            <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
-              <h3 className="font-bold text-slate-900 text-xs">
+            <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                 Envanter & Stok Seviyesi
               </h3>
 
@@ -398,29 +398,29 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-slate-50 p-3">
-                  <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
+                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
                     Kullanılabilir
                   </span>
-                  <div className="mt-1 font-extrabold text-lg text-slate-900">
+                  <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
                     {product.availableStock} {product.unit}
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-slate-50 p-3">
-                  <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
+                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
                     Rezerve
                   </span>
-                  <div className="mt-1 font-bold text-slate-700 text-sm">
+                  <div className="mt-1 font-bold text-zinc-700 dark:text-zinc-300 text-sm">
                     {product.reservedStock} {product.unit}
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-slate-50 p-3">
-                  <span className="font-semibold text-[10px] text-slate-500 uppercase">
+                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
+                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
                     Kritik Eşik
                   </span>
-                  <div className="mt-1 font-bold text-slate-700 text-sm">
+                  <div className="mt-1 font-bold text-zinc-700 dark:text-zinc-300 text-sm">
                     {product.minStockLevel} {product.unit}
                   </div>
                 </div>
@@ -429,37 +429,37 @@ export default function ProductDetailPage() {
           )}
 
           {/* Card: Meta details */}
-          <div className="space-y-3 rounded-3xl border border-slate-200/80 bg-white p-5 text-xs shadow-xs">
-            <h3 className="font-bold text-slate-900">
+          <div className="space-y-3 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 text-xs shadow-xs">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
               Teknik & Kimlik Bilgileri
             </h3>
-            <div className="space-y-2 text-slate-600">
+            <div className="space-y-2 text-zinc-600 dark:text-zinc-400">
               {product.barcode && (
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Barkod (EAN):</span>
-                  <span className="font-medium font-mono text-slate-800">
+                  <span className="text-zinc-400 dark:text-zinc-500">Barkod (EAN):</span>
+                  <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                     {product.barcode}
                   </span>
                 </div>
               )}
               {product.sku && (
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Stok Kodu (SKU):</span>
-                  <span className="font-medium font-mono text-slate-800">
+                  <span className="text-zinc-400 dark:text-zinc-500">Stok Kodu (SKU):</span>
+                  <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                     {product.sku}
                   </span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-slate-400">Ölçü Birimi:</span>
-                <span className="font-semibold text-slate-800">
+                <span className="text-zinc-400 dark:text-zinc-500">Ölçü Birimi:</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   {product.unit}
                 </span>
               </div>
               {product.description && (
-                <div className="mt-2 border-slate-100 border-t pt-2">
-                  <span className="mb-1 block text-slate-400">Açıklama:</span>
-                  <p className="text-slate-700 leading-relaxed">
+                <div className="mt-2 border-zinc-100 dark:border-zinc-800 border-t pt-2">
+                  <span className="mb-1 block text-zinc-400 dark:text-zinc-500">Açıklama:</span>
+                  <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
                     {product.description}
                   </p>
                 </div>
@@ -471,13 +471,13 @@ export default function ProductDetailPage() {
         {/* Right Column: Tabbed Views (8 Cols) */}
         <div className="space-y-6 lg:col-span-8">
           {/* Pill Tabs */}
-          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
+          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 dark:bg-zinc-800/90 p-1">
             {tabs.map((tab) => (
               <button
                 className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                   activeTab === tab.id
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                    : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
                 }`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
@@ -493,8 +493,8 @@ export default function ProductDetailPage() {
             <div className="space-y-6">
               {/* Quick Stock Movement Box */}
               {product.trackInventory && (
-                <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
-                  <h4 className="mb-3 font-bold text-slate-900 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+                  <h4 className="mb-3 font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                     Hızlı Stok Hareketi İşle
                   </h4>
                   <form
@@ -504,7 +504,7 @@ export default function ProductDetailPage() {
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                       <div>
                         <select
-                          className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:outline-none"
                           onChange={(e) =>
                             setQuickAdjType(e.target.value as any)
                           }
@@ -518,7 +518,7 @@ export default function ProductDetailPage() {
 
                       <div>
                         <input
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                           min="0.01"
                           onChange={(e) =>
                             setQuickAdjQty(
@@ -535,7 +535,7 @@ export default function ProductDetailPage() {
 
                       <div>
                         <input
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:bg-white focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                           onChange={(e) => setQuickAdjReason(e.target.value)}
                           placeholder="Neden / Açıklama (Opsiyonel)"
                           type="text"
@@ -558,9 +558,9 @@ export default function ProductDetailPage() {
               )}
 
               {/* Recent Movements Preview */}
-              <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+              <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
                 <div className="mb-4 flex items-center justify-between">
-                  <h4 className="font-bold text-slate-900 text-xs">
+                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                     Son Stok Hareketleri
                   </h4>
                   <button
@@ -573,39 +573,39 @@ export default function ProductDetailPage() {
                 </div>
 
                 {product.stockMovements.length === 0 ? (
-                  <div className="py-6 text-center text-slate-400 text-xs">
+                  <div className="py-6 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                     Henüz stok hareketi kaydedilmedi.
                   </div>
                 ) : (
                   <div className="space-y-2.5">
                     {product.stockMovements.slice(0, 5).map((mov) => (
                       <div
-                        className="flex items-center justify-between rounded-2xl bg-slate-50 p-3 text-xs"
+                        className="flex items-center justify-between rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3 text-xs"
                         key={mov.id}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-slate-200 bg-white shadow-2xs">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
                             {getMovementIcon(mov.movementType)}
                           </div>
                           <div>
-                            <div className="font-bold text-slate-900">
+                            <div className="font-bold text-zinc-900 dark:text-zinc-100">
                               {getMovementLabel(mov.movementType)} (
                               {mov.movementType === "Out"
                                 ? `-${mov.quantity}`
                                 : `+${mov.quantity}`}{" "}
                               {product.unit})
                             </div>
-                            <div className="text-[10px] text-slate-400">
+                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                               {mov.reason || "Kayıtlı açıklama yok"}
                             </div>
                           </div>
                         </div>
 
                         <div className="text-right">
-                          <div className="font-bold text-slate-800">
+                          <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {mov.previousStock} → {mov.newStock} {product.unit}
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </div>
                         </div>
@@ -621,7 +621,7 @@ export default function ProductDetailPage() {
           {activeTab === "variants" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-900 text-xs">
+                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                   Ürün Varyantları (Renk, Beden, Model)
                 </h4>
                 <button
@@ -635,13 +635,13 @@ export default function ProductDetailPage() {
               </div>
 
               {product.variants.length === 0 ? (
-                <div className="rounded-3xl border border-slate-200/80 border-dashed bg-white p-10 text-center text-slate-400 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-10 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                   Bu ürüne ait tanımlanmış varyant bulunmamaktadır.
                 </div>
               ) : (
-                <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+                <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
                   <table className="w-full text-left text-xs">
-                    <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
+                    <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                       <tr>
                         <th className="px-4 py-3">Varyant Adı</th>
                         <th className="px-4 py-3">SKU / Barkod</th>
@@ -650,30 +650,30 @@ export default function ProductDetailPage() {
                         <th className="py-3 pr-4 pl-2 text-right">İşlem</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                       {product.variants.map((v) => (
                         <tr
-                          className="transition-colors hover:bg-slate-50/80"
+                          className="transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
                           key={v.id}
                         >
-                          <td className="px-4 py-3.5 font-bold text-slate-900">
+                          <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                             {v.name}
                           </td>
-                          <td className="px-4 py-3.5 font-mono text-[11px] text-slate-500">
+                          <td className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                             {v.sku || v.barcode || "—"}
                           </td>
-                          <td className="px-4 py-3.5 text-right font-semibold text-slate-800">
+                          <td className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
                             +₺
                             {v.additionalPrice.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
                             })}
                           </td>
-                          <td className="px-4 py-3.5 text-right font-extrabold text-slate-900">
+                          <td className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                             {v.stockQuantity} {product.unit}
                           </td>
                           <td className="py-3.5 pr-4 pl-2 text-right">
                             <button
-                              className="p-1 text-slate-400 hover:text-rose-600"
+                              className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-rose-600"
                               onClick={() => handleDeleteVariant(v.id)}
                               title="Varyantı Sil"
                               type="button"
@@ -694,7 +694,7 @@ export default function ProductDetailPage() {
           {activeTab === "movements" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-900 text-xs">
+                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                   Tarihsel Stok Hareket Defteri
                 </h4>
                 {product.trackInventory && (
@@ -710,35 +710,35 @@ export default function ProductDetailPage() {
               </div>
 
               {product.stockMovements.length === 0 ? (
-                <div className="rounded-3xl border border-slate-200/80 border-dashed bg-white p-10 text-center text-slate-400 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-10 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                   Kayıtlı stok hareketi bulunmuyor.
                 </div>
               ) : (
-                <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
+                <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-zinc-100 dark:bg-zinc-800">
                   {product.stockMovements.map((mov) => (
                     <div
                       className="relative flex items-start gap-3 text-xs"
                       key={mov.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-slate-100">
+                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white dark:bg-zinc-900 shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
                         {getMovementIcon(mov.movementType)}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
+                      <div className="flex-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900">
+                          <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getMovementLabel(mov.movementType)} (
                             {mov.movementType === "Out"
                               ? `-${mov.quantity}`
                               : `+${mov.quantity}`}{" "}
                             {product.unit})
                           </span>
-                          <span className="font-medium text-[10px] text-slate-400">
+                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
 
-                        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-slate-500">
+                        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-zinc-500 dark:text-zinc-400">
                           <span>
                             Önceki: <strong>{mov.previousStock}</strong> → Yeni:{" "}
                             <strong>
@@ -758,7 +758,7 @@ export default function ProductDetailPage() {
                         </div>
 
                         {mov.reason && (
-                          <p className="mt-1.5 rounded-xl bg-slate-50 p-2 text-slate-700 text-xs">
+                          <p className="mt-1.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-700 dark:text-zinc-300 text-xs">
                             {mov.reason}
                           </p>
                         )}
@@ -773,16 +773,16 @@ export default function ProductDetailPage() {
           {/* TAB 4: PRICING & MARGIN SIMULATOR */}
           {activeTab === "pricing" && (
             <div className="space-y-4">
-              <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-6 text-xs">
-                <h4 className="font-bold text-slate-900 text-sm">
+              <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-6 text-xs">
+                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                   Fiyat & Karlılık Simülasyonu
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-slate-50 p-4">
-                    <span className="font-medium text-[11px] text-slate-500">
+                  <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
+                    <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                       Maliyet (Alış)
                     </span>
-                    <div className="mt-1 font-extrabold text-lg text-slate-900">
+                    <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
                       ₺
                       {product.costPrice.toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,
@@ -790,8 +790,8 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-slate-50 p-4">
-                    <span className="font-medium text-[11px] text-slate-500">
+                  <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
+                    <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                       Satış Fiyatı
                     </span>
                     <div className="mt-1 font-extrabold text-blue-600 text-lg">
@@ -928,14 +928,14 @@ function StockAdjustModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
-          <h3 className="font-bold text-base text-slate-900">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Stok Hareketi Ekle
           </h3>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -945,11 +945,11 @@ function StockAdjustModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Hareket Türü
             </label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -966,11 +966,11 @@ function StockAdjustModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Miktar ({product.unit}) *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               min="0.01"
               onChange={(e) =>
                 setFormData({
@@ -986,11 +986,11 @@ function StockAdjustModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               İrsaliye / Fatura No
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, referenceNumber: e.target.value })
               }
@@ -1001,11 +1001,11 @@ function StockAdjustModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Açıklama / Sebep
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, reason: e.target.value })
               }
@@ -1015,9 +1015,9 @@ function StockAdjustModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1094,14 +1094,14 @@ function AddVariantModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
-          <h3 className="font-bold text-base text-slate-900">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Varyant Ekle
           </h3>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1111,11 +1111,11 @@ function AddVariantModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1128,11 +1128,11 @@ function AddVariantModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Ek Fiyat (+₺)
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1146,11 +1146,11 @@ function AddVariantModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Varyant Stoğu
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1166,11 +1166,11 @@ function AddVariantModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Varyant SKU
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1180,11 +1180,11 @@ function AddVariantModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Barkod
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1194,9 +1194,9 @@ function AddVariantModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1294,14 +1294,14 @@ function EditProductModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
-          <h3 className="font-bold text-base text-slate-900">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Ürün / Hizmet Bilgilerini Düzenle
           </h3>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1314,11 +1314,11 @@ function EditProductModal({
           onSubmit={handleSubmit}
         >
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Ürün / Hizmet Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1330,11 +1330,11 @@ function EditProductModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Kategori
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, categoryId: e.target.value })
                 }
@@ -1349,11 +1349,11 @@ function EditProductModal({
               </select>
             </div>
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Durum
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, status: e.target.value })
                 }
@@ -1369,11 +1369,11 @@ function EditProductModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Alış / Maliyet (₺)
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1387,11 +1387,11 @@ function EditProductModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Satış Fiyatı (₺) *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1407,9 +1407,9 @@ function EditProductModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

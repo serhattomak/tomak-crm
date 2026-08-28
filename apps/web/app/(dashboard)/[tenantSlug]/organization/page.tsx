@@ -54,7 +54,7 @@ export default function OrganizationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white p-8 text-slate-500 shadow-xs">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 text-zinc-500 dark:text-zinc-400 shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-fuchsia-500" />
           <p className="font-semibold text-xs">Organizasyon yükleniyor...</p>
         </div>
@@ -245,10 +245,10 @@ function OrganizationPageContent() {
             <Network className="h-4 w-4" />
             <span>Organization & People</span>
           </div>
-          <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+          <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
             Organizasyon & Departmanlar
           </h1>
-          <p className="mt-1 text-slate-500 text-xs">
+          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
             Departman hiyerarşisi, organizasyon şeması, çalışan kadrosu ve
             pozisyonları yönetin.
           </p>
@@ -257,7 +257,7 @@ function OrganizationPageContent() {
         {/* Global Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-all hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={() => {
               setEditingDept(null);
               setIsDeptModalOpen(true);
@@ -269,7 +269,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition-all hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-all hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={() => {
               setEditingPos(null);
               setIsPosModalOpen(true);
@@ -295,13 +295,13 @@ function OrganizationPageContent() {
       </div>
 
       {/* 2. Navigation Tabs */}
-      <div className="flex items-center justify-between border-slate-100 border-b pb-3">
-        <div className="flex items-center gap-1 rounded-2xl bg-slate-100/80 p-1">
+      <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+        <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 p-1">
           <button
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "chart"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
             onClick={() => handleTabChange("chart")}
             type="button"
@@ -313,8 +313,8 @@ function OrganizationPageContent() {
           <button
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "departments"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
             onClick={() => handleTabChange("departments")}
             type="button"
@@ -326,8 +326,8 @@ function OrganizationPageContent() {
           <button
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "employees"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
             onClick={() => handleTabChange("employees")}
             type="button"
@@ -339,8 +339,8 @@ function OrganizationPageContent() {
           <button
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
               activeTab === "positions"
-                ? "bg-white text-slate-900 shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
             }`}
             onClick={() => handleTabChange("positions")}
             type="button"
@@ -352,13 +352,13 @@ function OrganizationPageContent() {
 
         {/* Refresh button */}
         <button
-          className="flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 font-medium text-slate-600 text-xs transition-colors hover:bg-slate-50"
+          className="flex items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-medium text-zinc-600 dark:text-zinc-400 text-xs transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
           disabled={isLoading}
           onClick={loadData}
           type="button"
         >
           <RotateCcw
-            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-fuchsia-500" : "text-slate-500"}`}
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-fuchsia-500" : "text-zinc-500 dark:text-zinc-400"}`}
           />
           <span>Yenile</span>
         </button>
@@ -366,7 +366,7 @@ function OrganizationPageContent() {
 
       {/* 3. Tab Contents */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white p-8 text-slate-500 shadow-xs">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 text-zinc-500 dark:text-zinc-400 shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-fuchsia-500" />
           <p className="font-semibold text-xs">
             Organizasyon verileri yükleniyor...
@@ -632,14 +632,14 @@ function OrgChartTab({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white p-8 text-center shadow-xs">
+      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-3xl border border-zinc-200 dark:border-zinc-800 border-dashed bg-white dark:bg-zinc-900 p-8 text-center shadow-xs">
         <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-fuchsia-50 text-fuchsia-600 shadow-fuchsia-500/10 shadow-sm">
           <Network className="h-7 w-7" />
         </div>
-        <h3 className="mt-4 font-bold text-base text-slate-900">
+        <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
           Organizasyon Şeması Henüz Oluşmadı
         </h3>
-        <p className="mt-1 max-w-sm text-slate-500 text-xs">
+        <p className="mt-1 max-w-sm text-zinc-500 dark:text-zinc-400 text-xs">
           Şema oluşturmak için çalışanları ekleyip birbirine bağlı yönetici
           (Reports To) hiyerarşisi belirleyin.
         </p>
@@ -648,22 +648,22 @@ function OrgChartTab({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-slate-50/70 shadow-xs">
+    <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 shadow-xs">
       {/* Chart Canvas Controls */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-md backdrop-blur-sm">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/95 p-1.5 shadow-md backdrop-blur-sm">
         <button
-          className="rounded-xl p-1.5 text-slate-600 hover:bg-slate-100"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
           onClick={() => setZoom((z) => Math.min(z + 0.15, 1.8))}
           title="Yakınlaştır"
           type="button"
         >
           <ZoomIn className="h-4 w-4" />
         </button>
-        <span className="px-1 font-mono font-semibold text-[11px] text-slate-500">
+        <span className="px-1 font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
           {Math.round(zoom * 100)}%
         </span>
         <button
-          className="rounded-xl p-1.5 text-slate-600 hover:bg-slate-100"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
           onClick={() => setZoom((z) => Math.max(z - 0.15, 0.4))}
           title="Uzaklaştır"
           type="button"
@@ -671,7 +671,7 @@ function OrgChartTab({
           <ZoomOut className="h-4 w-4" />
         </button>
         <button
-          className="rounded-xl p-1.5 text-slate-600 hover:bg-slate-100"
+          className="rounded-xl p-1.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
           onClick={() => setZoom(1)}
           title="Sıfırla"
           type="button"
@@ -732,14 +732,14 @@ function OrgNodeItem({
       case "Lead":
         return "bg-cyan-100 text-cyan-800";
       default:
-        return "bg-slate-100 text-slate-700";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300";
     }
   }, [node.level]);
 
   return (
     <div className="flex flex-col items-center">
       {/* Node Card */}
-      <div className="group relative z-10 w-72 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-fuchsia-300 hover:shadow-fuchsia-500/10 hover:shadow-xl">
+      <div className="group relative z-10 w-72 rounded-2xl border border-zinc-200 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-fuchsia-300 hover:shadow-fuchsia-500/10 hover:shadow-xl">
         {/* Top badges */}
         <div className="mb-3 flex items-center justify-between">
           <span
@@ -773,25 +773,25 @@ function OrgNodeItem({
           )}
 
           <div className="min-w-0 flex-1">
-            <h4 className="truncate font-bold text-slate-900 text-xs transition-colors group-hover:text-fuchsia-600">
+            <h4 className="truncate font-bold text-zinc-900 dark:text-zinc-100 text-xs transition-colors group-hover:text-fuchsia-600">
               {node.fullName}
             </h4>
-            <p className="truncate font-medium text-[11px] text-slate-500">
+            <p className="truncate font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
               {node.title || "Ünvan Belirtilmedi"}
             </p>
-            <p className="truncate font-mono text-[10px] text-slate-400">
+            <p className="truncate font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
               {node.email}
             </p>
           </div>
         </div>
 
         {/* Card Footer: Subordinates & Quick Actions */}
-        <div className="mt-3 flex items-center justify-between border-slate-100 border-t pt-2.5 text-[11px]">
-          <div className="flex items-center gap-1 font-semibold text-slate-500">
-            <Users className="h-3.5 w-3.5 text-slate-400" />
+        <div className="mt-3 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2.5 text-[11px]">
+          <div className="flex items-center gap-1 font-semibold text-zinc-500 dark:text-zinc-400">
+            <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             <span>{node.directReportsCount} Doğrudan</span>
             {node.totalSubordinatesCount > node.directReportsCount && (
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                 ({node.totalSubordinatesCount} Toplam)
               </span>
             )}
@@ -799,7 +799,7 @@ function OrgNodeItem({
 
           <div className="flex items-center gap-1">
             <button
-              className="rounded-lg p-1 text-slate-400 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-600"
+              className="rounded-lg p-1 text-zinc-400 dark:text-zinc-500 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-600"
               onClick={(e) => {
                 e.stopPropagation();
                 onAddSubordinate(node.id);
@@ -815,7 +815,7 @@ function OrgNodeItem({
                 className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${
                   isCollapsed
                     ? "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
-                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
                 }`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -905,9 +905,9 @@ function DepartmentsTab({
       {/* Search Bar */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative max-w-sm flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-white py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-fuchsia-500 focus:outline-none"
+            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pr-4 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-fuchsia-500 focus:outline-none"
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Departman adı, kod veya maliyet merkezi ara..."
             type="text"
@@ -920,7 +920,7 @@ function DepartmentsTab({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredDepts.map((dept) => (
           <div
-            className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-fuchsia-200 hover:shadow-md"
+            className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:border-fuchsia-200 hover:shadow-md"
             key={dept.id}
           >
             <div>
@@ -931,7 +931,7 @@ function DepartmentsTab({
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-sm">
+                    <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                       {dept.name}
                     </h3>
                     {dept.code && (
@@ -944,7 +944,7 @@ function DepartmentsTab({
 
                 <div className="flex items-center gap-1">
                   <button
-                    className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                     onClick={() => onEdit(dept)}
                     title="Düzenle"
                     type="button"
@@ -952,7 +952,7 @@ function DepartmentsTab({
                     <Edit2 className="h-3.5 w-3.5" />
                   </button>
                   <button
-                    className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-rose-50 hover:text-rose-600"
                     onClick={() => onDelete(dept.id)}
                     title="Sil"
                     type="button"
@@ -964,37 +964,37 @@ function DepartmentsTab({
 
               {/* Description & Parent */}
               {dept.parentName && (
-                <div className="mt-3 flex items-center gap-1 font-medium text-[11px] text-slate-500">
-                  <span className="text-slate-400">Üst Departman:</span>
-                  <span className="font-semibold text-slate-700">
+                <div className="mt-3 flex items-center gap-1 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <span className="text-zinc-400 dark:text-zinc-500">Üst Departman:</span>
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                     {dept.parentName}
                   </span>
                 </div>
               )}
 
               {dept.description && (
-                <p className="mt-2 line-clamp-2 text-slate-500 text-xs">
+                <p className="mt-2 line-clamp-2 text-zinc-500 dark:text-zinc-400 text-xs">
                   {dept.description}
                 </p>
               )}
 
               {/* Lead & Stats */}
-              <div className="mt-4 space-y-2 rounded-xl bg-slate-50 p-3 text-xs">
+              <div className="mt-4 space-y-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-3 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                     Departman Lideri:
                   </span>
-                  <span className="font-semibold text-slate-800">
+                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                     {dept.leadName || "Atanmadı"}
                   </span>
                 </div>
 
                 {dept.costCenter && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                       Maliyet Merkezi:
                     </span>
-                    <span className="font-mono font-semibold text-[11px] text-slate-700">
+                    <span className="font-mono font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
                       {dept.costCenter}
                     </span>
                   </div>
@@ -1003,14 +1003,14 @@ function DepartmentsTab({
             </div>
 
             {/* Footer */}
-            <div className="mt-5 flex items-center justify-between border-slate-100 border-t pt-3 text-xs">
-              <div className="flex items-center gap-3 font-semibold text-slate-600">
+            <div className="mt-5 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-3 text-xs">
+              <div className="flex items-center gap-3 font-semibold text-zinc-600 dark:text-zinc-400">
                 <span className="flex items-center gap-1">
-                  <Users className="h-3.5 w-3.5 text-slate-400" />
+                  <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                   {dept.employeeCount} Personel
                 </span>
                 {dept.subDepartmentCount > 0 && (
-                  <span className="flex items-center gap-1 text-slate-400">
+                  <span className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
                     <Layers className="h-3.5 w-3.5" />
                     {dept.subDepartmentCount} Alt Birim
                   </span>
@@ -1074,12 +1074,12 @@ function EmployeesTab({
   return (
     <div className="space-y-4">
       {/* Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs sm:flex-row sm:items-center">
         {/* Search */}
         <div className="relative min-w-[240px] flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-fuchsia-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="İsim, e-posta, sicil no veya unvan ile ara..."
             type="text"
@@ -1091,7 +1091,7 @@ function EmployeesTab({
         <div className="flex flex-wrap items-center gap-2">
           {/* Department Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700 text-xs focus:border-fuchsia-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs focus:border-fuchsia-500 focus:outline-none"
             onChange={(e) => setFilterDept(e.target.value)}
             value={filterDept}
           >
@@ -1105,7 +1105,7 @@ function EmployeesTab({
 
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700 text-xs focus:border-fuchsia-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs focus:border-fuchsia-500 focus:outline-none"
             onChange={(e) => setFilterType(e.target.value)}
             value={filterType}
           >
@@ -1120,7 +1120,7 @@ function EmployeesTab({
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700 text-xs focus:border-fuchsia-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs focus:border-fuchsia-500 focus:outline-none"
             onChange={(e) => setFilterStatus(e.target.value)}
             value={filterStatus}
           >
@@ -1132,16 +1132,16 @@ function EmployeesTab({
           </select>
 
           {/* Toggle View */}
-          <div className="flex items-center rounded-xl border border-slate-200 p-0.5">
+          <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 p-0.5">
             <button
-              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
             >
               <List className="h-3.5 w-3.5" />
             </button>
             <button
-              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"}`}
               onClick={() => setViewMode("grid")}
               type="button"
             >
@@ -1153,19 +1153,19 @@ function EmployeesTab({
 
       {/* Content: Table or Grid */}
       {employees.length === 0 ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white p-8 text-center shadow-xs">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-zinc-200 dark:border-zinc-800 border-dashed bg-white dark:bg-zinc-900 p-8 text-center shadow-xs">
           <Users className="h-10 w-10 text-slate-300" />
-          <h3 className="mt-3 font-bold text-slate-800 text-sm">
+          <h3 className="mt-3 font-bold text-zinc-800 dark:text-zinc-200 text-sm">
             Çalışan Bulunamadı
           </h3>
-          <p className="mt-1 text-slate-500 text-xs">
+          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
             Filtrelerinizi değiştirin veya yeni çalışan ekleyin.
           </p>
         </div>
       ) : viewMode === "table" ? (
-        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <table className="w-full text-left text-xs">
-            <thead className="border-slate-100 border-b bg-slate-50/60 font-bold text-[11px] text-slate-400 uppercase tracking-wider">
+            <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">Çalışan</th>
                 <th className="px-6 py-3.5">Departman & Pozisyon</th>
@@ -1175,10 +1175,10 @@ function EmployeesTab({
                 <th className="px-6 py-3.5 text-right">İşlemler</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {employees.map((emp) => (
                 <tr
-                  className="transition-colors hover:bg-slate-50/70"
+                  className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
                   key={emp.id}
                 >
                   <td className="px-6 py-4">
@@ -1195,35 +1195,35 @@ function EmployeesTab({
                         </div>
                       )}
                       <div>
-                        <div className="font-bold text-slate-900">
+                        <div className="font-bold text-zinc-900 dark:text-zinc-100">
                           {emp.fullName}
                         </div>
-                        <div className="font-mono text-[11px] text-slate-400">
+                        <div className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                           {emp.email}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-slate-800">
+                    <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {emp.title || "—"}
                     </div>
-                    <div className="text-[11px] text-slate-500">
+                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                       {emp.departmentName || "Genel"}
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-medium text-slate-700">
+                  <td className="px-6 py-4 font-medium text-zinc-700 dark:text-zinc-300">
                     {emp.managerName ? (
                       <span className="flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
                         {emp.managerName}
                       </span>
                     ) : (
-                      <span className="text-slate-400">Üst Yönetici Yok</span>
+                      <span className="text-zinc-400 dark:text-zinc-500">Üst Yönetici Yok</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-semibold text-[10px] text-slate-700">
+                    <span className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 font-semibold text-[10px] text-zinc-700 dark:text-zinc-300">
                       {emp.employmentType}
                     </span>
                   </td>
@@ -1234,7 +1234,7 @@ function EmployeesTab({
                           ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
                           : emp.status === "OnLeave"
                             ? "border border-amber-200 bg-amber-50 text-amber-700"
-                            : "bg-slate-100 text-slate-600"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
                       }`}
                     >
                       {emp.status === "Active"
@@ -1247,7 +1247,7 @@ function EmployeesTab({
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                         onClick={() => onView(emp)}
                         title="Profili Gör"
                         type="button"
@@ -1255,7 +1255,7 @@ function EmployeesTab({
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                         onClick={() => onEdit(emp)}
                         title="Düzenle"
                         type="button"
@@ -1263,7 +1263,7 @@ function EmployeesTab({
                         <Edit2 className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-rose-50 hover:text-rose-600"
                         onClick={() => onDelete(emp.id)}
                         title="Sil"
                         type="button"
@@ -1281,7 +1281,7 @@ function EmployeesTab({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {employees.map((emp) => (
             <div
-              className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-fuchsia-300 hover:shadow-md"
+              className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:border-fuchsia-300 hover:shadow-md"
               key={emp.id}
             >
               <div>
@@ -1299,10 +1299,10 @@ function EmployeesTab({
                       </div>
                     )}
                     <div>
-                      <h4 className="font-bold text-slate-900">
+                      <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                         {emp.fullName}
                       </h4>
-                      <p className="font-medium text-slate-500 text-xs">
+                      <p className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                         {emp.title || "Personel"}
                       </p>
                     </div>
@@ -1311,49 +1311,49 @@ function EmployeesTab({
                     className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
                       emp.status === "Active"
                         ? "bg-emerald-50 text-emerald-700"
-                        : "bg-slate-100 text-slate-600"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
                     {emp.status}
                   </span>
                 </div>
 
-                <div className="mt-4 space-y-1.5 text-slate-600 text-xs">
+                <div className="mt-4 space-y-1.5 text-zinc-600 dark:text-zinc-400 text-xs">
                   <div className="flex items-center gap-2">
-                    <Building className="h-3.5 w-3.5 text-slate-400" />
+                    <Building className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                     <span>{emp.departmentName || "Departmansız"}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-slate-400" />
+                    <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                     <span className="truncate font-mono text-[11px]">
                       {emp.email}
                     </span>
                   </div>
                   {emp.phone && (
                     <div className="flex items-center gap-2">
-                      <Phone className="h-3.5 w-3.5 text-slate-400" />
+                      <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                       <span>{emp.phone}</span>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-between border-slate-100 border-t pt-3">
-                <span className="font-medium text-[11px] text-slate-400">
+              <div className="mt-5 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-3">
+                <span className="font-medium text-[11px] text-zinc-400 dark:text-zinc-500">
                   {emp.directReportCount > 0
                     ? `${emp.directReportCount} Doğrudan Ast`
                     : "Bireysel Katılımcı"}
                 </span>
                 <div className="flex items-center gap-1">
                   <button
-                    className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                     onClick={() => onView(emp)}
                     type="button"
                   >
                     <Eye className="h-4 w-4" />
                   </button>
                   <button
-                    className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                    className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                     onClick={() => onEdit(emp)}
                     type="button"
                   >
@@ -1385,9 +1385,9 @@ function PositionsTab({
 }) {
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
         <table className="w-full text-left text-xs">
-          <thead className="border-slate-100 border-b bg-slate-50/60 font-bold text-[11px] text-slate-400 uppercase tracking-wider">
+          <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50/60 font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
             <tr>
               <th className="px-6 py-3.5">Pozisyon / Ünvan</th>
               <th className="px-6 py-3.5">Kariyer Kademesi</th>
@@ -1397,47 +1397,47 @@ function PositionsTab({
               <th className="px-6 py-3.5 text-right">İşlemler</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
             {positions.map((pos) => (
               <tr
-                className="transition-colors hover:bg-slate-50/70"
+                className="transition-colors hover:bg-zinc-50/70 dark:bg-zinc-800/40"
                 key={pos.id}
               >
                 <td className="px-6 py-4">
-                  <div className="font-bold text-slate-900">{pos.title}</div>
+                  <div className="font-bold text-zinc-900 dark:text-zinc-100">{pos.title}</div>
                   {pos.jobDescription && (
-                    <div className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">
+                    <div className="mt-0.5 line-clamp-1 text-[11px] text-zinc-400 dark:text-zinc-500">
                       {pos.jobDescription}
                     </div>
                   )}
                 </td>
                 <td className="px-6 py-4">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 font-bold text-[10px] text-slate-700">
+                  <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
                     {pos.level}
                   </span>
                 </td>
-                <td className="px-6 py-4 font-semibold text-slate-700">
+                <td className="px-6 py-4 font-semibold text-zinc-700 dark:text-zinc-300">
                   {pos.departmentName || "Tüm Departmanlar"}
                 </td>
-                <td className="px-6 py-4 font-mono text-[11px] text-slate-600">
+                <td className="px-6 py-4 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
                   {pos.minSalary || pos.maxSalary
                     ? `$${pos.minSalary?.toLocaleString() || "0"} – $${pos.maxSalary?.toLocaleString() || "Max"}`
                     : "—"}
                 </td>
-                <td className="px-6 py-4 font-semibold text-slate-800">
+                <td className="px-6 py-4 font-semibold text-zinc-800 dark:text-zinc-200">
                   {pos.employeeCount} Kişi
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
-                      className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                      className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                       onClick={() => onEdit(pos)}
                       type="button"
                     >
                       <Edit2 className="h-4 w-4" />
                     </button>
                     <button
-                      className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                      className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-rose-50 hover:text-rose-600"
                       onClick={() => onDelete(pos.id)}
                       type="button"
                     >
@@ -1515,14 +1515,14 @@ function DepartmentModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base text-slate-900">
+      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-blue-600" />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
           </h2>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1536,11 +1536,11 @@ function DepartmentModal({
           onSubmit={handleSubmit}
         >
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Departman Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Yazılım & Teknoloji"
               required
@@ -1551,11 +1551,11 @@ function DepartmentModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Departman Kodu
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-slate-900 uppercase focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-mono text-zinc-900 dark:text-zinc-100 uppercase focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Örn: TECH"
                 type="text"
@@ -1563,11 +1563,11 @@ function DepartmentModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Maliyet Merkezi
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setCostCenter(e.target.value)}
                 placeholder="CC-102"
                 type="text"
@@ -1577,7 +1577,7 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Üst Departman
             </label>
             <Select
@@ -1601,7 +1601,7 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Departman Lideri / Müdürü
             </label>
             <Select
@@ -1623,11 +1623,11 @@ function DepartmentModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Departmanın temel görev ve sorumlulukları..."
               rows={2}
@@ -1635,9 +1635,9 @@ function DepartmentModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1721,14 +1721,14 @@ function PositionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base text-slate-900">
+      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Briefcase className="h-5 w-5 text-blue-600" />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
           </h2>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1742,11 +1742,11 @@ function PositionModal({
           onSubmit={handleSubmit}
         >
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Pozisyon / Ünvan Başlığı *
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Örn: Senior Frontend Developer"
               required
@@ -1757,7 +1757,7 @@ function PositionModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Kariyer Kademesi *
               </label>
               <Select onValueChange={setLevel} value={level}>
@@ -1777,7 +1777,7 @@ function PositionModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Varsayılan Departman
               </label>
               <Select
@@ -1803,7 +1803,7 @@ function PositionModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Min Maaş Bandı
               </label>
               <NumberInput
@@ -1813,7 +1813,7 @@ function PositionModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Max Maaş Bandı
               </label>
               <NumberInput
@@ -1825,11 +1825,11 @@ function PositionModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Görev Tanımı
             </label>
             <textarea
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Pozisyonun ana sorumlulukları..."
               rows={2}
@@ -1837,9 +1837,9 @@ function PositionModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1985,16 +1985,16 @@ function EmployeeModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 p-4 backdrop-blur-sm">
-      <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base text-slate-900">
+      <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Users className="h-5 w-5 text-blue-600" />
             {employee?.id
               ? "Çalışan Kartını Düzenle"
               : "Yeni Çalışan / Personel Kartı Aç"}
           </h2>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -2016,7 +2016,7 @@ function EmployeeModal({
               onValueChange={(val) => handleUserLink(val === "none" ? "" : val)}
               value={userId || "none"}
             >
-              <SelectTrigger className="bg-white">
+              <SelectTrigger className="bg-white dark:bg-zinc-900">
                 <SelectValue placeholder="Bağımsız Personel Kartı (Hesap Bağlama Yok)" />
               </SelectTrigger>
               <SelectContent>
@@ -2035,11 +2035,11 @@ function EmployeeModal({
           {/* Personal Info */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Ahmet"
                 required
@@ -2048,11 +2048,11 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Soyadı *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Yılmaz"
                 required
@@ -2064,11 +2064,11 @@ function EmployeeModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 E-posta Adresi *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ahmet@sirket.com"
                 required
@@ -2077,11 +2077,11 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Telefon
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+90 555 123 4567"
                 type="text"
@@ -2093,7 +2093,7 @@ function EmployeeModal({
           {/* Org & Role Fields */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Departman
               </label>
               <Select
@@ -2116,7 +2116,7 @@ function EmployeeModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Pozisyon Kataloğu
               </label>
               <Select
@@ -2139,11 +2139,11 @@ function EmployeeModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Özel / Görünen Ünvan
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Senior Architect"
                 type="text"
@@ -2153,15 +2153,15 @@ function EmployeeModal({
           </div>
 
           {/* Manager / Reports To Hierarchy */}
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5">
-            <label className="mb-1 block font-bold text-slate-900">
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-3.5">
+            <label className="mb-1 block font-bold text-zinc-900 dark:text-zinc-100">
               Bağlı Olduğu Yönetici (Reports To)
             </label>
             <Select
               onValueChange={(val) => setManagerId(val === "none" ? "" : val)}
               value={managerId || "none"}
             >
-              <SelectTrigger className="bg-white">
+              <SelectTrigger className="bg-white dark:bg-zinc-900">
                 <SelectValue placeholder="Üst Yönetici Yok (En Üst Düzey / CEO / Founder)" />
               </SelectTrigger>
               <SelectContent>
@@ -2183,7 +2183,7 @@ function EmployeeModal({
           {/* HR & Employment Details */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Çalışma Şekli
               </label>
               <Select onValueChange={setEmploymentType} value={employmentType}>
@@ -2208,7 +2208,7 @@ function EmployeeModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Çalışan Durumu
               </label>
               <Select onValueChange={setStatus} value={status}>
@@ -2225,11 +2225,11 @@ function EmployeeModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Sicil No
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-slate-900 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-mono text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                 onChange={(e) => setEmployeeNumber(e.target.value)}
                 placeholder="EMP-1002"
                 type="text"
@@ -2240,13 +2240,13 @@ function EmployeeModal({
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 İşe Giriş Tarihi
               </label>
               <DatePicker onChange={setHireDate} value={hireDate} />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Maaş (Net/Brüt)
               </label>
               <NumberInput
@@ -2264,7 +2264,7 @@ function EmployeeModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold text-slate-800">
+              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
                 Para Birimi
               </label>
               <Select onValueChange={setCurrency} value={currency}>
@@ -2282,11 +2282,11 @@ function EmployeeModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-slate-800">
+            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               Avatar Fotoğraf URL
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://images.unsplash.com/photo-..."
               type="url"
@@ -2294,9 +2294,9 @@ function EmployeeModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-slate-100 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
             <button
-              className="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100"
+              className="rounded-xl px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2349,7 +2349,7 @@ function EmployeeDetailDrawer({
           className="fixed inset-0 bg-black/40 backdrop-blur-xs"
           onClick={onClose}
         />
-        <div className="relative z-10 flex h-full w-full max-w-md items-center justify-center bg-white p-8">
+        <div className="relative z-10 flex h-full w-full max-w-md items-center justify-center bg-white dark:bg-zinc-900 p-8">
           <Loader2 className="h-8 w-8 animate-spin text-fuchsia-500" />
         </div>
       </div>
@@ -2368,16 +2368,16 @@ function EmployeeDetailDrawer({
         onClick={onClose}
       />
 
-      <div className="slide-in-from-right relative z-10 flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-4 pb-28 shadow-2xl duration-300 sm:p-6 sm:pb-8">
+      <div className="slide-in-from-right relative z-10 flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white dark:bg-zinc-900 p-4 pb-28 shadow-2xl duration-300 sm:p-6 sm:pb-8">
         <div>
           {/* Top Close & Edit actions */}
-          <div className="flex items-center justify-between border-slate-100 border-b pb-4">
-            <span className="font-bold font-mono text-slate-400 text-xs">
+          <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+            <span className="font-bold font-mono text-zinc-400 dark:text-zinc-500 text-xs">
               {employeeDetail.employeeNumber || "PERSONEL DETAYI"}
             </span>
             <div className="flex items-center gap-1">
               <button
-                className="flex items-center gap-1 rounded-xl bg-slate-100 px-3 py-1.5 font-semibold text-slate-700 text-xs hover:bg-slate-200"
+                className="flex items-center gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-200"
                 onClick={onEdit}
                 type="button"
               >
@@ -2385,7 +2385,7 @@ function EmployeeDetailDrawer({
                 <span>Düzenle</span>
               </button>
               <button
-                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-xl p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-700 dark:text-zinc-300"
                 onClick={onClose}
                 type="button"
               >
@@ -2408,7 +2408,7 @@ function EmployeeDetailDrawer({
               </div>
             )}
 
-            <h3 className="mt-3 font-bold text-lg text-slate-900">
+            <h3 className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
               {employeeDetail.fullName}
             </h3>
             <p className="font-semibold text-fuchsia-600 text-xs">
@@ -2416,7 +2416,7 @@ function EmployeeDetailDrawer({
             </p>
 
             <div className="mt-2 flex items-center gap-2">
-              <span className="rounded-full bg-slate-100 px-3 py-0.5 font-bold text-[11px] text-slate-700">
+              <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-0.5 font-bold text-[11px] text-zinc-700 dark:text-zinc-300">
                 {employeeDetail.departmentName || "Genel"}
               </span>
               <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 font-bold text-[11px] text-emerald-700">
@@ -2426,29 +2426,29 @@ function EmployeeDetailDrawer({
           </div>
 
           {/* Contact Details Card */}
-          <div className="mt-6 space-y-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-xs">
-            <h4 className="font-bold text-[11px] text-slate-400 uppercase tracking-wider">
+          <div className="mt-6 space-y-3 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-800/40 p-4 text-xs">
+            <h4 className="font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               İletişim & İK Bilgileri
             </h4>
-            <div className="flex items-center gap-2.5 text-slate-700">
-              <Mail className="h-4 w-4 text-slate-400" />
+            <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
+              <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <span className="font-mono">{employeeDetail.email}</span>
             </div>
             {employeeDetail.phone && (
-              <div className="flex items-center gap-2.5 text-slate-700">
-                <Phone className="h-4 w-4 text-slate-400" />
+              <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
+                <Phone className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                 <span>{employeeDetail.phone}</span>
               </div>
             )}
-            <div className="flex items-center gap-2.5 text-slate-700">
-              <Briefcase className="h-4 w-4 text-slate-400" />
+            <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
+              <Briefcase className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <span>
                 Çalışma Türü: <strong>{employeeDetail.employmentType}</strong>
               </span>
             </div>
             {employeeDetail.hireDate && (
-              <div className="flex items-center gap-2.5 text-slate-700">
-                <Calendar className="h-4 w-4 text-slate-400" />
+              <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
+                <Calendar className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                 <span>
                   İşe Giriş:{" "}
                   {new Date(employeeDetail.hireDate).toLocaleDateString()}
@@ -2459,42 +2459,42 @@ function EmployeeDetailDrawer({
 
           {/* Hierarchy & Reporting Tree */}
           <div className="mt-5 space-y-3 text-xs">
-            <h4 className="font-bold text-[11px] text-slate-400 uppercase tracking-wider">
+            <h4 className="font-bold text-[11px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
               Hiyerarşi & Raporlama
             </h4>
 
             {/* Manager */}
-            <div className="rounded-2xl border border-slate-200/80 p-3">
-              <div className="mb-1.5 font-bold text-[10px] text-slate-400 uppercase">
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 p-3">
+              <div className="mb-1.5 font-bold text-[10px] text-zinc-400 dark:text-zinc-500 uppercase">
                 Bağlı Olduğu Yönetici
               </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
                 <div
-                  className="flex cursor-pointer items-center gap-3 rounded-xl p-1.5 transition-colors hover:bg-slate-50"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl p-1.5 transition-colors hover:bg-zinc-50 dark:bg-zinc-800/50"
                   onClick={() => onSelectEmployee(employeeDetail.managerId!)}
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500 font-bold text-white text-xs">
                     {employeeDetail.managerName.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900">
+                    <div className="font-bold text-zinc-900 dark:text-zinc-100">
                       {employeeDetail.managerName}
                     </div>
-                    <div className="text-[10px] text-slate-500">
+                    <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
                       Yönetici Profilini Görüntüle →
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="font-medium text-slate-500 text-xs italic">
+                <div className="font-medium text-zinc-500 dark:text-zinc-400 text-xs italic">
                   En üst düzey yönetici (Üst raporlama yok)
                 </div>
               )}
             </div>
 
             {/* Direct Reports */}
-            <div className="rounded-2xl border border-slate-200/80 p-3">
-              <div className="mb-2 flex items-center justify-between font-bold text-[10px] text-slate-400 uppercase">
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 p-3">
+              <div className="mb-2 flex items-center justify-between font-bold text-[10px] text-zinc-400 dark:text-zinc-500 uppercase">
                 <span>
                   Doğrudan Yönettiği Kişiler (
                   {employeeDetail.directReports.length})
@@ -2502,14 +2502,14 @@ function EmployeeDetailDrawer({
               </div>
 
               {employeeDetail.directReports.length === 0 ? (
-                <div className="text-slate-400 text-xs italic">
+                <div className="text-zinc-400 dark:text-zinc-500 text-xs italic">
                   Doğrudan bağlı çalışan bulunmuyor.
                 </div>
               ) : (
                 <div className="max-h-40 space-y-1.5 overflow-y-auto pr-1">
                   {employeeDetail.directReports.map((report) => (
                     <div
-                      className="flex cursor-pointer items-center justify-between rounded-xl bg-slate-50 p-2 transition-colors hover:bg-fuchsia-50"
+                      className="flex cursor-pointer items-center justify-between rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2 transition-colors hover:bg-fuchsia-50"
                       key={report.id}
                       onClick={() => onSelectEmployee(report.id)}
                     >
@@ -2518,15 +2518,15 @@ function EmployeeDetailDrawer({
                           {report.fullName.charAt(0)}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 text-xs">
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                             {report.fullName}
                           </div>
-                          <div className="text-[10px] text-slate-500">
+                          <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
                             {report.title || report.email}
                           </div>
                         </div>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-slate-400" />
+                      <ChevronRight className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     </div>
                   ))}
                 </div>
@@ -2536,7 +2536,7 @@ function EmployeeDetailDrawer({
         </div>
 
         {/* Footer */}
-        <div className="border-slate-100 border-t pt-4 text-center">
+        <div className="border-zinc-100 dark:border-zinc-800 border-t pt-4 text-center">
           <button
             className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
             onClick={onClose}

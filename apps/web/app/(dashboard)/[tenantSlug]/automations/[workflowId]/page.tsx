@@ -378,7 +378,7 @@ export default function WorkflowBuilderPage() {
       <div className="flex-1 flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-3">
           <RefreshCw className="h-8 w-8 text-blue-600 animate-spin mx-auto" />
-          <p className="text-sm font-medium text-slate-600">Akış tasarımcısı hazırlanıyor...</p>
+          <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Akış tasarımcısı hazırlanıyor...</p>
         </div>
       </div>
     );
@@ -387,11 +387,11 @@ export default function WorkflowBuilderPage() {
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 max-w-5xl mx-auto">
       {/* 1. Header Toolbar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push(`/${tenantSlug}/automations`)}
-            className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors"
+            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -401,10 +401,10 @@ export default function WorkflowBuilderPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="text-xl font-bold text-slate-900 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none px-1 py-0.5 tracking-tight"
+                className="text-xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-b border-transparent hover:border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:outline-none px-1 py-0.5 tracking-tight"
                 placeholder="Akış Adı..."
               />
-              <span className="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+              <span className="bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400 text-xs font-semibold px-2 py-0.5 rounded-full">
                 {isNew ? "Taslak" : isActive ? "Aktif" : "Pasif"}
               </span>
             </div>
@@ -413,15 +413,15 @@ export default function WorkflowBuilderPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Kısa açıklama ekleyin (isteğe bağlı)..."
-              className="text-xs text-slate-500 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-blue-500 focus:outline-none px-1 py-0.5 w-full mt-0.5"
+              className="text-xs text-zinc-500 dark:text-zinc-400 bg-transparent border-b border-transparent hover:border-zinc-200 dark:border-zinc-800 focus:border-blue-500 focus:outline-none px-1 py-0.5 w-full mt-0.5"
             />
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Active Switch */}
-          <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
-            <span className="text-xs font-semibold text-slate-600 px-2">
+          <div className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
+            <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 px-2">
               {isActive ? "Aktif" : "Pasif"}
             </span>
             <div
@@ -431,7 +431,7 @@ export default function WorkflowBuilderPage() {
               }`}
             >
               <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-zinc-900 shadow ring-0 transition duration-200 ease-in-out ${
                   isActive ? "translate-x-5" : "translate-x-0"
                 }`}
               />
@@ -444,7 +444,7 @@ export default function WorkflowBuilderPage() {
                 setIsSimulationOpen(true);
                 handleRunSimulation();
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-700 hover:text-blue-700 font-medium text-xs transition-all shadow-xs"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-blue-300 hover:bg-blue-50 text-zinc-700 dark:text-zinc-300 hover:text-blue-700 font-medium text-xs transition-all shadow-xs"
             >
               <Play className="h-3.5 w-3.5 fill-current" />
               <span>Simüle Et</span>
@@ -471,7 +471,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 1: TETİKLEYİCİ (TRIGGER) */}
         {/* ======================================================== */}
-        <div className="bg-white rounded-3xl border-2 border-blue-200 p-6 shadow-sm relative">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-blue-200 p-6 shadow-sm relative">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/20">
@@ -481,7 +481,7 @@ export default function WorkflowBuilderPage() {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600">
                   TETİKLEYİCİ OLAY (WHEN)
                 </span>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   Bu akış hangi olay gerçekleştiğinde başlasın?
                 </h3>
               </div>
@@ -491,7 +491,7 @@ export default function WorkflowBuilderPage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="px-2.5 py-1 text-xs border border-slate-200 rounded-lg bg-slate-50 font-medium"
+                className="px-2.5 py-1 text-xs border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 font-medium"
               >
                 <option value="Customer">Kategori: Müşteri</option>
                 <option value="Sales">Kategori: Satış & Sipariş</option>
@@ -501,15 +501,15 @@ export default function WorkflowBuilderPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Tetikleyici CRM Olayı
               </label>
               <select
                 value={triggerType}
                 onChange={(e) => setTriggerType(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-blue-500"
               >
                 <optgroup label="Müşteri Olayları">
                   <option value="Customer.Created">👤 Yeni Müşteri Oluşturulduğunda</option>
@@ -533,13 +533,13 @@ export default function WorkflowBuilderPage() {
             {/* Contextual Filters */}
             {triggerType === "Order.StatusChanged" && (
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                   Hedeflenen Sipariş Durumu
                 </label>
                 <select
                   value={triggerConfig.targetStatus || "Completed"}
                   onChange={(e) => setTriggerConfig({ ...triggerConfig, targetStatus: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-800"
+                  className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-800 dark:text-zinc-200"
                 >
                   <option value="Completed">Tamamlandı (Completed)</option>
                   <option value="Shipped">Kargoya Verildi (Shipped)</option>
@@ -559,7 +559,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 2: FİLTRE VE KOŞULLAR (IF / CONDITIONS) */}
         {/* ======================================================== */}
-        <div className="bg-white rounded-3xl border-2 border-amber-200 p-6 shadow-sm">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-amber-200 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-md shadow-amber-500/20">
@@ -569,7 +569,7 @@ export default function WorkflowBuilderPage() {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-amber-600">
                   KOŞULLAR & KURALLAR (IF / ONLY IF)
                 </span>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   Hangi kriterler sağlandığında aksiyonlar çalışsın?
                 </h3>
               </div>
@@ -595,11 +595,11 @@ export default function WorkflowBuilderPage() {
               {conditions.map((group, gIdx) => (
                 <div
                   key={gIdx}
-                  className="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80 space-y-3"
+                  className="bg-zinc-50/70 dark:bg-zinc-800/40 p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-700">Kural Grubu {gIdx + 1}:</span>
+                      <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Kural Grubu {gIdx + 1}:</span>
                       <select
                         value={group.logicalOperator}
                         onChange={(e) => {
@@ -608,7 +608,7 @@ export default function WorkflowBuilderPage() {
                             prev.map((g, i) => (i === gIdx ? { ...g, logicalOperator: val } : g))
                           );
                         }}
-                        className="px-2 py-0.5 rounded-md border border-slate-300 text-xs font-bold bg-white text-blue-600"
+                        className="px-2 py-0.5 rounded-md border border-zinc-300 dark:border-zinc-700 text-xs font-bold bg-white dark:bg-zinc-900 text-blue-600"
                       >
                         <option value="AND">TÜM kurallar sağlansın (VE / AND)</option>
                         <option value="OR">HERHANGİ bir kural sağlansın (VEYA / OR)</option>
@@ -617,7 +617,7 @@ export default function WorkflowBuilderPage() {
 
                     <button
                       onClick={() => removeConditionGroup(gIdx)}
-                      className="text-slate-400 hover:text-red-600 p-1"
+                      className="text-zinc-400 dark:text-zinc-500 hover:text-red-600 p-1"
                       title="Grubu Kaldır"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -629,7 +629,7 @@ export default function WorkflowBuilderPage() {
                     {group.rules.map((rule, rIdx) => (
                       <div
                         key={rIdx}
-                        className="flex flex-col md:flex-row items-center gap-2 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs"
+                        className="flex flex-col md:flex-row items-center gap-2 bg-white dark:bg-zinc-900 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-2xs"
                       >
                         {/* Field */}
                         <div className="w-full md:w-1/3">
@@ -638,7 +638,7 @@ export default function WorkflowBuilderPage() {
                             value={rule.field}
                             onChange={(e) => updateRule(gIdx, rIdx, "field", e.target.value)}
                             placeholder="Alan adı (tier, totalAmount, status...)"
-                            className="w-full px-2.5 py-1.5 text-xs font-mono rounded-lg border border-slate-200 bg-slate-50 focus:bg-white"
+                            className="w-full px-2.5 py-1.5 text-xs font-mono rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900"
                           />
                         </div>
 
@@ -647,7 +647,7 @@ export default function WorkflowBuilderPage() {
                           <select
                             value={rule.operator}
                             onChange={(e) => updateRule(gIdx, rIdx, "operator", e.target.value)}
-                            className="w-full px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 bg-white"
+                            className="w-full px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                           >
                             <option value="equals">Eşittir (Equals)</option>
                             <option value="notEquals">Eşit Değildir (!=)</option>
@@ -668,11 +668,11 @@ export default function WorkflowBuilderPage() {
                             value={rule.value}
                             onChange={(e) => updateRule(gIdx, rIdx, "value", e.target.value)}
                             placeholder="Değer..."
-                            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 bg-slate-50 focus:bg-white"
+                            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900"
                           />
                           <button
                             onClick={() => removeRuleFromGroup(gIdx, rIdx)}
-                            className="p-1 text-slate-400 hover:text-red-600"
+                            className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-red-600"
                             title="Kuralı Sil"
                           >
                             <X className="h-4 w-4" />
@@ -703,7 +703,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 3: AKSİYON ZİNCİRİ (THEN / ACTIONS) */}
         {/* ======================================================== */}
-        <div className="bg-white rounded-3xl border-2 border-emerald-200 p-6 shadow-sm">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-emerald-200 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-500/20">
@@ -713,7 +713,7 @@ export default function WorkflowBuilderPage() {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600">
                   OTOMATİK AKSİYONLAR (THEN / DO THIS)
                 </span>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   Sırasıyla yürütülecek işlem adımları
                 </h3>
               </div>
@@ -727,40 +727,40 @@ export default function WorkflowBuilderPage() {
                 <ChevronDown className="h-3 w-3" />
               </button>
 
-              <div className="absolute right-0 mt-1 w-56 bg-white rounded-2xl shadow-xl border border-slate-100 p-1.5 hidden group-hover:block z-30 space-y-1">
+              <div className="absolute right-0 mt-1 w-56 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 p-1.5 hidden group-hover:block z-30 space-y-1">
                 <button
                   onClick={() => addAction("notification")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
                 >
                   <Bell className="h-3.5 w-3.5 text-blue-500" />
                   <span>Bildirim / E-Posta Gönder</span>
                 </button>
                 <button
                   onClick={() => addAction("createRecord")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
                 >
                   <UserCheck className="h-3.5 w-3.5 text-purple-500" />
                   <span>Yeni Takip Görevi Aç</span>
                 </button>
                 <button
                   onClick={() => addAction("updateRecord")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2"
                 >
                   <FileEdit className="h-3.5 w-3.5 text-emerald-500" />
                   <span>CRM Kaydını Güncelle</span>
                 </button>
                 <button
                   onClick={() => addAction("webhook")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-700 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-amber-50 hover:text-amber-700 flex items-center gap-2"
                 >
                   <Globe className="h-3.5 w-3.5 text-amber-500" />
                   <span>Harici Webhook (HTTP POST)</span>
                 </button>
                 <button
                   onClick={() => addAction("delay")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:bg-zinc-800 flex items-center gap-2"
                 >
-                  <Clock className="h-3.5 w-3.5 text-slate-500" />
+                  <Clock className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
                   <span>Gecikme / Beklet (Delay)</span>
                 </button>
               </div>
@@ -768,36 +768,36 @@ export default function WorkflowBuilderPage() {
           </div>
 
           {actions.length === 0 ? (
-            <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200">
-              <Layers className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-              <p className="text-xs font-medium text-slate-600">Henüz bir aksiyon adımı eklenmedi.</p>
+            <div className="p-8 text-center bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+              <Layers className="h-8 w-8 text-zinc-400 dark:text-zinc-500 mx-auto mb-2" />
+              <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Henüz bir aksiyon adımı eklenmedi.</p>
             </div>
           ) : (
             <div className="space-y-3">
               {actions.map((act, index) => (
                 <div
                   key={act.id}
-                  className="p-4 rounded-2xl border border-slate-200/90 bg-white hover:border-emerald-300 transition-all shadow-xs relative"
+                  className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 hover:border-emerald-300 transition-all shadow-xs relative"
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold font-mono">
+                      <span className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-center text-xs font-bold font-mono">
                         {index + 1}
                       </span>
                       <input
                         type="text"
                         value={act.title}
                         onChange={(e) => updateActionTitle(act.id, e.target.value)}
-                        className="font-bold text-slate-900 text-xs bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none"
+                        className="font-bold text-zinc-900 dark:text-zinc-100 text-xs bg-transparent border-b border-transparent hover:border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:outline-none"
                       />
-                      <span className="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                      <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-[10px] font-semibold px-2 py-0.5 rounded-md">
                         {act.type}
                       </span>
                     </div>
 
                     <button
                       onClick={() => removeAction(act.id)}
-                      className="text-slate-400 hover:text-red-600 p-1"
+                      className="text-zinc-400 dark:text-zinc-500 hover:text-red-600 p-1"
                       title="Adımı Sil"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -806,14 +806,14 @@ export default function WorkflowBuilderPage() {
 
                   {/* Config Fields based on Action Type */}
                   {act.type === "notification" && (
-                    <div className="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs">
+                    <div className="space-y-2 bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-[11px] font-semibold text-slate-600 mb-1">Kanal</label>
+                          <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Kanal</label>
                           <select
                             value={(act.config.channel as string) || "InApp"}
                             onChange={(e) => updateActionConfig(act.id, "channel", e.target.value)}
-                            className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-medium"
+                            className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-medium"
                           >
                             <option value="InApp">Sistem İçi Bildirim (In-App)</option>
                             <option value="Email">E-Posta Şablonu</option>
@@ -821,18 +821,18 @@ export default function WorkflowBuilderPage() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold text-slate-600 mb-1">Başlık</label>
+                          <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Başlık</label>
                           <input
                             type="text"
                             value={(act.config.title as string) || ""}
                             onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
                             placeholder="Bildirim başlığı..."
-                            className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg"
+                            className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                           />
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">
                           Mesaj İçeriği (Değişkenler: {"{customerName}"}, {"{totalAmount}"}, {"{orderNumber}"})
                         </label>
                         <textarea
@@ -840,64 +840,64 @@ export default function WorkflowBuilderPage() {
                           value={(act.config.message as string) || ""}
                           onChange={(e) => updateActionConfig(act.id, "message", e.target.value)}
                           placeholder="Mesaj metni..."
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs"
+                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs"
                         />
                       </div>
                     </div>
                   )}
 
                   {act.type === "createRecord" && (
-                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs space-y-2">
-                      <label className="block text-[11px] font-semibold text-slate-600">Görev / Not Başlığı</label>
+                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs space-y-2">
+                      <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Görev / Not Başlığı</label>
                       <input
                         type="text"
                         value={(act.config.title as string) || ""}
                         onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
                         placeholder="Örn: VIP Müşteri Takip Araması - {customerName}"
-                        className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg"
+                        className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                       />
                     </div>
                   )}
 
                   {act.type === "updateRecord" && (
-                    <div className="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs">
+                    <div className="grid grid-cols-2 gap-2 bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">Güncellenecek Alan</label>
+                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Güncellenecek Alan</label>
                         <input
                           type="text"
                           value={(act.config.field as string) || "status"}
                           onChange={(e) => updateActionConfig(act.id, "field", e.target.value)}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
+                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">Yeni Değer</label>
+                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Yeni Değer</label>
                         <input
                           type="text"
                           value={(act.config.value as string) || ""}
                           onChange={(e) => updateActionConfig(act.id, "value", e.target.value)}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
+                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                         />
                       </div>
                     </div>
                   )}
 
                   {act.type === "webhook" && (
-                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs space-y-2">
-                      <label className="block text-[11px] font-semibold text-slate-600">Hedef URL (POST Endpoint)</label>
+                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs space-y-2">
+                      <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Hedef URL (POST Endpoint)</label>
                       <input
                         type="url"
                         value={(act.config.url as string) || ""}
                         onChange={(e) => updateActionConfig(act.id, "url", e.target.value)}
                         placeholder="https://api.hariciservis.com/webhook"
-                        className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
+                        className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                       />
                     </div>
                   )}
 
                   {act.type === "delay" && (
-                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs flex items-center gap-3">
-                      <label className="text-[11px] font-semibold text-slate-600">Bekleme Süresi (Dakika):</label>
+                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs flex items-center gap-3">
+                      <label className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Bekleme Süresi (Dakika):</label>
                       <input
                         type="number"
                         value={act.delayMinutes || 15}
@@ -907,7 +907,7 @@ export default function WorkflowBuilderPage() {
                             prev.map((a) => (a.id === act.id ? { ...a, delayMinutes: val } : a))
                           );
                         }}
-                        className="w-24 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-mono"
+                        className="w-24 px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                       />
                     </div>
                   )}
@@ -920,66 +920,66 @@ export default function WorkflowBuilderPage() {
 
       {/* 3. Live Simulation Modal */}
       {isSimulationOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                <div className="p-2 bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 rounded-xl">
                   <Play className="h-4 w-4 fill-current" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm">Akış Simülatörü (Canlı Kural Testi)</h3>
-                  <p className="text-xs text-slate-500">
+                  <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Akış Simülatörü (Canlı Kural Testi)</h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Örnek veriyle akışın nasıl tepki vereceğini test edin.
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsSimulationOpen(false)}
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-full"
+                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Mock input editor */}
-            <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-2">
-              <span className="text-[11px] font-bold text-slate-500 uppercase">Test Parametreleri</span>
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 space-y-2">
+              <span className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">Test Parametreleri</span>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <label className="text-[10px] text-slate-500 font-semibold">customerName</label>
+                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">customerName</label>
                   <input
                     type="text"
                     value={(mockContext.customerName as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, customerName: e.target.value })}
-                    className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
+                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-500 font-semibold">tier</label>
+                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">tier</label>
                   <input
                     type="text"
                     value={(mockContext.tier as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, tier: e.target.value })}
-                    className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
+                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-500 font-semibold">totalAmount</label>
+                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">totalAmount</label>
                   <input
                     type="number"
                     value={(mockContext.totalAmount as number) ?? 0}
                     onChange={(e) => setMockContext({ ...mockContext, totalAmount: Number(e.target.value) })}
-                    className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
+                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-500 font-semibold">status</label>
+                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">status</label>
                   <input
                     type="text"
                     value={(mockContext.status as string) || ""}
                     onChange={(e) => setMockContext({ ...mockContext, status: e.target.value })}
-                    className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg"
+                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
               </div>
@@ -1018,20 +1018,20 @@ export default function WorkflowBuilderPage() {
                   <p className="text-[11px] opacity-90">{simulationResult.conditionsSummary}</p>
                 </div>
 
-                <div className="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2 max-h-56 overflow-y-auto">
-                  <span className="text-slate-400 text-[11px] font-semibold uppercase">
+                <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 bg-zinc-50 dark:bg-zinc-800/50 space-y-2 max-h-56 overflow-y-auto">
+                  <span className="text-zinc-400 dark:text-zinc-500 text-[11px] font-semibold uppercase">
                     Adım Logları ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
                     <div
                       key={idx}
-                      className="bg-white p-2.5 rounded-lg border border-slate-200/80 flex items-start justify-between text-xs"
+                      className="bg-white dark:bg-zinc-900 p-2.5 rounded-lg border border-zinc-200/80 dark:border-zinc-800/90 flex items-start justify-between text-xs"
                     >
                       <div>
-                        <div className="font-semibold text-slate-800">{log.stepTitle}</div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">{log.message}</div>
+                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">{log.stepTitle}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">{log.message}</div>
                       </div>
-                      <span className="font-mono text-[10px] text-slate-400">{log.executionDurationMs}ms</span>
+                      <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">{log.executionDurationMs}ms</span>
                     </div>
                   ))}
                 </div>
@@ -1041,7 +1041,7 @@ export default function WorkflowBuilderPage() {
             <div className="pt-2 flex justify-end">
               <button
                 onClick={() => setIsSimulationOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-slate-200 text-zinc-700 dark:text-zinc-300 text-xs font-semibold"
               >
                 Kapat
               </button>

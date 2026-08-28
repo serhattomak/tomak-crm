@@ -1,3 +1,4 @@
+/* Hallmark · component: lead-sources · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Info, PieChart, Plus, Users } from "lucide-react";
@@ -57,41 +58,41 @@ export function LeadSourcesWidget({
   ].filter((s) => s.count > 0);
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs transition-all hover:border-slate-300">
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 shadow-2xs">
-              <PieChart className="h-4.5 w-4.5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+              <PieChart className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
                 Müşteri & Lead Dağılımı
               </span>
-              <div className="font-medium text-[11px] text-slate-500">
+              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 Segment ve portföy kırılımı
               </div>
             </div>
           </div>
 
-          <Info className="h-4 w-4 text-slate-400" />
+          <Info className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
         </div>
 
         {isLoading ? (
           <div className="flex h-40 items-center justify-center">
-            <div className="h-28 w-full animate-pulse rounded-2xl bg-slate-50" />
+            <div className="h-28 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
           </div>
         ) : hasData ? (
           <>
             {/* Donut Summary */}
-            <div className="my-3 flex items-center justify-center">
-              <div className="relative flex h-28 w-28 items-center justify-center">
-                <div className="h-full w-full animate-in rounded-full border-8 border-purple-500/20 border-t-purple-600" />
+            <div className="my-2 flex items-center justify-center">
+              <div className="relative flex h-24 w-24 items-center justify-center">
+                <div className="h-full w-full animate-in rounded-full border-6 border-violet-500/20 border-t-violet-600 dark:border-violet-400/20 dark:border-t-violet-400" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-extrabold text-2xl text-slate-900">
+                  <span className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
                     {totalCustomers}
                   </span>
-                  <span className="font-semibold text-[10px] text-slate-400">
+                  <span className="font-semibold text-[9px] text-zinc-400 dark:text-zinc-500">
                     Toplam Kayıt
                   </span>
                 </div>
@@ -99,7 +100,7 @@ export function LeadSourcesWidget({
             </div>
 
             {/* Segments list */}
-            <div className="space-y-2 pt-2 text-xs">
+            <div className="space-y-1.5 pt-2 text-xs">
               {segments.map((s) => {
                 const pct =
                   totalCustomers > 0
@@ -112,18 +113,18 @@ export function LeadSourcesWidget({
                   >
                     <div className="flex items-center gap-2">
                       <span
-                        className="h-2.5 w-2.5 flex-none rounded-full"
+                        className="h-2 w-2 flex-none rounded-full"
                         style={{ backgroundColor: s.color }}
                       />
-                      <span className="font-medium text-[11px] text-slate-600">
+                      <span className="font-medium text-[11px] text-zinc-600 dark:text-zinc-300">
                         {s.name}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 font-semibold">
-                      <span className="font-bold text-[11px] text-slate-900">
+                      <span className="font-bold text-[11px] text-zinc-900 dark:text-zinc-100">
                         {s.count}
                       </span>
-                      <span className="text-[10px] text-slate-400">%{pct}</span>
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">%{pct}</span>
                     </div>
                   </div>
                 );
@@ -132,18 +133,18 @@ export function LeadSourcesWidget({
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-6 text-center">
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
-              <Users className="h-6 w-6" />
+            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
+              <Users className="h-5 w-5" />
             </div>
-            <h3 className="font-bold text-slate-800 text-sm">
+            <h3 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
               Henüz müşteri veya lead kaydı yok
             </h3>
-            <p className="mt-1 max-w-xs text-slate-500 text-xs">
+            <p className="mt-1 max-w-xs text-zinc-500 text-[11px] dark:text-zinc-400">
               İlk müşteri veya aday kaydınızı oluşturarak portföy dağılımınızı
               buradan inceleyebilirsiniz.
             </p>
             <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3.5 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-purple-700"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
               href={`/${activeTenant?.slug || "workspace"}/customers`}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -154,9 +155,9 @@ export function LeadSourcesWidget({
       </div>
 
       {hasData && (
-        <div className="mt-4 border-slate-100 border-t pt-3 text-center">
+        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-purple-600 text-xs transition hover:text-purple-700"
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/customers`}
           >
             Tüm Müşteri Portföyünü İncele →

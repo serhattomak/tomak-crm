@@ -1,3 +1,4 @@
+/* Hallmark · component: activity-timeline · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {
@@ -86,38 +87,38 @@ export function ActivityTimelineWidget() {
   const getActionIcon = (type: ActivityItem["type"]) => {
     switch (type) {
       case "deal":
-        return <DollarSign className="h-3 w-3 text-emerald-600" />;
+        return <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />;
       case "call":
-        return <PhoneCall className="h-3 w-3 text-blue-600" />;
+        return <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />;
       case "lead":
-        return <UserPlus className="h-3 w-3 text-violet-600" />;
+        return <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />;
       case "task":
-        return <FileSpreadsheet className="h-3 w-3 text-amber-600" />;
+        return <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />;
       default:
-        return <Clock className="h-3 w-3 text-slate-600" />;
+        return <Clock className="h-3 w-3 text-zinc-600 dark:text-zinc-400" />;
     }
   };
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs transition-all hover:border-slate-300">
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-2xs">
-              <Clock className="h-4.5 w-4.5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+              <Clock className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
                 Canlı Aktivite Akışı
               </span>
-              <div className="font-medium text-[11px] text-slate-500">
+              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 Ekip içi son teklif, müşteri ve satış hareketleri
               </div>
             </div>
           </div>
 
           <button
-            className="rounded-xl p-1.5 text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
+            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={() => fetchLiveActivities()}
             title="Yenile"
             type="button"
@@ -128,28 +129,28 @@ export function ActivityTimelineWidget() {
 
         {/* Timeline List */}
         {isLoading ? (
-          <div className="space-y-3 py-3">
+          <div className="space-y-2.5 py-3">
             {[1, 2, 3].map((i) => (
               <div
-                className="h-10 w-full animate-pulse rounded-xl bg-slate-50"
+                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
                 key={i}
               />
             ))}
           </div>
         ) : activities.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="mb-2.5 flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 shadow-2xs">
-              <Clock className="h-6 w-6" />
+          <div className="flex flex-col items-center justify-center py-7 text-center">
+            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
+              <Clock className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-slate-800 text-xs">
+            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
               Henüz aktivite veya işlem kaydı bulunmuyor
             </h4>
-            <p className="mt-0.5 max-w-xs text-[11px] text-slate-400">
+            <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
               Oluşturulan teklifler, onaylar ve müşteri etkileşimleri otomatik
               olarak bu akışta toplanır.
             </p>
             <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-amber-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-amber-700"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
               href={`/${activeTenant?.slug || "workspace"}/quotes`}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -157,29 +158,29 @@ export function ActivityTimelineWidget() {
             </Link>
           </div>
         ) : (
-          <div className="relative max-h-72 space-y-3.5 overflow-y-auto pr-1 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-slate-100">
+          <div className="relative max-h-72 space-y-2.5 overflow-y-auto pr-1 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-zinc-100 dark:before:bg-zinc-800">
             {activities.map((act) => (
               <div
-                className="relative flex items-start gap-3 text-xs"
+                className="relative flex items-start gap-2.5 text-xs"
                 key={act.id}
               >
-                <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white bg-slate-900 font-bold text-[10px] text-white shadow-2xs">
+                <div className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white bg-zinc-900 font-bold text-[9px] text-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-100 dark:text-zinc-900">
                   {act.user.initials}
                 </div>
 
-                <div className="flex-1 rounded-2xl bg-slate-50/70 p-2.5 transition-colors hover:bg-slate-100/80">
+                <div className="flex-1 rounded-xl bg-zinc-50/70 p-2.5 transition-colors hover:bg-zinc-100/80 dark:bg-zinc-800/50 dark:hover:bg-zinc-800/80">
                   <div className="flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1.5 font-bold text-slate-900">
+                    <div className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100">
                       {getActionIcon(act.type)}
                       <span>{act.user.name}</span>
                     </div>
-                    <span className="font-semibold text-[10px] text-slate-400">
+                    <span className="font-semibold text-[10px] text-zinc-400 dark:text-zinc-500">
                       {act.timestamp}
                     </span>
                   </div>
-                  <p className="mt-0.5 font-medium text-[11px] text-slate-600">
+                  <p className="mt-0.5 font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
                     {act.action}:{" "}
-                    <strong className="font-bold text-slate-800">
+                    <strong className="font-bold text-zinc-800 dark:text-zinc-200">
                       {act.target}
                     </strong>
                   </p>
@@ -191,9 +192,9 @@ export function ActivityTimelineWidget() {
       </div>
 
       {activities.length > 0 && (
-        <div className="mt-4 border-slate-100 border-t pt-3 text-center">
+        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-amber-600 text-xs transition hover:text-amber-700"
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             Tüm İşlem Geçmişini İncele →

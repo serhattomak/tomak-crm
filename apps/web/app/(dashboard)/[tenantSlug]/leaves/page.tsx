@@ -258,22 +258,22 @@ export default function LeavesPage() {
   const getLeaveTypeBadge = (type: string) => {
     switch (type) {
       case "Annual":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Casual":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Sick":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Unpaid":
-        return "bg-slate-100 text-slate-700 border-slate-200";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
       case "Marriage":
-        return "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200";
+        return "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 dark:bg-fuchsia-950/60 dark:text-fuchsia-300 dark:border-fuchsia-800";
       case "Maternity":
       case "Paternity":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Bereavement":
         return "bg-zinc-100 text-zinc-700 border-zinc-200";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -303,15 +303,15 @@ export default function LeavesPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Pending":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Approved":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "Rejected":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Cancelled":
-        return "bg-slate-100 text-slate-600 border-slate-200";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -404,14 +404,14 @@ export default function LeavesPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
               İzin & Zaman Yönetimi
             </h1>
             <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
               {stats?.totalApprovedRequests ?? 0} Onaylı İzin
             </span>
           </div>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 dark:text-zinc-400 text-xs">
             Çalışan izin talepleri, onay süreçleri, yıllık izin bakiye takibi ve
             interaktif şirket izin takvimi.
           </p>
@@ -435,81 +435,81 @@ export default function LeavesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Pending Requests */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Onay Bekleyen Talepler
               </span>
               <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
                 {stats?.pendingRequestsCount ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Yönetici onayı bekleyen izinler</span>
           </div>
         </div>
 
         {/* Today on Leave */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Bugün İzinli Olanlar
               </span>
               <div className="mt-1 font-extrabold text-2xl text-blue-600 tracking-tight sm:text-3xl">
                 {stats?.todayOnLeaveCount ?? 0} Kişi
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Sun className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Bugün aktif izin kullanan personel</span>
           </div>
         </div>
 
         {/* This Month Used Days */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Bu Ay Kullanılan İzin
               </span>
               <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
                 {stats?.thisMonthUsedDays ?? 0} Gün
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <CalendarIcon className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Bu ay içinde onaylanan toplam iş günü</span>
           </div>
         </div>
 
         {/* Annual Leave Balance */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Yıllık İzin Bakiyem
               </span>
               <div className="mt-1 font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl">
                 {myBalance?.remainingDays ?? 14} Gün
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Palmtree className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Kullanılan: {myBalance?.usedDays ?? 0} Gün</span>
             <span>Hakediş: {myBalance?.totalDays ?? 14} Gün</span>
           </div>
@@ -517,12 +517,12 @@ export default function LeavesPage() {
       </div>
 
       {/* 3. Navigation Tabs Bar */}
-      <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-slate-100/90 p-1">
+      <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 dark:bg-zinc-800/90 p-1">
         <button
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "calendar"
-              ? "bg-white text-slate-900 shadow-xs"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
           }`}
           onClick={() => setActiveTab("calendar")}
           type="button"
@@ -534,8 +534,8 @@ export default function LeavesPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "pending"
-              ? "bg-white text-slate-900 shadow-xs"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
           }`}
           onClick={() => setActiveTab("pending")}
           type="button"
@@ -552,8 +552,8 @@ export default function LeavesPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "all"
-              ? "bg-white text-slate-900 shadow-xs"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
           }`}
           onClick={() => setActiveTab("all")}
           type="button"
@@ -565,8 +565,8 @@ export default function LeavesPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
             activeTab === "my"
-              ? "bg-white text-slate-900 shadow-xs"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
           }`}
           onClick={() => setActiveTab("my")}
           type="button"
@@ -578,29 +578,29 @@ export default function LeavesPage() {
 
       {/* 4. TAB 1: INTERACTIVE MONTHLY CALENDAR */}
       {activeTab === "calendar" && (
-        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
           {/* Calendar Header / Controls */}
-          <div className="flex flex-col justify-between gap-3 border-slate-100 border-b pb-4 sm:flex-row sm:items-center">
+          <div className="flex flex-col justify-between gap-3 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={handlePrevMonth}
                 type="button"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <h2 className="min-w-[150px] text-center font-extrabold text-base text-slate-900">
+              <h2 className="min-w-[150px] text-center font-extrabold text-base text-zinc-900 dark:text-zinc-100">
                 {monthNames[calendarDate.month - 1]} {calendarDate.year}
               </h2>
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={handleNextMonth}
                 type="button"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
               <button
-                className="ml-2 rounded-xl border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 text-xs hover:bg-slate-50"
+                className="ml-2 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={handleCurrentMonth}
                 type="button"
               >
@@ -610,11 +610,11 @@ export default function LeavesPage() {
 
             {/* Department Filter */}
             <div className="flex items-center gap-2">
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Departman:
               </span>
               <select
-                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 font-medium text-slate-800 text-xs focus:outline-none"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-1.5 font-medium text-zinc-800 dark:text-zinc-200 text-xs focus:outline-none"
                 onChange={(e) => setCalendarDeptFilter(e.target.value)}
                 value={calendarDeptFilter}
               >
@@ -632,16 +632,16 @@ export default function LeavesPage() {
           <div className="overflow-x-auto">
             <div className="min-w-[700px]">
               {/* Day Names Header */}
-              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-[11px] text-slate-500">
-                <div className="rounded-lg bg-slate-50 py-1">Pazartesi</div>
-                <div className="rounded-lg bg-slate-50 py-1">Salı</div>
-                <div className="rounded-lg bg-slate-50 py-1">Çarşamba</div>
-                <div className="rounded-lg bg-slate-50 py-1">Perşembe</div>
-                <div className="rounded-lg bg-slate-50 py-1">Cuma</div>
-                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700">
+              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-[11px] text-zinc-500 dark:text-zinc-400">
+                <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 py-1">Pazartesi</div>
+                <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 py-1">Salı</div>
+                <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 py-1">Çarşamba</div>
+                <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 py-1">Perşembe</div>
+                <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 py-1">Cuma</div>
+                <div className="rounded-lg bg-amber-50/60 dark:bg-amber-950/40 py-1 text-amber-700 dark:text-amber-300">
                   Cumartesi
                 </div>
-                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700">
+                <div className="rounded-lg bg-amber-50/60 dark:bg-amber-950/40 py-1 text-amber-700 dark:text-amber-300">
                   Pazar
                 </div>
               </div>
@@ -652,7 +652,7 @@ export default function LeavesPage() {
                   if (!cell.day) {
                     return (
                       <div
-                        className="h-28 rounded-2xl border border-slate-100 border-dashed bg-slate-50/30 p-2"
+                        className="h-28 rounded-2xl border border-zinc-100 dark:border-zinc-800 border-dashed bg-zinc-50 dark:bg-zinc-800/50/30 p-2"
                         key={idx}
                       />
                     );
@@ -669,10 +669,10 @@ export default function LeavesPage() {
 
                   return (
                     <div
-                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-slate-300 ${
+                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${
                         isToday
                           ? "border-blue-500 bg-blue-50/20 ring-1 ring-blue-500"
-                          : "border-slate-200/80 bg-white"
+                          : "border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900"
                       }`}
                       key={idx}
                     >
@@ -681,13 +681,13 @@ export default function LeavesPage() {
                           className={`flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs ${
                             isToday
                               ? "bg-blue-600 text-white"
-                              : "text-slate-700"
+                              : "text-zinc-700 dark:text-zinc-300"
                           }`}
                         >
                           {cell.day}
                         </span>
                         {activeLeaves.length > 0 && (
-                          <span className="rounded-full bg-slate-100 px-1.5 py-0.2 font-bold text-[9px] text-slate-600">
+                          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.2 font-bold text-[9px] text-zinc-600 dark:text-zinc-400">
                             {activeLeaves.length} İzinli
                           </span>
                         )}
@@ -720,13 +720,13 @@ export default function LeavesPage() {
 
       {/* 5. TAB 2: PENDING APPROVALS (MANAGER WORKBENCH) */}
       {activeTab === "pending" && (
-        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                 Yönetici Onay Masası
               </h3>
-              <p className="text-slate-500 text-xs">
+              <p className="text-zinc-500 dark:text-zinc-400 text-xs">
                 Onay veya ret işlemi bekleyen personel izin talepleri
               </p>
             </div>
@@ -736,12 +736,12 @@ export default function LeavesPage() {
           </div>
 
           {pendingLeaves.length === 0 ? (
-            <div className="rounded-2xl border border-slate-200 border-dashed p-12 text-center text-slate-400 text-xs">
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 border-dashed p-12 text-center text-zinc-400 dark:text-zinc-500 text-xs">
               <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
-              <p className="font-bold text-slate-700">
+              <p className="font-bold text-zinc-700 dark:text-zinc-300">
                 Tüm talepler sonuçlandırıldı!
               </p>
-              <p className="mt-0.5 text-slate-400">
+              <p className="mt-0.5 text-zinc-400 dark:text-zinc-500">
                 Şu anda onay bekleyen yeni izin talebi bulunmuyor.
               </p>
             </div>
@@ -749,16 +749,16 @@ export default function LeavesPage() {
             <div className="space-y-3">
               {pendingLeaves.map((leave) => (
                 <div
-                  className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/50 p-4 sm:flex-row sm:items-center"
+                  className="flex flex-col justify-between gap-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 p-4 sm:flex-row sm:items-center"
                   key={leave.id}
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 text-sm">
+                      <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                         {leave.employeeName}
                       </span>
                       {leave.departmentName && (
-                        <span className="rounded-md bg-slate-200 px-2 py-0.5 font-medium text-[10px] text-slate-700">
+                        <span className="rounded-md bg-slate-200 px-2 py-0.5 font-medium text-[10px] text-zinc-700 dark:text-zinc-300">
                           {leave.departmentName}
                         </span>
                       )}
@@ -769,9 +769,9 @@ export default function LeavesPage() {
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 text-slate-600 text-xs">
+                    <div className="flex flex-wrap items-center gap-3 text-zinc-600 dark:text-zinc-400 text-xs">
                       <span className="flex items-center gap-1">
-                        <CalendarIcon className="h-3.5 w-3.5 text-slate-400" />
+                        <CalendarIcon className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                         <strong>
                           {new Date(leave.startDate).toLocaleDateString(
                             "tr-TR"
@@ -792,7 +792,7 @@ export default function LeavesPage() {
                     </div>
 
                     {leave.reason && (
-                      <p className="mt-1 max-w-xl rounded-xl border border-slate-200/80 bg-white p-2 text-slate-700 text-xs italic">
+                      <p className="mt-1 max-w-xl rounded-xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-2 text-zinc-700 dark:text-zinc-300 text-xs italic">
                         "{leave.reason}"
                       </p>
                     )}
@@ -833,11 +833,11 @@ export default function LeavesPage() {
       {activeTab === "all" && (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
+          <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs md:flex-row md:items-center">
             <div className="relative max-w-md flex-1">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Çalışan adı, departman veya sebep ara..."
                 type="text"
@@ -847,7 +847,7 @@ export default function LeavesPage() {
 
             <div className="flex flex-wrap items-center gap-2">
               <select
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:outline-none"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:outline-none"
                 onChange={(e) => setStatusFilter(e.target.value)}
                 value={statusFilter}
               >
@@ -859,7 +859,7 @@ export default function LeavesPage() {
               </select>
 
               <select
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:outline-none"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:outline-none"
                 onChange={(e) => setLeaveTypeFilter(e.target.value)}
                 value={leaveTypeFilter}
               >
@@ -874,10 +874,10 @@ export default function LeavesPage() {
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+          <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
+                <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                   <tr>
                     <th className="py-3.5 pr-4 pl-6">Çalışan</th>
                     <th className="px-4 py-3.5">İzin Türü</th>
@@ -888,11 +888,11 @@ export default function LeavesPage() {
                     <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {leaves.length === 0 ? (
                     <tr>
                       <td
-                        className="py-8 text-center text-slate-400"
+                        className="py-8 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
                         İzin kaydı bulunamadı.
@@ -900,13 +900,13 @@ export default function LeavesPage() {
                     </tr>
                   ) : (
                     leaves.map((l) => (
-                      <tr className="hover:bg-slate-50/80" key={l.id}>
+                      <tr className="hover:bg-zinc-50/80 dark:bg-zinc-800/50" key={l.id}>
                         <td className="py-3.5 pr-4 pl-6">
-                          <div className="font-bold text-slate-900">
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {l.employeeName}
                           </div>
                           {l.departmentName && (
-                            <div className="text-[10px] text-slate-400">
+                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                               {l.departmentName}
                             </div>
                           )}
@@ -919,12 +919,12 @@ export default function LeavesPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3.5">
-                          <div className="font-semibold text-slate-800">
+                          <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {new Date(l.startDate).toLocaleDateString("tr-TR")}{" "}
                             - {new Date(l.endDate).toLocaleDateString("tr-TR")}
                           </div>
                         </td>
-                        <td className="px-4 py-3.5 text-center font-extrabold text-slate-900">
+                        <td className="px-4 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
                           {l.totalDays} Gün
                         </td>
                         <td className="px-4 py-3.5">
@@ -934,7 +934,7 @@ export default function LeavesPage() {
                             {getStatusLabel(l.status)}
                           </span>
                         </td>
-                        <td className="px-4 py-3.5 text-slate-600">
+                        <td className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
                           {l.approvedByUserName || "—"}
                         </td>
                         <td className="py-3.5 pr-6 pl-4 text-right">
@@ -974,13 +974,13 @@ export default function LeavesPage() {
 
       {/* 7. TAB 4: MY LEAVE REQUESTS */}
       {activeTab === "my" && (
-        <div className="space-y-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
                 Kendi İzin Taleplerim
               </h3>
-              <p className="text-slate-500 text-xs">
+              <p className="text-zinc-500 dark:text-zinc-400 text-xs">
                 Oluşturduğunuz izin talepleri ve onay durumları
               </p>
             </div>
@@ -994,9 +994,9 @@ export default function LeavesPage() {
             </button>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-slate-200">
+          <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-200 border-b bg-slate-50 font-medium text-[11px] text-slate-500">
+              <thead className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 <tr>
                   <th className="px-4 py-3">İzin Türü</th>
                   <th className="px-4 py-3">Tarih Aralığı</th>
@@ -1006,28 +1006,28 @@ export default function LeavesPage() {
                   <th className="py-3 pr-4 pl-3 text-right">İptal</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {leaves.length === 0 ? (
                   <tr>
-                    <td className="py-6 text-center text-slate-400" colSpan={6}>
+                    <td className="py-6 text-center text-zinc-400 dark:text-zinc-500" colSpan={6}>
                       Henüz bir izin talebiniz bulunmuyor.
                     </td>
                   </tr>
                 ) : (
                   leaves.map((l) => (
-                    <tr className="hover:bg-slate-50/60" key={l.id}>
-                      <td className="px-4 py-3.5 font-bold text-slate-900">
+                    <tr className="hover:bg-zinc-50 dark:bg-zinc-800/50/60" key={l.id}>
+                      <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
                         >
                           {getLeaveTypeLabel(l.leaveType)}
                         </span>
                       </td>
-                      <td className="px-4 py-3.5 font-semibold text-slate-800">
+                      <td className="px-4 py-3.5 font-semibold text-zinc-800 dark:text-zinc-200">
                         {new Date(l.startDate).toLocaleDateString("tr-TR")} -{" "}
                         {new Date(l.endDate).toLocaleDateString("tr-TR")}
                       </td>
-                      <td className="px-4 py-3.5 text-center font-bold text-slate-900">
+                      <td className="px-4 py-3.5 text-center font-bold text-zinc-900 dark:text-zinc-100">
                         {l.totalDays} Gün
                       </td>
                       <td className="px-4 py-3.5">
@@ -1037,7 +1037,7 @@ export default function LeavesPage() {
                           {getStatusLabel(l.status)}
                         </span>
                       </td>
-                      <td className="px-4 py-3.5 text-slate-600 italic">
+                      <td className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400 italic">
                         {l.reason || "—"}
                         {l.rejectionReason && (
                           <div className="mt-0.5 font-bold text-[10px] text-rose-600 not-italic">
@@ -1084,13 +1084,13 @@ export default function LeavesPage() {
 
       {/* 9. REJECT MODAL */}
       {rejectingLeave && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-            <h3 className="font-bold text-base text-slate-900">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               İzin Talebini Reddet
             </h3>
-            <p className="mt-1 text-slate-600 text-xs">
-              <strong className="font-semibold text-slate-900">
+            <p className="mt-1 text-zinc-600 dark:text-zinc-400 text-xs">
+              <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {rejectingLeave.employeeName}
               </strong>{" "}
               personelinin {rejectingLeave.totalDays} günlük izin talebini
@@ -1098,11 +1098,11 @@ export default function LeavesPage() {
             </p>
 
             <div className="mt-4">
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Ret Gerekçesi *
               </label>
               <textarea
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-900 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2.5 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setRejectionReason(e.target.value)}
                 placeholder="Örn: İlgili tarihte proje lansmanı olması sebebiyle..."
                 rows={3}
@@ -1112,7 +1112,7 @@ export default function LeavesPage() {
 
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={() => setRejectingLeave(null)}
                 type="button"
               >
@@ -1331,19 +1331,19 @@ function CreateLeaveModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200/80 bg-white text-xs shadow-2xl">
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 text-xs shadow-2xl">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">
+            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni İzin Talebi Oluştur
             </h2>
-            <p className="text-slate-500 text-xs">
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
               İzin türünü, gün aralığını ve gerekçenizi girin
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1363,7 +1363,7 @@ function CreateLeaveModal({
 
           {/* Employee Picker */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Personel / Çalışan *
             </label>
             <Select onValueChange={handleEmployeeChange} value={employeeId}>
@@ -1384,7 +1384,7 @@ function CreateLeaveModal({
           {/* Leave Type & Balance Alert */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 İzin Türü *
               </label>
               <Select onValueChange={handleLeaveTypeChange} value={leaveType}>
@@ -1413,7 +1413,7 @@ function CreateLeaveModal({
             {/* Half Day Option — only for Casual/Sick */}
             {isHalfDayAllowed && (
               <div className="flex flex-col justify-end">
-                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-800 transition-colors hover:bg-slate-100">
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-800 dark:text-zinc-200 transition-colors hover:bg-zinc-100 dark:bg-zinc-800">
                   <input
                     aria-label="Yarım Gün İzin"
                     checked={isHalfDay}
@@ -1430,7 +1430,7 @@ function CreateLeaveModal({
           {/* Date Picker Grid */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Başlangıç Tarihi *
               </label>
               <DatePicker
@@ -1449,7 +1449,7 @@ function CreateLeaveModal({
 
             {isHalfDayAllowed && isHalfDay ? (
               <div>
-                <label className="mb-1 block font-medium text-slate-700">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                   Yarım Gün Periyodu
                 </label>
                 <Select onValueChange={setHalfDayPeriod} value={halfDayPeriod}>
@@ -1466,7 +1466,7 @@ function CreateLeaveModal({
               </div>
             ) : (
               <div>
-                <label className="mb-1 block font-medium text-slate-700">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                   Bitiş Tarihi *
                 </label>
                 <DatePicker
@@ -1479,16 +1479,16 @@ function CreateLeaveModal({
           </div>
 
           {/* Smart Duration & Balance Calculation Banner */}
-          <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+          <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-3.5">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400">
                 <CalendarIcon className="h-4 w-4" />
               </div>
               <div>
-                <span className="font-bold text-slate-900">
+                <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   Hesaplanan İş Günü:
                 </span>
-                <span className="block text-[11px] text-slate-500">
+                <span className="block text-[11px] text-zinc-500 dark:text-zinc-400">
                   Hafta sonları otomatik atlandı
                 </span>
               </div>
@@ -1500,11 +1500,11 @@ function CreateLeaveModal({
 
           {/* Reason & Emergency Contact */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               İzin Sebebi / Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setReason(e.target.value)}
               placeholder="İzin gerekçenizi kısaca belirtin..."
               rows={2}
@@ -1513,11 +1513,11 @@ function CreateLeaveModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Acil Durum İletişim Notu (Opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) => setEmergencyContact(e.target.value)}
               placeholder="Örn: 0532 ... veya e-posta ile ulaşılabilir"
               type="text"
@@ -1537,9 +1537,9 @@ function CreateLeaveModal({
           />
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

@@ -1,3 +1,4 @@
+/* Hallmark · component: customers-list · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {
@@ -26,6 +27,8 @@ import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
+import { PhoneInput } from "@/components/phone-input";
+import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
 import {
   ApiClient,
   type CreateCustomerRequest,
@@ -145,15 +148,15 @@ export default function CustomersPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "Lead":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Passive":
-        return "bg-slate-100 text-slate-600 border-slate-200";
+        return "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700";
       case "Churned":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
     }
   };
 
@@ -175,13 +178,13 @@ export default function CustomersPage() {
   const getTierBadge = (tier: string) => {
     switch (tier) {
       case "VIP":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Enterprise":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "SME":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
       default:
-        return "bg-slate-50 text-slate-600 border-slate-200";
+        return "bg-zinc-50 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700";
     }
   };
 
@@ -189,8 +192,8 @@ export default function CustomersPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:bg-zinc-100 dark:text-zinc-900">
+          <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
       )}
@@ -199,14 +202,14 @@ export default function CustomersPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Müşteriler
             </h1>
-            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700">
+            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 text-xs dark:text-zinc-400">
             Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari
             geçmişini yönetin.
           </p>
@@ -215,7 +218,7 @@ export default function CustomersPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={() =>
               showToast("Müşteri listesi CSV olarak dışa aktarılıyor...")
             }
@@ -227,7 +230,7 @@ export default function CustomersPage() {
 
           <PermissionGate permission="Customers.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -241,21 +244,21 @@ export default function CustomersPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Customers */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
                 Toplam Müşteri
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {stats?.totalCustomers ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               <Users className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             <span>{stats?.companiesCount ?? 0} Şirket</span>
             <span>•</span>
             <span>{stats?.individualsCount ?? 0} Bireysel</span>
@@ -263,21 +266,21 @@ export default function CustomersPage() {
         </div>
 
         {/* Active Customers */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
                 Aktif Müşteriler
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {stats?.activeCustomers ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <UserCheck className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-emerald-600">
+          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 font-semibold text-[11px] text-emerald-600 dark:border-zinc-800 dark:text-emerald-400">
             <span>
               %
               {stats?.totalCustomers
@@ -291,41 +294,41 @@ export default function CustomersPage() {
         </div>
 
         {/* Leads */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
                 Potansiyel (Lead)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {stats?.leadCustomers ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-blue-600">
+          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 font-semibold text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
             <span>Dönüşüm bekleyen adaylar</span>
           </div>
         </div>
 
         {/* Total Revenue */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
                 Toplam Müşteri Hacmi
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 ₺{(stats?.totalRevenue ?? 0).toLocaleString("tr-TR")}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <TrendingUp className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             <span>
               Ort. Müşteri Değeri: ₺
               {(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}
@@ -335,12 +338,12 @@ export default function CustomersPage() {
       </div>
 
       {/* 3. Filters & View Switcher Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center dark:border-zinc-800/90 dark:bg-zinc-900/90">
         {/* Search */}
         <div className="relative max-w-md flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
             type="text"
@@ -352,7 +355,7 @@ export default function CustomersPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setTypeFilter(e.target.value)}
             value={typeFilter}
           >
@@ -363,7 +366,7 @@ export default function CustomersPage() {
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -376,7 +379,7 @@ export default function CustomersPage() {
 
           {/* Tier Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-violet-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setTierFilter(e.target.value)}
             value={tierFilter}
           >
@@ -390,7 +393,7 @@ export default function CustomersPage() {
           {/* Reset Filters */}
           {(search || statusFilter || typeFilter || tierFilter) && (
             <button
-              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
+              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300"
               onClick={() => {
                 setSearch("");
                 setStatusFilter("");
@@ -405,12 +408,12 @@ export default function CustomersPage() {
           )}
 
           {/* View Mode Toggle */}
-          <div className="flex items-center rounded-xl bg-slate-100 p-0.5">
+          <div className="flex items-center rounded-xl bg-zinc-100 p-0.5 dark:bg-zinc-800">
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-700 dark:text-zinc-100"
+                  : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("table")}
               title="Tablo Görünümü"
@@ -421,8 +424,8 @@ export default function CustomersPage() {
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "grid"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-700 dark:text-zinc-100"
+                  : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
               onClick={() => setViewMode("grid")}
               title="Kart Görünümü"
@@ -436,29 +439,29 @@ export default function CustomersPage() {
 
       {/* 4. Customer List (Table or Grid) */}
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
-            <span className="font-medium text-slate-500 text-xs">
+            <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
               Müşteriler yükleniyor...
             </span>
           </div>
         </div>
       ) : customers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-white p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 border-dashed bg-white p-12 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
             <Users className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-slate-900 text-sm">
+          <h3 className="mt-3 font-bold text-zinc-900 text-sm dark:text-zinc-100">
             Kayıtlı Müşteri Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+          <p className="mt-1 max-w-sm text-zinc-500 text-xs dark:text-zinc-400">
             Arama kriterlerinize uygun müşteri bulunamadı veya henüz müşteri
             kaydı eklenmedi.
           </p>
           <PermissionGate permission="Customers.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -469,10 +472,10 @@ export default function CustomersPage() {
         </div>
       ) : viewMode === "table" ? (
         /* Table View */
-        <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
+              <thead className="border-b border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Müşteri / Şirket</th>
                   <th className="px-4 py-3.5">Statü & Segment</th>
@@ -483,10 +486,10 @@ export default function CustomersPage() {
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlem</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {customers.map((c) => (
                   <tr
-                    className="group transition-colors hover:bg-slate-50/80"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                     key={c.id}
                   >
                     <td className="py-4 pr-4 pl-6">
@@ -497,8 +500,8 @@ export default function CustomersPage() {
                         <div
                           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-bold text-xs shadow-2xs ${
                             c.type === "Company"
-                              ? "bg-violet-100 text-violet-700"
-                              : "bg-blue-100 text-blue-700"
+                              ? "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-400"
+                              : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                           }`}
                         >
                           {c.type === "Company" ? (
@@ -508,10 +511,10 @@ export default function CustomersPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 transition-colors group-hover:text-violet-600">
+                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400">
                             {c.name}
                           </div>
-                          <div className="flex items-center gap-2 font-medium text-[10px] text-slate-400">
+                          <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                             <span>
                               {c.type === "Company" ? "Kurumsal" : "Bireysel"}
                             </span>
@@ -552,16 +555,16 @@ export default function CustomersPage() {
                     </td>
 
                     <td className="px-4 py-4">
-                      <div className="space-y-0.5 text-[11px] text-slate-600">
+                      <div className="space-y-0.5 text-[11px] text-zinc-600 dark:text-zinc-300">
                         {c.phone && (
                           <div className="flex items-center gap-1">
-                            <Phone className="h-3 w-3 text-slate-400" />
+                            <Phone className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
                             <span>{c.phone}</span>
                           </div>
                         )}
                         {c.email && (
                           <div className="flex items-center gap-1">
-                            <Mail className="h-3 w-3 text-slate-400" />
+                            <Mail className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
                             <span>{c.email}</span>
                           </div>
                         )}
@@ -569,7 +572,7 @@ export default function CustomersPage() {
                     </td>
 
                     <td className="px-4 py-4">
-                      <span className="font-medium text-[11px] text-slate-700">
+                      <span className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                         {c.city ? `${c.city}, ${c.country || "TR"}` : "—"}
                       </span>
                     </td>
@@ -577,25 +580,25 @@ export default function CustomersPage() {
                     <td className="px-4 py-4">
                       {c.assignedEmployeeName ? (
                         <div className="flex items-center gap-1.5">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 font-bold text-[9px] text-white">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 font-bold text-[9px] text-white dark:bg-zinc-100 dark:text-zinc-900">
                             {c.assignedEmployeeName.charAt(0)}
                           </div>
-                          <span className="font-medium text-[11px] text-slate-800">
+                          <span className="font-medium text-[11px] text-zinc-800 dark:text-zinc-200">
                             {c.assignedEmployeeName}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-[11px] text-slate-400">
+                        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                           Atanmadı
                         </span>
                       )}
                     </td>
 
                     <td className="px-4 py-4 text-right">
-                      <div className="font-bold text-slate-900 text-xs">
+                      <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
                         ₺{c.totalRevenue.toLocaleString("tr-TR")}
                       </div>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         {c.dealsCount} Fırsat
                       </div>
                     </td>
@@ -603,7 +606,7 @@ export default function CustomersPage() {
                     <td className="py-4 pr-6 pl-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                          className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                           href={`/${tenantSlug}/customers/${c.id}`}
                           title="Detay Görüntüle"
                         >
@@ -611,12 +614,12 @@ export default function CustomersPage() {
                         </Link>
                         <PermissionGate permission="Customers.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+                            className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
                             onClick={() => setDeletingCustomer(c)}
-                            title="Sil"
+                            title="Müşteriyi Sil"
                             type="button"
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </PermissionGate>
                       </div>
@@ -628,21 +631,21 @@ export default function CustomersPage() {
           </div>
         </div>
       ) : (
-        /* Grid Card View */
+        /* Grid View */
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {customers.map((c) => (
             <div
-              className="group flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300 hover:shadow-md"
+              className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700"
               key={c.id}
             >
               <div>
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-2xl font-bold text-sm shadow-2xs ${
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-bold text-sm shadow-2xs ${
                         c.type === "Company"
-                          ? "bg-violet-100 text-violet-700"
-                          : "bg-blue-100 text-blue-700"
+                          ? "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-400"
+                          : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                       }`}
                     >
                       {c.type === "Company" ? (
@@ -653,21 +656,19 @@ export default function CustomersPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-slate-900 text-sm transition-colors group-hover:text-violet-600"
+                        className="font-bold text-zinc-900 text-sm transition-colors group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400"
                         href={`/${tenantSlug}/customers/${c.id}`}
                       >
                         {c.name}
                       </Link>
-                      <div className="text-[10px] text-slate-400">
-                        {c.type === "Company"
-                          ? "Kurumsal Şirket"
-                          : "Bireysel Müşteri"}
+                      <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                        {c.industry || (c.type === "Company" ? "Kurumsal Şirket" : "Bireysel Müşteri")}
                       </div>
                     </div>
                   </div>
 
                   <span
-                    className={`rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getStatusBadge(
+                    className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getStatusBadge(
                       c.status
                     )}`}
                   >
@@ -675,42 +676,41 @@ export default function CustomersPage() {
                   </span>
                 </div>
 
-                {/* Contact and Info details */}
-                <div className="mt-4 space-y-1.5 border-slate-100 border-t pt-3 text-xs">
+                <div className="mt-4 space-y-1.5 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
                   {c.phone && (
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Phone className="h-3.5 w-3.5 text-slate-400" />
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                       <span>{c.phone}</span>
                     </div>
                   )}
                   {c.email && (
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Mail className="h-3.5 w-3.5 text-slate-400" />
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                       <span className="truncate">{c.email}</span>
                     </div>
                   )}
-                  {c.website && (
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Globe className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">{c.website}</span>
+                  {c.city && (
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                      <span>{c.city}, TR</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Card Footer */}
-              <div className="mt-5 flex items-center justify-between border-slate-100 border-t pt-3">
+              <div className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
                 <div>
-                  <span className="text-[10px] text-slate-400">
+                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                     Toplam Ciro:
                   </span>
-                  <div className="font-extrabold text-slate-900 text-xs">
+                  <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
                     ₺{c.totalRevenue.toLocaleString("tr-TR")}
                   </div>
                 </div>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-violet-700 active:scale-[0.98]"
                   href={`/${tenantSlug}/customers/${c.id}`}
                 >
                   <span>Detay (360°)</span>
@@ -739,13 +739,13 @@ export default function CustomersPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingCustomer && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <h3 className="font-bold text-base text-slate-900">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="flex w-full max-w-md flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Müşteriyi Sil
             </h3>
-            <p className="mt-2 text-slate-600 text-xs leading-relaxed">
-              <strong className="font-semibold text-slate-900">
+            <p className="mt-2 text-zinc-600 text-xs leading-relaxed dark:text-zinc-400">
+              <strong className="font-semibold text-zinc-900 dark:text-zinc-200">
                 {deletingCustomer.name}
               </strong>{" "}
               isimli müşteriyi ve buna bağlı yetkilileri, notları silmek
@@ -753,14 +753,14 @@ export default function CustomersPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50"
+                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 text-xs hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 onClick={() => setDeletingCustomer(null)}
                 type="button"
               >
                 Vazgeç
               </button>
               <button
-                className="rounded-xl bg-rose-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-rose-700"
+                className="rounded-xl bg-rose-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-rose-700 active:scale-95"
                 onClick={handleDelete}
                 type="button"
               >
@@ -779,7 +779,7 @@ function CreateCustomerModal({
   onClose,
   onSuccess,
   tenantId,
-  employees,
+  employees: initialEmployees,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -787,6 +787,9 @@ function CreateCustomerModal({
   tenantId: string;
   employees: EmployeeDto[];
 }) {
+  const [employeesList, setEmployeesList] = useState<EmployeeDto[]>(initialEmployees);
+  const [isAddSalesRepOpen, setIsAddSalesRepOpen] = useState(false);
+
   const [formData, setFormData] = useState<CreateCustomerRequest>({
     addressLine: "",
     assignedEmployeeId: "",
@@ -877,272 +880,301 @@ function CreateCustomerModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
-          <div>
-            <h2 className="font-bold text-base text-slate-900">
-              Yeni Müşteri Ekle
-            </h2>
-            <p className="text-slate-500 text-xs">
-              Kurumsal şirket veya bireysel şahıs müşterisi oluşturun
-            </p>
-          </div>
-
-          <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Form */}
-        <form
-          className="flex-1 space-y-4 overflow-y-auto p-6"
-          onSubmit={handleSubmit}
-        >
-          {error && (
-            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
-              {error}
+    <>
+      <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+        <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-zinc-100 p-5 dark:border-zinc-800">
+            <div>
+              <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                Yeni Müşteri Ekle
+              </h2>
+              <p className="text-zinc-500 text-xs dark:text-zinc-400">
+                Kurumsal şirket veya bireysel şahıs müşterisi oluşturun
+              </p>
             </div>
-          )}
 
-          {/* Type Switcher */}
-          <div className="flex items-center gap-2 rounded-2xl bg-slate-100 p-1">
             <button
-              className={`flex-1 rounded-xl py-2 font-semibold text-xs transition-all ${
-                formData.type === "Company"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              onClick={() => setFormData({ ...formData, type: "Company" })}
-              type="button"
-            >
-              Kurumsal (Şirket)
-            </button>
-            <button
-              className={`flex-1 rounded-xl py-2 font-semibold text-xs transition-all ${
-                formData.type === "Individual"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              onClick={() => setFormData({ ...formData, type: "Individual" })}
-              type="button"
-            >
-              Bireysel (Şahıs)
-            </button>
-          </div>
-
-          {/* Core Info */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                {formData.type === "Company"
-                  ? "Şirket / Kurum Adı *"
-                  : "Müşteri Adı Soyadı *"}
-              </label>
-              <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder={
-                  formData.type === "Company"
-                    ? "Acme Holding A.Ş."
-                    : "Ahmet Yılmaz"
-                }
-                required
-                type="text"
-                value={formData.name}
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                E-Posta
-              </label>
-              <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                placeholder="info@acme.com"
-                type="email"
-                value={formData.email}
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                Telefon
-              </label>
-              <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                placeholder="+90 212 555 0100"
-                type="tel"
-                value={formData.phone}
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                Statü
-              </label>
-              <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value })
-                }
-                value={formData.status}
-              >
-                <option value="Lead">Potansiyel (Lead)</option>
-                <option value="Active">Aktif Müşteri</option>
-                <option value="Passive">Pasif</option>
-                <option value="Churned">Kaybedildi</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                Segment / Seviye
-              </label>
-              <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, tier: e.target.value })
-                }
-                value={formData.tier}
-              >
-                <option value="Standard">Standart</option>
-                <option value="VIP">VIP</option>
-                <option value="Enterprise">Enterprise</option>
-                <option value="SME">KOBİ (SME)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                Sektör
-              </label>
-              <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, industry: e.target.value })
-                }
-                placeholder="Yazılım / Bilişim"
-                type="text"
-                value={formData.industry}
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-slate-700 text-xs">
-                Sorumlu Temsilci
-              </label>
-              <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    assignedEmployeeId: e.target.value,
-                  })
-                }
-                value={formData.assignedEmployeeId}
-              >
-                <option value="">Temsilci Seçin (Opsiyonel)</option>
-                {employees.map((emp) => (
-                  <option key={emp.id} value={emp.id}>
-                    {emp.fullName} ({emp.title || "Temsilci"})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Primary Contact for Companies */}
-          {formData.type === "Company" && (
-            <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
-              <h4 className="font-bold text-slate-900 text-xs">
-                Birincil Yetkili / İlgili Kişi
-              </h4>
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      initialContactFirstName: e.target.value,
-                    })
-                  }
-                  placeholder="Yetkili Adı"
-                  type="text"
-                  value={formData.initialContactFirstName}
-                />
-                <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      initialContactLastName: e.target.value,
-                    })
-                  }
-                  placeholder="Yetkili Soyadı"
-                  type="text"
-                  value={formData.initialContactLastName}
-                />
-                <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      initialContactTitle: e.target.value,
-                    })
-                  }
-                  placeholder="Ünvan (Örn: Satın Alma Md.)"
-                  type="text"
-                  value={formData.initialContactTitle}
-                />
-                <input
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-slate-900 text-xs placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      initialContactEmail: e.target.value,
-                    })
-                  }
-                  placeholder="Yetkili E-Posta"
-                  type="email"
-                  value={formData.initialContactEmail}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
-            <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50"
+              className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               onClick={onClose}
               type="button"
             >
-              Vazgeç
-            </button>
-            <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
-              disabled={submitting}
-              type="submit"
-            >
-              {submitting ? "Kaydediliyor..." : "Müşteriyi Kaydet"}
+              <X className="h-5 w-5" />
             </button>
           </div>
-        </form>
+
+          {/* Form */}
+          <form
+            className="flex-1 space-y-4 overflow-y-auto p-6 text-xs"
+            onSubmit={handleSubmit}
+          >
+            {error && (
+              <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs dark:bg-rose-950/60 dark:text-rose-300">
+                {error}
+              </div>
+            )}
+
+            {/* Type Switcher */}
+            <div className="flex items-center gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
+              <button
+                className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
+                  formData.type === "Company"
+                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                }`}
+                onClick={() => setFormData({ ...formData, type: "Company" })}
+                type="button"
+              >
+                Kurumsal (Şirket)
+              </button>
+              <button
+                className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
+                  formData.type === "Individual"
+                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                }`}
+                onClick={() => setFormData({ ...formData, type: "Individual" })}
+                type="button"
+              >
+                Bireysel (Şahıs)
+              </button>
+            </div>
+
+            {/* Core Info */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="sm:col-span-2">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  {formData.type === "Company"
+                    ? "Şirket / Kurum Adı *"
+                    : "Müşteri Adı Soyadı *"}
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  placeholder={
+                    formData.type === "Company"
+                      ? "Acme Holding A.Ş."
+                      : "Ahmet Yılmaz"
+                  }
+                  required
+                  type="text"
+                  value={formData.name}
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  E-Posta
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  placeholder="info@acme.com"
+                  type="email"
+                  value={formData.email}
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Telefon (Doğrulama & Maske)
+                </label>
+                <PhoneInput
+                  onChange={(val) => setFormData({ ...formData, phone: val })}
+                  placeholder="+90 (5XX) XXX XX XX"
+                  value={formData.phone || ""}
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Statü
+                </label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.value })
+                  }
+                  value={formData.status}
+                >
+                  <option value="Lead">Potansiyel (Lead)</option>
+                  <option value="Active">Aktif Müşteri</option>
+                  <option value="Passive">Pasif</option>
+                  <option value="Churned">Kaybedildi</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Segment / Seviye
+                </label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) =>
+                    setFormData({ ...formData, tier: e.target.value })
+                  }
+                  value={formData.tier}
+                >
+                  <option value="Standard">Standart</option>
+                  <option value="VIP">VIP</option>
+                  <option value="Enterprise">Enterprise</option>
+                  <option value="SME">KOBİ (SME)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Sektör
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  onChange={(e) =>
+                    setFormData({ ...formData, industry: e.target.value })
+                  }
+                  placeholder="Yazılım / Bilişim"
+                  type="text"
+                  value={formData.industry}
+                />
+              </div>
+
+              <div>
+                <div className="mb-1 flex items-center justify-between">
+                  <label className="block font-medium text-zinc-700 dark:text-zinc-300">
+                    Sorumlu Temsilci
+                  </label>
+                  <button
+                    className="flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:text-violet-400"
+                    onClick={() => setIsAddSalesRepOpen(true)}
+                    type="button"
+                  >
+                    <Plus className="h-3 w-3" />
+                    <span>Yeni Temsilci Ekle</span>
+                  </button>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <select
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        assignedEmployeeId: e.target.value,
+                      })
+                    }
+                    value={formData.assignedEmployeeId}
+                  >
+                    <option value="">Temsilci Seçin (Opsiyonel)</option>
+                    {employeesList.map((emp) => (
+                      <option key={emp.id} value={emp.id}>
+                        {emp.fullName} ({emp.title || "Temsilci"})
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-violet-200 bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 transition-all hover:bg-violet-100 active:scale-95 dark:border-violet-800/80 dark:bg-violet-950/60 dark:text-violet-400"
+                    onClick={() => setIsAddSalesRepOpen(true)}
+                    title="Yeni Satış Temsilcisi Oluştur"
+                    type="button"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Primary Contact for Companies */}
+            {formData.type === "Company" && (
+              <div className="space-y-3 rounded-xl border border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  Birincil Yetkili / İlgili Kişi
+                </h4>
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                  <input
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        initialContactFirstName: e.target.value,
+                      })
+                    }
+                    placeholder="Yetkili Adı"
+                    type="text"
+                    value={formData.initialContactFirstName}
+                  />
+                  <input
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        initialContactLastName: e.target.value,
+                      })
+                    }
+                    placeholder="Yetkili Soyadı"
+                    type="text"
+                    value={formData.initialContactLastName}
+                  />
+                  <input
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        initialContactTitle: e.target.value,
+                      })
+                    }
+                    placeholder="Ünvan (Örn: Satın Alma Md.)"
+                    type="text"
+                    value={formData.initialContactTitle}
+                  />
+                  <PhoneInput
+                    onChange={(val) =>
+                      setFormData({
+                        ...formData,
+                        initialContactPhone: val,
+                      })
+                    }
+                    placeholder="Yetkili Telefon (+90 5XX...)"
+                    value={formData.initialContactPhone || ""}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+              <button
+                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 text-xs hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                onClick={onClose}
+                type="button"
+              >
+                Vazgeç
+              </button>
+              <button
+                className="rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+                disabled={submitting}
+                type="submit"
+              >
+                {submitting ? "Kaydediliyor..." : "Müşteriyi Kaydet"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+
+      {/* Quick Add Sales Rep Modal */}
+      {isAddSalesRepOpen && (
+        <QuickAddSalesRepModal
+          isOpen={isAddSalesRepOpen}
+          onClose={() => setIsAddSalesRepOpen(false)}
+          onSuccess={(newEmp) => {
+            setEmployeesList((prev) => [...prev, newEmp]);
+            setFormData((prev) => ({ ...prev, assignedEmployeeId: newEmp.id }));
+          }}
+          tenantId={tenantId}
+        />
+      )}
+    </>
   );
 }

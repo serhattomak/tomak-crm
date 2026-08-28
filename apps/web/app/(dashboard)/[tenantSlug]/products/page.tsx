@@ -154,15 +154,15 @@ export default function ProductsPage() {
   const getTypeBadge = (type: string) => {
     switch (type) {
       case "Physical":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Service":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Digital":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
       case "Subscription":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       default:
-        return "bg-slate-50 text-slate-700 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -184,15 +184,15 @@ export default function ProductsPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       case "Inactive":
-        return "bg-slate-100 text-slate-600 border-slate-200";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800";
       case "Draft":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Discontinued":
-        return "bg-rose-50 text-rose-700 border-rose-200";
+        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       default:
-        return "bg-slate-50 text-slate-600 border-slate-200";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800";
     }
   };
 
@@ -210,14 +210,14 @@ export default function ProductsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
               Ürün & Hizmetler
             </h1>
             <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 dark:text-zinc-400 text-xs">
             Fiziksel stoklu ürünlerinizi, danışmanlık hizmetlerinizi ve abonelik
             paketlerinizi tek noktadan yönetin.
           </p>
@@ -226,20 +226,20 @@ export default function ProductsPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={() => setIsCategoryModalOpen(true)}
             type="button"
           >
-            <FolderTree className="h-3.5 w-3.5 text-slate-500" />
+            <FolderTree className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>Kategoriler ({categories.length})</span>
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:bg-zinc-800/50"
             onClick={() => showToast("Katalog CSV olarak dışa aktarılıyor...")}
             type="button"
           >
-            <Download className="h-3.5 w-3.5 text-slate-500" />
+            <Download className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>Dışa Aktar</span>
           </button>
 
@@ -259,21 +259,21 @@ export default function ProductsPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Products */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Toplam Katalog
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
                 {stats?.totalProducts ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Package className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>{stats?.physicalProductsCount ?? 0} Fiziksel</span>
             <span>•</span>
             <span>{stats?.servicesCount ?? 0} Hizmet</span>
@@ -283,24 +283,24 @@ export default function ProductsPage() {
         </div>
 
         {/* Total Inventory Valuation */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Toplam Envanter Değeri (Maliyet)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-slate-900 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
                 ₺
                 {(stats?.totalInventoryValue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>
               Satış Değeri: ₺
               {(stats?.totalRetailValue ?? 0).toLocaleString("tr-TR", {
@@ -311,53 +311,53 @@ export default function ProductsPage() {
         </div>
 
         {/* Low Stock Alerts */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Kritik Stok Uyarısı
               </span>
               <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
                 {stats?.lowStockCount ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <AlertTriangle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 font-semibold text-[11px] text-rose-600">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 font-semibold text-[11px] text-rose-600">
             <span>{stats?.outOfStockCount ?? 0} Ürün Tükendi</span>
           </div>
         </div>
 
         {/* Active Services & Subscriptions */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-slate-500 text-xs">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
                 Hizmet & Abonelikler
               </span>
               <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
                 {(stats?.servicesCount ?? 0) + (stats?.subscriptionsCount ?? 0)}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-slate-100 border-t pt-2 text-[11px] text-slate-500">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Stoksuz katma değerli teklif kalemleri</span>
           </div>
         </div>
       </div>
 
       {/* 3. Filters & View Switcher Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs md:flex-row md:items-center">
         {/* Search */}
         <div className="relative max-w-md flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-slate-900 text-xs placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Ürün adı, SKU, Barkod veya Marka ara..."
             type="text"
@@ -369,7 +369,7 @@ export default function ProductsPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setTypeFilter(e.target.value)}
             value={typeFilter}
           >
@@ -382,7 +382,7 @@ export default function ProductsPage() {
 
           {/* Category Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setCategoryFilter(e.target.value)}
             value={categoryFilter}
           >
@@ -397,7 +397,7 @@ export default function ProductsPage() {
 
           {/* Stock Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setStockStatusFilter(e.target.value)}
             value={stockStatusFilter}
           >
@@ -409,7 +409,7 @@ export default function ProductsPage() {
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 text-xs focus:border-blue-500 focus:outline-none"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs focus:border-blue-500 focus:outline-none"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -443,12 +443,12 @@ export default function ProductsPage() {
           )}
 
           {/* View Switcher */}
-          <div className="flex items-center rounded-xl bg-slate-100 p-0.5">
+          <div className="flex items-center rounded-xl bg-zinc-100 dark:bg-zinc-800 p-0.5">
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
               }`}
               onClick={() => setViewMode("table")}
               title="Tablo Görünümü"
@@ -459,8 +459,8 @@ export default function ProductsPage() {
             <button
               className={`rounded-lg p-1.5 transition-all ${
                 viewMode === "grid"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-400 hover:text-slate-700"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
               }`}
               onClick={() => setViewMode("grid")}
               title="Görsel Kart Görünümü"
@@ -474,23 +474,23 @@ export default function ProductsPage() {
 
       {/* 4. Product List (Table or Grid) */}
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="font-medium text-slate-500 text-xs">
+            <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
               Ürün ve hizmetler yükleniyor...
             </span>
           </div>
         </div>
       ) : products.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 border-dashed bg-white p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-12 text-center shadow-xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
             <Package className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-slate-900 text-sm">
+          <h3 className="mt-3 font-bold text-zinc-900 dark:text-zinc-100 text-sm">
             Ürün veya Hizmet Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-slate-500 text-xs">
+          <p className="mt-1 max-w-sm text-zinc-500 dark:text-zinc-400 text-xs">
             Arama kriterlerinize uygun kayıt bulunamadı veya henüz bir
             ürün/hizmet tanımlanmadı.
           </p>
@@ -507,10 +507,10 @@ export default function ProductsPage() {
         </div>
       ) : viewMode === "table" ? (
         /* Table View */
-        <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-slate-100 border-b bg-slate-50/50 font-medium text-[11px] text-slate-500">
+              <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Ürün / Hizmet</th>
                   <th className="px-4 py-3.5">Kategori & Marka</th>
@@ -522,10 +522,10 @@ export default function ProductsPage() {
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {products.map((p) => (
                   <tr
-                    className="group transition-colors hover:bg-slate-50/80"
+                    className="group transition-colors hover:bg-zinc-50/80 dark:bg-zinc-800/50"
                     key={p.id}
                   >
                     <td className="py-4 pr-4 pl-6">
@@ -533,7 +533,7 @@ export default function ProductsPage() {
                         className="flex items-center gap-3"
                         href={`/${tenantSlug}/products/${p.id}`}
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-600 text-xs shadow-2xs">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 font-bold text-zinc-600 dark:text-zinc-400 text-xs shadow-2xs">
                           {p.images && p.images.length > 0 ? (
                             <img
                               alt={p.name}
@@ -549,10 +549,10 @@ export default function ProductsPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 transition-colors group-hover:text-blue-600">
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100 transition-colors group-hover:text-blue-600">
                             {p.name}
                           </div>
-                          <div className="flex items-center gap-2 font-medium text-[10px] text-slate-400">
+                          <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                             {p.sku && <span>SKU: {p.sku}</span>}
                             {p.barcode && (
                               <>
@@ -574,11 +574,11 @@ export default function ProductsPage() {
                     </td>
 
                     <td className="px-4 py-4">
-                      <div className="font-medium text-[11px] text-slate-800">
+                      <div className="font-medium text-[11px] text-zinc-800 dark:text-zinc-200">
                         {p.categoryName || "Kategorisiz"}
                       </div>
                       {p.brand && (
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           {p.brand}
                         </div>
                       )}
@@ -613,7 +613,7 @@ export default function ProductsPage() {
                                   ? "text-rose-600"
                                   : p.isLowStock
                                     ? "text-amber-600"
-                                    : "text-slate-900"
+                                    : "text-zinc-900 dark:text-zinc-100"
                               }`}
                             >
                               {p.currentStock} {p.unit}
@@ -624,19 +624,19 @@ export default function ProductsPage() {
                               </span>
                             )}
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                             Min: {p.minStockLevel} {p.unit}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-[11px] text-slate-400">
+                        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                           — (Stoksuz)
                         </span>
                       )}
                     </td>
 
                     <td className="px-4 py-4 text-right">
-                      <div className="font-medium text-slate-600 text-xs">
+                      <div className="font-medium text-zinc-600 dark:text-zinc-400 text-xs">
                         ₺
                         {p.costPrice.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -645,13 +645,13 @@ export default function ProductsPage() {
                     </td>
 
                     <td className="px-4 py-4 text-right">
-                      <div className="font-extrabold text-slate-900 text-xs">
+                      <div className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
                         ₺
                         {p.sellingPrice.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         KDV: %{p.taxRate}
                       </div>
                     </td>
@@ -675,7 +675,7 @@ export default function ProductsPage() {
                         {p.trackInventory && (
                           <PermissionGate permission="Products.StockAdjust">
                             <button
-                              className="flex h-7 items-center gap-1 rounded-lg border border-slate-200 px-2 font-semibold text-[10px] text-slate-600 hover:bg-slate-100"
+                              className="flex h-7 items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 font-semibold text-[10px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800"
                               onClick={() => setStockAdjustProduct(p)}
                               title="Stok Hareketi Ekle"
                               type="button"
@@ -686,7 +686,7 @@ export default function ProductsPage() {
                           </PermissionGate>
                         )}
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800 hover:text-zinc-800 dark:text-zinc-200"
                           href={`/${tenantSlug}/products/${p.id}`}
                           title="Detay Görüntüle"
                         >
@@ -694,7 +694,7 @@ export default function ProductsPage() {
                         </Link>
                         <PermissionGate permission="Products.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-500 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                             onClick={() => setDeletingProduct(p)}
                             title="Sil"
                             type="button"
@@ -715,13 +715,13 @@ export default function ProductsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
             <div
-              className="group flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300 hover:shadow-md"
+              className="group flex flex-col justify-between rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:border-zinc-300 dark:border-zinc-700 hover:shadow-md"
               key={p.id}
             >
               <div>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 font-bold text-sm shadow-2xs">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 font-bold text-sm shadow-2xs">
                       {p.images && p.images.length > 0 ? (
                         <img
                           alt={p.name}
@@ -736,12 +736,12 @@ export default function ProductsPage() {
                     </div>
                     <div>
                       <Link
-                        className="block font-bold text-slate-900 text-sm transition-colors group-hover:text-blue-600"
+                        className="block font-bold text-zinc-900 dark:text-zinc-100 text-sm transition-colors group-hover:text-blue-600"
                         href={`/${tenantSlug}/products/${p.id}`}
                       >
                         {p.name}
                       </Link>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         {p.categoryName || "Kategorisiz"}{" "}
                         {p.brand && `• ${p.brand}`}
                       </div>
@@ -758,12 +758,12 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Stock & Price Strip */}
-                <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-slate-50 p-3 text-xs">
+                <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3 text-xs">
                   <div>
-                    <span className="font-medium text-[10px] text-slate-400">
+                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                       Satış Fiyatı
                     </span>
-                    <div className="font-extrabold text-slate-900 text-sm">
+                    <div className="font-extrabold text-zinc-900 dark:text-zinc-100 text-sm">
                       ₺
                       {p.sellingPrice.toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,
@@ -771,7 +771,7 @@ export default function ProductsPage() {
                     </div>
                   </div>
                   <div>
-                    <span className="font-medium text-[10px] text-slate-400">
+                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                       Stok Miktarı
                     </span>
                     <div
@@ -780,7 +780,7 @@ export default function ProductsPage() {
                           ? "text-rose-600"
                           : p.isLowStock
                             ? "text-amber-600"
-                            : "text-slate-800"
+                            : "text-zinc-800 dark:text-zinc-200"
                       }`}
                     >
                       {p.trackInventory
@@ -792,7 +792,7 @@ export default function ProductsPage() {
               </div>
 
               {/* Card Footer */}
-              <div className="mt-4 flex items-center justify-between border-slate-100 border-t pt-3">
+              <div className="mt-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-3">
                 <span
                   className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-[10px] ${
                     p.profitMargin >= 40
@@ -862,11 +862,11 @@ export default function ProductsPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingProduct && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <h3 className="font-bold text-base text-slate-900">Ürünü Sil</h3>
-            <p className="mt-2 text-slate-600 text-xs leading-relaxed">
-              <strong className="font-semibold text-slate-900">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Ürünü Sil</h3>
+            <p className="mt-2 text-zinc-600 dark:text-zinc-400 text-xs leading-relaxed">
+              <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {deletingProduct.name}
               </strong>{" "}
               isimli ürünü ve buna bağlı varyant ile stok geçmişini silmek
@@ -874,7 +874,7 @@ export default function ProductsPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 text-xs hover:bg-slate-50"
+                className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-50 dark:bg-zinc-800/50"
                 onClick={() => setDeletingProduct(null)}
                 type="button"
               >
@@ -991,21 +991,21 @@ function CreateProductModal({
       : 0;
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-slate-200/80 bg-white shadow-2xl">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-slate-100 border-b p-5">
+        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b p-5">
           <div>
-            <h2 className="font-bold text-base text-slate-900">
+            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Ürün / Hizmet Ekle
             </h2>
-            <p className="text-slate-500 text-xs">
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
               Fiziksel stoklu ürün, danışmanlık hizmeti veya abonelik paketi
               tanımlayın
             </p>
           </div>
           <button
-            className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+            className="rounded-full p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1024,12 +1024,12 @@ function CreateProductModal({
           )}
 
           {/* Type Switcher */}
-          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-1 sm:grid-cols-4">
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Physical"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1045,8 +1045,8 @@ function CreateProductModal({
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Service"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1062,8 +1062,8 @@ function CreateProductModal({
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Digital"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1079,8 +1079,8 @@ function CreateProductModal({
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${
                 formData.type === "Subscription"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
+                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
               }`}
               onClick={() =>
                 setFormData({
@@ -1098,11 +1098,11 @@ function CreateProductModal({
           {/* Core Info */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Ürün / Hizmet Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
@@ -1114,11 +1114,11 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Kategori
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, categoryId: e.target.value })
                 }
@@ -1134,11 +1134,11 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Marka
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, brand: e.target.value })
                 }
@@ -1149,11 +1149,11 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Stok Kodu (SKU)
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1164,11 +1164,11 @@ function CreateProductModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Barkod (EAN/UPC)
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1180,9 +1180,9 @@ function CreateProductModal({
           </div>
 
           {/* Pricing & Tax Strip */}
-          <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4">
+          <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-slate-900">
+              <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                 Fiyatlandırma & Vergi
               </h4>
               <span
@@ -1191,7 +1191,7 @@ function CreateProductModal({
                     ? "bg-emerald-100 text-emerald-800"
                     : calculatedMargin > 0
                       ? "bg-blue-100 text-blue-800"
-                      : "bg-slate-200 text-slate-700"
+                      : "bg-slate-200 text-zinc-700 dark:text-zinc-300"
                 }`}
               >
                 Tahmini Kar Marjı: %{calculatedMargin}
@@ -1200,11 +1200,11 @@ function CreateProductModal({
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
-                <label className="mb-1 block font-medium text-slate-700">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                   Alış / Maliyet Fiyatı
                 </label>
                 <input
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                   min="0"
                   onChange={(e) =>
                     setFormData({
@@ -1219,11 +1219,11 @@ function CreateProductModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-slate-700">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                   Satış Fiyatı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                   min="0"
                   onChange={(e) =>
                     setFormData({
@@ -1239,11 +1239,11 @@ function CreateProductModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-slate-700">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                   KDV Oranı (%)
                 </label>
                 <select
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -1263,12 +1263,12 @@ function CreateProductModal({
 
           {/* Inventory Settings (Only for Physical) */}
           {formData.type === "Physical" && (
-            <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4">
+            <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-900">
+                <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                   Stok & Envanter Ayarları
                 </h4>
-                <label className="flex cursor-pointer items-center gap-1.5 text-slate-700 text-xs">
+                <label className="flex cursor-pointer items-center gap-1.5 text-zinc-700 dark:text-zinc-300 text-xs">
                   <input
                     checked={formData.trackInventory}
                     className="rounded text-blue-600"
@@ -1287,11 +1287,11 @@ function CreateProductModal({
               {formData.trackInventory && (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">
+                    <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                       Açılış Stok Miktarı
                     </label>
                     <input
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                       min="0"
                       onChange={(e) =>
                         setFormData({
@@ -1305,11 +1305,11 @@ function CreateProductModal({
                   </div>
 
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">
+                    <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                       Kritik Stok Uyarısı
                     </label>
                     <input
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                       min="0"
                       onChange={(e) =>
                         setFormData({
@@ -1323,11 +1323,11 @@ function CreateProductModal({
                   </div>
 
                   <div>
-                    <label className="mb-1 block font-medium text-slate-700">
+                    <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                       Birim
                     </label>
                     <select
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
                       onChange={(e) =>
                         setFormData({ ...formData, unit: e.target.value })
                       }
@@ -1348,11 +1348,11 @@ function CreateProductModal({
 
           {/* Description */}
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Açıklama / Detaylar
             </label>
             <textarea
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
@@ -1363,9 +1363,9 @@ function CreateProductModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1443,19 +1443,19 @@ function QuickStockAdjustModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Hızlı Stok Hareketi
             </h3>
-            <p className="max-w-xs truncate text-slate-500 text-xs">
+            <p className="max-w-xs truncate text-zinc-500 dark:text-zinc-400 text-xs">
               {product.name}
             </p>
           </div>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1473,11 +1473,11 @@ function QuickStockAdjustModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               İşlem Türü
             </label>
             <select
-              className="w-full rounded-xl border border-slate-200 bg-white p-2 text-slate-900 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -1496,13 +1496,13 @@ function QuickStockAdjustModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               {formData.movementType === "Adjustment"
                 ? "Yeni Sayılan Stok Miktarı *"
                 : "Miktar *"}
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               min="0.01"
               onChange={(e) =>
                 setFormData({
@@ -1519,11 +1519,11 @@ function QuickStockAdjustModal({
 
           {formData.movementType === "In" && (
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Birim Alış Maliyeti (₺)
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1539,11 +1539,11 @@ function QuickStockAdjustModal({
           )}
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Fatura / İrsaliye No (Opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, referenceNumber: e.target.value })
               }
@@ -1554,11 +1554,11 @@ function QuickStockAdjustModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-slate-700">
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
               Açıklama / Neden
             </label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
               onChange={(e) =>
                 setFormData({ ...formData, reason: e.target.value })
               }
@@ -1568,9 +1568,9 @@ function QuickStockAdjustModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-slate-100 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
             <button
-              className="rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1657,20 +1657,20 @@ function CategoryManagerModal({
     categories.filter((c) => c.parentId === parentId);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[85vh] w-full max-w-lg flex-col rounded-3xl border border-slate-200 bg-white p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-slate-100 border-b pb-4">
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[85vh] w-full max-w-lg flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
           <div>
-            <h3 className="font-bold text-base text-slate-900">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Kategori & Hiyerarşi Yönetimi
             </h3>
-            <p className="text-slate-500 text-xs">
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
               Üst ve alt kategorileri (örn. Elektronik &gt; Küçük Ev Aletleri)
               yapılandırın
             </p>
           </div>
           <button
-            className="text-slate-400 hover:text-slate-700"
+            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1680,16 +1680,16 @@ function CategoryManagerModal({
 
         {/* Add Category Form */}
         <form
-          className="mb-4 space-y-3 border-slate-100 border-b pb-4"
+          className="mb-4 space-y-3 border-zinc-100 dark:border-zinc-800 border-b pb-4"
           onSubmit={handleCreate}
         >
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Kategori Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setNewCatName(e.target.value)}
                 placeholder="Örn: Küçük Ev Aletleri"
                 required
@@ -1699,11 +1699,11 @@ function CategoryManagerModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-slate-700">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
                 Üst Kategori (Opsiyonel)
               </label>
               <select
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
                 onChange={(e) => setNewCatParentId(e.target.value)}
                 value={newCatParentId}
               >
@@ -1731,7 +1731,7 @@ function CategoryManagerModal({
         {/* Categories Hierarchical List */}
         <div className="flex-1 space-y-2 overflow-y-auto">
           {categories.length === 0 ? (
-            <div className="py-6 text-center text-slate-400">
+            <div className="py-6 text-center text-zinc-400 dark:text-zinc-500">
               Henüz kategori eklenmedi.
             </div>
           ) : (
@@ -1740,18 +1740,18 @@ function CategoryManagerModal({
               return (
                 <div className="space-y-1.5" key={root.id}>
                   {/* Root Category Row */}
-                  <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3">
+                  <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/80 dark:bg-zinc-800/50 p-3">
                     <div className="flex items-center gap-2">
                       <FolderTree className="h-4 w-4 text-blue-600" />
-                      <span className="font-bold text-slate-900 text-xs">
+                      <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
                         {root.name}
                       </span>
-                      <span className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-bold text-[10px] text-slate-600">
+                      <span className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
                         {root.productsCount} Ürün
                       </span>
                     </div>
                     <button
-                      className="p-1 text-slate-400 hover:text-rose-600"
+                      className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-rose-600"
                       onClick={() => handleDelete(root.id)}
                       title="Ana Kategoriyi Sil"
                       type="button"
@@ -1763,20 +1763,20 @@ function CategoryManagerModal({
                   {/* Subcategories */}
                   {subs.map((sub) => (
                     <div
-                      className="ml-5 flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-2.5 shadow-2xs"
+                      className="ml-5 flex items-center justify-between rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 shadow-2xs"
                       key={sub.id}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-400">↳</span>
-                        <span className="font-semibold text-slate-800 text-xs">
+                        <span className="font-bold text-zinc-400 dark:text-zinc-500">↳</span>
+                        <span className="font-semibold text-zinc-800 dark:text-zinc-200 text-xs">
                           {sub.name}
                         </span>
-                        <span className="font-medium text-[10px] text-slate-400">
+                        <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                           ({sub.productsCount} Ürün)
                         </span>
                       </div>
                       <button
-                        className="p-1 text-slate-400 hover:text-rose-600"
+                        className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-rose-600"
                         onClick={() => handleDelete(sub.id)}
                         title="Alt Kategoriyi Sil"
                         type="button"

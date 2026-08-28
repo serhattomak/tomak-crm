@@ -505,18 +505,18 @@ export function CommandPalette({
 
   return (
     <div
-      className="fade-in fixed inset-0 z-50 flex animate-in items-start justify-center bg-slate-950/60 p-4 pt-16 backdrop-blur-sm sm:pt-24"
+      className="fade-in fixed inset-0 z-50 flex animate-in items-start justify-center bg-black/60 p-4 pt-16 backdrop-blur-xs sm:pt-24"
       onClick={onClose}
     >
       <div
-        className="zoom-in-95 flex max-h-[80vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-3xl border border-slate-200/90 bg-white text-xs shadow-2xl"
+        className="zoom-in-95 flex max-h-[80vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Bar Header */}
-        <div className="relative flex items-center border-slate-100 border-b px-4 py-3.5">
-          <Search className="mr-3 h-5 w-5 shrink-0 text-slate-400" />
+        <div className="relative flex items-center border-b border-zinc-100 px-4 py-3.5 dark:border-zinc-800">
+          <Search className="mr-3 h-5 w-5 shrink-0 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full bg-transparent font-medium text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none"
+            className="w-full bg-transparent font-medium text-zinc-900 text-sm placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Sayfa, eylem, müşteri, sipariş veya ürün ara..."
@@ -525,18 +525,18 @@ export function CommandPalette({
             value={query}
           />
           {liveLoading && (
-            <Loader2 className="mr-2 h-4 w-4 shrink-0 animate-spin text-blue-600" />
+            <Loader2 className="mr-2 h-4 w-4 shrink-0 animate-spin text-violet-600 dark:text-violet-400" />
           )}
           {query ? (
             <button
-              className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               onClick={() => setQuery("")}
               type="button"
             >
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <kbd className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-bold text-[10px] text-slate-400">
+            <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-bold text-[10px] text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500">
               ESC
             </kbd>
           )}
@@ -548,12 +548,12 @@ export function CommandPalette({
           ref={listRef}
         >
           {allFilteredItems.length === 0 ? (
-            <div className="py-12 text-center text-slate-400">
-              <Search className="mx-auto mb-2 h-8 w-8 text-slate-300" />
-              <p className="font-semibold text-slate-600 text-xs">
+            <div className="py-12 text-center text-zinc-400 dark:text-zinc-500">
+              <Search className="mx-auto mb-2 h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+              <p className="font-semibold text-zinc-600 text-xs dark:text-zinc-300">
                 "{query}" ile eşleşen sonuç bulunamadı
               </p>
-              <p className="mt-1 text-[11px] text-slate-400">
+              <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
                 Lütfen farklı bir arama terimi deneyin
               </p>
             </div>
@@ -562,7 +562,7 @@ export function CommandPalette({
               {/* Dynamic Customer Results */}
               {categorized.customers.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                     Müşteriler
                   </div>
                   {categorized.customers.map((item) => {
@@ -584,7 +584,7 @@ export function CommandPalette({
               {/* Dynamic Order Results */}
               {categorized.orders.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                     Siparişler
                   </div>
                   {categorized.orders.map((item) => {
@@ -606,7 +606,7 @@ export function CommandPalette({
               {/* Dynamic Product Results */}
               {categorized.products.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                     Ürünler & Hizmetler
                   </div>
                   {categorized.products.map((item) => {
@@ -628,7 +628,7 @@ export function CommandPalette({
               {/* Actions */}
               {categorized.actions.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                     Hızlı İşlemler
                   </div>
                   {categorized.actions.map((item) => {
@@ -650,7 +650,7 @@ export function CommandPalette({
               {/* Navigation */}
               {categorized.navigation.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-[10px] text-slate-400 uppercase tracking-wider">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                     Sayfalar & Modüller
                   </div>
                   {categorized.navigation.map((item) => {
@@ -673,32 +673,32 @@ export function CommandPalette({
         </div>
 
         {/* Footer Hotkey Legend */}
-        <div className="flex items-center justify-between border-slate-100 border-t bg-slate-50/70 px-4 py-2.5 text-[11px] text-slate-500">
+        <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/70 px-4 py-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-slate-200 bg-white px-1 font-bold font-mono text-[10px] text-slate-700 shadow-2xs">
+              <kbd className="rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 ↑↓
               </kbd>
               <span>Gezin</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-slate-200 bg-white px-1.5 font-bold font-mono text-[10px] text-slate-700 shadow-2xs">
+              <kbd className="rounded border border-zinc-200 bg-white px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 ↵
               </kbd>
               <span>Seç</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-slate-200 bg-white px-1 font-bold font-mono text-[10px] text-slate-700 shadow-2xs">
+              <kbd className="rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 Esc
               </kbd>
               <span>Kapat</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-1 text-slate-400">
+          <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
             <span>Kısayollar için</span>
             <kbd
-              className="cursor-pointer rounded border border-slate-200 bg-white px-1 font-bold font-mono text-[10px] text-blue-600 shadow-2xs hover:bg-blue-50"
+              className="cursor-pointer rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-violet-600 shadow-2xs hover:bg-violet-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-violet-400 dark:hover:bg-violet-950/50"
               onClick={() => {
                 onClose();
                 onOpenShortcutsHelp();
@@ -728,10 +728,10 @@ function PaletteRow({
 
   return (
     <div
-      className={`flex cursor-pointer items-center justify-between rounded-2xl px-3 py-2.5 transition-all ${
+      className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 transition-all ${
         isSelected
-          ? "border border-blue-100 bg-blue-50 text-blue-950 shadow-2xs"
-          : "border border-transparent text-slate-800 hover:bg-slate-50"
+          ? "border border-violet-200 bg-violet-50 text-violet-950 shadow-2xs dark:border-violet-800/80 dark:bg-violet-950/60 dark:text-violet-100"
+          : "border border-transparent text-zinc-800 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800/60"
       }`}
       data-item-index={index}
       onClick={item.onSelect}
@@ -739,13 +739,13 @@ function PaletteRow({
     >
       <div className="flex min-w-0 items-center gap-3">
         <div
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${
             isSelected
-              ? "bg-blue-600 text-white"
-              : "bg-slate-100 text-slate-600"
+              ? "bg-violet-600 text-white"
+              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
           }`}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3.5 w-3.5" />
         </div>
         <div className="truncate">
           <div className="truncate font-semibold text-xs leading-tight">
@@ -754,7 +754,9 @@ function PaletteRow({
           {item.subtitle && (
             <div
               className={`mt-0.5 truncate text-[11px] ${
-                isSelected ? "text-blue-700/80" : "text-slate-400"
+                isSelected
+                  ? "text-violet-700/80 dark:text-violet-300/80"
+                  : "text-zinc-400 dark:text-zinc-500"
               }`}
             >
               {item.subtitle}
@@ -768,8 +770,8 @@ function PaletteRow({
           <kbd
             className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-[10px] shadow-2xs ${
               isSelected
-                ? "border-blue-200 bg-white text-blue-800"
-                : "border-slate-200 bg-slate-50 text-slate-500"
+                ? "border-violet-200 bg-white text-violet-800 dark:border-violet-700 dark:bg-zinc-800 dark:text-violet-300"
+                : "border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
             }`}
           >
             {item.badge}
@@ -777,7 +779,7 @@ function PaletteRow({
         )}
         <ChevronRight
           className={`h-3.5 w-3.5 transition-transform ${
-            isSelected ? "translate-x-0.5 text-blue-600" : "text-slate-300"
+            isSelected ? "translate-x-0.5 text-violet-600 dark:text-violet-400" : "text-zinc-300 dark:text-zinc-600"
           }`}
         />
       </div>
