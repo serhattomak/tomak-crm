@@ -72,41 +72,41 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      {isCollapsed ? (
-        <button
-          className="group mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-sm text-white shadow-md ring-2 ring-violet-500/20 transition-all hover:scale-105 hover:ring-violet-500/40 active:scale-95"
-          onClick={() => setIsOpen(!isOpen)}
-          title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
-          type="button"
-        >
-          {initials}
-        </button>
-      ) : (
-        <button
-          className="group flex w-full items-center justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-2 text-left transition-all hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
-          onClick={() => setIsOpen(!isOpen)}
-          type="button"
-        >
-          <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-xs text-white shadow-2xs">
-              {initials.charAt(0)}
+      <button
+        className={`group relative flex h-11 w-full items-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-1.5 text-left transition-all duration-300 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${
+          isCollapsed
+            ? "justify-center border-transparent bg-transparent p-0"
+            : "justify-between px-2"
+        }`}
+        onClick={() => setIsOpen(!isOpen)}
+        title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
+        type="button"
+      >
+        <div className="flex min-w-0 items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-xs text-white shadow-2xs ring-2 ring-violet-500/20 transition-transform group-hover:scale-105">
+            {initials.charAt(0)}
+          </div>
+          <div
+            className={`min-w-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isCollapsed
+                ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
+                : "max-w-xs opacity-100 translate-x-0"
+            }`}
+          >
+            <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
+              {activeTenant?.name || "Çalışma Alanı Seçin"}
             </div>
-            <div className="min-w-0">
-              <div className="truncate font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                {activeTenant?.name || "Çalışma Alanı Seçin"}
-              </div>
-              <div className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
-                Kurumsal Workspace
-              </div>
+            <div className="truncate font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+              Kurumsal Workspace
             </div>
           </div>
-          <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-      )}
+        </div>
+        <ChevronDown
+          className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-all duration-300 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
+            isOpen ? "rotate-180" : ""
+          } ${isCollapsed ? "hidden opacity-0" : "opacity-100"}`}
+        />
+      </button>
 
       {isOpen && (
         <div

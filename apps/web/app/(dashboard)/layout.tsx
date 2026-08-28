@@ -405,61 +405,51 @@ export default function DashboardLayout({
             }`}
           >
             <div className="flex flex-1 flex-col overflow-hidden">
-              {/* Workspace Switcher Header (Always visible & interactive in both modes) */}
-              <div className="mb-3 shrink-0">
-                <TenantSwitcher isCollapsed={isSidebarCollapsed} />
+              {/* Workspace Switcher & Collapse Toggle Row */}
+              <div className="mb-2.5 flex shrink-0 items-center justify-between gap-1.5">
+                <div className="min-w-0 flex-1">
+                  <TenantSwitcher isCollapsed={isSidebarCollapsed} />
+                </div>
+                {!isSidebarCollapsed && (
+                  <button
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                    onClick={toggleSidebarCollapse}
+                    title="Menüyü Daralt"
+                    type="button"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                )}
               </div>
 
-              {/* Quick Search & Collapse Toggle Row */}
-              <div className="mb-3 shrink-0">
+              {/* Quick Search / Expand Row (Always h-9 in both modes) */}
+              <div className="mb-2.5 shrink-0">
                 {!isSidebarCollapsed ? (
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      className="group relative flex flex-1 items-center justify-between rounded-xl border border-zinc-200/90 bg-zinc-50/90 py-2 pr-2.5 pl-3 text-xs text-zinc-500 shadow-2xs transition-all hover:border-violet-300 hover:bg-white hover:text-zinc-800 hover:shadow-xs focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:border-violet-600/50 dark:hover:bg-zinc-800"
-                      onClick={() => setIsCommandPaletteOpen(true)}
-                      type="button"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Search className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400" />
-                        <span className="font-medium text-zinc-400 transition-colors group-hover:text-zinc-600 dark:group-hover:text-zinc-300 text-[11px] whitespace-nowrap">
-                          Hızlı Arama...
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-white px-1.5 py-0.5 font-bold text-[10px] text-zinc-400 shadow-2xs transition-colors group-hover:border-violet-200 group-hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-300">
-                        <Command className="h-2.5 w-2.5" />
-                        <span>K</span>
-                      </div>
-                    </button>
-
-                    <button
-                      className="flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
-                      onClick={toggleSidebarCollapse}
-                      title="Menüyü Daralt"
-                      type="button"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <button
+                    className="group relative flex h-9 w-full items-center justify-between rounded-xl border border-zinc-200/90 bg-zinc-50/90 px-2.5 text-xs text-zinc-500 shadow-2xs transition-all hover:border-violet-300 hover:bg-white hover:text-zinc-800 hover:shadow-xs focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:border-violet-600/50 dark:hover:bg-zinc-800"
+                    onClick={() => setIsCommandPaletteOpen(true)}
+                    type="button"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Search className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400" />
+                      <span className="font-medium text-zinc-400 transition-colors group-hover:text-zinc-600 dark:group-hover:text-zinc-300 text-[11px] whitespace-nowrap">
+                        Hızlı Arama...
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-white px-1.5 py-0.5 font-bold text-[10px] text-zinc-400 shadow-2xs transition-colors group-hover:border-violet-200 group-hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-300">
+                      <Command className="h-2.5 w-2.5" />
+                      <span>K</span>
+                    </div>
+                  </button>
                 ) : (
-                  <div className="flex flex-col items-center gap-2">
-                    <button
-                      className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-500 transition-all hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-violet-300"
-                      onClick={() => setIsCommandPaletteOpen(true)}
-                      title="Arama & Komutlar (⌘K veya /)"
-                      type="button"
-                    >
-                      <Search className="h-4 w-4" />
-                    </button>
-
-                    <button
-                      className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
-                      onClick={toggleSidebarCollapse}
-                      title="Menüyü Genişlet"
-                      type="button"
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <button
+                    className="flex h-9 w-9 mx-auto items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                    onClick={toggleSidebarCollapse}
+                    title="Menüyü Genişlet"
+                    type="button"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
                 )}
               </div>
 
@@ -800,14 +790,12 @@ function DashboardNavigation({
 
       const linkContent = (
         <Link
-          className={`group relative flex items-center ${
-            isCollapsed
-              ? "justify-center h-10 w-10 mx-auto rounded-xl"
-              : "justify-between rounded-xl px-2.5 py-1.5 text-xs"
-          } transition-all duration-150 ${
+          className={`group relative flex h-9 w-full items-center rounded-xl border text-xs transition-all duration-200 ${
+            isCollapsed ? "justify-center px-0" : "px-2.5 gap-2.5"
+          } ${
             isActive
-              ? "bg-violet-50 font-bold text-violet-700 shadow-2xs dark:bg-violet-950/60 dark:text-violet-300 border border-violet-200/70 dark:border-violet-800/60"
-              : "font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800/70 dark:hover:text-zinc-200"
+              ? "border-violet-200/80 bg-violet-50/90 font-semibold text-violet-700 shadow-2xs dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300"
+              : "border-transparent font-medium text-zinc-600 hover:border-zinc-200/60 hover:bg-zinc-100/80 hover:text-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-800/60 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-200"
           }`}
           href={item.href}
           key={item.name}
@@ -815,36 +803,49 @@ function DashboardNavigation({
           prefetch={false}
           title={isCollapsed ? item.name : undefined}
         >
-          {isActive && !isCollapsed && (
-            <span className="absolute top-1/2 left-1 h-3.5 w-1 -translate-y-1/2 rounded-full bg-violet-600 dark:bg-violet-400" />
-          )}
-          <div
-            className={`flex items-center gap-2.5 ${
-              !isCollapsed ? "pl-1.5 min-w-0" : "justify-center"
+          {/* Active indicator bar */}
+          <span
+            className={`absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-violet-600 transition-opacity duration-200 dark:bg-violet-400 ${
+              isActive && !isCollapsed
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"
             }`}
-          >
+          />
+
+          {/* Icon in fixed anchor box */}
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center">
             <item.icon
-              className={`h-4 w-4 shrink-0 transition-colors ${
+              className={`h-4 w-4 shrink-0 transition-colors duration-150 ${
                 isActive
                   ? "text-violet-600 dark:text-violet-400"
-                  : "text-zinc-400 group-hover:text-zinc-700 dark:hover:text-zinc-500 dark:group-hover:text-zinc-300"
+                  : "text-zinc-400 group-hover:text-zinc-700 dark:text-zinc-500 dark:group-hover:text-zinc-300"
               }`}
             />
-            {!isCollapsed && (
-              <span className="truncate whitespace-nowrap">{item.name}</span>
+          </div>
+
+          {/* Fluid label + badge container with smooth width/opacity transition */}
+          <div
+            className={`flex min-w-0 flex-1 items-center justify-between overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isCollapsed
+                ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
+                : "max-w-xs opacity-100 translate-x-0"
+            }`}
+          >
+            <span className="truncate whitespace-nowrap text-xs">
+              {item.name}
+            </span>
+            {item.badge && (
+              <span
+                className={`ml-2 shrink-0 rounded-full px-1.5 py-0.5 font-bold text-[10px] ${
+                  isActive
+                    ? "bg-violet-100 text-violet-800 dark:bg-violet-900/80 dark:text-violet-200"
+                    : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+                }`}
+              >
+                {item.badge}
+              </span>
             )}
           </div>
-          {!isCollapsed && item.badge && (
-            <span
-              className={`shrink-0 rounded-full px-1.5 py-0.5 font-bold text-[10px] ${
-                isActive
-                  ? "bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-200"
-                  : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
-              }`}
-            >
-              {item.badge}
-            </span>
-          )}
         </Link>
       );
 
@@ -864,9 +865,9 @@ function DashboardNavigation({
     <div className="space-y-3">
       {/* 1. GENEL & SATIŞ CRM */}
       <div>
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("sales")}
             type="button"
           >
@@ -877,10 +878,12 @@ function DashboardNavigation({
               }`}
             />
           </button>
+        ) : (
+          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("sales")) && (
-          <div className={`space-y-0.5 ${isCollapsed ? "flex flex-col items-center" : "mt-0.5"}`}>
+          <div className="mt-0.5 space-y-0.5">
             {renderNavList(salesMenu)}
           </div>
         )}
@@ -888,9 +891,9 @@ function DashboardNavigation({
 
       {/* 2. İNSAN KAYNAKLARI & BORDRO */}
       <div>
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("hr")}
             type="button"
           >
@@ -901,10 +904,12 @@ function DashboardNavigation({
               }`}
             />
           </button>
+        ) : (
+          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("hr")) && (
-          <div className={`space-y-0.5 ${isCollapsed ? "flex flex-col items-center" : "mt-0.5"}`}>
+          <div className="mt-0.5 space-y-0.5">
             {renderNavList(hrMenu)}
           </div>
         )}
@@ -912,9 +917,9 @@ function DashboardNavigation({
 
       {/* 3. İLETİŞİM & ARAÇLAR */}
       <div>
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("tools")}
             type="button"
           >
@@ -925,10 +930,12 @@ function DashboardNavigation({
               }`}
             />
           </button>
+        ) : (
+          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("tools")) && (
-          <div className={`space-y-0.5 ${isCollapsed ? "flex flex-col items-center" : "mt-0.5"}`}>
+          <div className="mt-0.5 space-y-0.5">
             {renderNavList(toolsMenu)}
           </div>
         )}
@@ -936,9 +943,9 @@ function DashboardNavigation({
 
       {/* 4. SİSTEM & YÖNETİM */}
       <div>
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <button
-            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:text-zinc-300"
+            className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("management")}
             type="button"
           >
@@ -949,10 +956,12 @@ function DashboardNavigation({
               }`}
             />
           </button>
+        ) : (
+          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("management")) && (
-          <div className={`space-y-0.5 ${isCollapsed ? "flex flex-col items-center" : "mt-0.5"}`}>
+          <div className="mt-0.5 space-y-0.5">
             {renderNavList(managementMenu)}
           </div>
         )}
@@ -989,94 +998,99 @@ function DashboardBottom({
         .toUpperCase()
     : "SD";
 
-  if (isCollapsed) {
-    return (
-      <div className="flex flex-col items-center gap-2 border-t border-zinc-200/80 pt-2.5 dark:border-zinc-800">
+  return (
+    <div className="space-y-2 border-t border-zinc-100 pt-2.5 dark:border-zinc-800">
+      {/* Theme and Shortcuts quick bar */}
+      <div
+        className={`flex items-center transition-all duration-300 ${
+          isCollapsed ? "justify-center" : "justify-between px-1"
+        }`}
+      >
         <button
-          className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
+          className={`flex h-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 ${
+            isCollapsed ? "w-8 px-0" : "px-2.5 gap-1.5 text-[11px] font-medium"
+          }`}
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           title={resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
           type="button"
         >
           {resolvedTheme === "dark" ? (
-            <Sun className="h-4 w-4 text-amber-400" />
+            <Sun className="h-3.5 w-3.5 text-amber-400 shrink-0" />
           ) : (
-            <Moon className="h-4 w-4 text-zinc-600" />
+            <Moon className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400 shrink-0" />
           )}
+          <span
+            className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
+              isCollapsed
+                ? "max-w-0 opacity-0 pointer-events-none"
+                : "max-w-xs opacity-100"
+            }`}
+          >
+            {resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
+          </span>
         </button>
 
-        <Link
-          className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-white text-xs shadow-2xs"
-          href={`/${tenantSlug || "workspace"}/settings`}
-          title={`${profile?.fullName || "Profil"} - Ayarlar`}
-        >
-          {userInitials}
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2 border-t border-zinc-200/80 pt-2.5 dark:border-zinc-800">
-      {/* Theme and Shortcuts quick bar */}
-      <div className="flex items-center justify-between px-1">
-        <button
-          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-          type="button"
-        >
-          {resolvedTheme === "dark" ? (
-            <>
-              <Sun className="h-3.5 w-3.5 text-amber-400" />
-              <span>Açık Tema</span>
-            </>
-          ) : (
-            <>
-              <Moon className="h-3.5 w-3.5 text-zinc-600" />
-              <span>Koyu Tema</span>
-            </>
-          )}
-        </button>
-
-        {onOpenShortcuts && (
+        {!isCollapsed && onOpenShortcuts && (
           <button
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800"
             onClick={onOpenShortcuts}
             title="Klavye Kısayolları (?)"
             type="button"
           >
-            <Keyboard className="h-3.5 w-3.5" />
+            <Keyboard className="h-3.5 w-3.5 shrink-0" />
             <span>Kısayol (?)</span>
           </button>
         )}
       </div>
 
       {/* User Profile & Account Card */}
-      <div className="flex items-center justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-2 shadow-2xs transition-all hover:border-zinc-300 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700">
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-white text-[11px] shadow-2xs">
+      <div
+        className={`group flex items-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-1.5 transition-all duration-300 hover:border-zinc-300 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700 ${
+          isCollapsed
+            ? "justify-center border-transparent bg-transparent p-0"
+            : "justify-between"
+        }`}
+      >
+        <Link
+          className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden"
+          href={`/${tenantSlug || "workspace"}/settings`}
+          title={`${profile?.fullName || "Profil"} - Ayarlar`}
+        >
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 font-bold text-white text-xs shadow-2xs">
             {userInitials}
           </div>
-          <div className="min-w-0 truncate">
-            <div className="truncate font-bold text-zinc-900 text-xs dark:text-zinc-100">
+          <div
+            className={`min-w-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isCollapsed
+                ? "max-w-0 opacity-0 pointer-events-none"
+                : "max-w-xs opacity-100"
+            }`}
+          >
+            <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
               {profile?.fullName || "Serhat Dev"}
             </div>
             <div className="truncate font-medium text-[10px] text-zinc-500 dark:text-zinc-400">
               {activeTenant?.name || "Ana Çalışma Alanı"}
             </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="flex flex-none items-center gap-0.5">
+        <div
+          className={`flex items-center gap-0.5 overflow-hidden transition-all duration-300 ${
+            isCollapsed
+              ? "max-w-0 opacity-0 pointer-events-none"
+              : "max-w-xs opacity-100"
+          }`}
+        >
           <Link
-            className="rounded-lg p-1 text-zinc-400 transition hover:bg-white hover:text-zinc-800 hover:shadow-2xs dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-white hover:text-zinc-800 hover:shadow-2xs dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
             href={`/${tenantSlug || "workspace"}/settings`}
             title="Şirket & Hesap Ayarları"
           >
             <Settings className="h-3.5 w-3.5" />
           </Link>
           <button
-            className="rounded-lg p-1 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/60 dark:hover:text-rose-400"
+            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/60 dark:hover:text-rose-400"
             onClick={handleLogout}
             title="Güvenli Çıkış Yap"
             type="button"
@@ -1084,25 +1098,6 @@ function DashboardBottom({
             <LogOut className="h-3.5 w-3.5" />
           </button>
         </div>
-      </div>
-
-      {/* Help & Feedback Footer Links */}
-      <div className="flex items-center justify-between px-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
-        <Link
-          className="flex items-center gap-1 transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
-          href="#help"
-        >
-          <HelpCircle className="h-3 w-3 text-zinc-400" />
-          <span>Yardım</span>
-        </Link>
-        <span className="text-zinc-300 dark:text-zinc-700">•</span>
-        <Link
-          className="flex items-center gap-1 transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
-          href="#feedback"
-        >
-          <MessageCircleQuestion className="h-3 w-3 text-zinc-400" />
-          <span>Geri Bildirim</span>
-        </Link>
       </div>
     </div>
   );
