@@ -15,5 +15,12 @@
     <Project Path="src/Modules/CRM.Modules.Attendance/CRM.Modules.Attendance.csproj" />
     <Project Path="src/Modules/CRM.Modules.Chat/CRM.Modules.Chat.csproj" />
     <Project Path="src/Modules/CRM.Modules.Shipping/CRM.Modules.Shipping.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Promotions/CRM.Modules.Promotions.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Automations/CRM.Modules.Automations.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Compliance/CRM.Modules.Compliance.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Recruitment/CRM.Modules.Recruitment.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CRM.Modules.Promotions.Tests/CRM.Modules.Promotions.Tests.csproj" />
   </Folder>
 </Solution>

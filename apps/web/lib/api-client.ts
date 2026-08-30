@@ -3436,6 +3436,170 @@ export class ApiClient {
       method: "POST",
     });
   }
+
+  // Promotions & Campaigns
+  static async getCampaigns(
+    params: {
+      search?: string;
+      type?: string;
+      triggerType?: string;
+      isActive?: boolean;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<CampaignListItemDto>>> {
+    const query = new URLSearchParams();
+    if (params.search) query.set("search", params.search);
+    if (params.type) query.set("type", params.type);
+    if (params.triggerType) query.set("triggerType", params.triggerType);
+    if (params.isActive !== undefined) query.set("isActive", String(params.isActive));
+    if (params.page) query.set("page", String(params.page));
+    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+    const qs = query.toString();
+    return ApiClient.request<PagedResult<CampaignListItemDto>>(
+      `/api/promotions/campaigns${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getCampaignById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<CampaignDetailDto>> {
+    return ApiClient.request<CampaignDetailDto>(
+      `/api/promotions/campaigns/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createCampaign(
+    data: CreateCampaignPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<{ id: string; message: string }>> {
+    return ApiClient.request<{ id: string; message: string }>(
+      "/api/promotions/campaigns",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateCampaign(
+    id: string,
+    data: UpdateCampaignPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<{ message: string }>> {
+    return ApiClient.request<{ message: string }>(
+      `/api/promotions/campaigns/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleCampaignStatus(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<{ isActive: boolean; message: string }>> {
+    return ApiClient.request<{ isActive: boolean; message: string }>(
+      `/api/promotions/campaigns/${id}/toggle`,
+      { method: "PATCH" },
+      tenantId
+    );
+  }
+
+  static async deleteCampaign(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<{ message: string }>> {
+    return ApiClient.request<{ message: string }>(
+      `/api/promotions/campaigns/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getCoupons(
+    params: {
+      campaignId?: string;
+      search?: string;
+      batchId?: string;
+      isActive?: boolean;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<CouponListItemDto>>> {
+    const query = new URLSearchParams();
+    if (params.campaignId) query.set("campaignId", params.campaignId);
+    if (params.search) query.set("search", params.search);
+    if (params.batchId) query.set("batchId", params.batchId);
+    if (params.isActive !== undefined) query.set("isActive", String(params.isActive));
+    if (params.page) query.set("page", String(params.page));
+    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+    const qs = query.toString();
+    return ApiClient.request<PagedResult<CouponListItemDto>>(
+      `/api/promotions/coupons${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async generateCoupons(
+    data: GenerateCouponsPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<{ batchId: string; generatedCount: number; codes: string[]; message: string }>> {
+    return ApiClient.request<{ batchId: string; generatedCount: number; codes: string[]; message: string }>(
+      "/api/promotions/coupons/generate",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteCoupon(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<{ message: string }>> {
+    return ApiClient.request<{ message: string }>(
+      `/api/promotions/coupons/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getPromotionsStats(
+    tenantId?: string
+  ): Promise<ApiResponse<PromotionsStatsDto>> {
+    return ApiClient.request<PromotionsStatsDto>(
+      "/api/promotions/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async evaluateCartPromotions(
+    data: CartPromotionEvaluationPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<CartPromotionEvaluationResultDto>> {
+    return ApiClient.request<CartPromotionEvaluationResultDto>(
+      "/api/promotions/evaluate",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -6319,6 +6483,178 @@ export interface PublicApplyResponse {
   cvFileUrl?: string;
   message: string;
 }
+
+// ==========================================
+// Promotions & Campaigns DTOs
+// ==========================================
+export interface CampaignListItemDto {
+  id: string;
+  name: string;
+  code?: string;
+  description?: string;
+  type: "Percentage" | "FixedAmount" | "CartThreshold" | "BuyXGetY" | "FreeShipping" | string;
+  triggerType: "Automatic" | "CouponCode" | string;
+  discountValue: number;
+  minOrderAmount: number;
+  maxDiscountAmount?: number;
+  startDate: string;
+  endDate?: string;
+  isActive: boolean;
+  priority: number;
+  isStackable: boolean;
+  totalUsageLimit?: number;
+  perCustomerUsageLimit?: number;
+  currentUsageCount: number;
+  targetsCount: number;
+  couponsCount: number;
+  createdAt: string;
+}
+
+export interface CampaignTargetDto {
+  id: string;
+  targetType: "Product" | "Category" | "Brand" | "Customer" | "CustomerGroup" | string;
+  targetId: string;
+  targetName?: string;
+  ruleCondition: "Include" | "Exclude" | string;
+}
+
+export interface CampaignDetailDto {
+  id: string;
+  name: string;
+  code?: string;
+  description?: string;
+  type: string;
+  triggerType: string;
+  discountValue: number;
+  minOrderAmount: number;
+  maxDiscountAmount?: number;
+  minQuantity: number;
+  buyQuantity: number;
+  getQuantity: number;
+  getDiscountRate: number;
+  startDate: string;
+  endDate?: string;
+  isActive: boolean;
+  priority: number;
+  isStackable: boolean;
+  totalUsageLimit?: number;
+  perCustomerUsageLimit?: number;
+  currentUsageCount: number;
+  metadata: string;
+  targets: CampaignTargetDto[];
+  couponsCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCampaignTargetPayload {
+  targetType: string;
+  targetId: string;
+  targetName?: string;
+  ruleCondition: string;
+}
+
+export interface CreateCampaignPayload {
+  name: string;
+  code?: string;
+  description?: string;
+  type: string;
+  triggerType: string;
+  discountValue: number;
+  minOrderAmount: number;
+  maxDiscountAmount?: number;
+  minQuantity: number;
+  buyQuantity?: number;
+  getQuantity?: number;
+  getDiscountRate?: number;
+  startDate: string;
+  endDate?: string;
+  isActive: boolean;
+  priority: number;
+  isStackable: boolean;
+  totalUsageLimit?: number;
+  perCustomerUsageLimit?: number;
+  targets?: CreateCampaignTargetPayload[];
+  initialCouponCode?: string;
+}
+
+export interface UpdateCampaignPayload extends Omit<CreateCampaignPayload, "initialCouponCode"> {}
+
+export interface CouponListItemDto {
+  id: string;
+  campaignId: string;
+  campaignName: string;
+  code: string;
+  type: "Standard" | "SingleUse" | "Dynamic" | string;
+  maxUses: number;
+  usedCount: number;
+  assignedCustomerId?: string;
+  assignedCustomerName?: string;
+  expiresAt?: string;
+  isActive: boolean;
+  batchId?: string;
+  createdAt: string;
+}
+
+export interface GenerateCouponsPayload {
+  campaignId: string;
+  quantity: number;
+  prefix?: string;
+  codeLength?: number;
+  maxUses?: number;
+  expiresAt?: string;
+  customCode?: string;
+}
+
+export interface PromotionsStatsDto {
+  totalCampaigns: number;
+  activeCampaigns: number;
+  totalCoupons: number;
+  totalUsages: number;
+  totalDiscountDistributed: number;
+  totalRevenueInfluenced: number;
+}
+
+export interface CartItemPayload {
+  productId?: string;
+  variantId?: string;
+  categoryId?: string;
+  brand?: string;
+  productName: string;
+  unitPrice: number;
+  quantity: number;
+  discountAmount?: number;
+}
+
+export interface CartPromotionEvaluationPayload {
+  items: CartItemPayload[];
+  customerId?: string;
+  customerGroup?: string;
+  couponCode?: string;
+  shippingFee?: number;
+}
+
+export interface AppliedPromotionDto {
+  campaignId: string;
+  campaignName: string;
+  campaignType: string;
+  couponCode?: string;
+  discountAmount: number;
+  description: string;
+}
+
+export interface CartPromotionEvaluationResultDto {
+  subtotal: number;
+  totalDiscountAmount: number;
+  netTotal: number;
+  shippingFee: number;
+  isFreeShipping: boolean;
+  appliedPromotions: AppliedPromotionDto[];
+  items: CartItemPayload[];
+  couponValidationMessage?: string;
+  isCouponValid: boolean;
+}
+
 
 
 

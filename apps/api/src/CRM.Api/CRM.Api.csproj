@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Modules\CRM.Modules.Automations\CRM.Modules.Automations.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Compliance\CRM.Modules.Compliance.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Recruitment\CRM.Modules.Recruitment.csproj" />
+    <ProjectReference Include="..\Modules\CRM.Modules.Promotions\CRM.Modules.Promotions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

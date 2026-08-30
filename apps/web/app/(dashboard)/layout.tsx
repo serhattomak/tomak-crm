@@ -34,6 +34,7 @@ import {
   Shield,
   ShoppingCart,
   Sun,
+  Tag,
   Truck,
   UserCheck,
   Users,
@@ -623,6 +624,14 @@ function DashboardNavigation({
       icon: Package,
       name: getModuleDisplayName("products", "Ürün & Hizmetler"),
       moduleKey: "products",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/promotions`,
+      icon: Tag,
+      name: getModuleDisplayName("promotions", "Kampanya & Kuponlar"),
+      permission: "Promotions.View",
+      moduleKey: "promotions",
     },
     {
       badge: null,

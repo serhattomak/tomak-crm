@@ -71,20 +71,20 @@ export function ConfirmDialog({
   return (
     <AlertDialogPrimitive.Root onOpenChange={onOpenChange} open={open}>
       <AlertDialogPrimitive.Portal>
-        <AlertDialogPrimitive.Overlay className="fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 animate-in bg-slate-950/40 backdrop-blur-xs data-[state=closed]:animate-out" />
-        <AlertDialogPrimitive.Content className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-2xl backdrop-blur-md data-[state=closed]:animate-out">
+        <AlertDialogPrimitive.Overlay className="fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs data-[state=closed]:animate-out" />
+        <AlertDialogPrimitive.Content className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-2xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 data-[state=closed]:animate-out">
           <div className="flex items-start gap-4">
             {icon}
             <div className="flex-1">
-              <AlertDialogPrimitive.Title className="font-bold text-base text-slate-900">
+              <AlertDialogPrimitive.Title className="font-bold text-base text-zinc-900 dark:text-zinc-50">
                 {title}
               </AlertDialogPrimitive.Title>
-              <AlertDialogPrimitive.Description className="mt-2 text-slate-600 text-xs leading-relaxed">
+              <AlertDialogPrimitive.Description className="mt-2 text-zinc-600 text-xs leading-relaxed dark:text-zinc-400">
                 {description}
               </AlertDialogPrimitive.Description>
             </div>
             <button
-              className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               onClick={handleCancel}
               type="button"
             >
@@ -95,7 +95,7 @@ export function ConfirmDialog({
           <div className="mt-6 flex items-center justify-end gap-2.5">
             <AlertDialogPrimitive.Cancel asChild>
               <button
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs transition-colors hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 text-xs transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 disabled={loading}
                 onClick={handleCancel}
                 type="button"
@@ -108,9 +108,9 @@ export function ConfirmDialog({
               <button
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all active:scale-[0.98] disabled:opacity-50",
-                  variant === "destructive" && "bg-rose-600 hover:bg-rose-700",
-                  variant === "warning" && "bg-amber-600 hover:bg-amber-700",
-                  variant === "default" && "bg-blue-600 hover:bg-blue-700"
+                  variant === "destructive" && "bg-rose-600 hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500",
+                  variant === "warning" && "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500",
+                  variant === "default" && "bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-500"
                 )}
                 disabled={loading}
                 onClick={handleConfirm}

@@ -12,7 +12,10 @@ import {
   RotateCcw,
   Search,
   ShoppingCart,
+  Sparkles,
   Table as TableIcon,
+  Tag,
+  Ticket,
   Trash2,
   X,
 } from "lucide-react";
@@ -789,6 +792,12 @@ function CreateOrderWizardModal({
   const [generalDiscount, setGeneralDiscount] = useState(0);
   const [notes, setNotes] = useState("");
 
+  // Promotion and Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedPromotions, setAppliedPromotions] = useState<{ name: string; discount: number; desc: string }[]>([]);
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoMessage, setPromoMessage] = useState<{ text: string; isSuccess: boolean } | null>(null);
+
   // Items cart
   const [items, setItems] = useState<CreateOrderItemRequest[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -797,6 +806,60 @@ function CreateOrderWizardModal({
   // Selected product picker state
   const [pickerProdId, setPickerProdId] = useState("");
   const [pickerQty, setPickerQty] = useState(1);
+
+  const handleApplyPromotion = async () => {
+    if (!tenantId || items.length === 0) {
+      setPromoMessage({ text: "Lütfen önce sepete ürün ekleyin.", isSuccess: false });
+      return;
+    }
+    setPromoLoading(true);
+    setPromoMessage(null);
+    try {
+      const res = await ApiClient.evaluateCartPromotions(
+        {
+          items: items.map((i) => ({
+            productId: i.productId,
+            productName: i.productName,
+            unitPrice: i.unitPrice,
+            quantity: i.quantity,
+          })),
+          customerId: selectedCustomerId || undefined,
+          couponCode: couponCode.trim() || undefined,
+          shippingFee: Number(shippingFee) || 0,
+        },
+        tenantId
+      );
+
+      if (res.success && res.data) {
+        const d = res.data;
+        if (d.totalDiscountAmount > 0) {
+          setGeneralDiscount(d.totalDiscountAmount);
+        }
+        if (d.isFreeShipping) {
+          setShippingFee(0);
+        }
+        setAppliedPromotions(
+          d.appliedPromotions.map((p) => ({
+            name: p.campaignName,
+            discount: p.discountAmount,
+            desc: p.description,
+          }))
+        );
+        if (d.couponValidationMessage) {
+          setPromoMessage({ text: d.couponValidationMessage, isSuccess: d.isCouponValid });
+        } else if (d.appliedPromotions.length > 0) {
+          setPromoMessage({
+            text: `${d.appliedPromotions.length} adet kampanya indirimi sepete uygulandı.`,
+            isSuccess: true,
+          });
+        }
+      }
+    } catch {
+      setPromoMessage({ text: "Promosyon hesaplanırken bir hata oluştu.", isSuccess: false });
+    } finally {
+      setPromoLoading(false);
+    }
+  };
 
   if (!isOpen) {
     return null;
@@ -1218,6 +1281,54 @@ function CreateOrderWizardModal({
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Coupon / Promotion Section */}
+              <div className="rounded-2xl border border-violet-100 bg-violet-50/40 p-3 dark:border-violet-950/50 dark:bg-violet-950/20">
+                <label className="mb-1 block text-xs font-semibold text-violet-900 dark:text-violet-200">
+                  Kupon veya Promosyon Kodu
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <Ticket className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-violet-500" />
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="Örn: BAHAR2026"
+                      className="w-full rounded-xl border border-violet-200 bg-white py-1.5 pl-8 pr-3 text-xs font-mono uppercase text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-violet-900/60 dark:bg-zinc-900 dark:text-zinc-100"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleApplyPromotion}
+                    disabled={promoLoading || items.length === 0}
+                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-violet-700 disabled:opacity-50"
+                  >
+                    {promoLoading ? <Sparkles className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                    Uygula
+                  </button>
+                </div>
+
+                {promoMessage && (
+                  <p className={`mt-1.5 text-[11px] font-medium ${promoMessage.isSuccess ? "text-emerald-700 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+                    {promoMessage.text}
+                  </p>
+                )}
+
+                {appliedPromotions.length > 0 && (
+                  <div className="mt-2 space-y-1">
+                    {appliedPromotions.map((p, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-[11px] font-medium text-violet-800 dark:text-violet-300">
+                        <span className="flex items-center gap-1">
+                          <Tag className="h-3 w-3 text-violet-500" />
+                          {p.name} ({p.desc})
+                        </span>
+                        <span className="font-bold text-emerald-600">-₺{p.discount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
