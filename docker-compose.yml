@@ -32,6 +32,43 @@ services:
       timeout: 5s
       retries: 5
 
+  # E-Commerce storefront (Q17/Q18) — shares same Supabase project as CRM web/api.
+  # Runs on :3001 side-by-side with web (:3000). Only calls CRM via public HTTP API
+  # (anon + X-Tenant-Slug + optional HMAC), no direct DB writes.
+  ecommerce:
+    image: node:20-alpine
+    container_name: crm-ecommerce
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
+      CRM_API_URL: ${CRM_API_URL:-http://host.docker.internal:5000}
+      NEXT_PUBLIC_CRM_URL: ${NEXT_PUBLIC_CRM_URL:-http://host.docker.internal:5000}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://host.docker.internal:5000}
+      ECOMMERCE_HMAC_SECRET: ${ECOMMERCE_HMAC_SECRET:-}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/ecommerce/.next
+      - /app/apps/web/.next
+      - /app/apps/api/bin
+    command: sh -c "npm install && npm run dev --workspace=@workspace/ecommerce -- --port 3001 --hostname 0.0.0.0"
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
 volumes:
   rabbitmq_data:
   redis_data:

@@ -65,6 +65,15 @@ public class ProductsDbContext(
             entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(50).IsRequired();
             entity.Property(e => e.Images).HasColumnName("images");
             entity.Property(e => e.Tags).HasColumnName("tags");
+            entity.Property(e => e.Slug).HasColumnName("slug").HasMaxLength(255);
+            entity.Property(e => e.SeoTitle).HasColumnName("seo_title").HasMaxLength(255);
+            entity.Property(e => e.MetaDescription).HasColumnName("meta_description");
+            entity.Property(e => e.IsPublished).HasColumnName("is_published");
+            entity.Property(e => e.IsFeatured).HasColumnName("is_featured");
+            entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+            entity.Property(e => e.WeightKg).HasColumnName("weight_kg").HasPrecision(10, 2);
+            entity.Property(e => e.Weight).HasColumnName("weight").HasPrecision(10, 2);
+            entity.Property(e => e.Dimensions).HasColumnName("dimensions").HasMaxLength(100);
             entity.Property(e => e.Attributes).HasColumnName("attributes").HasColumnType("jsonb");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");

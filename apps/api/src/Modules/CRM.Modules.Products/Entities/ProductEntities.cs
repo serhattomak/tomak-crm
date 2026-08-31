@@ -45,6 +45,15 @@ public class Product : ITenantScopedEntity
     public decimal MinStockLevel { get; set; } = 5.00m;
     public string Status { get; set; } = "Active"; // "Active", "Inactive", "Draft", "Discontinued"
     public string[]? Images { get; set; }
+    public string? Slug { get; set; }
+    public string? SeoTitle { get; set; }
+    public string? MetaDescription { get; set; }
+    public bool IsPublished { get; set; } = false;
+    public bool IsFeatured { get; set; } = false;
+    public int SortOrder { get; set; } = 0;
+    public decimal? WeightKg { get; set; }
+    public decimal? Weight { get; set; }
+    public string? Dimensions { get; set; }
     public string[]? Tags { get; set; }
     public string? Attributes { get; set; } // JSONB stored as string
     public string? Description { get; set; }

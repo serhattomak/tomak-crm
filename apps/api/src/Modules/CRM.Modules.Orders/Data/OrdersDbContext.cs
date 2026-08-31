@@ -47,6 +47,11 @@ public class OrdersDbContext(
             entity.Property(e => e.Carrier).HasColumnName("carrier").HasMaxLength(100);
             entity.Property(e => e.InvoiceNumber).HasColumnName("invoice_number").HasMaxLength(100);
             entity.Property(e => e.Notes).HasColumnName("notes");
+            entity.Property(e => e.ExternalId).HasColumnName("external_id").HasMaxLength(100);
+            entity.Property(e => e.ExternalSource).HasColumnName("external_source").HasMaxLength(50);
+            entity.Property(e => e.Source).HasColumnName("source").HasMaxLength(50);
+            entity.Property(e => e.PaymentGatewayId).HasColumnName("payment_gateway_id");
+            entity.Property(e => e.EcommerceCustomerId).HasColumnName("ecommerce_customer_id");
             entity.Property(e => e.OrderDate).HasColumnName("order_date");
             entity.Property(e => e.DueDate).HasColumnName("due_date");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");

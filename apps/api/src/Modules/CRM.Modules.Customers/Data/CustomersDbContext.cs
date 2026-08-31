@@ -45,6 +45,7 @@ public class CustomersDbContext(
             entity.Property(e => e.State).HasColumnName("state").HasMaxLength(100);
             entity.Property(e => e.PostalCode).HasColumnName("postal_code").HasMaxLength(20);
             entity.Property(e => e.Country).HasColumnName("country").HasMaxLength(100);
+            entity.Property(e => e.AuthUserId).HasColumnName("auth_user_id");
             entity.Property(e => e.AssignedEmployeeId).HasColumnName("assigned_employee_id");
             entity.Property(e => e.AssignedUserId).HasColumnName("assigned_user_id");
             entity.Property(e => e.TotalRevenue).HasColumnName("total_revenue").HasPrecision(18, 2);

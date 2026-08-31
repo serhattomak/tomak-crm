@@ -27,6 +27,7 @@ public class Customer : ITenantScopedEntity
     public string? Country { get; set; } = "Türkiye";
     public Guid? AssignedEmployeeId { get; set; }
     public Guid? AssignedUserId { get; set; }
+    public Guid? AuthUserId { get; set; }
     public decimal TotalRevenue { get; set; } = 0.00m;
     public string Currency { get; set; } = "TRY";
     public int DealsCount { get; set; } = 0;

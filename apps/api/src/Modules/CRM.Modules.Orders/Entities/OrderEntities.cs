@@ -27,6 +27,11 @@ public class Order : ITenantScopedEntity
     public string? Carrier { get; set; }
     public string? InvoiceNumber { get; set; }
     public string? Notes { get; set; }
+    public string? ExternalId { get; set; }
+    public string? ExternalSource { get; set; }
+    public string Source { get; set; } = "Manual"; // VARCHAR enum Manual | ECommerce
+    public Guid? PaymentGatewayId { get; set; }
+    public Guid? EcommerceCustomerId { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.UtcNow;
     public DateTime? DueDate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

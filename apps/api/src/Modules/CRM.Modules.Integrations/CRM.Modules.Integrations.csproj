@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CRM.BuildingBlocks\CRM.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Products\CRM.Modules.Products.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Orders\CRM.Modules.Orders.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Customers\CRM.Modules.Customers.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Promotions\CRM.Modules.Promotions.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Shipping\CRM.Modules.Shipping.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Tenants\CRM.Modules.Tenants.csproj" />
+    <ProjectReference Include="..\CRM.Modules.Chat\CRM.Modules.Chat.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>
