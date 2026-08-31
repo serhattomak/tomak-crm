@@ -40,6 +40,9 @@ public class Quote : ITenantScopedEntity
     public string? DeliveryTerms { get; set; }
     public string? BankDetails { get; set; }
     public string? Notes { get; set; }
+    public string? PaymentMethod { get; set; }
+    public int? PaymentDueDays { get; set; }
+    public DateTime? PaymentDueDate { get; set; }
     public string PublicViewToken { get; set; } = Guid.NewGuid().ToString("N");
     public Guid? ConvertedOrderId { get; set; }
     public bool IsActive { get; set; } = true;

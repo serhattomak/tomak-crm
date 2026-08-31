@@ -1,6 +1,7 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Chat.Data;
 using CRM.Modules.Chat.Entities;
@@ -91,7 +92,7 @@ public record CreateCannedResponseCommand(
     string Title,
     string Category,
     string Content,
-    Guid? CurrentUserId
+    Guid? CurrentUserId = null
 ) : ICommand<CannedResponseDto>;
 
 public class CreateCannedResponseValidator : AbstractValidator<CreateCannedResponseCommand>
@@ -106,21 +107,24 @@ public class CreateCannedResponseValidator : AbstractValidator<CreateCannedRespo
 
 public class CreateCannedResponseHandler(
     ChatDbContext dbContext,
-    ICurrentTenant currentTenant) : ICommandHandler<CreateCannedResponseCommand, CannedResponseDto>
+    ICurrentTenant currentTenant,
+    ICurrentUser currentUser) : ICommandHandler<CreateCannedResponseCommand, CannedResponseDto>
 {
     public async Task<Result<CannedResponseDto>> Handle(CreateCannedResponseCommand request, CancellationToken cancellationToken)
     {
         if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
             throw new ForbiddenException("Tenant context is required.");
 
+        var shortcut = NormalizeShortcut(request.Shortcut);
+
         var item = new CannedResponse
         {
             TenantId = currentTenant.Id.Value,
-            Shortcut = request.Shortcut.Trim().ToLower().Replace("/", ""),
+            Shortcut = shortcut,
             Title = request.Title.Trim(),
             Category = string.IsNullOrWhiteSpace(request.Category) ? "Genel" : request.Category.Trim(),
             Content = request.Content.Trim(),
-            CreatedByUserId = request.CurrentUserId,
+            CreatedByUserId = currentUser.Id ?? request.CurrentUserId,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -131,6 +135,85 @@ public class CreateCannedResponseHandler(
         return Result<CannedResponseDto>.Success(new CannedResponseDto(
             item.Id, item.Shortcut, item.Title, item.Category, item.Content, item.CreatedAt
         ));
+    }
+
+    private static string NormalizeShortcut(string shortcut)
+    {
+        return shortcut.Trim().ToLowerInvariant().Replace("/", "").Replace(" ", "-");
+    }
+}
+
+// 2b. UpdateCannedResponseCommand
+public record UpdateCannedResponseCommand(
+    Guid Id,
+    string Shortcut,
+    string Title,
+    string Category,
+    string Content
+) : ICommand<CannedResponseDto>;
+
+public class UpdateCannedResponseValidator : AbstractValidator<UpdateCannedResponseCommand>
+{
+    public UpdateCannedResponseValidator()
+    {
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Shortcut).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.Title).NotEmpty().MaximumLength(150);
+        RuleFor(x => x.Content).NotEmpty();
+    }
+}
+
+public class UpdateCannedResponseHandler(
+    ChatDbContext dbContext,
+    ICurrentTenant currentTenant) : ICommandHandler<UpdateCannedResponseCommand, CannedResponseDto>
+{
+    public async Task<Result<CannedResponseDto>> Handle(UpdateCannedResponseCommand request, CancellationToken cancellationToken)
+    {
+        if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
+            throw new ForbiddenException("Tenant context is required.");
+
+        var item = await dbContext.CannedResponses
+            .FirstOrDefaultAsync(c => c.Id == request.Id && c.TenantId == currentTenant.Id.Value, cancellationToken);
+
+        if (item is null)
+            throw new NotFoundException($"Canned response with ID '{request.Id}' was not found.");
+
+        item.Shortcut = request.Shortcut.Trim().ToLowerInvariant().Replace("/", "").Replace(" ", "-");
+        item.Title = request.Title.Trim();
+        item.Category = string.IsNullOrWhiteSpace(request.Category) ? "Genel" : request.Category.Trim();
+        item.Content = request.Content.Trim();
+        item.UpdatedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<CannedResponseDto>.Success(new CannedResponseDto(
+            item.Id, item.Shortcut, item.Title, item.Category, item.Content, item.CreatedAt
+        ));
+    }
+}
+
+// 2c. DeleteCannedResponseCommand
+public record DeleteCannedResponseCommand(Guid Id) : ICommand<bool>;
+
+public class DeleteCannedResponseHandler(
+    ChatDbContext dbContext,
+    ICurrentTenant currentTenant) : ICommandHandler<DeleteCannedResponseCommand, bool>
+{
+    public async Task<Result<bool>> Handle(DeleteCannedResponseCommand request, CancellationToken cancellationToken)
+    {
+        if (!currentTenant.Id.HasValue || currentTenant.Id.Value == Guid.Empty)
+            throw new ForbiddenException("Tenant context is required.");
+
+        var item = await dbContext.CannedResponses
+            .FirstOrDefaultAsync(c => c.Id == request.Id && c.TenantId == currentTenant.Id.Value, cancellationToken);
+
+        if (item is null)
+            throw new NotFoundException($"Canned response with ID '{request.Id}' was not found.");
+
+        dbContext.CannedResponses.Remove(item);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result.Success(true);
     }
 }
 
@@ -517,7 +600,7 @@ public class SupportEndpoints : IEndpoint
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<List<CannedResponseDto>>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<List<CannedResponseDto>>.Fail(result.Error.Code, result.Error.Description));
-        }).RequirePermission("Chat.View");
+        }).RequireAuthorization().RequirePermission("Chat.View");
 
         group.MapPost("/canned-responses", async (CreateCannedResponseCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
@@ -525,7 +608,24 @@ public class SupportEndpoints : IEndpoint
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<CannedResponseDto>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<CannedResponseDto>.Fail(result.Error.Code, result.Error.Description));
-        }).RequirePermission("Chat.Manage");
+        }).RequireAuthorization().RequirePermission("Chat.Manage");
+
+        group.MapPut("/canned-responses/{id:guid}", async (Guid id, UpdateCannedResponseCommand body, MediatR.ISender sender, CancellationToken ct) =>
+        {
+            var command = new UpdateCannedResponseCommand(id, body.Shortcut, body.Title, body.Category, body.Content);
+            var result = await sender.Send(command, ct);
+            return result.IsSuccess
+                ? Results.Ok(ApiResponse<CannedResponseDto>.Ok(result.Value))
+                : Results.BadRequest(ApiResponse<CannedResponseDto>.Fail(result.Error.Code, result.Error.Description));
+        }).RequireAuthorization().RequirePermission("Chat.Manage");
+
+        group.MapDelete("/canned-responses/{id:guid}", async (Guid id, MediatR.ISender sender, CancellationToken ct) =>
+        {
+            var result = await sender.Send(new DeleteCannedResponseCommand(id), ct);
+            return result.IsSuccess
+                ? Results.NoContent()
+                : Results.BadRequest(ApiResponse<string>.Fail(result.Error.Code, result.Error.Description));
+        }).RequireAuthorization().RequirePermission("Chat.Manage");
 
         group.MapPost("/sessions", async (CreateCustomerSupportSessionCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
@@ -533,7 +633,7 @@ public class SupportEndpoints : IEndpoint
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<ChatChannelDto>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<ChatChannelDto>.Fail(result.Error.Code, result.Error.Description));
-        }).RequirePermission("Chat.Support");
+        }).RequireAuthorization().RequirePermission("Chat.Support");
 
         group.MapPost("/sessions/status", async (UpdateSupportSessionStatusCommand command, MediatR.ISender sender, CancellationToken ct) =>
         {
@@ -541,7 +641,7 @@ public class SupportEndpoints : IEndpoint
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<CustomerSupportSessionDto>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<CustomerSupportSessionDto>.Fail(result.Error.Code, result.Error.Description));
-        }).RequirePermission("Chat.Support");
+        }).RequireAuthorization().RequirePermission("Chat.Support");
 
         group.MapGet("/customer-context/{customerId:guid}", async (Guid customerId, MediatR.ISender sender, CancellationToken ct) =>
         {
@@ -549,6 +649,6 @@ public class SupportEndpoints : IEndpoint
             return result.IsSuccess
                 ? Results.Ok(ApiResponse<Customer360ChatContextDto>.Ok(result.Value))
                 : Results.BadRequest(ApiResponse<Customer360ChatContextDto>.Fail(result.Error.Code, result.Error.Description));
-        }).RequirePermission("Chat.Support");
+        }).RequireAuthorization().RequirePermission("Chat.Support");
     }
 }

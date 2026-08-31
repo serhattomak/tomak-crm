@@ -17,11 +17,34 @@ public record UpdateQuoteCommand(Guid Id, UpdateQuoteRequest Request) : ICommand
 
 public class UpdateQuoteValidator : AbstractValidator<UpdateQuoteCommand>
 {
+    private static readonly string[] ValidPaymentMethods =
+    [
+        "BankTransfer",
+        "CreditCard",
+        "Cash",
+        "Check",
+        "OpenAccount"
+    ];
+
     public UpdateQuoteValidator()
     {
         RuleFor(x => x.Request.Title).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Request.CustomerName).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Request.Items).NotEmpty().WithMessage("Teklif için en az bir kalem girilmelidir.");
+
+        When(x => !string.IsNullOrWhiteSpace(x.Request.PaymentMethod), () =>
+        {
+            RuleFor(x => x.Request.PaymentMethod!)
+                .Must(m => ValidPaymentMethods.Contains(m.Trim()))
+                .WithMessage($"Geçersiz ödeme yöntemi. İzin verilenler: {string.Join(", ", ValidPaymentMethods)}");
+        });
+
+        When(x => x.Request.PaymentDueDays.HasValue, () =>
+        {
+            RuleFor(x => x.Request.PaymentDueDays!.Value)
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Vade günü 0 veya daha büyük olmalıdır.");
+        });
     }
 }
 
@@ -137,6 +160,23 @@ public class UpdateQuoteHandler(
             requiresApproval = true;
         }
 
+        // Payment fields — VARCHAR only, nullable, preserve discount logic
+        var paymentMethod = string.IsNullOrWhiteSpace(req.PaymentMethod) ? null : req.PaymentMethod.Trim();
+        var paymentDueDays = req.PaymentDueDays;
+        DateTime? paymentDueDate = null;
+        if (req.PaymentDueDate.HasValue)
+        {
+            var d = req.PaymentDueDate.Value;
+            paymentDueDate = d.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(d.Date, DateTimeKind.Utc)
+                : d.Date;
+        }
+        else if (paymentDueDays.HasValue && paymentDueDays.Value >= 0)
+        {
+            // Explicit due_date wins; otherwise compute from due_days relative to today
+            paymentDueDate = DateTime.UtcNow.Date.AddDays(paymentDueDays.Value);
+        }
+
         quote.Title = req.Title.Trim();
         quote.CustomerId = req.CustomerId;
         quote.CustomerName = req.CustomerName.Trim();
@@ -157,6 +197,9 @@ public class UpdateQuoteHandler(
         quote.DeliveryTerms = req.DeliveryTerms?.Trim();
         quote.BankDetails = req.BankDetails?.Trim();
         quote.Notes = req.Notes?.Trim();
+        quote.PaymentMethod = paymentMethod;
+        quote.PaymentDueDays = paymentDueDays;
+        quote.PaymentDueDate = paymentDueDate;
         quote.UpdatedAt = DateTime.UtcNow;
         quote.Items = newItems;
 

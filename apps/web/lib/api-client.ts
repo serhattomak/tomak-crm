@@ -1823,6 +1823,34 @@ export class ApiClient {
     );
   }
 
+  static async updateCannedResponse(
+    id: string,
+    data: CreateCannedResponsePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<CannedResponseDto>> {
+    return ApiClient.request<CannedResponseDto>(
+      `/api/chat/support/canned-responses/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteCannedResponse(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/chat/support/canned-responses/${id}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
   static async createCustomerSupportSession(
     data: CreateCustomerSupportSessionPayload,
     tenantId?: string
@@ -1908,13 +1936,23 @@ export class ApiClient {
 
   static async getTicketById(
     ticketId: string,
-    tenantId?: string
+    tenantId?: string,
+    includeInternal = false
   ): Promise<ApiResponse<TicketDetailDto>> {
+    const qs = includeInternal ? "?includeInternal=true" : "";
     return ApiClient.request<TicketDetailDto>(
-      `/api/tickets/${ticketId}`,
+      `/api/tickets/${ticketId}${qs}`,
       { method: "GET" },
       tenantId
     );
+  }
+
+  static async getTicketDetails(
+    ticketId: string,
+    tenantId: string,
+    includeInternal = false
+  ): Promise<ApiResponse<TicketDetailDto>> {
+    return ApiClient.getTicketById(ticketId, tenantId, includeInternal);
   }
 
   static async createTicket(
@@ -2485,7 +2523,7 @@ export class ApiClient {
 
   static async createQuoteRevision(
     id: string,
-    data: { revisionNotes?: string },
+    data: CreateQuoteRevisionPayload,
     tenantId?: string
   ): Promise<ApiResponse<string>> {
     return ApiClient.request<string>(
@@ -2541,11 +2579,15 @@ export class ApiClient {
 
   static async convertQuoteToOrder(
     id: string,
+    data?: ConvertToOrderPayload,
     tenantId?: string
   ): Promise<ApiResponse<string>> {
     return ApiClient.request<string>(
       `/api/quotes/${id}/convert-to-order`,
-      { method: "POST" },
+      {
+        body: data ? JSON.stringify(data) : undefined,
+        method: "POST",
+      },
       tenantId
     );
   }
@@ -5543,6 +5585,9 @@ export interface QuoteSummaryDto {
   id: string;
   itemCount: number;
   parentQuoteId?: string;
+  paymentDueDate?: string;
+  paymentDueDays?: number;
+  paymentMethod?: string;
   publicViewToken: string;
   quoteNumber: string;
   rejectedAt?: string;
@@ -5638,6 +5683,9 @@ export interface QuoteDetailDto {
   notes?: string;
   parentQuoteId?: string;
   parentQuoteNumber?: string;
+  paymentDueDate?: string;
+  paymentDueDays?: number;
+  paymentMethod?: string;
   paymentTerms?: string;
   publicViewToken: string;
   quoteNumber: string;
@@ -5719,6 +5767,9 @@ export interface CreateQuotePayload {
   exchangeRate?: number;
   items: CreateQuoteItemPayload[];
   notes?: string;
+  paymentDueDate?: string;
+  paymentDueDays?: number;
+  paymentMethod?: string;
   paymentTerms?: string;
   termsAndConditions?: string;
   title: string;
@@ -5727,6 +5778,62 @@ export interface CreateQuotePayload {
 
 export interface UpdateQuotePayload extends CreateQuotePayload {
   id?: string;
+}
+
+export interface RevisionItemOverridePayload {
+  id?: string;
+  productId?: string;
+  variantId?: string;
+  productName?: string;
+  sku?: string;
+  description?: string;
+  quantity?: number;
+  unit?: string;
+  unitPrice?: number;
+  unitCost?: number;
+  discountRate?: number;
+  taxRate?: number;
+  isOptional?: boolean;
+  isSelected?: boolean;
+  orderIndex?: number;
+}
+
+export interface CreateQuoteRevisionPayload {
+  revisionNotes?: string;
+  title?: string;
+  currency?: string;
+  exchangeRate?: number;
+  discountType?: string;
+  discountRate?: number;
+  discountAmount?: number;
+  validUntil?: string;
+  termsAndConditions?: string;
+  paymentTerms?: string;
+  deliveryTerms?: string;
+  bankDetails?: string;
+  notes?: string;
+  paymentMethod?: string;
+  paymentDueDays?: number;
+  paymentDueDate?: string;
+  items?: RevisionItemOverridePayload[];
+}
+
+export interface ConvertOrderItemOverridePayload {
+  quoteItemId?: string;
+  productId?: string;
+  productName?: string;
+  quantity?: number;
+  unitPrice?: number;
+  isSelected?: boolean;
+  description?: string;
+}
+
+export interface ConvertToOrderPayload {
+  shippingFee?: number;
+  notes?: string;
+  dueDate?: string;
+  paymentMethod?: string;
+  items?: ConvertOrderItemOverridePayload[];
 }
 
 export interface QuoteStatsResponse {
@@ -5858,12 +5965,44 @@ export interface PreviousTicketBriefDto {
   ticketNumber: string;
 }
 
+export interface Customer360OrderItemDto {
+  id: string;
+  productId?: string;
+  productName: string;
+  sku?: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface Customer360OrderBriefDto {
+  id: string;
+  orderNumber: string;
+  orderDate: string;
+  totalAmount: number;
+  currency: string;
+  status: string;
+  paymentStatus: string;
+  items: Customer360OrderItemDto[];
+}
+
+export interface Customer360ShipmentBriefDto {
+  id: string;
+  shipmentNumber: string;
+  status: string;
+  carrierName?: string;
+  trackingNumber?: string;
+  createdAt: string;
+}
+
 export interface Customer360BriefDto {
   customerId: string;
   customerName: string;
   email?: string;
   openTicketsCount: number;
   phone?: string;
+  recentOrders: Customer360OrderBriefDto[];
+  recentShipments: Customer360ShipmentBriefDto[];
   recentTickets: PreviousTicketBriefDto[];
   totalTicketsCount: number;
 }

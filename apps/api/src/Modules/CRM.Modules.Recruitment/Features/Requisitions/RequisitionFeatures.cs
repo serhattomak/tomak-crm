@@ -53,6 +53,57 @@ public record PagedRequisitionsResponse(
     int PageSize);
 
 // ---------------------------------------------------------------------------
+// Normalization helpers — canonical casing for VARCHAR enums
+// ---------------------------------------------------------------------------
+internal static class RequisitionNormalization
+{
+    public static string? NormalizeWorkModel(string? value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        if (trimmed.Length == 0)
+        {
+            return null;
+        }
+
+        return trimmed.ToLowerInvariant() switch
+        {
+            "onsite" => WorkModel.OnSite,
+            "remote" => WorkModel.Remote,
+            "hybrid" => WorkModel.Hybrid,
+            _ => trimmed,
+        };
+    }
+
+    public static string? NormalizeEmploymentType(string? value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        if (trimmed.Length == 0)
+        {
+            return null;
+        }
+
+        return trimmed.ToLowerInvariant() switch
+        {
+            "fulltime" => EmploymentType.FullTime,
+            "parttime" => EmploymentType.PartTime,
+            "contract" => EmploymentType.Contract,
+            "intern" => EmploymentType.Intern,
+            _ => trimmed,
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Create
 // ---------------------------------------------------------------------------
 public record CreateRequisitionCommand(
@@ -83,14 +134,14 @@ public class CreateRequisitionValidator : AbstractValidator<CreateRequisitionCom
         RuleFor(x => x.Title).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Headcount).GreaterThanOrEqualTo(1);
         RuleFor(x => x.Currency).NotEmpty().MaximumLength(10);
-        RuleFor(x => x.Priority).NotEmpty().Must(p => ValidPriorities.Contains(p)).WithMessage("Invalid priority.");
+        RuleFor(x => x.Priority).NotEmpty().Must(p => p != null && ValidPriorities.Contains(p.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid priority.");
         When(x => x.EmploymentType != null, () =>
         {
-            RuleFor(x => x.EmploymentType!).Must(v => ValidEmploymentTypes.Contains(v)).WithMessage("Invalid employment_type.");
+            RuleFor(x => x.EmploymentType!).Must(v => v != null && ValidEmploymentTypes.Contains(v.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid employment_type.");
         });
         When(x => x.WorkModel != null, () =>
         {
-            RuleFor(x => x.WorkModel!).Must(v => ValidWorkModels.Contains(v)).WithMessage("Invalid work_model.");
+            RuleFor(x => x.WorkModel!).Must(v => v != null && ValidWorkModels.Contains(v.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid work_model.");
         });
         When(x => x.MinSalary.HasValue && x.MaxSalary.HasValue, () =>
         {
@@ -160,8 +211,8 @@ public class CreateRequisitionHandler(
             DepartmentId = request.DepartmentId,
             JobPositionId = request.JobPositionId,
             Headcount = request.Headcount,
-            EmploymentType = request.EmploymentType?.Trim(),
-            WorkModel = request.WorkModel?.Trim(),
+            EmploymentType = RequisitionNormalization.NormalizeEmploymentType(request.EmploymentType),
+            WorkModel = RequisitionNormalization.NormalizeWorkModel(request.WorkModel),
             Location = request.Location?.Trim(),
             MinSalary = request.MinSalary,
             MaxSalary = request.MaxSalary,
@@ -222,6 +273,8 @@ public record UpdateRequisitionCommand(
 
 public class UpdateRequisitionValidator : AbstractValidator<UpdateRequisitionCommand>
 {
+    private static readonly string[] ValidEmploymentTypes = [EmploymentType.FullTime, EmploymentType.PartTime, EmploymentType.Contract, EmploymentType.Intern];
+    private static readonly string[] ValidWorkModels = [WorkModel.OnSite, WorkModel.Remote, WorkModel.Hybrid];
     private static readonly string[] ValidPriorities = [RequisitionPriority.Low, RequisitionPriority.Medium, RequisitionPriority.High, RequisitionPriority.Urgent];
 
     public UpdateRequisitionValidator()
@@ -230,7 +283,15 @@ public class UpdateRequisitionValidator : AbstractValidator<UpdateRequisitionCom
         RuleFor(x => x.Title).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Headcount).GreaterThanOrEqualTo(1);
         RuleFor(x => x.Currency).NotEmpty().MaximumLength(10);
-        RuleFor(x => x.Priority).Must(p => ValidPriorities.Contains(p)).WithMessage("Invalid priority.");
+        RuleFor(x => x.Priority).Must(p => p != null && ValidPriorities.Contains(p.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid priority.");
+        When(x => x.EmploymentType != null, () =>
+        {
+            RuleFor(x => x.EmploymentType!).Must(v => v != null && ValidEmploymentTypes.Contains(v.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid employment_type.");
+        });
+        When(x => x.WorkModel != null, () =>
+        {
+            RuleFor(x => x.WorkModel!).Must(v => v != null && ValidWorkModels.Contains(v.Trim(), StringComparer.OrdinalIgnoreCase)).WithMessage("Invalid work_model.");
+        });
         When(x => x.MinSalary.HasValue && x.MaxSalary.HasValue, () =>
         {
             RuleFor(x => x).Must(x => x.MaxSalary!.Value >= x.MinSalary!.Value).WithMessage("max_salary must be >= min_salary.");
@@ -291,8 +352,8 @@ public class UpdateRequisitionHandler(
         requisition.DepartmentId = request.DepartmentId;
         requisition.JobPositionId = request.JobPositionId;
         requisition.Headcount = request.Headcount;
-        requisition.EmploymentType = request.EmploymentType?.Trim();
-        requisition.WorkModel = request.WorkModel?.Trim();
+        requisition.EmploymentType = RequisitionNormalization.NormalizeEmploymentType(request.EmploymentType);
+        requisition.WorkModel = RequisitionNormalization.NormalizeWorkModel(request.WorkModel);
         requisition.Location = request.Location?.Trim();
         requisition.MinSalary = request.MinSalary;
         requisition.MaxSalary = request.MaxSalary;

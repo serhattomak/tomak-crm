@@ -1759,7 +1759,7 @@ function RequisitionModal({
   const [employmentType, setEmploymentType] = useState(
     requisition?.employmentType || "FullTime"
   );
-  const [workModel, setWorkModel] = useState(requisition?.workModel || "Onsite");
+  const [workModel, setWorkModel] = useState(requisition?.workModel || "OnSite");
   const [location, setLocation] = useState(requisition?.location || "");
   const [minSalary, setMinSalary] = useState(requisition?.minSalary?.toString() || "");
   const [maxSalary, setMaxSalary] = useState(requisition?.maxSalary?.toString() || "");
@@ -1913,7 +1913,7 @@ function RequisitionModal({
                 onChange={(e) => setWorkModel(e.target.value)}
                 value={workModel}
               >
-                <option value="Onsite">Ofiste</option>
+                <option value="OnSite">Ofiste</option>
                 <option value="Remote">Uzaktan</option>
                 <option value="Hybrid">Hibrit</option>
               </select>

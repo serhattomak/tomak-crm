@@ -17,11 +17,34 @@ public record CreateQuoteCommand(CreateQuoteRequest Request) : ICommand<Guid>;
 
 public class CreateQuoteValidator : AbstractValidator<CreateQuoteCommand>
 {
+    private static readonly string[] ValidPaymentMethods =
+    [
+        "BankTransfer",
+        "CreditCard",
+        "Cash",
+        "Check",
+        "OpenAccount"
+    ];
+
     public CreateQuoteValidator()
     {
         RuleFor(x => x.Request.Title).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Request.CustomerName).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Request.Items).NotEmpty().WithMessage("Teklif için en az bir kalem girilmelidir.");
+
+        When(x => !string.IsNullOrWhiteSpace(x.Request.PaymentMethod), () =>
+        {
+            RuleFor(x => x.Request.PaymentMethod!)
+                .Must(m => ValidPaymentMethods.Contains(m.Trim()))
+                .WithMessage($"Geçersiz ödeme yöntemi. İzin verilenler: {string.Join(", ", ValidPaymentMethods)}");
+        });
+
+        When(x => x.Request.PaymentDueDays.HasValue, () =>
+        {
+            RuleFor(x => x.Request.PaymentDueDays!.Value)
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Vade günü 0 veya daha büyük olmalıdır.");
+        });
     }
 }
 
@@ -49,6 +72,22 @@ public class CreateQuoteHandler(
         var quoteId = Guid.NewGuid();
         var currency = !string.IsNullOrWhiteSpace(req.Currency) ? req.Currency.Trim() : "TRY";
         var exchangeRate = req.ExchangeRate > 0 ? req.ExchangeRate : 1.0000m;
+
+        // Payment fields — VARCHAR only, nullable, no 500 on null
+        var paymentMethod = string.IsNullOrWhiteSpace(req.PaymentMethod) ? null : req.PaymentMethod.Trim();
+        var paymentDueDays = req.PaymentDueDays;
+        DateTime? paymentDueDate = null;
+        if (req.PaymentDueDate.HasValue)
+        {
+            var d = req.PaymentDueDate.Value;
+            paymentDueDate = d.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(d.Date, DateTimeKind.Utc)
+                : d.Date;
+        }
+        else if (paymentDueDays.HasValue && paymentDueDays.Value >= 0)
+        {
+            paymentDueDate = DateTime.UtcNow.Date.AddDays(paymentDueDays.Value);
+        }
 
         decimal subtotal = 0.00m;
         decimal totalTax = 0.00m;
@@ -162,6 +201,9 @@ public class CreateQuoteHandler(
             DeliveryTerms = req.DeliveryTerms?.Trim(),
             BankDetails = req.BankDetails?.Trim(),
             Notes = req.Notes?.Trim(),
+            PaymentMethod = paymentMethod,
+            PaymentDueDays = paymentDueDays,
+            PaymentDueDate = paymentDueDate,
             PublicViewToken = publicToken,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,

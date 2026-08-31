@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "@workspace/ui/components/sonner";
 import { PermissionGate } from "@/components/permission-gate";
 import { ApiClient, type OrderDetailDto } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
@@ -67,7 +68,7 @@ export default function OrderDetailPage() {
   }, [loadData]);
 
   const handlePrint = () => {
-    window.print();
+    router.push(`/${tenantSlug}/orders/${orderId}/print?type=proforma`);
   };
 
   const getStatusBadge = (status: string) => {
@@ -848,15 +849,20 @@ function AddPaymentModal({
   tenantId: string;
   order: OrderDetailDto;
 }) {
+  const todayIso = new Date().toISOString().slice(0, 10);
   const [amount, setAmount] = useState(
     order.remainingAmount > 0 ? order.remainingAmount : 0
   );
   const [paymentMethod, setPaymentMethod] = useState(
     order.paymentMethod || "BankTransfer"
   );
+  const [paymentDate, setPaymentDate] = useState(todayIso);
   const [referenceNumber, setReferenceNumber] = useState("");
   const [notes, setNotes] = useState("");
+  const [fieldError, setFieldError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const isOverpayment = amount > order.remainingAmount;
 
   if (!isOpen) {
     return null;
@@ -869,12 +875,17 @@ function AddPaymentModal({
     }
 
     setSubmitting(true);
+    setFieldError(null);
     try {
+      const isoDate = paymentDate
+        ? new Date(paymentDate).toISOString()
+        : new Date().toISOString();
       const res = await ApiClient.addOrderPayment(
         order.id,
         {
           amount: Number(amount),
           notes: notes.trim() || undefined,
+          paymentDate: isoDate,
           paymentMethod,
           referenceNumber: referenceNumber.trim() || undefined,
         },
@@ -882,8 +893,22 @@ function AddPaymentModal({
       );
 
       if (res.success) {
+        toast.success("Tahsilat başarıyla kaydedildi.");
         onSuccess();
+      } else {
+        const msg = res.message || "Tahsilat kaydedilemedi.";
+        const isRefError =
+          msg.toLowerCase().includes("reference") ||
+          msg.toLowerCase().includes("referans") ||
+          res.errorCode === "Conflict" ||
+          res.errorCode === "Duplicate";
+        if (isRefError) {
+          setFieldError(msg);
+        }
+        toast.error(msg);
       }
+    } catch {
+      toast.error("Tahsilat kaydedilirken hata oluştu.");
     } finally {
       setSubmitting(false);
     }
@@ -941,9 +966,19 @@ function AddPaymentModal({
             />
           </div>
 
+          {isOverpayment && (
+            <p className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs">
+              ⚠️ Tutar kalan bakiyeyi aşıyor (₺
+              {order.remainingAmount.toLocaleString("tr-TR", {
+                minimumFractionDigits: 2,
+              })}
+              ). Fazla ödeme kaydedilemez.
+            </p>
+          )}
+
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Ödeme Yöntemi
+              Ödeme Yöntemi *
             </label>
             <select
               className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
@@ -960,15 +995,34 @@ function AddPaymentModal({
 
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Dekont / İşlem Referans No
+              Ödeme Tarihi *
             </label>
             <input
               className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
-              onChange={(e) => setReferenceNumber(e.target.value)}
+              onChange={(e) => setPaymentDate(e.target.value)}
+              required
+              type="date"
+              value={paymentDate}
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+              Dekont / İşlem Referans No
+            </label>
+            <input
+              className={`w-full rounded-xl border bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none ${fieldError ? "border-rose-400 bg-rose-50/50" : "border-zinc-200 dark:border-zinc-800"}`}
+              onChange={(e) => {
+                setReferenceNumber(e.target.value);
+                setFieldError(null);
+              }}
               placeholder="Örn: TR849000..."
               type="text"
               value={referenceNumber}
             />
+            {fieldError && (
+              <p className="mt-1 font-medium text-rose-600 text-xs">{fieldError}</p>
+            )}
           </div>
 
           <div>
@@ -994,7 +1048,8 @@ function AddPaymentModal({
             </button>
             <button
               className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
-              disabled={submitting || amount <= 0}
+              disabled={submitting || amount <= 0 || isOverpayment}
+              title={isOverpayment ? "Tutar kalan bakiyeyi aşamaz" : undefined}
               type="submit"
             >
               {submitting ? "İşleniyor..." : "Tahsilatı Kaydet"}

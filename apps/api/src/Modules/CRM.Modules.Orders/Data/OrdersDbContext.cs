@@ -169,6 +169,9 @@ public class OrdersDbContext(
             entity.Property(e => e.DeliveryTerms).HasColumnName("delivery_terms");
             entity.Property(e => e.BankDetails).HasColumnName("bank_details");
             entity.Property(e => e.Notes).HasColumnName("notes");
+            entity.Property(e => e.PaymentMethod).HasColumnName("payment_method").HasMaxLength(50);
+            entity.Property(e => e.PaymentDueDays).HasColumnName("payment_due_days");
+            entity.Property(e => e.PaymentDueDate).HasColumnName("payment_due_date").HasColumnType("date");
             entity.Property(e => e.PublicViewToken).HasColumnName("public_view_token").HasMaxLength(100).IsRequired();
             entity.Property(e => e.ConvertedOrderId).HasColumnName("converted_order_id");
             entity.Property(e => e.IsActive).HasColumnName("is_active");

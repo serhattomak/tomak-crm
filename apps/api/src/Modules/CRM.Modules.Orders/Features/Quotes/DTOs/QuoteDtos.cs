@@ -27,6 +27,9 @@ public record QuoteSummaryDto(
     DateTime? RejectedAt,
     Guid? ConvertedOrderId,
     string PublicViewToken,
+    string? PaymentMethod,
+    int? PaymentDueDays,
+    DateTime? PaymentDueDate,
     int ItemCount,
     DateTime CreatedAt,
     DateTime UpdatedAt
@@ -111,6 +114,9 @@ public record QuoteDetailDto(
     string? DeliveryTerms,
     string? BankDetails,
     string? Notes,
+    string? PaymentMethod,
+    int? PaymentDueDays,
+    DateTime? PaymentDueDate,
     string PublicViewToken,
     Guid? ConvertedOrderId,
     string? ConvertedOrderNumber,
@@ -180,6 +186,9 @@ public record CreateQuoteRequest(
     string? DeliveryTerms,
     string? BankDetails,
     string? Notes,
+    string? PaymentMethod,
+    int? PaymentDueDays,
+    DateTime? PaymentDueDate,
     List<CreateQuoteItemRequest> Items
 );
 
@@ -201,11 +210,66 @@ public record UpdateQuoteRequest(
     string? DeliveryTerms,
     string? BankDetails,
     string? Notes,
+    string? PaymentMethod,
+    int? PaymentDueDays,
+    DateTime? PaymentDueDate,
     List<CreateQuoteItemRequest> Items
 );
 
+public record RevisionItemOverrideRequest(
+    Guid? Id,
+    Guid? ProductId,
+    Guid? VariantId,
+    string? ProductName,
+    string? SKU,
+    string? Description,
+    decimal? Quantity,
+    string? Unit,
+    decimal? UnitPrice,
+    decimal? UnitCost,
+    decimal? DiscountRate,
+    decimal? TaxRate,
+    bool? IsOptional,
+    bool? IsSelected,
+    int? OrderIndex
+);
+
 public record CreateRevisionRequest(
-    string? RevisionNotes
+    string? RevisionNotes,
+    string? Title = null,
+    string? Currency = null,
+    decimal? ExchangeRate = null,
+    string? DiscountType = null,
+    decimal? DiscountRate = null,
+    decimal? DiscountAmount = null,
+    DateTime? ValidUntil = null,
+    string? TermsAndConditions = null,
+    string? PaymentTerms = null,
+    string? DeliveryTerms = null,
+    string? BankDetails = null,
+    string? Notes = null,
+    string? PaymentMethod = null,
+    int? PaymentDueDays = null,
+    DateTime? PaymentDueDate = null,
+    List<RevisionItemOverrideRequest>? Items = null
+);
+
+public record ConvertOrderItemOverrideRequest(
+    Guid? QuoteItemId,
+    Guid? ProductId,
+    string? ProductName,
+    decimal? Quantity,
+    decimal? UnitPrice,
+    bool? IsSelected,
+    string? Description
+);
+
+public record ConvertToOrderRequest(
+    decimal? ShippingFee = null,
+    string? Notes = null,
+    DateTime? DueDate = null,
+    string? PaymentMethod = null,
+    List<ConvertOrderItemOverrideRequest>? Items = null
 );
 
 public record ApproveQuoteRequest(
@@ -218,7 +282,8 @@ public record RejectQuoteRequest(
 );
 
 public record AcceptQuoteRequest(
-    bool AutoConvertToOrder = true
+    bool AutoConvertToOrder = true,
+    ConvertToOrderRequest? Overrides = null
 );
 
 public record PublicAcceptQuoteRequest(

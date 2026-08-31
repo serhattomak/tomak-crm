@@ -3,6 +3,8 @@ using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Chat.Data;
+using CRM.Modules.Orders.Data;
+using CRM.Modules.Shipping.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -85,15 +87,6 @@ public record TicketActivityDto(
     string? NewValue,
     DateTime CreatedAt);
 
-public record Customer360BriefDto(
-    Guid CustomerId,
-    string CustomerName,
-    string? Email,
-    string? Phone,
-    int TotalTicketsCount,
-    int OpenTicketsCount,
-    IReadOnlyList<PreviousTicketBriefDto> RecentTickets);
-
 public record PreviousTicketBriefDto(
     Guid Id,
     string TicketNumber,
@@ -102,10 +95,50 @@ public record PreviousTicketBriefDto(
     string Priority,
     DateTime CreatedAt);
 
-public record GetTicketDetailsQuery(Guid TicketId) : IQuery<TicketDetailDto>;
+public record Customer360OrderItemDto(
+    Guid Id,
+    Guid? ProductId,
+    string ProductName,
+    string? SKU,
+    decimal Quantity,
+    decimal UnitPrice,
+    decimal TotalPrice);
+
+public record Customer360OrderBriefDto(
+    Guid Id,
+    string OrderNumber,
+    DateTime OrderDate,
+    decimal TotalAmount,
+    string Currency,
+    string Status,
+    string PaymentStatus,
+    IReadOnlyList<Customer360OrderItemDto> Items);
+
+public record Customer360ShipmentBriefDto(
+    Guid Id,
+    string ShipmentNumber,
+    string Status,
+    string? CarrierName,
+    string? TrackingNumber,
+    DateTime CreatedAt);
+
+public record Customer360BriefDto(
+    Guid CustomerId,
+    string CustomerName,
+    string? Email,
+    string? Phone,
+    int TotalTicketsCount,
+    int OpenTicketsCount,
+    IReadOnlyList<PreviousTicketBriefDto> RecentTickets,
+    IReadOnlyList<Customer360OrderBriefDto> RecentOrders,
+    IReadOnlyList<Customer360ShipmentBriefDto> RecentShipments);
+
+public record GetTicketDetailsQuery(Guid TicketId, bool IncludeInternal = false) : IQuery<TicketDetailDto>;
 
 public class GetTicketDetailsHandler(
     ChatDbContext dbContext,
+    OrdersDbContext ordersDbContext,
+    ShippingDbContext shippingDbContext,
     ICurrentTenant currentTenant) : IQueryHandler<GetTicketDetailsQuery, TicketDetailDto>
 {
     public async Task<Result<TicketDetailDto>> Handle(GetTicketDetailsQuery request, CancellationToken cancellationToken)
@@ -147,6 +180,68 @@ public class GetTicketDetailsHandler(
         var openCustomerTickets = await dbContext.Tickets
             .CountAsync(t => t.CustomerId == ticket.CustomerId && t.TenantId == tenantId && t.Status != "Resolved" && t.Status != "Closed", cancellationToken);
 
+        // Fetch Recent Orders (real join) - last 5 orders with items
+        IReadOnlyList<Customer360OrderBriefDto> recentOrders = Array.Empty<Customer360OrderBriefDto>();
+        IReadOnlyList<Customer360ShipmentBriefDto> recentShipments = Array.Empty<Customer360ShipmentBriefDto>();
+
+        if (ticket.CustomerId != Guid.Empty)
+        {
+            try
+            {
+                var orders = await ordersDbContext.Orders
+                    .AsNoTracking()
+                    .Include(o => o.Items)
+                    .Where(o => o.CustomerId == ticket.CustomerId && o.TenantId == tenantId)
+                    .OrderByDescending(o => o.OrderDate)
+                    .Take(5)
+                    .ToListAsync(cancellationToken);
+
+                recentOrders = orders.Select(o => new Customer360OrderBriefDto(
+                    o.Id,
+                    o.OrderNumber,
+                    o.OrderDate,
+                    o.TotalAmount,
+                    o.Currency,
+                    o.Status,
+                    o.PaymentStatus,
+                    o.Items.Select(i => new Customer360OrderItemDto(
+                        i.Id,
+                        i.ProductId,
+                        i.ProductName,
+                        i.SKU,
+                        i.Quantity,
+                        i.UnitPrice,
+                        i.TotalPrice)).ToList()
+                )).ToList();
+            }
+            catch
+            {
+                recentOrders = Array.Empty<Customer360OrderBriefDto>();
+            }
+
+            try
+            {
+                var shipments = await shippingDbContext.Shipments
+                    .AsNoTracking()
+                    .Where(s => s.CustomerId == ticket.CustomerId && s.TenantId == tenantId)
+                    .OrderByDescending(s => s.CreatedAt)
+                    .Take(5)
+                    .ToListAsync(cancellationToken);
+
+                recentShipments = shipments.Select(s => new Customer360ShipmentBriefDto(
+                    s.Id,
+                    s.ShipmentNumber,
+                    s.Status,
+                    s.CarrierName,
+                    s.TrackingNumber,
+                    s.CreatedAt)).ToList();
+            }
+            catch
+            {
+                recentShipments = Array.Empty<Customer360ShipmentBriefDto>();
+            }
+        }
+
         var customer360 = new Customer360BriefDto(
             CustomerId: ticket.CustomerId,
             CustomerName: ticket.CustomerName,
@@ -154,13 +249,15 @@ public class GetTicketDetailsHandler(
             Phone: ticket.CustomerPhone,
             TotalTicketsCount: totalCustomerTickets,
             OpenTicketsCount: openCustomerTickets,
-            RecentTickets: customerTickets);
+            RecentTickets: customerTickets,
+            RecentOrders: recentOrders,
+            RecentShipments: recentShipments);
 
-        // Map Messages
+        // Map Messages with includeInternal filtering
         var messages = new List<TicketMessageDto>();
         if (ticket.Channel != null && ticket.Channel.Messages != null)
         {
-            messages = ticket.Channel.Messages
+            var allMessages = ticket.Channel.Messages
                 .OrderBy(m => m.CreatedAt)
                 .Select(m => new TicketMessageDto(
                     m.Id,
@@ -175,6 +272,10 @@ public class GetTicketDetailsHandler(
                     m.Attachments.Select(a => new TicketAttachmentDto(a.Id, a.FileName, a.FileUrl, a.FileType, a.FileSizeBytes)).ToList(),
                     m.EntityEmbeds.Select(e => new TicketEntityEmbedDto(e.Id, e.EntityType, e.EntityId, e.EntityTitle, e.EntitySubtitle, e.EntityStatus, e.MetadataJson)).ToList()))
                 .ToList();
+
+            messages = request.IncludeInternal
+                ? allMessages
+                : allMessages.Where(m => m.MessageType != "InternalNote").ToList();
         }
 
         // Map Activities
@@ -234,9 +335,10 @@ public class GetTicketDetailsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/tickets/{id:guid}", async (Guid id, MediatR.ISender sender, CancellationToken ct) =>
+        app.MapGet("/api/tickets/{id:guid}", async (Guid id, bool? includeInternal, MediatR.ISender sender, CancellationToken ct) =>
         {
-            var result = await sender.Send(new GetTicketDetailsQuery(id), ct);
+            var query = new GetTicketDetailsQuery(id, includeInternal ?? false);
+            var result = await sender.Send(query, ct);
             return Results.Ok(ApiResponse<TicketDetailDto>.Ok(result.Value));
         })
         .RequireAuthorization()

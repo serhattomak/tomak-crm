@@ -828,6 +828,9 @@ function CreateQuoteModal({
   const [deliveryTerms, setDeliveryTerms] = useState("");
   const [bankDetails, setBankDetails] = useState("");
   const [notes, setNotes] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("BankTransfer");
+  const [paymentDueDays, setPaymentDueDays] = useState<string>("");
+  const [paymentDueDate, setPaymentDueDate] = useState<string>("");
 
   // Items
   const [items, setItems] = useState<CreateQuoteItemForm[]>([
@@ -1087,6 +1090,9 @@ function CreateQuoteModal({
           variantId: i.variantId || undefined,
         })),
         notes: notes.trim() || undefined,
+        paymentDueDate: paymentDueDate ? new Date(paymentDueDate).toISOString() : undefined,
+        paymentDueDays: paymentDueDays ? Number.parseInt(paymentDueDays, 10) : undefined,
+        paymentMethod: paymentMethod || undefined,
         paymentTerms: paymentTerms.trim() || undefined,
         termsAndConditions: termsAndConditions.trim() || undefined,
         title: title.trim(),
@@ -1622,12 +1628,55 @@ function CreateQuoteModal({
             </div>
           </div>
 
-          {/* Section 4: Terms, Delivery, Bank Details Templates */}
+          {/* Section 4: Payment Method & Due Date */}
+          <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
+            <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
+              <span>4. Ödeme Yöntemi & Vade</span>
+            </h3>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Ödeme Yöntemi</label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  value={paymentMethod}
+                >
+                  <option value="BankTransfer">Havale / EFT</option>
+                  <option value="CreditCard">Kredi Kartı</option>
+                  <option value="Cash">Nakit</option>
+                  <option value="Check">Çek / Senet</option>
+                  <option value="OpenAccount">Açık Hesap (Cari)</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Vade (Gün)</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  min="0"
+                  onChange={(e) => setPaymentDueDays(e.target.value)}
+                  placeholder="Örn: 30"
+                  type="number"
+                  value={paymentDueDays}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Vade Tarihi</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setPaymentDueDate(e.target.value)}
+                  type="date"
+                  value={paymentDueDate}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 5: Terms, Delivery, Bank Details Templates */}
           <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
                 <FileText className="h-4 w-4 text-blue-600" />
-                <span>3. Şartlar, Koşullar & Banka Bilgileri</span>
+                <span>5. Şartlar, Koşullar & Banka Bilgileri</span>
               </h3>
 
               {templates.length > 0 && (
@@ -1761,7 +1810,15 @@ function QuoteDetailDrawer({
   // Approval & Action Modals
   const [isApproveOpen, setIsApproveOpen] = useState(false);
   const [isRevisionOpen, setIsRevisionOpen] = useState(false);
+  const [isConvertPreviewOpen, setIsConvertPreviewOpen] = useState(false);
   const [revisionNotes, setRevisionNotes] = useState("");
+  const [revisionPaymentDueDate, setRevisionPaymentDueDate] = useState("");
+  const [revisionItems, setRevisionItems] = useState<{ id: string; quantity: number; unitPrice: number }[]>([]);
+  const [convertItems, setConvertItems] = useState<{ quoteItemId: string; quantity: number; unitPrice: number; isSelected: boolean; productName: string }[]>([]);
+  const [convertShippingFee, setConvertShippingFee] = useState<string>("0");
+  const [convertDueDate, setConvertDueDate] = useState<string>("");
+  const [convertPaymentMethod, setConvertPaymentMethod] = useState<string>("BankTransfer");
+  const [convertNotes, setConvertNotes] = useState<string>("");
   const [approvalNotes, setApprovalNotes] = useState("");
   const [isActionLoading, setIsActionLoading] = useState(false);
 
@@ -1792,6 +1849,31 @@ function QuoteDetailDrawer({
     fetchDetail();
   }, [fetchDetail]);
 
+  useEffect(() => {
+    if (isRevisionOpen && quote) {
+      setRevisionItems(quote.items.map((it) => ({ id: it.id, quantity: it.quantity, unitPrice: it.unitPrice })));
+      setRevisionPaymentDueDate(quote.paymentDueDate ? quote.paymentDueDate.slice(0, 10) : "");
+    }
+  }, [isRevisionOpen, quote]);
+
+  useEffect(() => {
+    if (isConvertPreviewOpen && quote) {
+      setConvertItems(
+        quote.items.map((it) => ({
+          isSelected: it.isSelected,
+          productName: it.productName,
+          quantity: it.quantity,
+          quoteItemId: it.id,
+          unitPrice: it.unitPrice,
+        }))
+      );
+      setConvertShippingFee("0");
+      setConvertDueDate(quote.paymentDueDate ? quote.paymentDueDate.slice(0, 10) : quote.validUntil ? quote.validUntil.slice(0, 10) : "");
+      setConvertPaymentMethod(quote.paymentMethod || "BankTransfer");
+      setConvertNotes("");
+    }
+  }, [isConvertPreviewOpen, quote]);
+
   // Action: Send to Customer
   const handleSend = async () => {
     if (!(activeTenant?.id && quote)) {
@@ -1814,19 +1896,34 @@ function QuoteDetailDrawer({
     }
   };
 
-  // Action: Convert to Order
-  const handleConvertToOrder = async () => {
+  // Action: Convert to Order (preview modal)
+  const handleConfirmConvert = async () => {
     if (!(activeTenant?.id && quote)) {
+      return;
+    }
+    if (quote.convertedOrderId) {
+      toast.error("Bu teklif zaten siparişe çevrilmiş");
       return;
     }
     setIsActionLoading(true);
     try {
-      const res = await ApiClient.convertQuoteToOrder(
-        quote.id,
-        activeTenant.id
-      );
+      const payload = {
+        dueDate: convertDueDate ? new Date(convertDueDate).toISOString() : undefined,
+        items: convertItems.map((ci) => ({
+          isSelected: ci.isSelected,
+          productName: ci.productName,
+          quantity: ci.quantity,
+          quoteItemId: ci.quoteItemId,
+          unitPrice: ci.unitPrice,
+        })),
+        notes: convertNotes.trim() || undefined,
+        paymentMethod: convertPaymentMethod,
+        shippingFee: convertShippingFee ? Number.parseFloat(convertShippingFee) : 0,
+      };
+      const res = await ApiClient.convertQuoteToOrder(quote.id, payload, activeTenant.id);
       if (res.success) {
         toast.success("Teklif kabul edildi ve sipariş başarıyla oluşturuldu!");
+        setIsConvertPreviewOpen(false);
         fetchDetail();
         onUpdated();
       } else {
@@ -1868,22 +1965,25 @@ function QuoteDetailDrawer({
     }
   };
 
-  // Action: Create Revision
+  // Action: Create Revision with overrides
   const handleCreateRevision = async () => {
     if (!(activeTenant?.id && quote)) {
       return;
     }
     setIsActionLoading(true);
     try {
-      const res = await ApiClient.createQuoteRevision(
-        quote.id,
-        { revisionNotes: revisionNotes.trim() },
-        activeTenant.id
-      );
+      const payload = {
+        items: revisionItems.map((ri) => ({
+          id: ri.id,
+          quantity: ri.quantity,
+          unitPrice: ri.unitPrice,
+        })),
+        paymentDueDate: revisionPaymentDueDate ? new Date(revisionPaymentDueDate).toISOString() : undefined,
+        revisionNotes: revisionNotes.trim() || undefined,
+      };
+      const res = await ApiClient.createQuoteRevision(quote.id, payload, activeTenant.id);
       if (res.success && res.data) {
-        toast.success(
-          `Yeni revizyon (R${quote.revisionNumber + 1}) oluşturuldu`
-        );
+        toast.success(`Yeni revizyon (R${quote.revisionNumber + 1}) oluşturuldu`);
         setIsRevisionOpen(false);
         onClose();
         onUpdated();
@@ -2175,17 +2275,23 @@ function QuoteDetailDrawer({
             {/* 2. Primary CTA Toolbar */}
             <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-3">
               {quote.status !== "Accepted" &&
-                quote.status !== "ConvertedToOrder" && (
+                quote.status !== "ConvertedToOrder" &&
+                !quote.convertedOrderId && (
                   <button
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-emerald-700"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-emerald-700 disabled:opacity-50"
                     disabled={isActionLoading}
-                    onClick={handleConvertToOrder}
+                    onClick={() => setIsConvertPreviewOpen(true)}
                     type="button"
                   >
                     <Check className="h-4 w-4" />
                     <span>Kabul Et & Siparişe Dönüştür</span>
                   </button>
                 )}
+              {quote.convertedOrderId && (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+                  ⚠️ Bu teklif zaten siparişe çevrildi — {quote.convertedOrderNumber || quote.convertedOrderId}
+                </div>
+              )}
 
               {(quote.status === "Draft" || quote.status === "Approved") && (
                 <button
@@ -2380,6 +2486,17 @@ function QuoteDetailDrawer({
 
             {activeTab === "terms" && (
               <div className="space-y-4 text-zinc-700 dark:text-zinc-300 text-xs">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Ödeme Yöntemi</div>
+                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">{quote.paymentMethod || "Belirtilmedi"}</div>
+                  </div>
+                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Vade Tarihi</div>
+                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">{quote.paymentDueDate ? new Date(quote.paymentDueDate).toLocaleDateString("tr-TR") : "Belirtilmedi"}</div>
+                    {quote.paymentDueDays !== undefined && quote.paymentDueDays !== null && <div className="text-[11px] text-zinc-500">{quote.paymentDueDays} gün</div>}
+                  </div>
+                </div>
                 <div className="space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">Ödeme Şartları</h4>
                   <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400">
@@ -2543,30 +2660,69 @@ function QuoteDetailDrawer({
         </div>
       )}
 
-      {/* New Revision Modal */}
-      {isRevisionOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+      {/* New Revision Modal with Override */}
+      {isRevisionOpen && quote && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
+          <div className="my-auto w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              Yeni Revizyon Oluştur (R
-              {quote?.revisionNumber ? quote.revisionNumber + 1 : 1})
+              Yeni Revizyon Oluştur (R{quote.revisionNumber + 1}) — Tek Adımda Düzenle
             </h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
-              Mevcut teklif kilitlenecek ve tüm kalemleriyle birlikte yeni bir
-              versiyon oluşturulacaktır.
-            </p>
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs">Kalem miktar/fiyat ve vade tek adımda güncellenir, yeni versiyon oluşturulur.</p>
 
-            <div>
-              <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
-                Revizyon Gerekçesi / Notu
-              </label>
-              <textarea
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
-                onChange={(e) => setRevisionNotes(e.target.value)}
-                placeholder="Örn: Müşteri %5 ek iskonto talep etti, 3. kalem çıkarıldı."
-                rows={3}
-                value={revisionNotes}
-              />
+            <div className="space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-3">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Kalemler (Miktar / Birim Fiyat)</div>
+              {revisionItems.map((ri, idx) => {
+                const qItem = quote.items.find((q) => q.id === ri.id);
+                return (
+                  <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2" key={ri.id}>
+                    <span className="min-w-0 flex-1 truncate text-xs font-semibold">{qItem?.productName || `Kalem ${idx + 1}`}</span>
+                    <input
+                      className="w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-center text-xs"
+                      min="0.01"
+                      onChange={(e) => {
+                        const v = Number.parseFloat(e.target.value) || 0;
+                        setRevisionItems((prev) => prev.map((p) => (p.id === ri.id ? { ...p, quantity: v } : p)));
+                      }}
+                      step="0.01"
+                      type="number"
+                      value={ri.quantity}
+                    />
+                    <input
+                      className="w-24 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-right text-xs font-semibold"
+                      min="0"
+                      onChange={(e) => {
+                        const v = Number.parseFloat(e.target.value) || 0;
+                        setRevisionItems((prev) => prev.map((p) => (p.id === ri.id ? { ...p, unitPrice: v } : p)));
+                      }}
+                      step="0.01"
+                      type="number"
+                      value={ri.unitPrice}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Vade Tarihi (Ödeme)</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setRevisionPaymentDueDate(e.target.value)}
+                  type="date"
+                  value={revisionPaymentDueDate}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Revizyon Gerekçesi / Notu</label>
+                <textarea
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-xs focus:border-blue-500 focus:outline-none"
+                  onChange={(e) => setRevisionNotes(e.target.value)}
+                  placeholder="Örn: Müşteri %5 ek iskonto talep etti"
+                  rows={2}
+                  value={revisionNotes}
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-2">
@@ -2577,9 +2733,8 @@ function QuoteDetailDrawer({
               >
                 Vazgeç
               </button>
-
               <button
-                className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
+                className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
                 disabled={isActionLoading}
                 onClick={handleCreateRevision}
                 type="button"
@@ -2587,6 +2742,102 @@ function QuoteDetailDrawer({
                 Revizyonu Başlat
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Convert Preview Modal */}
+      {isConvertPreviewOpen && quote && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
+          <div className="my-auto w-full max-w-3xl space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Siparişe Dönüştür — Önizleme & Düzenle</h3>
+              <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100" onClick={() => setIsConvertPreviewOpen(false)} type="button">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            {quote.convertedOrderId ? (
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-700">Bu teklif zaten siparişe çevrilmiş ({quote.convertedOrderNumber || quote.convertedOrderId}). Tekrar dönüştürülemez.</div>
+            ) : (
+              <>
+                <div className="space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-3">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Kalemler — Seç / Miktar / Fiyat</div>
+                  {convertItems.map((ci) => (
+                    <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2" key={ci.quoteItemId}>
+                      <label className="flex items-center gap-1.5 text-xs">
+                        <input
+                          checked={ci.isSelected}
+                          onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, isSelected: e.target.checked } : p)))}
+                          type="checkbox"
+                        />
+                        <span className={`truncate font-semibold ${ci.isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 line-through"}`}>{ci.productName}</span>
+                      </label>
+                      <input
+                        className="ml-auto w-16 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-center text-xs disabled:opacity-40"
+                        disabled={!ci.isSelected}
+                        min="0.01"
+                        onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, quantity: Number.parseFloat(e.target.value) || 0 } : p)))}
+                        step="0.01"
+                        type="number"
+                        value={ci.quantity}
+                      />
+                      <input
+                        className="w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-right text-xs font-semibold disabled:opacity-40"
+                        disabled={!ci.isSelected}
+                        min="0"
+                        onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, unitPrice: Number.parseFloat(e.target.value) || 0 } : p)))}
+                        step="0.01"
+                        type="number"
+                        value={ci.unitPrice}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <div>
+                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Kargo Ücreti</label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs"
+                      min="0"
+                      onChange={(e) => setConvertShippingFee(e.target.value)}
+                      step="0.01"
+                      type="number"
+                      value={convertShippingFee}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Vade Tarihi</label>
+                    <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertDueDate(e.target.value)} type="date" value={convertDueDate} />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Ödeme Yöntemi</label>
+                    <select className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertPaymentMethod(e.target.value)} value={convertPaymentMethod}>
+                      <option value="BankTransfer">Havale / EFT</option>
+                      <option value="CreditCard">Kredi Kartı</option>
+                      <option value="Cash">Nakit</option>
+                      <option value="Check">Çek / Senet</option>
+                      <option value="OpenAccount">Açık Hesap</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Sipariş Notu</label>
+                    <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertNotes(e.target.value)} placeholder="Not" type="text" value={convertNotes} />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <button className="rounded-xl px-4 py-2 text-xs font-semibold text-zinc-600 hover:bg-zinc-100" onClick={() => setIsConvertPreviewOpen(false)} type="button">
+                    Vazgeç
+                  </button>
+                  <button
+                    className="rounded-xl bg-emerald-600 px-5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+                    disabled={isActionLoading || !!quote.convertedOrderId}
+                    onClick={handleConfirmConvert}
+                    type="button"
+                  >
+                    {isActionLoading ? "Dönüştürülüyor..." : "Onayla & Siparişe Dönüştür"}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

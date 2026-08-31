@@ -60,6 +60,10 @@ export default function TicketDetailPage() {
   const [messageText, setMessageText] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [activeTab, setActiveTab] = useState<"conversation" | "activities">("conversation");
+  const [includeInternal, setIncludeInternal] = useState(false);
+  const [isTemplateManagerOpen, setIsTemplateManagerOpen] = useState(false);
+  const [editingTemplate, setEditingTemplate] = useState<CannedResponseDto | null>(null);
+  const [templateForm, setTemplateForm] = useState({ category: "Genel", content: "", shortcut: "", title: "" });
 
   // Resolution modal / note
   const [isResolveModalOpen, setIsResolveModalOpen] = useState(false);
@@ -73,7 +77,7 @@ export default function TicketDetailPage() {
 
     try {
       const [ticketRes, usersRes, cannedRes] = await Promise.all([
-        ApiClient.getTicketById(ticketId, activeTenant.id),
+        ApiClient.getTicketById(ticketId, activeTenant.id, includeInternal),
         ApiClient.getTenantUsers(activeTenant.id),
         ApiClient.getCannedResponses({}, activeTenant.id),
       ]);
@@ -90,13 +94,12 @@ export default function TicketDetailPage() {
       if (cannedRes.success && cannedRes.data) {
         setCannedResponses(cannedRes.data);
       }
-    } catch (err) {
-      console.error("Error loading ticket detail:", err);
+    } catch {
       toast.error("Bilet ayrıntıları yüklenirken hata oluştu.");
     } finally {
       setIsLoading(false);
     }
-  }, [activeTenant, ticketId]);
+  }, [activeTenant, ticketId, includeInternal]);
 
   useEffect(() => {
     loadTicket();
@@ -129,8 +132,7 @@ export default function TicketDetailPage() {
       } else {
         toast.error(res.message || "Mesaj gönderilemedi.");
       }
-    } catch (err) {
-      console.error("Error adding ticket message:", err);
+    } catch {
       toast.error("Mesaj gönderilirken hata oluştu.");
     } finally {
       setIsSending(false);
@@ -157,8 +159,7 @@ export default function TicketDetailPage() {
       } else {
         toast.error(res.message || "Durum güncellenemedi.");
       }
-    } catch (err) {
-      console.error("Error updating status:", err);
+    } catch {
       toast.error("Durum güncellenirken bir hata oluştu.");
     }
   };
@@ -179,9 +180,10 @@ export default function TicketDetailPage() {
         setIsResolveModalOpen(false);
         setResolutionNotes("");
         loadTicket();
+      } else {
+        toast.error(res.message || "Çözümleme başarısız.");
       }
-    } catch (err) {
-      console.error("Error resolving ticket:", err);
+    } catch {
       toast.error("Talep çözümlenirken hata oluştu.");
     }
   };
@@ -197,9 +199,10 @@ export default function TicketDetailPage() {
       if (res.success) {
         toast.success(`Öncelik "${newPriority}" olarak güncellendi.`);
         loadTicket();
+      } else {
+        toast.error(res.message || "Öncelik güncellenemedi.");
       }
-    } catch (err) {
-      console.error("Error updating priority:", err);
+    } catch {
       toast.error("Öncelik güncellenirken hata oluştu.");
     }
   };
@@ -219,9 +222,10 @@ export default function TicketDetailPage() {
       if (res.success) {
         toast.success("Temsilci ataması yapıldı.");
         loadTicket();
+      } else {
+        toast.error(res.message || "Atama başarısız.");
       }
-    } catch (err) {
-      console.error("Error assigning ticket:", err);
+    } catch {
       toast.error("Atama sırasında hata oluştu.");
     }
   };
@@ -229,6 +233,54 @@ export default function TicketDetailPage() {
   const applyCannedResponse = (response: CannedResponseDto) => {
     setMessageText((prev) => (prev ? `${prev}\n\n${response.content}` : response.content));
     toast.info(`"${response.title}" şablonu eklendi.`);
+  };
+
+  const handleTemplateSave = async () => {
+    if (!activeTenant || !templateForm.title.trim() || !templateForm.content.trim()) {
+      toast.error("Başlık ve içerik zorunlu.");
+      return;
+    }
+    try {
+      if (editingTemplate) {
+        const res = await ApiClient.updateCannedResponse(editingTemplate.id, templateForm, activeTenant.id);
+        if (res.success) {
+          toast.success("Şablon güncellendi.");
+          setIsTemplateManagerOpen(false);
+          setEditingTemplate(null);
+          setTemplateForm({ category: "Genel", content: "", shortcut: "", title: "" });
+          loadTicket();
+        } else {
+          toast.error(res.message || "Güncelleme başarısız.");
+        }
+      } else {
+        const res = await ApiClient.createCannedResponse(templateForm, activeTenant.id);
+        if (res.success) {
+          toast.success("Şablon oluşturuldu.");
+          setTemplateForm({ category: "Genel", content: "", shortcut: "", title: "" });
+          loadTicket();
+        } else {
+          toast.error(res.message || "Oluşturma başarısız.");
+        }
+      }
+    } catch {
+      toast.error("Şablon işlemi başarısız.");
+    }
+  };
+
+  const handleTemplateDelete = async (id: string) => {
+    if (!activeTenant) return;
+    const res = await ApiClient.deleteCannedResponse(id, activeTenant.id);
+    if (res.success) {
+      toast.success("Şablon silindi.");
+      loadTicket();
+    } else {
+      toast.error(res.message || "Silme başarısız.");
+    }
+  };
+
+  const handleTemplateEdit = (t: CannedResponseDto) => {
+    setEditingTemplate(t);
+    setTemplateForm({ category: t.category, content: t.content, shortcut: t.shortcut, title: t.title });
   };
 
   if (isLoading) {
@@ -390,6 +442,10 @@ export default function TicketDetailPage() {
               <History className="h-3.5 w-3.5" />
               <span>Denetim & İşlem Geçmişi ({ticket.activities.length})</span>
             </button>
+            <label className="ml-auto flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 py-1 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
+              <input checked={includeInternal} onChange={(e) => setIncludeInternal(e.target.checked)} type="checkbox" />
+              <span>Dahili notları göster</span>
+            </label>
           </div>
 
           {activeTab === "conversation" ? (
@@ -555,25 +611,34 @@ export default function TicketDetailPage() {
                     </button>
                   </div>
 
-                  {/* Canned Responses Dropdown */}
-                  {cannedResponses.length > 0 && (
-                    <Select onValueChange={(val) => {
-                      const found = cannedResponses.find((c) => c.id === val);
-                      if (found) applyCannedResponse(found);
-                    }}>
-                      <SelectTrigger className="h-7 w-[160px] rounded-lg border-zinc-200 dark:border-zinc-800 text-[11px]">
-                        <Zap className="mr-1 h-3 w-3 text-amber-500" />
-                        <SelectValue placeholder="Hazır Şablonlar" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {cannedResponses.map((c) => (
-                          <SelectItem key={c.id} value={c.id}>
-                            {c.title} (/{c.shortcut})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
+                  <div className="flex items-center gap-1.5">
+                    {/* Canned Responses Dropdown */}
+                    {cannedResponses.length > 0 && (
+                      <Select onValueChange={(val) => {
+                        const found = cannedResponses.find((c) => c.id === val);
+                        if (found) applyCannedResponse(found);
+                      }}>
+                        <SelectTrigger className="h-7 w-[160px] rounded-lg border-zinc-200 dark:border-zinc-800 text-[11px]">
+                          <Zap className="mr-1 h-3 w-3 text-amber-500" />
+                          <SelectValue placeholder="Hazır Şablonlar" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {cannedResponses.map((c) => (
+                            <SelectItem key={c.id} value={c.id}>
+                              {c.title} (/{c.shortcut})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                    <button
+                      className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50"
+                      onClick={() => setIsTemplateManagerOpen(true)}
+                      type="button"
+                    >
+                      Şablonları Yönet
+                    </button>
+                  </div>
                 </div>
 
                 <form onSubmit={handleSendMessage} className="space-y-2">
@@ -751,6 +816,64 @@ export default function TicketDetailPage() {
               <p className="text-zinc-400 dark:text-zinc-500 text-xs">Müşterinin başka bir geçmiş talebi yok.</p>
             )}
           </div>
+
+          {/* Customer 360: Recent Orders with Products */}
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+            <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200 block mb-2.5">
+              Son Siparişler (Gerçek Veri)
+            </span>
+            {ticket.customer360?.recentOrders && ticket.customer360.recentOrders.length > 0 ? (
+              <div className="space-y-2.5">
+                {ticket.customer360.recentOrders.map((ord) => (
+                  <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 p-2.5 text-xs" key={ord.id}>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold font-mono text-blue-700 text-[11px]">{ord.orderNumber}</span>
+                      <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-zinc-100 text-zinc-700"}`}>{ord.status}</span>
+                    </div>
+                    <div className="mt-1 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                      <span>{new Date(ord.orderDate).toLocaleDateString("tr-TR")}</span>
+                      <span className="font-bold text-zinc-900 dark:text-zinc-100">₺{ord.totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} · {ord.paymentStatus}</span>
+                    </div>
+                    {ord.items && ord.items.length > 0 && (
+                      <div className="mt-2 space-y-1 rounded-lg bg-white dark:bg-zinc-900 p-2">
+                        {ord.items.slice(0, 3).map((it) => (
+                          <div className="flex justify-between text-[11px]" key={it.id}>
+                            <span className="truncate font-medium text-zinc-700 dark:text-zinc-300">{it.productName} {it.sku ? `(${it.sku})` : ""}</span>
+                            <span className="shrink-0 font-mono text-zinc-500">×{it.quantity}</span>
+                          </div>
+                        ))}
+                        {ord.items.length > 3 && <div className="text-[10px] text-zinc-400">+{ord.items.length - 3} ürün daha</div>}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-zinc-400 dark:text-zinc-500 text-xs">Son 5 sipariş bulunamadı.</p>
+            )}
+          </div>
+
+          {/* Customer 360: Recent Shipments / Kargo */}
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+            <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200 block mb-2.5">
+              Kargo & Sevkiyat (Son 5)
+            </span>
+            {ticket.customer360?.recentShipments && ticket.customer360.recentShipments.length > 0 ? (
+              <div className="space-y-2">
+                {ticket.customer360.recentShipments.map((sh) => (
+                  <div className="flex items-center justify-between rounded-xl border border-zinc-100 dark:border-zinc-800 p-2.5 text-xs" key={sh.id}>
+                    <div>
+                      <div className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-[11px]">{sh.shipmentNumber}</div>
+                      <div className="text-[11px] text-zinc-500">{sh.carrierName || "Taşıyıcı yok"}{sh.trackingNumber ? ` · ${sh.trackingNumber}` : ""}</div>
+                    </div>
+                    <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-zinc-100 text-zinc-700"}`}>{sh.status}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-zinc-400 dark:text-zinc-500 text-xs">Kargo kaydı yok.</p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -798,6 +921,61 @@ export default function TicketDetailPage() {
                 >
                   Çözüldü Olarak Onayla
                 </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Template Manager Modal (PUT/DELETE) */}
+      {isTemplateManagerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/60 p-4 backdrop-blur-xs">
+          <div className="relative my-auto w-full max-w-lg rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Hazır Şablonları Yönet (PUT/DELETE)</h3>
+              <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100" onClick={() => { setIsTemplateManagerOpen(false); setEditingTemplate(null); }} type="button">
+                ✕
+              </button>
+            </div>
+            <div className="mt-3 max-h-56 space-y-2 overflow-y-auto">
+              {cannedResponses.map((t) => (
+                <div className="flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-2.5 text-xs" key={t.id}>
+                  <div className="min-w-0">
+                    <div className="font-bold text-zinc-900 dark:text-zinc-100 truncate">{t.title} <span className="font-mono text-[10px] text-zinc-500">/{t.shortcut}</span></div>
+                    <div className="truncate text-[11px] text-zinc-500">{t.content.slice(0, 80)}</div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1">
+                    <button className="rounded-lg bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 hover:bg-blue-100" onClick={() => handleTemplateEdit(t)} type="button">
+                      Düzenle
+                    </button>
+                    <button className="rounded-lg bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-700 hover:bg-rose-100" onClick={() => handleTemplateDelete(t.id)} type="button">
+                      Sil
+                    </button>
+                    <button className="rounded-lg border border-zinc-200 px-2 py-1 text-[11px] font-semibold text-zinc-600 hover:bg-zinc-100" onClick={() => applyCannedResponse(t)} type="button">
+                      Ekle
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {cannedResponses.length === 0 && <p className="text-xs text-zinc-400">Henüz şablon yok.</p>}
+            </div>
+            <div className="mt-4 space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-3">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600">{editingTemplate ? "Şablonu Düzenle (PUT)" : "Yeni Şablon (POST)"}</div>
+              <input className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1.5 text-xs" onChange={(e) => setTemplateForm((p) => ({ ...p, title: e.target.value }))} placeholder="Başlık" type="text" value={templateForm.title} />
+              <div className="grid grid-cols-2 gap-2">
+                <input className="rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1.5 text-xs" onChange={(e) => setTemplateForm((p) => ({ ...p, shortcut: e.target.value }))} placeholder="Kısayol (örn: selam)" type="text" value={templateForm.shortcut} />
+                <input className="rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1.5 text-xs" onChange={(e) => setTemplateForm((p) => ({ ...p, category: e.target.value }))} placeholder="Kategori" type="text" value={templateForm.category} />
+              </div>
+              <textarea className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1.5 text-xs" onChange={(e) => setTemplateForm((p) => ({ ...p, content: e.target.value }))} placeholder="İçerik" rows={3} value={templateForm.content} />
+              <div className="flex justify-end gap-2">
+                {editingTemplate && (
+                  <button className="rounded-xl px-3 py-1.5 text-xs font-semibold text-zinc-600 hover:bg-zinc-100" onClick={() => { setEditingTemplate(null); setTemplateForm({ category: "Genel", content: "", shortcut: "", title: "" }); }} type="button">
+                    Vazgeç
+                  </button>
+                )}
+                <button className="rounded-xl bg-blue-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-blue-700" onClick={handleTemplateSave} type="button">
+                  {editingTemplate ? "Güncelle (PUT)" : "Kaydet"}
+                </button>
               </div>
             </div>
           </div>

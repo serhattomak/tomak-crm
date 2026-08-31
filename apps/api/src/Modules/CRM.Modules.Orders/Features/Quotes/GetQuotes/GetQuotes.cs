@@ -124,6 +124,9 @@ public class GetQuotesHandler(
                 q.RejectedAt,
                 q.ConvertedOrderId,
                 q.PublicViewToken,
+                q.PaymentMethod,
+                q.PaymentDueDays,
+                q.PaymentDueDate,
                 q.Items.Count,
                 q.CreatedAt,
                 q.UpdatedAt
