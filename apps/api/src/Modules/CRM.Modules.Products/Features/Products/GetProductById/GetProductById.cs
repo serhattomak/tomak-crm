@@ -70,7 +70,13 @@ public record ProductDetailDto(
     List<ProductVariantDetailDto> Variants,
     List<ProductStockMovementDto> StockMovements,
     DateTime CreatedAt,
-    DateTime UpdatedAt);
+    DateTime UpdatedAt,
+    string? Slug,
+    string? SeoTitle,
+    bool IsPublished,
+    bool IsFeatured,
+    int SortOrder,
+    decimal? WeightKg);
 
 public record GetProductByIdQuery(Guid Id) : IQuery<ProductDetailDto>;
 
@@ -168,7 +174,13 @@ public class GetProductByIdHandler(
             variantsDto,
             stockMovementsDto,
             product.CreatedAt,
-            product.UpdatedAt);
+            product.UpdatedAt,
+            product.Slug,
+            product.SeoTitle,
+            product.IsPublished,
+            product.IsFeatured,
+            product.SortOrder,
+            product.WeightKg);
 
         return Result.Success(detail);
     }

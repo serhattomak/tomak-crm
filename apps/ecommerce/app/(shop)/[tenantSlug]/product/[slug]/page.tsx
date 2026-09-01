@@ -1,16 +1,26 @@
-import { ArrowLeft, Package, Star, Weight } from "lucide-react";
+import { Breadcrumbs, getBreadcrumbJsonLd } from "@workspace/ui/components/breadcrumbs";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ProductCard } from "@/app/(shop)/[tenantSlug]/components/product-card";
 import { EcommerceClient } from "@/lib/ecommerce-client";
-import { ProductAddToCart } from "./product-add-to-cart";
+import type { PublicProductDto } from "@/lib/ecommerce-client";
+import { ProductInteractive } from "./product-interactive";
 
 const TENANT_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function isValidTenantSlug(slug: string): boolean {
-  return (
-    TENANT_SLUG_PATTERN.test(slug) && slug.length >= 2 && slug.length <= 64
-  );
+  return TENANT_SLUG_PATTERN.test(slug) && slug.length >= 2 && slug.length <= 64;
+}
+
+function getSiteOrigin(): string {
+  const url =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.VERCEL_URL ||
+    "";
+  if (!url) return "https://example.com";
+  if (url.startsWith("http")) return url.replace(/\/$/, "");
+  return `https://${url.replace(/\/$/, "")}`;
 }
 
 interface ProductPageProps {
@@ -19,25 +29,51 @@ interface ProductPageProps {
 
 export const revalidate = 60;
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { tenantSlug, slug } = await params;
-  if (!isValidTenantSlug(tenantSlug)) return { title: "Ürün bulunamadı" };
+  const origin = getSiteOrigin();
+  const canonical = `${origin}/${tenantSlug}/product/${encodeURIComponent(slug)}`;
+
+  if (!isValidTenantSlug(tenantSlug)) {
+    return { title: "Ürün bulunamadı" };
+  }
 
   const res = await EcommerceClient.getPublicProductBySlug(slug, tenantSlug).catch(
     () => ({ success: false as const })
   );
+
   if (!res.success || !res.data) {
-    return { title: `${slug} — ${tenantSlug}` };
+    return {
+      title: `${slug} — ${tenantSlug}`,
+      alternates: { canonical },
+    };
   }
+
+  const product = res.data;
+  const title = `${product.name} — ${tenantSlug}`;
+  const description = product.description?.trim()
+    ? product.description.trim().slice(0, 160)
+    : `${product.name} — ${tenantSlug} mağazası`;
+  const images = product.imageUrl ? [product.imageUrl] : undefined;
+
   return {
-    description: res.data.description ?? `${res.data.name} — ${tenantSlug} mağazası`,
-    title: `${res.data.name} — ${tenantSlug}`,
+    title,
+    description,
+    alternates: { canonical },
     openGraph: {
-      description: res.data.description ?? undefined,
-      images: res.data.imageUrl ? [res.data.imageUrl] : undefined,
-      title: res.data.name,
+      title: product.name,
+      description,
+      url: canonical,
+      type: "website",
+      images: images
+        ? images.map((url) => ({ url }))
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images,
     },
   };
 }
@@ -69,118 +105,121 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   }
 
   const product = result.data;
+  const origin = getSiteOrigin();
+  const canonical = `${origin}/${tenantSlug}/product/${encodeURIComponent(product.slug)}`;
+
+  // Images: merge imageUrl + images, dedupe
+  const rawImages = [
+    product.imageUrl ?? "",
+    ...(product.images ?? []),
+  ].filter(Boolean) as string[];
+  const dedupedImages = Array.from(new Set(rawImages));
+
+  // Breadcrumb: Home > Shop > Category > Product (via primitives/breadcrumbs)
+  const displayBreadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Shop", href: `/${tenantSlug}/shop` },
+    ...(product.categoryName
+      ? [
+          {
+            label: product.categoryName,
+            href: product.categoryId
+              ? `/${tenantSlug}/shop?categoryId=${encodeURIComponent(product.categoryId)}`
+              : `/${tenantSlug}/shop`,
+          },
+        ]
+      : []),
+    { label: product.name },
+  ];
+
+  const breadcrumbJsonLd = getBreadcrumbJsonLd(displayBreadcrumbs, origin);
+
+  // JSON-LD Product
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description ?? undefined,
+    image: dedupedImages.length > 0 ? dedupedImages : undefined,
+    sku: product.sku ?? undefined,
+    brand: (product as unknown as { brand?: string }).brand
+      ? { "@type": "Brand", name: (product as unknown as { brand?: string }).brand }
+      : undefined,
+    category: product.categoryName ?? undefined,
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: product.currency ?? "TRY",
+      availability:
+        typeof product.stock === "number" && product.stock <= 0
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+      url: canonical,
+      priceValidUntil: undefined,
+    },
+    weight: product.weight ? `${product.weight} kg` : undefined,
+  };
+
+  // Related products: same category, isPublished, limit 4, exclude current
+  let relatedProducts: PublicProductDto[] = [];
+  if (product.categoryId) {
+    const relatedRes = await EcommerceClient.getPublicProducts(
+      { categoryId: product.categoryId, isPublished: true, page: 1, pageSize: 8 },
+      tenantSlug
+    ).catch(() => ({ success: false as const }));
+    if (relatedRes.success && relatedRes.data?.items) {
+      relatedProducts = (relatedRes.data.items as PublicProductDto[])
+        .filter((p) => p.id !== product.id)
+        .slice(0, 4);
+    }
+  }
+  if (relatedProducts.length === 0) {
+    const fallback = await EcommerceClient.getPublicProducts(
+      { isPublished: true, page: 1, pageSize: 8 },
+      tenantSlug
+    ).catch(() => ({ success: false as const }));
+    if (fallback.success && fallback.data?.items) {
+      relatedProducts = (fallback.data.items as PublicProductDto[])
+        .filter((p) => p.id !== product.id)
+        .slice(0, 4);
+    }
+  }
 
   return (
     <div className="space-y-6">
-      <Link
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400"
-        href={`/${tenantSlug}/shop`}
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Mağazaya dön
-      </Link>
+      <Breadcrumbs items={displayBreadcrumbs} />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Images */}
-        <div className="space-y-3">
-          <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-            {product.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                alt={product.name}
-                className="h-full w-full object-cover"
-                src={product.imageUrl}
-              />
-            ) : (
-              <Package className="h-10 w-10 text-zinc-400" />
-            )}
+      <ProductInteractive images={dedupedImages} product={product} tenantSlug={tenantSlug} />
+
+      {relatedProducts.length > 0 ? (
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-sm text-store-surface-foreground">Benzer ürünler</h2>
+            <span className="text-[11px] text-store-muted-foreground">{relatedProducts.length} ürün</span>
           </div>
-
-          {product.images && product.images.length > 0 ? (
-            <div className="grid grid-cols-4 gap-2">
-              {product.images.slice(0, 8).map((src) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  alt={product.name}
-                  className="aspect-square rounded-xl border border-zinc-200 object-cover dark:border-zinc-800"
-                  key={src}
-                  src={src}
-                />
-              ))}
-            </div>
-          ) : null}
-
-          <p className="text-[11px] text-zinc-400">
-            CRM → Products · slug={product.slug} · ISR 60s · is_published filter
-          </p>
-        </div>
-
-        {/* Detail */}
-        <div className="space-y-4">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              {product.isFeatured ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
-                  <Star className="h-3 w-3" /> Öne çıkan
-                </span>
-              ) : null}
-              {product.categoryName ? (
-                <span className="rounded-full border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900">
-                  {product.categoryName}
-                </span>
-              ) : null}
-              {product.sku ? (
-                <span className="rounded-full bg-zinc-100 px-2.5 py-1 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800">
-                  SKU: {product.sku}
-                </span>
-              ) : null}
-            </div>
-
-            <h1 className="mt-3 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
-              {product.name}
-            </h1>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-              {product.description ?? "Bu ürün için açıklama eklenmemiş."}
-            </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedProducts.map((related) => (
+              <ProductCard key={related.id} product={related} tenantSlug={tenantSlug} />
+            ))}
           </div>
+        </section>
+      ) : null}
 
-          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-            <span className="font-extrabold text-xl text-zinc-900 dark:text-zinc-100">
-              ₺{product.price.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
-            </span>
-            {product.compareAtPrice ? (
-              <span className="text-sm text-zinc-400 line-through">
-                ₺{product.compareAtPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
-              </span>
-            ) : null}
-            <span className="text-xs text-zinc-500">· {product.currency}</span>
-            <span className="ml-auto text-xs text-zinc-500">
-              Stok: {product.stock ?? "—"}
-            </span>
-          </div>
-
-          {product.weight !== null && product.weight !== undefined ? (
-            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
-              <Weight className="h-4 w-4" />
-              Ağırlık: {product.weight} kg
-            </div>
-          ) : null}
-
-          <ProductAddToCart
-            productId={product.id}
-            tenantSlug={tenantSlug}
-            variants={product.variants ?? []}
-          />
-
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <p className="font-semibold text-zinc-700 dark:text-zinc-300">Teslimat & İade</p>
-            <p className="mt-1 leading-relaxed">
-              Siparişleriniz CRM üzerinden <code>status=Confirmed</code> ve <code>source=ECommerce</code> olarak
-              oluşturulur. Kargo takibi <Link className="underline" href={`/${tenantSlug}/my-orders`}>Hesabım → Siparişlerim</Link> üzerinden 30s polling + Realtime ile güncellenir.
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* JSON-LD Product + BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires raw JSON injection
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires raw JSON injection
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
     </div>
   );
 }

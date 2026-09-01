@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
@@ -30,7 +31,13 @@ public record UpdateProductRequest(
     string[]? Images,
     string[]? Tags,
     string? Attributes,
-    string? Description);
+    string? Description,
+    string? Slug,
+    string? SeoTitle,
+    bool? IsPublished,
+    bool? IsFeatured,
+    int? SortOrder,
+    decimal? WeightKg);
 
 public record UpdateProductCommand(Guid Id, UpdateProductRequest Request) : ICommand<bool>;
 
@@ -42,6 +49,10 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
         RuleFor(x => x.Request.Name).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Request.SellingPrice).GreaterThanOrEqualTo(0);
         RuleFor(x => x.Request.CostPrice).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Request.Slug).MaximumLength(255).When(x => x.Request.Slug != null);
+        RuleFor(x => x.Request.SeoTitle).MaximumLength(255).When(x => x.Request.SeoTitle != null);
+        RuleFor(x => x.Request.WeightKg).GreaterThanOrEqualTo(0).When(x => x.Request.WeightKg.HasValue);
+        RuleFor(x => x.Request.SortOrder).GreaterThanOrEqualTo(0).When(x => x.Request.SortOrder.HasValue);
     }
 }
 
@@ -85,11 +96,116 @@ public class UpdateProductHandler(
         product.Tags = req.Tags;
         product.Attributes = req.Attributes;
         product.Description = req.Description?.Trim();
+
+        // E-commerce extensions
+        if (req.Slug != null || !string.IsNullOrWhiteSpace(product.Name))
+        {
+            // Normalize: if explicit slug provided use it, otherwise keep existing or slugify name
+            var raw = req.Slug;
+            // When slug is explicitly provided (even empty string) we normalize; when null keep existing if present otherwise derive from name
+            string normalized;
+            if (raw != null)
+            {
+                normalized = Slugify(string.IsNullOrWhiteSpace(raw) ? product.Name : raw);
+            }
+            else
+            {
+                normalized = product.Slug != null ? product.Slug : Slugify(product.Name);
+            }
+            var unique = await EnsureUniqueSlugAsync(currentTenant.Id.Value, normalized, product.Id, cancellationToken);
+            product.Slug = unique;
+        }
+
+        if (req.SeoTitle != null)
+        {
+            product.SeoTitle = string.IsNullOrWhiteSpace(req.SeoTitle) ? null : req.SeoTitle.Trim();
+        }
+
+        if (req.IsPublished.HasValue)
+        {
+            product.IsPublished = req.IsPublished.Value;
+        }
+
+        if (req.IsFeatured.HasValue)
+        {
+            product.IsFeatured = req.IsFeatured.Value;
+        }
+
+        if (req.SortOrder.HasValue)
+        {
+            product.SortOrder = req.SortOrder.Value;
+        }
+
+        if (req.WeightKg.HasValue)
+        {
+            product.WeightKg = req.WeightKg.Value;
+        }
+        else if (req.WeightKg == null && product.WeightKg != null)
+        {
+            // keep existing when not provided; only clear if explicitly wants null via separate API
+            // no-op
+        }
+
         product.UpdatedAt = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result.Success(true);
+    }
+
+    private static string Slugify(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return "product";
+        }
+
+        var lower = input.Trim().ToLowerInvariant();
+        lower = lower
+            .Replace("ı", "i")
+            .Replace("ğ", "g")
+            .Replace("ü", "u")
+            .Replace("ş", "s")
+            .Replace("ö", "o")
+            .Replace("ç", "c")
+            .Replace("İ", "i")
+            .Replace("Ğ", "g")
+            .Replace("Ü", "u")
+            .Replace("Ş", "s")
+            .Replace("Ö", "o")
+            .Replace("Ç", "c");
+        lower = Regex.Replace(lower, @"[\s_]+", "-");
+        lower = Regex.Replace(lower, @"[^a-z0-9\-]", string.Empty);
+        lower = Regex.Replace(lower, @"\-{2,}", "-");
+        lower = lower.Trim('-');
+        if (string.IsNullOrWhiteSpace(lower))
+        {
+            return "product";
+        }
+        if (lower.Length > 255)
+        {
+            lower = lower[..255].TrimEnd('-');
+        }
+        return lower;
+    }
+
+    private async Task<string> EnsureUniqueSlugAsync(Guid tenantId, string baseSlug, Guid excludeId, CancellationToken ct)
+    {
+        var candidate = baseSlug;
+        var suffix = 1;
+        while (await dbContext.Products.AnyAsync(p => p.TenantId == tenantId && p.Slug == candidate && p.Id != excludeId, ct))
+        {
+            var suffixStr = "-" + suffix;
+            var allowedBase = 255 - suffixStr.Length;
+            var truncated = baseSlug.Length > allowedBase ? baseSlug[..allowedBase].TrimEnd('-') : baseSlug;
+            candidate = truncated + suffixStr;
+            suffix++;
+            if (suffix > 1000)
+            {
+                break;
+            }
+        }
+        return candidate;
     }
 }
 

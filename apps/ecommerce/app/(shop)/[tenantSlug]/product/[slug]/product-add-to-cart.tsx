@@ -1,39 +1,106 @@
 "use client";
 
-import { Minus, Plus, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { StoreBadge } from "@workspace/ui/components/badge";
+import { QuantityStepper } from "@workspace/ui/components/quantity-stepper";
+import { StockIndicator } from "@workspace/ui/components/stock-indicator";
+import { ShoppingBag } from "lucide-react";
+import * as React from "react";
+import { VariantPicker } from "@/app/(shop)/[tenantSlug]/components/variant-picker";
 import { EcommerceClient } from "@/lib/ecommerce-client";
 import { ensureGuestToken } from "@/lib/guest-token";
+import type { PublicProductVariantDto } from "@/lib/ecommerce-client";
 
-interface VariantOption {
-  id: string;
-  name: string;
-  price: number;
-  sku?: string;
-}
-
-interface ProductAddToCartProps {
+export interface ProductAddToCartProps {
+  baseCompareAtPrice?: number | null;
+  basePrice: number;
+  baseSku?: string | null;
+  baseStock?: number | null;
+  currency?: string;
+  onVariantImageChange?: (imageUrl: string | null) => void;
   productId: string;
   tenantSlug: string;
-  variants?: VariantOption[];
+  variants?: PublicProductVariantDto[];
+}
+
+function isVariantOutOfStock(variant: PublicProductVariantDto): boolean {
+  if (variant.isActive === false) return true;
+  if (typeof variant.stock === "number" && variant.stock <= 0) return true;
+  return false;
 }
 
 export function ProductAddToCart({
+  baseCompareAtPrice,
+  basePrice,
+  baseSku,
+  baseStock,
+  currency = "TRY",
+  onVariantImageChange,
   productId,
   tenantSlug,
-  variants,
+  variants = [],
 }: ProductAddToCartProps) {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedVariantId, setSelectedVariantId] = useState<string>(
-    variants?.[0]?.id ?? ""
+  const [selectedVariantId, setSelectedVariantId] = React.useState<string | null>(
+    null
   );
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [quantity, setQuantity] = React.useState(1);
+  const [loading, setLoading] = React.useState(false);
+  const [message, setMessage] = React.useState<string | null>(null);
 
-  const effectiveProductId =
-    selectedVariantId && variants?.length ? selectedVariantId : productId;
+  const selectedVariant = React.useMemo(
+    () => variants.find((v) => v.id === selectedVariantId) ?? null,
+    [variants, selectedVariantId]
+  );
+
+  const effectiveProductId = selectedVariant ? selectedVariant.id : productId;
+  const effectiveStock = selectedVariant
+    ? (selectedVariant.stock ?? null)
+    : (baseStock ?? null);
+  const isOutOfStock = React.useMemo(() => {
+    if (selectedVariant) return isVariantOutOfStock(selectedVariant);
+    if (typeof effectiveStock === "number" && effectiveStock <= 0) return true;
+    return false;
+  }, [selectedVariant, effectiveStock]);
+
+  const maxQuantity =
+    typeof effectiveStock === "number" && effectiveStock > 0
+      ? effectiveStock
+      : undefined;
+
+  // Clamp quantity when max changes (e.g., variant switch reduces stock)
+  React.useEffect(() => {
+    if (typeof maxQuantity === "number" && quantity > maxQuantity) {
+      setQuantity(maxQuantity);
+    }
+    if (quantity < 1) setQuantity(1);
+  }, [maxQuantity, quantity]);
+
+  // Notify parent of variant image for gallery sync
+  React.useEffect(() => {
+    if (!onVariantImageChange) return;
+    if (selectedVariant?.imageUrl) {
+      onVariantImageChange(selectedVariant.imageUrl);
+    } else {
+      onVariantImageChange(null);
+    }
+  }, [selectedVariant, onVariantImageChange]);
+
+  const handleVariantChange = (
+    variant: PublicProductVariantDto | null
+  ) => {
+    if (variant) {
+      setSelectedVariantId(variant.id);
+    } else {
+      setSelectedVariantId(null);
+    }
+    setQuantity(1);
+    setMessage(null);
+  };
 
   const handleAdd = async () => {
+    if (isOutOfStock) {
+      setMessage("Ürün stokta yok");
+      return;
+    }
     setLoading(true);
     setMessage(null);
     try {
@@ -54,64 +121,81 @@ export function ProductAddToCart({
     }
   };
 
+  const canAdd = !loading && !isOutOfStock;
+
   return (
-    <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-      {variants && variants.length > 0 ? (
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-            Varyant
+    <div className="space-y-4">
+      {variants.length > 0 ? (
+        <VariantPicker
+          basePrice={basePrice}
+          baseSku={baseSku ?? null}
+          compareAtPrice={baseCompareAtPrice ?? null}
+          currency={currency}
+          onVariantChange={handleVariantChange}
+          selectedVariantId={selectedVariantId}
+          tenantSlug={tenantSlug}
+          variants={variants}
+        />
+      ) : (
+        <div className="flex flex-wrap items-center gap-2">
+          {baseSku ? <StoreBadge variant="sku">SKU: {baseSku}</StoreBadge> : null}
+          <StockIndicator stock={effectiveStock} />
+        </div>
+      )}
+
+      {/* Quantity + Stock row — integrated */}
+      <div className="flex flex-wrap items-center gap-3 rounded-store-lg border border-store-border bg-store-surface p-4 shadow-store">
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-semibold text-store-surface-foreground" htmlFor="product-quantity">
+            Adet
           </label>
-          <select
-            className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-violet-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
-            onChange={(e) => setSelectedVariantId(e.target.value)}
-            value={selectedVariantId}
-          >
-            {variants.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name} — ₺{v.price.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
-                {v.sku ? ` (${v.sku})` : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-      ) : null}
-
-      <div className="flex items-center gap-3">
-        <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <button
-            aria-label="Azalt"
-            className="flex h-9 w-9 items-center justify-center hover:bg-zinc-50 disabled:opacity-40"
-            disabled={quantity <= 1}
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            type="button"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-          <span className="w-10 text-center text-sm font-semibold">{quantity}</span>
-          <button
-            aria-label="Artır"
-            className="flex h-9 w-9 items-center justify-center hover:bg-zinc-50"
-            onClick={() => setQuantity((q) => q + 1)}
-            type="button"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
+          <QuantityStepper
+            disabled={isOutOfStock}
+            id="product-quantity"
+            max={maxQuantity}
+            min={1}
+            onChange={setQuantity}
+            value={quantity}
+          />
+          {typeof maxQuantity === "number" ? (
+            <span className="text-[11px] text-store-muted-foreground">
+              En fazla {maxQuantity} adet
+            </span>
+          ) : null}
         </div>
 
-        <button
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-violet-700 disabled:opacity-50"
-          disabled={loading}
-          onClick={handleAdd}
-          type="button"
-        >
-          <ShoppingBag className="h-4 w-4" />
-          {loading ? "Ekleniyor…" : "Sepete ekle"}
-        </button>
+        <div className="ml-auto flex flex-col items-end gap-2">
+          <StockIndicator stock={effectiveStock} />
+          {isOutOfStock ? (
+            <span className="text-xs font-medium text-red-600 dark:text-red-400">
+              Stokta yok
+            </span>
+          ) : null}
+        </div>
       </div>
 
+      {/* Add to cart */}
+      <button
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-store bg-store-primary px-4 py-3 text-sm font-semibold text-store-primary-foreground shadow-store transition-colors hover:bg-store-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring focus-visible:ring-offset-2 focus-visible:ring-offset-store-surface disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={!canAdd}
+        onClick={handleAdd}
+        type="button"
+      >
+        <ShoppingBag aria-hidden="true" className="h-4 w-4" />
+        {loading ? "Ekleniyor…" : isOutOfStock ? "Stokta yok" : "Sepete ekle"}
+      </button>
+
       {message ? (
-        <p className="text-center text-xs text-zinc-500">{message}</p>
+        <p
+          className="text-center text-xs font-medium text-store-muted-foreground"
+          role="status"
+          aria-live="polite"
+        >
+          {message}
+        </p>
       ) : null}
     </div>
   );
 }
+
+export default ProductAddToCart;

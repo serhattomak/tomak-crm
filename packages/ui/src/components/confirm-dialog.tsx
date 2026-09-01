@@ -1,27 +1,27 @@
-"use client";
+"use client"
 
-import { cn } from "@workspace/ui/lib/utils";
+import { cn } from "@workspace/ui/lib/utils"
 import {
   AlertCircle,
   AlertTriangle,
   CheckCircle2,
   Loader2,
   X,
-} from "lucide-react";
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
-import * as React from "react";
+} from "lucide-react"
+import { AlertDialog as AlertDialogPrimitive } from "radix-ui"
+import * as React from "react"
 
 export interface ConfirmDialogProps {
-  cancelText?: string;
-  confirmText?: string;
-  description: string;
-  loading?: boolean;
-  onCancel?: () => void;
-  onConfirm: () => void | Promise<void>;
-  onOpenChange: (open: boolean) => void;
-  open: boolean;
-  title: string;
-  variant?: "destructive" | "warning" | "default";
+  cancelText?: string
+  confirmText?: string
+  description: string
+  loading?: boolean
+  onCancel?: () => void
+  onConfirm: () => void | Promise<void>
+  onOpenChange: (open: boolean) => void
+  open: boolean
+  title: string
+  variant?: "destructive" | "warning" | "default"
 }
 
 export function ConfirmDialog({
@@ -37,14 +37,14 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   const handleConfirm = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    await onConfirm();
-  };
+    e.preventDefault()
+    await onConfirm()
+  }
 
   const handleCancel = () => {
-    onCancel?.();
-    onOpenChange(false);
-  };
+    onCancel?.()
+    onOpenChange(false)
+  }
 
   const icon = React.useMemo(() => {
     if (variant === "destructive") {
@@ -52,34 +52,34 @@ export function ConfirmDialog({
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400">
           <AlertCircle className="h-5 w-5" />
         </div>
-      );
+      )
     }
     if (variant === "warning") {
       return (
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
           <AlertTriangle className="h-5 w-5" />
         </div>
-      );
+      )
     }
     return (
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
         <CheckCircle2 className="h-5 w-5" />
       </div>
-    );
-  }, [variant]);
+    )
+  }, [variant])
 
   return (
     <AlertDialogPrimitive.Root onOpenChange={onOpenChange} open={open}>
       <AlertDialogPrimitive.Portal>
-        <AlertDialogPrimitive.Overlay className="fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs data-[state=closed]:animate-out" />
-        <AlertDialogPrimitive.Content className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-2xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 data-[state=closed]:animate-out">
+        <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
+        <AlertDialogPrimitive.Content className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-2xl backdrop-blur-md fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex items-start gap-4">
             {icon}
             <div className="flex-1">
-              <AlertDialogPrimitive.Title className="font-bold text-base text-zinc-900 dark:text-zinc-50">
+              <AlertDialogPrimitive.Title className="text-base font-bold text-zinc-900 dark:text-zinc-50">
                 {title}
               </AlertDialogPrimitive.Title>
-              <AlertDialogPrimitive.Description className="mt-2 text-zinc-600 text-xs leading-relaxed dark:text-zinc-400">
+              <AlertDialogPrimitive.Description className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
                 {description}
               </AlertDialogPrimitive.Description>
             </div>
@@ -95,7 +95,7 @@ export function ConfirmDialog({
           <div className="mt-6 flex items-center justify-end gap-2.5">
             <AlertDialogPrimitive.Cancel asChild>
               <button
-                className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 text-xs transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                className="rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 disabled={loading}
                 onClick={handleCancel}
                 type="button"
@@ -107,10 +107,13 @@ export function ConfirmDialog({
             <AlertDialogPrimitive.Action asChild>
               <button
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all active:scale-[0.98] disabled:opacity-50",
-                  variant === "destructive" && "bg-rose-600 hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500",
-                  variant === "warning" && "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500",
-                  variant === "default" && "bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-500"
+                  "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all active:scale-[0.98] disabled:opacity-50",
+                  variant === "destructive" &&
+                    "bg-rose-600 hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500",
+                  variant === "warning" &&
+                    "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500",
+                  variant === "default" &&
+                    "bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-500"
                 )}
                 disabled={loading}
                 onClick={handleConfirm}
@@ -124,5 +127,5 @@ export function ConfirmDialog({
         </AlertDialogPrimitive.Content>
       </AlertDialogPrimitive.Portal>
     </AlertDialogPrimitive.Root>
-  );
+  )
 }

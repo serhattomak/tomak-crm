@@ -151,6 +151,61 @@ export default function ProductsPage() {
     }
   };
 
+  const handlePublishToggle = async (product: ProductListDto) => {
+    if (!activeTenant) {
+      return;
+    }
+    const nextPublished = !product.isPublished;
+    const prevProducts = [...products];
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === product.id ? { ...p, isPublished: nextPublished } : p
+      )
+    );
+    const payload = {
+      barcode: product.barcode || undefined,
+      brand: product.brand || undefined,
+      categoryId: product.categoryId || undefined,
+      costPrice: product.costPrice,
+      currency: product.currency || "TRY",
+      description: undefined,
+      discountRate: product.discountRate,
+      images: product.images || undefined,
+      isFeatured: product.isFeatured,
+      isPublished: nextPublished,
+      minStockLevel: product.minStockLevel,
+      name: product.name,
+      sellingPrice: product.sellingPrice,
+      seoTitle: product.seoTitle || undefined,
+      slug: product.slug || undefined,
+      sortOrder: product.sortOrder,
+      sku: product.sku || undefined,
+      status: product.status || "Active",
+      tags: product.tags || undefined,
+      taxRate: product.taxRate,
+      trackInventory: product.trackInventory,
+      type: product.type,
+      unit: product.unit || "Adet",
+      weightKg: product.weightKg || undefined,
+    };
+    try {
+      const res = await ApiClient.updateProduct(product.id, payload, activeTenant.id);
+      if (res.success) {
+        showToast(
+          nextPublished
+            ? `'${product.name}' mağazada yayınlandı.`
+            : `'${product.name}' yayından kaldırıldı.`
+        );
+      } else {
+        setProducts(prevProducts);
+        showToast(res.message || "Yayın durumu güncellenemedi.");
+      }
+    } catch {
+      setProducts(prevProducts);
+      showToast("Bağlantı hatası oluştu.");
+    }
+  };
+
   const getTypeBadge = (type: string) => {
     switch (type) {
       case "Physical":
@@ -519,6 +574,7 @@ export default function ProductsPage() {
                   <th className="px-4 py-3.5 text-right">Maliyet</th>
                   <th className="px-4 py-3.5 text-right">Satış Fiyatı</th>
                   <th className="px-4 py-3.5 text-right">Kar Marjı</th>
+                  <th className="px-4 py-3.5 text-center">Yayın</th>
                   <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
                 </tr>
               </thead>
@@ -668,6 +724,32 @@ export default function ProductsPage() {
                       >
                         %{Math.round(p.profitMargin)}
                       </span>
+                    </td>
+
+                    <td className="px-4 py-4 text-center">
+                      <PermissionGate permission="Products.Update">
+                        <button
+                          aria-checked={p.isPublished}
+                          aria-label={p.isPublished ? "Yayından kaldır" : "Mağazada yayınla"}
+                          className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                            p.isPublished
+                              ? "border-emerald-500 bg-emerald-500"
+                              : "border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-700"
+                          }`}
+                          onClick={() => handlePublishToggle(p)}
+                          role="switch"
+                          type="button"
+                        >
+                          <span
+                            className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
+                              p.isPublished ? "translate-x-4" : "translate-x-1"
+                            }`}
+                          />
+                        </button>
+                      </PermissionGate>
+                      <div className="mt-0.5 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">
+                        {p.isPublished ? "Yayında" : "Taslak"}
+                      </div>
                     </td>
 
                     <td className="py-4 pr-6 pl-4 text-right">
@@ -917,19 +999,41 @@ function CreateProductModal({
     description: "",
     discountRate: 0,
     initialStock: 0,
+    isFeatured: false,
+    isPublished: false,
     minStockLevel: 5,
     name: "",
     sellingPrice: 0,
+    seoTitle: "",
+    slug: "",
+    sortOrder: 0,
     sku: "",
     status: "Active",
     taxRate: 20,
     trackInventory: true,
     type: "Physical",
     unit: "Adet",
+    weightKg: undefined,
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSlugTouched, setIsSlugTouched] = useState(false);
+
+  const slugify = (value: string) =>
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/ı/g, "i")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ş/g, "s")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c")
+      .replace(/[\s_]+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-{2,}/g, "-")
+      .replace(/^-|-$/g, "");
 
   if (!isOpen) {
     return null;
@@ -956,9 +1060,16 @@ function CreateProductModal({
           formData.type === "Physical" && formData.trackInventory
             ? Number(formData.initialStock) || 0
             : 0,
+        isFeatured: Boolean(formData.isFeatured),
+        isPublished: Boolean(formData.isPublished),
         minStockLevel: Number(formData.minStockLevel) || 5,
         name: formData.name.trim(),
         sellingPrice: Number(formData.sellingPrice) || 0,
+        seoTitle: formData.seoTitle?.trim() || undefined,
+        slug: formData.slug?.trim()
+          ? slugify(formData.slug.trim())
+          : slugify(formData.name.trim()),
+        sortOrder: Number(formData.sortOrder) || 0,
         sku: formData.sku?.trim() || undefined,
         status: formData.status || "Active",
         taxRate: Number(formData.taxRate) ?? 20,
@@ -966,6 +1077,7 @@ function CreateProductModal({
           formData.type === "Physical" ? formData.trackInventory : false,
         type: formData.type,
         unit: formData.unit?.trim() || "Adet",
+        weightKg: formData.weightKg ? Number(formData.weightKg) : undefined,
       };
 
       const res = await ApiClient.createProduct(cleanData, tenantId);
@@ -1103,14 +1215,41 @@ function CreateProductModal({
               </label>
               <input
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                onChange={(e) => {
+                  const newName = e.target.value;
+                  setFormData((prev) => ({
+                    ...prev,
+                    name: newName,
+                    slug: isSlugTouched ? prev.slug : slugify(newName),
+                  }));
+                }}
                 placeholder="Örn: Ergonomik Ofis Koltuğu veya Yıllık Bakım Anlaşması"
                 required
                 type="text"
                 value={formData.name}
               />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Slug (URL) <span className="text-zinc-400 font-normal">— otomatik oluşur, düzenlenebilir</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-400 text-[11px]">/urun/</span>
+                <input
+                  className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                  onChange={(e) => {
+                    setIsSlugTouched(true);
+                    setFormData({ ...formData, slug: e.target.value });
+                  }}
+                  placeholder="ornek-urun-slug"
+                  type="text"
+                  value={formData.slug}
+                />
+              </div>
+              <p className="mt-1 text-[11px] text-zinc-400">
+                Boş bırakırsanız ürün adından otomatik oluşturulur. Sadece küçük harf, rakam ve tire kullanılır.
+              </p>
             </div>
 
             <div>
@@ -1345,6 +1484,77 @@ function CreateProductModal({
               )}
             </div>
           )}
+
+          {/* Mağaza Vitrin Ayarları */}
+          <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-4">
+            <h4 className="font-bold text-zinc-900 dark:text-zinc-100">Mağaza Vitrin Ayarları</h4>
+            <div className="flex flex-wrap items-center gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <button
+                  aria-checked={Boolean(formData.isPublished)}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors ${
+                    formData.isPublished
+                      ? "border-emerald-500 bg-emerald-500"
+                      : "border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-700"
+                  }`}
+                  onClick={() => setFormData({ ...formData, isPublished: !formData.isPublished })}
+                  role="switch"
+                  type="button"
+                >
+                  <span
+                    className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
+                      formData.isPublished ? "translate-x-4" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+                <span className="font-medium text-zinc-700 dark:text-zinc-300">Mağazada Yayınla</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  checked={Boolean(formData.isFeatured)}
+                  className="rounded text-blue-600"
+                  onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                  type="checkbox"
+                />
+                <span className="font-medium text-zinc-700 dark:text-zinc-300">Öne Çıkan (Vitrin)</span>
+              </label>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Sıralama (Sort Order)</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
+                  min="0"
+                  onChange={(e) => setFormData({ ...formData, sortOrder: Number.parseInt(e.target.value, 10) || 0 })}
+                  type="number"
+                  value={formData.sortOrder ?? 0}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Ağırlık (kg)</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
+                  min="0"
+                  onChange={(e) => setFormData({ ...formData, weightKg: e.target.value ? Number.parseFloat(e.target.value) : undefined })}
+                  placeholder="Örn: 1.5"
+                  step="0.01"
+                  type="number"
+                  value={formData.weightKg ?? ""}
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">SEO Başlığı</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
+                  maxLength={255}
+                  onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                  placeholder="SEO title (opsiyonel)"
+                  type="text"
+                  value={formData.seoTitle ?? ""}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Description */}
           <div>

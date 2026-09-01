@@ -1239,18 +1239,38 @@ function EditProductModal({
     currency: product.currency || "TRY",
     description: product.description || "",
     discountRate: product.discountRate,
+    isFeatured: product.isFeatured ?? false,
+    isPublished: product.isPublished ?? false,
     minStockLevel: product.minStockLevel,
     name: product.name,
     sellingPrice: product.sellingPrice,
+    seoTitle: product.seoTitle || "",
+    slug: product.slug || "",
+    sortOrder: product.sortOrder ?? 0,
     sku: product.sku || "",
     status: product.status,
     taxRate: product.taxRate,
     trackInventory: product.trackInventory,
     type: product.type,
     unit: product.unit || "Adet",
+    weightKg: product.weightKg,
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const slugify = (value: string) =>
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/ı/g, "i")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ş/g, "s")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c")
+      .replace(/[\s_]+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-{2,}/g, "-")
+      .replace(/^-|-$/g, "");
 
   if (!isOpen) {
     return null;
@@ -1268,9 +1288,14 @@ function EditProductModal({
         currency: formData.currency || "TRY",
         description: formData.description?.trim() || undefined,
         discountRate: Number(formData.discountRate) || 0,
+        isFeatured: Boolean(formData.isFeatured),
+        isPublished: Boolean(formData.isPublished),
         minStockLevel: Number(formData.minStockLevel) || 5,
         name: formData.name.trim(),
         sellingPrice: Number(formData.sellingPrice) || 0,
+        seoTitle: formData.seoTitle?.trim() || undefined,
+        slug: formData.slug?.trim() ? slugify(formData.slug.trim()) : slugify(formData.name.trim()),
+        sortOrder: Number(formData.sortOrder) || 0,
         sku: formData.sku?.trim() || undefined,
         status: formData.status || "Active",
         taxRate: Number(formData.taxRate) ?? 20,
@@ -1278,6 +1303,7 @@ function EditProductModal({
           formData.type === "Physical" ? formData.trackInventory : false,
         type: formData.type,
         unit: formData.unit?.trim() || "Adet",
+        weightKg: formData.weightKg ? Number(formData.weightKg) : undefined,
       };
 
       const res = await ApiClient.updateProduct(
@@ -1319,13 +1345,60 @@ function EditProductModal({
             </label>
             <input
               className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => {
+                const v = e.target.value;
+                setFormData((prev) => ({ ...prev, name: v, slug: prev.slug ? prev.slug : slugify(v) }));
+              }}
               required
               type="text"
               value={formData.name}
             />
+          </div>
+
+          <div>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Slug (URL)</label>
+            <input
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+              placeholder="ornek-urun-slug"
+              type="text"
+              value={formData.slug ?? ""}
+            />
+          </div>
+
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-3 space-y-2">
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <button
+                  aria-checked={Boolean(formData.isPublished)}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors ${formData.isPublished ? "border-emerald-500 bg-emerald-500" : "border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-700"}`}
+                  onClick={() => setFormData({ ...formData, isPublished: !formData.isPublished })}
+                  role="switch"
+                  type="button"
+                >
+                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${formData.isPublished ? "translate-x-4" : "translate-x-1"}`} />
+                </button>
+                <span className="font-medium">Mağazada Yayınla</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input checked={Boolean(formData.isFeatured)} className="rounded text-blue-600" onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })} type="checkbox" />
+                <span className="font-medium">Öne Çıkan</span>
+              </label>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Sıralama</label>
+                <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" min="0" onChange={(e) => setFormData({ ...formData, sortOrder: Number.parseInt(e.target.value, 10) || 0 })} type="number" value={formData.sortOrder ?? 0} />
+              </div>
+              <div>
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Ağırlık (kg)</label>
+                <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" min="0" onChange={(e) => setFormData({ ...formData, weightKg: e.target.value ? Number.parseFloat(e.target.value) : undefined })} step="0.01" type="number" value={formData.weightKg ?? ""} />
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">SEO Başlığı</label>
+              <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" maxLength={255} onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} placeholder="SEO title (opsiyonel)" type="text" value={formData.seoTitle ?? ""} />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">

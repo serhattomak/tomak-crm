@@ -846,6 +846,7 @@ export class ApiClient {
       categoryId?: string;
       status?: string;
       stockStatus?: string;
+      isPublished?: boolean;
       search?: string;
       page?: number;
       pageSize?: number;
@@ -864,6 +865,9 @@ export class ApiClient {
     }
     if (params.stockStatus) {
       query.set("stockStatus", params.stockStatus);
+    }
+    if (params.isPublished !== undefined) {
+      query.set("isPublished", String(params.isPublished));
     }
     if (params.search) {
       query.set("search", params.search);
@@ -3869,12 +3873,17 @@ export interface ProductListDto {
   discountRate: number;
   id: string;
   images?: string[];
+  isFeatured: boolean;
   isLowStock: boolean;
+  isPublished: boolean;
   minStockLevel: number;
   name: string;
   profitMargin: number;
   reservedStock: number;
   sellingPrice: number;
+  seoTitle?: string;
+  slug?: string;
+  sortOrder: number;
   sku?: string;
   status: "Active" | "Inactive" | "Draft" | "Discontinued" | string;
   tags?: string[];
@@ -3885,6 +3894,7 @@ export interface ProductListDto {
   unit: string;
   updatedAt: string;
   variantsCount: number;
+  weightKg?: number;
 }
 
 export interface PagedProductsResponse {
@@ -3939,12 +3949,17 @@ export interface ProductDetailDto {
   discountRate: number;
   id: string;
   images?: string[];
+  isFeatured: boolean;
   isLowStock: boolean;
+  isPublished: boolean;
   minStockLevel: number;
   name: string;
   profitMargin: number;
   reservedStock: number;
   sellingPrice: number;
+  seoTitle?: string;
+  slug?: string;
+  sortOrder: number;
   sku?: string;
   status: "Active" | "Inactive" | "Draft" | "Discontinued" | string;
   stockMovements: ProductStockMovementDto[];
@@ -3956,6 +3971,7 @@ export interface ProductDetailDto {
   unit: string;
   updatedAt: string;
   variants: ProductVariantDetailDto[];
+  weightKg?: number;
 }
 
 export interface ProductStatsDto {
@@ -3982,9 +3998,14 @@ export interface CreateProductRequest {
   discountRate?: number;
   images?: string[];
   initialStock?: number;
+  isFeatured?: boolean;
+  isPublished?: boolean;
   minStockLevel?: number;
   name: string;
   sellingPrice: number;
+  seoTitle?: string;
+  slug?: string;
+  sortOrder?: number;
   sku?: string;
   status?: string;
   tags?: string[];
@@ -3992,6 +4013,7 @@ export interface CreateProductRequest {
   trackInventory?: boolean;
   type: string;
   unit: string;
+  weightKg?: number;
 }
 
 export interface UpdateProductRequest {
@@ -4004,9 +4026,14 @@ export interface UpdateProductRequest {
   description?: string;
   discountRate?: number;
   images?: string[];
+  isFeatured?: boolean;
+  isPublished?: boolean;
   minStockLevel?: number;
   name: string;
   sellingPrice: number;
+  seoTitle?: string;
+  slug?: string;
+  sortOrder?: number;
   sku?: string;
   status?: string;
   tags?: string[];
@@ -4014,6 +4041,7 @@ export interface UpdateProductRequest {
   trackInventory?: boolean;
   type: string;
   unit: string;
+  weightKg?: number;
 }
 
 export interface CreateProductCategoryRequest {

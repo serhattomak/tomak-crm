@@ -39,7 +39,13 @@ public record ProductListDto(
     string[]? Tags,
     int VariantsCount,
     DateTime CreatedAt,
-    DateTime UpdatedAt);
+    DateTime UpdatedAt,
+    string? Slug,
+    string? SeoTitle,
+    bool IsPublished,
+    bool IsFeatured,
+    int SortOrder,
+    decimal? WeightKg);
 
 public record PagedProductsResponse(
     List<ProductListDto> Items,
@@ -54,7 +60,8 @@ public record GetProductsQuery(
     string? StockStatus = null, // "in_stock", "low_stock", "out_of_stock"
     string? Search = null,
     int Page = 1,
-    int PageSize = 50) : IQuery<PagedProductsResponse>;
+    int PageSize = 50,
+    bool? IsPublished = null) : IQuery<PagedProductsResponse>;
 
 public class GetProductsHandler(
     ProductsDbContext dbContext,
@@ -97,6 +104,11 @@ public class GetProductsHandler(
             query = query.Where(p => p.Status == request.Status);
         }
 
+        if (request.IsPublished.HasValue)
+        {
+            query = query.Where(p => p.IsPublished == request.IsPublished.Value);
+        }
+
         if (!string.IsNullOrWhiteSpace(request.StockStatus))
         {
             switch (request.StockStatus)
@@ -120,7 +132,8 @@ public class GetProductsHandler(
                 p.Name.ToLower().Contains(search) ||
                 (p.SKU != null && p.SKU.ToLower().Contains(search)) ||
                 (p.Barcode != null && p.Barcode.ToLower().Contains(search)) ||
-                (p.Brand != null && p.Brand.ToLower().Contains(search)));
+                (p.Brand != null && p.Brand.ToLower().Contains(search)) ||
+                (p.Slug != null && p.Slug.ToLower().Contains(search)));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -129,7 +142,8 @@ public class GetProductsHandler(
         var pageSize = request.PageSize is > 0 and <= 200 ? request.PageSize : 50;
 
         var items = await query
-            .OrderByDescending(p => p.CreatedAt)
+            .OrderBy(p => p.SortOrder)
+            .ThenByDescending(p => p.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(p => new ProductListDto(
@@ -160,7 +174,13 @@ public class GetProductsHandler(
                 p.Tags,
                 p.Variants.Count,
                 p.CreatedAt,
-                p.UpdatedAt))
+                p.UpdatedAt,
+                p.Slug,
+                p.SeoTitle,
+                p.IsPublished,
+                p.IsFeatured,
+                p.SortOrder,
+                p.WeightKg))
             .ToListAsync(cancellationToken);
 
         return Result.Success(new PagedProductsResponse(items, totalCount, page, pageSize));
@@ -179,6 +199,7 @@ public class GetProductsEndpoint : IEndpoint
             string? search,
             int? page,
             int? pageSize,
+            bool? isPublished,
             MediatR.ISender sender,
             CancellationToken ct) =>
         {
@@ -189,7 +210,8 @@ public class GetProductsEndpoint : IEndpoint
                 stockStatus,
                 search,
                 page ?? 1,
-                pageSize ?? 50), ct);
+                pageSize ?? 50,
+                isPublished), ct);
 
             return Results.Ok(ApiResponse<PagedProductsResponse>.Ok(result.Value));
         })

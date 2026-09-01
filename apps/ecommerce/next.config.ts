@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
     "127.0.0.1:3001",
     "localhost:3000",
   ],
+  images: {
+    remotePatterns: [
+      {
+        hostname: "*.supabase.co",
+        protocol: "https",
+      },
+      {
+        hostname: "*.supabase.in",
+        protocol: "https",
+      },
+      {
+        hostname: "images.unsplash.com",
+        protocol: "https",
+      },
+    ],
+  },
   // biome-ignore lint/suspicious/useAwait: Next.js expects async headers
   async headers() {
     return [

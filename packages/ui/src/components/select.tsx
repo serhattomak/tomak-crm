@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { cn } from "@workspace/ui/lib/utils";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { Select as SelectPrimitive } from "radix-ui";
-import type * as React from "react";
+import { cn } from "@workspace/ui/lib/utils"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import { Select as SelectPrimitive } from "radix-ui"
+import type * as React from "react"
 
-const Select = SelectPrimitive.Root;
+const Select = SelectPrimitive.Root
 
-const SelectGroup = SelectPrimitive.Group;
+const SelectGroup = SelectPrimitive.Group
 
-const SelectValue = SelectPrimitive.Value;
+const SelectValue = SelectPrimitive.Value
 
 function SelectTrigger({
   className,
@@ -19,7 +19,7 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 shadow-2xs transition-all outline-none placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         className
       )}
       {...props}
@@ -29,7 +29,7 @@ function SelectTrigger({
         <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 opacity-80" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
-  );
+  )
 }
 
 function SelectScrollUpButton({
@@ -46,7 +46,7 @@ function SelectScrollUpButton({
     >
       <ChevronUp className="h-4 w-4" />
     </SelectPrimitive.ScrollUpButton>
-  );
+  )
 }
 
 function SelectScrollDownButton({
@@ -63,7 +63,7 @@ function SelectScrollDownButton({
     >
       <ChevronDown className="h-4 w-4" />
     </SelectPrimitive.ScrollDownButton>
-  );
+  )
 }
 
 function SelectContent({
@@ -77,9 +77,9 @@ function SelectContent({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-1 text-slate-900 shadow-lg backdrop-blur-md data-[state=closed]:animate-out",
+          "relative z-50 max-h-96 min-w-[8rem] animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-1 text-slate-900 shadow-lg backdrop-blur-md fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           position === "popper" &&
-            "data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
+            "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className
         )}
         position={position}
@@ -99,7 +99,7 @@ function SelectContent({
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
-  );
+  )
 }
 
 function SelectLabel({
@@ -109,12 +109,12 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       className={cn(
-        "px-2.5 py-1.5 font-bold text-[10px] text-slate-400 uppercase tracking-wider",
+        "px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 function SelectItem({
@@ -125,7 +125,7 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-xl py-2 pr-8 pl-2.5 font-semibold text-slate-700 text-xs outline-none transition-colors data-[disabled]:pointer-events-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 data-[disabled]:opacity-50",
+        "relative flex w-full cursor-pointer items-center rounded-xl py-2 pr-8 pl-2.5 text-xs font-semibold text-slate-700 transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700",
         className
       )}
       {...props}
@@ -137,7 +137,7 @@ function SelectItem({
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
-  );
+  )
 }
 
 function SelectSeparator({
@@ -152,7 +152,7 @@ function SelectSeparator({
       )}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -166,4 +166,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-};
+}

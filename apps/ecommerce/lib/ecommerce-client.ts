@@ -66,7 +66,20 @@ export interface PagedResult<T> {
 
 // -- Catalog (CRM master, ecommerce read-only, ISR 60s) --
 
+export interface PublicProductVariantDto {
+  additionalPrice?: number | null;
+  barcode?: string | null;
+  id: string;
+  imageUrl?: string | null;
+  isActive?: boolean;
+  name: string;
+  price: number;
+  sku?: string | null;
+  stock?: number | null;
+}
+
 export interface PublicProductDto {
+  barcode?: string | null;
   categoryId?: string | null;
   categoryName?: string | null;
   compareAtPrice?: number | null;
@@ -74,6 +87,7 @@ export interface PublicProductDto {
   description?: string | null;
   id: string;
   imageUrl?: string | null;
+  images?: string[];
   isFeatured?: boolean;
   isPublished: boolean;
   name: string;
@@ -81,6 +95,7 @@ export interface PublicProductDto {
   sku?: string | null;
   slug: string;
   stock?: number | null;
+  variants?: PublicProductVariantDto[];
   weight?: number | null;
 }
 
@@ -95,7 +110,7 @@ export interface PublicProductsParams {
 
 export type PublicProductDetailDto = PublicProductDto & {
   images?: string[];
-  variants?: { id: string; name: string; price: number; sku?: string }[];
+  variants?: PublicProductVariantDto[];
 };
 
 // -- Cart (guest_token + auth_user_id merge server-side) --
@@ -685,7 +700,7 @@ export const EcommerceClient = {
   ): Promise<ApiResponse<PublicProductDetailDto>> {
     const query = new URLSearchParams({ tenantSlug });
     return await publicRequest<PublicProductDetailDto>(
-      `/api/public/products/by-slug/${encodeURIComponent(slug)}?${query.toString()}`,
+      `/api/public/products/${encodeURIComponent(slug)}?${query.toString()}`,
       tenantSlug,
       {
         method: "GET",

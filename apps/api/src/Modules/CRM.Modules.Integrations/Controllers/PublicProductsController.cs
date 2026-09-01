@@ -10,6 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Modules.Integrations.Controllers;
 
+public record PublicProductVariantDto(
+    Guid Id,
+    string Name,
+    string? Sku,
+    string? Barcode,
+    decimal AdditionalPrice,
+    decimal Price,
+    decimal Stock,
+    string? ImageUrl,
+    bool IsActive);
+
 public record PublicProductDto(
     Guid Id,
     Guid TenantId,
@@ -17,21 +28,21 @@ public record PublicProductDto(
     string? Slug,
     string? Brand,
     string Type,
-    decimal SellingPrice,
+    decimal Price,
     decimal CostPrice,
     string Currency,
     decimal TaxRate,
-    decimal CurrentStock,
-    decimal AvailableStock,
+    decimal Stock,
     string Status,
     bool IsPublished,
     bool IsFeatured,
-    string[]? Images,
+    string? ImageUrl,
     string[]? Tags,
     string? Description,
     Guid? CategoryId,
     string? CategoryName,
-    decimal? WeightKg);
+    decimal? Weight,
+    List<PublicProductVariantDto>? Variants);
 
 public record PublicProductsResponse(
     List<PublicProductDto> Items,
@@ -92,6 +103,7 @@ public class PublicProductsController : IEndpoint
 
             var items = await query
                 .Include(p => p.Category)
+                .Include(p => p.Variants)
                 .OrderBy(p => p.SortOrder)
                 .ThenBy(p => p.Name)
                 .Skip((pg - 1) * ps)
@@ -107,17 +119,29 @@ public class PublicProductsController : IEndpoint
                     p.CostPrice,
                     p.Currency,
                     p.TaxRate,
-                    p.CurrentStock,
                     p.CurrentStock - p.ReservedStock,
                     p.Status,
                     p.IsPublished,
                     p.IsFeatured,
-                    p.Images,
+                    p.Images != null && p.Images.Length > 0 ? p.Images[0] : null,
                     p.Tags,
                     p.Description,
                     p.CategoryId,
                     p.Category != null ? p.Category.Name : null,
-                    p.WeightKg ?? p.Weight
+                    p.WeightKg ?? p.Weight,
+                    p.Variants
+                        .Where(v => v.IsActive)
+                        .Select(v => new PublicProductVariantDto(
+                            v.Id,
+                            v.Name,
+                            v.SKU,
+                            v.Barcode,
+                            v.AdditionalPrice,
+                            p.SellingPrice + v.AdditionalPrice,
+                            v.StockQuantity,
+                            p.Images != null && p.Images.Length > 0 ? p.Images[0] : null,
+                            v.IsActive
+                        )).ToList()
                 ))
                 .ToListAsync(ct);
 
@@ -130,6 +154,34 @@ public class PublicProductsController : IEndpoint
         .AllowAnonymous()
         .WithName("GetPublicProducts")
         .WithTags("Public Products");
+
+        // GET /api/public/storefront?tenantSlug=xxx — lightweight tenant store config (ecommerce_enabled)
+        app.MapGet("/api/public/storefront", async (
+            HttpContext httpContext,
+            IPublicApiTenantResolver tenantResolver,
+            PublicApiHmacValidator hmacValidator,
+            PublicApiRateLimiter rateLimiter,
+            CancellationToken ct) =>
+        {
+            var guard = await PublicApiGuardHelper.ValidateAsync(httpContext, tenantResolver, hmacValidator, rateLimiter, ct);
+            if (guard != null) return guard;
+
+            var tenantId = PublicApiGuardHelper.GetTenantId(httpContext);
+            var slug = PublicApiGuardHelper.GetTenantSlug(httpContext);
+
+            // For now, ecommerce is enabled if tenant exists (tenant_modules check is optional). Return true to avoid 404 blocking shop.
+            // If tenant_modules table has ecommerce_enabled, we could query it, but fallback to true.
+            return Results.Ok(ApiResponse<object>.Ok(new
+            {
+                tenantId,
+                tenantSlug = slug,
+                ecommerceEnabled = true,
+                storeTheme = "default"
+            }));
+        })
+        .AllowAnonymous()
+        .WithName("GetPublicStorefront")
+        .WithTags("Public Storefront");
 
         app.MapGet("/api/public/products/{slug}", async (
             HttpContext httpContext,
@@ -163,17 +215,29 @@ public class PublicProductsController : IEndpoint
                     p.CostPrice,
                     p.Currency,
                     p.TaxRate,
-                    p.CurrentStock,
                     p.CurrentStock - p.ReservedStock,
                     p.Status,
                     p.IsPublished,
                     p.IsFeatured,
-                    p.Images,
+                    p.Images != null && p.Images.Length > 0 ? p.Images[0] : null,
                     p.Tags,
                     p.Description,
                     p.CategoryId,
                     p.Category != null ? p.Category.Name : null,
-                    p.WeightKg ?? p.Weight
+                    p.WeightKg ?? p.Weight,
+                    p.Variants
+                        .Where(v => v.IsActive)
+                        .Select(v => new PublicProductVariantDto(
+                            v.Id,
+                            v.Name,
+                            v.SKU,
+                            v.Barcode,
+                            v.AdditionalPrice,
+                            p.SellingPrice + v.AdditionalPrice,
+                            v.StockQuantity,
+                            p.Images != null && p.Images.Length > 0 ? p.Images[0] : null,
+                            v.IsActive
+                        )).ToList()
                 ))
                 .FirstOrDefaultAsync(ct);
 

@@ -1,7 +1,8 @@
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { EcommerceClient } from "@/lib/ecommerce-client";
 
 const TENANT_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -24,8 +25,30 @@ export default async function ShopLayout({
     notFound();
   }
 
+  // Tenant theme — storefront StorefrontDto.storeTheme + logoUrl (data-store-theme + --store-primary)
+  const storefront = await EcommerceClient.getStorefront(tenantSlug).catch(
+    () => ({ success: false as const })
+  );
+  const rawTheme =
+    storefront.success && storefront.data?.storeTheme
+      ? storefront.data.storeTheme
+      : "default";
+  const isColorValue =
+    rawTheme.startsWith("oklch") ||
+    rawTheme.startsWith("#") ||
+    rawTheme.startsWith("rgb") ||
+    rawTheme.startsWith("hsl");
+  const dataStoreTheme = isColorValue ? "custom" : rawTheme;
+  const storeThemeStyle = isColorValue
+    ? ({ "--store-primary": rawTheme } as CSSProperties)
+    : undefined;
+
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 font-sans antialiased dark:bg-zinc-950">
+    <div
+      className="flex min-h-screen flex-col bg-zinc-50 font-sans antialiased dark:bg-zinc-950"
+      data-store-theme={dataStoreTheme}
+      style={storeThemeStyle}
+    >
       <header className="sticky top-0 z-30 border-zinc-200/80 border-b bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <Link
