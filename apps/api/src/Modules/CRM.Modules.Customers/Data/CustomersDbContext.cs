@@ -18,6 +18,7 @@ public class CustomersDbContext(
     public DbSet<Deal> Deals => Set<Deal>();
     public DbSet<DealActivity> DealActivities => Set<DealActivity>();
     public DbSet<DealNote> DealNotes => Set<DealNote>();
+    public DbSet<CrmTask> Tasks => Set<CrmTask>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -265,6 +266,41 @@ public class CustomersDbContext(
             entity.Property(e => e.IsPinned).HasColumnName("is_pinned");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 10. Tasks (CrmTask)
+        modelBuilder.Entity<CrmTask>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.Title).HasColumnName("title").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.DueDate).HasColumnName("due_date");
+            entity.Property(e => e.Priority).HasColumnName("priority").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.IsCompleted).HasColumnName("is_completed").IsRequired();
+            entity.Property(e => e.CompletedAt).HasColumnName("completed_at");
+            entity.Property(e => e.Category).HasColumnName("category").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.AssignedUserId).HasColumnName("assigned_user_id");
+            entity.Property(e => e.AssignedUserName).HasColumnName("assigned_user_name").HasMaxLength(255);
+            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+            entity.Property(e => e.CustomerName).HasColumnName("customer_name").HasMaxLength(255);
+            entity.Property(e => e.DealId).HasColumnName("deal_id");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(e => e.Deal)
+                  .WithMany()
+                  .HasForeignKey(e => e.DealId)
+                  .OnDelete(DeleteBehavior.SetNull);
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });

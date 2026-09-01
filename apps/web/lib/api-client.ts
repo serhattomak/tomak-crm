@@ -3645,6 +3645,99 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Tasks & To-Do Management
+  // ==========================================
+  static async getTasks(
+    params: GetTasksParams = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedTasksResponse>> {
+    const query = new URLSearchParams();
+    if (params.isCompleted !== undefined) query.set("isCompleted", String(params.isCompleted));
+    if (params.status) query.set("status", params.status);
+    if (params.priority) query.set("priority", params.priority);
+    if (params.category) query.set("category", params.category);
+    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.dealId) query.set("dealId", params.dealId);
+    if (params.search) query.set("search", params.search);
+    if (params.page) query.set("page", String(params.page));
+    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+
+    const qs = query.toString();
+    return ApiClient.request<PagedTasksResponse>(
+      `/api/tasks${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getTaskById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<CrmTaskDto>> {
+    return ApiClient.request<CrmTaskDto>(
+      `/api/tasks/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createTask(
+    data: CreateTaskPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/tasks",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateTask(
+    id: string,
+    data: UpdateTaskPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/tasks/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleTaskStatus(
+    id: string,
+    isCompleted?: boolean,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/tasks/${id}/toggle`,
+      {
+        body: JSON.stringify({ isCompleted }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteTask(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/tasks/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -6796,6 +6889,80 @@ export interface CartPromotionEvaluationResultDto {
   couponValidationMessage?: string;
   isCouponValid: boolean;
 }
+
+// ==========================================
+// Tasks & To-Do DTOs
+// ==========================================
+export interface CrmTaskDto {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category: string;
+  completedAt?: string;
+  createdAt: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  id: string;
+  isCompleted: boolean;
+  priority: "low" | "medium" | "high" | "urgent" | string;
+  status: "Pending" | "InProgress" | "Completed" | "Cancelled" | string;
+  tenantId: string;
+  title: string;
+  updatedAt: string;
+}
+
+export interface PagedTasksResponse {
+  completedCount: number;
+  items: CrmTaskDto[];
+  page: number;
+  pageSize: number;
+  pendingCount: number;
+  totalCount: number;
+}
+
+export interface GetTasksParams {
+  assignedUserId?: string;
+  category?: string;
+  customerId?: string;
+  dealId?: string;
+  isCompleted?: boolean;
+  page?: number;
+  pageSize?: number;
+  priority?: string;
+  search?: string;
+  status?: string;
+}
+
+export interface CreateTaskPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  priority?: "low" | "medium" | "high" | "urgent" | string;
+  title: string;
+}
+
+export interface UpdateTaskPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  category?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  isCompleted?: boolean;
+  priority?: "low" | "medium" | "high" | "urgent" | string;
+  status?: "Pending" | "InProgress" | "Completed" | "Cancelled" | string;
+  title: string;
+}
+
 
 
 
