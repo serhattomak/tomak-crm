@@ -45,7 +45,7 @@ export default function ProductsPage() {
   const [stats, setStats] = useState<ProductStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, _setPage] = useState(1);
   const [pageSize] = useState(25);
 
   // Filters
@@ -124,6 +124,7 @@ export default function ProductsPage() {
     categoryFilter,
     statusFilter,
     stockStatusFilter,
+    showToast,
   ]);
 
   useEffect(() => {

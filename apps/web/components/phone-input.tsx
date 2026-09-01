@@ -97,7 +97,7 @@ export function PhoneInput({
     if (value !== displayValue) {
       setDisplayValue(formatPhoneNumber(value));
     }
-  }, [value]);
+  }, [value, displayValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;

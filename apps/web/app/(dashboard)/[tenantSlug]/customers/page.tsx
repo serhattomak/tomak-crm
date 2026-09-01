@@ -114,6 +114,7 @@ export default function CustomersPage() {
     statusFilter,
     typeFilter,
     tierFilter,
+    showToast,
   ]);
 
   useEffect(() => {
@@ -171,6 +172,7 @@ export default function CustomersPage() {
     statusFilter,
     typeFilter,
     tierFilter,
+    showToast,
   ]);
 
   const handleDelete = async () => {

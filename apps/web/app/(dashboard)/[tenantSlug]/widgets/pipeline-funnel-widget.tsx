@@ -88,7 +88,7 @@ export function PipelineFunnelWidget({
     } finally {
       setIsLoading(false);
     }
-  }, [activeTenant?.id]);
+  }, [activeTenant?.id, stageColors.length, stageColors]);
 
   useEffect(() => {
     fetchPipelineStages();

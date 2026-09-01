@@ -190,15 +190,15 @@ function RecruitmentPageContent() {
   // Reset page when filters change
   useEffect(() => {
     setReqPage(1);
-  }, [reqSearch, reqStatusFilter, reqPublishedFilter]);
+  }, []);
 
   useEffect(() => {
     setCandPage(1);
-  }, [candSearch, candSourceFilter]);
+  }, []);
 
   useEffect(() => {
     setAppPage(1);
-  }, [appSearch, appStageFilter]);
+  }, []);
 
   // Sorted stages
   const sortedStages = useMemo(
@@ -218,10 +218,8 @@ function RecruitmentPageContent() {
         const matchesSearch =
           reqSearch === "" ||
           r.title.toLowerCase().includes(reqSearch.toLowerCase()) ||
-          (r.departmentName &&
-            r.departmentName.toLowerCase().includes(reqSearch.toLowerCase())) ||
-          (r.location &&
-            r.location.toLowerCase().includes(reqSearch.toLowerCase()));
+          r.departmentName?.toLowerCase().includes(reqSearch.toLowerCase()) ||
+          r.location?.toLowerCase().includes(reqSearch.toLowerCase());
         const matchesStatus =
           reqStatusFilter === "all" || r.status === reqStatusFilter;
         const matchesPublished =
@@ -246,8 +244,8 @@ function RecruitmentPageContent() {
           candSearch === "" ||
           c.fullName.toLowerCase().includes(q) ||
           c.email.toLowerCase().includes(q) ||
-          (c.phone && c.phone.toLowerCase().includes(q)) ||
-          (c.tags && c.tags.some((t) => t.toLowerCase().includes(q)));
+          c.phone?.toLowerCase().includes(q) ||
+          c.tags?.some((t) => t.toLowerCase().includes(q));
         const matchesSource =
           candSourceFilter === "all" || c.source === candSourceFilter;
         return matchesSearch && matchesSource;
@@ -269,7 +267,7 @@ function RecruitmentPageContent() {
           a.candidateName.toLowerCase().includes(q) ||
           a.candidateEmail.toLowerCase().includes(q) ||
           a.requisitionTitle.toLowerCase().includes(q) ||
-          (a.stageName && a.stageName.toLowerCase().includes(q));
+          a.stageName?.toLowerCase().includes(q);
         const matchesStage =
           appStageFilter === "all" || a.stageId === appStageFilter;
         return matchesSearch && matchesStage;
@@ -3163,20 +3161,19 @@ function ApplicationDetailDrawer({
                   CV Görüntüle
                 </a>
               )}
-              {candidate.cvFileUrl &&
-                candidate.cvFileUrl.toLowerCase().endsWith(".pdf") && (
-                  <div className="mt-2 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-                    <object
-                      className="h-48 w-full"
-                      data={candidate.cvFileUrl}
-                      type="application/pdf"
-                    >
-                      <p className="p-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        Önizleme yok
-                      </p>
-                    </object>
-                  </div>
-                )}
+              {candidate.cvFileUrl?.toLowerCase().endsWith(".pdf") && (
+                <div className="mt-2 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+                  <object
+                    className="h-48 w-full"
+                    data={candidate.cvFileUrl}
+                    type="application/pdf"
+                  >
+                    <p className="p-2 text-xs text-zinc-500 dark:text-zinc-400">
+                      Önizleme yok
+                    </p>
+                  </object>
+                </div>
+              )}
             </div>
           )}
 

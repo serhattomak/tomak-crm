@@ -57,7 +57,7 @@ import { usePermissions } from "@/lib/permissions/permission-context";
 export default function AttendancePage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const tenantSlug = (params?.tenantSlug as string) || "";
+  const _tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
   const [activeTab, setActiveTab] = useState<
@@ -276,7 +276,11 @@ export default function AttendancePage() {
       // Normalize breaks for overlap/range (mirrors backend NormalizeBreaks)
       const shiftStartMins = startTsMins;
       const shiftEndMins = isOvernight ? endTsMins + 1440 : endTsMins;
-      type Norm = { start: number; end: number; idx: number };
+      interface Norm {
+        end: number;
+        idx: number;
+        start: number;
+      }
       const normalized: Norm[] = templateForm.breaks.map((b, idx) => {
         const rawStart = toMinutes(b.startTime);
         let rawEnd = toMinutes(b.endTime);

@@ -26,7 +26,10 @@ export function CartDrawer({ tenantSlug }: CartDrawerProps) {
     try {
       const res = await EcommerceClient.getCart(tenantSlug, guestToken);
       if (res.success && res.data) {
-        const total = res.data.items.reduce((acc, item) => acc + item.quantity, 0);
+        const total = res.data.items.reduce(
+          (acc, item) => acc + item.quantity,
+          0
+        );
         setCount(total);
       } else if (res.errorCode === "HTTP_404") {
         setCount(0);
@@ -84,7 +87,9 @@ export function CartDrawer({ tenantSlug }: CartDrawerProps) {
     <>
       {/* Trigger — header sepet ikon click → sağ drawer */}
       <button
-        aria-label={showBadge ? `Sepet, ${count} ürün — drawer aç` : "Sepet — drawer aç"}
+        aria-label={
+          showBadge ? `Sepet, ${count} ürün — drawer aç` : "Sepet — drawer aç"
+        }
         className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-store-border bg-white text-store-ink transition-all duration-200 hover:bg-store-muted hover:shadow-store-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
         onClick={() => setOpen(true)}
         type="button"
@@ -116,19 +121,25 @@ export function CartDrawer({ tenantSlug }: CartDrawerProps) {
 
         {/* panel slide-in right */}
         <div
-          aria-modal="true"
-          className={`relative flex h-full w-full max-w-md flex-col border-l border-store-border bg-store-surface shadow-store-xl transition-all duration-200 ease-out ${open ? "translate-x-0" : "translate-x-full"} motion-reduce:transition-none`}
-          role="dialog"
           aria-label="Sepet"
+          aria-modal="true"
+          className={`relative flex h-full w-full max-w-md flex-col border-store-border border-l bg-store-surface shadow-store-xl transition-all duration-200 ease-out ${open ? "translate-x-0" : "translate-x-full"} motion-reduce:transition-none`}
+          role="dialog"
         >
           {/* header */}
-          <div className="flex items-center justify-between border-b border-store-border bg-white px-4 py-3">
+          <div className="flex items-center justify-between border-store-border border-b bg-white px-4 py-3">
             <div className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-store-primary text-store-primary-foreground">
-                <ShoppingBag aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                <ShoppingBag
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
               </span>
               <div className="flex flex-col">
-                <h2 className="font-serif text-base text-store-ink leading-none">Sepet</h2>
+                <h2 className="font-serif text-base text-store-ink leading-none">
+                  Sepet
+                </h2>
                 <span className="font-mono text-[11px] text-store-muted-foreground">
                   {count} ürün · {tenantSlug}
                 </span>
@@ -147,14 +158,14 @@ export function CartDrawer({ tenantSlug }: CartDrawerProps) {
           {/* content — aynı view cart/page ile paylaşılan cart-items list */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <CartView
+              onCheckout={() => setOpen(false)}
               tenantSlug={tenantSlug}
               variant="drawer"
-              onCheckout={() => setOpen(false)}
             />
           </div>
 
           {/* footer quick links — page'e de erişim */}
-          <div className="border-t border-store-border bg-white px-4 py-3">
+          <div className="border-store-border border-t bg-white px-4 py-3">
             <div className="flex items-center justify-between text-xs">
               <Link
                 className="font-medium text-store-muted-foreground underline-offset-4 hover:text-store-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"

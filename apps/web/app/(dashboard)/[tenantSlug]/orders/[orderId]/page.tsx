@@ -61,7 +61,7 @@ export default function OrderDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, orderId, tenantSlug, router]);
+  }, [activeTenant, orderId, tenantSlug, router, showToast]);
 
   useEffect(() => {
     loadData();

@@ -431,13 +431,13 @@ export function CommandPalette({
     const filteredNav = navItems.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
-        (item.subtitle && item.subtitle.toLowerCase().includes(q))
+        item.subtitle?.toLowerCase().includes(q)
     );
 
     const filteredActions = actionItems.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
-        (item.subtitle && item.subtitle.toLowerCase().includes(q))
+        item.subtitle?.toLowerCase().includes(q)
     );
 
     return [...dynamicLiveItems, ...filteredActions, ...filteredNav];
@@ -446,7 +446,7 @@ export function CommandPalette({
   // Reset selected index when query or results change
   useEffect(() => {
     setSelectedIndex(0);
-  }, [query, allFilteredItems.length]);
+  }, []);
 
   // Scroll active item into view
   useEffect(() => {

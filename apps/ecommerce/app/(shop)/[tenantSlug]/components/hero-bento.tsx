@@ -103,6 +103,7 @@ export function HeroBento({
                 <Image
                   alt={featured.name}
                   className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                  fetchPriority="high"
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"

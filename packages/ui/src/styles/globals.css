@@ -254,7 +254,7 @@
     height: auto !important;
     min-height: 100% !important;
     overflow: visible !important;
-    color: #0f172a !important;
+    color: oklch(0.15 0.02 240) !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     background: white !important;

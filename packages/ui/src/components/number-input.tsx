@@ -53,7 +53,7 @@ export function NumberInput({
     }
 
     const num = Number.parseFloat(raw);
-    if (!isNaN(num)) {
+    if (!Number.isNaN(num)) {
       let clamped = num;
       if (min !== undefined && clamped < min) {
         clamped = min;

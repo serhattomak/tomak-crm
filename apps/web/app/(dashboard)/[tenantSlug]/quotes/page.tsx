@@ -60,16 +60,16 @@ const formatCurrency = (amount: number, currency = "TRY") =>
 
 export default function QuotesPage() {
   const params = useParams();
-  const router = useRouter();
+  const _router = useRouter();
   const searchParams = useSearchParams();
-  const tenantSlug = (params?.tenantSlug as string) || "";
+  const _tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
   // State
   const [quotes, setQuotes] = useState<QuoteSummaryDto[]>([]);
   const [stats, setStats] = useState<QuoteStatsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isStatsLoading, setIsStatsLoading] = useState(true);
+  const [_isStatsLoading, setIsStatsLoading] = useState(true);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -827,7 +827,7 @@ function CreateQuoteModal({
   const [paymentTerms, setPaymentTerms] = useState("");
   const [deliveryTerms, setDeliveryTerms] = useState("");
   const [bankDetails, setBankDetails] = useState("");
-  const [notes, setNotes] = useState("");
+  const [notes, _setNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("BankTransfer");
   const [paymentDueDays, setPaymentDueDays] = useState<string>("");
   const [paymentDueDate, setPaymentDueDate] = useState<string>("");
@@ -1058,7 +1058,7 @@ function CreateQuoteModal({
     try {
       const validUntil = new Date();
       validUntil.setDate(
-        validUntil.getDate() + (Number.parseInt(validDays) || 15)
+        validUntil.getDate() + (Number.parseInt(validDays, 10) || 15)
       );
 
       const payload = {
@@ -3033,7 +3033,7 @@ function QuoteTemplatesModal({
 }) {
   const { activeTenant } = usePermissions();
   const [templates, setTemplates] = useState<QuoteTemplateDto[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
 
   // Form State
   const [editingId, setEditingId] = useState<string | null>(null);

@@ -47,7 +47,7 @@ export default function OrdersPage() {
   const [products, setProducts] = useState<ProductListDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, _setPage] = useState(1);
   const [pageSize] = useState(25);
 
   // Filters
@@ -112,7 +112,15 @@ export default function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, page, pageSize, search, statusFilter, paymentStatusFilter]);
+  }, [
+    activeTenant,
+    page,
+    pageSize,
+    search,
+    statusFilter,
+    paymentStatusFilter,
+    showToast,
+  ]);
 
   useEffect(() => {
     loadData();

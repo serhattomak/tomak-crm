@@ -51,7 +51,7 @@ interface TenantLabels {
 
 export default function AdminTenantDetailPage() {
   const params = useParams();
-  const router = useRouter();
+  const _router = useRouter();
   const tenantId = params?.tenantId as string;
 
   const [activeTab, setActiveTab] = useState<"modules" | "labels">("modules");
@@ -60,7 +60,7 @@ export default function AdminTenantDetailPage() {
 
   const [tenant, setTenant] = useState<TenantDetail | null>(null);
   const [modules, setModules] = useState<TenantModuleItem[]>([]);
-  const [templates, setTemplates] = useState<IndustryTemplate[]>([]);
+  const [_templates, setTemplates] = useState<IndustryTemplate[]>([]);
   const [labels, setLabels] = useState<TenantLabels | null>(null);
 
   // Editable Overrides: Array of { key, value }
@@ -102,7 +102,7 @@ export default function AdminTenantDetailPage() {
         ).map(([key, value]) => ({ key, value: String(value ?? "") }));
         setCustomOverrides(initialOverrides);
       }
-    } catch (err) {
+    } catch {
       toast.error("Firma detayları yüklenemedi.");
     } finally {
       setLoading(false);
@@ -111,7 +111,7 @@ export default function AdminTenantDetailPage() {
 
   useEffect(() => {
     loadData();
-  }, [tenantId]);
+  }, [loadData]);
 
   // Toggle module enabled status
   const handleToggleModule = async (
@@ -140,7 +140,7 @@ export default function AdminTenantDetailPage() {
           )
         );
       }
-    } catch (err) {
+    } catch {
       toast.error("Modül durumu güncellenemedi.");
     }
   };
@@ -166,7 +166,7 @@ export default function AdminTenantDetailPage() {
         }
       );
       toast.success("Modül görüntüleme adı güncellendi.");
-    } catch (err) {
+    } catch {
       toast.error("Görüntüleme adı kaydedilemedi.");
     }
   };
@@ -212,7 +212,7 @@ export default function AdminTenantDetailPage() {
         toast.success("Etiket ve terminoloji ayarları başarıyla kaydedildi.");
         loadData();
       }
-    } catch (err) {
+    } catch {
       toast.error("Etiketler kaydedilirken hata oluştu.");
     } finally {
       setSaving(false);

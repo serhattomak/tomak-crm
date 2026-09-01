@@ -137,8 +137,7 @@ export function ProductDetailView({
     }
   };
 
-  const brand =
-    (product as unknown as { brand?: string | null }).brand ?? null;
+  const brand = (product as unknown as { brand?: string | null }).brand ?? null;
   const categoryHref = product.categoryId
     ? `/${tenantSlug}/shop?categoryId=${encodeURIComponent(product.categoryId)}`
     : `/${tenantSlug}/shop`;
@@ -161,7 +160,13 @@ export function ProductDetailView({
             <div className="flex flex-wrap items-center gap-2">
               {product.isFeatured ? (
                 <StoreBadge
-                  icon={<Star aria-hidden="true" className="h-3 w-3" strokeWidth={1.5} />}
+                  icon={
+                    <Star
+                      aria-hidden="true"
+                      className="h-3 w-3"
+                      strokeWidth={1.5}
+                    />
+                  }
                   variant="featured"
                 >
                   Öne çıkan
@@ -197,7 +202,11 @@ export function ProductDetailView({
                       strokeWidth={1.5}
                     />
                   ) : (
-                    <Copy aria-hidden="true" className="h-3 w-3" strokeWidth={1.5} />
+                    <Copy
+                      aria-hidden="true"
+                      className="h-3 w-3"
+                      strokeWidth={1.5}
+                    />
                   )}
                 </button>
               ) : null}
@@ -236,7 +245,11 @@ export function ProductDetailView({
               <StockIndicator stock={effectiveStock} />
               {product.weight !== null && product.weight !== undefined ? (
                 <span className="inline-flex items-center gap-1 font-mono text-[11px] text-store-muted-foreground">
-                  <Weight aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  <Weight
+                    aria-hidden="true"
+                    className="h-3.5 w-3.5"
+                    strokeWidth={1.5}
+                  />
                   {product.weight} kg
                 </span>
               ) : null}
@@ -288,7 +301,11 @@ export function ProductDetailView({
               onClick={handleAdd}
               type="button"
             >
-              <ShoppingBag aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+              <ShoppingBag
+                aria-hidden="true"
+                className="h-4 w-4"
+                strokeWidth={1.5}
+              />
               {loading
                 ? "Ekleniyor…"
                 : isOutOfStock
@@ -299,7 +316,7 @@ export function ProductDetailView({
             {message ? (
               <p
                 aria-live="polite"
-                className="animate-in text-center font-medium text-store-muted-foreground text-xs fade-in slide-in-from-top-1 duration-200"
+                className="fade-in slide-in-from-top-1 animate-in text-center font-medium text-store-muted-foreground text-xs duration-200"
                 role="status"
               >
                 {message}

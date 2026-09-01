@@ -242,7 +242,7 @@ export default function MessagesPage() {
     ) {
       fetchCustomerContext(selectedChannel.customerId);
     }
-  }, [selectedChannel, activeTenantId, fetchCustomerContext]);
+  }, [selectedChannel, activeTenantId, fetchCustomerContext, scrollToBottom]);
 
   // Handle Send Message
   const handleSendMessage = async (embedData?: {
@@ -387,7 +387,7 @@ export default function MessagesPage() {
   const handleUpdateStatus = async (
     newStatus: "Open" | "Pending" | "Resolved" | "Closed"
   ) => {
-    if (!selectedChannel || selectedChannel.type !== "CustomerSupport") {
+    if (selectedChannel?.type !== "CustomerSupport") {
       return;
     }
 

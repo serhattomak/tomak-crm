@@ -148,5 +148,3 @@ export function EmptyIllustration({
     </div>
   );
 }
-
-export default EmptyIllustration;

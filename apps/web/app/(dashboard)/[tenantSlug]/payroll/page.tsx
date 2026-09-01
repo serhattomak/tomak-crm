@@ -68,14 +68,14 @@ const MONTH_NAMES = [
 export default function PayrollPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const tenantSlug = (params?.tenantSlug as string) || "";
+  const _tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
   const [activeTab, setActiveTab] = useState<
     "runs" | "puantaj" | "payslip" | "icmal" | "simulator" | "parameters"
   >("runs");
 
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
   const [runs, setRuns] = useState<PayrollRunDto[]>([]);
   const [selectedRun, setSelectedRun] =
     useState<PayrollRunDetailResponse | null>(null);
@@ -159,7 +159,7 @@ export default function PayrollPage() {
 
   // Search & Filter in Puantaj
   const [puantajSearch, setPuantajSearch] = useState("");
-  const [puantajDeptFilter, setPuantajDeptFilter] = useState("");
+  const [puantajDeptFilter, _setPuantajDeptFilter] = useState("");
 
   const formatCurrency = (val?: number) =>
     new Intl.NumberFormat("tr-TR", {
@@ -600,12 +600,10 @@ export default function PayrollPage() {
       const matchesSearch =
         !puantajSearch ||
         emp.employeeName.toLowerCase().includes(puantajSearch.toLowerCase()) ||
-        (emp.employeeNumber &&
-          emp.employeeNumber
-            .toLowerCase()
-            .includes(puantajSearch.toLowerCase())) ||
-        (emp.jobTitle &&
-          emp.jobTitle.toLowerCase().includes(puantajSearch.toLowerCase()));
+        emp.employeeNumber
+          ?.toLowerCase()
+          .includes(puantajSearch.toLowerCase()) ||
+        emp.jobTitle?.toLowerCase().includes(puantajSearch.toLowerCase());
 
       const matchesDept =
         !puantajDeptFilter || emp.departmentName === puantajDeptFilter;

@@ -8,9 +8,9 @@ import type { PublicProductDto } from "@/lib/ecommerce-client";
 export type ProductTabId = "desc" | "details" | "shipping";
 
 export interface ProductTabsProps {
+  effectiveSku?: string | null;
   product: PublicProductDto;
   tenantSlug: string;
-  effectiveSku?: string | null;
 }
 
 export function ProductTabs({
@@ -22,7 +22,9 @@ export function ProductTabs({
   const sku = effectiveSku ?? product.sku ?? null;
   const variants = product.variants ?? [];
 
-  function isVariantOutOfStock(variant: NonNullable<PublicProductDto["variants"]>[number]): boolean {
+  function isVariantOutOfStock(
+    variant: NonNullable<PublicProductDto["variants"]>[number]
+  ): boolean {
     if (variant.isActive === false) {
       return true;
     }
@@ -91,7 +93,11 @@ export function ProductTabs({
             </p>
             {product.isFeatured ? (
               <span className="inline-flex items-center gap-1 rounded-full bg-store-accent px-2.5 py-1 font-semibold text-[11px] text-store-accent-foreground">
-                <Star aria-hidden="true" className="h-3 w-3" strokeWidth={1.5} />
+                <Star
+                  aria-hidden="true"
+                  className="h-3 w-3"
+                  strokeWidth={1.5}
+                />
                 Öne çıkan ürün
               </span>
             ) : null}
@@ -247,7 +253,11 @@ export function ProductTabs({
               </li>
             </ul>
             <div className="flex items-center gap-2 rounded-[1rem] border border-store-border bg-store-surface p-3 text-store-muted-foreground text-xs">
-              <Package aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+              <Package
+                aria-hidden="true"
+                className="h-4 w-4 shrink-0"
+                strokeWidth={1.5}
+              />
               <span>30 gün içinde iade — orijinal ambalaj ile</span>
             </div>
           </div>

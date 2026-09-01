@@ -2,17 +2,11 @@
 
 import { Price } from "@workspace/ui/components/price";
 import { QuantityStepper } from "@workspace/ui/components/quantity-stepper";
-import {
-  Check,
-  ImageOff,
-  Loader2,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Check, ImageOff, Loader2, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
-import { EcommerceClient, type CartDto } from "@/lib/ecommerce-client";
+import { type CartDto, EcommerceClient } from "@/lib/ecommerce-client";
 import { getGuestToken } from "@/lib/guest-token";
 import { EmptyIllustration } from "./empty-illustration";
 
@@ -180,9 +174,9 @@ export function CartView({
   if (loading) {
     return (
       <div
+        aria-busy="true"
         className={`flex flex-col gap-3 ${className ?? ""}`}
         role="status"
-        aria-busy="true"
       >
         <div className="flex items-center gap-2 rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm">
           <Loader2
@@ -190,13 +184,15 @@ export function CartView({
             className="h-4 w-4 animate-spin text-store-muted-foreground"
             strokeWidth={1.5}
           />
-          <span className="text-sm text-store-muted-foreground">Sepet yükleniyor…</span>
+          <span className="text-sm text-store-muted-foreground">
+            Sepet yükleniyor…
+          </span>
         </div>
         <div className="grid gap-3">
           {Array.from({ length: 2 }).map((_, i) => (
             <div
-              key={i}
               className="h-24 animate-pulse rounded-[1rem] border border-store-border bg-white shadow-store-sm"
+              key={i}
             />
           ))}
         </div>
@@ -209,16 +205,13 @@ export function CartView({
       <div className={className}>
         {error ? (
           <p
-            className="mb-3 rounded-[1rem] border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
+            className="mb-3 rounded-[1rem] border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-xs"
             role="alert"
           >
             {error}
           </p>
         ) : null}
-        <EmptyIllustration
-          tenantSlug={tenantSlug}
-          variant="cart"
-        />
+        <EmptyIllustration tenantSlug={tenantSlug} variant="cart" />
         {variant === "drawer" ? (
           <p className="mt-3 text-center font-mono text-[11px] text-store-muted-foreground">
             {count} ürün · {tenantSlug}
@@ -232,7 +225,7 @@ export function CartView({
     <div className={`flex flex-col gap-4 ${className ?? ""}`}>
       {error ? (
         <div
-          className="flex items-center justify-between gap-2 rounded-[1rem] border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
+          className="flex items-center justify-between gap-2 rounded-[1rem] border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-xs"
           role="alert"
         >
           <span>{error}</span>
@@ -257,12 +250,12 @@ export function CartView({
           const isFading = justRemovedIds.has(item.id);
           return (
             <div
-              key={item.id}
-              className={`group flex gap-3 rounded-[1rem] border bg-white p-3 shadow-store-sm transition-all duration-200 hover:shadow-store focus-within:ring-2 focus-within:ring-store-ring ${
+              className={`group flex gap-3 rounded-[1rem] border bg-white p-3 shadow-store-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-store-ring hover:shadow-store ${
                 isFading
-                  ? "animate-out fade-out opacity-0 duration-200"
-                  : "animate-in fade-in slide-in-from-right-2 duration-200"
+                  ? "fade-out animate-out opacity-0 duration-200"
+                  : "fade-in slide-in-from-right-2 animate-in duration-200"
               } ${isRemoving ? "opacity-60" : ""} border-store-border`}
+              key={item.id}
               style={{
                 opacity: isFading ? 0 : undefined,
                 transform: isFading ? "translateX(8px)" : undefined,
@@ -303,16 +296,12 @@ export function CartView({
                   {item.productName}
                 </Link>
                 <div className="flex items-center gap-2">
-                  <Price
-                    currency={currency}
-                    price={item.unitPrice}
-                    size="sm"
-                  />
+                  <Price currency={currency} price={item.unitPrice} size="sm" />
                   <span className="font-mono text-[11px] text-store-muted-foreground">
                     × {item.quantity}
                   </span>
                   {isJustAdded ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-[11px] text-emerald-700 ring-1 ring-emerald-200 transition-all duration-200 animate-in fade-in slide-in-from-top-1">
+                    <span className="fade-in slide-in-from-top-1 inline-flex animate-in items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-[11px] text-emerald-700 ring-1 ring-emerald-200 transition-all duration-200">
                       <Check
                         aria-hidden="true"
                         className="h-3 w-3"
@@ -325,7 +314,7 @@ export function CartView({
 
                 <div className="flex items-center gap-2 pt-1">
                   <span
-                    className={`transition-all duration-200 ${isPulsing ? "animate-pulse scale-[1.02]" : ""}`}
+                    className={`transition-all duration-200 ${isPulsing ? "scale-[1.02] animate-pulse" : ""}`}
                   >
                     <QuantityStepper
                       disabled={isUpdating || isRemoving}
@@ -380,14 +369,16 @@ export function CartView({
       <div className="rounded-[1rem] border border-store-border bg-white p-4 shadow-store transition-all duration-200">
         <div className="flex items-center justify-between text-xs">
           <span className="text-store-muted-foreground">Ara toplam</span>
-          <span className="font-mono font-medium text-store-ink">
-            {subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} {currency}
+          <span className="font-medium font-mono text-store-ink">
+            {subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}{" "}
+            {currency}
           </span>
         </div>
         <div className="mt-2 flex items-center justify-between">
           <span className="font-semibold text-sm text-store-ink">Toplam</span>
           <span className="font-bold text-lg text-store-primary tracking-tight">
-            {totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} {currency}
+            {totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}{" "}
+            {currency}
           </span>
         </div>
         <p className="mt-1 font-mono text-[11px] text-store-muted-foreground">

@@ -71,7 +71,7 @@ export function Gallery({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isLightboxOpen]);
+  }, [isLightboxOpen, closeLightbox]);
 
   return (
     <div className={cn("space-y-3", className)}>
@@ -87,6 +87,7 @@ export function Gallery({
             <Image
               alt={alt}
               className="object-cover"
+              fetchPriority={activeIndex === 0 ? "high" : "auto"}
               fill
               priority={activeIndex === 0}
               sizes="(max-width: 1024px) 100vw, 50vw"

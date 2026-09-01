@@ -84,5 +84,3 @@ export function CategoryPills({
     </nav>
   );
 }
-
-export default CategoryPills;

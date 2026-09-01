@@ -207,7 +207,7 @@ export class ApiClient {
     };
 
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
 
     if (tenantId) {
@@ -533,7 +533,7 @@ export class ApiClient {
       search?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedEmployeesResponse>> {
     const query = new URLSearchParams();
@@ -852,7 +852,7 @@ export class ApiClient {
       search?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedProductsResponse>> {
     const query = new URLSearchParams();
@@ -1040,7 +1040,7 @@ export class ApiClient {
       search?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedOrdersResponse>> {
     const query = new URLSearchParams();
@@ -1164,7 +1164,7 @@ export class ApiClient {
       search?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedLeaveRequestsResponse>> {
     const query = new URLSearchParams();
@@ -1202,7 +1202,7 @@ export class ApiClient {
       endDate?: string;
       departmentId?: string;
       status?: string;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<LeaveCalendarEventDto[]>> {
     const query = new URLSearchParams();
@@ -1236,7 +1236,7 @@ export class ApiClient {
   }
 
   static async getMyLeaveBalance(
-    params: { employeeId?: string; year?: number } = {},
+    params: { employeeId?: string; year?: number },
     tenantId: string
   ): Promise<ApiResponse<LeaveBalanceDto>> {
     const query = new URLSearchParams();
@@ -3045,7 +3045,7 @@ export class ApiClient {
       isPublished?: boolean;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedRequisitionsResponse>> {
     const query = new URLSearchParams();
@@ -3161,7 +3161,7 @@ export class ApiClient {
       tag?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedCandidatesResponse>> {
     const query = new URLSearchParams();
@@ -3259,7 +3259,7 @@ export class ApiClient {
     const token = await ApiClient.getAuthToken();
     const headers: Record<string, string> = {};
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
     if (tenantId) {
       headers["X-Tenant-Id"] = tenantId;
@@ -3316,7 +3316,7 @@ export class ApiClient {
     const token = await ApiClient.getAuthToken();
     const headers: Record<string, string> = {};
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
     if (tenantId) {
       headers["X-Tenant-Id"] = tenantId;
@@ -3362,7 +3362,7 @@ export class ApiClient {
       candidateId?: string;
       page?: number;
       pageSize?: number;
-    } = {},
+    },
     tenantId: string
   ): Promise<ApiResponse<PagedApplicationsResponse>> {
     const query = new URLSearchParams();

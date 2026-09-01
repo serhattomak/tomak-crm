@@ -29,7 +29,7 @@ import {
 
 export default function CompliancePage() {
   const params = useParams();
-  const router = useRouter();
+  const _router = useRouter();
   const tenantSlug = (params?.tenantSlug as string) || "";
 
   const [activeTab, setActiveTab] = useState<
@@ -121,7 +121,7 @@ export default function CompliancePage() {
 
   useEffect(() => {
     loadData();
-  }, [tenantSlug, selectedCategory, statusFilter]);
+  }, [loadData]);
 
   // Open Rule Edit Drawer
   const handleOpenEditRule = (rule: ComplianceRuleDto) => {
@@ -322,7 +322,7 @@ export default function CompliancePage() {
       r.name.toLowerCase().includes(q) ||
       r.code.toLowerCase().includes(q) ||
       r.lawReference.toLowerCase().includes(q) ||
-      (r.description && r.description.toLowerCase().includes(q))
+      r.description?.toLowerCase().includes(q)
     );
   });
 

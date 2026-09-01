@@ -79,7 +79,12 @@ export function DatePicker({
     const y = Number.parseInt(p0, 10);
     const m = Number.parseInt(p1, 10) - 1;
     const d = Number.parseInt(p2, 10);
-    if (isNaN(y) || isNaN(m) || isNaN(d) || !TURKISH_MONTHS[m]) {
+    if (
+      Number.isNaN(y) ||
+      Number.isNaN(m) ||
+      Number.isNaN(d) ||
+      !TURKISH_MONTHS[m]
+    ) {
       return value;
     }
     return `${d} ${TURKISH_MONTHS[m]} ${y}`;
@@ -144,7 +149,7 @@ export function DatePicker({
     }
 
     return days;
-  }, [viewYear, viewMonth]);
+  }, [viewYear, viewMonth, formatDateString]);
 
   const handleSelectDay = (dateStr: string) => {
     onChange?.(dateStr);

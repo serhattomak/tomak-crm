@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function RootPage() {
   const router = useRouter();
-  const [tenants, setTenants] = useState<TenantDto[]>([]);
+  const [_tenants, setTenants] = useState<TenantDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [newTenantName, setNewTenantName] = useState("");
   const [isCreating, setIsCreating] = useState(false);

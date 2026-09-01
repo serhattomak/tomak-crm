@@ -54,7 +54,7 @@ export function Combobox({
     return options.filter(
       (opt) =>
         opt.label.toLowerCase().includes(query) ||
-        (opt.description && opt.description.toLowerCase().includes(query))
+        opt.description?.toLowerCase().includes(query)
     );
   }, [options, search]);
 

@@ -101,7 +101,7 @@ export default function CustomerDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, customerId, tenantSlug, router]);
+  }, [activeTenant, customerId, tenantSlug, router, showToast]);
 
   useEffect(() => {
     let ignore = false;
@@ -142,7 +142,7 @@ export default function CustomerDetailPage() {
     return () => {
       ignore = true;
     };
-  }, [activeTenant, customerId, tenantSlug, router]);
+  }, [activeTenant, customerId, tenantSlug, router, showToast]);
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
-import { EcommerceClient, type CartDto } from "@/lib/ecommerce-client";
+import { type CartDto, EcommerceClient } from "@/lib/ecommerce-client";
 import { getGuestToken } from "@/lib/guest-token";
 import { EmptyIllustration } from "../components/empty-illustration";
 
@@ -53,7 +53,7 @@ function StepPill({
       }`}
     >
       <span
-        className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold leading-none transition-all duration-200 ${
+        className={`flex h-5 w-5 items-center justify-center rounded-full font-bold text-[11px] leading-none transition-all duration-200 ${
           active
             ? "bg-white text-store-primary"
             : done
@@ -61,7 +61,11 @@ function StepPill({
               : "bg-store-muted text-store-muted-foreground"
         }`}
       >
-        {done ? <Check aria-hidden="true" className="h-3 w-3" strokeWidth={1.5} /> : step}
+        {done ? (
+          <Check aria-hidden="true" className="h-3 w-3" strokeWidth={1.5} />
+        ) : (
+          step
+        )}
       </span>
       {label}
     </span>
@@ -99,9 +103,7 @@ function PillRadio({
       <span
         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200 ${active ? "border-store-primary bg-store-primary text-store-primary-foreground" : "border-store-border bg-white"}`}
       >
-        {active ? (
-          <span className="h-2 w-2 rounded-full bg-white" />
-        ) : null}
+        {active ? <span className="h-2 w-2 rounded-full bg-white" /> : null}
       </span>
     </button>
   );
@@ -154,14 +156,15 @@ export default function CheckoutPage({
   const isEmpty = !cart || cart.items.length === 0;
   const currency = cart?.currency ?? "TRY";
   const subtotal = cart?.subtotal ?? cart?.totalAmount ?? 0;
-  const shippingFee =
-    SHIPPING_OPTIONS.find((o) => o.id === shipping)?.note.includes("59")
-      ? 59.9
-      : SHIPPING_OPTIONS.find((o) => o.id === shipping)?.note.includes("49")
-        ? 49.9
-        : SHIPPING_OPTIONS.find((o) => o.id === shipping)?.note.includes("69")
-          ? 69.9
-          : 39.9;
+  const shippingFee = SHIPPING_OPTIONS.find(
+    (o) => o.id === shipping
+  )?.note.includes("59")
+    ? 59.9
+    : SHIPPING_OPTIONS.find((o) => o.id === shipping)?.note.includes("49")
+      ? 49.9
+      : SHIPPING_OPTIONS.find((o) => o.id === shipping)?.note.includes("69")
+        ? 69.9
+        : 39.9;
   const total = subtotal + (isEmpty ? 0 : shippingFee);
 
   const handlePlaceOrder = async () => {
@@ -225,27 +228,42 @@ export default function CheckoutPage({
           Ödeme
         </h1>
         <p className="text-sm text-store-muted-foreground leading-relaxed">
-          Tek sayfa adımlar — sol adres/kargo pill’leri + payment_gateways radio, sağ özet sticky.
+          Tek sayfa adımlar — sol adres/kargo pill’leri + payment_gateways
+          radio, sağ özet sticky.
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring rounded-full"
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
             onClick={() => setStep(1)}
             type="button"
           >
-            <StepPill active={step === 1} done={step > 1} label="Sepet" step={1} />
+            <StepPill
+              active={step === 1}
+              done={step > 1}
+              label="Sepet"
+              step={1}
+            />
           </button>
-          <span className="text-store-muted-foreground" aria-hidden="true">→</span>
+          <span aria-hidden="true" className="text-store-muted-foreground">
+            →
+          </span>
           <button
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring rounded-full"
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
             onClick={() => setStep(2)}
             type="button"
           >
-            <StepPill active={step === 2} done={step > 2} label="Bilgiler" step={2} />
+            <StepPill
+              active={step === 2}
+              done={step > 2}
+              label="Bilgiler"
+              step={2}
+            />
           </button>
-          <span className="text-store-muted-foreground" aria-hidden="true">→</span>
+          <span aria-hidden="true" className="text-store-muted-foreground">
+            →
+          </span>
           <button
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring rounded-full"
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
             onClick={() => setStep(3)}
             type="button"
           >
@@ -255,7 +273,7 @@ export default function CheckoutPage({
       </div>
 
       {loadingCart ? (
-        <div className="rounded-[1rem] border border-store-border bg-white p-6 shadow-store-sm text-sm text-store-muted-foreground">
+        <div className="rounded-[1rem] border border-store-border bg-white p-6 text-sm text-store-muted-foreground shadow-store-sm">
           Sepet yükleniyor…
         </div>
       ) : isEmpty ? (
@@ -266,24 +284,31 @@ export default function CheckoutPage({
           <div className="space-y-4">
             {/* Step 1: Sepet mini özet — also via stepper */}
             {step === 1 ? (
-              <div className="rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm space-y-3 transition-all duration-200">
+              <div className="space-y-3 rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm transition-all duration-200">
                 <h2 className="flex items-center gap-1.5 font-semibold text-sm text-store-ink">
-                  <Package aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                  <Package
+                    aria-hidden="true"
+                    className="h-4 w-4"
+                    strokeWidth={1.5}
+                  />
                   Sepetiniz
                 </h2>
-                <div className="divide-y divide-store-border rounded-[0.75rem] border border-store-border overflow-hidden">
+                <div className="divide-y divide-store-border overflow-hidden rounded-[0.75rem] border border-store-border">
                   {cart.items.map((item) => (
                     <div
-                      key={item.id}
                       className="flex items-center justify-between gap-3 bg-white px-3 py-2 text-xs"
+                      key={item.id}
                     >
-                      <span className="font-medium text-store-ink line-clamp-1">
+                      <span className="line-clamp-1 font-medium text-store-ink">
                         {item.productName} × {item.quantity}
                       </span>
-                      <span className="font-mono font-semibold text-store-ink shrink-0">
-                        {(item.unitPrice * item.quantity).toLocaleString("tr-TR", {
-                          minimumFractionDigits: 2,
-                        })}{" "}
+                      <span className="shrink-0 font-mono font-semibold text-store-ink">
+                        {(item.unitPrice * item.quantity).toLocaleString(
+                          "tr-TR",
+                          {
+                            minimumFractionDigits: 2,
+                          }
+                        )}{" "}
                         {currency}
                       </span>
                     </div>
@@ -295,7 +320,11 @@ export default function CheckoutPage({
                   type="button"
                 >
                   Bilgilere devam et
-                  <ArrowRight aria-hidden="true" className="ml-1 h-4 w-4" strokeWidth={1.5} />
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="ml-1 h-4 w-4"
+                    strokeWidth={1.5}
+                  />
                 </button>
               </div>
             ) : null}
@@ -305,21 +334,27 @@ export default function CheckoutPage({
               className={`space-y-3 rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm transition-all duration-200 ${step === 2 ? "ring-2 ring-store-ring" : "opacity-90"}`}
             >
               <h2 className="flex items-center gap-1.5 font-semibold text-sm text-store-ink">
-                <MapPin aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                <MapPin
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
                 Teslimat bilgileri
               </h2>
 
               {/* adres başlık pill’leri */}
               <div className="space-y-2">
-                <p className="font-medium text-xs text-store-ink">Adres başlığı</p>
+                <p className="font-medium text-store-ink text-xs">
+                  Adres başlığı
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {["Ev", "İş", "Diğer"].map((label) => {
                     const active = addressTitle === label;
                     return (
                       <button
-                        key={label}
                         aria-pressed={active}
                         className={`rounded-full border px-4 py-1.5 font-medium text-xs transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring ${active ? "border-store-primary bg-store-accent text-store-accent-foreground shadow-store-sm" : "border-store-border bg-white text-store-ink hover:bg-store-muted"}`}
+                        key={label}
                         onClick={() => setAddressTitle(label)}
                         type="button"
                       >
@@ -332,19 +367,19 @@ export default function CheckoutPage({
                   <label className="flex flex-col gap-1 text-xs">
                     <span className="font-medium text-store-ink">Adres</span>
                     <input
-                      className="rounded-full border border-store-border bg-white px-3 py-2 text-xs text-store-ink placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring transition-all duration-200"
+                      className="rounded-full border border-store-border bg-white px-3 py-2 text-store-ink text-xs transition-all duration-200 placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring"
+                      onChange={(e) => setAddressLine(e.target.value)}
                       placeholder="Mahalle, sokak, no…"
                       value={addressLine}
-                      onChange={(e) => setAddressLine(e.target.value)}
                     />
                   </label>
                   <label className="flex flex-col gap-1 text-xs">
                     <span className="font-medium text-store-ink">Şehir</span>
                     <input
-                      className="rounded-full border border-store-border bg-white px-3 py-2 text-xs text-store-ink placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring transition-all duration-200"
+                      className="rounded-full border border-store-border bg-white px-3 py-2 text-store-ink text-xs transition-all duration-200 placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring"
+                      onChange={(e) => setCity(e.target.value)}
                       placeholder="İstanbul"
                       value={city}
-                      onChange={(e) => setCity(e.target.value)}
                     />
                   </label>
                 </div>
@@ -352,15 +387,19 @@ export default function CheckoutPage({
 
               {/* kargo pill’leri */}
               <div className="space-y-2 pt-2">
-                <p className="flex items-center gap-1.5 font-medium text-xs text-store-ink">
-                  <Truck aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                <p className="flex items-center gap-1.5 font-medium text-store-ink text-xs">
+                  <Truck
+                    aria-hidden="true"
+                    className="h-4 w-4"
+                    strokeWidth={1.5}
+                  />
                   Kargo
                 </p>
                 <div className="grid gap-2">
                   {SHIPPING_OPTIONS.map((opt) => (
                     <PillRadio
-                      key={opt.id}
                       active={shipping === opt.id}
+                      key={opt.id}
                       label={opt.label}
                       note={opt.note}
                       onClick={() => setShipping(opt.id)}
@@ -383,7 +422,11 @@ export default function CheckoutPage({
                   type="button"
                 >
                   Ödemeye devam
-                  <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="h-4 w-4"
+                    strokeWidth={1.5}
+                  />
                 </button>
               </div>
             </div>
@@ -393,14 +436,18 @@ export default function CheckoutPage({
               className={`space-y-3 rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm transition-all duration-200 ${step === 3 ? "ring-2 ring-store-ring" : "opacity-90"}`}
             >
               <h2 className="flex items-center gap-1.5 font-semibold text-sm text-store-ink">
-                <CreditCard aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                <CreditCard
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
                 Ödeme yöntemi
               </h2>
               <div className="grid gap-2">
                 {PAYMENT_GATEWAYS.map((gw) => (
                   <PillRadio
-                    key={gw.id}
                     active={gateway === gw.id}
+                    key={gw.id}
                     label={gw.label}
                     note={gw.note}
                     onClick={() => setGateway(gw.id)}
@@ -408,7 +455,9 @@ export default function CheckoutPage({
                 ))}
               </div>
               <p className="font-mono text-[11px] text-store-muted-foreground">
-                Seçili: <span className="font-semibold text-store-ink">{gateway}</span> · store-theme mercan radio active bg-store-accent
+                Seçili:{" "}
+                <span className="font-semibold text-store-ink">{gateway}</span>{" "}
+                · store-theme mercan radio active bg-store-accent
               </p>
               <div className="flex gap-2">
                 <button
@@ -429,25 +478,45 @@ export default function CheckoutPage({
           </div>
 
           {/* Right — özet sticky top-20 rounded-[1rem] shadow-store toplam store-primary */}
-          <div className="lg:sticky lg:top-20 lg:self-start space-y-4">
+          <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
             <div className="rounded-[1rem] border border-store-border bg-white p-4 shadow-store transition-all duration-200">
-              <h2 className="font-serif text-lg text-store-ink">Sipariş özeti</h2>
+              <h2 className="font-serif text-lg text-store-ink">
+                Sipariş özeti
+              </h2>
               <div className="mt-3 space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-store-muted-foreground">Ara toplam</span>
-                  <span className="font-mono font-medium text-store-ink">
-                    {subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} {currency}
+                  <span className="text-store-muted-foreground">
+                    Ara toplam
+                  </span>
+                  <span className="font-medium font-mono text-store-ink">
+                    {subtotal.toLocaleString("tr-TR", {
+                      minimumFractionDigits: 2,
+                    })}{" "}
+                    {currency}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-store-muted-foreground">Kargo ({SHIPPING_OPTIONS.find((o) => o.id === shipping)?.label})</span>
-                  <span className="font-mono font-medium text-store-ink">
-                    {shippingFee.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} {currency}
+                  <span className="text-store-muted-foreground">
+                    Kargo (
+                    {SHIPPING_OPTIONS.find((o) => o.id === shipping)?.label})
+                  </span>
+                  <span className="font-medium font-mono text-store-ink">
+                    {shippingFee.toLocaleString("tr-TR", {
+                      minimumFractionDigits: 2,
+                    })}{" "}
+                    {currency}
                   </span>
                 </div>
-                <div className="flex justify-between border-t border-store-border pt-2">
-                  <span className="font-semibold text-sm text-store-ink">Toplam</span>
-                  <Price currency={currency} price={total} size="lg" className="[&>span:first-child]:text-store-primary" />
+                <div className="flex justify-between border-store-border border-t pt-2">
+                  <span className="font-semibold text-sm text-store-ink">
+                    Toplam
+                  </span>
+                  <Price
+                    className="[&>span:first-child]:text-store-primary"
+                    currency={currency}
+                    price={total}
+                    size="lg"
+                  />
                 </div>
                 <p className="font-mono text-[11px] text-store-muted-foreground">
                   {cart.items.length} ürün · toplam store-primary vurgulu
@@ -458,7 +527,7 @@ export default function CheckoutPage({
               <div className="mt-4 flex gap-2">
                 <input
                   aria-label="Kupon kodu"
-                  className="flex-1 rounded-full border border-store-border bg-white px-3 py-2 text-xs text-store-ink placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring transition-all duration-200"
+                  className="flex-1 rounded-full border border-store-border bg-white px-3 py-2 text-store-ink text-xs transition-all duration-200 placeholder:text-store-muted-foreground focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring"
                   placeholder="Kupon kodu"
                   type="text"
                 />
@@ -477,13 +546,17 @@ export default function CheckoutPage({
                 type="button"
               >
                 {placing ? "Oluşturuluyor…" : "Siparişi tamamla"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+                <ArrowRight
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
               </button>
 
               {message ? (
                 <p
                   aria-live="polite"
-                  className="mt-3 animate-in fade-in slide-in-from-top-1 duration-200 text-center text-xs font-medium text-store-primary"
+                  className="fade-in slide-in-from-top-1 mt-3 animate-in text-center font-medium text-store-primary text-xs duration-200"
                   role="status"
                 >
                   {message}
@@ -493,16 +566,16 @@ export default function CheckoutPage({
               <p className="mt-3 text-center font-mono text-[11px] text-store-muted-foreground/70">
                 EcommerceClient.createPublicOrder · guest-token korunur
               </p>
-              <div className="mt-3 flex flex-wrap gap-2 justify-center">
+              <div className="mt-3 flex flex-wrap justify-center gap-2">
                 <Link
-                  className="text-xs font-medium text-store-muted-foreground underline-offset-4 hover:text-store-ink hover:underline"
+                  className="font-medium text-store-muted-foreground text-xs underline-offset-4 hover:text-store-ink hover:underline"
                   href={`/${tenantSlug}/cart`}
                 >
                   Sepete dön
                 </Link>
                 <span className="text-store-muted-foreground text-xs">·</span>
                 <Link
-                  className="text-xs font-medium text-store-muted-foreground underline-offset-4 hover:text-store-ink hover:underline"
+                  className="font-medium text-store-muted-foreground text-xs underline-offset-4 hover:text-store-ink hover:underline"
                   href={`/${tenantSlug}/shop`}
                 >
                   Mağazaya dön
@@ -512,8 +585,12 @@ export default function CheckoutPage({
 
             {/* mini trust */}
             <div className="rounded-[1rem] border border-store-border border-dashed bg-store-muted/50 p-3 text-[11px] text-store-muted-foreground leading-relaxed">
-              Güvenli ödeme · Iyzico / PayTR altyapısı · 14 gün iade. Kargo ücreti teslimat adımında netleşir. Sorular için{" "}
-              <Link className="font-medium text-store-ink underline-offset-4 hover:underline" href={`/${tenantSlug}/my-orders/support`}>
+              Güvenli ödeme · Iyzico / PayTR altyapısı · 14 gün iade. Kargo
+              ücreti teslimat adımında netleşir. Sorular için{" "}
+              <Link
+                className="font-medium text-store-ink underline-offset-4 hover:underline"
+                href={`/${tenantSlug}/my-orders/support`}
+              >
                 destek
               </Link>
               .

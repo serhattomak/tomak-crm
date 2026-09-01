@@ -57,7 +57,7 @@ const ALL_MODULES = [
 ];
 
 function AdminTenantsContent() {
-  const router = useRouter();
+  const _router = useRouter();
   const searchParams = useSearchParams();
   const shouldOpenCreateModal = searchParams.get("create") === "true";
 
@@ -97,7 +97,7 @@ function AdminTenantsContent() {
           setFormData((prev) => ({ ...prev, templateId: firstTpl.id }));
         }
       }
-    } catch (err) {
+    } catch {
       toast.error("Firma listesi yüklenemedi.");
     } finally {
       setLoading(false);
@@ -106,7 +106,7 @@ function AdminTenantsContent() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   const handleTemplateChange = (templateId: string) => {
     const selected = templates.find((t) => t.id === templateId);
@@ -186,7 +186,7 @@ function AdminTenantsContent() {
           )
         );
       }
-    } catch (err) {
+    } catch {
       toast.error("Durum güncellenirken hata oluştu.");
     }
   };

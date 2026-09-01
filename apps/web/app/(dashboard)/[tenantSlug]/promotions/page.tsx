@@ -47,7 +47,7 @@ import { CampaignModal } from "./components/campaign-modal";
 export default function PromotionsPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const tenantSlug = (params?.tenantSlug as string) || "";
+  const _tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
   const [activeTab, setActiveTab] = useState<
@@ -188,7 +188,7 @@ export default function PromotionsPage() {
         toast.success(res.data.message);
         setCampaigns((prev) =>
           prev.map((c) =>
-            c.id === id ? { ...c, isActive: res.data!.isActive } : c
+            c.id === id ? { ...c, isActive: res.data?.isActive } : c
           )
         );
       } else {

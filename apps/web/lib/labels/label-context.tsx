@@ -114,10 +114,10 @@ export function LabelProvider({
 
   useEffect(() => {
     fetchLabelsAndModules();
-  }, [tenantSlug, tenantId]);
+  }, [fetchLabelsAndModules]);
 
   const getLabel = (key: string, defaultText?: string): string => {
-    if (labels?.fieldLabels && labels.fieldLabels[key]) {
+    if (labels?.fieldLabels?.[key]) {
       return labels.fieldLabels[key];
     }
     return defaultText ?? key;
@@ -128,7 +128,7 @@ export function LabelProvider({
     defaultText?: string
   ): string => {
     const lower = moduleKey.toLowerCase();
-    if (labels?.moduleDisplayNames && labels.moduleDisplayNames[lower]) {
+    if (labels?.moduleDisplayNames?.[lower]) {
       return labels.moduleDisplayNames[lower];
     }
     return defaultText ?? DEFAULT_MODULE_NAMES[lower] ?? moduleKey;
@@ -156,7 +156,16 @@ export function LabelProvider({
       modules,
       refetch: fetchLabelsAndModules,
     }),
-    [labels, modules, isLoading, error]
+    [
+      labels,
+      modules,
+      isLoading,
+      error,
+      getLabel,
+      getModuleDisplayName,
+      isModuleEnabled,
+      fetchLabelsAndModules,
+    ]
   );
 
   return (

@@ -1020,7 +1020,7 @@ export default function WorkflowBuilderPage() {
                       <input
                         className="w-24 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
                         onChange={(e) => {
-                          const val = Number.parseInt(e.target.value) || 0;
+                          const val = Number.parseInt(e.target.value, 10) || 0;
                           setActions((prev) =>
                             prev.map((a) =>
                               a.id === act.id ? { ...a, delayMinutes: val } : a

@@ -73,7 +73,7 @@ export default function AdminTemplatesPage() {
       if (res?.data) {
         setTemplates(res.data);
       }
-    } catch (err) {
+    } catch {
       toast.error("Şablonlar yüklenemedi.");
     } finally {
       setLoading(false);
@@ -82,7 +82,7 @@ export default function AdminTemplatesPage() {
 
   useEffect(() => {
     loadTemplates();
-  }, []);
+  }, [loadTemplates]);
 
   const handleOpenCreate = () => {
     setEditTemplate({
@@ -142,7 +142,7 @@ export default function AdminTemplatesPage() {
     // Validate JSON
     try {
       JSON.parse(editTemplate.labelsJson);
-    } catch (err) {
+    } catch {
       toast.error("Etiket JSON şablonu geçersiz formatta.");
       return;
     }

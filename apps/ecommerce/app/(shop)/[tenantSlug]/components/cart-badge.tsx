@@ -89,11 +89,9 @@ export function CartBadge({ tenantSlug }: { tenantSlug: string }) {
           aria-hidden="true"
           className="absolute -top-1 -right-1 flex min-h-[18px] min-w-[18px] animate-pulse items-center justify-center rounded-full bg-store-primary px-1 font-bold text-[10px] text-store-primary-foreground leading-none shadow-store-sm"
         >
-          {loading ? "·" : displayCount}
+          {loading ? "…" : displayCount}
         </span>
       ) : null}
     </Link>
   );
 }
-
-export default CartBadge;

@@ -236,12 +236,8 @@ export default function ShipmentsPage() {
         const matchesSearch =
           searchQuery === "" ||
           s.shipmentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (s.trackingNumber &&
-            s.trackingNumber
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())) ||
-          (s.orderNumber &&
-            s.orderNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          s.trackingNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          s.orderNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           s.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
           s.recipientName.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -263,10 +259,7 @@ export default function ShipmentsPage() {
         const matchesSearch =
           searchQuery === "" ||
           r.returnCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (r.trackingNumber &&
-            r.trackingNumber
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())) ||
+          r.trackingNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.reason.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -1399,7 +1392,7 @@ function CreateShipmentModal({
   onSuccess: () => void;
 }) {
   const [customerName, setCustomerName] = useState("");
-  const [customerId, setCustomerId] = useState<string | undefined>(undefined);
+  const [customerId, _setCustomerId] = useState<string | undefined>(undefined);
   const [orderNumber, setOrderNumber] = useState("");
   const [carrierId, setCarrierId] = useState<string>(
     carriers.find((c) => c.isDefault)?.id || carriers[0]?.id || ""
@@ -1834,7 +1827,7 @@ function UpdateStatusModal({
   const [trackingNumber, setTrackingNumber] = useState(
     shipment.trackingNumber || ""
   );
-  const [carrierId, setCarrierId] = useState(shipment.carrierId || "");
+  const [carrierId, _setCarrierId] = useState(shipment.carrierId || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -2351,7 +2344,7 @@ function CreateReturnModal({
   onSuccess: () => void;
 }) {
   const [customerName, setCustomerName] = useState("");
-  const [customerId, setCustomerId] = useState<string | undefined>(undefined);
+  const [customerId, _setCustomerId] = useState<string | undefined>(undefined);
   const [carrierId, setCarrierId] = useState(carriers[0]?.id || "");
   const [trackingNumber, setTrackingNumber] = useState("");
   const [reason, setReason] = useState("Hasarlı / Kusurlu Ürün");

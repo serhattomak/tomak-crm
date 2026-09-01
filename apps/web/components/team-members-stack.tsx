@@ -48,10 +48,10 @@ function getAvatarColor(idOrName: string) {
 }
 
 function getInitials(name?: string, email?: string) {
-  if (name && name.trim()) {
+  if (name?.trim()) {
     const parts = name.trim().split(/\s+/);
     const firstPart = parts[0];
-    const lastPart = parts[parts.length - 1];
+    const lastPart = parts.at(-1);
     if (parts.length >= 2 && firstPart && lastPart) {
       const first = firstPart[0] ?? "";
       const last = lastPart[0] ?? "";
@@ -61,7 +61,7 @@ function getInitials(name?: string, email?: string) {
       return firstPart.slice(0, 2).toUpperCase();
     }
   }
-  if (email && email.trim()) {
+  if (email?.trim()) {
     return email.slice(0, 2).toUpperCase();
   }
   return "U";
@@ -123,7 +123,7 @@ export function TeamMembersStack({
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [_refreshKey, setRefreshKey] = useState(0);
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const tenantId = activeTenant?.id;
@@ -160,7 +160,7 @@ export function TeamMembersStack({
     return () => {
       isMounted = false;
     };
-  }, [tenantId, refreshKey]);
+  }, [tenantId]);
 
   // Click outside & Escape handler
   useEffect(() => {

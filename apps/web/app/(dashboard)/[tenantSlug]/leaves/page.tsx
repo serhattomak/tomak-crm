@@ -46,13 +46,13 @@ const ALLOWED_HALF_DAY_TYPES = ["Casual", "Sick"] as const;
 export default function LeavesPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const tenantSlug = (params?.tenantSlug as string) || "";
+  const _tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
 
   const [activeTab, setActiveTab] = useState<
     "calendar" | "pending" | "all" | "my"
   >("calendar");
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   // Data states
   const [stats, setStats] = useState<LeaveStatsDto | null>(null);

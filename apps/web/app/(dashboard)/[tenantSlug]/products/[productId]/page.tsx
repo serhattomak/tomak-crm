@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTenant, productId, tenantSlug, router]);
+  }, [activeTenant, productId, tenantSlug, router, showToast]);
 
   useEffect(() => {
     loadData();

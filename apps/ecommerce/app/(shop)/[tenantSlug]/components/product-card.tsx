@@ -7,9 +7,9 @@ import Link from "next/link";
 import type { PublicProductDto } from "@/lib/ecommerce-client";
 
 export interface ProductCardProps {
-  tenantSlug: string;
-  product: PublicProductDto;
   priority?: boolean;
+  product: PublicProductDto;
+  tenantSlug: string;
 }
 
 function getProductHref(tenantSlug: string, slug: string): string {
@@ -39,6 +39,7 @@ export function ProductCard({
           <Image
             alt={product.name}
             className="object-cover transition-transform duration-200 motion-safe:group-hover:scale-[1.02] motion-reduce:transform-none"
+            fetchPriority={priority ? "high" : "auto"}
             fill
             priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

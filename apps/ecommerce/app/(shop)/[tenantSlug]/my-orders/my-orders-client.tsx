@@ -57,7 +57,7 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
   if (loading) {
     return (
       <div className="flex h-32 items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-store-primary border-t-transparent" />
       </div>
     );
   }
@@ -65,20 +65,18 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-          Siparişlerim
-        </h2>
-        <span className="text-xs text-zinc-500">
+        <h2 className="font-semibold text-sm text-store-ink">Siparişlerim</h2>
+        <span className="text-store-muted-foreground text-xs">
           {orders.length} sipariş · 30s polling fallback
         </span>
       </div>
 
       {error ? (
-        <div className="rounded-xl bg-amber-50 p-3 text-amber-800 text-xs">
+        <div className="rounded-[1rem] bg-amber-50 p-3 text-amber-800 text-xs">
           <p>{error}</p>
           {(error.includes("Giriş") || error.includes("HTTP_401")) && (
             <Link
-              className="mt-2 inline-flex rounded-lg bg-violet-600 px-3 py-1.5 font-semibold text-white"
+              className="mt-2 inline-flex rounded-full bg-store-primary px-3 py-1.5 font-semibold text-store-primary-foreground text-xs"
               href={`/${tenantSlug}/auth/login`}
             >
               Giriş Yap →
@@ -88,17 +86,17 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
       ) : null}
 
       {orders.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-300 border-dashed bg-white p-8 text-center dark:border-zinc-700 dark:bg-zinc-900">
-          <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+        <div className="rounded-[1rem] border border-store-border border-dashed bg-white p-8 text-center shadow-store-sm">
+          <p className="font-semibold text-sm text-store-ink">
             Henüz siparişiniz yok
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-store-muted-foreground text-xs">
             Siparişler{" "}
             <code>GET /api/public/orders/mine?tenantSlug={tenantSlug}</code> ile
             CRM&apos;den gelir.
           </p>
           <Link
-            className="mt-4 inline-flex rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs"
+            className="mt-4 inline-flex rounded-full bg-store-primary px-4 py-2 font-semibold text-store-primary-foreground text-xs"
             href={`/${tenantSlug}/shop`}
           >
             Alışverişe başla
@@ -108,35 +106,35 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
         <div className="space-y-2">
           {orders.map((order) => (
             <Link
-              className="flex items-center justify-between rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900"
+              className="flex items-center justify-between rounded-[1rem] border border-store-border bg-white p-4 shadow-store-sm transition-all duration-200 hover:shadow-store"
               href={`/${tenantSlug}/my-orders/${order.id}`}
               key={order.id}
             >
               <div>
-                <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                <p className="font-semibold text-sm text-store-ink">
                   {order.orderNumber}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-store-muted-foreground text-xs">
                   {new Date(order.createdAt).toLocaleDateString("tr-TR")} ·{" "}
                   {order.status} · {order.paymentStatus}
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                <p className="font-bold text-sm text-store-ink">
                   ₺
                   {order.totalAmount.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
                   })}{" "}
                   {order.currency}
                 </p>
-                <span className="text-violet-600 text-xs">Takip →</span>
+                <span className="text-store-primary text-xs">Takip →</span>
               </div>
             </Link>
           ))}
         </div>
       )}
 
-      <p className="text-[11px] text-zinc-400">
+      <p className="text-[11px] text-store-muted-foreground">
         Realtime <code>postgres_changes</code> + 30s polling fallback ile canlı
         güncellenir (lib/realtime.ts).
       </p>

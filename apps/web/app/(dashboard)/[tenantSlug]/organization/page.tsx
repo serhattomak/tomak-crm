@@ -217,12 +217,8 @@ function OrganizationPageContent() {
           searchQuery === "" ||
           emp.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
           emp.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (emp.title &&
-            emp.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (emp.employeeNumber &&
-            emp.employeeNumber
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase()));
+          emp.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          emp.employeeNumber?.toLowerCase().includes(searchQuery.toLowerCase());
 
         const matchesDept =
           filterDept === "all" || emp.departmentId === filterDept;
@@ -422,7 +418,7 @@ function OrganizationPageContent() {
                   onConfirm: async () => {
                     const res = await ApiClient.deleteDepartment(
                       deptId,
-                      activeTenant!.id
+                      activeTenant?.id
                     );
                     if (res.success) {
                       toast.success("Departman başarıyla silindi.");
@@ -459,7 +455,7 @@ function OrganizationPageContent() {
                   onConfirm: async () => {
                     const res = await ApiClient.deleteEmployee(
                       empId,
-                      activeTenant!.id
+                      activeTenant?.id
                     );
                     if (res.success) {
                       toast.success("Çalışan kaydı silindi.");
@@ -501,7 +497,7 @@ function OrganizationPageContent() {
                   onConfirm: async () => {
                     const res = await ApiClient.deleteJobPosition(
                       posId,
-                      activeTenant!.id
+                      activeTenant?.id
                     );
                     if (res.success) {
                       toast.success("Pozisyon silindi.");
@@ -542,7 +538,7 @@ function OrganizationPageContent() {
             setEditingDept(null);
             loadData();
           }}
-          tenantId={activeTenant!.id}
+          tenantId={activeTenant?.id}
         />
       )}
 
@@ -560,7 +556,7 @@ function OrganizationPageContent() {
             loadData();
           }}
           position={editingPos}
-          tenantId={activeTenant!.id}
+          tenantId={activeTenant?.id}
         />
       )}
 
@@ -580,7 +576,7 @@ function OrganizationPageContent() {
             loadData();
           }}
           positions={positions}
-          tenantId={activeTenant!.id}
+          tenantId={activeTenant?.id}
           tenantUsers={tenantUsers}
         />
       )}
@@ -893,9 +889,8 @@ function DepartmentsTab({
       departments.filter(
         (d) =>
           d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (d.code && d.code.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (d.costCenter &&
-            d.costCenter.toLowerCase().includes(searchTerm.toLowerCase()))
+          d.code?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          d.costCenter?.toLowerCase().includes(searchTerm.toLowerCase())
       ),
     [departments, searchTerm]
   );
