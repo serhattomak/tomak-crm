@@ -18,6 +18,7 @@ using CRM.Modules.Compliance;
 using CRM.Modules.Recruitment;
 using CRM.Modules.Promotions;
 using CRM.Modules.Projects;
+using CRM.Modules.Vehicles;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
@@ -52,8 +53,9 @@ var complianceAssembly = typeof(ComplianceModuleExtensions).Assembly;
 var recruitmentAssembly = typeof(RecruitmentModuleExtensions).Assembly;
 var promotionsAssembly = typeof(PromotionsModuleExtensions).Assembly;
 var projectsAssembly = typeof(ProjectsModuleExtensions).Assembly;
+var vehiclesAssembly = typeof(VehiclesModuleExtensions).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -70,6 +72,7 @@ builder.Services.AddComplianceModule(builder.Configuration);
 builder.Services.AddRecruitmentModule(builder.Configuration);
 builder.Services.AddPromotionsModule(builder.Configuration);
 builder.Services.AddProjectsModule(builder.Configuration);
+builder.Services.AddVehiclesModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>
@@ -142,6 +145,7 @@ app.UseAuthorization();
 
 // 8. Map Slices Endpoints
 app.MapEndpoints();
+app.MapVehiclesModuleEndpoints();
 
 // 9. Map HealthChecks
 app.MapHealthChecks("/health", new HealthCheckOptions

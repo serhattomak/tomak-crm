@@ -9,6 +9,7 @@ import {
   Briefcase,
   Building2,
   Calendar,
+  Car,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -602,6 +603,13 @@ function DashboardNavigation({
       icon: Briefcase,
       name: "Projeler & Backlog",
       permission: "Projects.View",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/vehicles`,
+      icon: Car,
+      name: "Otomotiv & Araçlar",
+      permission: "Vehicles.View",
     },
     {
       badge: null,

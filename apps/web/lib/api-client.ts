@@ -4105,6 +4105,214 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Vehicles & Automotive Platform Module
+  // ==========================================
+  static async getVehicles(
+    params: {
+      search?: string;
+      brand?: string;
+      segment?: string;
+      status?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleListResponse>> {
+    const sp = new URLSearchParams();
+    if (params.search) sp.set("search", params.search);
+    if (params.brand) sp.set("brand", params.brand);
+    if (params.segment) sp.set("segment", params.segment);
+    if (params.status) sp.set("status", params.status);
+    if (params.page) sp.set("page", params.page.toString());
+    if (params.pageSize) sp.set("pageSize", params.pageSize.toString());
+
+    const query = sp.toString() ? `?${sp.toString()}` : "";
+    return ApiClient.request<VehicleListResponse>(
+      `/api/vehicles${query}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getVehicleById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleSummaryDto>> {
+    return ApiClient.request<VehicleSummaryDto>(
+      `/api/vehicles/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createVehicle(
+    data: CreateVehiclePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleSummaryDto>> {
+    return ApiClient.request<VehicleSummaryDto>(
+      "/api/vehicles",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateVehicle(
+    id: string,
+    data: UpdateVehiclePayload,
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleSummaryDto>> {
+    return ApiClient.request<VehicleSummaryDto>(
+      `/api/vehicles/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteVehicle(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/vehicles/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // --- EPC (Electronic Parts Catalog) ---
+  static async getEpcSystems(
+    tenantId?: string
+  ): Promise<ApiResponse<EpcSystemDto[]>> {
+    return ApiClient.request<EpcSystemDto[]>(
+      "/api/vehicles/epc/systems",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getEpcParts(
+    params: {
+      systemId?: string;
+      subsystemId?: string;
+      search?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<VehiclePartDto[]>> {
+    const sp = new URLSearchParams();
+    if (params.systemId) sp.set("systemId", params.systemId);
+    if (params.subsystemId) sp.set("subsystemId", params.subsystemId);
+    if (params.search) sp.set("search", params.search);
+    if (params.page) sp.set("page", params.page.toString());
+    if (params.pageSize) sp.set("pageSize", params.pageSize.toString());
+
+    const query = sp.toString() ? `?${sp.toString()}` : "";
+    return ApiClient.request<VehiclePartDto[]>(
+      `/api/vehicles/epc/parts${query}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createEpcPart(
+    data: CreatePartPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<VehiclePartDto>> {
+    return ApiClient.request<VehiclePartDto>(
+      "/api/vehicles/epc/parts",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateEpcPart(
+    id: string,
+    data: UpdatePartPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<VehiclePartDto>> {
+    return ApiClient.request<VehiclePartDto>(
+      `/api/vehicles/epc/parts/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteEpcPart(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/vehicles/epc/parts/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // --- Vehicle Documents ---
+  static async getVehicleDocuments(
+    params: {
+      vehicleId?: string;
+      partId?: string;
+      documentType?: string;
+      category?: string;
+      search?: string;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleDocumentDto[]>> {
+    const sp = new URLSearchParams();
+    if (params.vehicleId) sp.set("vehicleId", params.vehicleId);
+    if (params.partId) sp.set("partId", params.partId);
+    if (params.documentType) sp.set("documentType", params.documentType);
+    if (params.category) sp.set("category", params.category);
+    if (params.search) sp.set("search", params.search);
+
+    const query = sp.toString() ? `?${sp.toString()}` : "";
+    return ApiClient.request<VehicleDocumentDto[]>(
+      `/api/vehicles/documents${query}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createVehicleDocument(
+    data: CreateVehicleDocumentPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<VehicleDocumentDto>> {
+    return ApiClient.request<VehicleDocumentDto>(
+      "/api/vehicles/documents",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteVehicleDocument(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/vehicles/documents/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -7565,6 +7773,326 @@ export interface UpdateBacklogItemPayload {
   title: string;
   type?: "Story" | "Task" | "Bug" | "Feature" | "Improvement" | string;
 }
+
+// ==========================================
+// Vehicles & Automotive Platform Interfaces
+// ==========================================
+
+export interface VehicleDimensions {
+  cargoVolume?: number;
+  fuelTank?: number;
+  groundClearance?: number;
+  height?: number;
+  length?: number;
+  wheelbase?: number;
+  width?: number;
+}
+
+export interface VehicleWeights {
+  curb?: number;
+  gvw?: number;
+  payload?: number;
+}
+
+export interface VehicleEngineSpec {
+  aspiration?: string;
+  cylinders?: string;
+  displacement?: string;
+  power?: string;
+  torque?: string;
+}
+
+export interface VehiclePerformance {
+  accel?: string;
+  topSpeed?: string;
+}
+
+export interface VehicleFuelEco {
+  combined?: string;
+  urban?: string;
+  wltp?: string;
+}
+
+export interface VehicleSuspension {
+  front?: string;
+  rear?: string;
+}
+
+export interface VehicleBrakes {
+  front?: string;
+  rear?: string;
+}
+
+export interface VehicleSafety {
+  adas?: string[];
+  airbags?: number;
+}
+
+export interface VehicleComfort {
+  climate?: string;
+  seats?: string;
+}
+
+export interface VehicleInfotainment {
+  features?: string[];
+  screen?: string;
+}
+
+export interface VehicleWarranty {
+  corrosion?: string;
+  powertrain?: string;
+  vehicle?: string;
+}
+
+export interface VehicleSummaryDto {
+  bodyType: string;
+  brakesJson: string;
+  brand: string;
+  comfortJson: string;
+  country: string;
+  createdAt: string;
+  dimensionsJson: string;
+  doors: number;
+  driveType: string;
+  emission: string;
+  engine: string;
+  engineSpecJson: string;
+  equipmentJson: string;
+  fuel: string;
+  fuelEcoJson: string;
+  generation?: string;
+  icon: string;
+  id: string;
+  infotainmentJson: string;
+  internalCode?: string;
+  market: string;
+  model: string;
+  modelYear: number;
+  notes?: string;
+  performanceJson: string;
+  plant?: string;
+  platform?: string;
+  priceTry: number;
+  priceUsd: number;
+  projectCode?: string;
+  safetyJson: string;
+  seats: number;
+  segment: string;
+  series?: string;
+  status: "Active" | "Development" | "Discontinued" | string;
+  suspensionJson: string;
+  transmission: string;
+  trim: string;
+  tyres?: string;
+  updatedAt: string;
+  variant?: string;
+  vinPrefix?: string;
+  warrantyJson: string;
+  weightsJson: string;
+}
+
+export interface VehicleListResponse {
+  items: VehicleSummaryDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface CreateVehiclePayload {
+  bodyType: string;
+  brakesJson?: string;
+  brand: string;
+  comfortJson?: string;
+  country: string;
+  dimensionsJson?: string;
+  doors: number;
+  driveType: string;
+  emission: string;
+  engine: string;
+  engineSpecJson?: string;
+  equipmentJson?: string;
+  fuel: string;
+  fuelEcoJson?: string;
+  generation?: string;
+  icon?: string;
+  infotainmentJson?: string;
+  internalCode?: string;
+  market: string;
+  model: string;
+  modelYear: number;
+  notes?: string;
+  performanceJson?: string;
+  plant?: string;
+  platform?: string;
+  priceTry?: number;
+  priceUsd?: number;
+  projectCode?: string;
+  safetyJson?: string;
+  seats: number;
+  segment: string;
+  series?: string;
+  status: string;
+  suspensionJson?: string;
+  transmission: string;
+  trim: string;
+  tyres?: string;
+  variant?: string;
+  vinPrefix?: string;
+  warrantyJson?: string;
+  weightsJson?: string;
+}
+
+export interface UpdateVehiclePayload {
+  bodyType: string;
+  brakesJson?: string;
+  brand: string;
+  comfortJson?: string;
+  country: string;
+  dimensionsJson?: string;
+  doors: number;
+  driveType: string;
+  emission: string;
+  engine: string;
+  engineSpecJson?: string;
+  equipmentJson?: string;
+  fuel: string;
+  fuelEcoJson?: string;
+  generation?: string;
+  icon?: string;
+  infotainmentJson?: string;
+  internalCode?: string;
+  market: string;
+  model: string;
+  modelYear: number;
+  notes?: string;
+  performanceJson?: string;
+  plant?: string;
+  platform?: string;
+  priceTry?: number;
+  priceUsd?: number;
+  projectCode?: string;
+  safetyJson?: string;
+  seats: number;
+  segment: string;
+  series?: string;
+  status: string;
+  suspensionJson?: string;
+  transmission?: string;
+  trim: string;
+  tyres?: string;
+  variant?: string;
+  vinPrefix?: string;
+  warrantyJson?: string;
+  weightsJson?: string;
+}
+
+export interface EpcSubsystemDto {
+  code: string;
+  displayOrder: number;
+  id: string;
+  name: string;
+  partsCount: number;
+  systemId: string;
+}
+
+export interface EpcSystemDto {
+  code: string;
+  displayOrder: number;
+  icon: string;
+  id: string;
+  name: string;
+  subsystems: EpcSubsystemDto[];
+  totalPartsCount: number;
+}
+
+export interface VehiclePartDto {
+  compatibleModelsJson: string;
+  createdAt: string;
+  hotspotCoordX?: number;
+  hotspotCoordY?: number;
+  id: string;
+  location?: string;
+  nameCn?: string;
+  nameEn: string;
+  nameTr: string;
+  notes?: string;
+  oemNumber?: string;
+  partNumber: string;
+  qtyPerAssembly: number;
+  stockQuantity: number;
+  subsystemId?: string;
+  subsystemName?: string;
+  supersession?: string;
+  systemId?: string;
+  systemName?: string;
+  unitPrice: number;
+  updatedAt: string;
+}
+
+export interface CreatePartPayload {
+  compatibleModelsJson?: string;
+  hotspotCoordX?: number;
+  hotspotCoordY?: number;
+  location?: string;
+  nameCn?: string;
+  nameEn: string;
+  nameTr: string;
+  notes?: string;
+  oemNumber?: string;
+  partNumber: string;
+  qtyPerAssembly?: number;
+  stockQuantity?: number;
+  subsystemId?: string;
+  supersession?: string;
+  systemId?: string;
+  unitPrice?: number;
+}
+
+export interface UpdatePartPayload {
+  compatibleModelsJson?: string;
+  hotspotCoordX?: number;
+  hotspotCoordY?: number;
+  location?: string;
+  nameCn?: string;
+  nameEn: string;
+  nameTr: string;
+  notes?: string;
+  oemNumber?: string;
+  partNumber: string;
+  qtyPerAssembly?: number;
+  stockQuantity?: number;
+  subsystemId?: string;
+  supersession?: string;
+  systemId?: string;
+  unitPrice?: number;
+}
+
+export interface VehicleDocumentDto {
+  category: string;
+  createdAt: string;
+  documentType: string;
+  fileSize: string;
+  fileUrl?: string;
+  id: string;
+  name: string;
+  partId?: string;
+  partName?: string;
+  tagsJson: string;
+  vehicleId?: string;
+  vehicleName?: string;
+}
+
+export interface CreateVehicleDocumentPayload {
+  category: string;
+  documentType: string;
+  fileSize: string;
+  fileUrl?: string;
+  name: string;
+  partId?: string;
+  tagsJson?: string;
+  vehicleId?: string;
+}
+
 
 
 
