@@ -598,6 +598,13 @@ function DashboardNavigation({
     },
     {
       badge: null,
+      href: `/${tenantSlug}/projects`,
+      icon: Briefcase,
+      name: "Projeler & Backlog",
+      permission: "Projects.View",
+    },
+    {
+      badge: null,
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
       name: getModuleDisplayName("quotes", "Teklifler"),

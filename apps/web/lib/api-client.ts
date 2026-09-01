@@ -3738,6 +3738,373 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Projects & Agile Backlog Module
+  // ==========================================
+  static async getProjects(
+    params: { status?: string; customerId?: string; search?: string } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<ProjectSummaryDto[]>> {
+    const query = new URLSearchParams();
+    if (params.status) query.set("status", params.status);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.search) query.set("search", params.search);
+
+    const qs = query.toString();
+    return ApiClient.request<ProjectSummaryDto[]>(
+      `/api/projects${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getProjectById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<ProjectSummaryDto>> {
+    return ApiClient.request<ProjectSummaryDto>(
+      `/api/projects/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createProject(
+    data: CreateProjectPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/projects",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateProject(
+    id: string,
+    data: UpdateProjectPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/projects/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteProject(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/projects/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // Epics
+  static async getEpics(
+    projectId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<EpicDto[]>> {
+    return ApiClient.request<EpicDto[]>(
+      `/api/projects/${projectId}/epics`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createEpic(
+    projectId: string,
+    data: CreateEpicPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/projects/${projectId}/epics`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateEpic(
+    id: string,
+    data: UpdateEpicPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/epics/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteEpic(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/epics/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // Sprints
+  static async getSprints(
+    projectId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<SprintDto[]>> {
+    return ApiClient.request<SprintDto[]>(
+      `/api/projects/${projectId}/sprints`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createSprint(
+    projectId: string,
+    data: CreateSprintPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/projects/${projectId}/sprints`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateSprintStatus(
+    id: string,
+    status: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/sprints/${id}/status`,
+      {
+        body: JSON.stringify({ status }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteSprint(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/sprints/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // Backlog Items
+  static async getProjectBacklogItems(
+    projectId: string,
+    params: GetBacklogItemsParams = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedBacklogResponse>> {
+    const query = new URLSearchParams();
+    if (params.sprintId) query.set("sprintId", params.sprintId);
+    if (params.epicId) query.set("epicId", params.epicId);
+    if (params.status) query.set("status", params.status);
+    if (params.priority) query.set("priority", params.priority);
+    if (params.type) query.set("type", params.type);
+    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.dealId) query.set("dealId", params.dealId);
+    if (params.unassignedSprint !== undefined) query.set("unassignedSprint", String(params.unassignedSprint));
+    if (params.search) query.set("search", params.search);
+    if (params.page) query.set("page", String(params.page));
+    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+
+    const qs = query.toString();
+    return ApiClient.request<PagedBacklogResponse>(
+      `/api/projects/${projectId}/items${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getBacklogItems(
+    params: GetBacklogItemsParams = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedBacklogResponse>> {
+    const query = new URLSearchParams();
+    if (params.projectId) query.set("projectId", params.projectId);
+    if (params.sprintId) query.set("sprintId", params.sprintId);
+    if (params.epicId) query.set("epicId", params.epicId);
+    if (params.status) query.set("status", params.status);
+    if (params.priority) query.set("priority", params.priority);
+    if (params.type) query.set("type", params.type);
+    if (params.assignedUserId) query.set("assignedUserId", params.assignedUserId);
+    if (params.customerId) query.set("customerId", params.customerId);
+    if (params.dealId) query.set("dealId", params.dealId);
+    if (params.unassignedSprint !== undefined) query.set("unassignedSprint", String(params.unassignedSprint));
+    if (params.search) query.set("search", params.search);
+    if (params.page) query.set("page", String(params.page));
+    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+
+    const qs = query.toString();
+    return ApiClient.request<PagedBacklogResponse>(
+      `/api/backlog-items${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getBacklogItemById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<BacklogItemDto>> {
+    return ApiClient.request<BacklogItemDto>(
+      `/api/backlog-items/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createBacklogItem(
+    projectId: string,
+    data: CreateBacklogItemPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/projects/${projectId}/items`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateBacklogItem(
+    id: string,
+    data: UpdateBacklogItemPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/backlog-items/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async moveBacklogItemStatus(
+    id: string,
+    status: string,
+    orderIndex: number = 0,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/backlog-items/${id}/status`,
+      {
+        body: JSON.stringify({ status, orderIndex }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async assignItemToSprint(
+    id: string,
+    sprintId?: string | null,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/backlog-items/${id}/sprint`,
+      {
+        body: JSON.stringify({ sprintId: sprintId || null }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async addBacklogSubtask(
+    backlogItemId: string,
+    title: string,
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/backlog-items/${backlogItemId}/subtasks`,
+      {
+        body: JSON.stringify({ title }),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleBacklogSubtask(
+    subtaskId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/subtasks/${subtaskId}/toggle`,
+      { method: "PATCH" },
+      tenantId
+    );
+  }
+
+  static async deleteBacklogSubtask(
+    subtaskId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/subtasks/${subtaskId}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async addBacklogComment(
+    backlogItemId: string,
+    data: { content: string; userName: string; userId?: string; userAvatar?: string },
+    tenantId?: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      `/api/backlog-items/${backlogItemId}/comments`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteBacklogItem(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/backlog-items/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -6962,6 +7329,243 @@ export interface UpdateTaskPayload {
   status?: "Pending" | "InProgress" | "Completed" | "Cancelled" | string;
   title: string;
 }
+
+// ==========================================
+// Projects & Agile Backlog DTOs
+// ==========================================
+export interface ProjectSummaryDto {
+  activeItemsCount: number;
+  budget: number;
+  completedItemsCount: number;
+  createdAt: string;
+  currency: string;
+  customerId?: string;
+  customerName?: string;
+  description?: string;
+  id: string;
+  key: string;
+  leadUserId?: string;
+  leadUserName?: string;
+  name: string;
+  sprintsCount: number;
+  startDate?: string;
+  status: "Active" | "Planning" | "OnHold" | "Completed" | "Archived" | string;
+  targetEndDate?: string;
+  tenantId: string;
+  updatedAt: string;
+}
+
+export interface CreateProjectPayload {
+  budget?: number;
+  currency?: string;
+  customerId?: string;
+  customerName?: string;
+  description?: string;
+  key: string;
+  leadUserId?: string;
+  leadUserName?: string;
+  name: string;
+  startDate?: string;
+  status?: string;
+  targetEndDate?: string;
+}
+
+export interface UpdateProjectPayload {
+  budget?: number;
+  currency?: string;
+  customerId?: string;
+  customerName?: string;
+  description?: string;
+  leadUserId?: string;
+  leadUserName?: string;
+  name: string;
+  startDate?: string;
+  status?: string;
+  targetEndDate?: string;
+}
+
+export interface EpicDto {
+  color: string;
+  completedItemsCount: number;
+  createdAt: string;
+  description?: string;
+  dueDate?: string;
+  id: string;
+  itemsCount: number;
+  name: string;
+  projectId: string;
+  startDate?: string;
+  status: string;
+  tenantId: string;
+  updatedAt: string;
+}
+
+export interface CreateEpicPayload {
+  color?: string;
+  description?: string;
+  dueDate?: string;
+  name: string;
+  startDate?: string;
+  status?: string;
+}
+
+export interface UpdateEpicPayload {
+  color?: string;
+  description?: string;
+  dueDate?: string;
+  name: string;
+  startDate?: string;
+  status?: string;
+}
+
+export interface SprintDto {
+  completedItemsCount: number;
+  completedPoints: number;
+  createdAt: string;
+  endDate?: string;
+  goal?: string;
+  id: string;
+  name: string;
+  projectId: string;
+  startDate?: string;
+  status: "Planning" | "Active" | "Completed" | "Cancelled" | string;
+  tenantId: string;
+  totalItemsCount: number;
+  updatedAt: string;
+  velocityPoints: number;
+}
+
+export interface CreateSprintPayload {
+  endDate?: string;
+  goal?: string;
+  name: string;
+  startDate?: string;
+}
+
+export interface BacklogSubtaskDto {
+  backlogItemId: string;
+  createdAt: string;
+  id: string;
+  isCompleted: boolean;
+  orderIndex: number;
+  title: string;
+}
+
+export interface BacklogCommentDto {
+  backlogItemId: string;
+  content: string;
+  createdAt: string;
+  id: string;
+  userAvatar?: string;
+  userId?: string;
+  userName: string;
+}
+
+export interface BacklogItemDto {
+  acceptanceCriteria?: string;
+  assignedUserAvatar?: string;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  comments: BacklogCommentDto[];
+  completedAt?: string;
+  createdAt: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  epicColor?: string;
+  epicId?: string;
+  epicName?: string;
+  estimatedHours: number;
+  id: string;
+  itemKey: string;
+  loggedHours: number;
+  orderIndex: number;
+  priority: "Low" | "Medium" | "High" | "Urgent" | string;
+  projectId: string;
+  projectKey: string;
+  reporterUserId?: string;
+  reporterUserName?: string;
+  sprintId?: string;
+  sprintName?: string;
+  status: "Backlog" | "Todo" | "InProgress" | "InReview" | "Done" | "Cancelled" | string;
+  storyPoints: number;
+  subtasks: BacklogSubtaskDto[];
+  tenantId: string;
+  ticketId?: string;
+  title: string;
+  type: "Story" | "Task" | "Bug" | "Feature" | "Improvement" | string;
+  updatedAt: string;
+}
+
+export interface PagedBacklogResponse {
+  items: BacklogItemDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalStoryPoints: number;
+}
+
+export interface GetBacklogItemsParams {
+  assignedUserId?: string;
+  customerId?: string;
+  dealId?: string;
+  epicId?: string;
+  page?: number;
+  pageSize?: number;
+  priority?: string;
+  projectId?: string;
+  search?: string;
+  sprintId?: string;
+  status?: string;
+  type?: string;
+  unassignedSprint?: boolean;
+}
+
+export interface CreateBacklogItemPayload {
+  acceptanceCriteria?: string;
+  assignedUserAvatar?: string;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  epicId?: string;
+  estimatedHours?: number;
+  priority?: "Low" | "Medium" | "High" | "Urgent" | string;
+  sprintId?: string;
+  storyPoints?: number;
+  status?: string;
+  ticketId?: string;
+  title: string;
+  type?: "Story" | "Task" | "Bug" | "Feature" | "Improvement" | string;
+}
+
+export interface UpdateBacklogItemPayload {
+  acceptanceCriteria?: string;
+  assignedUserAvatar?: string;
+  assignedUserId?: string;
+  assignedUserName?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  description?: string;
+  dueDate?: string;
+  epicId?: string;
+  estimatedHours?: number;
+  loggedHours?: number;
+  priority?: "Low" | "Medium" | "High" | "Urgent" | string;
+  sprintId?: string;
+  status?: string;
+  storyPoints?: number;
+  ticketId?: string;
+  title: string;
+  type?: "Story" | "Task" | "Bug" | "Feature" | "Improvement" | string;
+}
+
 
 
 
