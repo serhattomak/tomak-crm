@@ -8,6 +8,16 @@ import { ApiClient } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 import type { TeamMemberScore } from "./dashboard-types";
 
+const AVATAR_COLORS = [
+  "bg-violet-600",
+  "bg-indigo-600",
+  "bg-blue-600",
+  "bg-emerald-600",
+  "bg-amber-600",
+  "bg-rose-600",
+  "bg-cyan-600",
+];
+
 export function TeamLeaderboardWidget() {
   const { activeTenant } = usePermissions();
   const [members, setMembers] = useState<TeamMemberScore[]>([]);
@@ -20,16 +30,131 @@ export function TeamLeaderboardWidget() {
       }
       setIsLoading(true);
       try {
-        const orderRes = await ApiClient.getOrderStats(activeTenant.id);
-        if (
-          orderRes.success &&
-          orderRes.data &&
-          orderRes.data.totalOrders > 0
-        ) {
+        const [empRes, dealsRes, quotesRes, ordersRes] = await Promise.allSettled([
+          ApiClient.getEmployees({ pageSize: 50, status: "Active" }, activeTenant.id),
+          ApiClient.getDeals({ pageSize: 100 }, activeTenant.id),
+          ApiClient.getQuotes({ pageSize: 100 }, activeTenant.id),
+          ApiClient.getOrders({ pageSize: 100 }, activeTenant.id),
+        ]);
+
+        const employees =
+          empRes.status === "fulfilled" && empRes.value.success && empRes.value.data?.items
+            ? empRes.value.data.items
+            : [];
+
+        const deals =
+          dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items
+            ? dealsRes.value.data.items
+            : [];
+
+        const quotes =
+          quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items
+            ? quotesRes.value.data.items
+            : [];
+
+        const orders =
+          ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items
+            ? ordersRes.value.data.items
+            : [];
+
+        if (employees.length === 0 && deals.length === 0 && orders.length === 0) {
           setMembers([]);
-        } else {
-          setMembers([]);
+          return;
         }
+
+        // Map performance per employee or assigned user
+        const scoreMap = new Map<
+          string,
+          { name: string; role: string; achieved: number; dealsClosed: number }
+        >();
+
+        // 1. Seed with active employees
+        for (const emp of employees) {
+          const empName = emp.fullName || `${emp.firstName} ${emp.lastName}`.trim() || emp.email;
+          const role = emp.jobPositionTitle || emp.departmentName || "Satış Temsilcisi";
+          scoreMap.set(emp.id, {
+            name: empName,
+            role,
+            achieved: 0,
+            dealsClosed: 0,
+          });
+        }
+
+        // 2. Aggregate won deals
+        for (const deal of deals) {
+          if (deal.status === "Won" || deal.stageName?.toLowerCase().includes("kazan")) {
+            const key = deal.assignedUserId || deal.assignedUserName || "unassigned";
+            const existing = scoreMap.get(key) || {
+              name: deal.assignedUserName || "Temsilci",
+              role: "Hesap Yöneticisi",
+              achieved: 0,
+              dealsClosed: 0,
+            };
+            existing.achieved += Number(deal.value || 0);
+            existing.dealsClosed += 1;
+            scoreMap.set(key, existing);
+          }
+        }
+
+        // 3. Aggregate accepted quotes
+        for (const quote of quotes) {
+          if (quote.status === "Accepted") {
+            const key = quote.assignedUserId || quote.assignedUserName || "unassigned";
+            const existing = scoreMap.get(key) || {
+              name: quote.assignedUserName || "Temsilci",
+              role: "Satış Uzmanı",
+              achieved: 0,
+              dealsClosed: 0,
+            };
+            existing.achieved += Number(quote.totalAmount || 0);
+            existing.dealsClosed += 1;
+            scoreMap.set(key, existing);
+          }
+        }
+
+        // 4. Aggregate completed orders
+        for (const order of orders) {
+          if (order.status === "Completed" || order.status === "Approved" || order.paymentStatus === "Paid") {
+            const key = (order as any).assignedUserId || order.customerName || "unassigned";
+            const existing = scoreMap.get(key);
+            if (existing) {
+              existing.achieved += Number(order.totalAmount || 0);
+              existing.dealsClosed += 1;
+            }
+          }
+        }
+
+        // Build list and sort by achieved descending
+        const items = Array.from(scoreMap.entries())
+          .filter(([_, val]) => val.name && val.name !== "unassigned")
+          .map(([id, val], idx) => {
+            const initials = val.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .substring(0, 2)
+              .toUpperCase();
+            const target = Math.max(
+              val.achieved > 0 ? Math.ceil((val.achieved * 1.25) / 1000) * 1000 : 50000,
+              25000
+            );
+            return {
+              id,
+              name: val.name,
+              role: val.role,
+              achieved: val.achieved,
+              dealsClosed: val.dealsClosed,
+              target,
+              rank: 1,
+              initials,
+              avatarColor: AVATAR_COLORS[idx % AVATAR_COLORS.length] || "bg-violet-600",
+            };
+          })
+          .sort((a, b) => b.achieved - a.achieved || b.dealsClosed - a.dealsClosed)
+          .map((m, idx) => ({ ...m, rank: idx + 1 }))
+          .slice(0, 5);
+
+        setMembers(items);
       } catch {
         setMembers([]);
       } finally {
@@ -73,7 +198,7 @@ export function TeamLeaderboardWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
@@ -97,7 +222,7 @@ export function TeamLeaderboardWidget() {
         {/* Content Area */}
         {isLoading ? (
           <div className="space-y-2 py-3">
-            {[1, 2].map((i) => (
+            {[1, 2, 3].map((i) => (
               <div
                 className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
                 key={i}
@@ -184,7 +309,9 @@ export function TeamLeaderboardWidget() {
                     </div>
                     <span
                       className={`font-semibold text-[10px] ${
-                        pct >= 100 ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500 dark:text-zinc-400"
+                        pct >= 100
+                          ? "text-emerald-600 dark:text-emerald-400"
+                          : "text-zinc-500 dark:text-zinc-400"
                       }`}
                     >
                       %{pct}

@@ -51,6 +51,7 @@ public record GetTicketsQuery(
     string? Category = null,
     Guid? DepartmentId = null,
     Guid? AssignedUserId = null,
+    Guid? CustomerId = null,
     string? Queue = null, // all, my, pending, slaBreached, resolved
     string? Search = null,
     int Page = 1,
@@ -70,6 +71,12 @@ public class GetTicketsHandler(
 
         var tenantId = currentTenant.Id.Value;
         var query = dbContext.Tickets.Where(t => t.TenantId == tenantId);
+
+        // Customer Filter
+        if (request.CustomerId.HasValue && request.CustomerId.Value != Guid.Empty)
+        {
+            query = query.Where(t => t.CustomerId == request.CustomerId.Value);
+        }
 
         // Search Filter
         if (!string.IsNullOrWhiteSpace(request.Search))
@@ -119,25 +126,26 @@ public class GetTicketsHandler(
             query = query.Where(t => t.AssignedUserId == request.AssignedUserId.Value);
         }
 
-        // Pre-built Queue Filters
-        var now = DateTime.UtcNow;
+        // Queue Smart Filters
         if (!string.IsNullOrWhiteSpace(request.Queue))
         {
-            switch (request.Queue.ToLowerInvariant())
+            var nowUtc = DateTime.UtcNow;
+            switch (request.Queue.ToLower())
             {
                 case "my":
                     if (currentUser.Id.HasValue)
                     {
-                        query = query.Where(t => t.AssignedUserId == currentUser.Id.Value && t.Status != "Closed");
+                        query = query.Where(t => t.AssignedUserId == currentUser.Id.Value);
                     }
                     break;
                 case "pending":
-                    query = query.Where(t => t.Status == "PendingCustomer" || t.Status == "OnHold");
+                    query = query.Where(t => t.Status == "Pending" || t.Status == "WaitingCustomer");
                     break;
                 case "slabreached":
-                    query = query.Where(t => (t.Status != "Resolved" && t.Status != "Closed") &&
-                        ((t.SlaFirstResponseDueAt.HasValue && t.FirstResponseAt == null && t.SlaFirstResponseDueAt < now) ||
-                         (t.SlaResolutionDueAt.HasValue && t.ResolvedAt == null && t.SlaResolutionDueAt < now)));
+                    query = query.Where(t =>
+                        (t.Status != "Resolved" && t.Status != "Closed") &&
+                        ((t.SlaFirstResponseDueAt.HasValue && t.FirstResponseAt == null && t.SlaFirstResponseDueAt < nowUtc) ||
+                         (t.SlaResolutionDueAt.HasValue && t.ResolvedAt == null && t.SlaResolutionDueAt < nowUtc)));
                     break;
                 case "resolved":
                     query = query.Where(t => t.Status == "Resolved" || t.Status == "Closed");
@@ -146,17 +154,14 @@ public class GetTicketsHandler(
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
-
         var page = request.Page > 0 ? request.Page : 1;
         var pageSize = request.PageSize > 0 ? request.PageSize : 20;
+        var now = DateTime.UtcNow;
 
         var items = await query
-            .OrderByDescending(t => t.Priority == "Urgent")
-            .ThenByDescending(t => t.CreatedAt)
+            .OrderByDescending(t => t.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Include(t => t.Channel)
-                .ThenInclude(c => c!.Messages)
             .Select(t => new TicketListDto(
                 t.Id,
                 t.TicketNumber,
@@ -184,7 +189,7 @@ public class GetTicketsHandler(
                 t.LinkedEntityId,
                 t.LinkedEntityTitle,
                 t.SatisfactionRating,
-                t.Tags,
+                t.Tags != null ? t.Tags.ToList() : new List<string>(),
                 t.CreatedAt,
                 t.UpdatedAt,
                 t.Channel != null ? t.Channel.Messages.Count : 0,
@@ -208,6 +213,7 @@ public class GetTicketsEndpoint : IEndpoint
             string? category,
             Guid? departmentId,
             Guid? assignedUserId,
+            Guid? customerId,
             string? queue,
             string? search,
             int? page,
@@ -221,6 +227,7 @@ public class GetTicketsEndpoint : IEndpoint
                 category,
                 departmentId,
                 assignedUserId,
+                customerId,
                 queue,
                 search,
                 page ?? 1,

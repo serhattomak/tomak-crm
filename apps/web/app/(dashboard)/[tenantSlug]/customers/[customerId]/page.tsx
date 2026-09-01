@@ -1,24 +1,32 @@
 "use client";
 
 import {
+  AlertCircle,
   ArrowLeft,
   Briefcase,
   Building2,
+  Calendar,
   Check,
   CheckCircle2,
+  Clock,
   DollarSign,
-  Edit,
   Edit2,
+  ExternalLink,
+  FileSpreadsheet,
   FileText,
   Globe,
+  LifeBuoy,
   Mail,
   MapPin,
+  Package,
   Phone,
   PhoneCall,
   Pin,
   PinOff,
   Plus,
   Send,
+  ShoppingCart,
+  Tag,
   TrendingUp,
   User,
   Video,
@@ -37,10 +45,25 @@ import {
   ApiClient,
   type CustomerDetailDto,
   type CustomerNoteDto,
+  type DealSummaryDto,
   type EmployeeDto,
+  type OrderListDto,
+  type QuoteSummaryDto,
+  type TicketListDto,
   type UpdateCustomerRequest,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+
+type CustomerTab =
+  | "overview"
+  | "contacts"
+  | "timeline"
+  | "deals"
+  | "quotes"
+  | "orders"
+  | "tickets"
+  | "notes"
+  | "finance";
 
 export default function CustomerDetailPage() {
   const params = useParams();
@@ -51,10 +74,12 @@ export default function CustomerDetailPage() {
 
   const [customer, setCustomer] = useState<CustomerDetailDto | null>(null);
   const [employees, setEmployees] = useState<EmployeeDto[]>([]);
+  const [deals, setDeals] = useState<DealSummaryDto[]>([]);
+  const [quotes, setQuotes] = useState<QuoteSummaryDto[]>([]);
+  const [orders, setOrders] = useState<OrderListDto[]>([]);
+  const [tickets, setTickets] = useState<TicketListDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<
-    "overview" | "contacts" | "timeline" | "deals" | "notes" | "finance"
-  >("overview");
+  const [activeTab, setActiveTab] = useState<CustomerTab>("overview");
 
   // Modals & Submissions
   const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);
@@ -77,24 +102,45 @@ export default function CustomerDetailPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!(activeTenant && customerId)) {
+    if (!activeTenant || !customerId) {
       return;
     }
     try {
-      const [custRes, empRes] = await Promise.all([
-        ApiClient.getCustomerById(customerId, activeTenant.id),
-        ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
-      ]);
+      const [custRes, empRes, dealsRes, quotesRes, ordersRes, ticketsRes] =
+        await Promise.allSettled([
+          ApiClient.getCustomerById(customerId, activeTenant.id),
+          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
+          ApiClient.getDeals({ customerId }, activeTenant.id),
+          ApiClient.getQuotes({ customerId }, activeTenant.id),
+          ApiClient.getOrders({ customerId }, activeTenant.id),
+          ApiClient.getTickets({ customerId }, activeTenant.id),
+        ]);
 
-      if (custRes.success && custRes.data) {
-        setCustomer(custRes.data);
+      if (custRes.status === "fulfilled" && custRes.value.success && custRes.value.data) {
+        setCustomer(custRes.value.data);
       } else {
         showToast("Müşteri bulunamadı.");
         router.push(`/${tenantSlug}/customers`);
       }
 
-      if (empRes.success && empRes.data) {
-        setEmployees(empRes.data.items);
+      if (empRes.status === "fulfilled" && empRes.value.success && empRes.value.data) {
+        setEmployees(empRes.value.data.items);
+      }
+
+      if (dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items) {
+        setDeals(dealsRes.value.data.items);
+      }
+
+      if (quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items) {
+        setQuotes(quotesRes.value.data.items);
+      }
+
+      if (ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items) {
+        setOrders(ordersRes.value.data.items);
+      }
+
+      if (ticketsRes.status === "fulfilled" && ticketsRes.value.success && ticketsRes.value.data?.items) {
+        setTickets(ticketsRes.value.data.items);
       }
     } catch {
       showToast("Müşteri bilgileri yüklenirken hata oluştu.");
@@ -104,43 +150,12 @@ export default function CustomerDetailPage() {
   }, [activeTenant, customerId, tenantSlug, router]);
 
   useEffect(() => {
-    let ignore = false;
-    async function init() {
-      if (!(activeTenant && customerId)) return;
-      try {
-        const [custRes, empRes] = await Promise.all([
-          ApiClient.getCustomerById(customerId, activeTenant.id),
-          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
-        ]);
-
-        if (!ignore) {
-          if (custRes.success && custRes.data) {
-            setCustomer(custRes.data);
-          } else {
-            showToast("Müşteri bulunamadı.");
-            router.push(`/${tenantSlug}/customers`);
-          }
-
-          if (empRes.success && empRes.data) {
-            setEmployees(empRes.data.items);
-          }
-        }
-      } catch {
-        if (!ignore) showToast("Müşteri bilgileri yüklenirken hata oluştu.");
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    }
-
-    init();
-    return () => {
-      ignore = true;
-    };
-  }, [activeTenant, customerId, tenantSlug, router]);
+    loadData();
+  }, [loadData]);
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!(activeTenant && customer && quickNoteContent.trim())) {
+    if (!activeTenant || !customer || !quickNoteContent.trim()) {
       return;
     }
 
@@ -189,9 +204,9 @@ export default function CustomerDetailPage() {
   };
 
   const handleDeleteContact = async (contactId: string) => {
-    if (!(activeTenant && customer)) {
-      return;
-    }
+    if (!activeTenant || !customer) return;
+    if (!confirm("Bu yetkili kişiyi silmek istediğinize emin misiniz?")) return;
+
     try {
       const res = await ApiClient.deleteCustomerContact(
         customer.id,
@@ -224,157 +239,111 @@ export default function CustomerDetailPage() {
     return null;
   }
 
-  const tabs = [
+  const tabs: { id: CustomerTab; label: string }[] = [
     { id: "overview", label: "Genel Bakış" },
+    { id: "deals", label: `Fırsatlar (${deals.length})` },
+    { id: "quotes", label: `Teklifler (${quotes.length})` },
+    { id: "orders", label: `Siparişler (${orders.length})` },
+    { id: "tickets", label: `Destek (${tickets.length})` },
     { id: "contacts", label: `Yetkililer (${customer.contacts.length})` },
-    {
-      id: "timeline",
-      label: `Aktivite Geçmişi (${customer.activities.length})`,
-    },
-    { id: "deals", label: `Satış Fırsatları (${customer.dealsCount})` },
+    { id: "timeline", label: `Aktivite Geçmişi (${customer.activities.length})` },
     { id: "notes", label: `Notlar (${customer.notes.length})` },
-    { id: "finance", label: "Finans & Siparişler" },
+    { id: "finance", label: "Finans & Bakiye" },
   ];
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
+        return "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
       case "Lead":
-        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
-      case "Passive":
-        return "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700";
+        return "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300 border-violet-200 dark:border-violet-800";
       case "Churned":
-        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
+        return "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800";
       default:
-        return "bg-zinc-50 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
+        return "bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700";
     }
   };
 
   const getTierBadge = (tier: string) => {
     switch (tier) {
       case "VIP":
-        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
+        return "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800";
+      case "Standard":
+        return "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800";
       case "Enterprise":
-        return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
-      case "SME":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
+        return "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border-purple-200 dark:border-purple-800";
       default:
-        return "bg-zinc-50 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700";
+        return "bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700";
     }
   };
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case "Call":
-        return <PhoneCall className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />;
-      case "Meeting":
-        return <Video className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />;
-      case "Email":
-        return <Mail className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />;
-      case "DealCreated":
-        return <DollarSign className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />;
-      case "StatusChange":
-        return <TrendingUp className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />;
-      default:
-        return <FileText className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />;
-    }
-  };
-
-  // Sort notes: pinned notes first
   const sortedNotes = [...customer.notes].sort((a, b) => {
-    if (a.isPinned === b.isPinned) return 0;
-    return a.isPinned ? -1 : 1;
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
+
+  const totalOrdersAmount = orders.reduce(
+    (sum, o) => sum + Number(o.totalAmount || 0),
+    0
+  );
+  const totalPaidAmount = orders
+    .filter((o) => o.paymentStatus === "Paid")
+    .reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+  const totalPendingAmount = Math.max(0, totalOrdersAmount - totalPaidAmount);
 
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:bg-zinc-100 dark:text-zinc-900">
+        <div className="fade-in fixed top-5 right-5 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:bg-white dark:text-zinc-900">
           <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
-          <span className="font-semibold">{toastMessage}</span>
+          <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* 1. Top Navigation & Action Header */}
-      <div className="flex flex-col justify-between gap-4 border-b border-zinc-100 pb-4 sm:flex-row sm:items-center dark:border-zinc-800">
+      {/* 1. Header & Quick Actions */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 shadow-2xs transition-all hover:bg-zinc-50 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:text-zinc-300 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/customers`}
-            title="Müşteri Listesine Dön"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
-
-          <div className="flex items-center gap-3">
-            <div
-              className={`flex h-11 w-11 items-center justify-center rounded-2xl font-bold text-base shadow-xs ${
-                customer.type === "Company"
-                  ? "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-400"
-                  : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
-              }`}
-            >
-              {customer.type === "Company" ? (
-                <Building2 className="h-6 w-6" />
-              ) : (
-                <User className="h-6 w-6" />
-              )}
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
+                {customer.name}
+              </h1>
+              <span
+                className={`inline-flex items-center rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(
+                  customer.status
+                )}`}
+              >
+                {customer.status}
+              </span>
+              <span
+                className={`inline-flex items-center rounded-md border px-2 py-0.5 font-bold text-[10px] ${getTierBadge(
+                  customer.tier
+                )}`}
+              >
+                {customer.tier}
+              </span>
             </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-bold text-zinc-900 text-xl tracking-tight sm:text-2xl dark:text-zinc-100">
-                  {customer.name}
-                </h1>
-                <span
-                  className={`rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(
-                    customer.status
-                  )}`}
-                >
-                  {customer.status}
-                </span>
-                <span
-                  className={`rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getTierBadge(
-                    customer.tier
-                  )}`}
-                >
-                  {customer.tier}
-                </span>
-              </div>
-              <div className="mt-0.5 flex items-center gap-2 text-zinc-500 text-xs dark:text-zinc-400">
-                <span>
-                  {customer.type === "Company"
-                    ? "Kurumsal Şirket"
-                    : "Bireysel Müşteri"}
-                </span>
-                {customer.industry && (
-                  <>
-                    <span>•</span>
-                    <span>{customer.industry}</span>
-                  </>
-                )}
-                {customer.city && (
-                  <>
-                    <span>•</span>
-                    <span>
-                      {customer.city}, {customer.country || "TR"}
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              {customer.type === "Company" ? "Kurumsal Müşteri" : "Bireysel Müşteri"} • {customer.industry || "Sektör Belirtilmemiş"}
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-zinc-700 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:text-zinc-200 dark:hover:bg-zinc-800"
             onClick={() => setIsEditModalOpen(true)}
             type="button"
           >
-            <Edit className="h-3.5 w-3.5" />
+            <Edit2 className="h-3.5 w-3.5 text-zinc-500" />
             <span>Düzenle</span>
           </button>
 
@@ -394,7 +363,7 @@ export default function CustomerDetailPage() {
         {/* Left Column: Quick Info Cards */}
         <div className="space-y-4">
           <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-            <h3 className="font-bold text-zinc-900 text-xs dark:text-zinc-100 uppercase tracking-wider">
+            <h3 className="font-bold text-zinc-900 text-xs uppercase tracking-wider dark:text-zinc-100">
               Temel İletişim Bilgileri
             </h3>
             <div className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-300">
@@ -441,12 +410,12 @@ export default function CustomerDetailPage() {
 
           {/* Assigned Sales Rep Card */}
           <div className="space-y-2.5 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-            <h3 className="font-bold text-zinc-900 text-xs dark:text-zinc-100 uppercase tracking-wider">
+            <h3 className="font-bold text-zinc-900 text-xs uppercase tracking-wider dark:text-zinc-100">
               Sorumlu Satış Temsilcisi
             </h3>
             {customer.assignedEmployeeName ? (
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 font-bold text-xs text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 font-bold text-xs text-white shadow-2xs">
                   {customer.assignedEmployeeName.charAt(0)}
                 </div>
                 <div>
@@ -478,17 +447,7 @@ export default function CustomerDetailPage() {
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
                 key={tab.id}
-                onClick={() =>
-                  setActiveTab(
-                    tab.id as
-                      | "overview"
-                      | "contacts"
-                      | "timeline"
-                      | "deals"
-                      | "notes"
-                      | "finance"
-                  )
-                }
+                onClick={() => setActiveTab(tab.id)}
                 type="button"
               >
                 {tab.label}
@@ -499,36 +458,350 @@ export default function CustomerDetailPage() {
           {/* TAB 1: OVERVIEW */}
           {activeTab === "overview" && (
             <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
                   <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
                     Toplam Ciro
                   </span>
-                  <div className="mt-1 font-bold text-xl text-zinc-900 dark:text-zinc-100">
-                    ₺{customer.totalRevenue.toLocaleString("tr-TR")}
+                  <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                    ₺{(customer.totalRevenue || totalOrdersAmount).toLocaleString("tr-TR")}
                   </div>
                 </div>
                 <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
                   <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                    Aktif Fırsatlar
+                    Fırsatlar
                   </span>
-                  <div className="mt-1 font-bold text-xl text-zinc-900 dark:text-zinc-100">
-                    {customer.dealsCount} Anlaşma
+                  <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                    {deals.length} Adet
                   </div>
                 </div>
                 <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
                   <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                    Kayıtlı Yetkili
+                    Teklifler
                   </span>
-                  <div className="mt-1 font-bold text-xl text-zinc-900 dark:text-zinc-100">
-                    {customer.contacts.length} Kişi
+                  <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                    {quotes.length} Adet
                   </div>
                 </div>
+                <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                    Destek Talepleri
+                  </span>
+                  <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                    {tickets.length} Talep
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent Activities Snapshot */}
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+                <div className="mb-3 flex items-center justify-between">
+                  <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                    Son Müşteri Aktiviteleri
+                  </h4>
+                  <button
+                    className="font-bold text-[11px] text-violet-600 hover:underline dark:text-violet-400"
+                    onClick={() => setActiveTab("timeline")}
+                    type="button"
+                  >
+                    Tümünü Gör →
+                  </button>
+                </div>
+                {customer.activities.length === 0 ? (
+                  <div className="py-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                    Henüz aktivite kaydı bulunmuyor.
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {customer.activities.slice(0, 3).map((act) => (
+                      <div
+                        className="flex items-center justify-between rounded-xl bg-zinc-50/80 p-3 text-xs dark:bg-zinc-800/50"
+                        key={act.id}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <Clock className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                            {act.title}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                          {new Date(act.performedAt).toLocaleDateString("tr-TR")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* TAB 2: CONTACTS */}
+          {/* TAB 2: DEALS */}
+          {activeTab === "deals" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  Müşteri Satış Fırsatları & Huniler
+                </h4>
+                <Link
+                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  href={`/${tenantSlug}/pipelines?create=true`}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Yeni Fırsat</span>
+                </Link>
+              </div>
+
+              {deals.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                  Bu müşteriye ait aktif fırsat bulunamadı.
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {deals.map((deal) => (
+                    <div
+                      className="flex flex-col justify-between gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition hover:border-zinc-300 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-900"
+                      key={deal.id}
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                            {deal.title}
+                          </span>
+                          <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                            {deal.stageName}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <span>Sorumlu: {deal.assignedUserName || "Atanmadı"}</span>
+                          <span>Durum: {deal.status}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-4 sm:justify-end">
+                        <div className="text-right font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                          ₺{(deal.value || 0).toLocaleString("tr-TR")}
+                        </div>
+                        <Link
+                          className="flex items-center gap-1 rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                          href={`/${tenantSlug}/pipelines?dealId=${deal.id}`}
+                        >
+                          <span>İncele</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 3: QUOTES */}
+          {activeTab === "quotes" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  Müşteri Teklif Geçmişi
+                </h4>
+                <Link
+                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  href={`/${tenantSlug}/quotes`}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Teklif Hazırla</span>
+                </Link>
+              </div>
+
+              {quotes.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                  Bu müşteriye henüz teklif oluşturulmadı.
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {quotes.map((quote) => (
+                    <div
+                      className="flex flex-col justify-between gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition hover:border-zinc-300 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-900"
+                      key={quote.id}
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                            {quote.quoteNumber} - {quote.title}
+                          </span>
+                          <span className="rounded-md bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                            {quote.status}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <span>Revizyon: v{quote.revisionNumber}</span>
+                          <span>Tarih: {new Date(quote.createdAt).toLocaleDateString("tr-TR")}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-4 sm:justify-end">
+                        <div className="text-right font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                          ₺{(quote.totalAmount || 0).toLocaleString("tr-TR")}
+                        </div>
+                        <Link
+                          className="flex items-center gap-1 rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                          href={`/${tenantSlug}/quotes`}
+                        >
+                          <span>Görüntüle</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 4: ORDERS */}
+          {activeTab === "orders" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  Müşteri Siparişleri & Satışlar
+                </h4>
+                <Link
+                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  href={`/${tenantSlug}/orders`}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Yeni Sipariş</span>
+                </Link>
+              </div>
+
+              {orders.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                  Bu müşteriye ait kayıtlı sipariş bulunamadı.
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {orders.map((order) => (
+                    <div
+                      className="flex flex-col justify-between gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition hover:border-zinc-300 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-900"
+                      key={order.id}
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                            {order.orderNumber}
+                          </span>
+                          <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                            {order.status}
+                          </span>
+                          <span
+                            className={`rounded-md px-2 py-0.5 font-bold text-[10px] ${
+                              order.paymentStatus === "Paid"
+                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                            }`}
+                          >
+                            {order.paymentStatus === "Paid" ? "Ödendi" : "Beklemede"}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <span>{order.itemsCount} Kalem Ürün</span>
+                          <span>Tarih: {new Date(order.createdAt).toLocaleDateString("tr-TR")}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-4 sm:justify-end">
+                        <div className="text-right font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                          ₺{(order.totalAmount || 0).toLocaleString("tr-TR")}
+                        </div>
+                        <Link
+                          className="flex items-center gap-1 rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                          href={`/${tenantSlug}/orders/${order.id}`}
+                        >
+                          <span>Detay</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 5: TICKETS */}
+          {activeTab === "tickets" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  Destek & Helpdesk Talepleri
+                </h4>
+                <Link
+                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  href={`/${tenantSlug}/tickets`}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Destek Talebi Aç</span>
+                </Link>
+              </div>
+
+              {tickets.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                  Bu müşteriye ait destek talebi bulunmuyor.
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {tickets.map((ticket) => (
+                    <div
+                      className="flex flex-col justify-between gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition hover:border-zinc-300 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-900"
+                      key={ticket.id}
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                            {ticket.ticketNumber}: {ticket.subject}
+                          </span>
+                          <span
+                            className={`rounded-md px-2 py-0.5 font-bold text-[10px] ${
+                              ticket.priority === "Urgent"
+                                ? "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
+                                : ticket.priority === "High"
+                                ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                                : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                            }`}
+                          >
+                            {ticket.priority}
+                          </span>
+                          <span className="rounded-md bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                            {ticket.status}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <span>Kategori: {ticket.category}</span>
+                          <span>Mesaj: {ticket.messageCount}</span>
+                          {ticket.isSlaBreached && (
+                            <span className="font-bold text-rose-600 dark:text-rose-400">
+                              SLA İhlali
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-end">
+                        <Link
+                          className="flex items-center gap-1 rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                          href={`/${tenantSlug}/tickets/${ticket.id}`}
+                        >
+                          <span>Talep Detayı</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 6: CONTACTS */}
           {activeTab === "contacts" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -605,12 +878,12 @@ export default function CustomerDetailPage() {
             </div>
           )}
 
-          {/* TAB 3: TIMELINE */}
+          {/* TAB 7: TIMELINE */}
           {activeTab === "timeline" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                  İletişim & Aktivite Zaman Tüneli
+                  Müşteri Etkileşim & Aktivite Geçmişi
                 </h4>
                 <button
                   className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
@@ -618,39 +891,49 @@ export default function CustomerDetailPage() {
                   type="button"
                 >
                   <Plus className="h-3.5 w-3.5" />
-                  <span>Yeni Aktivite Kaydet</span>
+                  <span>Aktivite Ekle</span>
                 </button>
               </div>
 
               {customer.activities.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
-                  Henüz kaydedilmiş aktivite yok.
+                  Henüz aktivite kaydı bulunmuyor.
                 </div>
               ) : (
-                <div className="relative space-y-3 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-zinc-200 dark:before:bg-zinc-800">
-                  {customer.activities.map((act) => (
+                <div className="space-y-3">
+                  {customer.activities.map((activity) => (
                     <div
-                      className="relative flex items-start gap-3 text-xs"
-                      key={act.id}
+                      className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
+                      key={activity.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white shadow-2xs ring-2 ring-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:ring-zinc-800">
-                        {getActivityIcon(act.activityType)}
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                        {activity.activityType === "Call" ? (
+                          <PhoneCall className="h-4 w-4" />
+                        ) : activity.activityType === "Meeting" ? (
+                          <Video className="h-4 w-4" />
+                        ) : activity.activityType === "Email" ? (
+                          <Mail className="h-4 w-4" />
+                        ) : (
+                          <FileText className="h-4 w-4" />
+                        )}
                       </div>
-
-                      <div className="flex-1 rounded-xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+                      <div className="flex-1 text-xs">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                            {act.title}
+                            {activity.title}
                           </span>
-                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
-                            {new Date(act.performedAt).toLocaleString("tr-TR")}
+                          <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                            {new Date(activity.performedAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
-                        {act.description && (
-                          <p className="mt-1 whitespace-pre-wrap text-zinc-600 text-xs leading-relaxed dark:text-zinc-300">
-                            {act.description}
+                        {activity.description && (
+                          <p className="mt-1 text-zinc-600 dark:text-zinc-300">
+                            {activity.description}
                           </p>
                         )}
+                        <div className="mt-2 flex items-center gap-2 text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <span>Tür: {activity.activityType}</span>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -659,36 +942,7 @@ export default function CustomerDetailPage() {
             </div>
           )}
 
-          {/* TAB 4: DEALS */}
-          {activeTab === "deals" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                  Müşteriyle Yürütülen Fırsatlar
-                </h4>
-                <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
-                  href={`/${tenantSlug}/pipelines`}
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Fırsat Başlat</span>
-                </Link>
-              </div>
-
-              <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-6 text-center dark:border-zinc-800 dark:bg-zinc-900">
-                <Briefcase className="mx-auto h-8 w-8 text-zinc-400 dark:text-zinc-500" />
-                <h5 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                  Aktif Pipeline Fırsatları
-                </h5>
-                <p className="mx-auto max-w-sm text-[11px] text-zinc-500 dark:text-zinc-400">
-                  Bu müşteriye ait toplam {customer.dealsCount} adet anlaşma
-                  kaydedilmiştir.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 5: NOTES (With Pin / Unpin & Edit Support) */}
+          {/* TAB 8: NOTES */}
           {activeTab === "notes" && (
             <div className="space-y-4">
               {/* Add Note Card */}
@@ -705,7 +959,7 @@ export default function CustomerDetailPage() {
                     value={quickNoteContent}
                   />
                   <div className="mt-2 flex items-center justify-between">
-                    <label className="flex cursor-pointer items-center gap-1.5 text-zinc-600 text-xs dark:text-zinc-300 select-none">
+                    <label className="flex cursor-pointer items-center gap-1.5 text-zinc-600 text-xs select-none dark:text-zinc-300">
                       <input
                         checked={quickNotePinned}
                         className="rounded text-violet-600 focus:ring-violet-500"
@@ -826,36 +1080,42 @@ export default function CustomerDetailPage() {
             </div>
           )}
 
-          {/* TAB 6: FINANCE */}
+          {/* TAB 9: FINANCE */}
           {activeTab === "finance" && (
             <div className="space-y-4">
               <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 dark:border-zinc-800/90 dark:bg-zinc-900/90">
                 <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                  Müşteri Finansal Özeti
+                  Müşteri Finansal Özeti & Bakiye
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
                     <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
-                      Toplam Faturalanan
+                      Toplam Sipariş Tutarı
                     </span>
                     <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                      ₺{customer.totalRevenue.toLocaleString("tr-TR")}
+                      ₺{totalOrdersAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
                     </div>
                   </div>
                   <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
                     <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
-                      Ödenen Tutar
+                      Tahsil Edilen (Ödenen)
                     </span>
                     <div className="mt-1 font-bold text-emerald-600 text-lg dark:text-emerald-400">
-                      ₺{customer.totalRevenue.toLocaleString("tr-TR")}
+                      ₺{totalPaidAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
                     </div>
                   </div>
                   <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
                     <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
-                      Açık Bakiye
+                      Bekleyen Bakiye
                     </span>
-                    <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                      ₺0,00
+                    <div
+                      className={`mt-1 font-bold text-lg ${
+                        totalPendingAmount > 0
+                          ? "text-amber-600 dark:text-amber-400"
+                          : "text-zinc-900 dark:text-zinc-100"
+                      }`}
+                    >
+                      ₺{totalPendingAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
                     </div>
                   </div>
                 </div>
@@ -880,7 +1140,7 @@ export default function CustomerDetailPage() {
         />
       )}
 
-      {/* Add Activity Modal (With Past / Manual Date-Time Support) */}
+      {/* Add Activity Modal */}
       {isAddActivityModalOpen && (
         <AddActivityModal
           customerId={customer.id}
@@ -1046,7 +1306,7 @@ function AddContactModal({
 
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Telefon (Doğrulama & Maske)
+              Telefon
             </label>
             <PhoneInput
               onChange={(val) => setFormData({ ...formData, phone: val })}
@@ -1104,19 +1364,12 @@ function AddActivityModal({
   tenantId: string;
   customerId: string;
 }) {
-  const [formData, setFormData] = useState<AddCustomerActivityRequest>({
-    activityType: "Call",
+  const [formData, setFormData] = useState({
+    activityDate: new Date().toISOString().split("T")[0],
+    activityTime: "14:00",
     description: "",
-    title: "",
-  });
-
-  // Custom date and time entry support (e.g. yesterday, today, custom date)
-  const [customDate, setCustomDate] = useState(() => {
-    return new Date().toISOString().split("T")[0];
-  });
-  const [customTime, setCustomTime] = useState(() => {
-    const now = new Date();
-    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    subject: "",
+    type: "Call",
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -1125,26 +1378,23 @@ function AddActivityModal({
     return null;
   }
 
-  const setShortcutDate = (type: "today" | "yesterday") => {
-    const d = new Date();
-    if (type === "yesterday") {
-      d.setDate(d.getDate() - 1);
-    }
-    setCustomDate(d.toISOString().split("T")[0]!);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title.trim()) {
+    if (!formData.subject.trim()) {
       return;
     }
 
     setSubmitting(true);
     try {
-      const combinedDateTime = `${customDate}T${customTime}:00Z`;
-      const payload = {
-        ...formData,
+      const combinedDateTime = new Date(
+        `${formData.activityDate}T${formData.activityTime}:00`
+      ).toISOString();
+
+      const payload: AddCustomerActivityRequest = {
+        activityType: formData.type,
+        description: formData.description.trim() || undefined,
         performedAt: combinedDateTime,
+        title: formData.subject.trim(),
       };
 
       const res = await ApiClient.addCustomerActivity(
@@ -1164,14 +1414,9 @@ function AddActivityModal({
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="flex w-full max-w-md flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
-          <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              Aktivite / İletişim Kaydet
-            </h3>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              Gerçekleşen görüşme, arama veya toplantıyı işleyin
-            </p>
-          </div>
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            Yeni Müşteri Aktivitesi Ekle
+          </h3>
           <button
             className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
             onClick={onClose}
@@ -1184,89 +1429,79 @@ function AddActivityModal({
         <form className="space-y-3 text-xs" onSubmit={handleSubmit}>
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Aktivite Türü
+              Aktivite Türü *
             </label>
             <select
               className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
-                setFormData({ ...formData, activityType: e.target.value })
+                setFormData({ ...formData, type: e.target.value })
               }
-              value={formData.activityType}
+              value={formData.type}
             >
-              <option value="Call">Telefon Görüşmesi</option>
-              <option value="Meeting">Toplantı & Demo</option>
+              <option value="Call">Telefon Araması</option>
+              <option value="Meeting">Toplantı / Görüşme</option>
               <option value="Email">E-Posta İletişimi</option>
-              <option value="Note">Bilgi / Not</option>
+              <option value="Note">Not / Bilgilendirme</option>
             </select>
-          </div>
-
-          {/* Date & Time Picker with Quick Date Pills */}
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <label className="block font-medium text-zinc-700 dark:text-zinc-300">
-                Görüşme Tarihi ve Saati
-              </label>
-              <div className="flex items-center gap-1">
-                <button
-                  className="rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                  onClick={() => setShortcutDate("today")}
-                  type="button"
-                >
-                  Bugün
-                </button>
-                <button
-                  className="rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                  onClick={() => setShortcutDate("yesterday")}
-                  type="button"
-                >
-                  Dün
-                </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setCustomDate(e.target.value)}
-                required
-                type="date"
-                value={customDate}
-              />
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setCustomTime(e.target.value)}
-                required
-                type="time"
-                value={customTime}
-              />
-            </div>
           </div>
 
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Başlık *
+              Konu / Başlık *
             </label>
             <input
               className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
+                setFormData({ ...formData, subject: e.target.value })
               }
-              placeholder="Örn: Fiyat teklifi ve lisanslama üzerine görüşüldü"
+              placeholder="Örn: Yıllık Sözleşme Yenileme Görüşmesi"
               required
               type="text"
-              value={formData.title}
+              value={formData.subject}
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Tarih *
+              </label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) =>
+                  setFormData({ ...formData, activityDate: e.target.value })
+                }
+                required
+                type="date"
+                value={formData.activityDate}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Saat *
+              </label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) =>
+                  setFormData({ ...formData, activityTime: e.target.value })
+                }
+                required
+                type="time"
+                value={formData.activityTime}
+              />
+            </div>
           </div>
 
           <div>
             <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Detaylar & Sonuç
+              Açıklama & Detaylar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="Görüşülen konular ve bir sonraki aksiyon adımları..."
+              placeholder="Görüşülen maddeler ve kararlar..."
               rows={3}
               value={formData.description}
             />
@@ -1281,7 +1516,7 @@ function AddActivityModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-violet-700 active:scale-95 disabled:opacity-50"
+              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1295,40 +1530,42 @@ function AddActivityModal({
 }
 
 function EditCustomerModal({
+  customer,
   isOpen,
   onClose,
   onSuccess,
   tenantId,
-  customer,
-  employees: initialEmployees,
+  employees,
 }: {
+  customer: CustomerDetailDto;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   tenantId: string;
-  customer: CustomerDetailDto;
   employees: EmployeeDto[];
 }) {
-  const [employeesList, setEmployeesList] = useState<EmployeeDto[]>(initialEmployees);
-  const [isAddSalesRepOpen, setIsAddSalesRepOpen] = useState(false);
-
   const [formData, setFormData] = useState<UpdateCustomerRequest>({
     addressLine: customer.addressLine || "",
-    assignedEmployeeId: customer.assignedEmployeeId || "",
+    assignedEmployeeId: customer.assignedEmployeeId || undefined,
     city: customer.city || "",
+    country: customer.country || "",
     email: customer.email || "",
     industry: customer.industry || "",
-    name: customer.name,
+    name: customer.name || "",
     phone: customer.phone || "",
-    status: customer.status,
+    postalCode: customer.postalCode || "",
+    state: customer.state || "",
+    status: customer.status || "Active",
+    tags: customer.tags || [],
     taxNumber: customer.taxNumber || "",
     taxOffice: customer.taxOffice || "",
-    tier: customer.tier,
-    type: customer.type,
+    tier: customer.tier || "Standard",
+    type: customer.type || "Company",
     website: customer.website || "",
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
 
   if (!isOpen) {
     return null;
@@ -1336,29 +1573,13 @@ function EditCustomerModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name?.trim()) return;
+
     setSubmitting(true);
     try {
-      const cleanData: UpdateCustomerRequest = {
-        addressLine: formData.addressLine?.trim() || undefined,
-        assignedEmployeeId: formData.assignedEmployeeId
-          ? formData.assignedEmployeeId
-          : undefined,
-        city: formData.city?.trim() || undefined,
-        email: formData.email?.trim() || undefined,
-        industry: formData.industry?.trim() || undefined,
-        name: formData.name.trim(),
-        phone: formData.phone?.trim() || undefined,
-        status: formData.status,
-        taxNumber: formData.taxNumber?.trim() || undefined,
-        taxOffice: formData.taxOffice?.trim() || undefined,
-        tier: formData.tier,
-        type: formData.type,
-        website: formData.website?.trim() || undefined,
-      };
-
       const res = await ApiClient.updateCustomer(
         customer.id,
-        cleanData,
+        formData,
         tenantId
       );
       if (res.success) {
@@ -1370,185 +1591,130 @@ function EditCustomerModal({
   };
 
   return (
-    <>
-      <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-        <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              Müşteri Bilgilerini Düzenle
-            </h3>
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+      <div className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            Müşteri Bilgilerini Düzenle
+          </h3>
+          <button
+            className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+            onClick={onClose}
+            type="button"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
+          <div>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+              Müşteri Adı *
+            </label>
+            <input
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              type="text"
+              value={formData.name || ""}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Müşteri Türü
+              </label>
+              <select
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                value={formData.type}
+              >
+                <option value="Company">Kurumsal Şirket</option>
+                <option value="Individual">Bireysel Müşteri</option>
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Segment (Tier)
+              </label>
+              <select
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
+                value={formData.tier}
+              >
+                <option value="Standard">Standard</option>
+                <option value="VIP">VIP</option>
+                <option value="Enterprise">Enterprise</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                E-Posta
+              </label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                type="email"
+                value={formData.email || ""}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                Telefon
+              </label>
+              <PhoneInput
+                onChange={(val) => setFormData({ ...formData, phone: val })}
+                value={formData.phone || ""}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+              Sorumlu Satış Temsilcisi
+            </label>
+            <SalesRepPicker
+              employees={employees}
+              onAddNew={() => setIsQuickAddOpen(true)}
+              onChange={(empId) =>
+                setFormData({ ...formData, assignedEmployeeId: empId || undefined })
+              }
+              value={formData.assignedEmployeeId}
+            />
+          </div>
+
+          <div className="mt-5 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3.5 dark:border-zinc-800">
             <button
-              className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
-              <X className="h-5 w-5" />
+              Vazgeç
+            </button>
+            <button
+              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+              disabled={submitting}
+              type="submit"
+            >
+              {submitting ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
             </button>
           </div>
+        </form>
 
-          <form
-            className="flex-1 space-y-3.5 overflow-y-auto pr-1 text-xs"
-            onSubmit={handleSubmit}
-          >
-            <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Müşteri / Şirket Adı *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-                type="text"
-                value={formData.name}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  E-Posta
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  type="email"
-                  value={formData.email}
-                />
-              </div>
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Telefon
-                </label>
-                <PhoneInput
-                  onChange={(val) => setFormData({ ...formData, phone: val })}
-                  placeholder="+90 (5XX) XXX XX XX"
-                  value={formData.phone || ""}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Statü
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, status: e.target.value })
-                  }
-                  value={formData.status}
-                >
-                  <option value="Lead">Potansiyel (Lead)</option>
-                  <option value="Active">Aktif</option>
-                  <option value="Passive">Pasif</option>
-                  <option value="Churned">Kaybedildi</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Segment / Seviye
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, tier: e.target.value })
-                  }
-                  value={formData.tier}
-                >
-                  <option value="Standard">Standart</option>
-                  <option value="VIP">VIP</option>
-                  <option value="Enterprise">Enterprise</option>
-                  <option value="SME">KOBİ (SME)</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Sorumlu Satış Temsilcisi
-              </label>
-              <SalesRepPicker
-                employees={employeesList}
-                onAddNew={() => setIsAddSalesRepOpen(true)}
-                onChange={(empId) =>
-                  setFormData({
-                    ...formData,
-                    assignedEmployeeId: empId,
-                  })
-                }
-                placeholder="Temsilci arayın veya seçin..."
-                value={formData.assignedEmployeeId}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Şehir
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, city: e.target.value })
-                  }
-                  type="text"
-                  value={formData.city}
-                />
-              </div>
-              <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Web Sitesi
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, website: e.target.value })
-                  }
-                  placeholder="https://..."
-                  type="url"
-                  value={formData.website}
-                />
-              </div>
-            </div>
-
-            <div className="mt-4 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
-              <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                onClick={onClose}
-                type="button"
-              >
-                Vazgeç
-              </button>
-              <button
-                className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-violet-700 active:scale-95 disabled:opacity-50"
-                disabled={submitting}
-                type="submit"
-              >
-                {submitting ? "Kaydediliyor..." : "Güncelle"}
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* Quick Add Sales Rep Modal */}
-      {isAddSalesRepOpen && (
         <QuickAddSalesRepModal
-          isOpen={isAddSalesRepOpen}
-          onClose={() => setIsAddSalesRepOpen(false)}
-          onSuccess={(newEmp) => {
-            setEmployeesList((prev) => [...prev, newEmp]);
-            setFormData((prev) => ({ ...prev, assignedEmployeeId: newEmp.id }));
+          isOpen={isQuickAddOpen}
+          onClose={() => setIsQuickAddOpen(false)}
+          onSuccess={(emp) => {
+            setFormData({ ...formData, assignedEmployeeId: emp.id });
+            setIsQuickAddOpen(false);
           }}
           tenantId={tenantId}
         />
-      )}
-    </>
+      </div>
+    </div>
   );
 }

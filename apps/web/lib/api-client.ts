@@ -1896,6 +1896,7 @@ export class ApiClient {
     params: {
       assignedUserId?: string;
       category?: string;
+      customerId?: string;
       departmentId?: string;
       page?: number;
       pageSize?: number;
@@ -1910,6 +1911,7 @@ export class ApiClient {
     if (params.status) q.set("status", params.status);
     if (params.priority) q.set("priority", params.priority);
     if (params.category) q.set("category", params.category);
+    if (params.customerId) q.set("customerId", params.customerId);
     if (params.departmentId) q.set("departmentId", params.departmentId);
     if (params.assignedUserId) q.set("assignedUserId", params.assignedUserId);
     if (params.queue) q.set("queue", params.queue);

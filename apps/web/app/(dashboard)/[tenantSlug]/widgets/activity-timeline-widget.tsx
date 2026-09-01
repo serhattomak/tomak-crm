@@ -5,9 +5,11 @@ import {
   Clock,
   DollarSign,
   FileSpreadsheet,
+  Package,
   PhoneCall,
   Plus,
   RefreshCw,
+  ShoppingBag,
   UserPlus,
 } from "lucide-react";
 import Link from "next/link";
@@ -27,52 +29,139 @@ export function ActivityTimelineWidget() {
     }
     setIsLoading(true);
     try {
-      const quotesRes = await ApiClient.getQuotes(
-        { pageSize: 6 },
-        activeTenant.id
-      );
-      const items: ActivityItem[] = [];
+      const [quotesRes, dealsRes, customersRes, ordersRes] = await Promise.allSettled([
+        ApiClient.getQuotes({ pageSize: 4 }, activeTenant.id),
+        ApiClient.getDeals({ pageSize: 4 }, activeTenant.id),
+        ApiClient.getCustomers(activeTenant.id, { pageSize: 4 }),
+        ApiClient.getOrders({ pageSize: 4 }, activeTenant.id),
+      ]);
 
-      if (quotesRes.success && quotesRes.data?.items) {
-        for (const q of quotesRes.data.items) {
-          const dateStr = q.updatedAt || q.createdAt;
-          const timeFormatted = dateStr
-            ? new Date(dateStr).toLocaleTimeString("tr-TR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : "Bugün";
+      const items: (ActivityItem & { rawDate: Date })[] = [];
+
+      // 1. Process Quotes
+      if (quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items) {
+        for (const q of quotesRes.value.data.items) {
+          const date = new Date(q.updatedAt || q.createdAt || Date.now());
+          const timeFormatted = date.toLocaleTimeString("tr-TR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
 
           let action = "yeni teklif oluşturdu";
           let type: ActivityItem["type"] = "deal";
           if (q.status === "RevisionRequested") {
-            action = "müşteriden revizyon talebi geldi";
+            action = "revizyon talebi geldi";
             type = "task";
           } else if (q.status === "Accepted") {
-            action = "teklif onaylandı & siparişe hazır";
+            action = "teklif onaylandı & siparişe dönüştürüldü";
             type = "deal";
           } else if (q.status === "Sent") {
-            action = "müşteriye dijital teklif iletildi";
+            action = "müşteriye dijital teklif iletti";
             type = "call";
           }
 
           items.push({
             action,
             id: `quote-${q.id}`,
+            rawDate: date,
             target: `${q.quoteNumber} - ${q.customerName} (₺${(q.totalAmount || 0).toLocaleString("tr-TR")})`,
             timestamp: timeFormatted,
             type,
             user: {
-              initials: (q.assignedUserName || "S")
-                .substring(0, 2)
-                .toUpperCase(),
-              name: q.assignedUserName || "Sistem",
+              initials: (q.assignedUserName || "ST").substring(0, 2).toUpperCase(),
+              name: q.assignedUserName || "Satış Ekibi",
             },
           });
         }
       }
 
-      setActivities(items);
+      // 2. Process Deals
+      if (dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items) {
+        for (const d of dealsRes.value.data.items) {
+          const date = new Date(d.updatedAt || d.createdAt || Date.now());
+          const timeFormatted = date.toLocaleTimeString("tr-TR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          let action = "satış fırsatı açtı";
+          if (d.status === "Won") {
+            action = "fırsatı kazandı 🏆";
+          } else if (d.status === "Lost") {
+            action = "fırsatı kapattı (Kayıp)";
+          } else if (d.stageName) {
+            action = `fırsatı '${d.stageName}' aşamasına taşıdı`;
+          }
+
+          items.push({
+            action,
+            id: `deal-${d.id}`,
+            rawDate: date,
+            target: `${d.title} (₺${(d.value || 0).toLocaleString("tr-TR")})`,
+            timestamp: timeFormatted,
+            type: "deal",
+            user: {
+              initials: (d.assignedUserName || "F").substring(0, 2).toUpperCase(),
+              name: d.assignedUserName || "Fırsat Yöneticisi",
+            },
+          });
+        }
+      }
+
+      // 3. Process Customers
+      if (customersRes.status === "fulfilled" && customersRes.value.success && customersRes.value.data?.items) {
+        for (const c of customersRes.value.data.items) {
+          const date = new Date(c.createdAt || Date.now());
+          const timeFormatted = date.toLocaleTimeString("tr-TR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          items.push({
+            action: "yeni müşteri kaydetti",
+            id: `cust-${c.id}`,
+            rawDate: date,
+            target: `${c.name} (${c.type === "Individual" ? "Bireysel" : "Kurumsal"})`,
+            timestamp: timeFormatted,
+            type: "lead",
+            user: {
+              initials: "CRM",
+              name: "Müşteri Sistemi",
+            },
+          });
+        }
+      }
+
+      // 4. Process Orders
+      if (ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items) {
+        for (const o of ordersRes.value.data.items) {
+          const date = new Date(o.createdAt || Date.now());
+          const timeFormatted = date.toLocaleTimeString("tr-TR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          items.push({
+            action: `sipariş oluşturuldu (${o.status})`,
+            id: `ord-${o.id}`,
+            rawDate: date,
+            target: `${o.orderNumber || "Sipariş"} - ₺${(o.totalAmount || 0).toLocaleString("tr-TR")}`,
+            timestamp: timeFormatted,
+            type: "task",
+            user: {
+              initials: (o.customerName || "S").substring(0, 2).toUpperCase(),
+              name: o.customerName || "Müşteri",
+            },
+          });
+        }
+      }
+
+      // Sort all activities chronologically descending
+      const sorted = items
+        .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime())
+        .slice(0, 7);
+
+      setActivities(sorted);
     } catch {
       setActivities([]);
     } finally {
@@ -104,7 +193,7 @@ export function ActivityTimelineWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs">
               <Clock className="h-4 w-4" />
             </div>
             <div>
@@ -112,7 +201,7 @@ export function ActivityTimelineWidget() {
                 Canlı Aktivite Akışı
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
-                Ekip içi son teklif, müşteri ve satış hareketleri
+                Teklif, müşteri, fırsat ve sipariş hareketleri
               </div>
             </div>
           </div>
@@ -143,11 +232,11 @@ export function ActivityTimelineWidget() {
               <Clock className="h-5 w-5" />
             </div>
             <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
-              Henüz aktivite veya işlem kaydı bulunmuyor
+              Henüz işlem kaydı bulunmuyor
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
-              Oluşturulan teklifler, onaylar ve müşteri etkileşimleri otomatik
-              olarak bu akışta toplanır.
+              Oluşturulan teklifler, fırsatlar ve müşteri etkileşimleri otomatik
+              olarak bu canlı akışta toplanır.
             </p>
             <Link
               className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
@@ -194,10 +283,10 @@ export function ActivityTimelineWidget() {
       {activities.length > 0 && (
         <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
-            href={`/${activeTenant?.slug || "workspace"}/quotes`}
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
+            href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
-            Tüm İşlem Geçmişini İncele →
+            Tüm Satış ve Fırsatları İncele →
           </Link>
         </div>
       )}
