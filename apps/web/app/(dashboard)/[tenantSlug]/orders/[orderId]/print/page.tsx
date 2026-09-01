@@ -49,14 +49,14 @@ export default function OrderPrintPage() {
 
   const getLabel = (status: string) => {
     const map: Record<string, string> = {
+      Cancelled: "İptal",
+      Confirmed: "Onaylandı",
+      Delivered: "Teslim Edildi",
       Draft: "Taslak",
       PendingApproval: "Onay Bekliyor",
-      Confirmed: "Onaylandı",
       Processing: "Hazırlanıyor",
-      Shipped: "Kargoda",
-      Delivered: "Teslim Edildi",
-      Cancelled: "İptal",
       Refunded: "İade",
+      Shipped: "Kargoda",
     };
     return map[status] || status;
   };
@@ -64,9 +64,9 @@ export default function OrderPrintPage() {
   const getPaymentLabel = (m: string) => {
     const map: Record<string, string> = {
       BankTransfer: "Havale / EFT",
-      CreditCard: "Kredi Kartı",
       Cash: "Nakit",
       Check: "Çek / Senet",
+      CreditCard: "Kredi Kartı",
       OpenAccount: "Açık Hesap",
     };
     return map[m] || m;
@@ -83,8 +83,13 @@ export default function OrderPrintPage() {
   if (error || !order) {
     return (
       <div className="mx-auto max-w-3xl p-8 text-center">
-        <p className="text-sm text-rose-600">{error || "Sipariş bulunamadı."}</p>
-        <Link className="mt-4 inline-flex text-blue-600 text-xs underline" href={`/${tenantSlug}/orders`}>
+        <p className="text-rose-600 text-sm">
+          {error || "Sipariş bulunamadı."}
+        </p>
+        <Link
+          className="mt-4 inline-flex text-blue-600 text-xs underline"
+          href={`/${tenantSlug}/orders`}
+        >
           Siparişlere Dön
         </Link>
       </div>
@@ -94,8 +99,15 @@ export default function OrderPrintPage() {
   const isProforma = type === "proforma";
 
   return (
-    <PermissionGate fallback={<div className="p-8 text-center text-xs text-zinc-500">Bu sayfayı görüntüleme yetkiniz yok (Orders.View).</div>} permission="Orders.View">
-      <div className="mx-auto max-w-4xl bg-white p-6 text-zinc-900 print:p-0 dark:bg-white dark:text-zinc-900">
+    <PermissionGate
+      fallback={
+        <div className="p-8 text-center text-xs text-zinc-500">
+          Bu sayfayı görüntüleme yetkiniz yok (Orders.View).
+        </div>
+      }
+      permission="Orders.View"
+    >
+      <div className="mx-auto max-w-4xl bg-white p-6 text-zinc-900 dark:bg-white dark:text-zinc-900 print:p-0">
         <style>{`
           @media print {
             .no-print { display: none !important; }
@@ -107,14 +119,14 @@ export default function OrderPrintPage() {
         {/* No-print toolbar */}
         <div className="no-print mb-4 flex items-center justify-between">
           <Link
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50"
             href={`/${tenantSlug}/orders/${orderId}`}
           >
             <ArrowLeft className="h-4 w-4" />
             Siparişe Dön
           </Link>
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
             onClick={handlePrint}
             type="button"
           >
@@ -124,30 +136,53 @@ export default function OrderPrintPage() {
         </div>
 
         {/* Header */}
-        <div className="flex items-start justify-between border-b-2 border-zinc-900 pb-4">
+        <div className="flex items-start justify-between border-zinc-900 border-b-2 pb-4">
           <div className="flex items-center gap-3">
             {activeTenant?.logoUrl ? (
-              <img alt="logo" className="h-10 w-10 rounded-xl object-cover" src={activeTenant.logoUrl} />
+              <img
+                alt="logo"
+                className="h-10 w-10 rounded-xl object-cover"
+                src={activeTenant.logoUrl}
+              />
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-black text-sm text-white">
                 {activeTenant?.name?.charAt(0).toUpperCase() || "C"}
               </div>
             )}
             <div>
-              <div className="font-black text-lg uppercase tracking-tight">{activeTenant?.name || "Şirket"}</div>
-              <div className="text-[11px] text-zinc-500">{isProforma ? "Proforma Fatura / Teklif" : "Sipariş Belgesi"}</div>
+              <div className="font-black text-lg uppercase tracking-tight">
+                {activeTenant?.name || "Şirket"}
+              </div>
+              <div className="text-[11px] text-zinc-500">
+                {isProforma ? "Proforma Fatura / Teklif" : "Sipariş Belgesi"}
+              </div>
             </div>
           </div>
           <div className="text-right">
-            <div className="font-mono text-sm font-black">{order.orderNumber}</div>
+            <div className="font-black font-mono text-sm">
+              {order.orderNumber}
+            </div>
             <div className="mt-1 flex justify-end gap-1">
-              <span className="rounded-md border border-zinc-300 bg-zinc-100 px-2 py-0.5 text-[10px] font-bold">{getLabel(order.status)}</span>
-              <span className="rounded-md border border-zinc-300 bg-zinc-50 px-2 py-0.5 text-[10px] font-bold">{order.paymentStatus}</span>
+              <span className="rounded-md border border-zinc-300 bg-zinc-100 px-2 py-0.5 font-bold text-[10px]">
+                {getLabel(order.status)}
+              </span>
+              <span className="rounded-md border border-zinc-300 bg-zinc-50 px-2 py-0.5 font-bold text-[10px]">
+                {order.paymentStatus}
+              </span>
             </div>
             <div className="mt-1 text-[11px] text-zinc-500">
-              <div>Sipariş Tarihi: {new Date(order.orderDate).toLocaleDateString("tr-TR")}</div>
-              {order.dueDate && <div>Vade: {new Date(order.dueDate).toLocaleDateString("tr-TR")}</div>}
-              {order.invoiceNumber && <div>Fatura No: {order.invoiceNumber}</div>}
+              <div>
+                Sipariş Tarihi:{" "}
+                {new Date(order.orderDate).toLocaleDateString("tr-TR")}
+              </div>
+              {order.dueDate && (
+                <div>
+                  Vade: {new Date(order.dueDate).toLocaleDateString("tr-TR")}
+                </div>
+              )}
+              {order.invoiceNumber && (
+                <div>Fatura No: {order.invoiceNumber}</div>
+              )}
             </div>
           </div>
         </div>
@@ -155,28 +190,45 @@ export default function OrderPrintPage() {
         {/* Customer */}
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3">
-            <div className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700">Müşteri</div>
+            <div className="font-extrabold text-[10px] text-blue-700 uppercase tracking-wider">
+              Müşteri
+            </div>
             <div className="mt-1 font-bold text-sm">{order.customerName}</div>
-            {order.billingAddress && <div className="mt-1 text-xs text-zinc-600">Fatura: {order.billingAddress}</div>}
-            {order.shippingAddress && <div className="mt-1 text-xs text-zinc-600">Teslimat: {order.shippingAddress}</div>}
+            {order.billingAddress && (
+              <div className="mt-1 text-xs text-zinc-600">
+                Fatura: {order.billingAddress}
+              </div>
+            )}
+            {order.shippingAddress && (
+              <div className="mt-1 text-xs text-zinc-600">
+                Teslimat: {order.shippingAddress}
+              </div>
+            )}
           </div>
           <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3">
-            <div className="text-[10px] font-extrabold uppercase tracking-wider text-zinc-500">Ödeme Bilgisi</div>
+            <div className="font-extrabold text-[10px] text-zinc-500 uppercase tracking-wider">
+              Ödeme Bilgisi
+            </div>
             <div className="mt-1 text-xs">
               <div>
                 Yöntem: <b>{getPaymentLabel(order.paymentMethod)}</b>
               </div>
               {order.dueDate && (
                 <div>
-                  Vade: <b>{new Date(order.dueDate).toLocaleDateString("tr-TR")}</b>
+                  Vade:{" "}
+                  <b>{new Date(order.dueDate).toLocaleDateString("tr-TR")}</b>
                 </div>
               )}
-              <div className="mt-1 text-[11px] text-zinc-500">Durum: {order.paymentStatus}</div>
+              <div className="mt-1 text-[11px] text-zinc-500">
+                Durum: {order.paymentStatus}
+              </div>
             </div>
             {(order.carrier || order.trackingNumber) && (
               <div className="mt-2 text-xs">
                 {order.carrier && <div>Taşıyıcı: {order.carrier}</div>}
-                {order.trackingNumber && <div className="font-mono">Takip: {order.trackingNumber}</div>}
+                {order.trackingNumber && (
+                  <div className="font-mono">Takip: {order.trackingNumber}</div>
+                )}
               </div>
             )}
           </div>
@@ -197,19 +249,42 @@ export default function OrderPrintPage() {
           </thead>
           <tbody>
             {order.items.map((it, idx) => (
-              <tr className={idx % 2 === 1 ? "bg-zinc-50" : "bg-white"} key={it.id}>
-                <td className="border-t border-zinc-200 px-2 py-2 text-center">{idx + 1}</td>
-                <td className="border-t border-zinc-200 px-2 py-2">
-                  <div className="font-semibold">{it.productName}</div>
-                  {it.optionsOrNotes && <div className="text-[11px] text-zinc-500">{it.optionsOrNotes}</div>}
+              <tr
+                className={idx % 2 === 1 ? "bg-zinc-50" : "bg-white"}
+                key={it.id}
+              >
+                <td className="border-zinc-200 border-t px-2 py-2 text-center">
+                  {idx + 1}
                 </td>
-                <td className="border-t border-zinc-200 px-2 py-2 text-center font-mono text-[11px]">{it.sku || "—"}</td>
-                <td className="border-t border-zinc-200 px-2 py-2 text-center font-bold">
+                <td className="border-zinc-200 border-t px-2 py-2">
+                  <div className="font-semibold">{it.productName}</div>
+                  {it.optionsOrNotes && (
+                    <div className="text-[11px] text-zinc-500">
+                      {it.optionsOrNotes}
+                    </div>
+                  )}
+                </td>
+                <td className="border-zinc-200 border-t px-2 py-2 text-center font-mono text-[11px]">
+                  {it.sku || "—"}
+                </td>
+                <td className="border-zinc-200 border-t px-2 py-2 text-center font-bold">
                   {it.quantity} {it.unit}
                 </td>
-                <td className="border-t border-zinc-200 px-2 py-2 text-right">₺{it.unitPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</td>
-                <td className="border-t border-zinc-200 px-2 py-2 text-center">%{it.taxRate}</td>
-                <td className="border-t border-zinc-200 px-2 py-2 text-right font-bold">₺{it.totalPrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</td>
+                <td className="border-zinc-200 border-t px-2 py-2 text-right">
+                  ₺
+                  {it.unitPrice.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </td>
+                <td className="border-zinc-200 border-t px-2 py-2 text-center">
+                  %{it.taxRate}
+                </td>
+                <td className="border-zinc-200 border-t px-2 py-2 text-right font-bold">
+                  ₺
+                  {it.totalPrice.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -220,35 +295,72 @@ export default function OrderPrintPage() {
           <div className="w-72 space-y-1 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-3 text-xs">
             <div className="flex justify-between">
               <span>Ara Toplam</span>
-              <span className="font-bold">₺{order.subtotal.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+              <span className="font-bold">
+                ₺
+                {order.subtotal.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             {order.discountAmount > 0 && (
               <div className="flex justify-between text-rose-600">
                 <span>İndirim</span>
-                <span className="font-bold">-₺{order.discountAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                <span className="font-bold">
+                  -₺
+                  {order.discountAmount.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             )}
             <div className="flex justify-between">
               <span>KDV</span>
-              <span className="font-bold">₺{order.taxAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+              <span className="font-bold">
+                ₺
+                {order.taxAmount.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             {order.shippingFee > 0 && (
               <div className="flex justify-between">
                 <span>Kargo</span>
-                <span className="font-bold">₺{order.shippingFee.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                <span className="font-bold">
+                  ₺
+                  {order.shippingFee.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             )}
-            <div className="flex justify-between border-t-2 border-zinc-900 pt-2 text-sm">
+            <div className="flex justify-between border-zinc-900 border-t-2 pt-2 text-sm">
               <span className="font-black">GENEL TOPLAM</span>
-              <span className="font-black text-blue-700">₺{order.totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+              <span className="font-black text-blue-700">
+                ₺
+                {order.totalAmount.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
-            <div className="flex justify-between border-t border-zinc-200 pt-1">
+            <div className="flex justify-between border-zinc-200 border-t pt-1">
               <span>Ödenen</span>
-              <span className="font-bold text-emerald-700">₺{order.paidAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+              <span className="font-bold text-emerald-700">
+                ₺
+                {order.paidAmount.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Kalan</span>
-              <span className={`font-bold ${order.remainingAmount > 0 ? "text-rose-600" : "text-zinc-700"}`}>₺{order.remainingAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+              <span
+                className={`font-bold ${order.remainingAmount > 0 ? "text-rose-600" : "text-zinc-700"}`}
+              >
+                ₺
+                {order.remainingAmount.toLocaleString("tr-TR", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -256,14 +368,26 @@ export default function OrderPrintPage() {
         {/* Payment history */}
         {order.payments.length > 0 && (
           <div className="mt-4">
-            <div className="text-[11px] font-bold uppercase tracking-wider">Tahsilat Geçmişi</div>
+            <div className="font-bold text-[11px] uppercase tracking-wider">
+              Tahsilat Geçmişi
+            </div>
             <div className="mt-1 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
               {order.payments.map((p) => (
-                <div className="flex justify-between px-3 py-2 text-xs" key={p.id}>
+                <div
+                  className="flex justify-between px-3 py-2 text-xs"
+                  key={p.id}
+                >
                   <span>
-                    {getPaymentLabel(p.paymentMethod)} {p.referenceNumber ? `· ${p.referenceNumber}` : ""}
+                    {getPaymentLabel(p.paymentMethod)}{" "}
+                    {p.referenceNumber ? `· ${p.referenceNumber}` : ""}
                   </span>
-                  <span className="font-bold">₺{p.amount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} · {new Date(p.paymentDate).toLocaleDateString("tr-TR")}</span>
+                  <span className="font-bold">
+                    ₺
+                    {p.amount.toLocaleString("tr-TR", {
+                      minimumFractionDigits: 2,
+                    })}{" "}
+                    · {new Date(p.paymentDate).toLocaleDateString("tr-TR")}
+                  </span>
                 </div>
               ))}
             </div>
@@ -273,7 +397,9 @@ export default function OrderPrintPage() {
         {order.notes && (
           <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-3 text-xs">
             <div className="font-bold">Notlar</div>
-            <p className="mt-1 whitespace-pre-wrap text-zinc-700">{order.notes}</p>
+            <p className="mt-1 whitespace-pre-wrap text-zinc-700">
+              {order.notes}
+            </p>
           </div>
         )}
         {order.shippingAddress && (
@@ -282,9 +408,14 @@ export default function OrderPrintPage() {
           </div>
         )}
 
-        <div className="mt-6 flex justify-between border-t border-zinc-200 pt-3 text-[10px] text-zinc-400">
-          <span>Bu belge {isProforma ? "proforma" : "sipariş"} olarak elektronik ortamda oluşturulmuştur.</span>
-          <span>{order.orderNumber} • {new Date().toLocaleDateString("tr-TR")}</span>
+        <div className="mt-6 flex justify-between border-zinc-200 border-t pt-3 text-[10px] text-zinc-400">
+          <span>
+            Bu belge {isProforma ? "proforma" : "sipariş"} olarak elektronik
+            ortamda oluşturulmuştur.
+          </span>
+          <span>
+            {order.orderNumber} • {new Date().toLocaleDateString("tr-TR")}
+          </span>
         </div>
       </div>
     </PermissionGate>

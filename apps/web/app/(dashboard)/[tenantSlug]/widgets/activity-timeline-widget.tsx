@@ -87,13 +87,21 @@ export function ActivityTimelineWidget() {
   const getActionIcon = (type: ActivityItem["type"]) => {
     switch (type) {
       case "deal":
-        return <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />;
+        return (
+          <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+        );
       case "call":
-        return <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />;
+        return (
+          <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+        );
       case "lead":
-        return <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />;
+        return (
+          <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />
+        );
       case "task":
-        return <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />;
+        return (
+          <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+        );
       default:
         return <Clock className="h-3 w-3 text-zinc-600 dark:text-zinc-400" />;
     }
@@ -104,11 +112,11 @@ export function ActivityTimelineWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Canlı Aktivite Akışı
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -142,7 +150,7 @@ export function ActivityTimelineWidget() {
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Clock className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz aktivite veya işlem kaydı bulunmuyor
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -192,9 +200,9 @@ export function ActivityTimelineWidget() {
       </div>
 
       {activities.length > 0 && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
+            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             Tüm İşlem Geçmişini İncele →

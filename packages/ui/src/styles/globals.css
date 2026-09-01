@@ -3,6 +3,7 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
@@ -49,13 +50,14 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
-  /* Store design-system — Tailwind v4 token bridge (single source of truth: --store-* in :root/.dark) */
+  /* Store design-system — Tailwind v4 token bridge (single source of truth: --store-* in :root) */
   --color-store-primary: var(--store-primary);
   --color-store-primary-foreground: var(--store-primary-foreground);
   --color-store-accent: var(--store-accent);
   --color-store-accent-foreground: var(--store-accent-foreground);
   --color-store-surface: var(--store-surface);
   --color-store-surface-foreground: var(--store-surface-foreground);
+  --color-store-ink: var(--store-ink);
   --color-store-muted: var(--store-muted);
   --color-store-muted-foreground: var(--store-muted-foreground);
   --color-store-border: var(--store-border);
@@ -108,27 +110,28 @@
   --sidebar-accent-foreground: oklch(0.5 0.2 260);
   --sidebar-border: oklch(0.92 0.005 240);
   --sidebar-ring: oklch(0.6 0.18 260);
-  /* Store tokens — light (oklch, single source of truth) */
-  --store-primary: oklch(0.56 0.22 285);
+  /* Store tokens — mercan editorial (oklch, single source of truth, light only) */
+  --store-primary: oklch(0.64 0.18 35);
   --store-primary-foreground: oklch(0.99 0 0);
-  --store-accent: oklch(0.96 0.02 285);
-  --store-accent-foreground: oklch(0.45 0.2 285);
-  --store-surface: oklch(1 0 0);
-  --store-surface-foreground: oklch(0.15 0.02 240);
-  --store-muted: oklch(0.97 0.005 240);
-  --store-muted-foreground: oklch(0.5 0.02 240);
-  --store-border: oklch(0.92 0.005 240);
-  --store-ring: oklch(0.56 0.22 285);
-  --store-radius-sm: 0.5rem;
-  --store-radius: 0.75rem;
+  --store-accent: oklch(0.95 0.04 35);
+  --store-accent-foreground: oklch(0.32 0.14 35);
+  --store-surface: oklch(0.98 0.01 85);
+  --store-surface-foreground: oklch(0.18 0.02 30);
+  --store-ink: oklch(0.18 0.02 30);
+  --store-muted: oklch(0.96 0.03 35);
+  --store-muted-foreground: oklch(0.52 0.03 30);
+  --store-border: oklch(0.9 0.03 35);
+  --store-ring: oklch(0.64 0.18 35);
+  --store-radius-sm: 0.75rem;
+  --store-radius: 1rem;
   --store-radius-lg: 1rem;
   --store-radius-xl: 1.25rem;
   --store-radius-2xl: 1.5rem;
-  --store-shadow-sm: 0 1px 2px 0 oklch(0.15 0.02 240 / 0.06);
-  --store-shadow: 0 4px 16px 0 oklch(0.15 0.02 240 / 0.08);
-  --store-shadow-lg: 0 8px 32px 0 oklch(0.15 0.02 240 / 0.12);
-  --store-shadow-xl: 0 16px 48px 0 oklch(0.15 0.02 240 / 0.14);
-  --store-grid-max-width: 72rem;
+  --store-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.05);
+  --store-shadow: 0 4px 20px oklch(0 0 0 / 0.06);
+  --store-shadow-lg: 0 8px 30px oklch(0 0 0 / 0.06);
+  --store-shadow-xl: 0 16px 40px oklch(0 0 0 / 0.08);
+  --store-grid-max-width: 80rem;
   --store-grid-gutter: 1rem;
   --store-grid-columns: 12;
   --store-font: var(--font-sans);
@@ -167,31 +170,16 @@
   --sidebar-accent-foreground: oklch(0.96 0.005 260);
   --sidebar-border: oklch(0.26 0.02 260);
   --sidebar-ring: oklch(0.65 0.18 260);
-  /* Store tokens — dark (oklch, mirrors CRM dark) */
-  --store-primary: oklch(0.65 0.18 285);
-  --store-primary-foreground: oklch(0.14 0.02 285);
-  --store-accent: oklch(0.24 0.04 285);
-  --store-accent-foreground: oklch(0.96 0.005 260);
-  --store-surface: oklch(0.18 0.02 260);
-  --store-surface-foreground: oklch(0.96 0.005 260);
-  --store-muted: oklch(0.24 0.02 260);
-  --store-muted-foreground: oklch(0.68 0.02 260);
-  --store-border: oklch(0.28 0.02 260);
-  --store-ring: oklch(0.65 0.18 285);
-  --store-shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.2);
-  --store-shadow: 0 4px 16px 0 oklch(0 0 0 / 0.3);
-  --store-shadow-lg: 0 8px 32px 0 oklch(0 0 0 / 0.4);
-  --store-shadow-xl: 0 16px 48px 0 oklch(0 0 0 / 0.5);
 }
 
 /* Tenant theme hook — layout.tsx sets data-store-theme and inline --store-primary from StorefrontDto.storeTheme/logoUrl */
 [data-store-theme] {
-  /* Inherits --store-* from :root/.dark; tenant override via inline style: style="--store-primary: oklch(...)" */
+  /* Inherits --store-* from :root; tenant override via inline style: style="--store-primary: oklch(...)" */
   color-scheme: light;
 }
 
-.dark [data-store-theme] {
-  color-scheme: dark;
+[data-store-theme="mercan"] {
+  --store-primary: oklch(0.64 0.18 35);
 }
 
 @layer base {
@@ -203,6 +191,58 @@
   }
 }
 
+/* Store motion — transition-all 200ms, prefers-reduced-motion support (Q10) */
+@keyframes store-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes store-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes store-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes store-ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 oklch(0.64 0.18 35 / 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 6px oklch(0.64 0.18 35 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media print {
   @page {
     size: A4 portrait;
@@ -211,13 +251,13 @@
 
   html,
   body {
-    background: white !important;
-    color: #0f172a !important;
     height: auto !important;
     min-height: 100% !important;
     overflow: visible !important;
+    color: #0f172a !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    background: white !important;
   }
 
   /* Reset layout overflow traps on print */
@@ -226,8 +266,8 @@
   section,
   aside,
   article {
-    overflow: visible !important;
     max-height: none !important;
+    overflow: visible !important;
   }
 
   /* Prevent page breaks inside cards */

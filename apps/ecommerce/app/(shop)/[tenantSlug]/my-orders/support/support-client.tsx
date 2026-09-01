@@ -35,7 +35,9 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
           ? (data as PublicTicketDto[])
           : ((data as { items?: PublicTicketDto[] })?.items ?? []);
         setTickets(list);
-      } else setError(res.message ?? "Talepler yüklenemedi");
+      } else {
+        setError(res.message ?? "Talepler yüklenemedi");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Talepler yüklenemedi");
     } finally {
@@ -52,7 +54,7 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!subject.trim() || !description.trim()) {
+    if (!(subject.trim() && description.trim())) {
       setError("Konu ve açıklama zorunlu.");
       return;
     }
@@ -75,7 +77,9 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
         setSubject("");
         setDescription("");
         await fetchTickets();
-      } else setError(res.message ?? "Talep oluşturulamadı");
+      } else {
+        setError(res.message ?? "Talep oluşturulamadı");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -92,13 +96,20 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Destek Taleplerim</h2>
+        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+          Destek Taleplerim
+        </h2>
         <p className="text-xs text-zinc-500">
-          POST /api/public/tickets → helpdesk_tickets SenderType=Customer, CRM yanıtı GET /api/public/tickets/mine ile gelir.
+          POST /api/public/tickets → helpdesk_tickets SenderType=Customer, CRM
+          yanıtı GET /api/public/tickets/mine ile gelir.
         </p>
       </div>
 
-      {error ? <p className="rounded-xl bg-amber-50 p-3 text-xs text-amber-800">{error}</p> : null}
+      {error ? (
+        <p className="rounded-xl bg-amber-50 p-3 text-amber-800 text-xs">
+          {error}
+        </p>
+      ) : null}
 
       <div className="space-y-2">
         {tickets.map((ticket) => (
@@ -110,17 +121,25 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
               {ticket.ticketNumber} — {ticket.subject}
             </p>
             <p className="text-xs text-zinc-500">
-              {new Date(ticket.createdAt).toLocaleDateString("tr-TR")} · {ticket.status} · {ticket.priority}
+              {new Date(ticket.createdAt).toLocaleDateString("tr-TR")} ·{" "}
+              {ticket.status} · {ticket.priority}
             </p>
           </div>
         ))}
         {tickets.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700">Henüz destek talebiniz yok.</p>
+          <p className="rounded-xl border border-zinc-300 border-dashed p-4 text-xs text-zinc-500 dark:border-zinc-700">
+            Henüz destek talebiniz yok.
+          </p>
         ) : null}
       </div>
 
-      <form className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900" onSubmit={handleCreate}>
-        <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Yeni destek talebi</h3>
+      <form
+        className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+        onSubmit={handleCreate}
+      >
+        <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+          Yeni destek talebi
+        </h3>
         <input
           className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900"
           onChange={(e) => setSubject(e.target.value)}
@@ -135,11 +154,13 @@ export function SupportClient({ tenantSlug }: SupportClientProps) {
           value={description}
         />
         <button
-          className="w-full rounded-xl bg-violet-600 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50"
+          className="w-full rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs disabled:opacity-50"
           disabled={submitting}
           type="submit"
         >
-          {submitting ? "Gönderiliyor…" : "Talebi oluştur — POST /api/public/tickets"}
+          {submitting
+            ? "Gönderiliyor…"
+            : "Talebi oluştur — POST /api/public/tickets"}
         </button>
       </form>
     </div>

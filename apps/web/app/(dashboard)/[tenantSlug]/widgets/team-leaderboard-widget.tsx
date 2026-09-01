@@ -49,7 +49,7 @@ export function TeamLeaderboardWidget() {
         );
       case 2:
         return (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-zinc-600 text-xs dark:bg-zinc-800 dark:text-zinc-300">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             <Medal className="h-3 w-3" />
           </div>
         );
@@ -61,7 +61,7 @@ export function TeamLeaderboardWidget() {
         );
       default:
         return (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-500 text-xs dark:bg-zinc-800 dark:text-zinc-400">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 font-bold text-xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
             {rank}
           </div>
         );
@@ -73,11 +73,11 @@ export function TeamLeaderboardWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Satış Liderlik Tablosu
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -109,7 +109,7 @@ export function TeamLeaderboardWidget() {
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Trophy className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz satış performansı kaydedilmedi
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -125,7 +125,7 @@ export function TeamLeaderboardWidget() {
                 <span>Fırsat Ekle</span>
               </Link>
               <Link
-                className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 href={`/${activeTenant?.slug || "workspace"}/orders`}
               >
                 <span>Sipariş Gir</span>
@@ -148,12 +148,12 @@ export function TeamLeaderboardWidget() {
                     <div className="flex items-center gap-2.5">
                       {getRankBadge(member.rank)}
                       <div
-                        className={`flex h-7 w-7 items-center justify-center rounded-full font-bold text-white text-[11px] ${member.avatarColor} shadow-2xs`}
+                        className={`flex h-7 w-7 items-center justify-center rounded-full font-bold text-[11px] text-white ${member.avatarColor} shadow-2xs`}
                       >
                         {member.initials}
                       </div>
                       <div>
-                        <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {member.name}
                         </div>
                         <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -163,7 +163,7 @@ export function TeamLeaderboardWidget() {
                     </div>
 
                     <div className="text-right">
-                      <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                      <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         ₺{member.achieved.toLocaleString("tr-TR")}
                       </div>
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -184,7 +184,9 @@ export function TeamLeaderboardWidget() {
                     </div>
                     <span
                       className={`font-semibold text-[10px] ${
-                        pct >= 100 ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500 dark:text-zinc-400"
+                        pct >= 100
+                          ? "text-emerald-600 dark:text-emerald-400"
+                          : "text-zinc-500 dark:text-zinc-400"
                       }`}
                     >
                       %{pct}
@@ -198,7 +200,7 @@ export function TeamLeaderboardWidget() {
       </div>
 
       {members.length > 0 && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <Link
             className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/orders`}

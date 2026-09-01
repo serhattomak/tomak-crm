@@ -319,7 +319,9 @@ export class ApiClient {
     tenantId: string
   ): Promise<ApiResponse<string>> {
     const sanitizedRoleId =
-      roleId && roleId.trim() !== "" && roleId !== "none" ? roleId.trim() : null;
+      roleId && roleId.trim() !== "" && roleId !== "none"
+        ? roleId.trim()
+        : null;
     return ApiClient.request<string>(
       `/api/identity/users/${userId}/role`,
       {
@@ -1910,15 +1912,33 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<TicketListDto>>> {
     const q = new URLSearchParams();
-    if (params.status) q.set("status", params.status);
-    if (params.priority) q.set("priority", params.priority);
-    if (params.category) q.set("category", params.category);
-    if (params.departmentId) q.set("departmentId", params.departmentId);
-    if (params.assignedUserId) q.set("assignedUserId", params.assignedUserId);
-    if (params.queue) q.set("queue", params.queue);
-    if (params.search) q.set("search", params.search);
-    if (params.page) q.set("page", params.page.toString());
-    if (params.pageSize) q.set("pageSize", params.pageSize.toString());
+    if (params.status) {
+      q.set("status", params.status);
+    }
+    if (params.priority) {
+      q.set("priority", params.priority);
+    }
+    if (params.category) {
+      q.set("category", params.category);
+    }
+    if (params.departmentId) {
+      q.set("departmentId", params.departmentId);
+    }
+    if (params.assignedUserId) {
+      q.set("assignedUserId", params.assignedUserId);
+    }
+    if (params.queue) {
+      q.set("queue", params.queue);
+    }
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.page) {
+      q.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      q.set("pageSize", params.pageSize.toString());
+    }
 
     const qs = q.toString();
     return ApiClient.request<PagedResult<TicketListDto>>(
@@ -2716,11 +2736,21 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<WorkflowSummaryDto>>> {
     const q = new URLSearchParams();
-    if (params.category && params.category !== "all") q.set("category", params.category);
-    if (params.isActive !== undefined) q.set("isActive", String(params.isActive));
-    if (params.search) q.set("search", params.search);
-    if (params.page) q.set("page", String(params.page));
-    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+    if (params.category && params.category !== "all") {
+      q.set("category", params.category);
+    }
+    if (params.isActive !== undefined) {
+      q.set("isActive", String(params.isActive));
+    }
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
 
     const qs = q.toString();
     return ApiClient.request<PagedResult<WorkflowSummaryDto>>(
@@ -2841,10 +2871,18 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<ExecutionItemDto>>> {
     const q = new URLSearchParams();
-    if (params.workflowId) q.set("workflowId", params.workflowId);
-    if (params.status && params.status !== "all") q.set("status", params.status);
-    if (params.page) q.set("page", String(params.page));
-    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+    if (params.workflowId) {
+      q.set("workflowId", params.workflowId);
+    }
+    if (params.status && params.status !== "all") {
+      q.set("status", params.status);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
 
     const qs = q.toString();
     return ApiClient.request<PagedResult<ExecutionItemDto>>(
@@ -2915,11 +2953,21 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<ComplianceViolationDto>>> {
     const q = new URLSearchParams();
-    if (params.status && params.status !== "all") q.set("status", params.status);
-    if (params.moduleSource && params.moduleSource !== "all") q.set("moduleSource", params.moduleSource);
-    if (params.severity && params.severity !== "all") q.set("severity", params.severity);
-    if (params.page) q.set("page", String(params.page));
-    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+    if (params.status && params.status !== "all") {
+      q.set("status", params.status);
+    }
+    if (params.moduleSource && params.moduleSource !== "all") {
+      q.set("moduleSource", params.moduleSource);
+    }
+    if (params.severity && params.severity !== "all") {
+      q.set("severity", params.severity);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
 
     const qs = q.toString();
     return ApiClient.request<PagedResult<ComplianceViolationDto>>(
@@ -3276,11 +3324,14 @@ export class ApiClient {
     }
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch(`${API_BASE_URL}/api/recruitment/candidates/import`, {
-      body: formData,
-      headers,
-      method: "POST",
-    });
+    const res = await fetch(
+      `${API_BASE_URL}/api/recruitment/candidates/import`,
+      {
+        body: formData,
+        headers,
+        method: "POST",
+      }
+    );
     if (!res.ok) {
       try {
         const errorJson = await res.json();
@@ -3410,7 +3461,7 @@ export class ApiClient {
     tenantId: string,
     isActive?: boolean
   ): Promise<ApiResponse<StageDto[]>> {
-    const qs = isActive !== undefined ? `?isActive=${isActive}` : "";
+    const qs = isActive === undefined ? "" : `?isActive=${isActive}`;
     return ApiClient.request<StageDto[]>(
       `/api/recruitment/stages${qs}`,
       {},
@@ -3477,10 +3528,13 @@ export class ApiClient {
   static async publicApply(
     data: PublicApplyPayload
   ): Promise<ApiResponse<PublicApplyResponse>> {
-    return ApiClient.request<PublicApplyResponse>("/api/recruitment/public/apply", {
-      body: JSON.stringify(data),
-      method: "POST",
-    });
+    return ApiClient.request<PublicApplyResponse>(
+      "/api/recruitment/public/apply",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      }
+    );
   }
 
   // Promotions & Campaigns
@@ -3496,12 +3550,24 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<CampaignListItemDto>>> {
     const query = new URLSearchParams();
-    if (params.search) query.set("search", params.search);
-    if (params.type) query.set("type", params.type);
-    if (params.triggerType) query.set("triggerType", params.triggerType);
-    if (params.isActive !== undefined) query.set("isActive", String(params.isActive));
-    if (params.page) query.set("page", String(params.page));
-    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.type) {
+      query.set("type", params.type);
+    }
+    if (params.triggerType) {
+      query.set("triggerType", params.triggerType);
+    }
+    if (params.isActive !== undefined) {
+      query.set("isActive", String(params.isActive));
+    }
+    if (params.page) {
+      query.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      query.set("pageSize", String(params.pageSize));
+    }
     const qs = query.toString();
     return ApiClient.request<PagedResult<CampaignListItemDto>>(
       `/api/promotions/campaigns${qs ? `?${qs}` : ""}`,
@@ -3584,12 +3650,24 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<CouponListItemDto>>> {
     const query = new URLSearchParams();
-    if (params.campaignId) query.set("campaignId", params.campaignId);
-    if (params.search) query.set("search", params.search);
-    if (params.batchId) query.set("batchId", params.batchId);
-    if (params.isActive !== undefined) query.set("isActive", String(params.isActive));
-    if (params.page) query.set("page", String(params.page));
-    if (params.pageSize) query.set("pageSize", String(params.pageSize));
+    if (params.campaignId) {
+      query.set("campaignId", params.campaignId);
+    }
+    if (params.search) {
+      query.set("search", params.search);
+    }
+    if (params.batchId) {
+      query.set("batchId", params.batchId);
+    }
+    if (params.isActive !== undefined) {
+      query.set("isActive", String(params.isActive));
+    }
+    if (params.page) {
+      query.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      query.set("pageSize", String(params.pageSize));
+    }
     const qs = query.toString();
     return ApiClient.request<PagedResult<CouponListItemDto>>(
       `/api/promotions/coupons${qs ? `?${qs}` : ""}`,
@@ -3601,8 +3679,20 @@ export class ApiClient {
   static async generateCoupons(
     data: GenerateCouponsPayload,
     tenantId?: string
-  ): Promise<ApiResponse<{ batchId: string; generatedCount: number; codes: string[]; message: string }>> {
-    return ApiClient.request<{ batchId: string; generatedCount: number; codes: string[]; message: string }>(
+  ): Promise<
+    ApiResponse<{
+      batchId: string;
+      generatedCount: number;
+      codes: string[];
+      message: string;
+    }>
+  > {
+    return ApiClient.request<{
+      batchId: string;
+      generatedCount: number;
+      codes: string[];
+      message: string;
+    }>(
       "/api/promotions/coupons/generate",
       {
         body: JSON.stringify(data),
@@ -3882,9 +3972,9 @@ export interface ProductListDto {
   reservedStock: number;
   sellingPrice: number;
   seoTitle?: string;
+  sku?: string;
   slug?: string;
   sortOrder: number;
-  sku?: string;
   status: "Active" | "Inactive" | "Draft" | "Discontinued" | string;
   tags?: string[];
   taxRate: number;
@@ -3958,9 +4048,9 @@ export interface ProductDetailDto {
   reservedStock: number;
   sellingPrice: number;
   seoTitle?: string;
+  sku?: string;
   slug?: string;
   sortOrder: number;
-  sku?: string;
   status: "Active" | "Inactive" | "Draft" | "Discontinued" | string;
   stockMovements: ProductStockMovementDto[];
   tags?: string[];
@@ -4004,9 +4094,9 @@ export interface CreateProductRequest {
   name: string;
   sellingPrice: number;
   seoTitle?: string;
+  sku?: string;
   slug?: string;
   sortOrder?: number;
-  sku?: string;
   status?: string;
   tags?: string[];
   taxRate?: number;
@@ -4032,9 +4122,9 @@ export interface UpdateProductRequest {
   name: string;
   sellingPrice: number;
   seoTitle?: string;
+  sku?: string;
   slug?: string;
   sortOrder?: number;
-  sku?: string;
   status?: string;
   tags?: string[];
   taxRate?: number;
@@ -5809,59 +5899,59 @@ export interface UpdateQuotePayload extends CreateQuotePayload {
 }
 
 export interface RevisionItemOverridePayload {
-  id?: string;
-  productId?: string;
-  variantId?: string;
-  productName?: string;
-  sku?: string;
   description?: string;
-  quantity?: number;
-  unit?: string;
-  unitPrice?: number;
-  unitCost?: number;
   discountRate?: number;
-  taxRate?: number;
+  id?: string;
   isOptional?: boolean;
   isSelected?: boolean;
   orderIndex?: number;
-}
-
-export interface CreateQuoteRevisionPayload {
-  revisionNotes?: string;
-  title?: string;
-  currency?: string;
-  exchangeRate?: number;
-  discountType?: string;
-  discountRate?: number;
-  discountAmount?: number;
-  validUntil?: string;
-  termsAndConditions?: string;
-  paymentTerms?: string;
-  deliveryTerms?: string;
-  bankDetails?: string;
-  notes?: string;
-  paymentMethod?: string;
-  paymentDueDays?: number;
-  paymentDueDate?: string;
-  items?: RevisionItemOverridePayload[];
-}
-
-export interface ConvertOrderItemOverridePayload {
-  quoteItemId?: string;
   productId?: string;
   productName?: string;
   quantity?: number;
+  sku?: string;
+  taxRate?: number;
+  unit?: string;
+  unitCost?: number;
   unitPrice?: number;
-  isSelected?: boolean;
+  variantId?: string;
+}
+
+export interface CreateQuoteRevisionPayload {
+  bankDetails?: string;
+  currency?: string;
+  deliveryTerms?: string;
+  discountAmount?: number;
+  discountRate?: number;
+  discountType?: string;
+  exchangeRate?: number;
+  items?: RevisionItemOverridePayload[];
+  notes?: string;
+  paymentDueDate?: string;
+  paymentDueDays?: number;
+  paymentMethod?: string;
+  paymentTerms?: string;
+  revisionNotes?: string;
+  termsAndConditions?: string;
+  title?: string;
+  validUntil?: string;
+}
+
+export interface ConvertOrderItemOverridePayload {
   description?: string;
+  isSelected?: boolean;
+  productId?: string;
+  productName?: string;
+  quantity?: number;
+  quoteItemId?: string;
+  unitPrice?: number;
 }
 
 export interface ConvertToOrderPayload {
-  shippingFee?: number;
-  notes?: string;
   dueDate?: string;
-  paymentMethod?: string;
   items?: ConvertOrderItemOverridePayload[];
+  notes?: string;
+  paymentMethod?: string;
+  shippingFee?: number;
 }
 
 export interface QuoteStatsResponse {
@@ -5925,8 +6015,8 @@ export interface TicketListDto {
   channelId?: string;
   closedAt?: string;
   createdAt: string;
-  customerId: string;
   customerEmail?: string;
+  customerId: string;
   customerName: string;
   customerPhone?: string;
   departmentId?: string;
@@ -5966,8 +6056,8 @@ export interface TicketStatsDto {
   newTickets: number;
   pendingCustomerTickets: number;
   resolvedTodayCount: number;
-  slaComplianceRate: number;
   slaBreachedTickets: number;
+  slaComplianceRate: number;
   totalOpenTickets: number;
   totalTickets: number;
   urgentTickets: number;
@@ -5997,30 +6087,30 @@ export interface Customer360OrderItemDto {
   id: string;
   productId?: string;
   productName: string;
-  sku?: string;
   quantity: number;
-  unitPrice: number;
+  sku?: string;
   totalPrice: number;
+  unitPrice: number;
 }
 
 export interface Customer360OrderBriefDto {
-  id: string;
-  orderNumber: string;
-  orderDate: string;
-  totalAmount: number;
   currency: string;
-  status: string;
-  paymentStatus: string;
+  id: string;
   items: Customer360OrderItemDto[];
+  orderDate: string;
+  orderNumber: string;
+  paymentStatus: string;
+  status: string;
+  totalAmount: number;
 }
 
 export interface Customer360ShipmentBriefDto {
+  carrierName?: string;
+  createdAt: string;
   id: string;
   shipmentNumber: string;
   status: string;
-  carrierName?: string;
   trackingNumber?: string;
-  createdAt: string;
 }
 
 export interface Customer360BriefDto {
@@ -6046,8 +6136,8 @@ export interface CreateTicketPayload {
   assignedUserId?: string;
   assignedUserName?: string;
   category: string;
-  customerId: string;
   customerEmail?: string;
+  customerId: string;
   customerName: string;
   customerPhone?: string;
   departmentId?: string;
@@ -6115,67 +6205,73 @@ export interface ConvertChatToTicketPayload {
 }
 
 export const apiClient = {
+  delete: <T>(endpoint: string, tenantId?: string) =>
+    ApiClient.request<T>(endpoint, { method: "DELETE" }, tenantId),
   get: <T>(endpoint: string, tenantId?: string) =>
     ApiClient.request<T>(endpoint, { method: "GET" }, tenantId),
   post: <T>(endpoint: string, body?: unknown, tenantId?: string) =>
     ApiClient.request<T>(
       endpoint,
-      { method: "POST", body: body !== undefined ? JSON.stringify(body) : undefined },
+      {
+        body: body === undefined ? undefined : JSON.stringify(body),
+        method: "POST",
+      },
       tenantId
     ),
   put: <T>(endpoint: string, body?: unknown, tenantId?: string) =>
     ApiClient.request<T>(
       endpoint,
-      { method: "PUT", body: body !== undefined ? JSON.stringify(body) : undefined },
+      {
+        body: body === undefined ? undefined : JSON.stringify(body),
+        method: "PUT",
+      },
       tenantId
     ),
-  delete: <T>(endpoint: string, tenantId?: string) =>
-    ApiClient.request<T>(endpoint, { method: "DELETE" }, tenantId),
 };
 
 // ==========================================
 // Automations Module DTOs
 // ==========================================
 export interface WorkflowSummaryDto {
-  id: string;
-  name: string;
-  description?: string;
-  category: string;
-  icon: string;
-  color: string;
-  isActive: boolean;
-  triggerType: string;
-  conditionsCount: number;
   actionsCount: number;
-  executionCount: number;
-  lastExecutedAt?: string;
+  category: string;
+  color: string;
+  conditionsCount: number;
   createdAt: string;
+  description?: string;
+  executionCount: number;
+  icon: string;
+  id: string;
+  isActive: boolean;
+  lastExecutedAt?: string;
+  name: string;
+  triggerType: string;
   updatedAt: string;
 }
 
 export interface WorkflowStatsDto {
-  totalWorkflows: number;
   activeWorkflows: number;
-  inactiveWorkflows: number;
-  executionsToday: number;
-  totalExecutionsAllTime: number;
-  successRate: number;
   estimatedHoursSaved: number;
+  executionsToday: number;
+  inactiveWorkflows: number;
+  successRate: number;
+  totalExecutionsAllTime: number;
+  totalWorkflows: number;
 }
 
 export interface WorkflowTriggerConfigDto {
-  targetStatus?: string;
-  targetPriority?: string;
-  targetCategory?: string;
-  entityFilter?: string;
   additionalSettings?: Record<string, string>;
+  entityFilter?: string;
+  targetCategory?: string;
+  targetPriority?: string;
+  targetStatus?: string;
 }
 
 export interface WorkflowConditionRuleDto {
   field: string;
+  fieldType?: string;
   operator: string;
   value: string;
-  fieldType?: string;
 }
 
 export interface WorkflowConditionGroupDto {
@@ -6184,274 +6280,280 @@ export interface WorkflowConditionGroupDto {
 }
 
 export interface WorkflowActionStepDto {
-  id: string;
-  type: "notification" | "updateRecord" | "createRecord" | "webhook" | "delay" | string;
-  title: string;
-  order: number;
-  delayMinutes?: number;
   config: Record<string, unknown>;
+  delayMinutes?: number;
+  id: string;
+  order: number;
+  title: string;
+  type:
+    | "notification"
+    | "updateRecord"
+    | "createRecord"
+    | "webhook"
+    | "delay"
+    | string;
 }
 
 export interface ExecutionStepLogDto {
-  stepId: string;
-  stepType: string;
-  stepTitle: string;
-  status: "Success" | "Failed" | "Skipped" | string;
-  message: string;
-  timestamp: string;
   executionDurationMs: number;
+  message: string;
   outputData?: Record<string, unknown>;
+  status: "Success" | "Failed" | "Skipped" | string;
+  stepId: string;
+  stepTitle: string;
+  stepType: string;
+  timestamp: string;
 }
 
 export interface ExecutionSummaryDto {
-  id: string;
-  triggerSource: string;
-  entityType?: string;
-  entityId?: string;
-  status: "Success" | "Failed" | "Skipped" | string;
-  evaluatedConditionsSummary?: string;
   actionsExecutedCount: number;
-  executionDurationMs: number;
-  stepLogs: ExecutionStepLogDto[];
-  errorMessage?: string;
   createdAt: string;
+  entityId?: string;
+  entityType?: string;
+  errorMessage?: string;
+  evaluatedConditionsSummary?: string;
+  executionDurationMs: number;
+  id: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  stepLogs: ExecutionStepLogDto[];
+  triggerSource: string;
 }
 
 export interface WorkflowDetailDto {
-  id: string;
-  name: string;
-  description?: string;
-  category: string;
-  icon: string;
-  color: string;
-  isActive: boolean;
-  triggerType: string;
-  triggerConfig: WorkflowTriggerConfigDto;
-  conditions: WorkflowConditionGroupDto[];
   actions: WorkflowActionStepDto[];
-  executionCount: number;
-  lastExecutedAt?: string;
+  category: string;
+  color: string;
+  conditions: WorkflowConditionGroupDto[];
   createdAt: string;
-  updatedAt: string;
+  description?: string;
+  executionCount: number;
+  icon: string;
+  id: string;
+  isActive: boolean;
+  lastExecutedAt?: string;
+  name: string;
   recentExecutions: ExecutionSummaryDto[];
+  triggerConfig: WorkflowTriggerConfigDto;
+  triggerType: string;
+  updatedAt: string;
 }
 
 export interface WorkflowTemplateDto {
+  actions: WorkflowActionStepDto[];
+  category: string;
+  color: string;
+  conditions: WorkflowConditionGroupDto[];
+  description: string;
+  icon: string;
   id: string;
   name: string;
-  description: string;
-  category: string;
-  icon: string;
-  color: string;
-  triggerType: string;
   triggerConfig: WorkflowTriggerConfigDto;
-  conditions: WorkflowConditionGroupDto[];
-  actions: WorkflowActionStepDto[];
+  triggerType: string;
 }
 
 export interface CreateWorkflowPayload {
-  name: string;
-  description?: string;
-  category: string;
-  icon?: string;
-  color?: string;
-  isActive: boolean;
-  triggerType: string;
-  triggerConfig?: WorkflowTriggerConfigDto;
-  conditions?: WorkflowConditionGroupDto[];
   actions?: WorkflowActionStepDto[];
+  category: string;
+  color?: string;
+  conditions?: WorkflowConditionGroupDto[];
+  description?: string;
+  icon?: string;
+  isActive: boolean;
+  name: string;
+  triggerConfig?: WorkflowTriggerConfigDto;
+  triggerType: string;
 }
 
 export interface UpdateWorkflowPayload {
-  id: string;
-  name: string;
-  description?: string;
-  category: string;
-  icon?: string;
-  color?: string;
-  isActive: boolean;
-  triggerType: string;
-  triggerConfig?: WorkflowTriggerConfigDto;
-  conditions?: WorkflowConditionGroupDto[];
   actions?: WorkflowActionStepDto[];
+  category: string;
+  color?: string;
+  conditions?: WorkflowConditionGroupDto[];
+  description?: string;
+  icon?: string;
+  id: string;
+  isActive: boolean;
+  name: string;
+  triggerConfig?: WorkflowTriggerConfigDto;
+  triggerType: string;
 }
 
 export interface TestWorkflowPayload {
-  id: string;
-  entityType?: string;
   entityId?: string;
+  entityType?: string;
+  id: string;
   mockContext?: Record<string, unknown>;
 }
 
 export interface AutomationExecutionResultDto {
+  actionsExecutedCount: number;
+  conditionsSummary: string;
+  errorMessage?: string;
+  executionDurationMs: number;
+  status: "Success" | "Failed" | "Skipped" | string;
+  stepLogs: ExecutionStepLogDto[];
   workflowId: string;
   workflowName: string;
-  status: "Success" | "Failed" | "Skipped" | string;
-  conditionsSummary: string;
-  actionsExecutedCount: number;
-  executionDurationMs: number;
-  stepLogs: ExecutionStepLogDto[];
-  errorMessage?: string;
 }
 
 export interface ExecutionItemDto {
+  actionsExecutedCount: number;
+  createdAt: string;
+  entityId?: string;
+  entityType?: string;
+  errorMessage?: string;
+  evaluatedConditionsSummary?: string;
+  executionDurationMs: number;
   id: string;
+  status: "Success" | "Failed" | "Skipped" | string;
+  triggerSource: string;
   workflowId: string;
   workflowName: string;
-  triggerSource: string;
-  entityType?: string;
-  entityId?: string;
-  status: "Success" | "Failed" | "Skipped" | string;
-  evaluatedConditionsSummary?: string;
-  actionsExecutedCount: number;
-  executionDurationMs: number;
-  errorMessage?: string;
-  createdAt: string;
 }
 
 // ==========================================
 // Compliance & Labor Law DTOs
 // ==========================================
 export interface ComplianceCategorySummaryDto {
+  activeViolations: number;
   category: string;
   categoryTitle: string;
   rulesCount: number;
-  activeViolations: number;
   score: number;
   status: "Excellent" | "Good" | "Risk" | string;
 }
 
 export interface ComplianceScoreResultDto {
-  healthScore: number;
   activeViolationsCount: number;
+  categorySummaries: ComplianceCategorySummaryDto[];
+  estimatedPenaltyExposureTl: number;
   hardBlockedAttemptsCount: number;
+  healthScore: number;
   overriddenViolationsCount: number;
   totalRulesCount: number;
-  estimatedPenaltyExposureTl: number;
-  categorySummaries: ComplianceCategorySummaryDto[];
 }
 
 export interface ComplianceRuleDto {
-  id: string;
-  code: string;
-  lawReference: string;
   category: string;
-  name: string;
+  code: string;
   description?: string;
-  penaltyRiskLevel: "Low" | "Medium" | "High" | "Critical" | string;
-  penaltyDescription?: string;
   enforcementLevel: "HardBlock" | "SoftWarning" | "Disabled" | string;
-  thresholdConfigJson: string;
-  isSystemRule: boolean;
+  id: string;
   isActive: boolean;
-  violationCount: number;
+  isSystemRule: boolean;
+  lawReference: string;
+  name: string;
+  penaltyDescription?: string;
+  penaltyRiskLevel: "Low" | "Medium" | "High" | "Critical" | string;
+  thresholdConfigJson: string;
   updatedAt: string;
+  violationCount: number;
 }
 
 export interface ComplianceViolationDto {
-  id: string;
-  ruleId?: string;
-  ruleCode: string;
-  lawReference: string;
+  createdAt: string;
+  details: string;
   employeeId?: string;
   employeeName: string;
-  moduleSource: string;
   entityId?: string;
-  severity: "Warning" | "Violation" | "CriticalRisk" | string;
-  details: string;
-  violationDataJson: string;
+  id: string;
   isOverridden: boolean;
+  lawReference: string;
+  moduleSource: string;
+  overriddenAt?: string;
   overriddenByUserId?: string;
   overrideReason?: string;
-  overriddenAt?: string;
+  ruleCode: string;
+  ruleId?: string;
+  severity: "Warning" | "Violation" | "CriticalRisk" | string;
   status: "Active" | "Resolved" | "Overridden" | string;
-  createdAt: string;
+  violationDataJson: string;
 }
 
 export interface ComplianceViolationDetailDto {
-  ruleCode: string;
-  lawReference: string;
-  ruleName: string;
   category: string;
-  severity: string;
-  enforcementLevel: string;
-  details: string;
-  penaltyRisk?: string;
   contextData: Record<string, unknown>;
+  details: string;
+  enforcementLevel: string;
+  lawReference: string;
+  penaltyRisk?: string;
+  ruleCode: string;
+  ruleName: string;
+  severity: string;
 }
 
 export interface ComplianceValidationResultDto {
-  isCompliant: boolean;
   hasHardBlock: boolean;
+  isCompliant: boolean;
   violations: ComplianceViolationDetailDto[];
 }
 
 export interface UpdateComplianceRulePayload {
-  id: string;
   enforcementLevel: "HardBlock" | "SoftWarning" | "Disabled" | string;
+  id: string;
   isActive: boolean;
   thresholdConfigJson?: string;
 }
 
 export interface ValidateShiftPayload {
-  employeeId: string;
-  employeeName: string;
-  shiftStart: string;
-  shiftEnd: string;
   breakMinutes: number;
   currentWeekTotalHours?: number;
-  previousShiftEnd?: string;
+  employeeId: string;
+  employeeName: string;
   isPregnant?: boolean;
+  previousShiftEnd?: string;
+  shiftEnd: string;
+  shiftStart: string;
 }
 
 export interface ValidateShiftTemplatePayload {
-  startTime: string;
-  endTime: string;
   breakMinutes: number;
+  endTime: string;
   isNightShift?: boolean;
+  startTime: string;
 }
 
 export interface ValidateLeavePayload {
+  age: number;
   employeeId: string;
   employeeName: string;
   leaveType: string;
   requestedDays: number;
   seniorityYears: number;
-  age: number;
 }
 
 // ==========================================
 // Recruitment Module DTOs
 // ==========================================
 export interface RequisitionDto {
-  id: string;
-  tenantId: string;
-  title: string;
+  applicationCount: number;
+  closingDate?: string;
+  createdAt: string;
+  currency: string;
   departmentId?: string;
   departmentName?: string;
-  jobPositionId?: string;
-  jobPositionTitle?: string;
-  headcount: number;
-  employmentType?: string;
-  workModel?: string;
-  location?: string;
-  minSalary?: number;
-  maxSalary?: number;
-  currency: string;
   description?: string;
-  requirements?: string;
-  status: string;
-  isPublished: boolean;
-  publishedAt?: string;
-  closingDate?: string;
+  employmentType?: string;
+  headcount: number;
+  headcountWarning?: string;
+  hiredCount: number;
   hiringManagerId?: string;
   hiringManagerName?: string;
+  id: string;
+  isPublished: boolean;
+  jobPositionId?: string;
+  jobPositionTitle?: string;
+  location?: string;
+  maxSalary?: number;
+  minSalary?: number;
   priority: string;
-  applicationCount: number;
-  hiredCount: number;
-  headcountWarning?: string;
-  createdAt: string;
+  publishedAt?: string;
+  requirements?: string;
+  status: string;
+  tenantId: string;
+  title: string;
   updatedAt: string;
+  workModel?: string;
 }
 
 export interface PagedRequisitionsResponse {
@@ -6462,21 +6564,21 @@ export interface PagedRequisitionsResponse {
 }
 
 export interface CreateRequisitionPayload {
-  title: string;
-  departmentId?: string;
-  jobPositionId?: string;
-  headcount: number;
-  employmentType?: string;
-  workModel?: string;
-  location?: string;
-  minSalary?: number;
-  maxSalary?: number;
-  currency: string;
-  description?: string;
-  requirements?: string;
   closingDate?: string;
+  currency: string;
+  departmentId?: string;
+  description?: string;
+  employmentType?: string;
+  headcount: number;
   hiringManagerId?: string;
+  jobPositionId?: string;
+  location?: string;
+  maxSalary?: number;
+  minSalary?: number;
   priority: string;
+  requirements?: string;
+  title: string;
+  workModel?: string;
 }
 
 export interface UpdateRequisitionPayload extends CreateRequisitionPayload {
@@ -6484,27 +6586,27 @@ export interface UpdateRequisitionPayload extends CreateRequisitionPayload {
 }
 
 export interface CandidateDto {
-  id: string;
-  tenantId: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-  phone?: string;
-  birthDate?: string;
   address?: string;
-  source: string;
-  tags?: string[];
-  cvFileUrl?: string;
-  cvFileName?: string;
+  applicationCount: number;
+  birthDate?: string;
   consentGiven: boolean;
   consentGivenAt?: string;
-  notes?: string;
-  deletedAt?: string;
-  createdBy?: string;
   createdAt: string;
+  createdBy?: string;
+  cvFileName?: string;
+  cvFileUrl?: string;
+  deletedAt?: string;
+  email: string;
+  firstName: string;
+  fullName: string;
+  id: string;
+  lastName: string;
+  notes?: string;
+  phone?: string;
+  source: string;
+  tags?: string[];
+  tenantId: string;
   updatedAt: string;
-  applicationCount: number;
 }
 
 export interface PagedCandidatesResponse {
@@ -6515,18 +6617,18 @@ export interface PagedCandidatesResponse {
 }
 
 export interface CreateCandidatePayload {
+  address?: string;
+  birthDate?: string;
+  consentGiven: boolean;
+  cvFileName?: string;
+  cvFileUrl?: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
+  notes?: string;
   phone?: string;
-  birthDate?: string;
-  address?: string;
   source: string;
   tags?: string[];
-  cvFileUrl?: string;
-  cvFileName?: string;
-  consentGiven: boolean;
-  notes?: string;
 }
 
 export interface UpdateCandidatePayload extends CreateCandidatePayload {
@@ -6535,45 +6637,45 @@ export interface UpdateCandidatePayload extends CreateCandidatePayload {
 
 export interface CvUploadResponse {
   candidateId: string;
-  cvFileUrl: string;
   cvFileName: string;
-  sizeBytes: number;
+  cvFileUrl: string;
   message: string;
+  sizeBytes: number;
 }
 
 export interface CsvImportRowPayload {
+  consentGiven?: boolean;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
   phone?: string;
   source?: string;
   tagsRaw?: string;
-  consentGiven?: boolean;
 }
 
 export interface CsvImportResponse {
+  errors: { row: number; email: string; error: string }[];
   imported: number;
   skippedDuplicates: number;
   skippedEmails: string[];
-  errors: { row: number; email: string; error: string }[];
 }
 
 export interface ApplicationDto {
-  id: string;
-  tenantId: string;
+  candidateEmail: string;
   candidateId: string;
   candidateName: string;
-  candidateEmail: string;
+  createdAt: string;
+  headcountWarning?: string;
+  id: string;
+  notes?: string;
   requisitionId: string;
   requisitionTitle: string;
+  score?: number;
+  stageColorHex?: string;
   stageId?: string;
   stageName?: string;
-  stageColorHex?: string;
   status: string;
-  score?: number;
-  notes?: string;
-  headcountWarning?: string;
-  createdAt: string;
+  tenantId: string;
   updatedAt: string;
 }
 
@@ -6586,38 +6688,38 @@ export interface PagedApplicationsResponse {
 
 export interface CreateApplicationPayload {
   candidateId: string;
-  requisitionId: string;
-  stageId?: string;
-  score?: number;
   notes?: string;
+  requisitionId: string;
+  score?: number;
+  stageId?: string;
 }
 
 export interface UpdateApplicationPayload {
-  score?: number;
   notes?: string;
+  score?: number;
 }
 
 export interface StageDto {
+  applicationCount: number;
+  colorHex: string;
+  createdAt: string;
   id: string;
-  tenantId: string;
+  isActive: boolean;
+  isDefault: boolean;
   name: string;
   slug: string;
   sortOrder: number;
-  colorHex: string;
-  isDefault: boolean;
   stageType: string;
-  isActive: boolean;
-  applicationCount: number;
-  createdAt: string;
+  tenantId: string;
   updatedAt: string;
 }
 
 export interface CreateStagePayload {
+  colorHex: string;
+  isActive: boolean;
   name: string;
   slug?: string;
-  colorHex: string;
   stageType: string;
-  isActive: boolean;
 }
 
 export interface UpdateStagePayload extends CreateStagePayload {
@@ -6625,179 +6727,192 @@ export interface UpdateStagePayload extends CreateStagePayload {
 }
 
 export interface PublicApplyPayload {
+  consentGiven: boolean;
+  cvBase64?: string;
+  cvFileName?: string;
+  email: string;
+  firstName: string;
+  honeypot?: string;
+  lastName: string;
+  phone?: string;
   requisitionId?: string;
   requisitionSlug?: string;
   tenantSlug?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  cvBase64?: string;
-  cvFileName?: string;
-  consentGiven: boolean;
-  honeypot?: string;
   website?: string;
 }
 
 export interface PublicApplyResponse {
-  candidateId: string;
   applicationId: string;
   candidateEmail: string;
+  candidateId: string;
+  cvFileUrl?: string;
+  message: string;
   requisitionId: string;
   requisitionTitle: string;
   stageId?: string;
   status: string;
-  cvFileUrl?: string;
-  message: string;
 }
 
 // ==========================================
 // Promotions & Campaigns DTOs
 // ==========================================
 export interface CampaignListItemDto {
-  id: string;
-  name: string;
   code?: string;
-  description?: string;
-  type: "Percentage" | "FixedAmount" | "CartThreshold" | "BuyXGetY" | "FreeShipping" | string;
-  triggerType: "Automatic" | "CouponCode" | string;
-  discountValue: number;
-  minOrderAmount: number;
-  maxDiscountAmount?: number;
-  startDate: string;
-  endDate?: string;
-  isActive: boolean;
-  priority: number;
-  isStackable: boolean;
-  totalUsageLimit?: number;
-  perCustomerUsageLimit?: number;
-  currentUsageCount: number;
-  targetsCount: number;
   couponsCount: number;
   createdAt: string;
+  currentUsageCount: number;
+  description?: string;
+  discountValue: number;
+  endDate?: string;
+  id: string;
+  isActive: boolean;
+  isStackable: boolean;
+  maxDiscountAmount?: number;
+  minOrderAmount: number;
+  name: string;
+  perCustomerUsageLimit?: number;
+  priority: number;
+  startDate: string;
+  targetsCount: number;
+  totalUsageLimit?: number;
+  triggerType: "Automatic" | "CouponCode" | string;
+  type:
+    | "Percentage"
+    | "FixedAmount"
+    | "CartThreshold"
+    | "BuyXGetY"
+    | "FreeShipping"
+    | string;
 }
 
 export interface CampaignTargetDto {
   id: string;
-  targetType: "Product" | "Category" | "Brand" | "Customer" | "CustomerGroup" | string;
+  ruleCondition: "Include" | "Exclude" | string;
   targetId: string;
   targetName?: string;
-  ruleCondition: "Include" | "Exclude" | string;
+  targetType:
+    | "Product"
+    | "Category"
+    | "Brand"
+    | "Customer"
+    | "CustomerGroup"
+    | string;
 }
 
 export interface CampaignDetailDto {
-  id: string;
-  name: string;
-  code?: string;
-  description?: string;
-  type: string;
-  triggerType: string;
-  discountValue: number;
-  minOrderAmount: number;
-  maxDiscountAmount?: number;
-  minQuantity: number;
   buyQuantity: number;
-  getQuantity: number;
-  getDiscountRate: number;
-  startDate: string;
-  endDate?: string;
-  isActive: boolean;
-  priority: number;
-  isStackable: boolean;
-  totalUsageLimit?: number;
-  perCustomerUsageLimit?: number;
-  currentUsageCount: number;
-  metadata: string;
-  targets: CampaignTargetDto[];
+  code?: string;
   couponsCount: number;
   createdAt: string;
+  currentUsageCount: number;
+  description?: string;
+  discountValue: number;
+  endDate?: string;
+  getDiscountRate: number;
+  getQuantity: number;
+  id: string;
+  isActive: boolean;
+  isStackable: boolean;
+  maxDiscountAmount?: number;
+  metadata: string;
+  minOrderAmount: number;
+  minQuantity: number;
+  name: string;
+  perCustomerUsageLimit?: number;
+  priority: number;
+  startDate: string;
+  targets: CampaignTargetDto[];
+  totalUsageLimit?: number;
+  triggerType: string;
+  type: string;
   updatedAt: string;
 }
 
 export interface CreateCampaignTargetPayload {
-  targetType: string;
+  ruleCondition: string;
   targetId: string;
   targetName?: string;
-  ruleCondition: string;
+  targetType: string;
 }
 
 export interface CreateCampaignPayload {
-  name: string;
+  buyQuantity?: number;
   code?: string;
   description?: string;
-  type: string;
-  triggerType: string;
   discountValue: number;
-  minOrderAmount: number;
-  maxDiscountAmount?: number;
-  minQuantity: number;
-  buyQuantity?: number;
-  getQuantity?: number;
-  getDiscountRate?: number;
-  startDate: string;
   endDate?: string;
-  isActive: boolean;
-  priority: number;
-  isStackable: boolean;
-  totalUsageLimit?: number;
-  perCustomerUsageLimit?: number;
-  targets?: CreateCampaignTargetPayload[];
+  getDiscountRate?: number;
+  getQuantity?: number;
   initialCouponCode?: string;
+  isActive: boolean;
+  isStackable: boolean;
+  maxDiscountAmount?: number;
+  minOrderAmount: number;
+  minQuantity: number;
+  name: string;
+  perCustomerUsageLimit?: number;
+  priority: number;
+  startDate: string;
+  targets?: CreateCampaignTargetPayload[];
+  totalUsageLimit?: number;
+  triggerType: string;
+  type: string;
 }
 
-export interface UpdateCampaignPayload extends Omit<CreateCampaignPayload, "initialCouponCode"> {}
+export interface UpdateCampaignPayload
+  extends Omit<CreateCampaignPayload, "initialCouponCode"> {}
 
 export interface CouponListItemDto {
-  id: string;
+  assignedCustomerId?: string;
+  assignedCustomerName?: string;
+  batchId?: string;
   campaignId: string;
   campaignName: string;
   code: string;
-  type: "Standard" | "SingleUse" | "Dynamic" | string;
-  maxUses: number;
-  usedCount: number;
-  assignedCustomerId?: string;
-  assignedCustomerName?: string;
-  expiresAt?: string;
-  isActive: boolean;
-  batchId?: string;
   createdAt: string;
+  expiresAt?: string;
+  id: string;
+  isActive: boolean;
+  maxUses: number;
+  type: "Standard" | "SingleUse" | "Dynamic" | string;
+  usedCount: number;
 }
 
 export interface GenerateCouponsPayload {
   campaignId: string;
-  quantity: number;
-  prefix?: string;
   codeLength?: number;
-  maxUses?: number;
-  expiresAt?: string;
   customCode?: string;
+  expiresAt?: string;
+  maxUses?: number;
+  prefix?: string;
+  quantity: number;
 }
 
 export interface PromotionsStatsDto {
-  totalCampaigns: number;
   activeCampaigns: number;
+  totalCampaigns: number;
   totalCoupons: number;
-  totalUsages: number;
   totalDiscountDistributed: number;
   totalRevenueInfluenced: number;
+  totalUsages: number;
 }
 
 export interface CartItemPayload {
-  productId?: string;
-  variantId?: string;
-  categoryId?: string;
   brand?: string;
-  productName: string;
-  unitPrice: number;
-  quantity: number;
+  categoryId?: string;
   discountAmount?: number;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  variantId?: string;
 }
 
 export interface CartPromotionEvaluationPayload {
-  items: CartItemPayload[];
-  customerId?: string;
-  customerGroup?: string;
   couponCode?: string;
+  customerGroup?: string;
+  customerId?: string;
+  items: CartItemPayload[];
   shippingFee?: number;
 }
 
@@ -6806,22 +6921,18 @@ export interface AppliedPromotionDto {
   campaignName: string;
   campaignType: string;
   couponCode?: string;
-  discountAmount: number;
   description: string;
+  discountAmount: number;
 }
 
 export interface CartPromotionEvaluationResultDto {
-  subtotal: number;
-  totalDiscountAmount: number;
-  netTotal: number;
-  shippingFee: number;
-  isFreeShipping: boolean;
   appliedPromotions: AppliedPromotionDto[];
-  items: CartItemPayload[];
   couponValidationMessage?: string;
   isCouponValid: boolean;
+  isFreeShipping: boolean;
+  items: CartItemPayload[];
+  netTotal: number;
+  shippingFee: number;
+  subtotal: number;
+  totalDiscountAmount: number;
 }
-
-
-
-

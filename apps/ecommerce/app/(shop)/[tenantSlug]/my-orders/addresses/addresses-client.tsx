@@ -2,7 +2,10 @@
 
 import { Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { EcommerceClient, type CustomerAddressDto } from "@/lib/ecommerce-client";
+import {
+  type CustomerAddressDto,
+  EcommerceClient,
+} from "@/lib/ecommerce-client";
 import { createClient } from "@/lib/supabase/client";
 
 interface AddressesClientProps {
@@ -34,13 +37,18 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       if (!token) {
-        setError("Adres defteri için giriş yapmalısınız (auth_user_id → customerId).");
+        setError(
+          "Adres defteri için giriş yapmalısınız (auth_user_id → customerId)."
+        );
         setAddresses([]);
         return;
       }
       const res = await EcommerceClient.getAddresses(tenantSlug, token);
-      if (res.success && res.data) setAddresses(res.data);
-      else setError(res.message ?? "Adresler yüklenemedi");
+      if (res.success && res.data) {
+        setAddresses(res.data);
+      } else {
+        setError(res.message ?? "Adresler yüklenemedi");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Adresler yüklenemedi");
     } finally {
@@ -54,7 +62,7 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.addressLine1.trim() || !form.city.trim()) {
+    if (!(form.addressLine1.trim() && form.city.trim())) {
       setError("Adres satırı ve şehir zorunlu.");
       return;
     }
@@ -84,7 +92,9 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
       if (res.success) {
         setForm(EMPTY_FORM);
         await fetchAddresses();
-      } else setError(res.message ?? "Adres eklenemedi");
+      } else {
+        setError(res.message ?? "Adres eklenemedi");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -95,10 +105,15 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
       const supabase = createClient();
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
-      if (!token) return;
+      if (!token) {
+        return;
+      }
       const res = await EcommerceClient.deleteAddress(id, tenantSlug, token);
-      if (res.success) await fetchAddresses();
-      else setError(res.message ?? "Silinemedi");
+      if (res.success) {
+        await fetchAddresses();
+      } else {
+        setError(res.message ?? "Silinemedi");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Silinemedi");
     }
@@ -115,11 +130,20 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Adreslerim</h2>
-        <p className="text-xs text-zinc-500">customer_addresses — billing/shipping, default işaretli. CRUD via POST/PUT/DELETE /api/public/addresses.</p>
+        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+          Adreslerim
+        </h2>
+        <p className="text-xs text-zinc-500">
+          customer_addresses — billing/shipping, default işaretli. CRUD via
+          POST/PUT/DELETE /api/public/addresses.
+        </p>
       </div>
 
-      {error ? <p className="rounded-xl bg-amber-50 p-3 text-xs text-amber-800">{error}</p> : null}
+      {error ? (
+        <p className="rounded-xl bg-amber-50 p-3 text-amber-800 text-xs">
+          {error}
+        </p>
+      ) : null}
 
       <div className="grid gap-3 sm:grid-cols-2">
         {addresses.map((addr) => (
@@ -143,18 +167,26 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
             </div>
             <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
               {addr.addressLine1}
-              {addr.district ? `, ${addr.district}` : ""} — {addr.city} {addr.postalCode ?? ""} / {addr.country}
+              {addr.district ? `, ${addr.district}` : ""} — {addr.city}{" "}
+              {addr.postalCode ?? ""} / {addr.country}
             </p>
             <p className="mt-1 text-[11px] text-zinc-400">Tip: {addr.type}</p>
           </div>
         ))}
         {addresses.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700">Henüz kayıtlı adres yok.</p>
+          <p className="rounded-xl border border-zinc-300 border-dashed p-4 text-xs text-zinc-500 dark:border-zinc-700">
+            Henüz kayıtlı adres yok.
+          </p>
         ) : null}
       </div>
 
-      <form className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900" onSubmit={handleCreate}>
-        <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Yeni adres ekle</h3>
+      <form
+        className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+        onSubmit={handleCreate}
+      >
+        <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+          Yeni adres ekle
+        </h3>
         <div className="grid gap-3 sm:grid-cols-2">
           <input
             className="rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900"
@@ -173,13 +205,17 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
           </select>
           <input
             className="rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900"
-            onChange={(e) => setForm((f) => ({ ...f, addressLine1: e.target.value }))}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, addressLine1: e.target.value }))
+            }
             placeholder="Adres satırı *"
             value={form.addressLine1}
           />
           <input
             className="rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900"
-            onChange={(e) => setForm((f) => ({ ...f, district: e.target.value }))}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, district: e.target.value }))
+            }
             placeholder="İlçe"
             value={form.district}
           />
@@ -191,17 +227,21 @@ export function AddressesClient({ tenantSlug }: AddressesClientProps) {
           />
           <input
             className="rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900"
-            onChange={(e) => setForm((f) => ({ ...f, postalCode: e.target.value }))}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, postalCode: e.target.value }))
+            }
             placeholder="Posta kodu"
             value={form.postalCode}
           />
         </div>
         <button
-          className="w-full rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 dark:bg-white dark:text-zinc-900"
+          className="w-full rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white text-xs disabled:opacity-50 dark:bg-white dark:text-zinc-900"
           disabled={submitting}
           type="submit"
         >
-          {submitting ? "Ekleniyor…" : "Adresi kaydet — POST /api/public/addresses"}
+          {submitting
+            ? "Ekleniyor…"
+            : "Adresi kaydet — POST /api/public/addresses"}
         </button>
       </form>
     </div>

@@ -1,15 +1,15 @@
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@workspace/ui/lib/utils";
 
-type PriceSize = "sm" | "default" | "lg"
+type PriceSize = "sm" | "default" | "lg";
 
 export interface PriceProps {
-  className?: string
-  compareAtPrice?: number | null
-  currency?: string
-  price: number
-  showCurrencyLabel?: boolean
-  showDiscountBadge?: boolean
-  size?: PriceSize
+  className?: string;
+  compareAtPrice?: number | null;
+  currency?: string;
+  price: number;
+  showCurrencyLabel?: boolean;
+  showDiscountBadge?: boolean;
+  size?: PriceSize;
 }
 
 const sizeClasses: Record<
@@ -19,19 +19,19 @@ const sizeClasses: Record<
   default: {
     compare: "text-sm",
     discount: "text-[11px]",
-    price: "text-xl",
+    price: "text-lg",
   },
   lg: {
-    compare: "text-base",
-    discount: "text-xs",
-    price: "text-2xl",
+    compare: "text-sm",
+    discount: "text-[11px]",
+    price: "text-lg",
   },
   sm: {
     compare: "text-xs",
     discount: "text-[10px]",
     price: "text-base",
   },
-}
+};
 
 function formatPrice(value: number, currency: string): string {
   try {
@@ -39,9 +39,9 @@ function formatPrice(value: number, currency: string): string {
       currency,
       minimumFractionDigits: 2,
       style: "currency",
-    }).format(value)
+    }).format(value);
   } catch {
-    return `₺${value.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`
+    return `₺${value.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`;
   }
 }
 
@@ -50,10 +50,10 @@ function getDiscountPercent(
   compareAtPrice: number
 ): number | null {
   if (compareAtPrice <= 0 || price >= compareAtPrice) {
-    return null
+    return null;
   }
-  const percent = Math.round((1 - price / compareAtPrice) * 100)
-  return percent > 0 ? percent : null
+  const percent = Math.round((1 - price / compareAtPrice) * 100);
+  return percent > 0 ? percent : null;
 }
 
 export function Price({
@@ -66,17 +66,17 @@ export function Price({
   size = "default",
 }: PriceProps) {
   const hasCompare =
-    typeof compareAtPrice === "number" && compareAtPrice > price
+    typeof compareAtPrice === "number" && compareAtPrice > price;
   const discountPercent = hasCompare
     ? getDiscountPercent(price, compareAtPrice as number)
-    : null
-  const sizeClass = sizeClasses[size]
+    : null;
+  const sizeClass = sizeClasses[size];
 
   return (
     <div className={cn("inline-flex flex-wrap items-center gap-2", className)}>
       <span
         className={cn(
-          "font-extrabold tracking-tight text-store-surface-foreground",
+          "font-bold font-sans text-store-ink tracking-tight",
           sizeClass.price
         )}
       >
@@ -87,7 +87,7 @@ export function Price({
         <span
           aria-label={`Eski fiyat ${formatPrice(compareAtPrice as number, currency)}`}
           className={cn(
-            "text-store-muted-foreground line-through",
+            "font-sans text-store-muted-foreground line-through",
             sizeClass.compare
           )}
         >
@@ -96,7 +96,7 @@ export function Price({
       ) : null}
 
       {showCurrencyLabel ? (
-        <span className="text-xs text-store-muted-foreground">
+        <span className="font-mono text-store-muted-foreground text-xs">
           · {currency}
         </span>
       ) : null}
@@ -105,7 +105,7 @@ export function Price({
         <span
           aria-label={`%${discountPercent} indirim`}
           className={cn(
-            "inline-flex items-center rounded-store-sm bg-store-primary px-1.5 py-0.5 font-semibold text-store-primary-foreground",
+            "inline-flex items-center rounded-full bg-store-primary px-2 py-0.5 font-sans font-semibold text-store-primary-foreground",
             sizeClass.discount
           )}
         >
@@ -113,5 +113,5 @@ export function Price({
         </span>
       ) : null}
     </div>
-  )
+  );
 }

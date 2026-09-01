@@ -20,7 +20,9 @@ export function UpcomingMeetingsWidget() {
     if (typeof window !== "undefined") {
       try {
         const saved = localStorage.getItem(`crm_meetings_${tenantSlug}`);
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          return JSON.parse(saved);
+        }
       } catch {
         // ignore
       }
@@ -74,11 +76,17 @@ export function UpcomingMeetingsWidget() {
   const getTypeIcon = (type: MeetingItem["type"]) => {
     switch (type) {
       case "video":
-        return <Video className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />;
+        return (
+          <Video className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+        );
       case "phone":
-        return <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />;
+        return (
+          <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+        );
       case "in-person":
-        return <MapPin className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />;
+        return (
+          <MapPin className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+        );
     }
   };
 
@@ -87,11 +95,11 @@ export function UpcomingMeetingsWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Calendar className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Görüşmeler & Randevular
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -101,7 +109,7 @@ export function UpcomingMeetingsWidget() {
           </div>
 
           <button
-            className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:hover:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
+            className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:text-violet-300 dark:hover:bg-violet-900 dark:hover:bg-violet-950/60"
             onClick={() => setShowAddForm(!showAddForm)}
             type="button"
           >
@@ -131,7 +139,7 @@ export function UpcomingMeetingsWidget() {
                   className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition-colors ${
                     newDate === d
                       ? "bg-violet-600 text-white"
-                      : "bg-white text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600"
+                      : "bg-white text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:bg-zinc-700"
                   }`}
                   key={d}
                   onClick={() => setNewDate(d)}
@@ -158,7 +166,7 @@ export function UpcomingMeetingsWidget() {
             </div>
             <div className="flex justify-end gap-2 pt-1">
               <button
-                className="rounded-lg px-2.5 py-1 font-semibold text-zinc-500 text-xs hover:bg-zinc-200 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                className="rounded-lg px-2.5 py-1 font-semibold text-xs text-zinc-500 hover:bg-zinc-200 dark:text-zinc-400 dark:hover:bg-zinc-700"
                 onClick={() => setShowAddForm(false)}
                 type="button"
               >
@@ -181,7 +189,7 @@ export function UpcomingMeetingsWidget() {
               <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
                 <Calendar className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+              <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 Henüz kayıtlı görüşme yok
               </h4>
               <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -201,7 +209,7 @@ export function UpcomingMeetingsWidget() {
             <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
               {meetings.map((meeting) => (
                 <div
-                  className="group rounded-xl border border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-3 transition-all hover:border-zinc-300 hover:bg-white hover:shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/80"
+                  className="group rounded-xl border border-zinc-100 bg-zinc-50/50 p-3 transition-all hover:border-zinc-300 hover:bg-white hover:shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/80"
                   key={meeting.id}
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -212,7 +220,7 @@ export function UpcomingMeetingsWidget() {
                           {meeting.date} {meeting.time}
                         </span>
                       </div>
-                      <h4 className="font-bold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
+                      <h4 className="font-bold text-xs text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
                         {meeting.title}
                       </h4>
                       <p className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -249,7 +257,7 @@ export function UpcomingMeetingsWidget() {
       </div>
 
       {meetings.length > 0 && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <span className="cursor-pointer font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400">
             {meetings.length} Görüşme Kayıtlı
           </span>

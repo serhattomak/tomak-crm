@@ -1,42 +1,38 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import {
-  Building2,
-  Users,
-  Sparkles,
-  CheckCircle2,
-  AlertTriangle,
-  Plus,
   ArrowRight,
-  Shield,
-  Layers,
-  Activity,
   ArrowUpRight,
-  TrendingUp,
+  Building2,
+  CheckCircle2,
+  Plus,
+  Shield,
+  Sparkles,
+  Users,
 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 
 interface AdminStats {
-  totalTenants: number;
   activeTenants: number;
+  industryDistribution: { industry: string; count: number }[];
   suspendedTenants: number;
   totalMembers: number;
   totalTemplates: number;
-  industryDistribution: { industry: string; count: number }[];
+  totalTenants: number;
 }
 
 interface TenantItem {
+  createdAt: string;
+  enabledModuleCount: number;
   id: string;
-  name: string;
-  slug: string;
   industry: string;
   industryTemplateName?: string;
   isActive: boolean;
   memberCount: number;
-  enabledModuleCount: number;
-  createdAt: string;
+  name: string;
+  slug: string;
 }
 
 export default function AdminDashboardPage() {
@@ -53,8 +49,12 @@ export default function AdminDashboardPage() {
           apiClient.get<TenantItem[]>("/api/admin/tenants").catch(() => null),
         ]);
 
-        if (statsRes?.data) setStats(statsRes.data);
-        if (tenantsRes?.data) setRecentTenants(tenantsRes.data.slice(0, 5));
+        if (statsRes?.data) {
+          setStats(statsRes.data);
+        }
+        if (tenantsRes?.data) {
+          setRecentTenants(tenantsRes.data.slice(0, 5));
+        }
       } finally {
         setLoading(false);
       }
@@ -68,29 +68,30 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-extrabold text-2xl md:text-3xl text-slate-900 tracking-tight">
+            <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight md:text-3xl">
               Merkezi Yönetim Konsolu
             </h1>
-            <span className="rounded-md bg-blue-50 px-2 py-0.5 text-xs font-bold text-blue-600 border border-blue-200/60">
+            <span className="rounded-md border border-blue-200/60 bg-blue-50 px-2 py-0.5 font-bold text-blue-600 text-xs">
               Super Admin
             </span>
           </div>
-          <p className="text-slate-500 text-sm mt-1">
-            Tüm firmaların lisans, sektör şablonu ve aktif modül durumlarını tek merkezden denetleyin.
+          <p className="mt-1 text-slate-500 text-sm">
+            Tüm firmaların lisans, sektör şablonu ve aktif modül durumlarını tek
+            merkezden denetleyin.
           </p>
         </div>
 
         <div className="flex items-center gap-2.5">
           <Link
+            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-500 active:scale-95"
             href="/admin/tenants?create=true"
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-500 active:scale-95"
           >
             <Plus className="h-4 w-4" />
             <span>Yeni Firma Kaydet</span>
           </Link>
           <Link
+            className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
             href="/admin/templates"
-            className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50"
           >
             <Sparkles className="h-4 w-4 text-amber-500" />
             <span>Sektör Şablonları</span>
@@ -103,36 +104,36 @@ export default function AdminDashboardPage() {
         {/* Total Tenants */}
         <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
               Kayıtlı Firma
             </span>
-            <div className="rounded-xl bg-blue-50 p-2 text-blue-600 border border-blue-100">
+            <div className="rounded-xl border border-blue-100 bg-blue-50 p-2 text-blue-600">
               <Building2 className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-extrabold text-3xl text-slate-900">
-              {loading ? "-" : stats?.totalTenants ?? 0}
+              {loading ? "-" : (stats?.totalTenants ?? 0)}
             </span>
-            <span className="text-xs text-blue-600 font-medium">Tenant</span>
+            <span className="font-medium text-blue-600 text-xs">Tenant</span>
           </div>
         </div>
 
         {/* Active Companies */}
         <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
               Aktif Abonelik
             </span>
-            <div className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-2 text-emerald-600">
               <CheckCircle2 className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-extrabold text-3xl text-emerald-600">
-              {loading ? "-" : stats?.activeTenants ?? 0}
+              {loading ? "-" : (stats?.activeTenants ?? 0)}
             </span>
-            <span className="text-xs text-slate-500">
+            <span className="text-slate-500 text-xs">
               / {stats?.suspendedTenants ?? 0} askıda
             </span>
           </div>
@@ -141,36 +142,38 @@ export default function AdminDashboardPage() {
         {/* Total Members */}
         <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
             </span>
-            <div className="rounded-xl bg-purple-50 p-2 text-purple-600 border border-purple-100">
+            <div className="rounded-xl border border-purple-100 bg-purple-50 p-2 text-purple-600">
               <Users className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-extrabold text-3xl text-slate-900">
-              {loading ? "-" : stats?.totalMembers ?? 0}
+              {loading ? "-" : (stats?.totalMembers ?? 0)}
             </span>
-            <span className="text-xs text-purple-600 font-medium">Toplam Üye</span>
+            <span className="font-medium text-purple-600 text-xs">
+              Toplam Üye
+            </span>
           </div>
         </div>
 
         {/* Sektör Şablonları */}
         <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
               Sektör Şablonu
             </span>
-            <div className="rounded-xl bg-amber-50 p-2 text-amber-600 border border-amber-100">
+            <div className="rounded-xl border border-amber-100 bg-amber-50 p-2 text-amber-600">
               <Sparkles className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-extrabold text-3xl text-amber-600">
-              {loading ? "-" : stats?.totalTemplates ?? 0}
+              {loading ? "-" : (stats?.totalTemplates ?? 0)}
             </span>
-            <span className="text-xs text-slate-500">Hazır Dikey</span>
+            <span className="text-slate-500 text-xs">Hazır Dikey</span>
           </div>
         </div>
       </div>
@@ -179,14 +182,18 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Recent Tenants Table (2 Columns) */}
         <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xs lg:col-span-2">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div className="flex items-center justify-between border-slate-100 border-b pb-4">
             <div>
-              <h2 className="font-bold text-base text-slate-900">Son Eklenen Firmalar</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Sisteme kayıtlı işletmeler ve modül durumları</p>
+              <h2 className="font-bold text-base text-slate-900">
+                Son Eklenen Firmalar
+              </h2>
+              <p className="mt-0.5 text-slate-500 text-xs">
+                Sisteme kayıtlı işletmeler ve modül durumları
+              </p>
             </div>
             <Link
+              className="flex items-center gap-1 font-semibold text-blue-600 text-xs hover:text-blue-700"
               href="/admin/tenants"
-              className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700"
             >
               <span>Tümünü Gör</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -195,54 +202,61 @@ export default function AdminDashboardPage() {
 
           <div className="mt-2 divide-y divide-slate-100">
             {recentTenants.length === 0 ? (
-              <div className="py-8 text-center text-xs text-slate-400">
+              <div className="py-8 text-center text-slate-400 text-xs">
                 {loading ? "Yükleniyor..." : "Henüz kayıtlı firma bulunamadı."}
               </div>
             ) : (
               recentTenants.map((tenant) => (
-                <div key={tenant.id} className="flex items-center justify-between py-3.5">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 border border-blue-100 font-bold text-blue-600 text-xs">
+                <div
+                  className="flex items-center justify-between py-3.5"
+                  key={tenant.id}
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 font-bold text-blue-600 text-xs">
                       {tenant.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <Link
+                          className="truncate font-semibold text-slate-900 text-sm hover:text-blue-600"
                           href={`/admin/tenants/${tenant.id}`}
-                          className="truncate font-semibold text-sm text-slate-900 hover:text-blue-600"
                         >
                           {tenant.name}
                         </Link>
                         {tenant.isActive ? (
-                          <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200/60">
+                          <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700">
                             Aktif
                           </span>
                         ) : (
-                          <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200/60">
+                          <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-[10px] text-rose-700">
                             Askıda
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                      <p className="mt-0.5 flex items-center gap-2 text-slate-500 text-xs">
                         <span>slug: {tenant.slug}</span>
                         <span>•</span>
-                        <span className="text-amber-600 font-medium">
-                          {tenant.industryTemplateName ?? tenant.industry ?? "Genel"}
+                        <span className="font-medium text-amber-600">
+                          {tenant.industryTemplateName ??
+                            tenant.industry ??
+                            "Genel"}
                         </span>
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="text-right hidden sm:block">
-                      <p className="text-xs font-semibold text-slate-700">
+                    <div className="hidden text-right sm:block">
+                      <p className="font-semibold text-slate-700 text-xs">
                         {tenant.enabledModuleCount} Modül
                       </p>
-                      <p className="text-[11px] text-slate-400">{tenant.memberCount} Üye</p>
+                      <p className="text-[11px] text-slate-400">
+                        {tenant.memberCount} Üye
+                      </p>
                     </div>
                     <Link
+                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
                       href={`/admin/tenants/${tenant.id}`}
-                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
                       title="Yönet"
                     >
                       <ArrowUpRight className="h-4 w-4" />
@@ -256,17 +270,27 @@ export default function AdminDashboardPage() {
 
         {/* Industry Distribution Widget (1 Column) */}
         <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xs">
-          <h2 className="font-bold text-base text-slate-900">Sektör Dağılımı</h2>
-          <p className="text-xs text-slate-500 mt-0.5">Firmaların sektörel şablon dağılımı</p>
+          <h2 className="font-bold text-base text-slate-900">
+            Sektör Dağılımı
+          </h2>
+          <p className="mt-0.5 text-slate-500 text-xs">
+            Firmaların sektörel şablon dağılımı
+          </p>
 
           <div className="mt-6 space-y-4">
-            {stats?.industryDistribution && stats.industryDistribution.length > 0 ? (
+            {stats?.industryDistribution &&
+            stats.industryDistribution.length > 0 ? (
               stats.industryDistribution.map((item) => {
-                const percentage = stats.totalTenants > 0 ? Math.round((item.count / stats.totalTenants) * 100) : 0;
+                const percentage =
+                  stats.totalTenants > 0
+                    ? Math.round((item.count / stats.totalTenants) * 100)
+                    : 0;
                 return (
-                  <div key={item.industry} className="space-y-1.5">
+                  <div className="space-y-1.5" key={item.industry}>
                     <div className="flex justify-between text-xs">
-                      <span className="font-medium text-slate-700 capitalize">{item.industry}</span>
+                      <span className="font-medium text-slate-700 capitalize">
+                        {item.industry}
+                      </span>
                       <span className="text-slate-500">
                         {item.count} firma ({percentage}%)
                       </span>
@@ -281,19 +305,21 @@ export default function AdminDashboardPage() {
                 );
               })
             ) : (
-              <div className="py-6 text-center text-xs text-slate-400">
+              <div className="py-6 text-center text-slate-400 text-xs">
                 {loading ? "Yükleniyor..." : "Veri bulunamadı."}
               </div>
             )}
           </div>
 
-          <div className="mt-8 rounded-xl border border-blue-100 bg-blue-50/50 p-4 text-xs text-slate-700">
-            <div className="flex items-center gap-2 font-bold text-blue-700 mb-1">
+          <div className="mt-8 rounded-xl border border-blue-100 bg-blue-50/50 p-4 text-slate-700 text-xs">
+            <div className="mb-1 flex items-center gap-2 font-bold text-blue-700">
               <Shield className="h-4 w-4" />
               <span>Modüler Satış Prensibi</span>
             </div>
-            <p className="text-slate-600 leading-relaxed text-[11px]">
-              Her firma için aktif modülleri ve özel terminolojiyi Firma Detay sayfasından anlık değiştirebilirsiniz. Değişiklikler Redis üzerinden sıfır gecikmeyle yansır.
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              Her firma için aktif modülleri ve özel terminolojiyi Firma Detay
+              sayfasından anlık değiştirebilirsiniz. Değişiklikler Redis
+              üzerinden sıfır gecikmeyle yansır.
             </p>
           </div>
         </div>

@@ -145,10 +145,10 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
+      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Ürün detayları yükleniyor...
           </span>
         </div>
@@ -195,7 +195,9 @@ export default function ProductDetailPage() {
       case "Adjustment":
         return <RotateCcw className="h-3.5 w-3.5 text-blue-600" />;
       default:
-        return <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />;
+        return (
+          <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
+        );
     }
   };
 
@@ -228,10 +230,10 @@ export default function ProductDetailPage() {
       )}
 
       {/* 1. Header Section */}
-      <div className="flex flex-col justify-between gap-4 border-zinc-100 dark:border-zinc-800 border-b pb-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-4 border-zinc-100 border-b pb-4 sm:flex-row sm:items-center dark:border-zinc-800">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             href={`/${tenantSlug}/products`}
             title="Kataloğa Dön"
           >
@@ -239,7 +241,7 @@ export default function ProductDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 font-bold text-base text-blue-600 shadow-xs">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 shadow-xs dark:bg-zinc-800">
               {product.type === "Physical" ? (
                 <Package className="h-6 w-6" />
               ) : (
@@ -249,7 +251,7 @@ export default function ProductDetailPage() {
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xl tracking-tight sm:text-2xl">
+                <h1 className="font-extrabold text-xl text-zinc-900 tracking-tight sm:text-2xl dark:text-zinc-100">
                   {product.name}
                 </h1>
                 <span
@@ -265,7 +267,7 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-xs">
+              <div className="mt-0.5 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
                 <span>{product.categoryName || "Kategorisiz"}</span>
                 {product.brand && (
                   <>
@@ -289,7 +291,7 @@ export default function ProductDetailPage() {
           {product.trackInventory && (
             <PermissionGate permission="Products.StockAdjust">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
@@ -317,9 +319,9 @@ export default function ProductDetailPage() {
         {/* Left Column: Summary Info & Cards (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Pricing & Margins */}
-          <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+          <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+              <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Fiyatlandırma & Karlılık
               </h3>
               <span
@@ -336,9 +338,11 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">Satış Fiyatı (KDV Hariç)</span>
-                <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-sm">
+              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">
+                  Satış Fiyatı (KDV Hariç)
+                </span>
+                <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
                   ₺
                   {product.sellingPrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -346,8 +350,10 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">KDV Oranı & Dahil Fiyat</span>
+              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">
+                  KDV Oranı & Dahil Fiyat
+                </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   %{product.taxRate} (₺
                   {taxInclusivePrice.toLocaleString("tr-TR", {
@@ -357,8 +363,10 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">Alış / Maliyet Fiyatı</span>
+              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">
+                  Alış / Maliyet Fiyatı
+                </span>
                 <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                   ₺
                   {product.costPrice.toLocaleString("tr-TR", {
@@ -383,8 +391,8 @@ export default function ProductDetailPage() {
 
           {/* Card: Inventory Stock Status */}
           {product.trackInventory && product.type === "Physical" && (
-            <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
-              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+            <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Envanter & Stok Seviyesi
               </h3>
 
@@ -398,8 +406,8 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
-                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                     Kullanılabilir
                   </span>
                   <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
@@ -407,20 +415,20 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
-                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                     Rezerve
                   </span>
-                  <div className="mt-1 font-bold text-zinc-700 dark:text-zinc-300 text-sm">
+                  <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
                     {product.reservedStock} {product.unit}
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
-                  <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                     Kritik Eşik
                   </span>
-                  <div className="mt-1 font-bold text-zinc-700 dark:text-zinc-300 text-sm">
+                  <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
                     {product.minStockLevel} {product.unit}
                   </div>
                 </div>
@@ -429,14 +437,16 @@ export default function ProductDetailPage() {
           )}
 
           {/* Card: Meta details */}
-          <div className="space-y-3 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 text-xs shadow-xs">
+          <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
             <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
               Teknik & Kimlik Bilgileri
             </h3>
             <div className="space-y-2 text-zinc-600 dark:text-zinc-400">
               {product.barcode && (
                 <div className="flex justify-between">
-                  <span className="text-zinc-400 dark:text-zinc-500">Barkod (EAN):</span>
+                  <span className="text-zinc-400 dark:text-zinc-500">
+                    Barkod (EAN):
+                  </span>
                   <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                     {product.barcode}
                   </span>
@@ -444,22 +454,28 @@ export default function ProductDetailPage() {
               )}
               {product.sku && (
                 <div className="flex justify-between">
-                  <span className="text-zinc-400 dark:text-zinc-500">Stok Kodu (SKU):</span>
+                  <span className="text-zinc-400 dark:text-zinc-500">
+                    Stok Kodu (SKU):
+                  </span>
                   <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                     {product.sku}
                   </span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-zinc-400 dark:text-zinc-500">Ölçü Birimi:</span>
+                <span className="text-zinc-400 dark:text-zinc-500">
+                  Ölçü Birimi:
+                </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   {product.unit}
                 </span>
               </div>
               {product.description && (
-                <div className="mt-2 border-zinc-100 dark:border-zinc-800 border-t pt-2">
-                  <span className="mb-1 block text-zinc-400 dark:text-zinc-500">Açıklama:</span>
-                  <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                <div className="mt-2 border-zinc-100 border-t pt-2 dark:border-zinc-800">
+                  <span className="mb-1 block text-zinc-400 dark:text-zinc-500">
+                    Açıklama:
+                  </span>
+                  <p className="text-zinc-700 leading-relaxed dark:text-zinc-300">
                     {product.description}
                   </p>
                 </div>
@@ -471,13 +487,13 @@ export default function ProductDetailPage() {
         {/* Right Column: Tabbed Views (8 Cols) */}
         <div className="space-y-6 lg:col-span-8">
           {/* Pill Tabs */}
-          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 dark:bg-zinc-800/90 p-1">
+          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             {tabs.map((tab) => (
               <button
                 className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                   activeTab === tab.id
-                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                    : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                 }`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
@@ -493,8 +509,8 @@ export default function ProductDetailPage() {
             <div className="space-y-6">
               {/* Quick Stock Movement Box */}
               {product.trackInventory && (
-                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
-                  <h4 className="mb-3 font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                  <h4 className="mb-3 font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Hızlı Stok Hareketi İşle
                   </h4>
                   <form
@@ -504,7 +520,7 @@ export default function ProductDetailPage() {
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                       <div>
                         <select
-                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                           onChange={(e) =>
                             setQuickAdjType(e.target.value as any)
                           }
@@ -518,7 +534,7 @@ export default function ProductDetailPage() {
 
                       <div>
                         <input
-                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                           min="0.01"
                           onChange={(e) =>
                             setQuickAdjQty(
@@ -535,7 +551,7 @@ export default function ProductDetailPage() {
 
                       <div>
                         <input
-                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                          className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                           onChange={(e) => setQuickAdjReason(e.target.value)}
                           placeholder="Neden / Açıklama (Opsiyonel)"
                           type="text"
@@ -558,9 +574,9 @@ export default function ProductDetailPage() {
               )}
 
               {/* Recent Movements Preview */}
-              <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs">
+              <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                 <div className="mb-4 flex items-center justify-between">
-                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                  <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Son Stok Hareketleri
                   </h4>
                   <button
@@ -573,18 +589,18 @@ export default function ProductDetailPage() {
                 </div>
 
                 {product.stockMovements.length === 0 ? (
-                  <div className="py-6 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+                  <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
                     Henüz stok hareketi kaydedilmedi.
                   </div>
                 ) : (
                   <div className="space-y-2.5">
                     {product.stockMovements.slice(0, 5).map((mov) => (
                       <div
-                        className="flex items-center justify-between rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-3 text-xs"
+                        className="flex items-center justify-between rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50"
                         key={mov.id}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
                             {getMovementIcon(mov.movementType)}
                           </div>
                           <div>
@@ -621,7 +637,7 @@ export default function ProductDetailPage() {
           {activeTab === "variants" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Ürün Varyantları (Renk, Beden, Model)
                 </h4>
                 <button
@@ -635,13 +651,13 @@ export default function ProductDetailPage() {
               </div>
 
               {product.variants.length === 0 ? (
-                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-10 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
                   Bu ürüne ait tanımlanmış varyant bulunmamaktadır.
                 </div>
               ) : (
-                <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
+                <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                   <table className="w-full text-left text-xs">
-                    <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                       <tr>
                         <th className="px-4 py-3">Varyant Adı</th>
                         <th className="px-4 py-3">SKU / Barkod</th>
@@ -673,7 +689,7 @@ export default function ProductDetailPage() {
                           </td>
                           <td className="py-3.5 pr-4 pl-2 text-right">
                             <button
-                              className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-rose-600"
+                              className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
                               onClick={() => handleDeleteVariant(v.id)}
                               title="Varyantı Sil"
                               type="button"
@@ -694,7 +710,7 @@ export default function ProductDetailPage() {
           {activeTab === "movements" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Tarihsel Stok Hareket Defteri
                 </h4>
                 {product.trackInventory && (
@@ -710,7 +726,7 @@ export default function ProductDetailPage() {
               </div>
 
               {product.stockMovements.length === 0 ? (
-                <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 border-dashed bg-white dark:bg-zinc-900 p-10 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
                   Kayıtlı stok hareketi bulunmuyor.
                 </div>
               ) : (
@@ -720,11 +736,11 @@ export default function ProductDetailPage() {
                       className="relative flex items-start gap-3 text-xs"
                       key={mov.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white dark:bg-zinc-900 shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
+                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-800">
                         {getMovementIcon(mov.movementType)}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+                      <div className="flex-1 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getMovementLabel(mov.movementType)} (
@@ -758,7 +774,7 @@ export default function ProductDetailPage() {
                         </div>
 
                         {mov.reason && (
-                          <p className="mt-1.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-700 dark:text-zinc-300 text-xs">
+                          <p className="mt-1.5 rounded-xl bg-zinc-50 p-2 text-xs text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300">
                             {mov.reason}
                           </p>
                         )}
@@ -773,12 +789,12 @@ export default function ProductDetailPage() {
           {/* TAB 4: PRICING & MARGIN SIMULATOR */}
           {activeTab === "pricing" && (
             <div className="space-y-4">
-              <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-6 text-xs">
-                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
+              <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-6 text-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Fiyat & Karlılık Simülasyonu
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
+                  <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
                     <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                       Maliyet (Alış)
                     </span>
@@ -790,7 +806,7 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
+                  <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
                     <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
                       Satış Fiyatı
                     </span>
@@ -929,13 +945,13 @@ function StockAdjustModal({
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Stok Hareketi Ekle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -949,7 +965,7 @@ function StockAdjustModal({
               Hareket Türü
             </label>
             <select
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -970,7 +986,7 @@ function StockAdjustModal({
               Miktar ({product.unit}) *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               min="0.01"
               onChange={(e) =>
                 setFormData({
@@ -990,7 +1006,7 @@ function StockAdjustModal({
               İrsaliye / Fatura No
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, referenceNumber: e.target.value })
               }
@@ -1005,7 +1021,7 @@ function StockAdjustModal({
               Açıklama / Sebep
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, reason: e.target.value })
               }
@@ -1015,9 +1031,9 @@ function StockAdjustModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1095,13 +1111,13 @@ function AddVariantModal({
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Varyant Ekle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1115,7 +1131,7 @@ function AddVariantModal({
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1132,7 +1148,7 @@ function AddVariantModal({
                 Ek Fiyat (+₺)
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1150,7 +1166,7 @@ function AddVariantModal({
                 Varyant Stoğu
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1170,7 +1186,7 @@ function AddVariantModal({
                 Varyant SKU
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1184,7 +1200,7 @@ function AddVariantModal({
                 Barkod
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1194,9 +1210,9 @@ function AddVariantModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1245,9 +1261,9 @@ function EditProductModal({
     name: product.name,
     sellingPrice: product.sellingPrice,
     seoTitle: product.seoTitle || "",
+    sku: product.sku || "",
     slug: product.slug || "",
     sortOrder: product.sortOrder ?? 0,
-    sku: product.sku || "",
     status: product.status,
     taxRate: product.taxRate,
     trackInventory: product.trackInventory,
@@ -1294,9 +1310,11 @@ function EditProductModal({
         name: formData.name.trim(),
         sellingPrice: Number(formData.sellingPrice) || 0,
         seoTitle: formData.seoTitle?.trim() || undefined,
-        slug: formData.slug?.trim() ? slugify(formData.slug.trim()) : slugify(formData.name.trim()),
-        sortOrder: Number(formData.sortOrder) || 0,
         sku: formData.sku?.trim() || undefined,
+        slug: formData.slug?.trim()
+          ? slugify(formData.slug.trim())
+          : slugify(formData.name.trim()),
+        sortOrder: Number(formData.sortOrder) || 0,
         status: formData.status || "Active",
         taxRate: Number(formData.taxRate) ?? 20,
         trackInventory:
@@ -1321,13 +1339,13 @@ function EditProductModal({
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-xs shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-4">
+      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Ürün / Hizmet Bilgilerini Düzenle
           </h3>
           <button
-            className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1344,10 +1362,14 @@ function EditProductModal({
               Ürün / Hizmet Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => {
                 const v = e.target.value;
-                setFormData((prev) => ({ ...prev, name: v, slug: prev.slug ? prev.slug : slugify(v) }));
+                setFormData((prev) => ({
+                  ...prev,
+                  name: v,
+                  slug: prev.slug ? prev.slug : slugify(v),
+                }));
               }}
               required
               type="text"
@@ -1356,48 +1378,106 @@ function EditProductModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Slug (URL)</label>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+              Slug (URL)
+            </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
-              onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+              onChange={(e) =>
+                setFormData({ ...formData, slug: e.target.value })
+              }
               placeholder="ornek-urun-slug"
               type="text"
               value={formData.slug ?? ""}
             />
           </div>
 
-          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/50 dark:bg-zinc-800/30 p-3 space-y-2">
+          <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-3 dark:border-zinc-800/90 dark:bg-zinc-800/30">
             <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex cursor-pointer items-center gap-2">
                 <button
                   aria-checked={Boolean(formData.isPublished)}
                   className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors ${formData.isPublished ? "border-emerald-500 bg-emerald-500" : "border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-700"}`}
-                  onClick={() => setFormData({ ...formData, isPublished: !formData.isPublished })}
+                  onClick={() =>
+                    setFormData({
+                      ...formData,
+                      isPublished: !formData.isPublished,
+                    })
+                  }
                   role="switch"
                   type="button"
                 >
-                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${formData.isPublished ? "translate-x-4" : "translate-x-1"}`} />
+                  <span
+                    className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${formData.isPublished ? "translate-x-4" : "translate-x-1"}`}
+                  />
                 </button>
                 <span className="font-medium">Mağazada Yayınla</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input checked={Boolean(formData.isFeatured)} className="rounded text-blue-600" onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })} type="checkbox" />
+              <label className="flex cursor-pointer items-center gap-2">
+                <input
+                  checked={Boolean(formData.isFeatured)}
+                  className="rounded text-blue-600"
+                  onChange={(e) =>
+                    setFormData({ ...formData, isFeatured: e.target.checked })
+                  }
+                  type="checkbox"
+                />
                 <span className="font-medium">Öne Çıkan</span>
               </label>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Sıralama</label>
-                <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" min="0" onChange={(e) => setFormData({ ...formData, sortOrder: Number.parseInt(e.target.value, 10) || 0 })} type="number" value={formData.sortOrder ?? 0} />
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Sıralama
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+                  min="0"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      sortOrder: Number.parseInt(e.target.value, 10) || 0,
+                    })
+                  }
+                  type="number"
+                  value={formData.sortOrder ?? 0}
+                />
               </div>
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">Ağırlık (kg)</label>
-                <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" min="0" onChange={(e) => setFormData({ ...formData, weightKg: e.target.value ? Number.parseFloat(e.target.value) : undefined })} step="0.01" type="number" value={formData.weightKg ?? ""} />
+                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                  Ağırlık (kg)
+                </label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+                  min="0"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      weightKg: e.target.value
+                        ? Number.parseFloat(e.target.value)
+                        : undefined,
+                    })
+                  }
+                  step="0.01"
+                  type="number"
+                  value={formData.weightKg ?? ""}
+                />
               </div>
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">SEO Başlığı</label>
-              <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 focus:border-blue-500 focus:outline-none" maxLength={255} onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} placeholder="SEO title (opsiyonel)" type="text" value={formData.seoTitle ?? ""} />
+              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                SEO Başlığı
+              </label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+                maxLength={255}
+                onChange={(e) =>
+                  setFormData({ ...formData, seoTitle: e.target.value })
+                }
+                placeholder="SEO title (opsiyonel)"
+                type="text"
+                value={formData.seoTitle ?? ""}
+              />
             </div>
           </div>
 
@@ -1407,7 +1487,7 @@ function EditProductModal({
                 Kategori
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, categoryId: e.target.value })
                 }
@@ -1426,7 +1506,7 @@ function EditProductModal({
                 Durum
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, status: e.target.value })
                 }
@@ -1446,7 +1526,7 @@ function EditProductModal({
                 Alış / Maliyet (₺)
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1464,7 +1544,7 @@ function EditProductModal({
                 Satış Fiyatı (₺) *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 min="0"
                 onChange={(e) =>
                   setFormData({
@@ -1480,9 +1560,9 @@ function EditProductModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

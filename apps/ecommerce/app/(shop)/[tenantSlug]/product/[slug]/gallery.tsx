@@ -4,10 +4,10 @@ import { Gallery } from "@workspace/ui/components/gallery";
 import * as React from "react";
 
 export interface ProductGalleryProps {
-  images: string[];
-  variantImage?: string | null;
   alt: string;
   className?: string;
+  images: string[];
+  variantImage?: string | null;
 }
 
 /**
@@ -44,8 +44,8 @@ export function ProductGallery({
   );
 }
 
+export type { GalleryProps } from "@workspace/ui/components/gallery";
 // Re-export primitive for direct use and for file-level granularity checks
 export { Gallery } from "@workspace/ui/components/gallery";
-export type { GalleryProps } from "@workspace/ui/components/gallery";
 
 export default ProductGallery;

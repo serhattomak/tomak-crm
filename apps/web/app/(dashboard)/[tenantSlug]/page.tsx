@@ -17,7 +17,10 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { DashboardSharePopover } from "@/components/dashboard-share-popover";
 import { NotificationCenter } from "@/components/notification-center";
-import { TeamMembersStack, InviteMemberModal } from "@/components/team-members-stack";
+import {
+  InviteMemberModal,
+  TeamMembersStack,
+} from "@/components/team-members-stack";
 import { usePermissions } from "@/lib/permissions/permission-context";
 import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget";
 import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal";
@@ -26,7 +29,10 @@ import { DealsTableWidget } from "./widgets/deals-table-widget";
 import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget";
 import { LeadSourcesWidget } from "./widgets/lead-sources-widget";
 import { PipelineFunnelWidget } from "./widgets/pipeline-funnel-widget";
-import { QuickActionsWidget, type QuickActionType } from "./widgets/quick-actions-widget";
+import {
+  QuickActionsWidget,
+  type QuickActionType,
+} from "./widgets/quick-actions-widget";
 import { QuickCreateModal } from "./widgets/quick-create-modal";
 import { QuotesSummaryWidget } from "./widgets/quotes-summary-widget";
 import { RevenueChartWidget } from "./widgets/revenue-chart-widget";
@@ -48,24 +54,27 @@ export default function WorkspaceOverviewPage() {
   // Modals state
   const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const [quickCreateType, setQuickCreateType] = useState<QuickActionType | null>(null);
+  const [quickCreateType, setQuickCreateType] =
+    useState<QuickActionType | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Widget layouts stored per tab and tenant
-  const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const storageKey = `crm_dashboard_layout_${tenantSlug}`;
-        const saved = localStorage.getItem(storageKey);
-        if (saved) {
-          return JSON.parse(saved);
+  const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(
+    () => {
+      if (typeof window !== "undefined") {
+        try {
+          const storageKey = `crm_dashboard_layout_${tenantSlug}`;
+          const saved = localStorage.getItem(storageKey);
+          if (saved) {
+            return JSON.parse(saved);
+          }
+        } catch {
+          // ignore storage errors
         }
-      } catch {
-        // ignore storage errors
       }
+      return DEFAULT_WIDGET_IDS_BY_TAB;
     }
-    return DEFAULT_WIDGET_IDS_BY_TAB;
-  });
+  );
 
   // Save layout helper
   const saveWidgets = (newLayout: Record<string, string[]>) => {
@@ -264,32 +273,34 @@ export default function WorkspaceOverviewPage() {
       )}
 
       {/* Executive Printable Report Header (Visible Only When Printing) */}
-      <div className="hidden print:block border-b-2 border-zinc-900 pb-5 mb-8">
+      <div className="mb-8 hidden border-zinc-900 border-b-2 pb-5 print:block">
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-white font-black text-lg">
-                {(activeTenant?.name || tenantSlug || "C").slice(0, 2).toUpperCase()}
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 font-black text-lg text-white">
+                {(activeTenant?.name || tenantSlug || "C")
+                  .slice(0, 2)
+                  .toUpperCase()}
               </div>
               <div>
                 <h1 className="font-black text-2xl text-zinc-900 tracking-tight">
                   {activeTenant?.name || tenantSlug.toUpperCase()}
                 </h1>
-                <p className="text-xs font-semibold text-zinc-600">
+                <p className="font-semibold text-xs text-zinc-600">
                   CRM Pano Yönetici & Performans Raporu
                 </p>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-4 text-xs text-zinc-700 font-medium">
+            <div className="mt-4 flex items-center gap-4 font-medium text-xs text-zinc-700">
               <div>
                 Pano Sekmesi:{" "}
-                <strong className="text-zinc-900 font-bold">
+                <strong className="font-bold text-zinc-900">
                   {tabs.find((t) => t.id === activeTab)?.label || activeTab}
                 </strong>
               </div>
               <div>
                 Dönem:{" "}
-                <strong className="text-zinc-900 font-bold">
+                <strong className="font-bold text-zinc-900">
                   {dateRangeLabels[dateRange]}
                 </strong>
               </div>
@@ -305,10 +316,10 @@ export default function WorkspaceOverviewPage() {
                 year: "numeric",
               })}
             </div>
-            <div className="text-[11px] text-zinc-400 mt-1">
+            <div className="mt-1 text-[11px] text-zinc-400">
               Hazırlayan: {profile?.fullName || "Yetkili Kullanıcı"}
             </div>
-            <div className="mt-2 inline-block rounded-md bg-zinc-100 px-2 py-0.5 text-[9px] font-bold text-zinc-600 uppercase tracking-wider">
+            <div className="mt-2 inline-block rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[9px] text-zinc-600 uppercase tracking-wider">
               Gizli & Kurum İçi
             </div>
           </div>
@@ -319,7 +330,7 @@ export default function WorkspaceOverviewPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center print:hidden">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100 sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Dashboard
             </h1>
             <span className="inline-flex items-center gap-1 rounded-full border border-violet-200/70 bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300">
@@ -327,7 +338,7 @@ export default function WorkspaceOverviewPage() {
               {activeTenant?.name || "Ana Çalışma Alanı"}
             </span>
           </div>
-          <p className="mt-0.5 text-zinc-500 text-xs dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             Hoş geldiniz,{" "}
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
               {profile?.fullName || "Serhat Dev"}
@@ -359,7 +370,7 @@ export default function WorkspaceOverviewPage() {
 
           {/* Customize Widgets Button */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition-colors hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-violet-300"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-violet-300"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -370,7 +381,7 @@ export default function WorkspaceOverviewPage() {
       </div>
 
       {/* 2. Subheader Tabs & Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 border-b border-zinc-200/70 pb-3.5 dark:border-zinc-800 sm:flex-row sm:items-center print:hidden">
+      <div className="flex flex-col justify-between gap-3 border-zinc-200/70 border-b pb-3.5 sm:flex-row sm:items-center dark:border-zinc-800 print:hidden">
         {/* Pill Tabs */}
         <div className="flex w-fit items-center gap-1 rounded-xl bg-zinc-100/80 p-1 dark:bg-zinc-800/60">
           {tabs.map((tab) => (
@@ -378,7 +389,7 @@ export default function WorkspaceOverviewPage() {
               className={`rounded-lg px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === tab.id
                   ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
               }`}
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -388,7 +399,7 @@ export default function WorkspaceOverviewPage() {
             </button>
           ))}
           <button
-            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:bg-white/50 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200"
+            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-xs text-zinc-500 transition-colors hover:bg-white/50 hover:text-zinc-900 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -402,7 +413,7 @@ export default function WorkspaceOverviewPage() {
           {/* Dynamic Date Range Dropdown */}
           <div className="relative">
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
               onClick={() => setShowDateDropdown(!showDateDropdown)}
               type="button"
             >
@@ -418,7 +429,7 @@ export default function WorkspaceOverviewPage() {
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left font-medium text-xs transition-colors ${
                       dateRange === range
                         ? "bg-violet-50 font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
-                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                     }`}
                     key={range}
                     onClick={() => {
@@ -439,7 +450,7 @@ export default function WorkspaceOverviewPage() {
 
           {/* Quick PDF / Print Export */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={() => window.print()}
             type="button"
           >
@@ -459,14 +470,14 @@ export default function WorkspaceOverviewPage() {
       {/* 4. Main Dynamic Bento Grid of Widgets */}
       <div className="grid grid-flow-dense grid-cols-12 gap-5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
         {currentTabWidgets.length === 0 ? (
-          <div className="col-span-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/50 dark:bg-zinc-800/40 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="col-span-12 flex flex-col items-center justify-center rounded-2xl border border-zinc-200 border-dashed bg-zinc-50/50 p-12 text-center dark:border-zinc-800 dark:bg-zinc-800/40 dark:bg-zinc-900/50">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <LayoutGrid className="h-6 w-6" />
             </div>
-            <h3 className="mt-3 font-bold text-zinc-900 text-sm dark:text-zinc-100">
+            <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Bu sekmede henüz aktif widget yok
             </h3>
-            <p className="mt-1 max-w-sm text-zinc-500 text-xs dark:text-zinc-400">
+            <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
               Widget kataloğunu açarak bu sekmeye dilediğiniz CRM bileşenlerini
               ekleyebilirsiniz.
             </p>
@@ -480,7 +491,7 @@ export default function WorkspaceOverviewPage() {
                 <span>Widget Kataloğunu Aç</span>
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onClick={handleResetDefaults}
                 type="button"
               >

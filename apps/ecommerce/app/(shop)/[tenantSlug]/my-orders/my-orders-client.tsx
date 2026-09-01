@@ -21,7 +21,10 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       // auth_user_id → customerId mapping is done server-side via token; guest sees empty
-      const res = await EcommerceClient.getMyOrders(tenantSlug, token ?? undefined);
+      const res = await EcommerceClient.getMyOrders(
+        tenantSlug,
+        token ?? undefined
+      );
       if (res.success && res.data) {
         const data: unknown = res.data;
         const list = Array.isArray(data)
@@ -29,7 +32,9 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
           : ((data as { items?: PublicOrderDto[] })?.items ?? []);
         setOrders(list);
       } else if (res.errorCode === "HTTP_401" || res.errorCode === "HTTP_403") {
-        setError(`Giriş yapmanız gerekiyor — auth_user_id → customerId eşleşmesi için oturum açın. [Giriş: /${tenantSlug}/auth/login]`);
+        setError(
+          `Giriş yapmanız gerekiyor — auth_user_id → customerId eşleşmesi için oturum açın. [Giriş: /${tenantSlug}/auth/login]`
+        );
       } else {
         setError(res.message ?? "Siparişler yüklenemedi");
       }
@@ -60,12 +65,16 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Siparişlerim</h2>
-        <span className="text-xs text-zinc-500">{orders.length} sipariş · 30s polling fallback</span>
+        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+          Siparişlerim
+        </h2>
+        <span className="text-xs text-zinc-500">
+          {orders.length} sipariş · 30s polling fallback
+        </span>
       </div>
 
       {error ? (
-        <div className="rounded-xl bg-amber-50 p-3 text-xs text-amber-800">
+        <div className="rounded-xl bg-amber-50 p-3 text-amber-800 text-xs">
           <p>{error}</p>
           {(error.includes("Giriş") || error.includes("HTTP_401")) && (
             <Link
@@ -79,13 +88,17 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
       ) : null}
 
       {orders.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-8 text-center dark:border-zinc-700 dark:bg-zinc-900">
-          <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Henüz siparişiniz yok</p>
+        <div className="rounded-2xl border border-zinc-300 border-dashed bg-white p-8 text-center dark:border-zinc-700 dark:bg-zinc-900">
+          <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+            Henüz siparişiniz yok
+          </p>
           <p className="mt-1 text-xs text-zinc-500">
-            Siparişler <code>GET /api/public/orders/mine?tenantSlug={tenantSlug}</code> ile CRM&apos;den gelir.
+            Siparişler{" "}
+            <code>GET /api/public/orders/mine?tenantSlug={tenantSlug}</code> ile
+            CRM&apos;den gelir.
           </p>
           <Link
-            className="mt-4 inline-flex rounded-xl bg-violet-600 px-4 py-2 text-xs font-semibold text-white"
+            className="mt-4 inline-flex rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs"
             href={`/${tenantSlug}/shop`}
           >
             Alışverişe başla
@@ -100,16 +113,23 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
               key={order.id}
             >
               <div>
-                <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{order.orderNumber}</p>
+                <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                  {order.orderNumber}
+                </p>
                 <p className="text-xs text-zinc-500">
-                  {new Date(order.createdAt).toLocaleDateString("tr-TR")} · {order.status} · {order.paymentStatus}
+                  {new Date(order.createdAt).toLocaleDateString("tr-TR")} ·{" "}
+                  {order.status} · {order.paymentStatus}
                 </p>
               </div>
               <div className="text-right">
                 <p className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                  ₺{order.totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} {order.currency}
+                  ₺
+                  {order.totalAmount.toLocaleString("tr-TR", {
+                    minimumFractionDigits: 2,
+                  })}{" "}
+                  {order.currency}
                 </p>
-                <span className="text-xs text-violet-600">Takip →</span>
+                <span className="text-violet-600 text-xs">Takip →</span>
               </div>
             </Link>
           ))}
@@ -117,7 +137,8 @@ export function MyOrdersClient({ tenantSlug }: MyOrdersClientProps) {
       )}
 
       <p className="text-[11px] text-zinc-400">
-        Realtime <code>postgres_changes</code> + 30s polling fallback ile canlı güncellenir (lib/realtime.ts).
+        Realtime <code>postgres_changes</code> + 30s polling fallback ile canlı
+        güncellenir (lib/realtime.ts).
       </p>
     </div>
   );

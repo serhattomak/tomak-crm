@@ -1,22 +1,20 @@
-"use client"
+"use client";
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Minus, Plus } from "lucide-react"
-import * as React from "react"
+import { cn } from "@workspace/ui/lib/utils";
+import { Minus, Plus } from "lucide-react";
+import * as React from "react";
 
-export interface NumberInputProps extends Omit<
-  React.ComponentProps<"input">,
-  "onChange" | "value"
-> {
-  max?: number
-  min?: number
-  onChange?: (val: number) => void
-  precision?: number
-  prefix?: string
-  showStepper?: boolean
-  step?: number
-  suffix?: string
-  value?: number
+export interface NumberInputProps
+  extends Omit<React.ComponentProps<"input">, "onChange" | "value"> {
+  max?: number;
+  min?: number;
+  onChange?: (val: number) => void;
+  precision?: number;
+  prefix?: string;
+  showStepper?: boolean;
+  step?: number;
+  suffix?: string;
+  value?: number;
 }
 
 export function NumberInput({
@@ -35,67 +33,67 @@ export function NumberInput({
 }: NumberInputProps) {
   const [internalVal, setInternalVal] = React.useState<string>(
     value !== undefined && value !== null ? String(value) : ""
-  )
+  );
 
   React.useEffect(() => {
     if (value !== undefined && value !== null) {
-      setInternalVal(String(value))
+      setInternalVal(String(value));
     } else {
-      setInternalVal("")
+      setInternalVal("");
     }
-  }, [value])
+  }, [value]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value
-    setInternalVal(raw)
+    const raw = e.target.value;
+    setInternalVal(raw);
 
     if (raw === "") {
-      onChange?.(min ?? 0)
-      return
+      onChange?.(min ?? 0);
+      return;
     }
 
-    const num = Number.parseFloat(raw)
+    const num = Number.parseFloat(raw);
     if (!isNaN(num)) {
-      let clamped = num
+      let clamped = num;
       if (min !== undefined && clamped < min) {
-        clamped = min
+        clamped = min;
       }
       if (max !== undefined && clamped > max) {
-        clamped = max
+        clamped = max;
       }
-      onChange?.(clamped)
+      onChange?.(clamped);
     }
-  }
+  };
 
   const handleIncrement = () => {
     if (disabled) {
-      return
+      return;
     }
-    const current = value ?? 0
-    let next = current + step
+    const current = value ?? 0;
+    let next = current + step;
     if (max !== undefined && next > max) {
-      next = max
+      next = max;
     }
     if (precision !== undefined) {
-      next = Number(next.toFixed(precision))
+      next = Number(next.toFixed(precision));
     }
-    onChange?.(next)
-  }
+    onChange?.(next);
+  };
 
   const handleDecrement = () => {
     if (disabled) {
-      return
+      return;
     }
-    const current = value ?? 0
-    let next = current - step
+    const current = value ?? 0;
+    let next = current - step;
     if (min !== undefined && next < min) {
-      next = min
+      next = min;
     }
     if (precision !== undefined) {
-      next = Number(next.toFixed(precision))
+      next = Number(next.toFixed(precision));
     }
-    onChange?.(next)
-  }
+    onChange?.(next);
+  };
 
   return (
     <div
@@ -106,14 +104,14 @@ export function NumberInput({
       )}
     >
       {prefix && (
-        <span className="pl-3 text-xs font-bold text-slate-400 select-none">
+        <span className="select-none pl-3 font-bold text-slate-400 text-xs">
           {prefix}
         </span>
       )}
 
       <input
         className={cn(
-          "w-full [appearance:textfield] bg-transparent px-3 py-1.5 text-xs font-semibold text-slate-900 outline-none placeholder:text-slate-400 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          "w-full bg-transparent px-3 py-1.5 font-semibold text-slate-900 text-xs outline-none [appearance:textfield] placeholder:text-slate-400 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
           prefix && "pl-1.5",
           suffix && "pr-1"
         )}
@@ -128,13 +126,13 @@ export function NumberInput({
       />
 
       {suffix && (
-        <span className="pr-2 text-xs font-medium text-slate-400 select-none">
+        <span className="select-none pr-2 font-medium text-slate-400 text-xs">
           {suffix}
         </span>
       )}
 
       {showStepper && !disabled && (
-        <div className="flex h-full items-center border-l border-slate-100">
+        <div className="flex h-full items-center border-slate-100 border-l">
           <button
             className="flex h-full w-6 items-center justify-center text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600 active:bg-blue-100"
             onClick={handleDecrement}
@@ -144,7 +142,7 @@ export function NumberInput({
             <Minus className="h-3 w-3" />
           </button>
           <button
-            className="flex h-full w-6 items-center justify-center border-l border-slate-100 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600 active:bg-blue-100"
+            className="flex h-full w-6 items-center justify-center border-slate-100 border-l text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600 active:bg-blue-100"
             onClick={handleIncrement}
             tabIndex={-1}
             type="button"
@@ -154,5 +152,5 @@ export function NumberInput({
         </div>
       )}
     </div>
-  )
+  );
 }

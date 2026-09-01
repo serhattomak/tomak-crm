@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Tooltip as TooltipPrimitive } from "radix-ui"
-import type * as React from "react"
+import { cn } from "@workspace/ui/lib/utils";
+import { Tooltip as TooltipPrimitive } from "radix-ui";
+import type * as React from "react";
 
 function TooltipProvider({
   delayDuration = 150,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
-  return <TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />
+  return <TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />;
 }
 
 function Tooltip({
@@ -18,13 +18,13 @@ function Tooltip({
     <TooltipProvider>
       <TooltipPrimitive.Root {...props} />
     </TooltipProvider>
-  )
+  );
 }
 
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger {...props} />
+  return <TooltipPrimitive.Trigger {...props} />;
 }
 
 function TooltipContent({
@@ -34,13 +34,13 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content> & {
-  shortcut?: string
+  shortcut?: string;
 }) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         className={cn(
-          "z-50 animate-in overflow-hidden rounded-xl border border-slate-800/20 bg-slate-900 px-3 py-1.5 text-xs font-medium text-white shadow-md fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 dark:border-slate-700/60 dark:bg-slate-800",
+          "fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 animate-in overflow-hidden rounded-xl border border-slate-800/20 bg-slate-900 px-3 py-1.5 font-medium text-white text-xs shadow-md data-[state=closed]:animate-out dark:border-slate-700/60 dark:bg-slate-800",
           className
         )}
         sideOffset={sideOffset}
@@ -56,7 +56,7 @@ function TooltipContent({
         </div>
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
-  )
+  );
 }
 
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

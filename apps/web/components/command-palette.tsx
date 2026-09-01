@@ -513,10 +513,10 @@ export function CommandPalette({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Bar Header */}
-        <div className="relative flex items-center border-b border-zinc-100 px-4 py-3.5 dark:border-zinc-800">
+        <div className="relative flex items-center border-zinc-100 border-b px-4 py-3.5 dark:border-zinc-800">
           <Search className="mr-3 h-5 w-5 shrink-0 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full bg-transparent font-medium text-zinc-900 text-sm placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
+            className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Sayfa, eylem, müşteri, sipariş veya ürün ara..."
@@ -550,7 +550,7 @@ export function CommandPalette({
           {allFilteredItems.length === 0 ? (
             <div className="py-12 text-center text-zinc-400 dark:text-zinc-500">
               <Search className="mx-auto mb-2 h-8 w-8 text-zinc-300 dark:text-zinc-600" />
-              <p className="font-semibold text-zinc-600 text-xs dark:text-zinc-300">
+              <p className="font-semibold text-xs text-zinc-600 dark:text-zinc-300">
                 "{query}" ile eşleşen sonuç bulunamadı
               </p>
               <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -673,7 +673,7 @@ export function CommandPalette({
         </div>
 
         {/* Footer Hotkey Legend */}
-        <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/70 px-4 py-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-zinc-100 border-t bg-zinc-50/70 px-4 py-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -779,7 +779,9 @@ function PaletteRow({
         )}
         <ChevronRight
           className={`h-3.5 w-3.5 transition-transform ${
-            isSelected ? "translate-x-0.5 text-violet-600 dark:text-violet-400" : "text-zinc-300 dark:text-zinc-600"
+            isSelected
+              ? "translate-x-0.5 text-violet-600 dark:text-violet-400"
+              : "text-zinc-300 dark:text-zinc-600"
           }`}
         />
       </div>

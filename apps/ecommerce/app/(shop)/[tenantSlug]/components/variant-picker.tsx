@@ -11,31 +11,39 @@ export type VariantPickerVariant = PublicProductVariantDto;
 export type VariantDisplayMode = "auto" | "swatch" | "select";
 
 export interface VariantPickerProps {
-  variants: VariantPickerVariant[];
-  selectedVariantId: string | null;
-  onVariantChange: (variant: VariantPickerVariant | null) => void;
   basePrice: number;
   baseSku?: string | null;
-  currency?: string;
   compareAtPrice?: number | null;
-  tenantSlug: string;
+  currency?: string;
   displayMode?: VariantDisplayMode;
   label?: string;
+  onVariantChange: (variant: VariantPickerVariant | null) => void;
+  selectedVariantId: string | null;
+  tenantSlug: string;
+  variants: VariantPickerVariant[];
 }
 
-function formatAdditionalPrice(value: number | null | undefined): string | null {
-  if (typeof value !== "number" || value === 0) return null;
+function formatAdditionalPrice(
+  value: number | null | undefined
+): string | null {
+  if (typeof value !== "number" || value === 0) {
+    return null;
+  }
   const sign = value > 0 ? "+" : "";
   try {
-    return `${sign}${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 2 }).format(value)}`;
+    return `${sign}${new Intl.NumberFormat("tr-TR", { currency: "TRY", minimumFractionDigits: 2, style: "currency" }).format(value)}`;
   } catch {
     return `${sign}₺${value.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`;
   }
 }
 
 function isOutOfStock(variant: VariantPickerVariant): boolean {
-  if (variant.isActive === false) return true;
-  if (typeof variant.stock === "number" && variant.stock <= 0) return true;
+  if (variant.isActive === false) {
+    return true;
+  }
+  if (typeof variant.stock === "number" && variant.stock <= 0) {
+    return true;
+  }
   return false;
 }
 
@@ -43,11 +51,19 @@ function resolveDisplayMode(
   variants: VariantPickerVariant[],
   requested: VariantDisplayMode
 ): "swatch" | "select" {
-  if (requested === "swatch") return "swatch";
-  if (requested === "select") return "select";
+  if (requested === "swatch") {
+    return "swatch";
+  }
+  if (requested === "select") {
+    return "select";
+  }
   // auto: swatch for small sets with short names, otherwise select
-  if (variants.length === 0) return "select";
-  if (variants.length > 6) return "select";
+  if (variants.length === 0) {
+    return "select";
+  }
+  if (variants.length > 6) {
+    return "select";
+  }
   const avgLen =
     variants.reduce((acc, v) => acc + v.name.length, 0) / variants.length;
   return avgLen <= 12 ? "swatch" : "select";
@@ -89,12 +105,16 @@ export function VariantPicker({
       return;
     }
     const next = variants.find((v) => v.id === nextId) ?? null;
-    if (next && isOutOfStock(next)) return;
+    if (next && isOutOfStock(next)) {
+      return;
+    }
     onVariantChange(next);
   };
 
   const handleSwatchClick = (variant: VariantPickerVariant) => {
-    if (isOutOfStock(variant)) return;
+    if (isOutOfStock(variant)) {
+      return;
+    }
     if (variant.id === selectedVariantId) {
       // toggle off to base — allow deselect only if base is meaningful
       // keep selected; do not deselect on same click to avoid accidental clear
@@ -106,7 +126,7 @@ export function VariantPicker({
   if (!hasVariants) {
     return (
       <div className="rounded-store border border-store-border bg-store-surface p-3 shadow-store-sm">
-        <p className="text-xs text-store-muted-foreground">
+        <p className="text-store-muted-foreground text-xs">
           Bu ürün için varyant bulunmuyor.
         </p>
         {displaySku ? (
@@ -122,11 +142,15 @@ export function VariantPicker({
     <div className="space-y-3 rounded-store-lg border border-store-border bg-store-surface p-4 shadow-store">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <p className="font-semibold text-xs text-store-surface-foreground" id="variant-picker-label">
+          <p
+            className="font-semibold text-store-surface-foreground text-xs"
+            id="variant-picker-label"
+          >
             {label}
           </p>
           <p className="text-[11px] text-store-muted-foreground">
-            {variants.length} seçenek · Seçili: {selectedVariant ? selectedVariant.name : "Varsayılan"}
+            {variants.length} seçenek · Seçili:{" "}
+            {selectedVariant ? selectedVariant.name : "Varsayılan"}
           </p>
         </div>
 
@@ -138,7 +162,7 @@ export function VariantPicker({
             size="sm"
           />
           {displayAdditional ? (
-            <p className="mt-1 text-right text-[11px] font-medium text-store-primary">
+            <p className="mt-1 text-right font-medium text-[11px] text-store-primary">
               {displayAdditional} ek
             </p>
           ) : null}
@@ -157,8 +181,8 @@ export function VariantPicker({
             aria-label="Varsayılan varyant"
             className={
               selectedVariantId === null
-                ? "rounded-store border border-store-primary bg-store-primary px-3 py-1.5 text-xs font-semibold text-store-primary-foreground shadow-store-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
-                : "rounded-store border border-store-border bg-store-surface px-3 py-1.5 text-xs font-medium text-store-surface-foreground hover:bg-store-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
+                ? "rounded-store border border-store-primary bg-store-primary px-3 py-1.5 font-semibold text-store-primary-foreground text-xs shadow-store-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
+                : "rounded-store border border-store-border bg-store-surface px-3 py-1.5 font-medium text-store-surface-foreground text-xs hover:bg-store-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
             }
             onClick={() => onVariantChange(null)}
             role="radio"
@@ -177,10 +201,10 @@ export function VariantPicker({
                 aria-label={`${variant.name}${outOfStock ? " — stokta yok" : ""}${variant.sku ? ` — ${variant.sku}` : ""}`}
                 className={
                   isSelected
-                    ? "rounded-store border border-store-primary bg-store-primary px-3 py-1.5 text-xs font-semibold text-store-primary-foreground shadow-store-sm ring-2 ring-store-ring focus-visible:outline-none"
+                    ? "rounded-store border border-store-primary bg-store-primary px-3 py-1.5 font-semibold text-store-primary-foreground text-xs shadow-store-sm ring-2 ring-store-ring focus-visible:outline-none"
                     : outOfStock
-                      ? "cursor-not-allowed rounded-store border border-store-border bg-store-muted px-3 py-1.5 text-xs font-medium text-store-muted-foreground opacity-60"
-                      : "rounded-store border border-store-border bg-store-surface px-3 py-1.5 text-xs font-medium text-store-surface-foreground hover:bg-store-muted hover:border-store-ring/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
+                      ? "cursor-not-allowed rounded-store border border-store-border bg-store-muted px-3 py-1.5 font-medium text-store-muted-foreground text-xs opacity-60"
+                      : "rounded-store border border-store-border bg-store-surface px-3 py-1.5 font-medium text-store-surface-foreground text-xs hover:border-store-ring/30 hover:bg-store-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring"
                 }
                 disabled={outOfStock}
                 key={variant.id}
@@ -191,7 +215,7 @@ export function VariantPicker({
                 <span className="inline-flex items-center gap-1.5">
                   {variant.name}
                   {outOfStock ? (
-                    <span className="rounded-full bg-store-border px-1.5 py-0.5 text-[10px] font-bold leading-none text-store-muted-foreground">
+                    <span className="rounded-full bg-store-border px-1.5 py-0.5 font-bold text-[10px] text-store-muted-foreground leading-none">
                       Tükendi
                     </span>
                   ) : null}
@@ -203,26 +227,33 @@ export function VariantPicker({
       ) : (
         <div className="space-y-1.5">
           <label
-            className="block text-xs font-medium text-store-surface-foreground"
+            className="block font-medium text-store-surface-foreground text-xs"
             htmlFor="variant-picker-select"
           >
             Seçenek
           </label>
           <select
             aria-label={label}
-            className="w-full rounded-store border border-store-border bg-store-surface px-3 py-2 text-xs font-medium text-store-surface-foreground shadow-store-sm focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring disabled:opacity-50"
+            className="w-full rounded-store border border-store-border bg-store-surface px-3 py-2 font-medium text-store-surface-foreground text-xs shadow-store-sm focus:border-store-ring focus:outline-none focus:ring-2 focus:ring-store-ring disabled:opacity-50"
             id="variant-picker-select"
             onChange={handleSelectChange}
             value={selectedVariantId ?? ""}
           >
-            <option value="">Varsayılan — ₺{basePrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</option>
+            <option value="">
+              Varsayılan — ₺
+              {basePrice.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+            </option>
             {variants.map((variant) => {
               const outOfStock = isOutOfStock(variant);
               const priceLabel = `₺${variant.price.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`;
               const stockLabel = outOfStock ? " — Tükendi" : "";
               const skuLabel = variant.sku ? ` (${variant.sku})` : "";
               return (
-                <option disabled={outOfStock} key={variant.id} value={variant.id}>
+                <option
+                  disabled={outOfStock}
+                  key={variant.id}
+                  value={variant.id}
+                >
                   {variant.name} — {priceLabel}
                   {skuLabel}
                   {stockLabel}
@@ -238,7 +269,9 @@ export function VariantPicker({
           <StoreBadge variant="sku">SKU: {displaySku}</StoreBadge>
         ) : null}
         {selectedVariant?.barcode ? (
-          <StoreBadge variant="default">Barkod: {selectedVariant.barcode}</StoreBadge>
+          <StoreBadge variant="default">
+            Barkod: {selectedVariant.barcode}
+          </StoreBadge>
         ) : null}
       </div>
 
@@ -247,7 +280,10 @@ export function VariantPicker({
       ) : null}
 
       {selectedVariant && isOutOfStock(selectedVariant) ? (
-        <p className="text-xs font-medium text-red-600 dark:text-red-400" role="alert">
+        <p
+          className="font-medium text-red-600 text-xs dark:text-red-400"
+          role="alert"
+        >
           Seçili varyant stokta yok. Lütfen başka bir seçenek deneyin.
         </p>
       ) : null}

@@ -49,7 +49,9 @@ export function CustomizeWidgetsModal({
 
   // Close on Escape key - must be called unconditionally at top level
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -76,31 +78,53 @@ export function CustomizeWidgetsModal({
   const getWidgetIcon = (iconName: string) => {
     switch (iconName) {
       case "TrendingUp":
-        return <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+        return (
+          <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        );
       case "BarChart3":
-        return <BarChart3 className="h-4 w-4 text-violet-600 dark:text-violet-400" />;
+        return (
+          <BarChart3 className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+        );
       case "Gauge":
-        return <Gauge className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />;
+        return (
+          <Gauge className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+        );
       case "Filter":
-        return <Filter className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
+        return (
+          <Filter className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+        );
       case "Briefcase":
-        return <Briefcase className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />;
+        return (
+          <Briefcase className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+        );
       case "PieChart":
-        return <PieChart className="h-4 w-4 text-purple-600 dark:text-purple-400" />;
+        return (
+          <PieChart className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        );
       case "CheckSquare":
-        return <CheckSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+        return (
+          <CheckSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        );
       case "Calendar":
-        return <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+        return (
+          <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        );
       case "Clock":
         return <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "Trophy":
-        return <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+        return (
+          <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+        );
       case "FileSpreadsheet":
-        return <FileSpreadsheet className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+        return (
+          <FileSpreadsheet className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+        );
       case "Zap":
         return <Zap className="h-4 w-4 text-amber-500 dark:text-amber-400" />;
       default:
-        return <SlidersHorizontal className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />;
+        return (
+          <SlidersHorizontal className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+        );
     }
   };
 
@@ -139,16 +163,16 @@ export function CustomizeWidgetsModal({
 
       <div className="relative z-10 my-auto flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-zinc-100 p-4 sm:p-5 dark:border-zinc-800">
+        <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b p-4 sm:p-5 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-800 shadow-2xs dark:bg-zinc-800 dark:text-zinc-200">
               <SlidersHorizontal className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-zinc-900 text-sm sm:text-base dark:text-zinc-100">
+              <h2 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-zinc-100">
                 Dashboard Widget Düzenini Özelleştir
               </h2>
-              <p className="truncate text-zinc-500 text-xs dark:text-zinc-400">
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                 <strong className="font-semibold text-violet-600 dark:text-violet-400">
                   {activeTab}
                 </strong>{" "}
@@ -168,7 +192,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="space-y-2.5 border-b border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
+        <div className="space-y-2.5 border-zinc-100 border-b bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             <input
@@ -251,7 +275,7 @@ export function CustomizeWidgetsModal({
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="truncate font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                      <span className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {widget.title}
                       </span>
                       <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-[9px] text-zinc-500 dark:bg-zinc-700 dark:text-zinc-300">
@@ -268,7 +292,9 @@ export function CustomizeWidgetsModal({
                 <div className="flex flex-none items-center gap-2">
                   <button
                     className={`flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none ${
-                      isActive ? "bg-violet-600" : "bg-zinc-300 dark:bg-zinc-700"
+                      isActive
+                        ? "bg-violet-600"
+                        : "bg-zinc-300 dark:bg-zinc-700"
                     }`}
                     onClick={() => onToggleWidget(widget.id)}
                     type="button"
@@ -286,9 +312,9 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-zinc-100 p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-zinc-100 border-t p-4 dark:border-zinc-800">
           <button
-            className="flex items-center gap-1.5 font-semibold text-zinc-500 text-xs transition-colors hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+            className="flex items-center gap-1.5 font-semibold text-xs text-zinc-500 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
             onClick={onResetDefaults}
             type="button"
           >

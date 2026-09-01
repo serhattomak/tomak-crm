@@ -17,10 +17,14 @@ function generateGuestToken(): string {
 }
 
 export function getGuestToken(): string | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined") {
+    return null;
+  }
   try {
     const ls = localStorage.getItem(GUEST_TOKEN_KEY);
-    if (ls) return ls;
+    if (ls) {
+      return ls;
+    }
     // Fallback to cookie
     const match = document.cookie.match(
       new RegExp(`(?:^|; )${GUEST_TOKEN_COOKIE}=([^;]*)`)
@@ -33,14 +37,18 @@ export function getGuestToken(): string | null {
 
 export function ensureGuestToken(): string {
   const existing = getGuestToken();
-  if (existing) return existing;
+  if (existing) {
+    return existing;
+  }
   const token = generateGuestToken();
   setGuestToken(token);
   return token;
 }
 
 export function setGuestToken(token: string): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
   try {
     localStorage.setItem(GUEST_TOKEN_KEY, token);
     // Also set cookie for server components / middleware reading
@@ -52,7 +60,9 @@ export function setGuestToken(token: string): void {
 }
 
 export function clearGuestToken(): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
   try {
     localStorage.removeItem(GUEST_TOKEN_KEY);
     document.cookie = `${GUEST_TOKEN_COOKIE}=; path=/; max-age=0`;

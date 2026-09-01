@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useState } from "react";
 import { EcommerceClient } from "@/lib/ecommerce-client";
+import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm({ tenantSlug }: { tenantSlug: string }) {
   const router = useRouter();
@@ -19,11 +19,15 @@ export function LoginForm({ tenantSlug }: { tenantSlug: string }) {
     setLoading(true);
     try {
       const supabase = createClient();
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-      if (authError) throw authError;
+      const { data, error: authError } = await supabase.auth.signInWithPassword(
+        {
+          email: email.trim(),
+          password,
+        }
+      );
+      if (authError) {
+        throw authError;
+      }
       // Sync to CRM customers (auth_user_id → customerId) + guest merge
       const token = data.session?.access_token;
       if (token) {
@@ -32,9 +36,11 @@ export function LoginForm({ tenantSlug }: { tenantSlug: string }) {
         await EcommerceClient.syncAuth(
           tenantSlug,
           { email: userEmail, guestToken },
-          token,
+          token
         );
-        if (guestToken) localStorage.removeItem("guest_token");
+        if (guestToken) {
+          localStorage.removeItem("guest_token");
+        }
       }
       router.push(`/${tenantSlug}/my-orders`);
     } catch (err) {
@@ -46,7 +52,11 @@ export function LoginForm({ tenantSlug }: { tenantSlug: string }) {
 
   return (
     <form className="mt-6 space-y-4" onSubmit={handleLogin}>
-      {error ? <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-700">{error}</p> : null}
+      {error ? (
+        <p className="rounded-xl bg-rose-50 p-3 text-rose-700 text-sm">
+          {error}
+        </p>
+      ) : null}
       <div>
         <label className="font-medium text-sm">E-posta</label>
         <input
@@ -75,9 +85,12 @@ export function LoginForm({ tenantSlug }: { tenantSlug: string }) {
       >
         {loading ? "Giriş yapılıyor…" : "Giriş Yap"}
       </button>
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-muted-foreground text-sm">
         Hesabın yok mu?{" "}
-        <Link className="font-semibold text-violet-600 underline" href={`/${tenantSlug}/auth/register`}>
+        <Link
+          className="font-semibold text-violet-600 underline"
+          href={`/${tenantSlug}/auth/register`}
+        >
           Kayıt Ol
         </Link>
       </p>

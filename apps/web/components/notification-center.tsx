@@ -1,247 +1,280 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef, useId } from "react"
-import { useRouter, useParams } from "next/navigation"
 import {
   Bell,
   CheckCheck,
+  ExternalLink,
   FileSpreadsheet,
-  ShoppingCart,
-  Truck,
   Headphones,
   Kanban,
-  Trash2,
-  X,
-  ExternalLink,
+  ShoppingCart,
   Sparkles,
-} from "lucide-react"
+  Trash2,
+  Truck,
+  X,
+} from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useId, useRef, useState } from "react";
 
 export interface CrmNotification {
-  id: string
-  title: string
-  description: string
-  category: "quote" | "order" | "shipment" | "support" | "deal"
-  link: string
-  createdAt: string
-  read: boolean
-  priority?: "low" | "medium" | "high" | "urgent"
-  badgeText?: string
+  badgeText?: string;
+  category: "quote" | "order" | "shipment" | "support" | "deal";
+  createdAt: string;
+  description: string;
+  id: string;
+  link: string;
+  priority?: "low" | "medium" | "high" | "urgent";
+  read: boolean;
+  title: string;
 }
 
 const DEFAULT_NOTIFICATIONS: CrmNotification[] = [
   {
-    id: "notif-1",
-    title: "Revizyon Talebi Alındı",
-    description: "Ahmet Yılmaz (Acme A.Ş.) teklif için revizyon istedi: 'Ödeme vadesi 45 gün olarak güncellenebilir mi?'",
-    category: "quote",
-    link: "/quotes",
-    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // 5 dk önce
-    read: false,
-    priority: "urgent",
     badgeText: "Teklif #QT-2026-089",
+    category: "quote",
+    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // 5 dk önce
+    description:
+      "Ahmet Yılmaz (Acme A.Ş.) teklif için revizyon istedi: 'Ödeme vadesi 45 gün olarak güncellenebilir mi?'",
+    id: "notif-1",
+    link: "/quotes",
+    priority: "urgent",
+    read: false,
+    title: "Revizyon Talebi Alındı",
   },
   {
-    id: "notif-2",
-    title: "Yeni Destek Talebi Başlatıldı",
-    description: "Selin Kaya sipariş teslimat durumu hakkında canlı destek oturumu başlattı.",
-    category: "support",
-    link: "/messages",
-    createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(), // 25 dk önce
-    read: false,
-    priority: "high",
     badgeText: "Canlı Destek",
-  },
-  {
-    id: "notif-3",
-    title: "Fırsat Kazanıldı 🎉",
-    description: "Bulut Bilişim Projesi fırsatı 'Kazanıldı' aşamasına taşındı (145.000 ₺).",
-    category: "deal",
-    link: "/pipelines",
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 saat önce
+    category: "support",
+    createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(), // 25 dk önce
+    description:
+      "Selin Kaya sipariş teslimat durumu hakkında canlı destek oturumu başlattı.",
+    id: "notif-2",
+    link: "/messages",
+    priority: "high",
     read: false,
-    priority: "medium",
+    title: "Yeni Destek Talebi Başlatıldı",
+  },
+  {
     badgeText: "Satış Hattı",
-  },
-  {
-    id: "notif-4",
-    title: "Yeni Sipariş Oluşturuldu",
-    description: "Global Teknoloji Ltd. #ORD-2026-014 numaralı siparişi onayladı (42.500 ₺).",
-    category: "order",
-    link: "/orders",
-    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 saat önce
-    read: true,
+    category: "deal",
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 saat önce
+    description:
+      "Bulut Bilişim Projesi fırsatı 'Kazanıldı' aşamasına taşındı (145.000 ₺).",
+    id: "notif-3",
+    link: "/pipelines",
     priority: "medium",
-    badgeText: "Sipariş #ORD-014",
+    read: false,
+    title: "Fırsat Kazanıldı 🎉",
   },
   {
-    id: "notif-5",
-    title: "Sevkiyat Kargoya Verildi",
-    description: "#SHP-2026-104 numaralı kargo Yurtiçi Kargo ile yola çıktı.",
-    category: "shipment",
-    link: "/shipments",
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 gün önce
+    badgeText: "Sipariş #ORD-014",
+    category: "order",
+    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 saat önce
+    description:
+      "Global Teknoloji Ltd. #ORD-2026-014 numaralı siparişi onayladı (42.500 ₺).",
+    id: "notif-4",
+    link: "/orders",
+    priority: "medium",
     read: true,
-    priority: "low",
-    badgeText: "Sevkiyat",
+    title: "Yeni Sipariş Oluşturuldu",
   },
-]
+  {
+    badgeText: "Sevkiyat",
+    category: "shipment",
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 gün önce
+    description: "#SHP-2026-104 numaralı kargo Yurtiçi Kargo ile yola çıktı.",
+    id: "notif-5",
+    link: "/shipments",
+    priority: "low",
+    read: true,
+    title: "Sevkiyat Kargoya Verildi",
+  },
+];
 
 interface NotificationCenterProps {
-  className?: string
-  buttonClassName?: string
+  buttonClassName?: string;
+  className?: string;
 }
 
 export function NotificationCenter({
   className = "",
   buttonClassName = "",
 }: NotificationCenterProps) {
-  const router = useRouter()
-  const params = useParams()
-  const tenantSlug = (params?.tenantSlug as string) || ""
-  const popoverId = useId()
+  const router = useRouter();
+  const params = useParams();
+  const tenantSlug = (params?.tenantSlug as string) || "";
+  const popoverId = useId();
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeFilter, setActiveFilter] = useState<"all" | "unread">("all")
-  const [notifications, setNotifications] = useState<CrmNotification[]>([])
-  const [isLoaded, setIsLoaded] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<"all" | "unread">("all");
+  const [notifications, setNotifications] = useState<CrmNotification[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const storageKey = `crm_notifications_${tenantSlug || "default"}`
+  const storageKey = `crm_notifications_${tenantSlug || "default"}`;
 
   // Load notifications from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(storageKey)
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
-        setNotifications(JSON.parse(saved))
+        setNotifications(JSON.parse(saved));
       } else {
-        setNotifications(DEFAULT_NOTIFICATIONS)
-        localStorage.setItem(storageKey, JSON.stringify(DEFAULT_NOTIFICATIONS))
+        setNotifications(DEFAULT_NOTIFICATIONS);
+        localStorage.setItem(storageKey, JSON.stringify(DEFAULT_NOTIFICATIONS));
       }
     } catch {
-      setNotifications(DEFAULT_NOTIFICATIONS)
+      setNotifications(DEFAULT_NOTIFICATIONS);
     } finally {
-      setIsLoaded(true)
+      setIsLoaded(true);
     }
-  }, [storageKey])
+  }, [storageKey]);
 
   // Sync to localStorage
   const updateNotifications = (newList: CrmNotification[]) => {
-    setNotifications(newList)
+    setNotifications(newList);
     try {
-      localStorage.setItem(storageKey, JSON.stringify(newList))
+      localStorage.setItem(storageKey, JSON.stringify(newList));
     } catch {
       // ignore
     }
-  }
+  };
 
   // Close on click outside or Escape
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) {
+      return;
+    }
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false)
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
       }
-    }
+    };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    window.addEventListener("keydown", handleKeyDown)
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [isOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
-  const unreadCount = notifications.filter(n => !n.read).length
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAllAsRead = () => {
-    const updated = notifications.map(n => ({ ...n, read: true }))
-    updateNotifications(updated)
-  }
+    const updated = notifications.map((n) => ({ ...n, read: true }));
+    updateNotifications(updated);
+  };
 
   const markAsRead = (id: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation()
-    const updated = notifications.map(n => (n.id === id ? { ...n, read: true } : n))
-    updateNotifications(updated)
-  }
+    if (e) {
+      e.stopPropagation();
+    }
+    const updated = notifications.map((n) =>
+      n.id === id ? { ...n, read: true } : n
+    );
+    updateNotifications(updated);
+  };
 
   const deleteNotification = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    const updated = notifications.filter(n => n.id !== id)
-    updateNotifications(updated)
-  }
+    e.stopPropagation();
+    const updated = notifications.filter((n) => n.id !== id);
+    updateNotifications(updated);
+  };
 
   const clearAll = () => {
-    updateNotifications([])
-  }
+    updateNotifications([]);
+  };
 
   const handleNotificationClick = (item: CrmNotification) => {
-    markAsRead(item.id)
-    setIsOpen(false)
-    const targetUrl = item.link.startsWith("/") ? `/${tenantSlug}${item.link}` : `/${tenantSlug}/${item.link}`
-    router.push(targetUrl)
-  }
+    markAsRead(item.id);
+    setIsOpen(false);
+    const targetUrl = item.link.startsWith("/")
+      ? `/${tenantSlug}${item.link}`
+      : `/${tenantSlug}/${item.link}`;
+    router.push(targetUrl);
+  };
 
-  const filteredNotifications = notifications.filter(n => {
-    if (activeFilter === "unread") return !n.read
-    return true
-  })
+  const filteredNotifications = notifications.filter((n) => {
+    if (activeFilter === "unread") {
+      return !n.read;
+    }
+    return true;
+  });
 
   const formatTimeAgo = (dateStr: string) => {
-    const date = new Date(dateStr)
-    const now = new Date()
-    const diffMs = now.getTime() - date.getTime()
-    const diffMins = Math.floor(diffMs / (1000 * 60))
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffMins < 1) return "Az önce"
-    if (diffMins < 60) return `${diffMins} dk önce`
-    if (diffHours < 24) return `${diffHours} sa önce`
-    if (diffDays === 1) return "Dün"
-    return `${diffDays} gün önce`
-  }
+    if (diffMins < 1) {
+      return "Az önce";
+    }
+    if (diffMins < 60) {
+      return `${diffMins} dk önce`;
+    }
+    if (diffHours < 24) {
+      return `${diffHours} sa önce`;
+    }
+    if (diffDays === 1) {
+      return "Dün";
+    }
+    return `${diffDays} gün önce`;
+  };
 
   const getCategoryIcon = (category: CrmNotification["category"]) => {
     switch (category) {
       case "quote":
-        return <FileSpreadsheet className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+        return (
+          <FileSpreadsheet className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+        );
       case "order":
-        return <ShoppingCart className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        return (
+          <ShoppingCart className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        );
       case "shipment":
-        return <Truck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+        return <Truck className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "support":
-        return <Headphones className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        return (
+          <Headphones className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        );
       case "deal":
-        return <Kanban className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+        return (
+          <Kanban className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+        );
       default:
-        return <Bell className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+        return <Bell className="h-4 w-4 text-slate-600 dark:text-slate-400" />;
     }
-  }
+  };
 
   const getCategoryBg = (category: CrmNotification["category"]) => {
     switch (category) {
       case "quote":
-        return "bg-fuchsia-50 dark:bg-fuchsia-950/50 border-fuchsia-100 dark:border-fuchsia-900/40"
+        return "bg-fuchsia-50 dark:bg-fuchsia-950/50 border-fuchsia-100 dark:border-fuchsia-900/40";
       case "order":
-        return "bg-emerald-50 dark:bg-emerald-950/50 border-emerald-100 dark:border-emerald-900/40"
+        return "bg-emerald-50 dark:bg-emerald-950/50 border-emerald-100 dark:border-emerald-900/40";
       case "shipment":
-        return "bg-amber-50 dark:bg-amber-950/50 border-amber-100 dark:border-amber-900/40"
+        return "bg-amber-50 dark:bg-amber-950/50 border-amber-100 dark:border-amber-900/40";
       case "support":
-        return "bg-blue-50 dark:bg-blue-950/50 border-blue-100 dark:border-blue-900/40"
+        return "bg-blue-50 dark:bg-blue-950/50 border-blue-100 dark:border-blue-900/40";
       case "deal":
-        return "bg-indigo-50 dark:bg-indigo-950/50 border-indigo-100 dark:border-indigo-900/40"
+        return "bg-indigo-50 dark:bg-indigo-950/50 border-indigo-100 dark:border-indigo-900/40";
       default:
-        return "bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700"
+        return "bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700";
     }
-  }
+  };
 
   return (
     <div className={`relative inline-block ${className}`} ref={containerRef}>
@@ -273,20 +306,22 @@ export function NotificationCenter({
       {/* Popover Dropdown */}
       {isOpen && (
         <div
-          className="fixed inset-x-3 top-14 z-50 sm:absolute sm:inset-x-auto sm:right-0 sm:top-11 sm:w-96 rounded-2xl border border-slate-200/90 bg-white/95 backdrop-blur-md shadow-2xl dark:border-border dark:bg-card/95 animate-in fade-in zoom-in-95 duration-150 overflow-hidden"
+          className="fade-in zoom-in-95 fixed inset-x-3 top-14 z-50 animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-md duration-150 sm:absolute sm:inset-x-auto sm:top-11 sm:right-0 sm:w-96 dark:border-border dark:bg-card/95"
           id={popoverId}
           role="dialog"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-border">
+          <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
             <div className="flex items-center gap-2">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Bell className="h-4 w-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 dark:text-foreground">Bildirimler</h3>
+                <h3 className="font-bold text-slate-900 text-xs dark:text-foreground">
+                  Bildirimler
+                </h3>
                 {unreadCount > 0 ? (
-                  <p className="text-[10px] text-fuchsia-600 dark:text-fuchsia-400 font-semibold">
+                  <p className="font-semibold text-[10px] text-fuchsia-600 dark:text-fuchsia-400">
                     {unreadCount} yeni okunmamış bildirim
                   </p>
                 ) : (
@@ -298,7 +333,7 @@ export function NotificationCenter({
             <div className="flex items-center gap-1">
               {unreadCount > 0 && (
                 <button
-                  className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold text-blue-600 hover:bg-blue-50 transition-colors dark:text-blue-400 dark:hover:bg-blue-950/50"
+                  className="flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-[11px] text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
                   onClick={markAllAsRead}
                   title="Tümünü okundu işaretle"
                   type="button"
@@ -318,13 +353,13 @@ export function NotificationCenter({
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-2 dark:border-border dark:bg-muted/40 text-xs">
+          <div className="flex items-center justify-between border-slate-100 border-b bg-slate-50/70 px-4 py-2 text-xs dark:border-border dark:bg-muted/40">
             <div className="flex items-center gap-1.5">
               <button
-                className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all ${
+                className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition-all ${
                   activeFilter === "all"
                     ? "bg-white text-slate-900 shadow-2xs dark:bg-card dark:text-foreground"
-                    : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-foreground dark:hover:text-slate-400"
                 }`}
                 onClick={() => setActiveFilter("all")}
                 type="button"
@@ -332,10 +367,10 @@ export function NotificationCenter({
                 Tümü ({notifications.length})
               </button>
               <button
-                className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all ${
+                className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition-all ${
                   activeFilter === "unread"
                     ? "bg-white text-fuchsia-600 shadow-2xs dark:bg-card dark:text-fuchsia-400"
-                    : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-400 dark:hover:text-foreground"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-foreground dark:hover:text-slate-400"
                 }`}
                 onClick={() => setActiveFilter("unread")}
                 type="button"
@@ -346,7 +381,7 @@ export function NotificationCenter({
 
             {notifications.length > 0 && (
               <button
-                className="text-[10px] text-slate-400 hover:text-red-600 transition-colors dark:hover:text-red-400 font-medium"
+                className="font-medium text-[10px] text-slate-400 transition-colors hover:text-red-600 dark:hover:text-red-400"
                 onClick={clearAll}
                 type="button"
               >
@@ -356,23 +391,26 @@ export function NotificationCenter({
           </div>
 
           {/* Notifications Stream */}
-          <div className="max-h-[380px] overflow-y-auto divide-y divide-slate-100 dark:divide-border/50">
+          <div className="max-h-[380px] divide-y divide-slate-100 overflow-y-auto dark:divide-border/50">
             {filteredNotifications.length === 0 ? (
-              <div className="py-10 px-4 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-muted text-slate-400">
+              <div className="px-4 py-10 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-muted">
                   <Sparkles className="h-6 w-6 text-slate-300 dark:text-slate-600" />
                 </div>
-                <p className="mt-3 text-xs font-bold text-slate-700 dark:text-slate-300">
-                  {activeFilter === "unread" ? "Okunmamış bildiriminiz yok" : "Henüz bir bildirim yok"}
+                <p className="mt-3 font-bold text-slate-700 text-xs dark:text-slate-300">
+                  {activeFilter === "unread"
+                    ? "Okunmamış bildiriminiz yok"
+                    : "Henüz bir bildirim yok"}
                 </p>
                 <p className="mt-1 text-[11px] text-slate-400">
-                  CRM süreçlerindeki teklif, sipariş ve mesaj aktiviteleri burada listelenir.
+                  CRM süreçlerindeki teklif, sipariş ve mesaj aktiviteleri
+                  burada listelenir.
                 </p>
               </div>
             ) : (
               filteredNotifications.map((item) => (
                 <div
-                  className={`group relative flex items-start gap-3 p-3.5 transition-all cursor-pointer select-none ${
+                  className={`group relative flex cursor-pointer select-none items-start gap-3 p-3.5 transition-all ${
                     item.read
                       ? "hover:bg-slate-50/80 dark:hover:bg-muted/30"
                       : "bg-fuchsia-50/30 hover:bg-fuchsia-50/60 dark:hover:bg-fuchsia-950/20 dark:hover:bg-fuchsia-950/40"
@@ -392,39 +430,39 @@ export function NotificationCenter({
                   {/* Body Content */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1">
-                      <div className="flex items-center gap-1.5 min-w-0">
+                      <div className="flex min-w-0 items-center gap-1.5">
                         <span
-                          className={`text-xs font-bold truncate ${
+                          className={`truncate font-bold text-xs ${
                             item.read
                               ? "text-slate-800 dark:text-foreground"
-                              : "text-slate-900 font-extrabold dark:text-foreground"
+                              : "font-extrabold text-slate-900 dark:text-foreground"
                           }`}
                         >
                           {item.title}
                         </span>
                         {!item.read && (
-                          <span className="h-2 w-2 rounded-full bg-fuchsia-500 shrink-0 ring-1 ring-white" />
+                          <span className="h-2 w-2 shrink-0 rounded-full bg-fuchsia-500 ring-1 ring-white" />
                         )}
                       </div>
-                      <span className="shrink-0 text-[10px] text-slate-400 font-medium">
+                      <span className="shrink-0 font-medium text-[10px] text-slate-400">
                         {formatTimeAgo(item.createdAt)}
                       </span>
                     </div>
 
-                    <p className="mt-1 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
+                    <p className="mt-1 line-clamp-2 text-[11px] text-slate-600 leading-relaxed dark:text-slate-400">
                       {item.description}
                     </p>
 
                     {/* Bottom Metadata & Badges */}
                     <div className="mt-2 flex items-center justify-between">
                       {item.badgeText && (
-                        <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[9px] font-semibold text-slate-700 dark:bg-muted dark:text-slate-300">
+                        <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-semibold text-[9px] text-slate-700 dark:bg-muted dark:text-slate-300">
                           {item.badgeText}
                         </span>
                       )}
 
                       {/* Hover Actions */}
-                      <div className="flex items-center gap-1 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
+                      <div className="ml-auto flex items-center gap-1 opacity-80 transition-opacity group-hover:opacity-100 sm:opacity-0">
                         {!item.read && (
                           <button
                             className="rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-700 dark:hover:bg-muted"
@@ -452,12 +490,12 @@ export function NotificationCenter({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-slate-100 bg-slate-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
+          <div className="border-slate-100 border-t bg-slate-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
             <button
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
+              className="inline-flex items-center gap-1 font-semibold text-[11px] text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
               onClick={() => {
-                setIsOpen(false)
-                router.push(`/${tenantSlug}/quotes`)
+                setIsOpen(false);
+                router.push(`/${tenantSlug}/quotes`);
               }}
               type="button"
             >
@@ -468,5 +506,5 @@ export function NotificationCenter({
         </div>
       )}
     </div>
-  )
+  );
 }

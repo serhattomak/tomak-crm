@@ -39,8 +39,8 @@ import {
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { PermissionGate } from "@/components/permission-gate";
 import { ComplianceInlineCard } from "@/components/compliance-inline-card";
+import { PermissionGate } from "@/components/permission-gate";
 import {
   ApiClient,
   type AttendanceCorrectionRequestDto,
@@ -157,9 +157,18 @@ export default function AttendancePage() {
   });
 
   // Compliance Override States for Modals
-  const [templateOverride, setTemplateOverride] = useState({ allowed: false, reason: "" });
-  const [assignOverride, setAssignOverride] = useState({ allowed: false, reason: "" });
-  const [correctionOverride, setCorrectionOverride] = useState({ allowed: false, reason: "" });
+  const [templateOverride, setTemplateOverride] = useState({
+    allowed: false,
+    reason: "",
+  });
+  const [assignOverride, setAssignOverride] = useState({
+    allowed: false,
+    reason: "",
+  });
+  const [correctionOverride, setCorrectionOverride] = useState({
+    allowed: false,
+    reason: "",
+  });
 
   // Real-time Shift Template Compliance — derived from breaks array (multi-break)
   const templateCompliance = useMemo(() => {
@@ -170,8 +179,12 @@ export default function AttendancePage() {
       return h * 60 + m;
     };
 
-    const startParts = (templateForm.startTime || "09:00:00").split(":").map(Number);
-    const endParts = (templateForm.endTime || "18:00:00").split(":").map(Number);
+    const startParts = (templateForm.startTime || "09:00:00")
+      .split(":")
+      .map(Number);
+    const endParts = (templateForm.endTime || "18:00:00")
+      .split(":")
+      .map(Number);
     const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
     const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
     const startTsMins = startMins;
@@ -194,9 +207,13 @@ export default function AttendancePage() {
         const s = toMinutes(b.startTime);
         const e = toMinutes(b.endTime);
         let dur = 0;
-        if (e > s) dur = e - s;
-        else if (e < s) dur = 24 * 60 - s + e;
-        else dur = 0;
+        if (e > s) {
+          dur = e - s;
+        } else if (e < s) {
+          dur = 24 * 60 - s + e;
+        } else {
+          dur = 0;
+        }
         totalBreakMinutes += dur;
       }
     } else {
@@ -222,11 +239,12 @@ export default function AttendancePage() {
     // 1. Md. 68 Mola — total
     if (breakMins < requiredBreak) {
       violations.push({
-        lawReference: "4857 SK. Md. 68",
-        ruleName: "Yasal Asgari Ara Dinlenme (Mola)",
-        enforcementLevel: "SoftWarning",
         details: `${totalHours.toFixed(1)} saatlik vardiya için yasal asgari mola süresi en az ${requiredBreak} dakikadır (Mevcut: ${breakMins} dk).`,
-        penaltyRisk: "Dinlenme haklarının ihlali ve fazla çalışma ücreti riski.",
+        enforcementLevel: "SoftWarning",
+        lawReference: "4857 SK. Md. 68",
+        penaltyRisk:
+          "Dinlenme haklarının ihlali ve fazla çalışma ücreti riski.",
+        ruleName: "Yasal Asgari Ara Dinlenme (Mola)",
       });
     }
 
@@ -239,11 +257,18 @@ export default function AttendancePage() {
         if (e <= s) {
           const labelFallback = b.label || `Mola ${idx + 1}`;
           violations.push({
-            lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
-            ruleName: `Mola #${idx + 1} Geçersiz Saat Aralığı`,
+            details:
+              `"` +
+              labelFallback +
+              `" için bitiş saati başlangıç saatinden sonra olmalıdır (` +
+              (b.startTime || "--:--") +
+              " → " +
+              (b.endTime || "--:--") +
+              ").",
             enforcementLevel: "SoftWarning",
-            details: `"` + labelFallback + `" için bitiş saati başlangıç saatinden sonra olmalıdır (` + (b.startTime || "--:--") + ` → ` + (b.endTime || "--:--") + `).`,
+            lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
             penaltyRisk: "Geçersiz mola aralığı çalışma süresi hesabını bozar.",
+            ruleName: `Mola #${idx + 1} Geçersiz Saat Aralığı`,
           });
         }
       }
@@ -253,16 +278,18 @@ export default function AttendancePage() {
       const shiftEndMins = isOvernight ? endTsMins + 1440 : endTsMins;
       type Norm = { start: number; end: number; idx: number };
       const normalized: Norm[] = templateForm.breaks.map((b, idx) => {
-        let rawStart = toMinutes(b.startTime);
+        const rawStart = toMinutes(b.startTime);
         let rawEnd = toMinutes(b.endTime);
-        if (rawEnd <= rawStart) rawEnd += 1440;
+        if (rawEnd <= rawStart) {
+          rawEnd += 1440;
+        }
         let normStart = rawStart;
         let normEnd = rawEnd;
         if (isOvernight && rawStart < shiftStartMins) {
           normStart += 1440;
           normEnd += 1440;
         }
-        return { start: normStart, end: normEnd, idx };
+        return { end: normEnd, idx, start: normStart };
       });
 
       // Overlap detection (sorted by start)
@@ -278,11 +305,13 @@ export default function AttendancePage() {
       }
       if (hasOverlap) {
         violations.push({
-          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
-          ruleName: "Mola Periyotları Çakışması",
+          details:
+            "Tanımlı mola periyotları birbiriyle çakışıyor; molalar çakışmamalı ve sıralı olmalıdır.",
           enforcementLevel: "SoftWarning",
-          details: "Tanımlı mola periyotları birbiriyle çakışıyor; molalar çakışmamalı ve sıralı olmalıdır.",
-          penaltyRisk: "Çakışan mola planlaması fiili dinlenme süresini azaltabilir ve denetimde uygunsuzluk sayılabilir.",
+          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
+          penaltyRisk:
+            "Çakışan mola planlaması fiili dinlenme süresini azaltabilir ve denetimde uygunsuzluk sayılabilir.",
+          ruleName: "Mola Periyotları Çakışması",
         });
       }
 
@@ -292,11 +321,12 @@ export default function AttendancePage() {
       );
       if (outOfRange.length > 0) {
         violations.push({
-          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
-          ruleName: "Mola Vardiya Aralığı Dışında",
-          enforcementLevel: "SoftWarning",
           details: `Molalar vardiya aralığı [${templateForm.startTime.slice(0, 5)} - ${templateForm.endTime.slice(0, 5)}] dışında olamaz (${outOfRange.length} mola aralık dışında).`,
-          penaltyRisk: "Vardiya dışına taşan mola planlaması çalışma süresi hesabını bozar.",
+          enforcementLevel: "SoftWarning",
+          lawReference: "4857 SK. Md. 68 / Vardiya Yönetmeliği",
+          penaltyRisk:
+            "Vardiya dışına taşan mola planlaması çalışma süresi hesabını bozar.",
+          ruleName: "Mola Vardiya Aralığı Dışında",
         });
       }
     }
@@ -305,11 +335,11 @@ export default function AttendancePage() {
     if (netWorkHours > 11) {
       hasHardBlock = true;
       violations.push({
-        lawReference: "4857 SK. Md. 63",
-        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
-        enforcementLevel: "HardBlock",
         details: `Günlük net çalışma süresi (${netWorkHours.toFixed(1)} saat), kanuni azami sınır olan 11 saati aşamaz.`,
+        enforcementLevel: "HardBlock",
+        lawReference: "4857 SK. Md. 63",
         penaltyRisk: "4857 SK. Md. 104 uyarınca 15.200 TL idari para cezası.",
+        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
       });
     }
 
@@ -317,88 +347,117 @@ export default function AttendancePage() {
     if (isNightPeriod && netWorkHours > 7.5) {
       hasHardBlock = true;
       violations.push({
-        lawReference: "4857 SK. Md. 69",
-        ruleName: "Gece Çalışması Azami Süresi (7.5 Saat)",
-        enforcementLevel: "HardBlock",
         details: `Gece dönemine (20:00 - 06:00) rastlayan çalışmalarda net süre (${netWorkHours.toFixed(1)} saat) azami 7.5 saati aşamaz.`,
+        enforcementLevel: "HardBlock",
+        lawReference: "4857 SK. Md. 69",
         penaltyRisk: "4857 SK. Md. 104 uyarınca 18.500 TL idari para cezası.",
+        ruleName: "Gece Çalışması Azami Süresi (7.5 Saat)",
       });
     }
 
     return {
-      validationResult: {
-        isCompliant: violations.length === 0,
-        hasHardBlock,
-        violations,
-      },
       metrics: {
-        totalDurationHours: totalHours,
         netWorkHours,
         nightWorkHours: isNightPeriod ? netWorkHours : 0,
         providedBreakMinutes: breakMins,
         requiredBreakMinutes: requiredBreak,
+        totalDurationHours: totalHours,
+      },
+      validationResult: {
+        hasHardBlock,
+        isCompliant: violations.length === 0,
+        violations,
       },
     };
   }, [templateForm]);
 
   // Real-time Shift Assignment Compliance
   const assignCompliance = useMemo(() => {
-    const selectedTemplate = templates.find((t) => t.id === assignForm.shiftTemplateId);
-    if (!selectedTemplate) return null;
+    const selectedTemplate = templates.find(
+      (t) => t.id === assignForm.shiftTemplateId
+    );
+    if (!selectedTemplate) {
+      return null;
+    }
 
     const startParts = selectedTemplate.startTime.split(":").map(Number);
     const endParts = selectedTemplate.endTime.split(":").map(Number);
     const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
     const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
 
-    let durationMins = endMins >= startMins ? endMins - startMins : 24 * 60 - startMins + endMins;
-    const netShiftHours = Math.max(0, (durationMins - (selectedTemplate.breakDurationMinutes || 0)) / 60);
+    const durationMins =
+      endMins >= startMins
+        ? endMins - startMins
+        : 24 * 60 - startMins + endMins;
+    const netShiftHours = Math.max(
+      0,
+      (durationMins - (selectedTemplate.breakDurationMinutes || 0)) / 60
+    );
 
     let dayCount = 5;
     if (assignForm.startDate && assignForm.endDate) {
       const s = new Date(assignForm.startDate);
       const e = new Date(assignForm.endDate);
       const diffTime = Math.abs(e.getTime() - s.getTime());
-      dayCount = Math.max(1, Math.min(7, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
+      dayCount = Math.max(
+        1,
+        Math.min(7, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1)
+      );
     }
 
-    const projectedWeeklyHours = netShiftHours * Math.min(dayCount, assignForm.repeatOnDays?.length || 5);
+    const projectedWeeklyHours =
+      netShiftHours * Math.min(dayCount, assignForm.repeatOnDays?.length || 5);
     const violations: any[] = [];
-    let hasHardBlock = false;
+    const hasHardBlock = false;
 
     if (projectedWeeklyHours > 45) {
       violations.push({
-        lawReference: "4857 SK. Md. 63",
-        ruleName: "Haftalık Yasal Çalışma Süresi (45 Saat)",
-        enforcementLevel: "SoftWarning",
         details: `Planlanan haftalık toplam süre (${projectedWeeklyHours.toFixed(1)} saat), yasal 45 saatlik haftalık tavanı aşıyor (${(projectedWeeklyHours - 45).toFixed(1)} saat fazla mesai).`,
-        penaltyRisk: "Ödenmeyen fazla çalışma ücretlerinde idari para cezası ve faiz riski.",
+        enforcementLevel: "SoftWarning",
+        lawReference: "4857 SK. Md. 63",
+        penaltyRisk:
+          "Ödenmeyen fazla çalışma ücretlerinde idari para cezası ve faiz riski.",
+        ruleName: "Haftalık Yasal Çalışma Süresi (45 Saat)",
       });
     }
 
     return {
-      validationResult: {
-        isCompliant: violations.length === 0,
-        hasHardBlock,
-        violations,
-      },
       metrics: {
         netWorkHours: netShiftHours,
         projectedWeeklyHours,
+      },
+      validationResult: {
+        hasHardBlock,
+        isCompliant: violations.length === 0,
+        violations,
       },
     };
   }, [assignForm, templates]);
 
   // Real-time Correction Request Compliance
   const correctionCompliance = useMemo(() => {
-    if (!correctionForm.requestedClockInTime || !correctionForm.requestedClockOutTime) return null;
+    if (
+      !(
+        correctionForm.requestedClockInTime &&
+        correctionForm.requestedClockOutTime
+      )
+    ) {
+      return null;
+    }
 
-    const startParts = correctionForm.requestedClockInTime.split(":").map(Number);
-    const endParts = correctionForm.requestedClockOutTime.split(":").map(Number);
+    const startParts = correctionForm.requestedClockInTime
+      .split(":")
+      .map(Number);
+    const endParts = correctionForm.requestedClockOutTime
+      .split(":")
+      .map(Number);
     const startMins = (startParts[0] || 0) * 60 + (startParts[1] || 0);
     const endMins = (endParts[0] || 0) * 60 + (endParts[1] || 0);
 
-    let durationMins = endMins >= startMins ? endMins - startMins : 24 * 60 - startMins + endMins;
+    const durationMins =
+      endMins >= startMins
+        ? endMins - startMins
+        : 24 * 60 - startMins + endMins;
     const netHours = durationMins / 60;
 
     const violations: any[] = [];
@@ -407,22 +466,22 @@ export default function AttendancePage() {
     if (netHours > 11) {
       hasHardBlock = true;
       violations.push({
-        lawReference: "4857 SK. Md. 63",
-        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
-        enforcementLevel: "HardBlock",
         details: `Talep edilen düzeltme süresi (${netHours.toFixed(1)} saat), kanuni azami 11 saatlik günlük sınırı aşmaktadır.`,
+        enforcementLevel: "HardBlock",
+        lawReference: "4857 SK. Md. 63",
         penaltyRisk: "4857 SK. Md. 104 idari para cezası riski.",
+        ruleName: "Günlük Azami Çalışma Süresi (11 Saat)",
       });
     }
 
     return {
-      validationResult: {
-        isCompliant: violations.length === 0,
-        hasHardBlock,
-        violations,
-      },
       metrics: {
         netWorkHours: netHours,
+      },
+      validationResult: {
+        hasHardBlock,
+        isCompliant: violations.length === 0,
+        violations,
       },
     };
   }, [correctionForm]);
@@ -606,24 +665,29 @@ export default function AttendancePage() {
       return toMin(b.endTime) <= toMin(b.startTime);
     });
     if (invalidBreak) {
-      toast.error(`"${invalidBreak.label || "Mola"}" için bitiş saati başlangıçtan sonra olmalıdır.`);
+      toast.error(
+        `"${invalidBreak.label || "Mola"}" için bitiş saati başlangıçtan sonra olmalıdır.`
+      );
       return;
     }
     setActionLoading(true);
     try {
       const payload = {
         ...templateForm,
-        breaks: templateForm.breaks.map((b, idx) => ({
-          label: b.label.trim() || `Mola ${idx + 1}`,
-          startTime: b.startTime.length === 5 ? `${b.startTime}:00` : b.startTime,
-          endTime: b.endTime.length === 5 ? `${b.endTime}:00` : b.endTime,
-          sortOrder: idx,
-        })),
         // Keep breakDurationMinutes as deprecated fallback for backward compat
         breakDurationMinutes: templateForm.breakDurationMinutes,
+        breaks: templateForm.breaks.map((b, idx) => ({
+          endTime: b.endTime.length === 5 ? `${b.endTime}:00` : b.endTime,
+          label: b.label.trim() || `Mola ${idx + 1}`,
+          sortOrder: idx,
+          startTime:
+            b.startTime.length === 5 ? `${b.startTime}:00` : b.startTime,
+        })),
       };
       const res = await ApiClient.createShiftTemplate(
-        payload as unknown as Parameters<typeof ApiClient.createShiftTemplate>[0],
+        payload as unknown as Parameters<
+          typeof ApiClient.createShiftTemplate
+        >[0],
         activeTenant.id
       );
       if (res.success && res.data) {
@@ -822,7 +886,7 @@ export default function AttendancePage() {
       {/* 1. Header & Live Clock Quick Bar */}
       <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
         <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs dark:bg-blue-950/50 dark:text-blue-400">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/50 dark:bg-blue-950/60 dark:text-blue-400">
             <Clock className="h-6 w-6" />
           </div>
           <div>
@@ -1886,14 +1950,15 @@ export default function AttendancePage() {
                     Molalar
                   </label>
                   <span className="text-[10px] text-muted-foreground">
-                    Toplam: {templateCompliance.metrics.providedBreakMinutes} dk (Asgari:{" "}
-                    {templateCompliance.metrics.requiredBreakMinutes} dk)
+                    Toplam: {templateCompliance.metrics.providedBreakMinutes} dk
+                    (Asgari: {templateCompliance.metrics.requiredBreakMinutes}{" "}
+                    dk)
                   </span>
                 </div>
                 {templateForm.breaks.length === 0 ? (
-                  <p className="rounded-xl border border-dashed border-border bg-muted/20 px-3 py-2 text-center text-muted-foreground text-xs">
-                    Henüz mola eklenmedi. &quot;Mola Ekle&quot; ile birden fazla mola
-                    tanımlayın (her mola başlangıç–bitiş saatleri ile).
+                  <p className="rounded-xl border border-border border-dashed bg-muted/20 px-3 py-2 text-center text-muted-foreground text-xs">
+                    Henüz mola eklenmedi. &quot;Mola Ekle&quot; ile birden fazla
+                    mola tanımlayın (her mola başlangıç–bitiş saatleri ile).
                   </p>
                 ) : (
                   <div className="space-y-2">
@@ -1912,12 +1977,19 @@ export default function AttendancePage() {
                           <input
                             className="w-full rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                             id={`break-label-${idx}`}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
                               const next = [...templateForm.breaks];
                               const cur = next[idx];
-                              if (!cur) return;
+                              if (!cur) {
+                                return;
+                              }
                               next[idx] = { ...cur, label: e.target.value };
-                              setTemplateForm({ ...templateForm, breaks: next });
+                              setTemplateForm({
+                                ...templateForm,
+                                breaks: next,
+                              });
                             }}
                             placeholder={`Mola ${idx + 1}`}
                             value={brk.label}
@@ -1934,31 +2006,48 @@ export default function AttendancePage() {
                             aria-label={`Mola ${idx + 1} başlangıç saati`}
                             className="rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                             id={`break-start-${idx}`}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
                               const next = [...templateForm.breaks];
                               const cur = next[idx];
-                              if (!cur) return;
+                              if (!cur) {
+                                return;
+                              }
                               next[idx] = { ...cur, startTime: e.target.value };
-                              setTemplateForm({ ...templateForm, breaks: next });
+                              setTemplateForm({
+                                ...templateForm,
+                                breaks: next,
+                              });
                             }}
                             type="time"
                             value={brk.startTime.slice(0, 5)}
                           />
                         </div>
                         <div>
-                          <label className="sr-only" htmlFor={`break-end-${idx}`}>
+                          <label
+                            className="sr-only"
+                            htmlFor={`break-end-${idx}`}
+                          >
                             Mola {idx + 1} bitiş
                           </label>
                           <input
                             aria-label={`Mola ${idx + 1} bitiş saati`}
                             className="rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                             id={`break-end-${idx}`}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
                               const next = [...templateForm.breaks];
                               const cur = next[idx];
-                              if (!cur) return;
+                              if (!cur) {
+                                return;
+                              }
                               next[idx] = { ...cur, endTime: e.target.value };
-                              setTemplateForm({ ...templateForm, breaks: next });
+                              setTemplateForm({
+                                ...templateForm,
+                                breaks: next,
+                              });
                             }}
                             type="time"
                             value={brk.endTime.slice(0, 5)}
@@ -1968,14 +2057,23 @@ export default function AttendancePage() {
                           aria-label={`Mola ${idx + 1} kaldır`}
                           className="rounded-full p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
                           onClick={() => {
-                            const next = templateForm.breaks.filter((_, i) => i !== idx);
+                            const next = templateForm.breaks.filter(
+                              (_, i) => i !== idx
+                            );
                             setTemplateForm({ ...templateForm, breaks: next });
                           }}
-                          onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+                          onKeyDown={(
+                            e: React.KeyboardEvent<HTMLButtonElement>
+                          ) => {
                             if (e.key === "Enter" || e.key === " ") {
                               e.preventDefault();
-                              const next = templateForm.breaks.filter((_, i) => i !== idx);
-                              setTemplateForm({ ...templateForm, breaks: next });
+                              const next = templateForm.breaks.filter(
+                                (_, i) => i !== idx
+                              );
+                              setTemplateForm({
+                                ...templateForm,
+                                breaks: next,
+                              });
                             }
                           }}
                           type="button"
@@ -1994,9 +2092,9 @@ export default function AttendancePage() {
                       breaks: [
                         ...templateForm.breaks,
                         {
+                          endTime: "13:00",
                           label: `Mola ${templateForm.breaks.length + 1}`,
                           startTime: "12:00",
-                          endTime: "13:00",
                         },
                       ],
                     });
@@ -2016,7 +2114,7 @@ export default function AttendancePage() {
                     </label>
                     <input
                       aria-label="Mola süresi deprecated fallback"
-                      className="w-full rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground"
+                      className="w-full rounded-xl border border-border bg-muted/40 px-3 py-2 text-muted-foreground text-sm"
                       readOnly
                       type="number"
                       value={templateForm.breakDurationMinutes}
@@ -2065,14 +2163,14 @@ export default function AttendancePage() {
 
               {/* Real-time Labor Law Compliance Alert */}
               <ComplianceInlineCard
-                validationResult={templateCompliance.validationResult}
-                metrics={templateCompliance.metrics}
                 allowOverride={true}
                 isOverridden={templateOverride.allowed}
-                overrideReason={templateOverride.reason}
+                metrics={templateCompliance.metrics}
                 onOverrideChange={(allowed, reason) =>
                   setTemplateOverride({ allowed, reason })
                 }
+                overrideReason={templateOverride.reason}
+                validationResult={templateCompliance.validationResult}
               />
 
               <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
@@ -2088,8 +2186,10 @@ export default function AttendancePage() {
                   disabled={
                     actionLoading ||
                     templateCompliance.validationResult.hasHardBlock ||
-                    (!templateCompliance.validationResult.isCompliant &&
-                      !templateOverride.allowed)
+                    !(
+                      templateCompliance.validationResult.isCompliant ||
+                      templateOverride.allowed
+                    )
                   }
                   type="submit"
                 >
@@ -2244,14 +2344,14 @@ export default function AttendancePage() {
               {/* Real-time Labor Law Compliance Alert */}
               {assignCompliance && (
                 <ComplianceInlineCard
-                  validationResult={assignCompliance.validationResult}
-                  metrics={assignCompliance.metrics}
                   allowOverride={true}
                   isOverridden={assignOverride.allowed}
-                  overrideReason={assignOverride.reason}
+                  metrics={assignCompliance.metrics}
                   onOverrideChange={(allowed, reason) =>
                     setAssignOverride({ allowed, reason })
                   }
+                  overrideReason={assignOverride.reason}
+                  validationResult={assignCompliance.validationResult}
                 />
               )}
 
@@ -2410,14 +2510,14 @@ export default function AttendancePage() {
               {/* Real-time Labor Law Compliance Alert */}
               {correctionCompliance && (
                 <ComplianceInlineCard
-                  validationResult={correctionCompliance.validationResult}
-                  metrics={correctionCompliance.metrics}
                   allowOverride={true}
                   isOverridden={correctionOverride.allowed}
-                  overrideReason={correctionOverride.reason}
+                  metrics={correctionCompliance.metrics}
                   onOverrideChange={(allowed, reason) =>
                     setCorrectionOverride({ allowed, reason })
                   }
+                  overrideReason={correctionOverride.reason}
+                  validationResult={correctionCompliance.validationResult}
                 />
               )}
 
@@ -2433,7 +2533,9 @@ export default function AttendancePage() {
                   className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                   disabled={
                     actionLoading ||
-                    Boolean(correctionCompliance?.validationResult.hasHardBlock) ||
+                    Boolean(
+                      correctionCompliance?.validationResult.hasHardBlock
+                    ) ||
                     Boolean(
                       correctionCompliance &&
                         !correctionCompliance.validationResult.isCompliant &&

@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Minus, Plus } from "lucide-react"
-import * as React from "react"
+import { cn } from "@workspace/ui/lib/utils";
+import { Minus, Plus } from "lucide-react";
+import * as React from "react";
 
 export interface QuantityStepperProps {
-  className?: string
-  disabled?: boolean
-  id?: string
-  max?: number
-  min?: number
-  onChange: (value: number) => void
-  value: number
+  className?: string;
+  disabled?: boolean;
+  id?: string;
+  max?: number;
+  min?: number;
+  onChange: (value: number) => void;
+  value: number;
 }
 
 export function QuantityStepper({
@@ -23,52 +23,58 @@ export function QuantityStepper({
   onChange,
   value,
 }: QuantityStepperProps) {
-  const inputId = React.useId()
-  const resolvedId = id ?? inputId
+  const inputId = React.useId();
+  const resolvedId = id ?? inputId;
 
   const clamp = React.useCallback(
     (next: number) => {
-      let clamped = Number.isFinite(next) ? Math.trunc(next) : min
-      clamped = Math.max(min, clamped)
+      let clamped = Number.isFinite(next) ? Math.trunc(next) : min;
+      clamped = Math.max(min, clamped);
       if (typeof max === "number") {
-        clamped = Math.min(max, clamped)
+        clamped = Math.min(max, clamped);
       }
-      return clamped
+      return clamped;
     },
     [max, min]
-  )
+  );
 
   const handleDecrement = () => {
-    if (disabled) return
-    onChange(clamp(value - 1))
-  }
+    if (disabled) {
+      return;
+    }
+    onChange(clamp(value - 1));
+  };
 
   const handleIncrement = () => {
-    if (disabled) return
-    onChange(clamp(value + 1))
-  }
+    if (disabled) {
+      return;
+    }
+    onChange(clamp(value + 1));
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = event.target.value.replace(/[^0-9-]/g, "")
+    const raw = event.target.value.replace(/[^0-9-]/g, "");
     if (raw === "" || raw === "-") {
-      return
+      return;
     }
-    const parsed = Number.parseInt(raw, 10)
-    if (Number.isNaN(parsed)) return
-    onChange(clamp(parsed))
-  }
+    const parsed = Number.parseInt(raw, 10);
+    if (Number.isNaN(parsed)) {
+      return;
+    }
+    onChange(clamp(parsed));
+  };
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const parsed = Number.parseInt(event.target.value, 10)
+    const parsed = Number.parseInt(event.target.value, 10);
     if (Number.isNaN(parsed)) {
-      onChange(min)
-      return
+      onChange(min);
+      return;
     }
-    onChange(clamp(parsed))
-  }
+    onChange(clamp(parsed));
+  };
 
-  const isMin = value <= min
-  const isMax = typeof max === "number" ? value >= max : false
+  const isMin = value <= min;
+  const isMax = typeof max === "number" ? value >= max : false;
 
   return (
     <div
@@ -90,7 +96,7 @@ export function QuantityStepper({
 
       <input
         aria-label="Adet"
-        className="h-9 w-12 border-x border-store-border bg-transparent text-center text-sm font-semibold text-store-surface-foreground outline-none focus-visible:bg-store-muted/50"
+        className="h-9 w-12 border-store-border border-x bg-transparent text-center font-semibold text-sm text-store-surface-foreground outline-none focus-visible:bg-store-muted/50"
         disabled={disabled}
         id={resolvedId}
         inputMode="numeric"
@@ -111,5 +117,5 @@ export function QuantityStepper({
         <Plus aria-hidden="true" className="h-4 w-4" />
       </button>
     </div>
-  )
+  );
 }

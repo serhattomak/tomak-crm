@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useState } from "react";
 import { EcommerceClient } from "@/lib/ecommerce-client";
+import { createClient } from "@/lib/supabase/client";
 
 export function RegisterForm({ tenantSlug }: { tenantSlug: string }) {
   const router = useRouter();
@@ -22,10 +22,14 @@ export function RegisterForm({ tenantSlug }: { tenantSlug: string }) {
       const supabase = createClient();
       const { data, error: authError } = await supabase.auth.signUp({
         email: email.trim(),
+        options: {
+          data: { full_name: fullName.trim(), tenant_slug: tenantSlug },
+        },
         password,
-        options: { data: { full_name: fullName.trim(), tenant_slug: tenantSlug } },
       });
-      if (authError) throw authError;
+      if (authError) {
+        throw authError;
+      }
       // If email confirmation required, data.session may be null — inform user
       if (!data.session) {
         setError("Kayıt alındı — e-postanı doğrula, sonra giriş yap.");
@@ -36,9 +40,11 @@ export function RegisterForm({ tenantSlug }: { tenantSlug: string }) {
       await EcommerceClient.syncAuth(
         tenantSlug,
         { email: email.trim(), fullName: fullName.trim(), guestToken },
-        token,
+        token
       );
-      if (guestToken) localStorage.removeItem("guest_token");
+      if (guestToken) {
+        localStorage.removeItem("guest_token");
+      }
       router.push(`/${tenantSlug}/my-orders`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Kayıt başarısız");
@@ -49,7 +55,11 @@ export function RegisterForm({ tenantSlug }: { tenantSlug: string }) {
 
   return (
     <form className="mt-6 space-y-4" onSubmit={handleRegister}>
-      {error ? <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-800">{error}</p> : null}
+      {error ? (
+        <p className="rounded-xl bg-amber-50 p-3 text-amber-800 text-sm">
+          {error}
+        </p>
+      ) : null}
       <div>
         <label className="font-medium text-sm">Ad Soyad</label>
         <input
@@ -88,9 +98,12 @@ export function RegisterForm({ tenantSlug }: { tenantSlug: string }) {
       >
         {loading ? "Kaydediliyor…" : "Kayıt Ol"}
       </button>
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-muted-foreground text-sm">
         Zaten hesabın var mı?{" "}
-        <Link className="font-semibold text-violet-600 underline" href={`/${tenantSlug}/auth/login`}>
+        <Link
+          className="font-semibold text-violet-600 underline"
+          href={`/${tenantSlug}/auth/login`}
+        >
           Giriş Yap
         </Link>
       </p>

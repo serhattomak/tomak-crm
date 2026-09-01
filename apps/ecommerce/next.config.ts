@@ -7,6 +7,20 @@ const nextConfig: NextConfig = {
     "127.0.0.1:3001",
     "localhost:3000",
   ],
+  // biome-ignore lint/suspicious/useAwait: Next.js expects async headers
+  async headers() {
+    return [
+      {
+        headers: [
+          {
+            key: "Permissions-Policy",
+            value: "identity-credentials-get=()",
+          },
+        ],
+        source: "/:path*",
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -22,20 +36,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
       },
     ],
-  },
-  // biome-ignore lint/suspicious/useAwait: Next.js expects async headers
-  async headers() {
-    return [
-      {
-        headers: [
-          {
-            key: "Permissions-Policy",
-            value: "identity-credentials-get=()",
-          },
-        ],
-        source: "/:path*",
-      },
-    ];
   },
   // biome-ignore lint/suspicious/useAwait: Next.js expects async rewrites
   async rewrites() {

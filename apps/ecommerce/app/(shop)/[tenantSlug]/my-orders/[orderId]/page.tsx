@@ -8,7 +8,9 @@ interface OrderTrackingPageProps {
   params: Promise<{ tenantSlug: string; orderId: string }>;
 }
 
-export async function generateMetadata({ params }: OrderTrackingPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: OrderTrackingPageProps): Promise<Metadata> {
   const { orderId } = await params;
   return { title: `Sipariş ${orderId} — Takip` };
 }
@@ -16,20 +18,24 @@ export async function generateMetadata({ params }: OrderTrackingPageProps): Prom
 const TENANT_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function isValidTenantSlug(slug: string): boolean {
-  return TENANT_SLUG_PATTERN.test(slug) && slug.length >= 2 && slug.length <= 64;
+  return (
+    TENANT_SLUG_PATTERN.test(slug) && slug.length >= 2 && slug.length <= 64
+  );
 }
 
-export default async function OrderTrackingPage({ params }: OrderTrackingPageProps) {
+export default async function OrderTrackingPage({
+  params,
+}: OrderTrackingPageProps) {
   const { tenantSlug, orderId } = await params;
 
-  if (!isValidTenantSlug(tenantSlug) || !orderId) {
+  if (!(isValidTenantSlug(tenantSlug) && orderId)) {
     notFound();
   }
 
   return (
     <div className="space-y-4">
       <Link
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900"
+        className="inline-flex items-center gap-1.5 font-medium text-xs text-zinc-500 hover:text-zinc-900"
         href={`/${tenantSlug}/my-orders`}
       >
         <ArrowLeft className="h-3.5 w-3.5" />

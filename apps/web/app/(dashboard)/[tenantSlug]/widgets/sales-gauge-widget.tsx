@@ -65,11 +65,11 @@ export function SalesGaugeWidget({
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Satış Hedef Performansı
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -170,10 +170,10 @@ export function SalesGaugeWidget({
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Target className="h-5 w-5" />
             </div>
-            <h3 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h3 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz kota veya sipariş verisi yok
             </h3>
-            <p className="mt-1 max-w-xs text-zinc-500 text-[11px] dark:text-zinc-400">
+            <p className="mt-1 max-w-xs text-[11px] text-zinc-500 dark:text-zinc-400">
               İlk siparişinizi oluşturarak veya teklifleri kapatıp dönemsel
               hedef yüzdenizi takip etmeye başlayın.
             </p>
@@ -190,7 +190,7 @@ export function SalesGaugeWidget({
 
       {hasData && (
         <Link
-          className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white py-2 font-bold text-zinc-800 text-xs shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+          className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white py-2 font-bold text-xs text-zinc-800 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
           href={`/${activeTenant?.slug || "workspace"}/orders`}
         >
           <span>Sipariş ve Hedef Detayları</span>

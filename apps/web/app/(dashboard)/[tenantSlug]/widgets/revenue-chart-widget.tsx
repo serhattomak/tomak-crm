@@ -1,7 +1,7 @@
 /* Hallmark · component: revenue-chart · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
-import { BarChart3, Info, Plus, TrendingUp } from "lucide-react";
+import { BarChart3, Info, Plus } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
@@ -64,11 +64,11 @@ export function RevenueChartWidget({
         {/* Header and Controls */}
         <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <BarChart3 className="h-4 w-4" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5 font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <div className="flex items-center gap-1.5 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 <span>Gelir & Satış Performansı</span>
                 <Info className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
               </div>
@@ -84,7 +84,7 @@ export function RevenueChartWidget({
                 className={`rounded-lg px-3 py-1 font-semibold transition-all ${
                   activeMetric === "revenue"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                 }`}
                 onClick={() => setActiveMetric("revenue")}
                 type="button"
@@ -95,7 +95,7 @@ export function RevenueChartWidget({
                 className={`rounded-lg px-3 py-1 font-semibold transition-all ${
                   activeMetric === "deals"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                 }`}
                 onClick={() => setActiveMetric("deals")}
                 type="button"
@@ -118,7 +118,7 @@ export function RevenueChartWidget({
                 <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   Toplam Sipariş Geliri
                 </span>
-                <span className="mt-1 block font-bold text-zinc-900 text-lg dark:text-zinc-100">
+                <span className="mt-1 block font-bold text-lg text-zinc-900 dark:text-zinc-100">
                   ₺
                   {(orderStats?.totalRevenue || 0).toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -140,7 +140,7 @@ export function RevenueChartWidget({
                 <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   Aktif Teklif Hacmi
                 </span>
-                <span className="mt-1 block font-bold text-violet-600 text-lg dark:text-violet-400">
+                <span className="mt-1 block font-bold text-lg text-violet-600 dark:text-violet-400">
                   ₺
                   {Number(
                     quoteStats?.activeProposalsVolume || 0
@@ -151,7 +151,7 @@ export function RevenueChartWidget({
                 <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   Toplam Sipariş
                 </span>
-                <span className="mt-1 block font-bold text-zinc-900 text-lg dark:text-zinc-100">
+                <span className="mt-1 block font-bold text-lg text-zinc-900 dark:text-zinc-100">
                   {totalOrders} Adet
                 </span>
               </div>
@@ -162,10 +162,10 @@ export function RevenueChartWidget({
             <div className="mb-2.5 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <BarChart3 className="h-5 w-5" />
             </div>
-            <h3 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h3 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz satış veya ciro kaydı bulunmuyor
             </h3>
-            <p className="mt-1 max-w-sm text-zinc-500 text-[11px] dark:text-zinc-400">
+            <p className="mt-1 max-w-sm text-[11px] text-zinc-500 dark:text-zinc-400">
               Müşterilerinize teklif hazırlayarak veya onaylanan teklifleri
               siparişe dönüştürerek gelir grafiklerinizi buradan takip
               edebilirsiniz.
@@ -179,7 +179,7 @@ export function RevenueChartWidget({
                 <span>Teklif Oluştur</span>
               </Link>
               <Link
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 href={`/${activeTenant?.slug || "workspace"}/orders`}
               >
                 <span>Siparişler</span>
@@ -190,13 +190,13 @@ export function RevenueChartWidget({
       </div>
 
       {hasData && (
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-100 pt-3 text-xs dark:border-zinc-800/80">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-4 border-zinc-100 border-t pt-3 text-xs dark:border-zinc-800/80">
           <div className="flex items-center gap-5">
             <div>
               <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                 Toplam İşlem:
               </span>
-              <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+              <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 ₺
                 {totalRevenue.toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -214,7 +214,7 @@ export function RevenueChartWidget({
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 transition hover:text-violet-700 dark:hover:text-violet-400 text-xs"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/orders`}
           >
             <span>Tüm Siparişleri İncele →</span>

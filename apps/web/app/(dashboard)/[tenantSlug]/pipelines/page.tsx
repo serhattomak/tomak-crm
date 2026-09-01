@@ -32,6 +32,7 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { SalesRepPicker } from "@/components/entity-picker-modal";
 import {
   ApiClient,
   type DealDetailDto,
@@ -40,7 +41,6 @@ import {
   type EmployeeDto,
   type PipelineDto,
 } from "@/lib/api-client";
-import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function PipelinesPage() {
@@ -392,14 +392,14 @@ export default function PipelinesPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
+            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Pipeline & Satış Hunisi
             </h1>
 
             {/* Pipeline Selector */}
             <div className="flex items-center gap-1.5">
               <select
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-bold text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-bold text-xs text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800/50"
                 onChange={(e) => setSelectedPipelineId(e.target.value)}
                 value={selectedPipelineId}
               >
@@ -411,7 +411,7 @@ export default function PipelinesPage() {
               </select>
 
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-800 dark:hover:text-zinc-200"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200"
                 onClick={() => setIsSettingsModalOpen(true)}
                 title="Pipeline Ayarları ve Aşamaları Düzenle"
                 type="button"
@@ -420,7 +420,7 @@ export default function PipelinesPage() {
               </button>
             </div>
           </div>
-          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
             {activePipeline?.description ||
               "Müşteri ve canlı destek taleplerini aşamalara göre takip edin, çalışanlara akıllı dağıtın."}
           </p>
@@ -430,7 +430,7 @@ export default function PipelinesPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Refresh */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             disabled={isRefreshing}
             onClick={loadDeals}
             title="Yenile"
@@ -442,12 +442,12 @@ export default function PipelinesPage() {
           </button>
 
           {/* View Mode Switcher */}
-          <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 p-1 shadow-2xs">
+          <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100 p-1 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800">
             <button
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "kanban"
-                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
               }`}
               onClick={() => setViewMode("kanban")}
               type="button"
@@ -458,8 +458,8 @@ export default function PipelinesPage() {
             <button
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
                 viewMode === "table"
-                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
               }`}
               onClick={() => setViewMode("table")}
               type="button"
@@ -484,13 +484,13 @@ export default function PipelinesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Pipeline Value */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Açık Fırsat Hacmi
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {formatCurrency(
                   stats?.totalOpenValue ?? 0,
                   stats?.currency ?? "TRY"
@@ -501,7 +501,7 @@ export default function PipelinesPage() {
               <TrendingUp className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             <span>{stats?.openDealsCount ?? 0} Aktif Fırsat</span>
             <span>•</span>
             <span>{stats?.wonDealsCount ?? 0} Kazanılan</span>
@@ -509,13 +509,13 @@ export default function PipelinesPage() {
         </div>
 
         {/* Win Rate */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Kazanma Oranı (Win Rate)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 %{stats?.winRatePercentage ?? 0}
               </div>
             </div>
@@ -523,19 +523,19 @@ export default function PipelinesPage() {
               <Award className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 font-semibold text-[11px] text-emerald-600">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 font-semibold text-[11px] text-emerald-600 dark:border-zinc-800">
             <span>Başarıyla tamamlanan fırsatlar</span>
           </div>
         </div>
 
         {/* Unassigned Pool */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Atanmamış / Açık Havuz
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {deals.filter((d) => !d.assignedUserId).length}
               </div>
             </div>
@@ -543,19 +543,19 @@ export default function PipelinesPage() {
               <Users className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 font-semibold text-[11px] text-amber-600">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 font-semibold text-[11px] text-amber-600 dark:border-zinc-800">
             <span>Temsilci ataması bekleyen kartlar</span>
           </div>
         </div>
 
         {/* SLA Breached */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 SLA Aşımı / Kritik
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 {stats?.slaBreachedCount ?? 0}
               </div>
             </div>
@@ -563,14 +563,14 @@ export default function PipelinesPage() {
               <Flame className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-2 font-semibold text-[11px] text-rose-600">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 font-semibold text-[11px] text-rose-600 dark:border-zinc-800">
             <span>Aşama yanıt süresi gecikenler</span>
           </div>
         </div>
       </div>
 
       {/* 3. Filter and Search Bar */}
-      <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+      <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           {/* Quick Filter Buttons */}
           <div className="flex flex-wrap items-center gap-2">
@@ -578,7 +578,7 @@ export default function PipelinesPage() {
               className={`rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "all"
                   ? "border border-blue-200 bg-blue-50 text-blue-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("all")}
               type="button"
@@ -590,7 +590,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "my"
                   ? "border border-blue-200 bg-blue-50 text-blue-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("my")}
               type="button"
@@ -603,7 +603,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "unassigned"
                   ? "border border-amber-200 bg-amber-50 text-amber-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("unassigned")}
               type="button"
@@ -616,7 +616,7 @@ export default function PipelinesPage() {
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition ${
                 filterType === "sla"
                   ? "border border-rose-200 bg-rose-50 text-rose-700"
-                  : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               }`}
               onClick={() => setFilterType("sla")}
               type="button"
@@ -632,7 +632,7 @@ export default function PipelinesPage() {
             <div className="relative min-w-[240px]">
               <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-1.5 pr-8 pl-9 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-8 pl-9 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Fırsat, müşteri veya iletişim ara..."
                 type="text"
@@ -640,7 +640,7 @@ export default function PipelinesPage() {
               />
               {searchQuery && (
                 <button
-                  className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+                  className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
                 >
@@ -651,7 +651,7 @@ export default function PipelinesPage() {
 
             {/* Priority filter */}
             <select
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onChange={(e) => setPriorityFilter(e.target.value)}
               value={priorityFilter}
             >
@@ -664,7 +664,7 @@ export default function PipelinesPage() {
 
             {/* User filter */}
             <select
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onChange={(e) => setUserFilter(e.target.value)}
               value={userFilter}
             >
@@ -681,10 +681,10 @@ export default function PipelinesPage() {
 
       {/* 4. Deals View (Kanban Board or Table View) */}
       {isLoading ? (
-        <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
+        <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="font-medium text-zinc-500 dark:text-zinc-400 text-xs">
+            <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
               Pipeline ve fırsatlar yükleniyor...
             </span>
           </div>
@@ -702,7 +702,7 @@ export default function PipelinesPage() {
                 className={`flex w-80 shrink-0 flex-col rounded-3xl border p-3 shadow-2xs transition-all duration-200 ${
                   isDragOver
                     ? "border-blue-400 bg-blue-50/80 ring-2 ring-blue-500/20"
-                    : "border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40"
+                    : "border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800/90 dark:bg-zinc-800/40"
                 }`}
                 key={stage.id}
                 onDragLeave={handleDragLeave}
@@ -710,27 +710,27 @@ export default function PipelinesPage() {
                 onDrop={(e) => handleDrop(e, stage.id)}
               >
                 {/* Column Header */}
-                <div className="mb-2.5 flex items-center justify-between border-zinc-200 dark:border-zinc-800 border-b px-1 pb-2.5">
+                <div className="mb-2.5 flex items-center justify-between border-zinc-200 border-b px-1 pb-2.5 dark:border-zinc-800">
                   <div className="flex min-w-0 items-center gap-2">
                     <div
                       className="h-3 w-3 flex-none rounded-full shadow-xs"
                       style={{ backgroundColor: stage.color || "#3B82F6" }}
                     />
-                    <span className="truncate font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                    <span className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
                       {stage.name}
                     </span>
-                    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700 px-2 py-0.5 font-bold text-[10px] text-zinc-800 dark:text-zinc-100 shadow-2xs">
+                    <span className="rounded-full bg-zinc-200 px-2 py-0.5 font-bold text-[10px] text-zinc-800 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100">
                       {stageDeals.length}
                     </span>
                   </div>
 
-                  <div className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
+                  <div className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
                     {formatCurrency(stageTotal)}
                   </div>
                 </div>
 
                 {/* Stage Probability & SLA Sub-header */}
-                <div className="mb-3 flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-zinc-900 px-2.5 py-1 text-[10px] text-zinc-500 dark:text-zinc-400 shadow-2xs">
+                <div className="mb-3 flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-[10px] text-zinc-500 shadow-2xs dark:border-zinc-800/60 dark:bg-zinc-900 dark:text-zinc-400">
                   <span className="flex items-center gap-1 font-semibold text-zinc-600 dark:text-zinc-400">
                     <Award className="h-3 w-3 text-blue-600" />
                     Kazanma: %{stage.probability}
@@ -750,7 +750,7 @@ export default function PipelinesPage() {
                   {stageDeals.map((deal) => {
                     return (
                       <div
-                        className="group relative cursor-pointer rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.99]"
+                        className="group relative cursor-pointer rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.99] dark:border-zinc-800/90 dark:bg-zinc-900"
                         draggable
                         key={deal.id}
                         onClick={() => setSelectedDealId(deal.id)}
@@ -789,7 +789,7 @@ export default function PipelinesPage() {
                         </div>
 
                         {/* Deal Title */}
-                        <h4 className="mb-1.5 line-clamp-2 font-bold text-zinc-900 dark:text-zinc-100 text-xs transition-colors group-hover:text-blue-600">
+                        <h4 className="mb-1.5 line-clamp-2 font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100">
                           {deal.title}
                         </h4>
 
@@ -808,19 +808,19 @@ export default function PipelinesPage() {
                         )}
 
                         {/* Financial Value & Tags */}
-                        <div className="mb-2.5 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2.5">
-                          <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
+                        <div className="mb-2.5 flex items-center justify-between border-zinc-100 border-t pt-2.5 dark:border-zinc-800">
+                          <span className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
                             {formatCurrency(deal.value, deal.currency)}
                           </span>
                           {deal.tags && deal.tags.length > 0 && (
-                            <span className="rounded-md bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:text-zinc-400">
+                            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                               #{deal.tags[0]}
                             </span>
                           )}
                         </div>
 
                         {/* Card Footer: Assignee & Action */}
-                        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2 text-[11px]">
+                        <div className="flex items-center justify-between border-zinc-100 border-t pt-2 text-[11px] dark:border-zinc-800">
                           {deal.assignedUserId ? (
                             <div className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300">
                               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 font-bold text-[10px] text-blue-700">
@@ -866,9 +866,9 @@ export default function PipelinesPage() {
                   })}
 
                   {stageDeals.length === 0 && (
-                    <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 border-dashed bg-white dark:bg-zinc-900/60 p-8 text-center">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900/60">
                       <Kanban className="mb-1.5 h-6 w-6 text-slate-300" />
-                      <p className="font-semibold text-zinc-500 dark:text-zinc-400 text-xs">
+                      <p className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
                         Bu aşamada kart yok
                       </p>
                       <p className="mt-0.5 text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -883,10 +883,10 @@ export default function PipelinesPage() {
         </div>
       ) : (
         /* Table View */
-        <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
+        <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Fırsat Başlığı</th>
                   <th className="px-4 py-3.5">Müşteri / Şirket</th>
@@ -906,7 +906,7 @@ export default function PipelinesPage() {
                     key={deal.id}
                     onClick={() => setSelectedDealId(deal.id)}
                   >
-                    <td className="py-4 pr-4 pl-6 font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600">
+                    <td className="py-4 pr-4 pl-6 font-bold text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100">
                       {deal.title}
                     </td>
                     <td className="px-4 py-4 font-medium text-zinc-700 dark:text-zinc-300">
@@ -980,7 +980,7 @@ export default function PipelinesPage() {
                     </td>
                     <td className="py-4 pr-6 pl-4 text-right">
                       <button
-                        className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                        className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedDealId(deal.id);
@@ -1234,12 +1234,12 @@ function DealDetailDrawer({
         variant="destructive"
       />
 
-      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-zinc-200 dark:border-zinc-800 border-l bg-white dark:bg-zinc-900 shadow-2xl duration-200 md:max-w-2xl">
+      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-zinc-200 border-l bg-white shadow-2xl duration-200 md:max-w-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Drawer Header */}
-        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/80 dark:bg-zinc-800/50 p-3.5 sm:p-5">
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 border-b bg-zinc-50/80 p-3.5 sm:p-5 dark:border-zinc-800/90 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-2.5">
             <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-95"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={onClose}
               title="Kapat & Geri Dön"
               type="button"
@@ -1251,7 +1251,7 @@ function DealDetailDrawer({
               <span className="block truncate font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                 {deal?.pipelineName || "Pipeline Fırsatı"}
               </span>
-              <h2 className="max-w-[200px] truncate font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight sm:max-w-md sm:text-base">
+              <h2 className="max-w-[200px] truncate font-bold text-sm text-zinc-900 leading-tight sm:max-w-md sm:text-base dark:text-zinc-100">
                 {deal?.title || "Fırsat Detayı"}
               </h2>
             </div>
@@ -1259,7 +1259,7 @@ function DealDetailDrawer({
 
           <div className="flex shrink-0 items-center gap-1.5">
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500"
               onClick={() => setIsDeleteDialogOpen(true)}
               title="Fırsatı Sil"
               type="button"
@@ -1279,10 +1279,10 @@ function DealDetailDrawer({
           <div className="custom-scrollbar flex-1 space-y-6 overflow-y-auto p-4 pb-28 sm:p-5 sm:pb-8">
             {/* 1. Stage Progression Stepper */}
             <div>
-              <label className="mb-2 block font-bold text-[11px] text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
+              <label className="mb-2 block font-bold text-[11px] text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
                 Aşama İlerlemesi (Tıklayarak Değiştirin)
               </label>
-              <div className="grid grid-cols-2 gap-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-2.5 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-2.5 sm:grid-cols-4 dark:border-zinc-800/90 dark:bg-zinc-800/40">
                 {activePipeline?.stages?.map((stage) => {
                   const isCurrent = deal.stageId === stage.id;
                   return (
@@ -1290,7 +1290,7 @@ function DealDetailDrawer({
                       className={`flex flex-col justify-between rounded-xl px-3 py-2.5 text-left font-semibold text-xs transition-all ${
                         isCurrent
                           ? "bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/30"
-                          : "border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          : "border border-zinc-200/80 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                       }`}
                       key={stage.id}
                       onClick={() => handleStageChange(stage.id)}
@@ -1299,7 +1299,9 @@ function DealDetailDrawer({
                       <span className="truncate">{stage.name}</span>
                       <span
                         className={`mt-1 font-medium text-[10px] ${
-                          isCurrent ? "text-blue-100" : "text-zinc-400 dark:text-zinc-500"
+                          isCurrent
+                            ? "text-blue-100"
+                            : "text-zinc-400 dark:text-zinc-500"
                         }`}
                       >
                         %{stage.probability} Olasılık
@@ -1338,10 +1340,10 @@ function DealDetailDrawer({
             )}
 
             {/* 3. Core Properties Grid */}
-            <div className="grid grid-cols-2 gap-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:grid-cols-3 dark:border-zinc-800/90 dark:bg-zinc-900">
               {/* Value */}
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Tutar
                 </span>
                 <p className="mt-0.5 font-extrabold text-base text-zinc-900 dark:text-zinc-100">
@@ -1354,7 +1356,7 @@ function DealDetailDrawer({
 
               {/* Priority */}
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Öncelik
                 </span>
                 <p className="mt-1">
@@ -1378,7 +1380,7 @@ function DealDetailDrawer({
 
               {/* SLA Status */}
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   SLA Durumu
                 </span>
                 <p className="mt-1">
@@ -1395,14 +1397,16 @@ function DealDetailDrawer({
               </div>
 
               {/* Assigned Representative */}
-              <div className="col-span-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 sm:col-span-3">
+              <div className="col-span-2 border-zinc-100 border-t pt-3 sm:col-span-3 dark:border-zinc-800">
                 <div className="space-y-1.5">
-                  <span className="font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                  <span className="font-bold text-xs text-zinc-700 dark:text-zinc-300">
                     Sorumlu Çalışan / Satış Temsilcisi
                   </span>
                   <SalesRepPicker
                     employees={employees}
-                    onChange={(empId) => handleAssignUser(empId || "unassigned")}
+                    onChange={(empId) =>
+                      handleAssignUser(empId || "unassigned")
+                    }
                     placeholder="Temsilci arayın veya seçin..."
                     value={deal.assignedUserId || ""}
                   />
@@ -1415,8 +1419,8 @@ function DealDetailDrawer({
               deal.contactName ||
               deal.contactEmail ||
               deal.contactPhone) && (
-              <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs">
-                <h4 className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+              <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <h4 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   <User className="h-4 w-4 text-blue-600" />
                   Müşteri & İletişim Bilgileri
                 </h4>
@@ -1467,12 +1471,12 @@ function DealDetailDrawer({
 
             {/* 5. Tabs: Timeline (Aktiviteler) & Notes (Notlar) */}
             <div>
-              <div className="mb-4 flex border-zinc-200 dark:border-zinc-800 border-b">
+              <div className="mb-4 flex border-zinc-200 border-b dark:border-zinc-800">
                 <button
                   className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "timeline"
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                      : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
                   }`}
                   onClick={() => setActiveTab("timeline")}
                   type="button"
@@ -1484,7 +1488,7 @@ function DealDetailDrawer({
                   className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === "notes"
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                      : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
                   }`}
                   onClick={() => setActiveTab("notes")}
                   type="button"
@@ -1499,7 +1503,7 @@ function DealDetailDrawer({
                 <div className="space-y-3">
                   {deal.activities?.map((act) => (
                     <div
-                      className="flex items-start gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-3.5 text-xs"
+                      className="flex items-start gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 text-xs dark:border-zinc-800/90 dark:bg-zinc-800/40"
                       key={act.id}
                     >
                       <div className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -1523,7 +1527,7 @@ function DealDetailDrawer({
                     </div>
                   ))}
                   {(!deal.activities || deal.activities.length === 0) && (
-                    <p className="py-6 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+                    <p className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
                       Henüz aktivite kaydı yok.
                     </p>
                   )}
@@ -1534,7 +1538,7 @@ function DealDetailDrawer({
                   {/* Note Creator Form */}
                   <form className="space-y-2" onSubmit={handleAddNote}>
                     <textarea
-                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-3 font-medium text-xs text-zinc-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                       onChange={(e) => setNewNote(e.target.value)}
                       placeholder="Bu fırsat için dahili bir not ekleyin..."
                       rows={3}
@@ -1555,7 +1559,7 @@ function DealDetailDrawer({
                   <div className="space-y-2.5">
                     {deal.notes?.map((n) => (
                       <div
-                        className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-3.5 text-xs shadow-2xs"
+                        className="rounded-2xl border border-zinc-200/80 bg-white p-3.5 text-xs shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900"
                         key={n.id}
                       >
                         <div className="mb-1.5 flex items-center justify-between">
@@ -1683,8 +1687,8 @@ function CreateDealModal({
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
-        <div className="flex shrink-0 items-center justify-between border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 p-5">
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b bg-zinc-50/50 p-5 dark:border-zinc-800 dark:bg-zinc-800/30">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Plus className="h-5 w-5" />
@@ -1694,7 +1698,7 @@ function CreateDealModal({
             </h3>
           </div>
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1709,11 +1713,11 @@ function CreateDealModal({
           {/* Pipeline & Stage */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Pipeline
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => {
                   const nextPipeId = e.target.value;
                   setPipelineId(nextPipeId);
@@ -1733,11 +1737,11 @@ function CreateDealModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Başlangıç Aşaması
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setStageId(e.target.value)}
                 value={stageId}
               >
@@ -1752,11 +1756,11 @@ function CreateDealModal({
 
           {/* Title */}
           <div>
-            <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+            <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
               Fırsat / İş Başlığı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="örn: Kurumsal Yazılım Lisans Teklifi"
               required
@@ -1768,12 +1772,12 @@ function CreateDealModal({
           {/* Value & Currency & Priority */}
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-2">
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Tahmini Tutar
               </label>
               <div className="flex gap-2">
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   min="0"
                   onChange={(e) => setValue(Number(e.target.value))}
                   step="100"
@@ -1781,7 +1785,7 @@ function CreateDealModal({
                   value={value}
                 />
                 <select
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs"
+                  className="rounded-xl border border-zinc-200 bg-white px-2.5 font-bold text-xs text-zinc-700 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
                   onChange={(e) => setCurrency(e.target.value)}
                   value={currency}
                 >
@@ -1793,11 +1797,11 @@ function CreateDealModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Öncelik
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-2 font-bold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-2 py-2 font-bold text-xs text-zinc-700 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
                 onChange={(e) => setPriority(e.target.value)}
                 value={priority}
               >
@@ -1811,11 +1815,11 @@ function CreateDealModal({
 
           {/* Representative Assignment */}
           <div>
-            <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+            <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
               Atama Kuralı / Sorumlu Çalışan
             </label>
             <select
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
               onChange={(e) => setAssignedUserId(e.target.value)}
               value={assignedUserId}
             >
@@ -1832,27 +1836,27 @@ function CreateDealModal({
           </div>
 
           {/* Contact Information (Lead) */}
-          <div className="space-y-3 border-zinc-100 dark:border-zinc-800 border-t pt-3">
+          <div className="space-y-3 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <h4 className="font-bold text-blue-700 text-xs">
               Potansiyel Müşteri / Kontak Bilgisi
             </h4>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <input
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setContactName(e.target.value)}
                 placeholder="İsim / Şirket Adı"
                 type="text"
                 value={contactName}
               />
               <input
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setContactEmail(e.target.value)}
                 placeholder="E-Posta"
                 type="email"
                 value={contactEmail}
               />
               <input
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setContactPhone(e.target.value)}
                 placeholder="Telefon"
                 type="tel"
@@ -1862,14 +1866,14 @@ function CreateDealModal({
           </div>
 
           {/* Source & Initial Note */}
-          <div className="space-y-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
+          <div className="space-y-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <div>
-                <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   Kaynak
                 </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                   onChange={(e) => setSource(e.target.value)}
                   value={source}
                 >
@@ -1881,11 +1885,11 @@ function CreateDealModal({
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   İlk Not / Açıklama
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setInitialNote(e.target.value)}
                   placeholder="Müşteri ihtiyacı veya ilk temas detayları..."
                   type="text"
@@ -1896,9 +1900,9 @@ function CreateDealModal({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -2021,8 +2025,8 @@ function PipelineSettingsModal({
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b bg-zinc-50/50 dark:bg-zinc-800/30 p-5">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b bg-zinc-50/50 p-5 dark:border-zinc-800 dark:bg-zinc-800/30">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Settings className="h-5 w-5" />
@@ -2032,7 +2036,7 @@ function PipelineSettingsModal({
             </h3>
           </div>
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -2047,11 +2051,11 @@ function PipelineSettingsModal({
           {/* General Pipeline Settings */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Pipeline Adı
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -2060,11 +2064,11 @@ function PipelineSettingsModal({
             </div>
 
             <div>
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Otomatik Dağıtım Algoritması (Routing)
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setRoutingStrategy(e.target.value)}
                 value={routingStrategy}
               >
@@ -2082,11 +2086,11 @@ function PipelineSettingsModal({
             </div>
 
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <label className="mb-1 block font-bold text-xs text-zinc-700 dark:text-zinc-300">
                 Açıklama
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-900 dark:text-zinc-100 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-900 placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Pipeline'ın kullanım amacını belirtin"
                 type="text"
@@ -2096,9 +2100,9 @@ function PipelineSettingsModal({
           </div>
 
           {/* Stages Configuration */}
-          <div className="space-y-3 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="space-y-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <div className="flex items-center justify-between">
-              <h4 className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+              <h4 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 <Layers className="h-4 w-4 text-blue-600" />
                 Pipeline Aşamaları ({stages.length})
               </h4>
@@ -2115,16 +2119,16 @@ function PipelineSettingsModal({
             <div className="space-y-2.5">
               {stages.map((stage, idx) => (
                 <div
-                  className="flex flex-wrap items-center gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-3.5 shadow-2xs sm:flex-nowrap"
+                  className="flex flex-wrap items-center gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 shadow-2xs sm:flex-nowrap dark:border-zinc-800/90 dark:bg-zinc-800/40"
                   key={idx}
                 >
-                  <span className="w-4 font-bold text-zinc-400 dark:text-zinc-500 text-xs">
+                  <span className="w-4 font-bold text-xs text-zinc-400 dark:text-zinc-500">
                     {idx + 1}.
                   </span>
 
                   {/* Stage Name */}
                   <input
-                    className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-medium text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                    className="flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => {
                       const val = e.target.value;
                       setStages((prev) =>
@@ -2145,7 +2149,7 @@ function PipelineSettingsModal({
                       %
                     </span>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1.5 text-right font-bold text-zinc-800 dark:text-zinc-200 text-xs"
+                      className="w-full rounded-xl border border-zinc-200 bg-white px-2 py-1.5 text-right font-bold text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                       max="100"
                       min="0"
                       onChange={(e) => {
@@ -2167,7 +2171,7 @@ function PipelineSettingsModal({
                       SLA(s):
                     </span>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1.5 text-right font-bold text-zinc-800 dark:text-zinc-200 text-xs"
+                      className="w-full rounded-xl border border-zinc-200 bg-white px-2 py-1.5 text-right font-bold text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                       min="1"
                       onChange={(e) => {
                         const val = e.target.value
@@ -2187,7 +2191,7 @@ function PipelineSettingsModal({
 
                   {/* Color Picker */}
                   <input
-                    className="h-8 w-8 cursor-pointer rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-0.5"
+                    className="h-8 w-8 cursor-pointer rounded-xl border border-zinc-200 bg-white p-0.5 dark:border-zinc-800 dark:bg-zinc-900"
                     onChange={(e) => {
                       const val = e.target.value;
                       setStages((prev) =>
@@ -2204,7 +2208,7 @@ function PipelineSettingsModal({
                   {/* Remove stage button */}
                   {stages.length > 2 && (
                     <button
-                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-zinc-800 dark:text-zinc-500"
                       onClick={() => handleRemoveStage(idx)}
                       title="Aşamayı Kaldır"
                       type="button"
@@ -2218,9 +2222,9 @@ function PipelineSettingsModal({
           </div>
 
           {/* Save Button */}
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

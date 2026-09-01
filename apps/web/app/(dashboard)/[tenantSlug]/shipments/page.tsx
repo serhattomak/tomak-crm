@@ -405,10 +405,10 @@ export default function ShipmentsPage() {
               <Truck className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-zinc-900 dark:text-zinc-100 text-xl tracking-tight dark:text-foreground">
+              <h1 className="font-bold text-xl text-zinc-900 tracking-tight dark:text-foreground dark:text-zinc-100">
                 Kargo & Sevkiyat Yönetimi
               </h1>
-              <p className="text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+              <p className="text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
                 Depo paketleme, kargo çıkışları, takip kodları, etiket basımı ve
                 iade lojistiği
               </p>
@@ -418,7 +418,7 @@ export default function ShipmentsPage() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <button
-            className="flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-card dark:text-slate-200"
+            className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-200 dark:text-zinc-300"
             onClick={loadData}
             type="button"
           >
@@ -429,7 +429,7 @@ export default function ShipmentsPage() {
           </button>
 
           <button
-            className="flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-card dark:text-slate-200"
+            className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-200 dark:text-zinc-300"
             onClick={() => setIsCreateReturnModalOpen(true)}
             type="button"
           >
@@ -450,8 +450,8 @@ export default function ShipmentsPage() {
 
       {/* 2. Top Summary KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs dark:border-slate-800 dark:bg-card">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
             <span>Toplam Sevkiyat</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
               <Package className="h-4 w-4" />
@@ -460,11 +460,13 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-slate-900 dark:text-foreground">
             {stats?.totalShipments ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">Kayıtlı paket</div>
+          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+            Kayıtlı paket
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs dark:border-slate-800 dark:bg-card">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
             <span>Hazırlanıyor</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
               <Clock className="h-4 w-4" />
@@ -473,11 +475,13 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-amber-600 dark:text-amber-400">
             {stats?.preparingCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">Depo masasında</div>
+          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+            Depo masasında
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs dark:border-slate-800 dark:bg-card">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
             <span>Dağıtımda / Yolda</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
               <Truck className="h-4 w-4" />
@@ -491,8 +495,8 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs dark:border-slate-800 dark:bg-card">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
             <span>Bugün Teslim</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
@@ -506,8 +510,8 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="col-span-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs sm:col-span-1 dark:border-slate-800 dark:bg-card">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+        <div className="col-span-2 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs sm:col-span-1 dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
             <span>Teslimat Başarısı</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
               <TrendingUp className="h-4 w-4" />
@@ -523,12 +527,12 @@ export default function ShipmentsPage() {
       </div>
 
       {/* 3. Navigation Tabs */}
-      <div className="flex items-center gap-2 border-zinc-200 dark:border-zinc-800 border-b pb-px dark:border-slate-800">
+      <div className="flex items-center gap-2 border-zinc-200 border-b pb-px dark:border-slate-800 dark:border-zinc-800">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "outbound"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-slate-200 dark:hover:text-slate-400"
           }`}
           onClick={() => {
             setActiveTab("outbound");
@@ -538,7 +542,7 @@ export default function ShipmentsPage() {
         >
           <Package className="h-4 w-4" />
           <span>Giden Kargolar (Sevkiyatlar)</span>
-          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-slate-800 dark:bg-zinc-800 dark:text-slate-300">
             {shipments.length}
           </span>
         </button>
@@ -547,7 +551,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "returns"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-slate-200 dark:hover:text-slate-400"
           }`}
           onClick={() => {
             setActiveTab("returns");
@@ -566,14 +570,14 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "carriers"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-slate-200 dark:hover:text-slate-400"
           }`}
           onClick={() => setActiveTab("carriers")}
           type="button"
         >
           <Building2 className="h-4 w-4" />
           <span>Taşıyıcı Kargo Firmaları</span>
-          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-slate-600 dark:bg-slate-800 dark:bg-zinc-800 dark:text-slate-300">
             {carriers.length}
           </span>
         </button>
@@ -582,7 +586,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "analytics"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-slate-400 dark:hover:text-slate-200"
+              : "border-transparent text-zinc-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-slate-200 dark:hover:text-slate-400"
           }`}
           onClick={() => setActiveTab("analytics")}
           type="button"
@@ -598,11 +602,11 @@ export default function ShipmentsPage() {
       {activeTab === "outbound" && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-card">
+          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900/50 dark:focus:bg-slate-900"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900/50 dark:bg-zinc-800/30 dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-slate-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Gönderi no, takip no, sipariş, müşteri veya alıcı ara..."
                 type="text"
@@ -610,7 +614,7 @@ export default function ShipmentsPage() {
               />
               {searchQuery && (
                 <button
-                  className="absolute top-2.5 right-3 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+                  className="absolute top-2.5 right-3 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
                 >
@@ -621,7 +625,7 @@ export default function ShipmentsPage() {
 
             <div className="flex flex-wrap items-center gap-2">
               <select
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs dark:border-slate-700 dark:bg-card dark:text-slate-200"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-200 dark:text-zinc-300"
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 value={selectedStatus}
               >
@@ -635,7 +639,7 @@ export default function ShipmentsPage() {
               </select>
 
               <select
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs dark:border-slate-700 dark:bg-card dark:text-slate-200"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-200 dark:text-zinc-300"
                 onChange={(e) => setSelectedCarrierFilter(e.target.value)}
                 value={selectedCarrierFilter}
               >
@@ -650,11 +654,11 @@ export default function ShipmentsPage() {
           </div>
 
           {/* Shipments Table */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xs dark:border-slate-800 dark:bg-card">
+          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400">
+                  <tr className="border-zinc-200 border-b bg-zinc-50 font-semibold text-slate-500 dark:border-slate-800 dark:border-zinc-800 dark:bg-slate-900/50 dark:bg-zinc-800/50 dark:text-zinc-400">
                     <th className="px-4 py-3.5">Gönderi No / Tarih</th>
                     <th className="px-4 py-3.5">Sipariş & Müşteri</th>
                     <th className="px-4 py-3.5">Taşıyıcı & Takip No</th>
@@ -684,7 +688,7 @@ export default function ShipmentsPage() {
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
-                          <PackageSearch className="h-8 w-8 text-slate-300 dark:text-zinc-600 dark:text-zinc-400" />
+                          <PackageSearch className="h-8 w-8 text-slate-300 dark:text-zinc-400 dark:text-zinc-600" />
                           <p className="font-medium text-slate-600 dark:text-slate-300">
                             Kayıtlı kargo gönderisi bulunamadı.
                           </p>
@@ -702,7 +706,7 @@ export default function ShipmentsPage() {
 
                       return (
                         <tr
-                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 dark:hover:bg-slate-900/30"
+                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-slate-900/30 dark:hover:bg-zinc-800/50"
                           key={s.id}
                         >
                           {/* 1. Shipment Number & Date */}
@@ -747,7 +751,7 @@ export default function ShipmentsPage() {
                           {/* 3. Carrier & Tracking */}
                           <td className="px-4 py-3.5">
                             <div className="flex flex-col gap-1">
-                              <span className="font-medium text-zinc-800 dark:text-zinc-200 text-xs dark:text-slate-200">
+                              <span className="font-medium text-xs text-zinc-800 dark:text-slate-200 dark:text-zinc-200">
                                 {s.carrierName || "Belirtilmedi"}
                               </span>
                               {s.trackingNumber ? (
@@ -756,7 +760,7 @@ export default function ShipmentsPage() {
                                     {s.trackingNumber}
                                   </span>
                                   <button
-                                    className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+                                    className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                                     onClick={() =>
                                       copyToClipboard(
                                         s.trackingNumber!,
@@ -781,7 +785,7 @@ export default function ShipmentsPage() {
                                   )}
                                 </div>
                               ) : (
-                                <span className="text-[11px] text-zinc-400 dark:text-zinc-500 italic">
+                                <span className="text-[11px] text-zinc-400 italic dark:text-zinc-500">
                                   Takip no girilmedi
                                 </span>
                               )}
@@ -833,7 +837,7 @@ export default function ShipmentsPage() {
                             <div className="flex items-center justify-end gap-1.5">
                               {/* View Details */}
                               <button
-                                className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-600 dark:text-zinc-400 shadow-2xs hover:bg-slate-50 dark:border-slate-700 dark:bg-card dark:text-slate-300"
+                                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-600 shadow-2xs hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-300 dark:text-zinc-400"
                                 onClick={() => {
                                   setSelectedShipmentDetail(s);
                                   setIsDetailDrawerOpen(true);
@@ -846,7 +850,7 @@ export default function ShipmentsPage() {
 
                               {/* Print Shipping Label */}
                               <button
-                                className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-zinc-600 dark:text-zinc-400 shadow-2xs hover:bg-slate-50 dark:border-slate-700 dark:bg-card dark:text-slate-300"
+                                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-600 shadow-2xs hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-300 dark:text-zinc-400"
                                 onClick={() => {
                                   setSelectedShipmentForLabel(s);
                                   setIsLabelModalOpen(true);
@@ -859,7 +863,7 @@ export default function ShipmentsPage() {
 
                               {/* Advance Status */}
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-[11px] text-blue-700 hover:bg-blue-100 dark:hover:bg-blue-950/60 dark:text-blue-300"
+                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-[11px] text-blue-700 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/60"
                                 onClick={() => {
                                   setSelectedShipmentForStatus(s);
                                   setIsUpdateStatusModalOpen(true);
@@ -872,7 +876,7 @@ export default function ShipmentsPage() {
 
                               {/* Delete Shipment */}
                               <button
-                                className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:bg-card dark:text-rose-400 dark:hover:bg-rose-950/40"
+                                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-rose-400 dark:hover:bg-rose-950/40"
                                 onClick={() =>
                                   handleDeleteShipment(s.id, s.shipmentNumber)
                                 }
@@ -897,11 +901,11 @@ export default function ShipmentsPage() {
       {/* --- TAB 2: İADE KARGOLAR (RETURNS) --- */}
       {activeTab === "returns" && (
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-card">
+          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900/50 dark:focus:bg-slate-900"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900/50 dark:bg-zinc-800/30 dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-slate-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="İade kodu, müşteri veya iade sebebi ara..."
                 type="text"
@@ -911,7 +915,7 @@ export default function ShipmentsPage() {
 
             <div className="flex items-center gap-2">
               <select
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs dark:border-slate-700 dark:bg-card dark:text-slate-200"
+                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-slate-200 dark:text-zinc-300"
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 value={selectedStatus}
               >
@@ -936,11 +940,11 @@ export default function ShipmentsPage() {
           </div>
 
           {/* Returns Table */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xs dark:border-slate-800 dark:bg-card">
+          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200 dark:border-zinc-800 border-b bg-zinc-50 dark:bg-zinc-800/50 font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-zinc-400">
+                  <tr className="border-zinc-200 border-b bg-zinc-50 font-semibold text-slate-500 dark:border-slate-800 dark:border-zinc-800 dark:bg-slate-900/50 dark:bg-zinc-800/50 dark:text-zinc-400">
                     <th className="px-4 py-3.5">İade Kodu / Tarih</th>
                     <th className="px-4 py-3.5">Müşteri</th>
                     <th className="px-4 py-3.5">İade Sebebi</th>
@@ -981,7 +985,7 @@ export default function ShipmentsPage() {
 
                       return (
                         <tr
-                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 dark:hover:bg-slate-900/30"
+                          className="transition-colors hover:bg-zinc-50 dark:hover:bg-slate-900/30 dark:hover:bg-zinc-800/50"
                           key={r.id}
                         >
                           <td className="px-4 py-3.5">
@@ -991,7 +995,7 @@ export default function ShipmentsPage() {
                                   {r.returnCode}
                                 </span>
                                 <button
-                                  className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+                                  className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                                   onClick={() =>
                                     copyToClipboard(r.returnCode, "İade Kodu")
                                   }
@@ -1027,7 +1031,7 @@ export default function ShipmentsPage() {
                           </td>
 
                           <td className="px-4 py-3.5">
-                            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 italic">
+                            <span className="text-[11px] text-zinc-500 italic dark:text-zinc-400">
                               {r.inspectionNotes || "Henüz kontrol edilmedi"}
                             </span>
                           </td>
@@ -1044,7 +1048,7 @@ export default function ShipmentsPage() {
                           <td className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:hover:bg-amber-950/60 dark:text-amber-300"
+                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
                                 onClick={() => {
                                   setSelectedReturnForStatus(r);
                                   setIsUpdateReturnModalOpen(true);
@@ -1056,7 +1060,7 @@ export default function ShipmentsPage() {
                               </button>
 
                               <button
-                                className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:bg-card dark:text-rose-400 dark:hover:bg-rose-950/40"
+                                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-rose-400 dark:hover:bg-rose-950/40"
                                 onClick={() =>
                                   handleDeleteReturn(r.id, r.returnCode)
                                 }
@@ -1082,7 +1086,7 @@ export default function ShipmentsPage() {
       {activeTab === "carriers" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-zinc-500 dark:text-zinc-400 text-xs dark:text-muted-foreground">
+            <p className="text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
               Anlaşmalı kargo şirketleri, şube kodları ve canlı takip
               entegrasyon şablonları.
             </p>
@@ -1099,17 +1103,17 @@ export default function ShipmentsPage() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {carriers.map((c) => (
               <div
-                className="relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-2xs transition-all hover:border-blue-200 dark:border-slate-800 dark:bg-card"
+                className="relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-blue-200 dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900"
                 key={c.id}
               >
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 font-bold text-zinc-700 dark:text-zinc-300 text-xs dark:bg-slate-800 dark:text-slate-200">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-700 dark:bg-slate-800 dark:bg-zinc-800 dark:text-slate-200 dark:text-zinc-300">
                         {c.code.slice(0, 3)}
                       </div>
                       <div>
-                        <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+                        <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
                           {c.name}
                         </h2>
                         <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -1125,15 +1129,19 @@ export default function ShipmentsPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 space-y-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 text-[11px] text-slate-600 dark:border-slate-800 dark:text-slate-300">
+                  <div className="mt-4 space-y-2 border-zinc-100 border-t pt-3 text-[11px] text-slate-600 dark:border-slate-800 dark:border-zinc-800 dark:text-slate-300">
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 dark:text-zinc-500">Müşteri Hesap No:</span>
+                      <span className="text-zinc-400 dark:text-zinc-500">
+                        Müşteri Hesap No:
+                      </span>
                       <span className="font-medium">
                         {c.customerAccountNumber || "Belirtilmedi"}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 dark:text-zinc-500">Şube Kodu:</span>
+                      <span className="text-zinc-400 dark:text-zinc-500">
+                        Şube Kodu:
+                      </span>
                       <span className="font-medium">
                         {c.branchCode || "Merkez"}
                       </span>
@@ -1149,12 +1157,12 @@ export default function ShipmentsPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+                <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
                   <span className="block max-w-[200px] truncate text-[10px] text-zinc-400 dark:text-zinc-500">
                     {c.trackingUrlTemplate || "Manuel takip bağlantısı"}
                   </span>
                   <button
-                    className="rounded-lg p-1 text-zinc-400 dark:text-zinc-500 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+                    className="rounded-lg p-1 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
                     onClick={() => handleDeleteCarrier(c.id, c.name)}
                     title="Kargo Firmasını Sil"
                     type="button"
@@ -1173,11 +1181,11 @@ export default function ShipmentsPage() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {/* Delivery Success Metric */}
-            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-6 shadow-2xs dark:border-slate-800 dark:bg-card">
-              <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+              <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
                 Zamanında Teslimat Başarısı
               </h2>
-              <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                 Son 30 gündeki başarılı teslim edilen paket oranı
               </p>
               <div className="mt-6 flex items-baseline gap-2">
@@ -1199,11 +1207,11 @@ export default function ShipmentsPage() {
             </div>
 
             {/* Carrier Distribution */}
-            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-6 shadow-2xs dark:border-slate-800 dark:bg-card">
-              <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+              <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
                 Taşıyıcı Bazlı Kargo Dağılımı
               </h2>
-              <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                 Aktif sevkiyatlarda kargo şirketi payları
               </p>
               <div className="mt-4 space-y-2.5">
@@ -1231,18 +1239,20 @@ export default function ShipmentsPage() {
             </div>
 
             {/* Return Rate Metric */}
-            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-6 shadow-2xs dark:border-slate-800 dark:bg-card">
-              <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-slate-800 dark:border-zinc-800/90 dark:bg-card dark:bg-zinc-900">
+              <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
                 İade & Tersine Lojistik Oranı
               </h2>
-              <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                 Toplam kargo hacmine oranla dönen paketler
               </p>
               <div className="mt-6 flex items-baseline gap-2">
                 <span className="font-bold text-4xl text-amber-600 dark:text-amber-400">
                   {returns.length}
                 </span>
-                <span className="text-zinc-400 dark:text-zinc-500 text-xs">Toplam İade</span>
+                <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                  Toplam İade
+                </span>
               </div>
               <div className="mt-4 rounded-xl bg-amber-50/50 p-3 text-[11px] text-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
                 Müşteri memnuniyetini artırmak için iade kalite kontrollerini 24
@@ -1463,18 +1473,18 @@ function CreateShipmentModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl dark:border-slate-800 dark:bg-card">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b px-6 py-4 dark:border-slate-800">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-slate-800 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
               <PackagePlus className="h-4 w-4" />
             </div>
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Yeni Kargo Paketi & Sevkiyat Oluştur
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1490,13 +1500,13 @@ function CreateShipmentModal({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-customer-name"
               >
                 Müşteri / Firma Adı *
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-customer-name"
                 onChange={(e) => setCustomerName(e.target.value)}
                 placeholder="Örn: Acme Lojistik A.Ş."
@@ -1508,13 +1518,13 @@ function CreateShipmentModal({
 
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-order-number"
               >
                 Sipariş No (Opsiyonel)
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-order-number"
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder="Örn: ORD-202608-0012"
@@ -1528,13 +1538,13 @@ function CreateShipmentModal({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-carrier"
               >
                 Taşıyıcı Kargo Firması
               </label>
               <select
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-carrier"
                 onChange={(e) => setCarrierId(e.target.value)}
                 value={carrierId}
@@ -1549,13 +1559,13 @@ function CreateShipmentModal({
 
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-tracking-number"
               >
                 Kargo Takip No (Opsiyonel)
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-tracking-number"
                 onChange={(e) => setTrackingNumber(e.target.value)}
                 placeholder="Örn: 99882177410"
@@ -1569,13 +1579,13 @@ function CreateShipmentModal({
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-package-count"
               >
                 Koli / Paket Sayısı
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-package-count"
                 min="1"
                 onChange={(e) => setPackageCount(Number(e.target.value))}
@@ -1585,13 +1595,13 @@ function CreateShipmentModal({
             </div>
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-total-weight"
               >
                 Ağırlık (kg)
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-total-weight"
                 min="0.1"
                 onChange={(e) => setTotalWeightKg(Number(e.target.value))}
@@ -1602,13 +1612,13 @@ function CreateShipmentModal({
             </div>
             <div>
               <label
-                className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+                className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
                 htmlFor="new-shipment-total-desi"
               >
                 Hacim (Desi)
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-total-desi"
                 min="0.1"
                 onChange={(e) => setTotalDesi(Number(e.target.value))}
@@ -1620,8 +1630,8 @@ function CreateShipmentModal({
           </div>
 
           {/* Section: Recipient & Address */}
-          <div className="space-y-3 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs dark:text-foreground">
+          <div className="space-y-3 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
+            <h3 className="font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Alıcı ve Teslimat Adresi
             </h3>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -1633,7 +1643,7 @@ function CreateShipmentModal({
                   Alıcı Kişi / Yetkili *
                 </label>
                 <input
-                  className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   id="new-shipment-recipient-name"
                   onChange={(e) => setRecipientName(e.target.value)}
                   placeholder="Örn: Ahmet Yılmaz"
@@ -1650,7 +1660,7 @@ function CreateShipmentModal({
                   Alıcı Telefon No
                 </label>
                 <input
-                  className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   id="new-shipment-recipient-phone"
                   onChange={(e) => setRecipientPhone(e.target.value)}
                   placeholder="0532 000 00 00"
@@ -1668,7 +1678,7 @@ function CreateShipmentModal({
                 Açık Adres *
               </label>
               <textarea
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="new-shipment-recipient-address"
                 onChange={(e) => setRecipientAddress(e.target.value)}
                 placeholder="Mahalle, Cadde, Sokak, No, Daire..."
@@ -1687,7 +1697,7 @@ function CreateShipmentModal({
                   İl
                 </label>
                 <input
-                  className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   id="new-shipment-recipient-city"
                   onChange={(e) => setRecipientCity(e.target.value)}
                   type="text"
@@ -1702,7 +1712,7 @@ function CreateShipmentModal({
                   İlçe
                 </label>
                 <input
-                  className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   id="new-shipment-recipient-district"
                   onChange={(e) => setRecipientDistrict(e.target.value)}
                   type="text"
@@ -1713,9 +1723,9 @@ function CreateShipmentModal({
           </div>
 
           {/* Section: Items List */}
-          <div className="space-y-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+          <div className="space-y-2 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs dark:text-foreground">
+              <h3 className="font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
                 Paket İçeriği (Ürün Kalemleri)
               </h3>
               <button
@@ -1734,7 +1744,7 @@ function CreateShipmentModal({
                 key={`shipment-item-${idx}-${it.sku || "row"}`}
               >
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="flex-1 rounded-xl border border-zinc-200 px-3 py-1.5 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   onChange={(e) => {
                     const val = e.target.value;
                     setItems((prev) =>
@@ -1748,7 +1758,7 @@ function CreateShipmentModal({
                   value={it.productName}
                 />
                 <input
-                  className="w-20 rounded-xl border border-zinc-200 dark:border-zinc-800 px-2 py-1.5 text-xs dark:border-slate-700 dark:bg-slate-900"
+                  className="w-20 rounded-xl border border-zinc-200 px-2 py-1.5 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                   min="1"
                   onChange={(e) => {
                     const val = Number(e.target.value);
@@ -1775,9 +1785,9 @@ function CreateShipmentModal({
             ))}
           </div>
 
-          <div className="flex items-center justify-end gap-2.5 border-zinc-100 dark:border-zinc-800 border-t pt-4 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2.5 border-zinc-100 border-t pt-4 dark:border-slate-800 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-2 font-medium text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:text-slate-300 dark:text-zinc-300"
               onClick={onClose}
               type="button"
             >
@@ -1874,10 +1884,10 @@ function UpdateStatusModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:border-slate-800 dark:bg-card">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3 dark:border-slate-800">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-slate-800 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Kargo Durumunu İlerlet
             </h2>
             <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -1885,7 +1895,7 @@ function UpdateStatusModal({
             </span>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1896,13 +1906,13 @@ function UpdateStatusModal({
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-status-select"
             >
               Yeni Kargo Durumu
             </label>
             <select
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs focus:border-blue-500 focus:outline-hidden dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-status-select"
               onChange={(e) => setStatus(e.target.value)}
               value={status}
@@ -1918,13 +1928,13 @@ function UpdateStatusModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-status-tracking-number"
             >
               Kargo Takip No
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-status-tracking-number"
               onChange={(e) => setTrackingNumber(e.target.value)}
               placeholder="Örn: 99882177410"
@@ -1935,13 +1945,13 @@ function UpdateStatusModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-status-location"
             >
               Lokasyon / Şube
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-status-location"
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Örn: Kadıköy Dağıtım Şubesi"
@@ -1952,13 +1962,13 @@ function UpdateStatusModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-status-description"
             >
               Açıklama / Durum Notu
             </label>
             <textarea
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-status-description"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Örn: Kurye dağıtıma çıktı, tahmini teslim 14:00..."
@@ -1967,9 +1977,9 @@ function UpdateStatusModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-3.5 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:text-slate-300 dark:text-zinc-300"
               onClick={onClose}
               type="button"
             >
@@ -2010,12 +2020,12 @@ function PrintLabelModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[95vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl dark:border-slate-800 dark:bg-card">
+      <div className="flex max-h-[95vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
         {/* Header (No print) */}
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b px-6 py-4 dark:border-slate-800">
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-slate-800 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Printer className="h-4 w-4 text-blue-600" />
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Kargo Sevk Etiketi & Barkod Önizleme
             </h2>
           </div>
@@ -2029,7 +2039,7 @@ function PrintLabelModal({
               <span>Yazdır (A6 / Termal)</span>
             </button>
             <button
-              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2041,7 +2051,7 @@ function PrintLabelModal({
         {/* Printable Label Area */}
         <div className="overflow-y-auto p-6">
           <div
-            className="rounded-2xl border-2 border-slate-900 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-sm"
+            className="rounded-2xl border-2 border-slate-900 bg-white p-6 text-zinc-900 shadow-sm dark:bg-zinc-900 dark:text-zinc-100"
             id="printable-shipping-label"
           >
             {/* Top Bar: Carrier & Code */}
@@ -2050,7 +2060,7 @@ function PrintLabelModal({
                 <span className="font-black text-xl tracking-tight">
                   {shipment.carrierName || "STANDART KARGO"}
                 </span>
-                <span className="block text-[10px] text-zinc-600 dark:text-zinc-400 uppercase">
+                <span className="block text-[10px] text-zinc-600 uppercase dark:text-zinc-400">
                   SEVKİYAT İRSALİYE ETİKETİ
                 </span>
               </div>
@@ -2075,14 +2085,14 @@ function PrintLabelModal({
             {/* Sender & Recipient Box */}
             <div className="grid grid-cols-2 gap-4 border-slate-900 border-b-2 pb-4 text-xs">
               {/* Sender */}
-              <div className="border-zinc-200 dark:border-zinc-800 border-r pr-3">
-                <span className="block font-bold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+              <div className="border-zinc-200 border-r pr-3 dark:border-zinc-800">
+                <span className="block font-bold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   GÖNDERİCİ:
                 </span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   CRM Monorepo Lojistik Deposu
                 </span>
-                <p className="text-[11px] text-zinc-700 dark:text-zinc-300 leading-tight">
+                <p className="text-[11px] text-zinc-700 leading-tight dark:text-zinc-300">
                   İkitelli OSB Mah. Sanayi Cad. No: 42
                   <br />
                   Başakşehir / İSTANBUL
@@ -2094,13 +2104,13 @@ function PrintLabelModal({
 
               {/* Recipient */}
               <div className="pl-1">
-                <span className="block font-bold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="block font-bold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   ALICI (TESLİMAT):
                 </span>
                 <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   {shipment.recipientName}
                 </span>
-                <p className="mt-0.5 text-zinc-800 dark:text-zinc-200 text-xs leading-tight">
+                <p className="mt-0.5 text-xs text-zinc-800 leading-tight dark:text-zinc-200">
                   {shipment.recipientAddress}
                 </p>
                 <span className="font-bold text-xs">
@@ -2153,11 +2163,11 @@ function ShipmentDetailDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs">
-      <div className="flex h-full w-full max-w-lg flex-col bg-white dark:bg-zinc-900 shadow-2xl dark:bg-card">
+      <div className="flex h-full w-full max-w-lg flex-col bg-white shadow-2xl dark:bg-card dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b p-6 dark:border-slate-800">
+        <div className="flex items-center justify-between border-zinc-100 border-b p-6 dark:border-slate-800 dark:border-zinc-800">
           <div>
-            <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <span className="font-bold font-mono text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               {shipment.shipmentNumber}
             </span>
             <div className="mt-1 flex items-center gap-2">
@@ -2170,7 +2180,7 @@ function ShipmentDetailDrawer({
             </div>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-slate-100 dark:text-zinc-500 dark:hover:bg-slate-800"
             onClick={onClose}
             type="button"
           >
@@ -2181,27 +2191,35 @@ function ShipmentDetailDrawer({
         {/* Content */}
         <div className="flex-1 space-y-5 overflow-y-auto p-6 text-xs">
           {/* Quick Info Grid */}
-          <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 p-4 dark:bg-slate-900/60">
+          <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 p-4 dark:bg-slate-900/60 dark:bg-zinc-800/50">
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">Müşteri</span>
+              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                Müşteri
+              </span>
               <span className="block font-semibold text-slate-800 dark:text-slate-200">
                 {shipment.customerName}
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">Taşıyıcı</span>
+              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                Taşıyıcı
+              </span>
               <span className="block font-semibold text-slate-800 dark:text-slate-200">
                 {shipment.carrierName || "Belirtilmedi"}
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">Takip No</span>
+              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                Takip No
+              </span>
               <span className="block font-mono font-semibold text-blue-600 dark:text-blue-400">
                 {shipment.trackingNumber || "Yok"}
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">Paket & Desi</span>
+              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                Paket & Desi
+              </span>
               <span className="block font-semibold text-slate-800 dark:text-slate-200">
                 {shipment.packageCount} Koli • {shipment.totalDesi} Desi
               </span>
@@ -2209,8 +2227,8 @@ function ShipmentDetailDrawer({
           </div>
 
           {/* Delivery Address */}
-          <div className="space-y-1.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 p-4 dark:border-slate-800">
-            <h3 className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs dark:text-foreground">
+          <div className="space-y-1.5 rounded-2xl border border-zinc-200/80 p-4 dark:border-slate-800 dark:border-zinc-800/90">
+            <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
               <MapPin className="h-3.5 w-3.5 text-blue-600" />
               <span>Teslimat Adresi & Alıcı</span>
             </h3>
@@ -2228,10 +2246,10 @@ function ShipmentDetailDrawer({
 
           {/* Items in Package */}
           <div className="space-y-2">
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-xs dark:text-foreground">
+            <h3 className="font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Paket İçeriği ({shipment.items?.length || 0} Kalem)
             </h3>
-            <div className="divide-y divide-zinc-100 dark:divide-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-800/80 dark:divide-slate-800 dark:border-slate-800">
+            <div className="divide-y divide-zinc-100 rounded-2xl border border-zinc-200 dark:divide-slate-800 dark:divide-zinc-800 dark:border-slate-800 dark:border-zinc-800/80">
               {shipment.items?.map((it) => (
                 <div
                   className="flex items-center justify-between p-3"
@@ -2257,11 +2275,11 @@ function ShipmentDetailDrawer({
 
           {/* Status Timeline History */}
           <div className="space-y-2">
-            <h3 className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs dark:text-foreground">
+            <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
               <History className="h-3.5 w-3.5 text-indigo-600" />
               <span>Kargo Hareket & Durum Tarihçesi</span>
             </h3>
-            <div className="ml-2 space-y-3 border-zinc-200 dark:border-zinc-800 border-l-2 pl-4 dark:border-slate-800">
+            <div className="ml-2 space-y-3 border-zinc-200 border-l-2 pl-4 dark:border-slate-800 dark:border-zinc-800">
               {shipment.statusHistories?.map((h) => (
                 <div className="relative" key={h.id}>
                   <div className="absolute top-1 -left-[21px] h-2.5 w-2.5 rounded-full bg-blue-600 ring-4 ring-white dark:ring-card" />
@@ -2293,7 +2311,7 @@ function ShipmentDetailDrawer({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center gap-2 border-zinc-100 dark:border-zinc-800 border-t p-4 dark:border-slate-800">
+        <div className="flex items-center gap-2 border-zinc-100 border-t p-4 dark:border-slate-800 dark:border-zinc-800">
           {onDelete && (
             <button
               className="flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 font-semibold text-rose-700 text-xs shadow-2xs hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
@@ -2374,16 +2392,16 @@ function CreateReturnModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:border-slate-800 dark:bg-card">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3 dark:border-slate-800">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-slate-800 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <RotateCcw className="h-4 w-4 text-amber-600" />
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Yeni İade Kargo Talebi Başlat
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -2394,13 +2412,13 @@ function CreateReturnModal({
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-return-customer-name"
             >
               Müşteri Adı *
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-return-customer-name"
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="Örn: Mehmet Öz"
@@ -2412,13 +2430,13 @@ function CreateReturnModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-return-reason"
             >
               İade Sebebi *
             </label>
             <select
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-return-reason"
               onChange={(e) => setReason(e.target.value)}
               value={reason}
@@ -2441,13 +2459,13 @@ function CreateReturnModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-return-carrier"
             >
               Taşıyıcı Kargo Firması
             </label>
             <select
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-return-carrier"
               onChange={(e) => setCarrierId(e.target.value)}
               value={carrierId}
@@ -2462,13 +2480,13 @@ function CreateReturnModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-return-tracking-number"
             >
               İade Kargo Takip No (Opsiyonel)
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-return-tracking-number"
               onChange={(e) => setTrackingNumber(e.target.value)}
               placeholder="Örn: RET-99120"
@@ -2477,9 +2495,9 @@ function CreateReturnModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-3.5 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:text-slate-300 dark:text-zinc-300"
               onClick={onClose}
               type="button"
             >
@@ -2553,10 +2571,10 @@ function UpdateReturnStatusModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:border-slate-800 dark:bg-card">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3 dark:border-slate-800">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-slate-800 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               İade Kargo Kabul & Kontrol
             </h2>
             <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -2564,7 +2582,7 @@ function UpdateReturnStatusModal({
             </span>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -2575,13 +2593,13 @@ function UpdateReturnStatusModal({
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-return-status-select"
             >
               İade Durumu
             </label>
             <select
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-return-status-select"
               onChange={(e) => setStatus(e.target.value)}
               value={status}
@@ -2597,13 +2615,13 @@ function UpdateReturnStatusModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="update-return-inspection-notes"
             >
               Kalite Kontrol Notları & Açıklama
             </label>
             <textarea
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="update-return-inspection-notes"
               onChange={(e) => setInspectionNotes(e.target.value)}
               placeholder="Ürün ambalajı incelendi, hasar tespit edilmedi, stoka alındı..."
@@ -2612,9 +2630,9 @@ function UpdateReturnStatusModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-3.5 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:text-slate-300 dark:text-zinc-300"
               onClick={onClose}
               type="button"
             >
@@ -2693,16 +2711,16 @@ function CreateCarrierModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:border-slate-800 dark:bg-card">
-        <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3 dark:border-slate-800">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-slate-800 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-blue-600" />
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm dark:text-foreground">
+            <h2 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
               Yeni Taşıyıcı Kargo Firması Ekle
             </h2>
           </div>
           <button
-            className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-slate-800 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -2713,13 +2731,13 @@ function CreateCarrierModal({
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-carrier-name"
             >
               Kargo Firması Adı *
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-carrier-name"
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: UPS Kargo"
@@ -2731,13 +2749,13 @@ function CreateCarrierModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-carrier-code"
             >
               Firma Kodu (Büyük Harf) *
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs uppercase dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs uppercase dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-carrier-code"
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="Örn: UPS"
@@ -2756,7 +2774,7 @@ function CreateCarrierModal({
                 Müşteri Hesap No
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="create-carrier-account-number"
                 onChange={(e) => setCustomerAccountNumber(e.target.value)}
                 placeholder="Örn: ACME-88"
@@ -2772,7 +2790,7 @@ function CreateCarrierModal({
                 Şube Kodu
               </label>
               <input
-                className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
                 id="create-carrier-branch-code"
                 onChange={(e) => setBranchCode(e.target.value)}
                 placeholder="Örn: 3401"
@@ -2784,13 +2802,13 @@ function CreateCarrierModal({
 
           <div>
             <label
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="block font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-carrier-tracking-template"
             >
               Takip URL Şablonu
             </label>
             <input
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:bg-slate-900"
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 font-mono text-xs dark:border-slate-700 dark:border-zinc-800 dark:bg-slate-900"
               id="create-carrier-tracking-template"
               onChange={(e) => setTrackingUrlTemplate(e.target.value)}
               placeholder="https://ups.com/track?q={tracking_number}"
@@ -2812,16 +2830,16 @@ function CreateCarrierModal({
               type="checkbox"
             />
             <label
-              className="font-medium text-zinc-700 dark:text-zinc-300 text-xs dark:text-slate-300"
+              className="font-medium text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
               htmlFor="create-carrier-default-checkbox"
             >
               Varsayılan Kargo Firması Yap
             </label>
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-slate-800 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-3.5 py-1.5 font-medium text-zinc-700 dark:text-zinc-300 text-xs hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-slate-50 dark:border-slate-700 dark:border-zinc-800 dark:text-slate-300 dark:text-zinc-300"
               onClick={onClose}
               type="button"
             >

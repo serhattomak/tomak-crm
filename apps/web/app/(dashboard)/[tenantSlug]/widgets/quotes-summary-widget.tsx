@@ -113,11 +113,11 @@ export function QuotesSummaryWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <FileSpreadsheet className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Teklif Yönetimi & Süreçler
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -129,7 +129,7 @@ export function QuotesSummaryWidget() {
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/quotes`}
           >
             <span>Tekliflere Git</span>
@@ -177,7 +177,7 @@ export function QuotesSummaryWidget() {
           </div>
         ) : quotes.length === 0 ? (
           <div className="py-6 text-center">
-            <p className="font-semibold text-zinc-500 text-xs dark:text-zinc-400">
+            <p className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               Kayıtlı teklif bulunamadı.
             </p>
             <Link
@@ -192,12 +192,12 @@ export function QuotesSummaryWidget() {
           <div className="space-y-1.5">
             {quotes.map((q) => (
               <div
-                className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-2.5 transition-colors hover:bg-zinc-50 dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70"
+                className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/50 p-2.5 transition-colors hover:bg-zinc-50 dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70"
                 key={q.id}
               >
                 <div className="truncate pr-2">
-                  <div className="flex items-center gap-1.5 font-bold text-zinc-900 text-xs dark:text-zinc-100">
-                    <span className="font-mono text-zinc-400 dark:text-zinc-500 text-[11px]">
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                    <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                       {q.quoteNumber} (R{q.revisionNumber})
                     </span>
                     <span className="truncate">{q.title}</span>
@@ -208,7 +208,7 @@ export function QuotesSummaryWidget() {
                 </div>
 
                 <div className="flex flex-none items-center gap-2">
-                  <span className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     ₺
                     {q.totalAmount.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -226,9 +226,9 @@ export function QuotesSummaryWidget() {
         )}
       </div>
 
-      <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+      <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
         <Link
-          className="inline-flex items-center gap-1.5 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
+          className="inline-flex items-center gap-1.5 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
           href={`/${activeTenant?.slug || "workspace"}/quotes`}
         >
           <Plus className="h-3.5 w-3.5" />

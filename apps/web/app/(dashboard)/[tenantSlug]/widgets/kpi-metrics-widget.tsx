@@ -165,10 +165,10 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
 
             <div className="relative flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-semibold text-zinc-500 text-xs dark:text-zinc-400">
+                <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
                   {m.title}
                 </span>
-                <div className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100 sm:text-3xl">
+                <div className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                   {isLoading ? (
                     <span className="inline-block h-8 w-28 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
                   ) : (
@@ -183,8 +183,8 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
               </div>
             </div>
 
-            <div className="relative mt-3.5 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800/80">
-              <div className="flex items-center gap-1.5 min-w-0">
+            <div className="relative mt-3.5 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800/80">
+              <div className="flex min-w-0 items-center gap-1.5">
                 <span
                   className={`inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 font-bold text-[10px] ${
                     m.isPositive

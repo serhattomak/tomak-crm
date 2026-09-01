@@ -24,7 +24,9 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
 
   // Close dropdown on click outside
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
     const handleClickOutside = (e: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -83,14 +85,14 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
         type="button"
       >
         <div className="flex min-w-0 items-center gap-2.5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-xs text-white shadow-2xs ring-2 ring-violet-500/20 transition-transform group-hover:scale-105">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-white text-xs shadow-2xs ring-2 ring-violet-500/20 transition-transform group-hover:scale-105">
             {initials.charAt(0)}
           </div>
           <div
             className={`min-w-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isCollapsed
-                ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
-                : "max-w-xs opacity-100 translate-x-0"
+                ? "pointer-events-none max-w-0 -translate-x-2 opacity-0"
+                : "max-w-xs translate-x-0 opacity-100"
             }`}
           >
             <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
@@ -112,7 +114,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
         <div
           className={`fade-in zoom-in-95 absolute z-50 animate-in rounded-2xl border border-zinc-200/90 bg-white py-1.5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 ${
             isCollapsed
-              ? "left-full top-0 ml-2 w-64"
+              ? "top-0 left-full ml-2 w-64"
               : "top-full left-0 mt-1.5 w-full min-w-[240px]"
           }`}
         >
@@ -151,7 +153,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             })}
           </div>
 
-          <div className="mt-1 border-t border-zinc-100 px-1.5 pt-1.5 dark:border-zinc-800">
+          <div className="mt-1 border-zinc-100 border-t px-1.5 pt-1.5 dark:border-zinc-800">
             {isCreating ? (
               <form
                 action="javascript:void(0);"
@@ -160,7 +162,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               >
                 <input
                   autoFocus
-                  className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewTenantName(e.target.value)}
                   placeholder="Çalışma Alanı Adı..."
                   type="text"
@@ -168,7 +170,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
                 />
                 <div className="flex justify-end gap-1">
                   <button
-                    className="px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                    className="px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                     onClick={() => setIsCreating(false)}
                     type="button"
                   >

@@ -86,8 +86,8 @@ export interface PublicProductDto {
   currency: string;
   description?: string | null;
   id: string;
-  imageUrl?: string | null;
   images?: string[];
+  imageUrl?: string | null;
   isFeatured?: boolean;
   isPublished: boolean;
   name: string;
@@ -490,6 +490,85 @@ export const EcommerceClient = {
     });
   },
 
+  // -- Addresses (customer_addresses book) --
+
+  async createAddress(
+    data: CreateAddressRequest,
+    tenantSlug: string,
+    accessToken?: string
+  ): Promise<ApiResponse<CustomerAddressDto>> {
+    const headers: Record<string, string> = {};
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return await publicRequest<CustomerAddressDto>(
+      "/api/public/addresses",
+      tenantSlug,
+      {
+        body: JSON.stringify(data),
+        headers,
+        method: "POST",
+      }
+    );
+  },
+
+  createOrdersPoller(
+    tenantSlug: string,
+    callbacks: {
+      onOrders?: (data: unknown) => void;
+      onError?: (error: Error) => void;
+    },
+    accessToken?: string,
+    intervalMs = 30_000
+  ): () => void {
+    const tick = async () => {
+      const headers: Record<string, string> = {};
+      if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
+      const res = await publicRequest<PublicOrderDto[]>(
+        `/api/public/orders/mine?tenantSlug=${encodeURIComponent(tenantSlug)}&poll=true`,
+        tenantSlug,
+        { headers, method: "GET" }
+      );
+      if (res.success) {
+        callbacks.onOrders?.(res.data);
+      } else if (res.errorCode !== "RATE_LIMITED") {
+        callbacks.onError?.(new Error(res.message ?? "poll failed"));
+      }
+    };
+    // Initial tick after 2s, then every intervalMs
+    const t0 = setTimeout(() => void tick(), 2000);
+    const iv = setInterval(() => void tick(), intervalMs);
+    return () => {
+      clearTimeout(t0);
+      clearInterval(iv);
+    };
+  },
+
+  async createPaymentIntent(
+    data: CreatePaymentIntentRequest,
+    tenantSlug: string,
+    accessToken?: string
+  ): Promise<ApiResponse<PaymentIntentDto>> {
+    const headers: Record<string, string> = {};
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    if (data.guestToken) {
+      headers["X-Guest-Token"] = data.guestToken;
+    }
+    return await publicRequest<PaymentIntentDto>(
+      "/api/public/payments/create-intent",
+      tenantSlug,
+      {
+        body: JSON.stringify(data),
+        headers,
+        method: "POST",
+      }
+    );
+  },
+
   // -- Orders --
 
   async createPublicOrder(
@@ -502,45 +581,6 @@ export const EcommerceClient = {
     }
     return await publicRequest<PublicOrderDto>(
       "/api/public/orders",
-      tenantSlug,
-      {
-        body: JSON.stringify(data),
-        headers,
-        method: "POST",
-      }
-    );
-  },
-
-  // -- Addresses (customer_addresses book) --
-
-  async createAddress(
-    data: CreateAddressRequest,
-    tenantSlug: string,
-    accessToken?: string
-  ): Promise<ApiResponse<CustomerAddressDto>> {
-    const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    return await publicRequest<CustomerAddressDto>(
-      "/api/public/addresses",
-      tenantSlug,
-      {
-        body: JSON.stringify(data),
-        headers,
-        method: "POST",
-      }
-    );
-  },
-
-  async createPaymentIntent(
-    data: CreatePaymentIntentRequest,
-    tenantSlug: string,
-    accessToken?: string
-  ): Promise<ApiResponse<PaymentIntentDto>> {
-    const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    if (data.guestToken) headers["X-Guest-Token"] = data.guestToken;
-    return await publicRequest<PaymentIntentDto>(
-      "/api/public/payments/create-intent",
       tenantSlug,
       {
         body: JSON.stringify(data),
@@ -578,7 +618,9 @@ export const EcommerceClient = {
     accessToken?: string
   ): Promise<ApiResponse<void>> {
     const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
     return await publicRequest<void>(
       `/api/public/addresses/${addressId}`,
       tenantSlug,
@@ -603,6 +645,25 @@ export const EcommerceClient = {
     );
   },
 
+  async getAddresses(
+    tenantSlug: string,
+    accessToken?: string
+  ): Promise<ApiResponse<CustomerAddressDto[]>> {
+    const headers: Record<string, string> = {};
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    const query = new URLSearchParams({ tenantSlug });
+    return await publicRequest<CustomerAddressDto[]>(
+      `/api/public/addresses?${query.toString()}`,
+      tenantSlug,
+      {
+        headers,
+        method: "GET",
+      }
+    );
+  },
+
   // -- Cart --
 
   async getCart(
@@ -619,23 +680,6 @@ export const EcommerceClient = {
     }
     return await publicRequest<CartDto>(
       `/api/public/cart?${query.toString()}`,
-      tenantSlug,
-      {
-        headers,
-        method: "GET",
-      }
-    );
-  },
-
-  async getAddresses(
-    tenantSlug: string,
-    accessToken?: string
-  ): Promise<ApiResponse<CustomerAddressDto[]>> {
-    const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    const query = new URLSearchParams({ tenantSlug });
-    return await publicRequest<CustomerAddressDto[]>(
-      `/api/public/addresses?${query.toString()}`,
       tenantSlug,
       {
         headers,
@@ -745,9 +789,7 @@ export const EcommerceClient = {
     );
   },
 
-  async getStorefront(
-    tenantSlug: string
-  ): Promise<ApiResponse<StorefrontDto>> {
+  async getStorefront(tenantSlug: string): Promise<ApiResponse<StorefrontDto>> {
     const query = new URLSearchParams({ tenantSlug });
     return await publicRequest<StorefrontDto>(
       `/api/public/storefront?${query.toString()}`,
@@ -756,6 +798,46 @@ export const EcommerceClient = {
         method: "GET",
         next: { revalidate: 60 },
       } as RequestInit & { next: { revalidate: number } }
+    );
+  },
+
+  async mergeCart(
+    tenantSlug: string,
+    guestToken: string,
+    accessToken?: string
+  ): Promise<ApiResponse<CartDto>> {
+    const headers: Record<string, string> = {};
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return await publicRequest<CartDto>("/api/public/cart/merge", tenantSlug, {
+      body: JSON.stringify({ guestToken }),
+      headers,
+      method: "POST",
+    });
+  },
+
+  // -------------------------------------------------------------------------
+  // Polling fallback (Q13) — 30s interval when Realtime unavailable
+  // -------------------------------------------------------------------------
+
+  /**
+   * Polling fallback for GET /api/public/orders/mine?poll=true
+   * Calls every 30s; caller should use with setInterval/clearInterval.
+   * See also lib/realtime.ts startOrdersPolling for full Supabase Realtime + fallback combo.
+   */
+  async pollOrdersMine(
+    tenantSlug: string,
+    accessToken?: string
+  ): Promise<ApiResponse<PublicOrderDto[]>> {
+    const headers: Record<string, string> = {};
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return await publicRequest<PublicOrderDto[]>(
+      `/api/public/orders/mine?tenantSlug=${encodeURIComponent(tenantSlug)}&poll=true`,
+      tenantSlug,
+      { headers, method: "GET" }
     );
   },
 
@@ -778,98 +860,47 @@ export const EcommerceClient = {
     );
   },
 
+  // Expose raw request for escape hatches (still tenantSlug-bound)
+  request: publicRequest,
+
   // -------------------------------------------------------------------------
   // Auth sync + guest merge (Q8) — POST /api/public/auth/sync + POST /api/public/cart/merge
   // -------------------------------------------------------------------------
 
   async syncAuth(
     tenantSlug: string,
-    data: { email?: string; fullName?: string; phone?: string; guestToken?: string },
+    data: {
+      email?: string;
+      fullName?: string;
+      phone?: string;
+      guestToken?: string;
+    },
     accessToken?: string
-  ): Promise<ApiResponse<{ customerId: string; tenantId: string; status: string }>> {
+  ): Promise<
+    ApiResponse<{ customerId: string; tenantId: string; status: string }>
+  > {
     const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    if (data.guestToken) headers["X-Guest-Token"] = data.guestToken;
-    return await publicRequest<{ customerId: string; tenantId: string; status: string }>(
-      "/api/public/auth/sync",
-      tenantSlug,
-      {
-        body: JSON.stringify({
-          email: data.email,
-          fullName: data.fullName,
-          phone: data.phone,
-          guestToken: data.guestToken,
-        }),
-        headers,
-        method: "POST",
-      }
-    );
-  },
-
-  async mergeCart(
-    tenantSlug: string,
-    guestToken: string,
-    accessToken?: string
-  ): Promise<ApiResponse<CartDto>> {
-    const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    return await publicRequest<CartDto>("/api/public/cart/merge", tenantSlug, {
-      body: JSON.stringify({ guestToken }),
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+    if (data.guestToken) {
+      headers["X-Guest-Token"] = data.guestToken;
+    }
+    return await publicRequest<{
+      customerId: string;
+      tenantId: string;
+      status: string;
+    }>("/api/public/auth/sync", tenantSlug, {
+      body: JSON.stringify({
+        email: data.email,
+        fullName: data.fullName,
+        guestToken: data.guestToken,
+        phone: data.phone,
+      }),
       headers,
       method: "POST",
     });
   },
-
-  // -------------------------------------------------------------------------
-  // Polling fallback (Q13) — 30s interval when Realtime unavailable
-  // -------------------------------------------------------------------------
-
-  /**
-   * Polling fallback for GET /api/public/orders/mine?poll=true
-   * Calls every 30s; caller should use with setInterval/clearInterval.
-   * See also lib/realtime.ts startOrdersPolling for full Supabase Realtime + fallback combo.
-   */
-  async pollOrdersMine(
-    tenantSlug: string,
-    accessToken?: string
-  ): Promise<ApiResponse<PublicOrderDto[]>> {
-    const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    return await publicRequest<PublicOrderDto[]>(
-      `/api/public/orders/mine?tenantSlug=${encodeURIComponent(tenantSlug)}&poll=true`,
-      tenantSlug,
-      { headers, method: "GET" }
-    );
-  },
-
-  createOrdersPoller(
-    tenantSlug: string,
-    callbacks: { onOrders?: (data: unknown) => void; onError?: (error: Error) => void },
-    accessToken?: string,
-    intervalMs = 30_000
-  ): () => void {
-    const tick = async () => {
-      const headers: Record<string, string> = {};
-      if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-      const res = await publicRequest<PublicOrderDto[]>(
-        `/api/public/orders/mine?tenantSlug=${encodeURIComponent(tenantSlug)}&poll=true`,
-        tenantSlug,
-        { headers, method: "GET" }
-      );
-      if (res.success) callbacks.onOrders?.(res.data);
-      else if (res.errorCode !== "RATE_LIMITED") callbacks.onError?.(new Error(res.message ?? "poll failed"));
-    };
-    // Initial tick after 2s, then every intervalMs
-    const t0 = setTimeout(() => void tick(), 2000);
-    const iv = setInterval(() => void tick(), intervalMs);
-    return () => {
-      clearTimeout(t0);
-      clearInterval(iv);
-    };
-  },
-
-  // Expose raw request for escape hatches (still tenantSlug-bound)
-  request: publicRequest,
 
   async updateAddress(
     addressId: string,
@@ -878,7 +909,9 @@ export const EcommerceClient = {
     accessToken?: string
   ): Promise<ApiResponse<CustomerAddressDto>> {
     const headers: Record<string, string> = {};
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
     return await publicRequest<CustomerAddressDto>(
       `/api/public/addresses/${addressId}`,
       tenantSlug,

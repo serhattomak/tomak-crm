@@ -26,10 +26,10 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { PermissionGate } from "@/components/permission-gate";
 import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
-import { SalesRepPicker } from "@/components/entity-picker-modal";
 import {
   ApiClient,
   type CreateCustomerRequest,
@@ -119,7 +119,9 @@ export default function CustomersPage() {
   useEffect(() => {
     let ignore = false;
     async function fetchData() {
-      if (!activeTenant) return;
+      if (!activeTenant) {
+        return;
+      }
       try {
         const [custRes, statsRes, empRes] = await Promise.all([
           ApiClient.getCustomers(activeTenant.id, {
@@ -147,9 +149,13 @@ export default function CustomersPage() {
           }
         }
       } catch {
-        if (!ignore) showToast("Müşteri verileri yüklenirken bir hata oluştu.");
+        if (!ignore) {
+          showToast("Müşteri verileri yüklenirken bir hata oluştu.");
+        }
       } finally {
-        if (!ignore) setLoading(false);
+        if (!ignore) {
+          setLoading(false);
+        }
       }
     }
 
@@ -252,7 +258,7 @@ export default function CustomersPage() {
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-zinc-500 text-xs dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari
             geçmişini yönetin.
           </p>
@@ -261,7 +267,7 @@ export default function CustomersPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-zinc-700 text-xs shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={() =>
               showToast("Müşteri listesi CSV olarak dışa aktarılıyor...")
             }
@@ -290,7 +296,7 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Toplam Müşteri
               </span>
               <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -301,7 +307,7 @@ export default function CustomersPage() {
               <Users className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             <span>{stats?.companiesCount ?? 0} Şirket</span>
             <span>•</span>
             <span>{stats?.individualsCount ?? 0} Bireysel</span>
@@ -312,7 +318,7 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Aktif Müşteriler
               </span>
               <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -323,7 +329,7 @@ export default function CustomersPage() {
               <UserCheck className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 font-semibold text-[11px] text-emerald-600 dark:border-zinc-800 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 font-semibold text-[11px] text-emerald-600 dark:border-zinc-800 dark:text-emerald-400">
             <span>
               %
               {stats?.totalCustomers
@@ -340,7 +346,7 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Potansiyel (Lead)
               </span>
               <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -351,7 +357,7 @@ export default function CustomersPage() {
               <UserPlus className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 font-semibold text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 font-semibold text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
             <span>Dönüşüm bekleyen adaylar</span>
           </div>
         </div>
@@ -360,7 +366,7 @@ export default function CustomersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Toplam Müşteri Hacmi
               </span>
               <div className="mt-1 font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -371,7 +377,7 @@ export default function CustomersPage() {
               <TrendingUp className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             <span>
               Ort. Müşteri Değeri: ₺
               {(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}
@@ -386,7 +392,7 @@ export default function CustomersPage() {
         <div className="relative max-w-md flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
             type="text"
@@ -398,7 +404,7 @@ export default function CustomersPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
           <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setTypeFilter(e.target.value)}
             value={typeFilter}
           >
@@ -409,7 +415,7 @@ export default function CustomersPage() {
 
           {/* Status Filter */}
           <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -422,7 +428,7 @@ export default function CustomersPage() {
 
           {/* Tier Filter */}
           <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-zinc-700 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setTierFilter(e.target.value)}
             value={tierFilter}
           >
@@ -485,7 +491,7 @@ export default function CustomersPage() {
         <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
-            <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+            <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
               Müşteriler yükleniyor...
             </span>
           </div>
@@ -495,10 +501,10 @@ export default function CustomersPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
             <Users className="h-6 w-6" />
           </div>
-          <h3 className="mt-3 font-bold text-zinc-900 text-sm dark:text-zinc-100">
+          <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
             Kayıtlı Müşteri Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-zinc-500 text-xs dark:text-zinc-400">
+          <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
             Arama kriterlerinize uygun müşteri bulunamadı veya henüz müşteri
             kaydı eklenmedi.
           </p>
@@ -518,7 +524,7 @@ export default function CustomersPage() {
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+              <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                 <tr>
                   <th className="py-3.5 pr-4 pl-6">Müşteri / Şirket</th>
                   <th className="px-4 py-3.5">Statü & Segment</th>
@@ -554,7 +560,7 @@ export default function CustomersPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
+                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
                             {c.name}
                           </div>
                           <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -638,7 +644,7 @@ export default function CustomersPage() {
                     </td>
 
                     <td className="px-4 py-4 text-right">
-                      <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                      <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         ₺{c.totalRevenue.toLocaleString("tr-TR")}
                       </div>
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -699,13 +705,16 @@ export default function CustomersPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-zinc-900 text-sm transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400"
+                        className="font-bold text-sm text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100"
                         href={`/${tenantSlug}/customers/${c.id}`}
                       >
                         {c.name}
                       </Link>
                       <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                        {c.industry || (c.type === "Company" ? "Kurumsal Şirket" : "Bireysel Müşteri")}
+                        {c.industry ||
+                          (c.type === "Company"
+                            ? "Kurumsal Şirket"
+                            : "Bireysel Müşteri")}
                       </div>
                     </div>
                   </div>
@@ -719,7 +728,7 @@ export default function CustomersPage() {
                   </span>
                 </div>
 
-                <div className="mt-4 space-y-1.5 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
+                <div className="mt-4 space-y-1.5 border-zinc-100 border-t pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
                   {c.phone && (
                     <div className="flex items-center gap-2">
                       <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
@@ -742,12 +751,12 @@ export default function CustomersPage() {
               </div>
 
               {/* Card Footer */}
-              <div className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
                 <div>
                   <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                     Toplam Ciro:
                   </span>
-                  <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     ₺{c.totalRevenue.toLocaleString("tr-TR")}
                   </div>
                 </div>
@@ -787,7 +796,7 @@ export default function CustomersPage() {
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Müşteriyi Sil
             </h3>
-            <p className="mt-2 text-zinc-600 text-xs leading-relaxed dark:text-zinc-400">
+            <p className="mt-2 text-xs text-zinc-600 leading-relaxed dark:text-zinc-400">
               <strong className="font-semibold text-zinc-900 dark:text-zinc-200">
                 {deletingCustomer.name}
               </strong>{" "}
@@ -796,7 +805,7 @@ export default function CustomersPage() {
             </p>
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 text-xs hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 onClick={() => setDeletingCustomer(null)}
                 type="button"
               >
@@ -830,7 +839,8 @@ function CreateCustomerModal({
   tenantId: string;
   employees: EmployeeDto[];
 }) {
-  const [employeesList, setEmployeesList] = useState<EmployeeDto[]>(initialEmployees);
+  const [employeesList, setEmployeesList] =
+    useState<EmployeeDto[]>(initialEmployees);
   const [isAddSalesRepOpen, setIsAddSalesRepOpen] = useState(false);
 
   const [formData, setFormData] = useState<CreateCustomerRequest>({
@@ -927,12 +937,12 @@ function CreateCustomerModal({
       <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
         <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-100 p-5 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-zinc-100 border-b p-5 dark:border-zinc-800">
             <div>
               <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Müşteri Ekle
               </h2>
-              <p className="text-zinc-500 text-xs dark:text-zinc-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Kurumsal şirket veya bireysel şahıs müşterisi oluşturun
               </p>
             </div>
@@ -963,7 +973,7 @@ function CreateCustomerModal({
                 className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
                   formData.type === "Company"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                 }`}
                 onClick={() => setFormData({ ...formData, type: "Company" })}
                 type="button"
@@ -974,7 +984,7 @@ function CreateCustomerModal({
                 className={`flex-1 rounded-lg py-2 font-semibold text-xs transition-all ${
                   formData.type === "Individual"
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                 }`}
                 onClick={() => setFormData({ ...formData, type: "Individual" })}
                 type="button"
@@ -992,7 +1002,7 @@ function CreateCustomerModal({
                     : "Müşteri Adı Soyadı *"}
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -1012,7 +1022,7 @@ function CreateCustomerModal({
                   E-Posta
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
@@ -1038,7 +1048,7 @@ function CreateCustomerModal({
                   Statü
                 </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) =>
                     setFormData({ ...formData, status: e.target.value })
                   }
@@ -1056,7 +1066,7 @@ function CreateCustomerModal({
                   Segment / Seviye
                 </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) =>
                     setFormData({ ...formData, tier: e.target.value })
                   }
@@ -1074,7 +1084,7 @@ function CreateCustomerModal({
                   Sektör
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                   onChange={(e) =>
                     setFormData({ ...formData, industry: e.target.value })
                   }
@@ -1105,13 +1115,13 @@ function CreateCustomerModal({
 
             {/* Primary Contact for Companies */}
             {formData.type === "Company" && (
-              <div className="space-y-3 rounded-xl border border-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/40 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+              <div className="space-y-3 rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Birincil Yetkili / İlgili Kişi
                 </h4>
                 <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1123,7 +1133,7 @@ function CreateCustomerModal({
                     value={formData.initialContactFirstName}
                   />
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1135,7 +1145,7 @@ function CreateCustomerModal({
                     value={formData.initialContactLastName}
                   />
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1161,9 +1171,9 @@ function CreateCustomerModal({
             )}
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+            <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
               <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 text-xs hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 onClick={onClose}
                 type="button"
               >

@@ -102,11 +102,11 @@ export function TasksChecklistWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
               <CheckSquare className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Görevler & Checklist
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -130,7 +130,7 @@ export function TasksChecklistWidget() {
         {/* Quick Add Task Input */}
         <form className="mb-3 flex gap-2" onSubmit={handleAddTask}>
           <input
-            className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs transition placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+            className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs transition placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="Hızlı yeni görev yaz ve Enter'a bas..."
             type="text"
@@ -153,7 +153,7 @@ export function TasksChecklistWidget() {
               <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
                 <CheckSquare className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+              <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 Henüz planlanan görev bulunmuyor
               </h4>
               <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -188,8 +188,10 @@ export function TasksChecklistWidget() {
 
                     <div className="space-y-0.5 truncate">
                       <p
-                        className={`truncate font-semibold text-zinc-800 text-xs dark:text-zinc-200 ${
-                          task.completed ? "text-zinc-400 line-through dark:text-zinc-500" : ""
+                        className={`truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200 ${
+                          task.completed
+                            ? "text-zinc-400 line-through dark:text-zinc-500"
+                            : ""
                         }`}
                       >
                         {task.title}
@@ -242,7 +244,7 @@ export function TasksChecklistWidget() {
       </div>
 
       {tasks.length > 0 && (
-        <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2.5 font-medium text-zinc-500 text-xs dark:border-zinc-800/80 dark:text-zinc-400">
+        <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 font-medium text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
           <span>
             Kalan acil:{" "}
             <strong className="text-zinc-800 dark:text-zinc-200">

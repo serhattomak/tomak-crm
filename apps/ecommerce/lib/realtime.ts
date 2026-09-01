@@ -11,7 +11,7 @@
  * - Tenant isolation via tenantSlug + channel filter; RLS still enforced server-side.
  */
 
-import type { SupabaseClient, RealtimeChannel } from "@supabase/supabase-js";
+import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
 
 // ---------------------------------------------------------------------------
 // Types — mirror public API shapes (kept local to avoid BuildingBlocks import)
@@ -61,18 +61,18 @@ export interface RealtimeTicketEvent {
 }
 
 export interface RealtimeCallbacks {
+  onError?: (error: Error) => void;
   onOrderChange?: (event: RealtimeOrderEvent) => void;
   onShipmentChange?: (event: RealtimeShipmentEvent) => void;
   onTicketChange?: (event: RealtimeTicketEvent) => void;
-  onError?: (error: Error) => void;
 }
 
 export interface PollingOptions {
-  tenantSlug: string;
   accessToken?: string;
   intervalMs?: number;
-  onOrders?: (orders: unknown) => void;
   onError?: (error: Error) => void;
+  onOrders?: (orders: unknown) => void;
+  tenantSlug: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -137,7 +137,9 @@ export function subscribeEcommerceRealtime(
         };
         callbacks.onOrderChange?.(evt);
       } catch (error) {
-        callbacks.onError?.(error instanceof Error ? error : new Error(String(error)));
+        callbacks.onError?.(
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
   );
@@ -160,7 +162,9 @@ export function subscribeEcommerceRealtime(
         };
         callbacks.onShipmentChange?.(evt);
       } catch (error) {
-        callbacks.onError?.(error instanceof Error ? error : new Error(String(error)));
+        callbacks.onError?.(
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
   );
@@ -183,7 +187,9 @@ export function subscribeEcommerceRealtime(
         };
         callbacks.onTicketChange?.(evt);
       } catch (error) {
-        callbacks.onError?.(error instanceof Error ? error : new Error(String(error)));
+        callbacks.onError?.(
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
   );
@@ -235,9 +241,9 @@ export function subscribeTicketMessages(
     "postgres_changes",
     {
       event: "INSERT",
+      filter: `channel_id=eq.${channelId}`,
       schema: "public",
       table: "chat_messages",
-      filter: `channel_id=eq.${channelId}`,
     },
     (payload) => {
       try {
@@ -256,7 +262,9 @@ export function subscribeTicketMessages(
   );
 
   channel.subscribe((status, err) => {
-    if (err) onError?.(err instanceof Error ? err : new Error(String(err)));
+    if (err) {
+      onError?.(err instanceof Error ? err : new Error(String(err)));
+    }
     if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
       onError?.(new Error(`Ticket message channel ${status}`));
     }
@@ -307,7 +315,9 @@ export function startOrdersPolling(options: PollingOptions): () => void {
         `/api/public/orders/mine?tenantSlug=${encodeURIComponent(options.tenantSlug)}&poll=true`,
         options.tenantSlug,
         {
-          headers: options.accessToken ? { Authorization: `Bearer ${options.accessToken}` } : {},
+          headers: options.accessToken
+            ? { Authorization: `Bearer ${options.accessToken}` }
+            : {},
           method: "GET",
         }
       );
@@ -318,7 +328,9 @@ export function startOrdersPolling(options: PollingOptions): () => void {
         options.onError?.(new Error(result.message ?? "Polling failed"));
       }
     } catch (error) {
-      options.onError?.(error instanceof Error ? error : new Error(String(error)));
+      options.onError?.(
+        error instanceof Error ? error : new Error(String(error))
+      );
     }
   };
 
@@ -343,7 +355,9 @@ export function startOrdersPolling(options: PollingOptions): () => void {
 /**
  * Polling for tickets/mine — same 30s interval, separate channel.
  */
-export function startTicketsPolling(options: PollingOptions & { onTickets?: (tickets: unknown) => void }): () => void {
+export function startTicketsPolling(
+  options: PollingOptions & { onTickets?: (tickets: unknown) => void }
+): () => void {
   const intervalMs = options.intervalMs ?? 30_000;
 
   const doPoll = async () => {
@@ -353,7 +367,9 @@ export function startTicketsPolling(options: PollingOptions & { onTickets?: (tic
         `/api/public/tickets/mine?tenantSlug=${encodeURIComponent(options.tenantSlug)}&poll=true`,
         options.tenantSlug,
         {
-          headers: options.accessToken ? { Authorization: `Bearer ${options.accessToken}` } : {},
+          headers: options.accessToken
+            ? { Authorization: `Bearer ${options.accessToken}` }
+            : {},
           method: "GET",
         }
       );
@@ -361,7 +377,9 @@ export function startTicketsPolling(options: PollingOptions & { onTickets?: (tic
         options.onTickets?.(result.data);
       }
     } catch (error) {
-      options.onError?.(error instanceof Error ? error : new Error(String(error)));
+      options.onError?.(
+        error instanceof Error ? error : new Error(String(error))
+      );
     }
   };
 
@@ -387,13 +405,15 @@ export function startTicketsPolling(options: PollingOptions & { onTickets?: (tic
 // ---------------------------------------------------------------------------
 
 export const EMAIL_WEBHOOK_CONTRACT = {
-  route: "POST /api/webhooks/email",
-  description: "Inbound email webhook (Resend/Postmark) -> creates helpdesk_tickets source=Email via POST /api/public/tickets",
-  headers: ["X-Webhook-Signature (HMAC)", "X-Tenant-Slug"],
   body: {
     from: "string (customer email)",
     subject: "string",
     text: "string (email body -> ticket description)",
-    to_tenantSlug: "string (parsed from inbound address, e.g. support+<tenantSlug>@domain)",
+    to_tenantSlug:
+      "string (parsed from inbound address, e.g. support+<tenantSlug>@domain)",
   },
+  description:
+    "Inbound email webhook (Resend/Postmark) -> creates helpdesk_tickets source=Email via POST /api/public/tickets",
+  headers: ["X-Webhook-Signature (HMAC)", "X-Tenant-Slug"],
+  route: "POST /api/webhooks/email",
 } as const;

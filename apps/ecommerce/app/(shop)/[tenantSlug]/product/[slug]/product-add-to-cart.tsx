@@ -6,9 +6,9 @@ import { StockIndicator } from "@workspace/ui/components/stock-indicator";
 import { ShoppingBag } from "lucide-react";
 import * as React from "react";
 import { VariantPicker } from "@/app/(shop)/[tenantSlug]/components/variant-picker";
+import type { PublicProductVariantDto } from "@/lib/ecommerce-client";
 import { EcommerceClient } from "@/lib/ecommerce-client";
 import { ensureGuestToken } from "@/lib/guest-token";
-import type { PublicProductVariantDto } from "@/lib/ecommerce-client";
 
 export interface ProductAddToCartProps {
   baseCompareAtPrice?: number | null;
@@ -23,8 +23,12 @@ export interface ProductAddToCartProps {
 }
 
 function isVariantOutOfStock(variant: PublicProductVariantDto): boolean {
-  if (variant.isActive === false) return true;
-  if (typeof variant.stock === "number" && variant.stock <= 0) return true;
+  if (variant.isActive === false) {
+    return true;
+  }
+  if (typeof variant.stock === "number" && variant.stock <= 0) {
+    return true;
+  }
   return false;
 }
 
@@ -39,9 +43,9 @@ export function ProductAddToCart({
   tenantSlug,
   variants = [],
 }: ProductAddToCartProps) {
-  const [selectedVariantId, setSelectedVariantId] = React.useState<string | null>(
-    null
-  );
+  const [selectedVariantId, setSelectedVariantId] = React.useState<
+    string | null
+  >(null);
   const [quantity, setQuantity] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
   const [message, setMessage] = React.useState<string | null>(null);
@@ -56,8 +60,12 @@ export function ProductAddToCart({
     ? (selectedVariant.stock ?? null)
     : (baseStock ?? null);
   const isOutOfStock = React.useMemo(() => {
-    if (selectedVariant) return isVariantOutOfStock(selectedVariant);
-    if (typeof effectiveStock === "number" && effectiveStock <= 0) return true;
+    if (selectedVariant) {
+      return isVariantOutOfStock(selectedVariant);
+    }
+    if (typeof effectiveStock === "number" && effectiveStock <= 0) {
+      return true;
+    }
     return false;
   }, [selectedVariant, effectiveStock]);
 
@@ -71,12 +79,16 @@ export function ProductAddToCart({
     if (typeof maxQuantity === "number" && quantity > maxQuantity) {
       setQuantity(maxQuantity);
     }
-    if (quantity < 1) setQuantity(1);
+    if (quantity < 1) {
+      setQuantity(1);
+    }
   }, [maxQuantity, quantity]);
 
   // Notify parent of variant image for gallery sync
   React.useEffect(() => {
-    if (!onVariantImageChange) return;
+    if (!onVariantImageChange) {
+      return;
+    }
     if (selectedVariant?.imageUrl) {
       onVariantImageChange(selectedVariant.imageUrl);
     } else {
@@ -84,9 +96,7 @@ export function ProductAddToCart({
     }
   }, [selectedVariant, onVariantImageChange]);
 
-  const handleVariantChange = (
-    variant: PublicProductVariantDto | null
-  ) => {
+  const handleVariantChange = (variant: PublicProductVariantDto | null) => {
     if (variant) {
       setSelectedVariantId(variant.id);
     } else {
@@ -121,7 +131,7 @@ export function ProductAddToCart({
     }
   };
 
-  const canAdd = !loading && !isOutOfStock;
+  const canAdd = !(loading || isOutOfStock);
 
   return (
     <div className="space-y-4">
@@ -138,7 +148,9 @@ export function ProductAddToCart({
         />
       ) : (
         <div className="flex flex-wrap items-center gap-2">
-          {baseSku ? <StoreBadge variant="sku">SKU: {baseSku}</StoreBadge> : null}
+          {baseSku ? (
+            <StoreBadge variant="sku">SKU: {baseSku}</StoreBadge>
+          ) : null}
           <StockIndicator stock={effectiveStock} />
         </div>
       )}
@@ -146,7 +158,10 @@ export function ProductAddToCart({
       {/* Quantity + Stock row — integrated */}
       <div className="flex flex-wrap items-center gap-3 rounded-store-lg border border-store-border bg-store-surface p-4 shadow-store">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-store-surface-foreground" htmlFor="product-quantity">
+          <label
+            className="font-semibold text-store-surface-foreground text-xs"
+            htmlFor="product-quantity"
+          >
             Adet
           </label>
           <QuantityStepper
@@ -167,7 +182,7 @@ export function ProductAddToCart({
         <div className="ml-auto flex flex-col items-end gap-2">
           <StockIndicator stock={effectiveStock} />
           {isOutOfStock ? (
-            <span className="text-xs font-medium text-red-600 dark:text-red-400">
+            <span className="font-medium text-red-600 text-xs dark:text-red-400">
               Stokta yok
             </span>
           ) : null}
@@ -176,7 +191,7 @@ export function ProductAddToCart({
 
       {/* Add to cart */}
       <button
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-store bg-store-primary px-4 py-3 text-sm font-semibold text-store-primary-foreground shadow-store transition-colors hover:bg-store-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring focus-visible:ring-offset-2 focus-visible:ring-offset-store-surface disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-store bg-store-primary px-4 py-3 font-semibold text-sm text-store-primary-foreground shadow-store transition-colors hover:bg-store-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-store-ring focus-visible:ring-offset-2 focus-visible:ring-offset-store-surface disabled:cursor-not-allowed disabled:opacity-50"
         disabled={!canAdd}
         onClick={handleAdd}
         type="button"
@@ -187,9 +202,9 @@ export function ProductAddToCart({
 
       {message ? (
         <p
-          className="text-center text-xs font-medium text-store-muted-foreground"
-          role="status"
           aria-live="polite"
+          className="text-center font-medium text-store-muted-foreground text-xs"
+          role="status"
         >
           {message}
         </p>

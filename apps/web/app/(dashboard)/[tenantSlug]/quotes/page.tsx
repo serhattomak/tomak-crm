@@ -161,14 +161,14 @@ export default function QuotesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/60 dark:text-blue-400">
               <FileSpreadsheet className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-zinc-900 dark:text-zinc-100 text-xl tracking-tight">
+              <h1 className="font-bold text-xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Teklif Yönetimi & Fiyatlandırma
               </h1>
-              <p className="text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Müşteri teklifleri, çoklu revizyonlar, iskonto onayları ve
                 sipariş dönüşümleri
               </p>
@@ -178,7 +178,7 @@ export default function QuotesPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100"
+            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-100"
             onClick={() => setIsTemplatesOpen(true)}
             type="button"
           >
@@ -187,7 +187,7 @@ export default function QuotesPage() {
           </button>
 
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-800 dark:hover:text-zinc-200"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200"
             onClick={() => {
               fetchQuotes();
               fetchStats();
@@ -216,9 +216,9 @@ export default function QuotesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Active Proposals Volume */}
-        <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="font-semibold text-zinc-600 dark:text-zinc-400 text-xs">
+            <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Açık Teklif Hacmi
             </span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -226,7 +226,7 @@ export default function QuotesPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
+            <div className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {formatCurrency(stats?.activeProposalsVolume || 0)}
             </div>
             <p className="mt-1 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -236,9 +236,9 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 2: Conversion Rate */}
-        <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="font-semibold text-zinc-600 dark:text-zinc-400 text-xs">
+            <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Kabul & Kazanma Oranı
             </span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
@@ -247,7 +247,7 @@ export default function QuotesPage() {
           </div>
           <div className="mt-3">
             <div className="flex items-baseline gap-2">
-              <span className="font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
+              <span className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 %{stats?.conversionRate || 0}
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700">
@@ -262,9 +262,9 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 3: Pending Approval */}
-        <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="font-semibold text-zinc-600 dark:text-zinc-400 text-xs">
+            <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Yönetici Onayı Bekleyen
             </span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
@@ -272,7 +272,7 @@ export default function QuotesPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
+            <div className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {stats?.pendingApprovalCount || 0}
             </div>
             <p className="mt-1 font-medium text-[11px] text-amber-600">
@@ -282,9 +282,9 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 4: Sent / Viewed / Expired */}
-        <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="font-semibold text-zinc-600 dark:text-zinc-400 text-xs">
+            <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Müşteride Olanlar
             </span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
@@ -293,7 +293,7 @@ export default function QuotesPage() {
           </div>
           <div className="mt-3">
             <div className="flex items-baseline gap-2">
-              <span className="font-extrabold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
+              <span className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 {stats?.sentCount || 0}
               </span>
               {stats?.expiredCount ? (
@@ -311,7 +311,7 @@ export default function QuotesPage() {
       </div>
 
       {/* 3. Toolbar & Status Filter Tabs */}
-      <div className="space-y-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-2xs">
+      <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
         {/* Status Pills */}
         <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
           {[
@@ -330,7 +330,7 @@ export default function QuotesPage() {
                 className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                   isSelected
                     ? "bg-blue-600 text-white shadow-xs"
-                    : "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
+                    : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 }`}
                 key={tab.key}
                 onClick={() => setSelectedStatus(tab.key)}
@@ -356,7 +356,7 @@ export default function QuotesPage() {
           <div className="relative w-full flex-1">
             <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 py-2 pr-4 pl-10 text-zinc-900 dark:text-zinc-100 text-xs transition placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:bg-white dark:bg-zinc-900 focus:outline-none"
+              className="w-full rounded-2xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-10 text-xs text-zinc-900 transition placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Teklif no, başlık veya müşteri adına göre ara..."
               type="text"
@@ -367,7 +367,7 @@ export default function QuotesPage() {
       </div>
 
       {/* 4. Quotes Data Table */}
-      <div className="overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xs">
+      <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
         {isLoading ? (
           <div className="flex min-h-[300px] flex-col items-center justify-center p-8 text-zinc-500 dark:text-zinc-400">
             <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600" />
@@ -380,10 +380,10 @@ export default function QuotesPage() {
             <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <FileSpreadsheet className="h-6 w-6" />
             </div>
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
+            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Teklif Bulunamadı
             </h3>
-            <p className="mt-1 max-w-sm text-zinc-500 dark:text-zinc-400 text-xs">
+            <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
               Bu filtre kriterlerine uygun teklif kaydı bulunamadı. Yeni bir
               teklif oluşturabilirsiniz.
             </p>
@@ -401,7 +401,7 @@ export default function QuotesPage() {
         ) : (
           <div>
             {/* Mobile Card List View (Visible on small screens) */}
-            <div className="block divide-y divide-zinc-100 dark:divide-zinc-800 md:hidden">
+            <div className="block divide-y divide-zinc-100 md:hidden dark:divide-zinc-800">
               {quotes.map((quote) => (
                 <div
                   className={`cursor-pointer p-4 transition active:bg-zinc-50 dark:bg-zinc-800/50 ${
@@ -415,14 +415,14 @@ export default function QuotesPage() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100 text-xs">
+                        <span className="font-bold font-mono text-xs text-zinc-900 dark:text-zinc-100">
                           {quote.quoteNumber}
                         </span>
                         <span className="rounded-md bg-blue-100 px-1.5 py-0.2 font-bold text-[10px] text-blue-700">
                           R{quote.revisionNumber}
                         </span>
                       </div>
-                      <h4 className="mt-1 line-clamp-1 font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-snug">
+                      <h4 className="mt-1 line-clamp-1 font-bold text-sm text-zinc-900 leading-snug dark:text-zinc-100">
                         {quote.title}
                       </h4>
                       <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -432,13 +432,13 @@ export default function QuotesPage() {
                     </div>
                     <div className="flex flex-none flex-col items-end gap-1.5">
                       <QuoteStatusBadge status={quote.status} />
-                      <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-sm">
+                      <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
                         {formatCurrency(quote.totalAmount, quote.currency)}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-t pt-2.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
                     <div className="flex items-center gap-2">
                       <span className="text-zinc-400 dark:text-zinc-500">
                         {quote.itemCount} Kalem
@@ -460,7 +460,7 @@ export default function QuotesPage() {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-blue-50 hover:text-blue-600"
+                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                         onClick={() => {
                           const publicUrl = `${window.location.origin}/quotes/view/${quote.publicViewToken}`;
                           navigator.clipboard.writeText(publicUrl);
@@ -472,7 +472,7 @@ export default function QuotesPage() {
                         <LinkIcon className="h-3.5 w-3.5" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
+                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                         onClick={() => setPrintQuoteId(quote.id)}
                         title="PDF"
                         type="button"
@@ -490,7 +490,7 @@ export default function QuotesPage() {
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/70 dark:bg-zinc-800/40 font-bold text-[11px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
                     <th className="px-4 py-3.5">Teklif No & Revizyon</th>
                     <th className="px-4 py-3.5">Teklif Başlığı & Müşteri</th>
                     <th className="px-4 py-3.5">Durum</th>
@@ -500,7 +500,7 @@ export default function QuotesPage() {
                     <th className="px-4 py-3.5 text-right">Aksiyonlar</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 font-medium text-zinc-700 dark:text-zinc-300">
+                <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                   {quotes.map((quote) => {
                     return (
                       <tr
@@ -529,7 +529,7 @@ export default function QuotesPage() {
 
                         {/* 2. Title & Customer */}
                         <td className="max-w-xs px-4 py-3.5">
-                          <span className="block truncate font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-blue-600">
+                          <span className="block truncate font-bold text-zinc-900 transition group-hover:text-blue-600 dark:text-zinc-100">
                             {quote.title}
                           </span>
                           <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -582,15 +582,15 @@ export default function QuotesPage() {
                         <td className="whitespace-nowrap px-4 py-3.5">
                           {quote.assignedUserName ? (
                             <div className="flex items-center gap-2">
-                              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
+                              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                 {quote.assignedUserName.charAt(0).toUpperCase()}
                               </div>
-                              <span className="text-zinc-700 dark:text-zinc-300 text-xs">
+                              <span className="text-xs text-zinc-700 dark:text-zinc-300">
                                 {quote.assignedUserName}
                               </span>
                             </div>
                           ) : (
-                            <span className="text-zinc-400 dark:text-zinc-500 text-xs italic">
+                            <span className="text-xs text-zinc-400 italic dark:text-zinc-500">
                               Atanmamış
                             </span>
                           )}
@@ -603,7 +603,7 @@ export default function QuotesPage() {
                         >
                           <div className="flex items-center justify-end gap-1.5">
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
+                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={() => setSelectedQuoteId(quote.id)}
                               title="Detay & İncele"
                               type="button"
@@ -612,7 +612,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300"
+                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={() => setPrintQuoteId(quote.id)}
                               title="Yazdır / PDF"
                               type="button"
@@ -621,7 +621,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 dark:text-zinc-500 transition hover:bg-blue-50 hover:text-blue-600"
+                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                               onClick={() => {
                                 const publicUrl = `${window.location.origin}/quotes/view/${quote.publicViewToken}`;
                                 navigator.clipboard.writeText(publicUrl);
@@ -697,75 +697,75 @@ function QuoteStatusBadge({ status }: { status: string }) {
   switch (status) {
     case "RevisionRequested":
       return (
-        <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 dark:text-amber-300 shadow-2xs">
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 shadow-2xs dark:border-amber-700/60 dark:bg-amber-950/60 dark:text-amber-300">
           <RefreshCw className="h-3 w-3 text-amber-600 dark:text-amber-400" />
           Revizyon İstendi
         </span>
       );
     case "Draft":
       return (
-        <span className="inline-flex items-center rounded-lg border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:text-zinc-300">
+        <span className="inline-flex items-center rounded-lg border border-zinc-200/80 bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:border-zinc-800/90 dark:bg-zinc-800 dark:text-zinc-300">
           Taslak
         </span>
       );
     case "PendingApproval":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 dark:text-amber-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 font-bold text-[10px] text-amber-700 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
           <AlertCircle className="h-3 w-3" />
           Onay Bekliyor
         </span>
       );
     case "Approved":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:text-emerald-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300">
           <CheckCircle2 className="h-3 w-3" />
           Onaylandı
         </span>
       );
     case "Sent":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-[10px] text-blue-700 dark:text-blue-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-bold text-[10px] text-blue-700 dark:border-blue-800/60 dark:bg-blue-950/60 dark:text-blue-300">
           <Send className="h-3 w-3" />
           Müşteride
         </span>
       );
     case "Viewed":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-purple-200 dark:border-purple-800/60 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-0.5 font-bold text-[10px] text-purple-700 dark:text-purple-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-0.5 font-bold text-[10px] text-purple-700 dark:border-purple-800/60 dark:bg-purple-950/60 dark:text-purple-300">
           <Eye className="h-3 w-3" />
           İncelendi
         </span>
       );
     case "Accepted":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:text-emerald-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 font-bold text-[10px] text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300">
           <Award className="h-3 w-3" />
           Kabul Edildi
         </span>
       );
     case "Rejected":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 font-bold text-[10px] text-rose-700 dark:text-rose-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-0.5 font-bold text-[10px] text-rose-700 dark:border-rose-800/60 dark:bg-rose-950/60 dark:text-rose-300">
           <XCircle className="h-3 w-3" />
           Reddedildi
         </span>
       );
     case "Expired":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-red-200 dark:border-red-800/60 bg-red-50 dark:bg-red-950/60 px-2.5 py-0.5 font-bold text-[10px] text-red-700 dark:text-red-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-2.5 py-0.5 font-bold text-[10px] text-red-700 dark:border-red-800/60 dark:bg-red-950/60 dark:text-red-300">
           <Clock className="h-3 w-3" />
           Süresi Doldu
         </span>
       );
     case "Revised":
       return (
-        <span className="inline-flex items-center rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 font-bold text-[10px] text-zinc-500 dark:text-zinc-400">
+        <span className="inline-flex items-center rounded-lg bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
           Revize Edildi
         </span>
       );
     default:
       return (
-        <span className="inline-flex items-center rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
+        <span className="inline-flex items-center rounded-lg bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
           {status}
         </span>
       );
@@ -1090,8 +1090,12 @@ function CreateQuoteModal({
           variantId: i.variantId || undefined,
         })),
         notes: notes.trim() || undefined,
-        paymentDueDate: paymentDueDate ? new Date(paymentDueDate).toISOString() : undefined,
-        paymentDueDays: paymentDueDays ? Number.parseInt(paymentDueDays, 10) : undefined,
+        paymentDueDate: paymentDueDate
+          ? new Date(paymentDueDate).toISOString()
+          : undefined,
+        paymentDueDays: paymentDueDays
+          ? Number.parseInt(paymentDueDays, 10)
+          : undefined,
         paymentMethod: paymentMethod || undefined,
         paymentTerms: paymentTerms.trim() || undefined,
         termsAndConditions: termsAndConditions.trim() || undefined,
@@ -1137,25 +1141,25 @@ function CreateQuoteModal({
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-2xl">
+      <div className="relative z-10 my-auto flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50 dark:bg-zinc-800/50 p-4 sm:p-6">
+        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b bg-zinc-50 p-4 sm:p-6 dark:border-zinc-800/90 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/60 dark:text-blue-400">
               <FileSpreadsheet className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-base text-zinc-900 dark:text-zinc-100 sm:text-lg">
+              <h2 className="truncate font-bold text-base text-zinc-900 sm:text-lg dark:text-zinc-100">
                 Yeni Teklif Hazırla
               </h2>
-              <p className="truncate text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                 Müşteri, ürün kalemleri, KDV, iskonto ve şartnameleri belirleyin
               </p>
             </div>
           </div>
 
           <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-600 dark:hover:text-zinc-400"
+            className="shrink-0 rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
             onClick={onClose}
             type="button"
           >
@@ -1169,8 +1173,8 @@ function CreateQuoteModal({
           onSubmit={handleSubmit}
         >
           {/* Section 1: Customer & Deal Linking */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
-            <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+            <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
               <Building2 className="h-4 w-4 text-blue-600" />
               <span>1. Müşteri & Fırsat Bilgileri</span>
             </h3>
@@ -1182,7 +1186,7 @@ function CreateQuoteModal({
                   Müşteri Seçin
                 </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => handleCustomerPick(e.target.value)}
                   value={customerId}
                 >
@@ -1201,7 +1205,7 @@ function CreateQuoteModal({
                   Müşteri Ünvanı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Örn: ABC Holding A.Ş."
                   required
@@ -1216,7 +1220,7 @@ function CreateQuoteModal({
                   Bağlı Pipeline Fırsatı (Opsiyonel)
                 </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => handleDealPick(e.target.value)}
                   value={dealId}
                 >
@@ -1237,7 +1241,7 @@ function CreateQuoteModal({
                   Teklif Başlığı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Örn: Yıllık Yazılım ve Altyapı Lisans Teklifi"
                   required
@@ -1253,7 +1257,7 @@ function CreateQuoteModal({
                     Para Birimi
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setCurrency(e.target.value)}
                     value={currency}
                   >
@@ -1269,7 +1273,7 @@ function CreateQuoteModal({
                     Geçerlilik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setValidDays(e.target.value)}
                     value={validDays}
                   >
@@ -1286,7 +1290,7 @@ function CreateQuoteModal({
           {/* Section 2: Items Table */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
+              <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
                 <Package className="h-4 w-4 text-blue-600" />
                 <span>2. Teklif Kalemleri & Ürünler</span>
               </h3>
@@ -1301,10 +1305,10 @@ function CreateQuoteModal({
               </button>
             </div>
 
-            <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900">
+            <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
-                  <tr className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/70 dark:bg-zinc-800/40 font-bold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
                     <th className="min-w-[200px] px-3 py-2.5">
                       Ürün / Hizmet Adı
                     </th>
@@ -1317,7 +1321,7 @@ function CreateQuoteModal({
                     <th className="w-10 px-2 py-2.5 text-center" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 font-medium">
+                <tbody className="divide-y divide-zinc-100 font-medium dark:divide-zinc-800">
                   {items.map((item, idx) => {
                     const raw = (item.unitPrice || 0) * (item.quantity || 1);
                     const disc =
@@ -1331,7 +1335,7 @@ function CreateQuoteModal({
 
                     return (
                       <tr
-                        className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${item.isOptional ? "bg-zinc-50 dark:bg-zinc-800/50 opacity-60" : ""}`}
+                        className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${item.isOptional ? "bg-zinc-50 opacity-60 dark:bg-zinc-800/50" : ""}`}
                         key={idx}
                       >
                         {/* Product Picker or Free Text */}
@@ -1339,7 +1343,7 @@ function CreateQuoteModal({
                           <div className="space-y-1">
                             {products.length > 0 && (
                               <select
-                                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-[11px] text-zinc-700 dark:text-zinc-300 focus:border-blue-500 focus:outline-none"
+                                className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[11px] text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
                                 onChange={(e) =>
                                   handleItemChange(
                                     idx,
@@ -1361,7 +1365,7 @@ function CreateQuoteModal({
                               </select>
                             )}
                             <input
-                              className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 font-semibold text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                              className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                               onChange={(e) =>
                                 handleItemChange(
                                   idx,
@@ -1399,7 +1403,7 @@ function CreateQuoteModal({
                         {/* Quantity */}
                         <td className="px-2 py-2.5">
                           <input
-                            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-center text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             min="0.01"
                             onChange={(e) =>
                               handleItemChange(
@@ -1418,7 +1422,7 @@ function CreateQuoteModal({
                         {/* Unit */}
                         <td className="px-2 py-2.5">
                           <input
-                            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-center text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             onChange={(e) =>
                               handleItemChange(idx, "unit", e.target.value)
                             }
@@ -1430,7 +1434,7 @@ function CreateQuoteModal({
                         {/* Unit Price */}
                         <td className="px-2 py-2.5">
                           <input
-                            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-right font-semibold text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-right font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             min="0"
                             onChange={(e) =>
                               handleItemChange(
@@ -1452,7 +1456,7 @@ function CreateQuoteModal({
                             className={`w-full rounded-lg border px-2 py-1 text-center font-bold text-xs focus:outline-none ${
                               item.discountRate > 20
                                 ? "border-amber-400 bg-amber-50 text-amber-800"
-                                : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100"
+                                : "border-zinc-200 bg-white text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             }`}
                             max="100"
                             min="0"
@@ -1471,7 +1475,7 @@ function CreateQuoteModal({
                         {/* Tax Rate */}
                         <td className="px-2 py-2.5">
                           <select
-                            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-1.5 py-1 text-center text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-1.5 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             onChange={(e) =>
                               handleItemChange(
                                 idx,
@@ -1516,8 +1520,8 @@ function CreateQuoteModal({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left: General Discount & Approval warning */}
             <div className="space-y-3">
-              <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
-                <h4 className="font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+              <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+                <h4 className="font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   Genel Teklif İskontosu
                 </h4>
                 <div className="flex items-center gap-3">
@@ -1525,7 +1529,7 @@ function CreateQuoteModal({
                     <button
                       className={`rounded-lg px-3 py-1 transition ${
                         discountType === "Percentage"
-                          ? "bg-white dark:bg-zinc-900 text-blue-600 shadow-xs"
+                          ? "bg-white text-blue-600 shadow-xs dark:bg-zinc-900"
                           : "text-zinc-600 dark:text-zinc-400"
                       }`}
                       onClick={() => setDiscountType("Percentage")}
@@ -1536,7 +1540,7 @@ function CreateQuoteModal({
                     <button
                       className={`rounded-lg px-3 py-1 transition ${
                         discountType === "Amount"
-                          ? "bg-white dark:bg-zinc-900 text-blue-600 shadow-xs"
+                          ? "bg-white text-blue-600 shadow-xs dark:bg-zinc-900"
                           : "text-zinc-600 dark:text-zinc-400"
                       }`}
                       onClick={() => setDiscountType("Amount")}
@@ -1548,7 +1552,7 @@ function CreateQuoteModal({
 
                   {discountType === "Percentage" ? (
                     <input
-                      className="w-24 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                      className="w-24 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                       max="100"
                       min="0"
                       onChange={(e) =>
@@ -1560,7 +1564,7 @@ function CreateQuoteModal({
                     />
                   ) : (
                     <input
-                      className="w-32 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 font-bold text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                      className="w-32 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                       min="0"
                       onChange={(e) =>
                         setDiscountAmount(
@@ -1593,8 +1597,8 @@ function CreateQuoteModal({
             </div>
 
             {/* Right: Live Calculated Totals Card */}
-            <div className="space-y-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-800/90 bg-zinc-50/70 dark:bg-zinc-800/40 p-4">
-              <div className="flex justify-between text-zinc-600 dark:text-zinc-400 text-xs">
+            <div className="space-y-2.5 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/40">
+              <div className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400">
                 <span>Ara Toplam (KDV Hariç):</span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   {formatCurrency(calculations.subtotal, currency)}
@@ -1610,15 +1614,15 @@ function CreateQuoteModal({
                 </div>
               )}
 
-              <div className="flex justify-between text-zinc-600 dark:text-zinc-400 text-xs">
+              <div className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400">
                 <span>Hesaplanan KDV:</span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   {formatCurrency(calculations.totalTax, currency)}
                 </span>
               </div>
 
-              <div className="flex items-baseline justify-between border-zinc-200 dark:border-zinc-800 border-t pt-2">
-                <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
+              <div className="flex items-baseline justify-between border-zinc-200 border-t pt-2 dark:border-zinc-800">
+                <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Genel Toplam:
                 </span>
                 <span className="font-extrabold text-blue-600 text-xl">
@@ -1629,15 +1633,17 @@ function CreateQuoteModal({
           </div>
 
           {/* Section 4: Payment Method & Due Date */}
-          <div className="space-y-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
-            <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
+          <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+            <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
               <span>4. Ödeme Yöntemi & Vade</span>
             </h3>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Ödeme Yöntemi</label>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                  Ödeme Yöntemi
+                </label>
                 <select
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   value={paymentMethod}
                 >
@@ -1649,9 +1655,11 @@ function CreateQuoteModal({
                 </select>
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Vade (Gün)</label>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                  Vade (Gün)
+                </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
                   min="0"
                   onChange={(e) => setPaymentDueDays(e.target.value)}
                   placeholder="Örn: 30"
@@ -1660,9 +1668,11 @@ function CreateQuoteModal({
                 />
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">Vade Tarihi</label>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                  Vade Tarihi
+                </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
                   onChange={(e) => setPaymentDueDate(e.target.value)}
                   type="date"
                   value={paymentDueDate}
@@ -1672,9 +1682,9 @@ function CreateQuoteModal({
           </div>
 
           {/* Section 5: Terms, Delivery, Bank Details Templates */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-4">
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
             <div className="flex items-center justify-between">
-              <h3 className="flex items-center gap-1.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs uppercase tracking-wider">
+              <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
                 <FileText className="h-4 w-4 text-blue-600" />
                 <span>5. Şartlar, Koşullar & Banka Bilgileri</span>
               </h3>
@@ -1685,7 +1695,7 @@ function CreateQuoteModal({
                     Şablon Seç:
                   </span>
                   <select
-                    className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 font-semibold text-zinc-800 dark:text-zinc-200 text-xs focus:outline-none"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1 font-semibold text-xs text-zinc-800 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                     onChange={(e) => handleTemplateChange(e.target.value)}
                     value={selectedTemplateId}
                   >
@@ -1706,7 +1716,7 @@ function CreateQuoteModal({
                   Ödeme & Fatura Şartları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setPaymentTerms(e.target.value)}
                   placeholder="Örn: %50 siparişte peşin, %50 teslimatta 30 gün vadeli."
                   rows={2}
@@ -1719,7 +1729,7 @@ function CreateQuoteModal({
                   Teslimat & Sevkiyat Şartları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setDeliveryTerms(e.target.value)}
                   placeholder="Örn: Sipariş onayından itibaren 10 iş günü içerisinde adrese teslim."
                   rows={2}
@@ -1734,7 +1744,7 @@ function CreateQuoteModal({
                   Banka Hesap & IBAN Bilgileri
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setBankDetails(e.target.value)}
                   placeholder="Örn: Garanti BBVA TR12 0006 2000... (ABC Ltd Şti)"
                   rows={2}
@@ -1747,7 +1757,7 @@ function CreateQuoteModal({
                   Genel Şartlar & Garanti Koşulları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setTermsAndConditions(e.target.value)}
                   placeholder="Örn: Ürünler 2 yıl resmi garantilidir. Fiyatlarımıza KDV dahildir."
                   rows={2}
@@ -1758,9 +1768,9 @@ function CreateQuoteModal({
           </div>
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end gap-3 border-zinc-200 dark:border-zinc-800 border-t pt-4">
+          <div className="flex items-center justify-end gap-3 border-zinc-200 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1813,11 +1823,22 @@ function QuoteDetailDrawer({
   const [isConvertPreviewOpen, setIsConvertPreviewOpen] = useState(false);
   const [revisionNotes, setRevisionNotes] = useState("");
   const [revisionPaymentDueDate, setRevisionPaymentDueDate] = useState("");
-  const [revisionItems, setRevisionItems] = useState<{ id: string; quantity: number; unitPrice: number }[]>([]);
-  const [convertItems, setConvertItems] = useState<{ quoteItemId: string; quantity: number; unitPrice: number; isSelected: boolean; productName: string }[]>([]);
+  const [revisionItems, setRevisionItems] = useState<
+    { id: string; quantity: number; unitPrice: number }[]
+  >([]);
+  const [convertItems, setConvertItems] = useState<
+    {
+      quoteItemId: string;
+      quantity: number;
+      unitPrice: number;
+      isSelected: boolean;
+      productName: string;
+    }[]
+  >([]);
   const [convertShippingFee, setConvertShippingFee] = useState<string>("0");
   const [convertDueDate, setConvertDueDate] = useState<string>("");
-  const [convertPaymentMethod, setConvertPaymentMethod] = useState<string>("BankTransfer");
+  const [convertPaymentMethod, setConvertPaymentMethod] =
+    useState<string>("BankTransfer");
   const [convertNotes, setConvertNotes] = useState<string>("");
   const [approvalNotes, setApprovalNotes] = useState("");
   const [isActionLoading, setIsActionLoading] = useState(false);
@@ -1851,8 +1872,16 @@ function QuoteDetailDrawer({
 
   useEffect(() => {
     if (isRevisionOpen && quote) {
-      setRevisionItems(quote.items.map((it) => ({ id: it.id, quantity: it.quantity, unitPrice: it.unitPrice })));
-      setRevisionPaymentDueDate(quote.paymentDueDate ? quote.paymentDueDate.slice(0, 10) : "");
+      setRevisionItems(
+        quote.items.map((it) => ({
+          id: it.id,
+          quantity: it.quantity,
+          unitPrice: it.unitPrice,
+        }))
+      );
+      setRevisionPaymentDueDate(
+        quote.paymentDueDate ? quote.paymentDueDate.slice(0, 10) : ""
+      );
     }
   }, [isRevisionOpen, quote]);
 
@@ -1868,7 +1897,13 @@ function QuoteDetailDrawer({
         }))
       );
       setConvertShippingFee("0");
-      setConvertDueDate(quote.paymentDueDate ? quote.paymentDueDate.slice(0, 10) : quote.validUntil ? quote.validUntil.slice(0, 10) : "");
+      setConvertDueDate(
+        quote.paymentDueDate
+          ? quote.paymentDueDate.slice(0, 10)
+          : quote.validUntil
+            ? quote.validUntil.slice(0, 10)
+            : ""
+      );
       setConvertPaymentMethod(quote.paymentMethod || "BankTransfer");
       setConvertNotes("");
     }
@@ -1908,7 +1943,9 @@ function QuoteDetailDrawer({
     setIsActionLoading(true);
     try {
       const payload = {
-        dueDate: convertDueDate ? new Date(convertDueDate).toISOString() : undefined,
+        dueDate: convertDueDate
+          ? new Date(convertDueDate).toISOString()
+          : undefined,
         items: convertItems.map((ci) => ({
           isSelected: ci.isSelected,
           productName: ci.productName,
@@ -1918,9 +1955,15 @@ function QuoteDetailDrawer({
         })),
         notes: convertNotes.trim() || undefined,
         paymentMethod: convertPaymentMethod,
-        shippingFee: convertShippingFee ? Number.parseFloat(convertShippingFee) : 0,
+        shippingFee: convertShippingFee
+          ? Number.parseFloat(convertShippingFee)
+          : 0,
       };
-      const res = await ApiClient.convertQuoteToOrder(quote.id, payload, activeTenant.id);
+      const res = await ApiClient.convertQuoteToOrder(
+        quote.id,
+        payload,
+        activeTenant.id
+      );
       if (res.success) {
         toast.success("Teklif kabul edildi ve sipariş başarıyla oluşturuldu!");
         setIsConvertPreviewOpen(false);
@@ -1978,12 +2021,20 @@ function QuoteDetailDrawer({
           quantity: ri.quantity,
           unitPrice: ri.unitPrice,
         })),
-        paymentDueDate: revisionPaymentDueDate ? new Date(revisionPaymentDueDate).toISOString() : undefined,
+        paymentDueDate: revisionPaymentDueDate
+          ? new Date(revisionPaymentDueDate).toISOString()
+          : undefined,
         revisionNotes: revisionNotes.trim() || undefined,
       };
-      const res = await ApiClient.createQuoteRevision(quote.id, payload, activeTenant.id);
+      const res = await ApiClient.createQuoteRevision(
+        quote.id,
+        payload,
+        activeTenant.id
+      );
       if (res.success && res.data) {
-        toast.success(`Yeni revizyon (R${quote.revisionNumber + 1}) oluşturuldu`);
+        toast.success(
+          `Yeni revizyon (R${quote.revisionNumber + 1}) oluşturuldu`
+        );
         setIsRevisionOpen(false);
         onClose();
         onUpdated();
@@ -2051,13 +2102,13 @@ function QuoteDetailDrawer({
         variant="destructive"
       />
 
-      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-zinc-200 dark:border-zinc-800 border-l bg-white dark:bg-zinc-900 shadow-2xl duration-200 md:max-w-3xl">
+      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-zinc-200 border-l bg-white shadow-2xl duration-200 md:max-w-3xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Drawer Header (Mobile-Optimized) */}
-        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/80 dark:bg-zinc-800/50 p-3.5 sm:p-5">
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 border-b bg-zinc-50/80 p-3.5 sm:p-5 dark:border-zinc-800/90 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-2.5">
             {/* Back / Close Button */}
             <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-95"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               onClick={onClose}
               title="Kapat & Geri Dön"
               type="button"
@@ -2068,7 +2119,7 @@ function QuoteDetailDrawer({
 
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-extrabold font-mono text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                <span className="font-extrabold font-mono text-xs text-zinc-900 sm:text-sm dark:text-zinc-100">
                   {quote?.quoteNumber || "TEK-..."}
                 </span>
                 <span className="rounded-md bg-blue-100 px-1.5 py-0.2 font-bold text-[10px] text-blue-700">
@@ -2076,7 +2127,7 @@ function QuoteDetailDrawer({
                 </span>
                 {quote && <QuoteStatusBadge status={quote.status} />}
               </div>
-              <h2 className="mt-0.5 max-w-[170px] truncate font-bold text-zinc-900 dark:text-zinc-100 text-xs leading-tight sm:max-w-md sm:text-sm">
+              <h2 className="mt-0.5 max-w-[170px] truncate font-bold text-xs text-zinc-900 leading-tight sm:max-w-md sm:text-sm dark:text-zinc-100">
                 {quote?.title || "Teklif Detayı"}
               </h2>
             </div>
@@ -2084,7 +2135,7 @@ function QuoteDetailDrawer({
 
           <div className="flex shrink-0 items-center gap-1">
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300 shadow-2xs transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 sm:px-2.5"
+              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={() => quote && onPrint(quote.id)}
               title="Yazdır / PDF"
               type="button"
@@ -2094,7 +2145,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 font-semibold text-[11px] text-blue-600 shadow-2xs transition hover:bg-blue-50 sm:px-2.5"
+              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-blue-600 shadow-2xs transition hover:bg-blue-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900"
               onClick={() => {
                 if (!quote) {
                   return;
@@ -2111,7 +2162,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500"
               onClick={() => setIsDeleteDialogOpen(true)}
               title="Teklifi Sil"
               type="button"
@@ -2134,7 +2185,7 @@ function QuoteDetailDrawer({
               quote.activities?.some(
                 (a) => a.activityType === "RevisionRequested"
               )) && (
-              <div className="space-y-3 rounded-2xl border-2 border-amber-400/80 dark:border-amber-500/40 bg-amber-50/90 dark:bg-amber-950/40 p-4.5 shadow-md">
+              <div className="space-y-3 rounded-2xl border-2 border-amber-400/80 bg-amber-50/90 p-4.5 shadow-md dark:border-amber-500/40 dark:bg-amber-950/40">
                 <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs">
@@ -2142,14 +2193,14 @@ function QuoteDetailDrawer({
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-extrabold text-amber-950 dark:text-amber-200 text-sm">
+                        <h4 className="font-extrabold text-amber-950 text-sm dark:text-amber-200">
                           Müşteri Revizyon / Değişiklik Talebinde Bulundu!
                         </h4>
-                        <span className="rounded-full border border-amber-300 dark:border-amber-700/60 bg-amber-200/80 dark:bg-amber-900/60 px-2 py-0.5 font-bold text-[10px] text-amber-900 dark:text-amber-200">
+                        <span className="rounded-full border border-amber-300 bg-amber-200/80 px-2 py-0.5 font-bold text-[10px] text-amber-900 dark:border-amber-700/60 dark:bg-amber-900/60 dark:text-amber-200">
                           Yeni Versiyon Bekleniyor
                         </span>
                       </div>
-                      <p className="mt-1 font-medium text-amber-800 dark:text-amber-300/90 text-xs">
+                      <p className="mt-1 font-medium text-amber-800 text-xs dark:text-amber-300/90">
                         Müşteri dijital teklif sayfası üzerinden revizyon ve
                         güncelleme talebinde bulundu.
                       </p>
@@ -2193,9 +2244,9 @@ function QuoteDetailDrawer({
                     return null;
                   }
                   return (
-                    <div className="rounded-xl border border-amber-300/80 dark:border-amber-800/60 bg-white/90 dark:bg-zinc-900/90 p-3.5 text-zinc-800 dark:text-zinc-200 text-xs shadow-2xs">
+                    <div className="rounded-xl border border-amber-300/80 bg-white/90 p-3.5 text-xs text-zinc-800 shadow-2xs dark:border-amber-800/60 dark:bg-zinc-900/90 dark:text-zinc-200">
                       <div className="mb-1.5 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5 font-bold text-[11px] text-amber-900 dark:text-amber-300 uppercase tracking-wider">
+                        <span className="flex items-center gap-1.5 font-bold text-[11px] text-amber-900 uppercase tracking-wider dark:text-amber-300">
                           <FileText className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                           Müşterinin İlettiği Talep Notu:
                         </span>
@@ -2203,7 +2254,7 @@ function QuoteDetailDrawer({
                           {new Date(revAct.createdAt).toLocaleString("tr-TR")}
                         </span>
                       </div>
-                      <p className="rounded-lg border border-amber-200/60 dark:border-amber-800/40 bg-amber-50/60 dark:bg-amber-950/30 p-2.5 font-semibold text-zinc-900 dark:text-zinc-100 text-xs leading-relaxed">
+                      <p className="rounded-lg border border-amber-200/60 bg-amber-50/60 p-2.5 font-semibold text-xs text-zinc-900 leading-relaxed dark:border-amber-800/40 dark:bg-amber-950/30 dark:text-zinc-100">
                         "
                         {revAct.description?.replace(
                           /^Müşterinin ilettiği revizyon.*?:\s*/,
@@ -2219,13 +2270,13 @@ function QuoteDetailDrawer({
 
             {/* 1. Action Alert / Banner based on status */}
             {quote.status === "PendingApproval" && (
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-amber-50/80 dark:bg-amber-950/40 p-4 shadow-2xs">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 shadow-2xs dark:border-amber-800/60 dark:bg-amber-950/40">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-amber-900 dark:text-amber-200 text-xs">
+                    <h4 className="font-bold text-amber-900 text-xs dark:text-amber-200">
                       Yönetici İskonto / Limit Onayı Bekliyor
                     </h4>
                     <p className="text-[11px] text-amber-700 dark:text-amber-300/80">
@@ -2246,13 +2297,13 @@ function QuoteDetailDrawer({
             )}
 
             {quote.status === "Accepted" && quote.convertedOrderId && (
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/80 dark:bg-emerald-950/40 p-4 shadow-2xs">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 shadow-2xs dark:border-emerald-800/60 dark:bg-emerald-950/40">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
                     <ShoppingCart className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-emerald-900 dark:text-emerald-200 text-xs">
+                    <h4 className="font-bold text-emerald-900 text-xs dark:text-emerald-200">
                       Teklif Kabul Edildi & Siparişe Dönüştü
                     </h4>
                     <p className="text-[11px] text-emerald-700 dark:text-emerald-300/80">
@@ -2263,7 +2314,7 @@ function QuoteDetailDrawer({
                 </div>
 
                 <Link
-                  className="flex items-center gap-1.5 rounded-xl border border-emerald-300/60 dark:border-emerald-700/60 bg-emerald-100 dark:bg-emerald-900/60 px-3 py-1.5 font-semibold text-emerald-700 dark:text-emerald-200 text-xs transition hover:bg-emerald-200 dark:hover:bg-emerald-800 hover:text-emerald-900"
+                  className="flex items-center gap-1.5 rounded-xl border border-emerald-300/60 bg-emerald-100 px-3 py-1.5 font-semibold text-emerald-700 text-xs transition hover:bg-emerald-200 hover:text-emerald-900 dark:border-emerald-700/60 dark:bg-emerald-900/60 dark:text-emerald-200 dark:hover:bg-emerald-800"
                   href={`/${activeTenant?.slug}/orders`}
                 >
                   <span>Siparişe Git</span>
@@ -2273,7 +2324,7 @@ function QuoteDetailDrawer({
             )}
 
             {/* 2. Primary CTA Toolbar */}
-            <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-3">
+            <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-3 dark:border-zinc-800/90 dark:bg-zinc-800/50">
               {quote.status !== "Accepted" &&
                 quote.status !== "ConvertedToOrder" &&
                 !quote.convertedOrderId && (
@@ -2288,8 +2339,9 @@ function QuoteDetailDrawer({
                   </button>
                 )}
               {quote.convertedOrderId && (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-                  ⚠️ Bu teklif zaten siparişe çevrildi — {quote.convertedOrderNumber || quote.convertedOrderId}
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 font-semibold text-amber-800 text-xs">
+                  ⚠️ Bu teklif zaten siparişe çevrildi —{" "}
+                  {quote.convertedOrderNumber || quote.convertedOrderId}
                 </div>
               )}
 
@@ -2306,7 +2358,7 @@ function QuoteDetailDrawer({
               )}
 
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 font-semibold text-zinc-700 dark:text-zinc-300 text-xs shadow-2xs transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 onClick={() => setIsRevisionOpen(true)}
                 type="button"
               >
@@ -2316,18 +2368,18 @@ function QuoteDetailDrawer({
             </div>
 
             {/* 3. Core Properties Grid */}
-            <div className="grid grid-cols-2 gap-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4 shadow-xs sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:grid-cols-4 dark:border-zinc-800/90 dark:bg-zinc-900">
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Müşteri
                 </span>
-                <p className="mt-0.5 truncate font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                <p className="mt-0.5 truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   {quote.customerName}
                 </p>
               </div>
 
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Genel Toplam
                 </span>
                 <p className="mt-0.5 font-extrabold text-blue-600 text-sm">
@@ -2336,7 +2388,7 @@ function QuoteDetailDrawer({
               </div>
 
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   İskonto
                 </span>
                 <p className="mt-0.5 font-bold text-rose-600 text-xs">
@@ -2346,10 +2398,10 @@ function QuoteDetailDrawer({
               </div>
 
               <div>
-                <span className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
+                <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Geçerlilik
                 </span>
-                <p className="mt-0.5 font-bold text-zinc-700 dark:text-zinc-300 text-xs">
+                <p className="mt-0.5 font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   {quote.validUntil
                     ? new Date(quote.validUntil).toLocaleDateString("tr-TR")
                     : "Süresiz"}
@@ -2358,7 +2410,7 @@ function QuoteDetailDrawer({
             </div>
 
             {/* 4. Tab Navigation */}
-            <div className="flex border-zinc-200 dark:border-zinc-800 border-b">
+            <div className="flex border-zinc-200 border-b dark:border-zinc-800">
               {[
                 { key: "items", label: `Kalemler (${quote.items.length})` },
                 { key: "terms", label: "Şartlar & Banka" },
@@ -2375,7 +2427,7 @@ function QuoteDetailDrawer({
                   className={`-mb-px border-b-2 px-4 py-2.5 font-bold text-xs transition ${
                     activeTab === tab.key
                       ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                      : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
                   }`}
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
@@ -2389,10 +2441,10 @@ function QuoteDetailDrawer({
             {/* 5. Tab Contents */}
             {activeTab === "items" && (
               <div className="space-y-4">
-                <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900">
+                <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
                   <table className="w-full border-collapse text-left text-xs">
                     <thead>
-                      <tr className="border-zinc-200/80 dark:border-zinc-800/90 border-b bg-zinc-50/70 dark:bg-zinc-800/40 font-bold text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                      <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
                         <th className="px-3 py-2.5">Ürün / Hizmet</th>
                         <th className="px-2 py-2.5 text-center">Miktar</th>
                         <th className="px-2 py-2.5 text-right">Birim Fiyat</th>
@@ -2401,11 +2453,13 @@ function QuoteDetailDrawer({
                         <th className="px-3 py-2.5 text-right">Toplam</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 font-medium text-zinc-700 dark:text-zinc-300">
+                    <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                       {quote.items.map((item) => (
                         <tr
                           className={
-                            item.isOptional ? "bg-zinc-50/50 dark:bg-zinc-800/30 opacity-75" : ""
+                            item.isOptional
+                              ? "bg-zinc-50/50 opacity-75 dark:bg-zinc-800/30"
+                              : ""
                           }
                           key={item.id}
                         >
@@ -2449,7 +2503,7 @@ function QuoteDetailDrawer({
 
                 {/* Subtotals Box */}
                 <div className="flex justify-end">
-                  <div className="w-72 space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-800/50 p-3.5 text-xs">
+                  <div className="w-72 space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs dark:border-zinc-800/90 dark:bg-zinc-800/50">
                     <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                       <span>Ara Toplam:</span>
                       <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -2471,7 +2525,7 @@ function QuoteDetailDrawer({
                         {formatCurrency(quote.taxAmount, quote.currency)}
                       </span>
                     </div>
-                    <div className="flex items-baseline justify-between border-zinc-200 dark:border-zinc-800 border-t pt-2">
+                    <div className="flex items-baseline justify-between border-zinc-200 border-t pt-2 dark:border-zinc-800">
                       <span className="font-bold text-zinc-900 dark:text-zinc-100">
                         Genel Toplam:
                       </span>
@@ -2485,26 +2539,45 @@ function QuoteDetailDrawer({
             )}
 
             {activeTab === "terms" && (
-              <div className="space-y-4 text-zinc-700 dark:text-zinc-300 text-xs">
+              <div className="space-y-4 text-xs text-zinc-700 dark:text-zinc-300">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Ödeme Yöntemi</div>
-                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">{quote.paymentMethod || "Belirtilmedi"}</div>
+                  <div className="rounded-2xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="font-bold text-[11px] text-zinc-500 uppercase tracking-wider">
+                      Ödeme Yöntemi
+                    </div>
+                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">
+                      {quote.paymentMethod || "Belirtilmedi"}
+                    </div>
                   </div>
-                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Vade Tarihi</div>
-                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">{quote.paymentDueDate ? new Date(quote.paymentDueDate).toLocaleDateString("tr-TR") : "Belirtilmedi"}</div>
-                    {quote.paymentDueDays !== undefined && quote.paymentDueDays !== null && <div className="text-[11px] text-zinc-500">{quote.paymentDueDays} gün</div>}
+                  <div className="rounded-2xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="font-bold text-[11px] text-zinc-500 uppercase tracking-wider">
+                      Vade Tarihi
+                    </div>
+                    <div className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">
+                      {quote.paymentDueDate
+                        ? new Date(quote.paymentDueDate).toLocaleDateString(
+                            "tr-TR"
+                          )
+                        : "Belirtilmedi"}
+                    </div>
+                    {quote.paymentDueDays !== undefined &&
+                      quote.paymentDueDays !== null && (
+                        <div className="text-[11px] text-zinc-500">
+                          {quote.paymentDueDays} gün
+                        </div>
+                      )}
                   </div>
                 </div>
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
-                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100">Ödeme Şartları</h4>
+                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
+                    Ödeme Şartları
+                  </h4>
                   <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400">
                     {quote.paymentTerms || "Belirtilmedi"}
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
+                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Teslimat & Sevkiyat Koşulları
                   </h4>
@@ -2513,7 +2586,7 @@ function QuoteDetailDrawer({
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
+                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Banka Hesap & IBAN Bilgileri
                   </h4>
@@ -2522,7 +2595,7 @@ function QuoteDetailDrawer({
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 p-4">
+                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Genel Hükümler & Garanti
                   </h4>
@@ -2535,7 +2608,7 @@ function QuoteDetailDrawer({
 
             {activeTab === "revisions" && (
               <div className="space-y-3">
-                <div className="mb-2 text-zinc-500 dark:text-zinc-400 text-xs">
+                <div className="mb-2 text-xs text-zinc-500 dark:text-zinc-400">
                   Bu teklife ait tüm pazarlık ve revizyon tarihçesi:
                 </div>
                 {quote.revisions.map((rev) => {
@@ -2545,7 +2618,7 @@ function QuoteDetailDrawer({
                       className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${
                         isCurrent
                           ? "border-blue-300 bg-blue-50/70 ring-2 ring-blue-500/20"
-                          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                          : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/50"
                       }`}
                       key={rev.id}
                     >
@@ -2554,7 +2627,7 @@ function QuoteDetailDrawer({
                           R{rev.revisionNumber}
                         </span>
                         <div>
-                          <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {rev.quoteNumber}
                           </span>
                           <span className="block text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -2564,7 +2637,7 @@ function QuoteDetailDrawer({
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <span className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs">
+                        <span className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
                           {formatCurrency(rev.totalAmount, rev.currency)}
                         </span>
                         <QuoteStatusBadge status={rev.status} />
@@ -2579,7 +2652,7 @@ function QuoteDetailDrawer({
               <div className="space-y-3">
                 {quote.activities.map((act) => (
                   <div
-                    className="flex gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5"
+                    className="flex gap-3 rounded-2xl border border-zinc-200 bg-white p-3.5 dark:border-zinc-800 dark:bg-zinc-900"
                     key={act.id}
                   >
                     <div className="mt-0.5 flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -2587,7 +2660,7 @@ function QuoteDetailDrawer({
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs">
+                        <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {act.title}
                         </span>
                         <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -2609,11 +2682,11 @@ function QuoteDetailDrawer({
       {/* Approve / Reject Modal */}
       {isApproveOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yönetici Teklif Değerlendirmesi
             </h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-xs">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Teklifi onaylayarak müşteriye gönderilmeye hazır hale getirebilir
               veya açıklama ekleyerek revizyon isteyebilirsiniz.
             </p>
@@ -2623,7 +2696,7 @@ function QuoteDetailDrawer({
                 Değerlendirme Notu
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2.5 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setApprovalNotes(e.target.value)}
                 placeholder="Örn: %18 iskonto onaylandı veya %10 seviyesine çekilmesini rica ederim."
                 rows={3}
@@ -2633,7 +2706,7 @@ function QuoteDetailDrawer({
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
-                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-xl px-3.5 py-2 font-semibold text-xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 onClick={() => setIsApproveOpen(false)}
                 type="button"
               >
@@ -2663,36 +2736,55 @@ function QuoteDetailDrawer({
       {/* New Revision Modal with Override */}
       {isRevisionOpen && quote && (
         <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="my-auto w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+          <div className="my-auto w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              Yeni Revizyon Oluştur (R{quote.revisionNumber + 1}) — Tek Adımda Düzenle
+              Yeni Revizyon Oluştur (R{quote.revisionNumber + 1}) — Tek Adımda
+              Düzenle
             </h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-xs">Kalem miktar/fiyat ve vade tek adımda güncellenir, yeni versiyon oluşturulur.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Kalem miktar/fiyat ve vade tek adımda güncellenir, yeni versiyon
+              oluşturulur.
+            </p>
 
-            <div className="space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-3">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Kalemler (Miktar / Birim Fiyat)</div>
+            <div className="space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+              <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
+                Kalemler (Miktar / Birim Fiyat)
+              </div>
               {revisionItems.map((ri, idx) => {
                 const qItem = quote.items.find((q) => q.id === ri.id);
                 return (
-                  <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2" key={ri.id}>
-                    <span className="min-w-0 flex-1 truncate text-xs font-semibold">{qItem?.productName || `Kalem ${idx + 1}`}</span>
+                  <div
+                    className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900"
+                    key={ri.id}
+                  >
+                    <span className="min-w-0 flex-1 truncate font-semibold text-xs">
+                      {qItem?.productName || `Kalem ${idx + 1}`}
+                    </span>
                     <input
-                      className="w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-center text-xs"
+                      className="w-20 rounded-lg border border-zinc-200 px-2 py-1 text-center text-xs dark:border-zinc-800"
                       min="0.01"
                       onChange={(e) => {
                         const v = Number.parseFloat(e.target.value) || 0;
-                        setRevisionItems((prev) => prev.map((p) => (p.id === ri.id ? { ...p, quantity: v } : p)));
+                        setRevisionItems((prev) =>
+                          prev.map((p) =>
+                            p.id === ri.id ? { ...p, quantity: v } : p
+                          )
+                        );
                       }}
                       step="0.01"
                       type="number"
                       value={ri.quantity}
                     />
                     <input
-                      className="w-24 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-right text-xs font-semibold"
+                      className="w-24 rounded-lg border border-zinc-200 px-2 py-1 text-right font-semibold text-xs dark:border-zinc-800"
                       min="0"
                       onChange={(e) => {
                         const v = Number.parseFloat(e.target.value) || 0;
-                        setRevisionItems((prev) => prev.map((p) => (p.id === ri.id ? { ...p, unitPrice: v } : p)));
+                        setRevisionItems((prev) =>
+                          prev.map((p) =>
+                            p.id === ri.id ? { ...p, unitPrice: v } : p
+                          )
+                        );
                       }}
                       step="0.01"
                       type="number"
@@ -2705,18 +2797,22 @@ function QuoteDetailDrawer({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Vade Tarihi (Ödeme)</label>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                  Vade Tarihi (Ödeme)
+                </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 p-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800"
                   onChange={(e) => setRevisionPaymentDueDate(e.target.value)}
                   type="date"
                   value={revisionPaymentDueDate}
                 />
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Revizyon Gerekçesi / Notu</label>
+                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                  Revizyon Gerekçesi / Notu
+                </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-200 p-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800"
                   onChange={(e) => setRevisionNotes(e.target.value)}
                   placeholder="Örn: Müşteri %5 ek iskonto talep etti"
                   rows={2}
@@ -2727,7 +2823,7 @@ function QuoteDetailDrawer({
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
-                className="rounded-xl px-3.5 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-xl px-3.5 py-2 font-semibold text-xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 onClick={() => setIsRevisionOpen(false)}
                 type="button"
               >
@@ -2748,43 +2844,94 @@ function QuoteDetailDrawer({
       {/* Convert Preview Modal */}
       {isConvertPreviewOpen && quote && (
         <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="my-auto w-full max-w-3xl space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
+          <div className="my-auto w-full max-w-3xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Siparişe Dönüştür — Önizleme & Düzenle</h3>
-              <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100" onClick={() => setIsConvertPreviewOpen(false)} type="button">
+              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                Siparişe Dönüştür — Önizleme & Düzenle
+              </h3>
+              <button
+                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
+                onClick={() => setIsConvertPreviewOpen(false)}
+                type="button"
+              >
                 <X className="h-4 w-4" />
               </button>
             </div>
             {quote.convertedOrderId ? (
-              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-700">Bu teklif zaten siparişe çevrilmiş ({quote.convertedOrderNumber || quote.convertedOrderId}). Tekrar dönüştürülemez.</div>
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 font-semibold text-rose-700 text-xs">
+                Bu teklif zaten siparişe çevrilmiş (
+                {quote.convertedOrderNumber || quote.convertedOrderId}). Tekrar
+                dönüştürülemez.
+              </div>
             ) : (
               <>
-                <div className="space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40 p-3">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">Kalemler — Seç / Miktar / Fiyat</div>
+                <div className="space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+                  <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
+                    Kalemler — Seç / Miktar / Fiyat
+                  </div>
                   {convertItems.map((ci) => (
-                    <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2" key={ci.quoteItemId}>
+                    <div
+                      className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900"
+                      key={ci.quoteItemId}
+                    >
                       <label className="flex items-center gap-1.5 text-xs">
                         <input
                           checked={ci.isSelected}
-                          onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, isSelected: e.target.checked } : p)))}
+                          onChange={(e) =>
+                            setConvertItems((prev) =>
+                              prev.map((p) =>
+                                p.quoteItemId === ci.quoteItemId
+                                  ? { ...p, isSelected: e.target.checked }
+                                  : p
+                              )
+                            )
+                          }
                           type="checkbox"
                         />
-                        <span className={`truncate font-semibold ${ci.isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 line-through"}`}>{ci.productName}</span>
+                        <span
+                          className={`truncate font-semibold ${ci.isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 line-through"}`}
+                        >
+                          {ci.productName}
+                        </span>
                       </label>
                       <input
-                        className="ml-auto w-16 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-center text-xs disabled:opacity-40"
+                        className="ml-auto w-16 rounded-lg border border-zinc-200 px-2 py-1 text-center text-xs disabled:opacity-40 dark:border-zinc-800"
                         disabled={!ci.isSelected}
                         min="0.01"
-                        onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, quantity: Number.parseFloat(e.target.value) || 0 } : p)))}
+                        onChange={(e) =>
+                          setConvertItems((prev) =>
+                            prev.map((p) =>
+                              p.quoteItemId === ci.quoteItemId
+                                ? {
+                                    ...p,
+                                    quantity:
+                                      Number.parseFloat(e.target.value) || 0,
+                                  }
+                                : p
+                            )
+                          )
+                        }
                         step="0.01"
                         type="number"
                         value={ci.quantity}
                       />
                       <input
-                        className="w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-right text-xs font-semibold disabled:opacity-40"
+                        className="w-20 rounded-lg border border-zinc-200 px-2 py-1 text-right font-semibold text-xs disabled:opacity-40 dark:border-zinc-800"
                         disabled={!ci.isSelected}
                         min="0"
-                        onChange={(e) => setConvertItems((prev) => prev.map((p) => (p.quoteItemId === ci.quoteItemId ? { ...p, unitPrice: Number.parseFloat(e.target.value) || 0 } : p)))}
+                        onChange={(e) =>
+                          setConvertItems((prev) =>
+                            prev.map((p) =>
+                              p.quoteItemId === ci.quoteItemId
+                                ? {
+                                    ...p,
+                                    unitPrice:
+                                      Number.parseFloat(e.target.value) || 0,
+                                  }
+                                : p
+                            )
+                          )
+                        }
                         step="0.01"
                         type="number"
                         value={ci.unitPrice}
@@ -2794,9 +2941,11 @@ function QuoteDetailDrawer({
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   <div>
-                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Kargo Ücreti</label>
+                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      Kargo Ücreti
+                    </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs"
+                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
                       min="0"
                       onChange={(e) => setConvertShippingFee(e.target.value)}
                       step="0.01"
@@ -2805,12 +2954,25 @@ function QuoteDetailDrawer({
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Vade Tarihi</label>
-                    <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertDueDate(e.target.value)} type="date" value={convertDueDate} />
+                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      Vade Tarihi
+                    </label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
+                      onChange={(e) => setConvertDueDate(e.target.value)}
+                      type="date"
+                      value={convertDueDate}
+                    />
                   </div>
                   <div>
-                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Ödeme Yöntemi</label>
-                    <select className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertPaymentMethod(e.target.value)} value={convertPaymentMethod}>
+                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      Ödeme Yöntemi
+                    </label>
+                    <select
+                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
+                      onChange={(e) => setConvertPaymentMethod(e.target.value)}
+                      value={convertPaymentMethod}
+                    >
                       <option value="BankTransfer">Havale / EFT</option>
                       <option value="CreditCard">Kredi Kartı</option>
                       <option value="Cash">Nakit</option>
@@ -2819,21 +2981,35 @@ function QuoteDetailDrawer({
                     </select>
                   </div>
                   <div>
-                    <label className="mb-1 block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Sipariş Notu</label>
-                    <input className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 px-3 py-2 text-xs" onChange={(e) => setConvertNotes(e.target.value)} placeholder="Not" type="text" value={convertNotes} />
+                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      Sipariş Notu
+                    </label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
+                      onChange={(e) => setConvertNotes(e.target.value)}
+                      placeholder="Not"
+                      type="text"
+                      value={convertNotes}
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-2">
-                  <button className="rounded-xl px-4 py-2 text-xs font-semibold text-zinc-600 hover:bg-zinc-100" onClick={() => setIsConvertPreviewOpen(false)} type="button">
+                  <button
+                    className="rounded-xl px-4 py-2 font-semibold text-xs text-zinc-600 hover:bg-zinc-100"
+                    onClick={() => setIsConvertPreviewOpen(false)}
+                    type="button"
+                  >
                     Vazgeç
                   </button>
                   <button
-                    className="rounded-xl bg-emerald-600 px-5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+                    className="rounded-xl bg-emerald-600 px-5 py-2 font-semibold text-white text-xs hover:bg-emerald-700 disabled:opacity-50"
                     disabled={isActionLoading || !!quote.convertedOrderId}
                     onClick={handleConfirmConvert}
                     type="button"
                   >
-                    {isActionLoading ? "Dönüştürülüyor..." : "Onayla & Siparişe Dönüştür"}
+                    {isActionLoading
+                      ? "Dönüştürülüyor..."
+                      : "Onayla & Siparişe Dönüştür"}
                   </button>
                 </div>
               </>
@@ -2979,23 +3155,23 @@ function QuoteTemplatesModal({
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-2xl flex-col space-y-5 overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-2xl sm:p-6">
-        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 dark:border-zinc-800/90 border-b pb-4">
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-2xl flex-col space-y-5 overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b pb-4 dark:border-zinc-800/90">
           <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Settings className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h3 className="truncate font-bold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">
+              <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-zinc-100">
                 Teklif Şart & Banka Şablonları
               </h3>
-              <p className="truncate text-zinc-500 dark:text-zinc-400 text-xs">
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                 Tekliflerde tek tıkla kullanılan hazır şartnameler
               </p>
             </div>
           </div>
           <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -3007,11 +3183,11 @@ function QuoteTemplatesModal({
         <div className="custom-scrollbar max-h-48 space-y-2 overflow-y-auto">
           {templates.map((t) => (
             <div
-              className="flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 p-3"
+              className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30"
               key={t.id}
             >
               <div className="flex items-center gap-2">
-                <span className="font-bold text-zinc-800 dark:text-zinc-200 text-xs">
+                <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                   {t.name}
                 </span>
                 {t.isDefault && (
@@ -3029,7 +3205,7 @@ function QuoteTemplatesModal({
                   Düzenle
                 </button>
                 <button
-                  className="p-1 text-zinc-400 dark:text-zinc-500 transition hover:text-rose-600"
+                  className="p-1 text-zinc-400 transition hover:text-rose-600 dark:text-zinc-500"
                   onClick={() => handleDelete(t.id)}
                   type="button"
                 >
@@ -3042,10 +3218,10 @@ function QuoteTemplatesModal({
 
         {/* Create/Edit Form */}
         <form
-          className="space-y-3 border-zinc-200 dark:border-zinc-800 border-t pt-3"
+          className="space-y-3 border-zinc-200 border-t pt-3 dark:border-zinc-800"
           onSubmit={handleSave}
         >
-          <h4 className="font-bold text-zinc-800 dark:text-zinc-200 text-xs">
+          <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
             {editingId ? "Şablonu Düzenle" : "Yeni Şablon Ekle"}
           </h4>
 
@@ -3054,7 +3230,7 @@ function QuoteTemplatesModal({
               Şablon Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Standart Kurumsal Lisans Şartnamesi"
               required
@@ -3069,7 +3245,7 @@ function QuoteTemplatesModal({
                 Ödeme Şartları
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setPaymentTerms(e.target.value)}
                 rows={2}
                 value={paymentTerms}
@@ -3080,7 +3256,7 @@ function QuoteTemplatesModal({
                 Teslimat Koşulları
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none"
+                className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setDeliveryTerms(e.target.value)}
                 rows={2}
                 value={deliveryTerms}
@@ -3093,14 +3269,14 @@ function QuoteTemplatesModal({
               Banka & IBAN Bilgileri
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
               onChange={(e) => setBankDetails(e.target.value)}
               rows={2}
               value={bankDetails}
             />
           </div>
 
-          <label className="flex cursor-pointer items-center gap-2 pt-1 font-semibold text-zinc-700 dark:text-zinc-300 text-xs">
+          <label className="flex cursor-pointer items-center gap-2 pt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
             <input
               checked={isDefault}
               className="rounded text-blue-600 focus:ring-0"
@@ -3835,7 +4011,7 @@ function QuotePrintModal({
             </div>
           ) : (
             <div
-              className="my-1 w-full max-w-[210mm] shrink-0 select-text space-y-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-xl sm:p-10"
+              className="my-1 w-full max-w-[210mm] shrink-0 select-text space-y-5 rounded-xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-xl sm:p-10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               style={{
                 transform: `scale(${zoom / 100})`,
                 transformOrigin: "top center",
@@ -3851,7 +4027,7 @@ function QuotePrintModal({
                         ? activeTenant.name.charAt(0).toUpperCase()
                         : "C"}
                     </div>
-                    <h1 className="font-black text-lg text-zinc-900 dark:text-zinc-100 uppercase tracking-tight">
+                    <h1 className="font-black text-lg text-zinc-900 uppercase tracking-tight dark:text-zinc-100">
                       {activeTenant?.name || "CRM ŞİRKETİ"}
                     </h1>
                   </div>
@@ -3861,8 +4037,8 @@ function QuotePrintModal({
                 </div>
 
                 <div className="space-y-1 text-right">
-                  <div className="inline-flex items-center gap-2 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5">
-                    <span className="font-black font-mono text-zinc-900 dark:text-zinc-100 text-xs tracking-wider">
+                  <div className="inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 dark:border-zinc-800 dark:bg-zinc-800">
+                    <span className="font-black font-mono text-xs text-zinc-900 tracking-wider dark:text-zinc-100">
                       {quote.quoteNumber}
                     </span>
                     <span className="rounded bg-primary px-1.5 py-0.2 font-bold text-[8px] text-primary-foreground">
@@ -3896,11 +4072,11 @@ function QuotePrintModal({
 
               {/* 2. Client & Issuer Party Cards */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="space-y-0.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-800/40 p-3">
+                <div className="space-y-0.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
                   <span className="block font-extrabold text-[8px] text-blue-700 uppercase tracking-wider">
                     SAYIN / MÜŞTERİ (ALICI)
                   </span>
-                  <h3 className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs leading-snug">
+                  <h3 className="font-extrabold text-xs text-zinc-900 leading-snug dark:text-zinc-100">
                     {quote.customerName}
                   </h3>
                   <p className="font-semibold text-[10px] text-zinc-700 dark:text-zinc-300">
@@ -3916,11 +4092,11 @@ function QuotePrintModal({
                   )}
                 </div>
 
-                <div className="space-y-0.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-800/40 p-3">
-                  <span className="block font-extrabold text-[8px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                <div className="space-y-0.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+                  <span className="block font-extrabold text-[8px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
                     TEKLİFİ VEREN / TEMSİLCİ
                   </span>
-                  <h3 className="font-extrabold text-zinc-900 dark:text-zinc-100 text-xs leading-snug">
+                  <h3 className="font-extrabold text-xs text-zinc-900 leading-snug dark:text-zinc-100">
                     {quote.assignedUserName || "Satış Departmanı"}
                   </h3>
                   <p className="font-medium text-[10px] text-zinc-600 dark:text-zinc-400">
@@ -3954,7 +4130,7 @@ function QuotePrintModal({
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 font-medium text-zinc-700 dark:text-zinc-300">
+                  <tbody className="divide-y divide-zinc-200 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                     {quote.items.map((item, idx) => (
                       <tr
                         className={
@@ -3970,7 +4146,7 @@ function QuotePrintModal({
                           {idx + 1}
                         </td>
                         <td className="px-2.5 py-1.5">
-                          <span className="block font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+                          <span className="block font-bold text-zinc-900 leading-tight dark:text-zinc-100">
                             {item.productName}
                           </span>
                           {item.sku && (
@@ -4015,19 +4191,19 @@ function QuotePrintModal({
               {/* 4. Financial Calculations & Tax Breakdown Matrix */}
               <div className="grid grid-cols-1 gap-3 pt-0.5 sm:grid-cols-2">
                 {/* Left: VAT Rate Breakdown Box */}
-                <div className="space-y-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 p-2.5">
-                  <span className="block font-extrabold text-[8px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                <div className="space-y-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 dark:border-zinc-800 dark:bg-zinc-800/30">
+                  <span className="block font-extrabold text-[8px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
                     KDV ORAN & MATRAH DAĞILIMI
                   </span>
                   <table className="w-full text-left text-[9px]">
                     <thead>
-                      <tr className="border-zinc-200 dark:border-zinc-800 border-b font-bold text-zinc-500 dark:text-zinc-400">
+                      <tr className="border-zinc-200 border-b font-bold text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
                         <th className="pb-1">Oran</th>
                         <th className="pb-1 text-right">Matrah</th>
                         <th className="pb-1 text-right">KDV Tutarı</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800 font-medium text-zinc-700 dark:text-zinc-300">
+                    <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                       {taxBreakdown.map((t) => (
                         <tr key={t.rate}>
                           <td className="py-0.5 font-bold">%{t.rate}</td>
@@ -4044,7 +4220,7 @@ function QuotePrintModal({
                 </div>
 
                 {/* Right: Totals Box */}
-                <div className="space-y-1 rounded-xl border-2 border-slate-900 bg-zinc-50 dark:bg-zinc-800/50 p-3 text-[11px]">
+                <div className="space-y-1 rounded-xl border-2 border-slate-900 bg-zinc-50 p-3 text-[11px] dark:bg-zinc-800/50">
                   <div className="flex justify-between font-medium text-zinc-600 dark:text-zinc-400">
                     <span>Ara Toplam (KDV Hariç):</span>
                     <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -4069,7 +4245,7 @@ function QuotePrintModal({
                   </div>
 
                   <div className="flex items-baseline justify-between border-slate-900 border-t-2 pt-1.5">
-                    <span className="font-black text-[11px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                    <span className="font-black text-[11px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       GENEL TOPLAM:
                     </span>
                     <span className="font-black text-blue-700 text-sm">
@@ -4080,46 +4256,46 @@ function QuotePrintModal({
               </div>
 
               {/* 5. Terms & Banking Details */}
-              <div className="grid grid-cols-1 gap-2.5 text-[9px] text-zinc-700 dark:text-zinc-300 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2.5 text-[9px] text-zinc-700 sm:grid-cols-2 dark:text-zinc-300">
                 {quote.paymentTerms && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2">
-                    <span className="block font-bold text-[8px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+                    <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       ÖDEME VE VADE KOŞULLARI:
                     </span>
-                    <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    <p className="whitespace-pre-line text-zinc-600 leading-relaxed dark:text-zinc-400">
                       {quote.paymentTerms}
                     </p>
                   </div>
                 )}
 
                 {quote.deliveryTerms && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2">
-                    <span className="block font-bold text-[8px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+                    <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       TESLİMAT VE SEVKİYAT ŞARTLARI:
                     </span>
-                    <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    <p className="whitespace-pre-line text-zinc-600 leading-relaxed dark:text-zinc-400">
                       {quote.deliveryTerms}
                     </p>
                   </div>
                 )}
 
                 {quote.bankDetails && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 p-2 font-mono sm:col-span-2">
-                    <span className="block font-bold font-sans text-[8px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-2 font-mono sm:col-span-2 dark:border-zinc-800 dark:bg-zinc-800/50">
+                    <span className="block font-bold font-sans text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       RESMİ BANKA VE HESAP (IBAN) BİLGİLERİ:
                     </span>
-                    <p className="whitespace-pre-line text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                    <p className="whitespace-pre-line text-zinc-700 leading-relaxed dark:text-zinc-300">
                       {quote.bankDetails}
                     </p>
                   </div>
                 )}
 
                 {quote.termsAndConditions && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 sm:col-span-2">
-                    <span className="block font-bold text-[8px] text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 sm:col-span-2 dark:border-zinc-800 dark:bg-zinc-900">
+                    <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       GENEL HÜKÜMLER VE GARANTİ ŞARTLARI:
                     </span>
-                    <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    <p className="whitespace-pre-line text-zinc-600 leading-relaxed dark:text-zinc-400">
                       {quote.termsAndConditions}
                     </p>
                   </div>
@@ -4128,28 +4304,28 @@ function QuotePrintModal({
 
               {/* 6. Stamp / Signature Box */}
               <div className="grid grid-cols-2 gap-6 pt-2 text-center text-[9px]">
-                <div className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-2.5">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                <div className="rounded-xl border border-zinc-300 bg-white p-2.5 dark:border-zinc-700 dark:bg-zinc-900">
+                  <p className="font-bold text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                     TEKLİFİ DÜZENLEYEN (FİRMA YETKİLİSİ)
                   </p>
                   <p className="mt-0.5 text-[8px] text-zinc-500 dark:text-zinc-400">
                     Yetkili Kaşe & İmza
                   </p>
-                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 dark:border-zinc-700 border-b border-dashed pb-1">
+                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 border-b border-dashed pb-1 dark:border-zinc-700">
                     <span className="text-[8px] text-zinc-400 dark:text-zinc-500">
                       {quote.assignedUserName || activeTenant?.name}
                     </span>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-2.5">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                <div className="rounded-xl border border-zinc-300 bg-white p-2.5 dark:border-zinc-700 dark:bg-zinc-900">
+                  <p className="font-bold text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                     TEKLİFİ ONAYLAYAN (MÜŞTERİ YETKİLİSİ)
                   </p>
                   <p className="mt-0.5 text-[8px] text-zinc-500 dark:text-zinc-400">
                     Kabul & Onay İmzası
                   </p>
-                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 dark:border-zinc-700 border-b border-dashed pb-1">
+                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 border-b border-dashed pb-1 dark:border-zinc-700">
                     <span className="text-[8px] text-zinc-400 dark:text-zinc-500">
                       {quote.customerName}
                     </span>
@@ -4158,7 +4334,7 @@ function QuotePrintModal({
               </div>
 
               {/* 7. Document Footer Bar */}
-              <div className="mt-4 flex items-center justify-between border-zinc-200 dark:border-zinc-800 border-t pt-2.5 text-[8px] text-zinc-400 dark:text-zinc-500">
+              <div className="mt-4 flex items-center justify-between border-zinc-200 border-t pt-2.5 text-[8px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
                 <span>
                   Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik
                   olarak üretilmiştir.
