@@ -2,13 +2,10 @@
 "use client";
 
 import {
-  AlertCircle,
   ArrowRight,
   Briefcase,
-  Calendar,
   CheckCircle2,
   Clock,
-  DollarSign,
   FolderPlus,
   Layers,
   LayoutGrid,
@@ -16,10 +13,7 @@ import {
   RotateCcw,
   Search,
   Table as TableIcon,
-  Trash2,
-  TrendingUp,
   User,
-  Users,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -71,7 +65,9 @@ export default function ProjectsPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setLoading(true);
     try {
       const [projRes, empRes, custRes] = await Promise.all([
@@ -108,7 +104,9 @@ export default function ProjectsPage() {
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !key.trim() || !activeTenant || submitting) return;
+    if (!(name.trim() && key.trim() && activeTenant) || submitting) {
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -117,17 +115,17 @@ export default function ProjectsPage() {
 
       const res = await ApiClient.createProject(
         {
-          name: name.trim(),
-          key: key.trim().toUpperCase(),
-          description: description.trim() || undefined,
-          status,
-          leadUserId: leadUserId || undefined,
-          leadUserName: leadUser?.fullName || undefined,
-          customerId: customerId || undefined,
-          customerName: customer?.name || undefined,
           budget: Number(budget) || 0,
           currency,
+          customerId: customerId || undefined,
+          customerName: customer?.name || undefined,
+          description: description.trim() || undefined,
+          key: key.trim().toUpperCase(),
+          leadUserId: leadUserId || undefined,
+          leadUserName: leadUser?.fullName || undefined,
+          name: name.trim(),
           startDate: startDate ? new Date(startDate).toISOString() : undefined,
+          status,
           targetEndDate: targetEndDate
             ? new Date(targetEndDate).toISOString()
             : undefined,
@@ -158,8 +156,14 @@ export default function ProjectsPage() {
     }
   };
 
-  const totalActiveItems = projects.reduce((acc, p) => acc + p.activeItemsCount, 0);
-  const totalCompletedItems = projects.reduce((acc, p) => acc + p.completedItemsCount, 0);
+  const totalActiveItems = projects.reduce(
+    (acc, p) => acc + p.activeItemsCount,
+    0
+  );
+  const totalCompletedItems = projects.reduce(
+    (acc, p) => acc + p.completedItemsCount,
+    0
+  );
   const totalSprints = projects.reduce((acc, p) => acc + p.sprintsCount, 0);
 
   const getStatusBadge = (st: string) => {
@@ -209,7 +213,8 @@ export default function ProjectsPage() {
             Projeler & Agile Backlog
           </h1>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Sprint planlamaları, epikler, iş maddeleri ve CRM entegre görev yönetimi
+            Sprint planlamaları, epikler, iş maddeleri ve CRM entegre görev
+            yönetimi
           </p>
         </div>
 
@@ -308,7 +313,7 @@ export default function ProjectsPage() {
           </div>
 
           <select
-            className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-2 text-xs font-medium text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             onChange={(e) => setStatusFilter(e.target.value)}
             value={statusFilter}
           >
@@ -320,7 +325,7 @@ export default function ProjectsPage() {
           </select>
         </div>
 
-        <div className="flex items-center gap-1.5 border-t border-zinc-100 pt-3 sm:border-t-0 sm:pt-0 dark:border-zinc-800">
+        <div className="flex items-center gap-1.5 border-zinc-100 border-t pt-3 sm:border-t-0 sm:pt-0 dark:border-zinc-800">
           <button
             className={`rounded-xl p-2 transition ${
               viewMode === "grid"
@@ -359,7 +364,7 @@ export default function ProjectsPage() {
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
             <Briefcase className="h-7 w-7" />
           </div>
@@ -367,7 +372,8 @@ export default function ProjectsPage() {
             Henüz proje bulunmuyor
           </h3>
           <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
-            Yeni bir proje oluşturarak sprintler, epikler ve iş maddeleri tanımlayabilirsiniz.
+            Yeni bir proje oluşturarak sprintler, epikler ve iş maddeleri
+            tanımlayabilirsiniz.
           </p>
           <button
             className="mt-5 flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-violet-700"
@@ -382,7 +388,10 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((proj) => {
             const total = proj.activeItemsCount + proj.completedItemsCount;
-            const progress = total > 0 ? Math.round((proj.completedItemsCount / total) * 100) : 0;
+            const progress =
+              total > 0
+                ? Math.round((proj.completedItemsCount / total) * 100)
+                : 0;
 
             return (
               <Link
@@ -393,7 +402,7 @@ export default function ProjectsPage() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-100 font-bold text-xs text-violet-700 dark:bg-violet-950/80 dark:text-violet-300">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs dark:bg-violet-950/80 dark:text-violet-300">
                         {proj.key}
                       </span>
                       <div>
@@ -442,7 +451,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] text-zinc-400 dark:border-zinc-800/80">
+                <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800/80">
                   <div className="flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5" />
                     <span>{proj.leadUserName || "Atanmamış"}</span>
@@ -461,7 +470,7 @@ export default function ProjectsPage() {
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-zinc-200/80 bg-zinc-50/50 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
+              <thead className="border-zinc-200/80 border-b bg-zinc-50/50 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
                 <tr>
                   <th className="px-4 py-3">Anahtar</th>
                   <th className="px-4 py-3">Proje Adı</th>
@@ -506,7 +515,8 @@ export default function ProjectsPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
-                      {proj.activeItemsCount} açık / {proj.completedItemsCount} bitti
+                      {proj.activeItemsCount} açık / {proj.completedItemsCount}{" "}
+                      bitti
                     </td>
                     <td className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
                       {proj.budget > 0
@@ -533,7 +543,7 @@ export default function ProjectsPage() {
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
           <div className="w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
                   <FolderPlus className="h-5 w-5" />
@@ -551,7 +561,10 @@ export default function ProjectsPage() {
               </button>
             </div>
 
-            <form className="mt-4 space-y-4 text-xs" onSubmit={handleCreateProject}>
+            <form
+              className="mt-4 space-y-4 text-xs"
+              onSubmit={handleCreateProject}
+            >
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2 space-y-1">
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
@@ -572,7 +585,7 @@ export default function ProjectsPage() {
                     Anahtar (Key) *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs font-bold uppercase text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 font-bold text-xs text-zinc-900 uppercase focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     maxLength={10}
                     onChange={(e) => setKey(e.target.value.toUpperCase())}
                     placeholder="MOB"
@@ -690,7 +703,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-end gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+              <div className="mt-6 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
                 <button
                   className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateModalOpen(false)}
@@ -700,7 +713,7 @@ export default function ProjectsPage() {
                 </button>
                 <button
                   className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white shadow-xs hover:bg-violet-700 active:scale-95 disabled:opacity-50"
-                  disabled={!name.trim() || !key.trim() || submitting}
+                  disabled={!(name.trim() && key.trim()) || submitting}
                   type="submit"
                 >
                   {submitting ? "Kaydediliyor..." : "Projeyi Oluştur"}

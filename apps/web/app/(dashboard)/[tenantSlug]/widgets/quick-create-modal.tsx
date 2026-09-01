@@ -59,7 +59,9 @@ export function QuickCreateModal({
 
   // Close on Escape key - called unconditionally at top level
   useEffect(() => {
-    if (!(isOpen && type)) return;
+    if (!(isOpen && type)) {
+      return;
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -176,7 +178,7 @@ export function QuickCreateModal({
 
       <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-zinc-100 p-4 sm:p-5 dark:border-zinc-800">
+        <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b p-4 sm:p-5 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               {type === "lead" && <UserPlus className="h-4.5 w-4.5" />}
@@ -189,7 +191,7 @@ export function QuickCreateModal({
               {type === "leave" && <Palmtree className="h-4.5 w-4.5" />}
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <h2 className="truncate font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 {type === "lead" && "Hızlı Müşteri Adayı (Lead) Ekle"}
                 {type === "deal" && "Yeni Satış Fırsatı Oluştur"}
                 {type === "task" && "Hızlı Görev / Hatırlatıcı Ekle"}
@@ -199,7 +201,7 @@ export function QuickCreateModal({
                 {type === "meeting" && "Randevu & Toplantı Planla"}
                 {type === "leave" && "Yeni İzin Talebi"}
               </h2>
-              <p className="truncate text-zinc-500 text-xs dark:text-zinc-400">
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                 Temel bilgileri girerek saniyeler içinde kaydedin
               </p>
             </div>
@@ -221,13 +223,13 @@ export function QuickCreateModal({
           <div className="space-y-3">
             {/* Title / Name */}
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 {type === "lead" || type === "customer"
                   ? "Ad & Soyad / Müşteri Adı *"
                   : "Başlık / İsim *"}
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
@@ -244,11 +246,11 @@ export function QuickCreateModal({
 
             {/* Company */}
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Firma / Kuruluş
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 onChange={(e) =>
                   setFormData({ ...formData, company: e.target.value })
                 }
@@ -262,7 +264,7 @@ export function QuickCreateModal({
             {(type === "deal" || type === "proposal" || type === "order") && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Tahmini Tutar (₺)
                   </label>
                   <NumberInput
@@ -274,7 +276,7 @@ export function QuickCreateModal({
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Kapanış Tarihi
                   </label>
                   <DatePicker
@@ -291,11 +293,11 @@ export function QuickCreateModal({
             {(type === "lead" || type === "customer") && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     E-Posta Adresi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
@@ -305,13 +307,11 @@ export function QuickCreateModal({
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Telefon Numarası
                   </label>
                   <PhoneInput
-                    onChange={(val) =>
-                      setFormData({ ...formData, phone: val })
-                    }
+                    onChange={(val) => setFormData({ ...formData, phone: val })}
                     placeholder="+90 (5XX) XXX XX XX"
                     value={formData.phone}
                   />
@@ -323,7 +323,7 @@ export function QuickCreateModal({
             {type === "task" && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Öncelik Seviyesi
                   </label>
                   <Select
@@ -344,7 +344,7 @@ export function QuickCreateModal({
                   </Select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                  <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Teslim Tarihi
                   </label>
                   <DatePicker
@@ -359,9 +359,9 @@ export function QuickCreateModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
             <button
-              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-semibold text-zinc-600 text-xs transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >

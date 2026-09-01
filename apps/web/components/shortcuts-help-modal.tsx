@@ -58,7 +58,7 @@ export function ShortcutsHelpModal({
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/70 p-4 backdrop-blur-sm">
       <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-2xl border border-zinc-200/80 bg-white p-5 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3.5 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               <Keyboard className="h-4.5 w-4.5" />
@@ -67,7 +67,7 @@ export function ShortcutsHelpModal({
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Klavye Kısayolları Kılavuzu
               </h3>
-              <p className="text-zinc-500 text-[11px] dark:text-zinc-400">
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 CRM içinde hızlı ve etkili gezinme için klavye komutları
               </p>
             </div>
@@ -94,7 +94,7 @@ export function ShortcutsHelpModal({
                     className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/70 px-3 py-2 dark:border-zinc-800/80 dark:bg-zinc-800/40"
                     key={idx}
                   >
-                    <span className="font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                    <span className="font-medium text-xs text-zinc-700 dark:text-zinc-300">
                       {item.label}
                     </span>
                     <div className="ml-2 flex shrink-0 items-center gap-1">
@@ -115,12 +115,12 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+        <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
           <div className="flex items-center gap-1.5">
             <HelpCircle className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
             <span>
-              Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu
-              kılavuzu açabilirsiniz.
+              Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu kılavuzu
+              açabilirsiniz.
             </span>
           </div>
           <button

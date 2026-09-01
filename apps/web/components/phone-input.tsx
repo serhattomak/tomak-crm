@@ -1,7 +1,7 @@
 /* Hallmark · component: phone-input · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
-import { Check, Phone, AlertCircle } from "lucide-react";
+import { AlertCircle, Check, Phone } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,9 @@ interface PhoneInputProps {
 }
 
 export function formatPhoneNumber(input: string): string {
-  if (!input) return "";
+  if (!input) {
+    return "";
+  }
 
   // Normalize: keep leading plus and numbers only
   const hasPlus = input.trim().startsWith("+");
@@ -57,7 +59,9 @@ export function formatPhoneNumber(input: string): string {
 }
 
 export function validatePhoneNumber(phone: string): boolean {
-  if (!phone) return false;
+  if (!phone) {
+    return false;
+  }
   const digits = phone.replace(/\D/g, "");
   // For TR numbers: 10 digits starting with 5 (e.g. 5321234567) or 12 digits starting with 905
   if (digits.length === 10 && digits.startsWith("5")) {
@@ -84,7 +88,9 @@ export function PhoneInput({
   id,
   name,
 }: PhoneInputProps) {
-  const [displayValue, setDisplayValue] = useState(() => formatPhoneNumber(value));
+  const [displayValue, setDisplayValue] = useState(() =>
+    formatPhoneNumber(value)
+  );
   const [touched, setTouched] = useState(false);
 
   useEffect(() => {
@@ -112,12 +118,12 @@ export function PhoneInput({
         </div>
         <input
           autoFocus={autoFocus}
-          className={`w-full rounded-xl border bg-white py-2 pr-9 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 transition-all focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 ${
+          className={`w-full rounded-xl border bg-white py-2 pr-9 pl-9 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 ${
             showError
               ? "border-rose-400 focus:border-rose-500 dark:border-rose-500"
               : isValid
-              ? "border-emerald-300 focus:border-emerald-500 dark:border-emerald-700"
-              : "border-zinc-200 focus:border-violet-500 dark:border-zinc-700 dark:focus:border-violet-400"
+                ? "border-emerald-300 focus:border-emerald-500 dark:border-emerald-700"
+                : "border-zinc-200 focus:border-violet-500 dark:border-zinc-700 dark:focus:border-violet-400"
           } ${disabled ? "cursor-not-allowed opacity-60" : ""} ${className}`}
           disabled={disabled}
           id={id}
@@ -138,7 +144,7 @@ export function PhoneInput({
         </div>
       </div>
       {showError && (
-        <p className="mt-1 text-[10px] text-rose-500 dark:text-rose-400 animate-in fade-in">
+        <p className="fade-in mt-1 animate-in text-[10px] text-rose-500 dark:text-rose-400">
           Lütfen geçerli bir telefon numarası girin (+90 5XX...)
         </p>
       )}

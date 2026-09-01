@@ -106,7 +106,7 @@ export function DealsTableWidget() {
               <Building2 className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Sıcak Fırsatlar & Teklifler
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -116,7 +116,7 @@ export function DealsTableWidget() {
           </div>
 
           <Link
-            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Tümünü Gör</span>
@@ -137,7 +137,7 @@ export function DealsTableWidget() {
         ) : deals.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-7 text-center">
             <FileSpreadsheet className="mb-2 h-7 w-7 text-zinc-300 dark:text-zinc-600" />
-            <p className="font-semibold text-zinc-700 text-xs dark:text-zinc-300">
+            <p className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
               Henüz fırsat veya teklif bulunmuyor
             </p>
             <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -155,7 +155,7 @@ export function DealsTableWidget() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-zinc-100 font-semibold text-[10px] text-zinc-400 uppercase tracking-wider dark:border-zinc-800">
+                <tr className="border-zinc-100 border-b font-semibold text-[10px] text-zinc-400 uppercase tracking-wider dark:border-zinc-800">
                   <th className="pb-2">Anlaşma & Müşteri</th>
                   <th className="pb-2">Tutar</th>
                   <th className="pb-2">Aşama</th>
@@ -170,7 +170,7 @@ export function DealsTableWidget() {
                     key={deal.id}
                   >
                     <td className="py-2.5 pr-3">
-                      <div className="max-w-[160px] truncate font-bold text-zinc-900 dark:text-zinc-100 sm:max-w-xs">
+                      <div className="max-w-[160px] truncate font-bold text-zinc-900 sm:max-w-xs dark:text-zinc-100">
                         {deal.title}
                       </div>
                       <div className="mt-0.5 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -228,7 +228,7 @@ export function DealsTableWidget() {
         )}
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2.5 font-medium text-[11px] text-zinc-400 dark:border-zinc-800/80 dark:text-zinc-500">
+      <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-zinc-400 dark:border-zinc-800/80 dark:text-zinc-500">
         <span>{deals.length} anlaşmanın potansiyeli:</span>
         <strong className="font-bold text-zinc-800 dark:text-zinc-200">
           ₺{totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}

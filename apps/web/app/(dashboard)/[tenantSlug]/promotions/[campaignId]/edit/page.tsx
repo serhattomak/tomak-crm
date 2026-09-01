@@ -1,28 +1,20 @@
 "use client";
 
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { NumberInput } from "@workspace/ui/components/number-input";
 import {
   AlertCircle,
   ArrowLeft,
-  Calendar,
-  Check,
   Coins,
-  Layers,
   Loader2,
-  Package,
-  Percent,
-  Plus,
   Save,
-  Sparkles,
   Tag,
   Trash2,
-  TrendingUp,
-  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { DatePicker } from "@workspace/ui/components/date-picker";
-import { NumberInput } from "@workspace/ui/components/number-input";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
   ApiClient,
   type CreateCampaignTargetPayload,
@@ -61,7 +53,9 @@ export default function EditCampaignPage() {
   const [triggerType, setTriggerType] = useState<string>("Automatic");
   const [discountValue, setDiscountValue] = useState<number>(20);
   const [minOrderAmount, setMinOrderAmount] = useState<number>(0);
-  const [maxDiscountAmount, setMaxDiscountAmount] = useState<number | undefined>(undefined);
+  const [maxDiscountAmount, setMaxDiscountAmount] = useState<
+    number | undefined
+  >(undefined);
   const [minQuantity, setMinQuantity] = useState<number>(1);
   const [buyQuantity, setBuyQuantity] = useState<number>(2);
   const [getQuantity, setGetQuantity] = useState<number>(1);
@@ -71,12 +65,16 @@ export default function EditCampaignPage() {
   const [isActive, setIsActive] = useState(true);
   const [priority, setPriority] = useState<number>(10);
   const [isStackable, setIsStackable] = useState<boolean>(false);
-  const [totalUsageLimit, setTotalUsageLimit] = useState<number | undefined>(undefined);
+  const [totalUsageLimit, setTotalUsageLimit] = useState<number | undefined>(
+    undefined
+  );
   const [perCustomerUsageLimit, setPerCustomerUsageLimit] = useState<number>(1);
   const [targets, setTargets] = useState<CreateCampaignTargetPayload[]>([]);
 
   useEffect(() => {
-    if (!activeTenant || !campaignId) return;
+    if (!(activeTenant && campaignId)) {
+      return;
+    }
 
     const loadData = async () => {
       setLoading(true);
@@ -110,10 +108,10 @@ export default function EditCampaignPage() {
           setPerCustomerUsageLimit(c.perCustomerUsageLimit || 1);
           setTargets(
             c.targets.map((t) => ({
-              targetType: t.targetType,
+              ruleCondition: t.ruleCondition,
               targetId: t.targetId,
               targetName: t.targetName,
-              ruleCondition: t.ruleCondition,
+              targetType: t.targetType,
             }))
           );
         }
@@ -136,32 +134,48 @@ export default function EditCampaignPage() {
 
   const addProductTarget = (productId: string) => {
     const prod = products.find((p) => p.id === productId);
-    if (!prod) return;
-    if (targets.some((t) => t.targetType === "Product" && t.targetId === productId)) return;
+    if (!prod) {
+      return;
+    }
+    if (
+      targets.some(
+        (t) => t.targetType === "Product" && t.targetId === productId
+      )
+    ) {
+      return;
+    }
 
     setTargets((prev) => [
       ...prev,
       {
-        targetType: "Product",
+        ruleCondition: "Include",
         targetId: productId,
         targetName: prod.name,
-        ruleCondition: "Include",
+        targetType: "Product",
       },
     ]);
   };
 
   const addCategoryTarget = (categoryId: string) => {
     const cat = categories.find((c) => c.id === categoryId);
-    if (!cat) return;
-    if (targets.some((t) => t.targetType === "Category" && t.targetId === categoryId)) return;
+    if (!cat) {
+      return;
+    }
+    if (
+      targets.some(
+        (t) => t.targetType === "Category" && t.targetId === categoryId
+      )
+    ) {
+      return;
+    }
 
     setTargets((prev) => [
       ...prev,
       {
-        targetType: "Category",
+        ruleCondition: "Include",
         targetId: categoryId,
         targetName: cat.name,
-        ruleCondition: "Include",
+        targetType: "Category",
       },
     ]);
   };
@@ -172,35 +186,43 @@ export default function EditCampaignPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setSaving(true);
     setError(null);
 
     try {
       const payload: UpdateCampaignPayload = {
-        name: name.trim(),
+        buyQuantity: type === "BuyXGetY" ? buyQuantity : undefined,
         code: code.trim() || undefined,
         description: description.trim() || undefined,
-        type,
-        triggerType,
         discountValue,
-        minOrderAmount,
-        maxDiscountAmount: maxDiscountAmount || undefined,
-        minQuantity,
-        buyQuantity: type === "BuyXGetY" ? buyQuantity : undefined,
-        getQuantity: type === "BuyXGetY" ? getQuantity : undefined,
-        getDiscountRate: type === "BuyXGetY" ? getDiscountRate : undefined,
-        startDate: startDate ? new Date(startDate).toISOString() : new Date().toISOString(),
         endDate: endDate ? new Date(endDate).toISOString() : undefined,
+        getDiscountRate: type === "BuyXGetY" ? getDiscountRate : undefined,
+        getQuantity: type === "BuyXGetY" ? getQuantity : undefined,
         isActive,
-        priority,
         isStackable,
-        totalUsageLimit: totalUsageLimit || undefined,
+        maxDiscountAmount: maxDiscountAmount || undefined,
+        minOrderAmount,
+        minQuantity,
+        name: name.trim(),
         perCustomerUsageLimit,
+        priority,
+        startDate: startDate
+          ? new Date(startDate).toISOString()
+          : new Date().toISOString(),
         targets,
+        totalUsageLimit: totalUsageLimit || undefined,
+        triggerType,
+        type,
       };
 
-      const res = await ApiClient.updateCampaign(campaignId, payload, activeTenant.id);
+      const res = await ApiClient.updateCampaign(
+        campaignId,
+        payload,
+        activeTenant.id
+      );
       if (res.success) {
         router.push(`/${tenantSlug}/promotions`);
       } else {
@@ -224,16 +246,16 @@ export default function EditCampaignPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 pb-16">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
+      <div className="flex items-center justify-between border-zinc-200/80 border-b pb-4 dark:border-zinc-800">
         <div className="flex items-center gap-3">
           <Link
-            href={`/${tenantSlug}/promotions`}
             className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            href={`/${tenantSlug}/promotions`}
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+            <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-50">
               Kampanyayı Düzenle
             </h1>
             <p className="text-xs text-zinc-500">{name}</p>
@@ -242,113 +264,113 @@ export default function EditCampaignPage() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
+        <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-red-700 text-xs dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Basic Section */}
         <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
             <Tag className="h-4 w-4 text-violet-600" />
             Genel Bilgiler & Zamanlama
           </h2>
 
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Kampanya Adı *
               </label>
               <input
-                type="text"
-                value={name}
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                type="text"
+                value={name}
               />
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Dahili Takip Kodu
                 </label>
                 <input
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
                   type="text"
                   value={code}
-                  onChange={(e) => setCode(e.target.value.toUpperCase())}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm font-mono uppercase text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Öncelik Sırası (Priority)
                 </label>
                 <NumberInput
-                  value={priority}
-                  onChange={(val) => setPriority(val)}
-                  min={0}
-                  step={5}
                   className="w-full"
+                  min={0}
+                  onChange={(val) => setPriority(val)}
+                  step={5}
+                  value={priority}
                 />
               </div>
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Açıklama
               </label>
               <textarea
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                onChange={(e) => setDescription(e.target.value)}
                 rows={2}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
               />
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Başlangıç Tarihi *
                 </label>
                 <DatePicker
-                  value={startDate}
+                  className="w-full"
                   onChange={(val) => setStartDate(val)}
                   placeholder="Başlangıç tarihi"
-                  className="w-full"
+                  value={startDate}
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Bitiş Tarihi
                 </label>
                 <DatePicker
-                  value={endDate}
+                  className="w-full"
                   onChange={(val) => setEndDate(val)}
                   placeholder="Bitiş tarihi (Süresiz için boş)"
-                  className="w-full"
+                  value={endDate}
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950">
               <div>
-                <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Diğer Kampanyalarla Birleşebilir (Stackable)
                 </span>
               </div>
               <button
-                type="button"
-                role="switch"
                 aria-checked={isStackable}
-                onClick={() => setIsStackable(!isStackable)}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   isStackable ? "bg-violet-600" : "bg-zinc-200 dark:bg-zinc-700"
                 }`}
+                onClick={() => setIsStackable(!isStackable)}
+                role="switch"
+                type="button"
               >
                 <span
                   className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
@@ -362,55 +384,57 @@ export default function EditCampaignPage() {
 
         {/* Discount & Targets */}
         <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
             <Coins className="h-4 w-4 text-violet-600" />
             İndirim Değeri & Kapsam
           </h2>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 İndirim Değeri ({type === "Percentage" ? "%" : "₺"})
               </label>
               <NumberInput
-                value={discountValue}
-                onChange={(val) => setDiscountValue(val)}
+                className="w-full"
                 min={0}
+                onChange={(val) => setDiscountValue(val)}
                 prefix={type === "Percentage" ? undefined : "₺"}
                 suffix={type === "Percentage" ? "%" : undefined}
-                className="w-full"
+                value={discountValue}
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Maksimum İndirim Tavanı (TL)
               </label>
               <NumberInput
-                value={maxDiscountAmount ?? 0}
-                onChange={(val) => setMaxDiscountAmount(val > 0 ? val : undefined)}
-                min={0}
-                step={50}
-                prefix="₺"
                 className="w-full"
+                min={0}
+                onChange={(val) =>
+                  setMaxDiscountAmount(val > 0 ? val : undefined)
+                }
+                prefix="₺"
+                step={50}
+                value={maxDiscountAmount ?? 0}
               />
             </div>
           </div>
 
           {/* Targets management */}
-          <div className="space-y-3 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+          <div className="space-y-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+            <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
               Hedef Ürün ve Kategoriler ({targets.length})
             </span>
             <div className="grid grid-cols-2 gap-3">
               <select
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => {
                   if (e.target.value) {
                     addProductTarget(e.target.value);
                     e.target.value = "";
                   }
                 }}
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
               >
                 <option value="">Ürün Ekle...</option>
                 {products.map((p) => (
@@ -421,13 +445,13 @@ export default function EditCampaignPage() {
               </select>
 
               <select
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => {
                   if (e.target.value) {
                     addCategoryTarget(e.target.value);
                     e.target.value = "";
                   }
                 }}
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
               >
                 <option value="">Kategori Ekle...</option>
                 {categories.map((c) => (
@@ -441,16 +465,16 @@ export default function EditCampaignPage() {
             <div className="space-y-2">
               {targets.map((t, idx) => (
                 <div
-                  key={idx}
                   className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs dark:border-zinc-800 dark:bg-zinc-950"
+                  key={idx}
                 >
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                     {t.targetName} ({t.targetType})
                   </span>
                   <button
-                    type="button"
-                    onClick={() => removeTarget(idx)}
                     className="rounded p-1 text-zinc-400 hover:text-red-600"
+                    onClick={() => removeTarget(idx)}
+                    type="button"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -461,19 +485,23 @@ export default function EditCampaignPage() {
         </div>
 
         {/* Submit */}
-        <div className="flex items-center justify-end gap-3 border-t border-zinc-200/80 pt-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-3 border-zinc-200/80 border-t pt-4 dark:border-zinc-800">
           <Link
+            className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/promotions`}
-            className="rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             İptal
           </Link>
           <button
-            type="submit"
+            className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 text-xs font-bold text-white shadow-xs hover:bg-violet-700 disabled:opacity-50"
+            type="submit"
           >
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {saving ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
             Değişiklikleri Kaydet
           </button>
         </div>

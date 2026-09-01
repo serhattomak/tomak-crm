@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using CRM.Modules.Vehicles.Data;
 using CRM.Modules.Vehicles.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +42,13 @@ public record CreateVehicleDocumentRequest(
     string FileSize,
     string? FileUrl,
     string? TagsJson
+);
+
+public record UploadDocumentResponse(
+    string FileUrl,
+    string FileName,
+    string FileSize,
+    string DocumentType
 );
 
 // --- Handlers ---
@@ -189,6 +198,59 @@ public static class VehicleDocEndpoints
             var res = await sender.Send(new CreateVehicleDocumentCommand(req));
             return Results.Ok(ApiResponse<VehicleDocumentDto>.Ok(res, "Doküman eklendi."));
         });
+
+        group.MapPost("/upload", async (
+            IFormFile file,
+            ICurrentTenant currentTenant,
+            IWebHostEnvironment env) =>
+        {
+            if (file == null || file.Length == 0)
+            {
+                return Results.BadRequest(ApiResponse<string>.Fail("EMPTY_FILE", "Lütfen geçerli bir dosya seçin."));
+            }
+
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            var docType = extension switch
+            {
+                ".pdf" => "PDF",
+                ".dwg" or ".dxf" or ".step" or ".stp" or ".iges" or ".igs" or ".cad" => "CAD",
+                ".xlsx" or ".xls" or ".csv" => "Excel",
+                ".docx" or ".doc" => "Word",
+                ".png" or ".jpg" or ".jpeg" or ".webp" or ".svg" => "Görsel",
+                ".zip" or ".rar" or ".7z" or ".tar" => "Arşiv",
+                ".mp4" or ".mov" or ".avi" => "Video",
+                _ => "Diğer"
+            };
+
+            var sizeStr = file.Length >= 1048576
+                ? $"{(file.Length / 1048576.0):0.#} MB"
+                : $"{(file.Length / 1024.0):0.#} KB";
+
+            var tenantId = currentTenant.Id?.ToString() ?? "global";
+            var webRoot = env.WebRootPath ?? Path.Combine(env.ContentRootPath, "wwwroot");
+            var uploadDir = Path.Combine(webRoot, "uploads", "documents", tenantId);
+            Directory.CreateDirectory(uploadDir);
+
+            var safeOriginalName = Path.GetFileName(file.FileName);
+            var uniqueFileName = $"{Guid.NewGuid():N}_{safeOriginalName}";
+            var filePath = Path.Combine(uploadDir, uniqueFileName);
+
+            await using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var relativeUrl = $"/uploads/documents/{tenantId}/{uniqueFileName}";
+
+            var result = new UploadDocumentResponse(
+                FileUrl: relativeUrl,
+                FileName: Path.GetFileNameWithoutExtension(safeOriginalName),
+                FileSize: sizeStr,
+                DocumentType: docType
+            );
+
+            return Results.Ok(ApiResponse<UploadDocumentResponse>.Ok(result, "Dosya başarıyla yüklendi."));
+        }).DisableAntiforgery();
 
         group.MapDelete("/{id:guid}", async (Guid id, ISender sender) =>
         {

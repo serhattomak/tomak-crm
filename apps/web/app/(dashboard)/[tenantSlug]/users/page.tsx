@@ -108,11 +108,11 @@ export default function UsersManagementPage() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 dark:text-zinc-100 tracking-tight">
+          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             <Users className="h-6 w-6 text-fuchsia-500" />
             Team Members
           </h1>
-          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
             Manage workspace members and their access roles.
           </p>
         </div>
@@ -144,15 +144,15 @@ export default function UsersManagementPage() {
       )}
 
       {/* Users Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 shadow-xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
         {isLoading ? (
-          <div className="flex items-center justify-center gap-2 p-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+          <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
             <Loader2 className="h-4 w-4 animate-spin text-fuchsia-500" />
             Loading team members...
           </div>
         ) : (
           <table className="w-full text-left text-xs">
-            <thead className="border-zinc-200/80 dark:border-zinc-800 border-b bg-zinc-50/90 dark:bg-zinc-800/60 font-semibold text-[11px] text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
+            <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -183,7 +183,7 @@ export default function UsersManagementPage() {
                   <td className="px-6 py-4">
                     <PermissionGate
                       fallback={
-                        <span className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 font-medium text-zinc-700 dark:text-zinc-300 text-xs">
+                        <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-medium text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {user.roles.map((r) => r.name).join(", ") ||
                             "No Role"}
                         </span>
@@ -215,7 +215,7 @@ export default function UsersManagementPage() {
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
                         user.isActive
                           ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
                       {user.isActive ? "Active" : "Inactive"}
@@ -234,14 +234,14 @@ export default function UsersManagementPage() {
       {/* Invite Modal */}
       {isInviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-zinc-100 dark:border-zinc-800 border-b pb-3">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <UserPlus className="h-4 w-4 text-indigo-500" />
                 Invite New Member
               </h2>
               <button
-                className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
                 onClick={() => setIsInviteOpen(false)}
               >
                 <X className="h-4 w-4" />
@@ -254,13 +254,13 @@ export default function UsersManagementPage() {
               onSubmit={handleInvite}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 dark:text-zinc-200 text-xs">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Email Address
                 </label>
                 <div className="relative">
                   <Mail className="absolute top-3 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2.5 pr-3 pl-9 text-zinc-900 dark:text-zinc-100 text-xs placeholder:text-zinc-400 dark:text-zinc-500 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder="teammate@company.com"
                     required
@@ -271,7 +271,7 @@ export default function UsersManagementPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 dark:text-zinc-200 text-xs">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Initial Role
                 </label>
                 <Select onValueChange={setInviteRoleId} value={inviteRoleId}>
@@ -288,9 +288,9 @@ export default function UsersManagementPage() {
                 </Select>
               </div>
 
-              <div className="flex justify-end gap-2 border-zinc-100 dark:border-zinc-800 border-t pt-3">
+              <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
                 <button
-                  className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-400 text-xs hover:text-zinc-900 dark:hover:text-zinc-100"
+                  className="px-4 py-2 font-semibold text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   onClick={() => setIsInviteOpen(false)}
                   type="button"
                 >

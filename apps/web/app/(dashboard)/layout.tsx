@@ -16,7 +16,6 @@ import {
   Clock,
   Command,
   FileSpreadsheet,
-  HelpCircle,
   Kanban,
   Keyboard,
   LayoutDashboard,
@@ -24,7 +23,6 @@ import {
   LogOut,
   Mail,
   Menu,
-  MessageCircleQuestion,
   MessageSquare,
   Moon,
   Network,
@@ -58,11 +56,11 @@ import { NotificationCenter } from "@/components/notification-center";
 import { PermissionGate } from "@/components/permission-gate";
 import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
 import { TenantSwitcher } from "@/components/tenant-switcher";
+import { LabelProvider, useLabels } from "@/lib/labels/label-context";
 import {
   PermissionProvider,
   usePermissions,
 } from "@/lib/permissions/permission-context";
-import { LabelProvider, useLabels } from "@/lib/labels/label-context";
 import { createClient } from "@/lib/supabase/client";
 
 export default function DashboardLayout({
@@ -306,9 +304,9 @@ export default function DashboardLayout({
     <PermissionProvider initialTenantSlug={tenantSlug}>
       <LabelProvider tenantSlug={tenantSlug}>
         <Toaster position="top-right" richColors />
-        <div className="flex h-screen w-full flex-col overflow-hidden bg-zinc-100/70 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100 md:flex-row md:p-3 md:gap-3 print:h-auto print:overflow-visible print:bg-white print:p-0 print:m-0 print:block">
+        <div className="flex h-screen w-full flex-col overflow-hidden bg-zinc-100/70 font-sans text-zinc-900 antialiased md:flex-row md:gap-3 md:p-3 dark:bg-zinc-950 dark:text-zinc-100 print:m-0 print:block print:h-auto print:overflow-visible print:bg-white print:p-0">
           {/* Mobile Top Header Bar */}
-          <header className="sticky top-0 z-30 flex items-center justify-between border-b border-zinc-200/80 bg-white/95 px-3.5 py-2.5 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-900/95 md:hidden print:hidden">
+          <header className="sticky top-0 z-30 flex items-center justify-between border-zinc-200/80 border-b bg-white/95 px-3.5 py-2.5 backdrop-blur-md md:hidden dark:border-zinc-800/80 dark:bg-zinc-900/95 print:hidden">
             <div className="flex min-w-0 items-center gap-2">
               <button
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-700 shadow-2xs transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300"
@@ -328,7 +326,11 @@ export default function DashboardLayout({
                 onClick={() =>
                   setTheme(resolvedTheme === "dark" ? "light" : "dark")
                 }
-                title={mounted && resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
+                title={
+                  mounted && resolvedTheme === "dark"
+                    ? "Açık Tema"
+                    : "Koyu Tema"
+                }
                 type="button"
               >
                 {mounted && resolvedTheme === "dark" ? (
@@ -359,7 +361,7 @@ export default function DashboardLayout({
 
               <div className="slide-in-from-left relative z-10 flex w-4/5 max-w-xs flex-1 animate-in flex-col justify-between overflow-y-auto bg-white p-4 shadow-2xl duration-200 dark:bg-zinc-900">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-zinc-200/80 pb-3 dark:border-zinc-800">
+                  <div className="flex items-center justify-between border-zinc-200/80 border-b pb-3 dark:border-zinc-800">
                     <TenantSwitcher />
                     <button
                       className="rounded-full p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
@@ -402,7 +404,7 @@ export default function DashboardLayout({
           {/* Desktop Left Collapsible Sidebar with Fluid Spring Transition */}
           {/* Desktop Left Collapsible Sidebar with Fluid Spring Transition */}
           <aside
-            className={`relative hidden shrink-0 flex-col justify-between rounded-[24px] border border-zinc-200/80 bg-white p-3 shadow-xs transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] dark:border-zinc-800/80 dark:bg-zinc-900 md:flex print:hidden ${
+            className={`relative hidden shrink-0 flex-col justify-between rounded-[24px] border border-zinc-200/80 bg-white p-3 shadow-xs transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:flex dark:border-zinc-800/80 dark:bg-zinc-900 print:hidden ${
               isSidebarCollapsed ? "w-[72px]" : "w-64"
             }`}
           >
@@ -426,7 +428,16 @@ export default function DashboardLayout({
 
               {/* Quick Search / Expand Row (Always h-9 in both modes) */}
               <div className="mb-2.5 shrink-0">
-                {!isSidebarCollapsed ? (
+                {isSidebarCollapsed ? (
+                  <button
+                    className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                    onClick={toggleSidebarCollapse}
+                    title="Menüyü Genişlet"
+                    type="button"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                ) : (
                   <button
                     className="group relative flex h-9 w-full items-center justify-between rounded-xl border border-zinc-200/90 bg-zinc-50/90 px-2.5 text-xs text-zinc-500 shadow-2xs transition-all hover:border-violet-300 hover:bg-white hover:text-zinc-800 hover:shadow-xs focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:border-violet-600/50 dark:hover:bg-zinc-800"
                     onClick={() => setIsCommandPaletteOpen(true)}
@@ -434,7 +445,7 @@ export default function DashboardLayout({
                   >
                     <div className="flex items-center gap-2">
                       <Search className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400" />
-                      <span className="font-medium text-zinc-400 transition-colors group-hover:text-zinc-600 dark:group-hover:text-zinc-300 text-[11px] whitespace-nowrap">
+                      <span className="whitespace-nowrap font-medium text-[11px] text-zinc-400 transition-colors group-hover:text-zinc-600 dark:group-hover:text-zinc-300">
                         Hızlı Arama...
                       </span>
                     </div>
@@ -442,15 +453,6 @@ export default function DashboardLayout({
                       <Command className="h-2.5 w-2.5" />
                       <span>K</span>
                     </div>
-                  </button>
-                ) : (
-                  <button
-                    className="flex h-9 w-9 mx-auto items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-700"
-                    onClick={toggleSidebarCollapse}
-                    title="Menüyü Genişlet"
-                    type="button"
-                  >
-                    <ChevronRight className="h-4 w-4" />
                   </button>
                 )}
               </div>
@@ -468,7 +470,7 @@ export default function DashboardLayout({
             </div>
 
             {/* Bottom User Profile & Preferences */}
-            <div className="mt-3 shrink-0 border-t border-zinc-100 pt-2 dark:border-zinc-800">
+            <div className="mt-3 shrink-0 border-zinc-100 border-t pt-2 dark:border-zinc-800">
               <DashboardBottom
                 isCollapsed={isSidebarCollapsed}
                 onOpenShortcuts={() => setIsShortcutsHelpOpen(true)}
@@ -477,14 +479,14 @@ export default function DashboardLayout({
           </aside>
 
           {/* Main Content Viewport Canvas */}
-          <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-zinc-200/80 bg-white shadow-none md:rounded-[24px] md:border md:shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900 print:h-auto print:overflow-visible print:border-none print:shadow-none print:p-0 print:rounded-none print:block">
+          <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-zinc-200/80 bg-white shadow-none md:rounded-[24px] md:border md:shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900 print:block print:h-auto print:overflow-visible print:rounded-none print:border-none print:p-0 print:shadow-none">
             <div className="flex-1 p-3.5 pb-24 sm:p-6 md:p-7 md:pb-8 print:p-0 print:pb-0">
               {children}
             </div>
           </div>
 
           {/* Mobile Bottom Navigation Bar */}
-          <nav className="safe-bottom fixed right-0 bottom-0 left-0 z-40 flex items-center justify-around border-t border-zinc-200/90 bg-white/95 px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] backdrop-blur-lg dark:border-zinc-800 dark:bg-zinc-900/95 md:hidden print:hidden">
+          <nav className="safe-bottom fixed right-0 bottom-0 left-0 z-40 flex items-center justify-around border-zinc-200/90 border-t bg-white/95 px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] backdrop-blur-lg md:hidden dark:border-zinc-800 dark:bg-zinc-900/95 print:hidden">
             {mobileBottomNav.map((item) => {
               const isActive = item.exact
                 ? pathname === item.href
@@ -494,7 +496,7 @@ export default function DashboardLayout({
                   className={`flex flex-col items-center gap-1 rounded-xl px-2.5 py-1 font-semibold text-[10px] transition-all ${
                     isActive
                       ? "font-bold text-violet-600 dark:text-violet-400"
-                      : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                      : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                   }`}
                   href={item.href}
                   key={item.href}
@@ -502,7 +504,7 @@ export default function DashboardLayout({
                   <div
                     className={`rounded-lg p-1 transition-all ${
                       isActive
-                        ? "bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400"
+                        ? "bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400"
                         : ""
                     }`}
                   >
@@ -547,10 +549,10 @@ interface NavItem {
   exact?: boolean;
   href: string;
   icon: React.ElementType;
+  moduleKey?: string;
   name: string;
   permission?: string;
   tab?: string;
-  moduleKey?: string;
 }
 
 function DashboardNavigation({
@@ -566,7 +568,9 @@ function DashboardNavigation({
   const tenantSlug = (params?.tenantSlug as string) || "";
   const currentTab = searchParams.get("tab") || "chart";
 
-  const [closedSections, setClosedSections] = useState<Record<string, boolean>>({});
+  const [closedSections, setClosedSections] = useState<Record<string, boolean>>(
+    {}
+  );
 
   const toggleSection = (sectionKey: string) => {
     setClosedSections((prev) => ({
@@ -575,9 +579,7 @@ function DashboardNavigation({
     }));
   };
 
-  const isSectionOpen = (sectionKey: string) => {
-    return !closedSections[sectionKey];
-  };
+  const isSectionOpen = (sectionKey: string) => !closedSections[sectionKey];
 
   const { getModuleDisplayName, isModuleEnabled } = useLabels();
 
@@ -593,9 +595,9 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/pipelines`,
       icon: Kanban,
+      moduleKey: "pipelines",
       name: getModuleDisplayName("pipelines", "Pipeline & Akış"),
       permission: "Pipelines.View",
-      moduleKey: "pipelines",
     },
     {
       badge: null,
@@ -615,46 +617,46 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
+      moduleKey: "quotes",
       name: getModuleDisplayName("quotes", "Teklifler"),
       permission: "Quotes.View",
-      moduleKey: "quotes",
     },
     {
       badge: null,
       href: `/${tenantSlug}/customers`,
       icon: Users2,
-      name: getModuleDisplayName("customers", "Müşteriler"),
       moduleKey: "customers",
+      name: getModuleDisplayName("customers", "Müşteriler"),
     },
     {
       badge: null,
       href: `/${tenantSlug}/orders`,
       icon: ShoppingCart,
-      name: getModuleDisplayName("orders", "Siparişler"),
       moduleKey: "orders",
+      name: getModuleDisplayName("orders", "Siparişler"),
     },
     {
       badge: null,
       href: `/${tenantSlug}/products`,
       icon: Package,
-      name: getModuleDisplayName("products", "Ürün & Hizmetler"),
       moduleKey: "products",
+      name: getModuleDisplayName("products", "Ürün & Hizmetler"),
     },
     {
       badge: null,
       href: `/${tenantSlug}/promotions`,
       icon: Tag,
+      moduleKey: "promotions",
       name: getModuleDisplayName("promotions", "Kampanya & Kuponlar"),
       permission: "Promotions.View",
-      moduleKey: "promotions",
     },
     {
       badge: null,
       href: `/${tenantSlug}/shipments`,
       icon: Truck,
+      moduleKey: "shipping",
       name: getModuleDisplayName("shipping", "Kargo & Sevkiyat"),
       permission: "Shipment.View",
-      moduleKey: "shipping",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
@@ -664,69 +666,69 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/attendance`,
       icon: Clock,
+      moduleKey: "attendance",
       name: getModuleDisplayName("attendance", "Vardiya & PDKS"),
       permission: "Attendance.View",
-      moduleKey: "attendance",
     },
     {
       badge: null,
       href: `/${tenantSlug}/leaves`,
       icon: Calendar,
+      moduleKey: "leaves",
       name: getModuleDisplayName("leaves", "İzinler & Takvim"),
       permission: "Leaves.View",
-      moduleKey: "leaves",
     },
     {
       badge: null,
       href: `/${tenantSlug}/payroll`,
       icon: Banknote,
+      moduleKey: "payroll",
       name: getModuleDisplayName("payroll", "Bordro & Maaşlar"),
       permission: "Payroll.View",
-      moduleKey: "payroll",
     },
     {
       badge: null,
       href: `/${tenantSlug}/organization?tab=employees`,
       icon: UserCheck,
+      moduleKey: "organization",
       name: "Çalışanlar & Kadro",
       permission: "Employees.View",
       tab: "employees",
-      moduleKey: "organization",
     },
     {
       badge: null,
       href: `/${tenantSlug}/organization?tab=departments`,
       icon: Building2,
+      moduleKey: "organization",
       name: "Departmanlar",
       permission: "Departments.View",
       tab: "departments",
-      moduleKey: "organization",
     },
     {
       badge: null,
       href: `/${tenantSlug}/organization?tab=positions`,
       icon: Briefcase,
+      moduleKey: "organization",
       name: "Pozisyonlar & Ünvanlar",
       permission: "JobPositions.Manage",
       tab: "positions",
-      moduleKey: "organization",
     },
     {
       badge: null,
       href: `/${tenantSlug}/organization?tab=chart`,
       icon: Network,
+      moduleKey: "organization",
       name: "Org Şeması",
       permission: "Organization.ViewChart",
       tab: "chart",
-      moduleKey: "organization",
     },
     {
       badge: null,
       href: `/${tenantSlug}/compliance`,
       icon: Scale,
+      moduleKey: "compliance",
       name: getModuleDisplayName("compliance", "Mevzuat & İş Hukuku"),
       permission: "Compliance.View",
-      moduleKey: "compliance",
     },
     {
       badge: null,
@@ -743,16 +745,16 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/tickets`,
       icon: LifeBuoy,
+      moduleKey: "tickets",
       name: getModuleDisplayName("tickets", "Destek Masası"),
       permission: "Tickets.View",
-      moduleKey: "tickets",
     },
     {
       badge: "33",
       href: `/${tenantSlug}/messages`,
       icon: MessageSquare,
-      name: getModuleDisplayName("chat", "Mesajlar"),
       moduleKey: "chat",
+      name: getModuleDisplayName("chat", "Mesajlar"),
     },
     {
       href: `/${tenantSlug}/email`,
@@ -762,9 +764,9 @@ function DashboardNavigation({
     {
       href: `/${tenantSlug}/automations`,
       icon: Zap,
+      moduleKey: "automations",
       name: getModuleDisplayName("automations", "Otomasyon"),
       permission: "Automations.View",
-      moduleKey: "automations",
     },
     {
       href: `/${tenantSlug}/analytics`,
@@ -815,7 +817,7 @@ function DashboardNavigation({
       const linkContent = (
         <Link
           className={`group relative flex h-9 w-full items-center rounded-xl border text-xs transition-all duration-200 ${
-            isCollapsed ? "justify-center px-0" : "px-2.5 gap-2.5"
+            isCollapsed ? "justify-center px-0" : "gap-2.5 px-2.5"
           } ${
             isActive
               ? "border-violet-200/80 bg-violet-50/90 font-semibold text-violet-700 shadow-2xs dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300"
@@ -832,7 +834,7 @@ function DashboardNavigation({
             className={`absolute top-1/2 left-1 h-4 w-1 -translate-y-1/2 rounded-full bg-violet-600 transition-opacity duration-200 dark:bg-violet-400 ${
               isActive && !isCollapsed
                 ? "opacity-100"
-                : "opacity-0 pointer-events-none"
+                : "pointer-events-none opacity-0"
             }`}
           />
 
@@ -851,8 +853,8 @@ function DashboardNavigation({
           <div
             className={`flex min-w-0 flex-1 items-center justify-between overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isCollapsed
-                ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
-                : "max-w-xs opacity-100 translate-x-0"
+                ? "pointer-events-none max-w-0 -translate-x-2 opacity-0"
+                : "max-w-xs translate-x-0 opacity-100"
             }`}
           >
             <span className="truncate whitespace-nowrap text-xs">
@@ -889,85 +891,87 @@ function DashboardNavigation({
     <div className="space-y-3">
       {/* 1. GENEL & SATIŞ CRM */}
       <div>
-        {!isCollapsed ? (
+        {isCollapsed ? (
+          <div className="mx-1.5 my-1.5 border-zinc-200/60 border-t dark:border-zinc-800/60" />
+        ) : (
           <button
             className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("sales")}
             type="button"
           >
-            <span className="truncate whitespace-nowrap">Genel & Satış CRM</span>
+            <span className="truncate whitespace-nowrap">
+              Genel & Satış CRM
+            </span>
             <ChevronDown
               className={`h-3 w-3 shrink-0 text-zinc-400 transition-transform duration-200 ${
                 isSectionOpen("sales") ? "rotate-0 transform" : "-rotate-90"
               }`}
             />
           </button>
-        ) : (
-          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("sales")) && (
-          <div className="mt-0.5 space-y-0.5">
-            {renderNavList(salesMenu)}
-          </div>
+          <div className="mt-0.5 space-y-0.5">{renderNavList(salesMenu)}</div>
         )}
       </div>
 
       {/* 2. İNSAN KAYNAKLARI & BORDRO */}
       <div>
-        {!isCollapsed ? (
+        {isCollapsed ? (
+          <div className="mx-1.5 my-1.5 border-zinc-200/60 border-t dark:border-zinc-800/60" />
+        ) : (
           <button
             className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("hr")}
             type="button"
           >
-            <span className="truncate whitespace-nowrap">İnsan Kaynakları & Bordro</span>
+            <span className="truncate whitespace-nowrap">
+              İnsan Kaynakları & Bordro
+            </span>
             <ChevronDown
               className={`h-3 w-3 shrink-0 text-zinc-400 transition-transform duration-200 ${
                 isSectionOpen("hr") ? "rotate-0 transform" : "-rotate-90"
               }`}
             />
           </button>
-        ) : (
-          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("hr")) && (
-          <div className="mt-0.5 space-y-0.5">
-            {renderNavList(hrMenu)}
-          </div>
+          <div className="mt-0.5 space-y-0.5">{renderNavList(hrMenu)}</div>
         )}
       </div>
 
       {/* 3. İLETİŞİM & ARAÇLAR */}
       <div>
-        {!isCollapsed ? (
+        {isCollapsed ? (
+          <div className="mx-1.5 my-1.5 border-zinc-200/60 border-t dark:border-zinc-800/60" />
+        ) : (
           <button
             className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("tools")}
             type="button"
           >
-            <span className="truncate whitespace-nowrap">İletişim & Araçlar</span>
+            <span className="truncate whitespace-nowrap">
+              İletişim & Araçlar
+            </span>
             <ChevronDown
               className={`h-3 w-3 shrink-0 text-zinc-400 transition-transform duration-200 ${
                 isSectionOpen("tools") ? "rotate-0 transform" : "-rotate-90"
               }`}
             />
           </button>
-        ) : (
-          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("tools")) && (
-          <div className="mt-0.5 space-y-0.5">
-            {renderNavList(toolsMenu)}
-          </div>
+          <div className="mt-0.5 space-y-0.5">{renderNavList(toolsMenu)}</div>
         )}
       </div>
 
       {/* 4. SİSTEM & YÖNETİM */}
       <div>
-        {!isCollapsed ? (
+        {isCollapsed ? (
+          <div className="mx-1.5 my-1.5 border-zinc-200/60 border-t dark:border-zinc-800/60" />
+        ) : (
           <button
             className="flex w-full cursor-pointer select-none items-center justify-between px-2 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider transition-colors hover:text-zinc-700 dark:hover:text-zinc-300"
             onClick={() => toggleSection("management")}
@@ -976,12 +980,12 @@ function DashboardNavigation({
             <span className="truncate whitespace-nowrap">Sistem & Yönetim</span>
             <ChevronDown
               className={`h-3 w-3 shrink-0 text-zinc-400 transition-transform duration-200 ${
-                isSectionOpen("management") ? "rotate-0 transform" : "-rotate-90"
+                isSectionOpen("management")
+                  ? "rotate-0 transform"
+                  : "-rotate-90"
               }`}
             />
           </button>
-        ) : (
-          <div className="my-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 mx-1.5" />
         )}
 
         {(isCollapsed || isSectionOpen("management")) && (
@@ -1023,7 +1027,7 @@ function DashboardBottom({
     : "SD";
 
   return (
-    <div className="space-y-2 border-t border-zinc-100 pt-2.5 dark:border-zinc-800">
+    <div className="space-y-2 border-zinc-100 border-t pt-2.5 dark:border-zinc-800">
       {/* Theme and Shortcuts quick bar */}
       <div
         className={`flex items-center transition-all duration-300 ${
@@ -1032,21 +1036,21 @@ function DashboardBottom({
       >
         <button
           className={`flex h-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 ${
-            isCollapsed ? "w-8 px-0" : "px-2.5 gap-1.5 text-[11px] font-medium"
+            isCollapsed ? "w-8 px-0" : "gap-1.5 px-2.5 font-medium text-[11px]"
           }`}
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           title={resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
           type="button"
         >
           {resolvedTheme === "dark" ? (
-            <Sun className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+            <Sun className="h-3.5 w-3.5 shrink-0 text-amber-400" />
           ) : (
-            <Moon className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400 shrink-0" />
+            <Moon className="h-3.5 w-3.5 shrink-0 text-zinc-600 dark:text-zinc-400" />
           )}
           <span
             className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
               isCollapsed
-                ? "max-w-0 opacity-0 pointer-events-none"
+                ? "pointer-events-none max-w-0 opacity-0"
                 : "max-w-xs opacity-100"
             }`}
           >
@@ -1056,7 +1060,7 @@ function DashboardBottom({
 
         {!isCollapsed && onOpenShortcuts && (
           <button
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-300 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 font-medium text-[11px] text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
             onClick={onOpenShortcuts}
             title="Klavye Kısayolları (?)"
             type="button"
@@ -1086,7 +1090,7 @@ function DashboardBottom({
           <div
             className={`min-w-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isCollapsed
-                ? "max-w-0 opacity-0 pointer-events-none"
+                ? "pointer-events-none max-w-0 opacity-0"
                 : "max-w-xs opacity-100"
             }`}
           >
@@ -1102,7 +1106,7 @@ function DashboardBottom({
         <div
           className={`flex items-center gap-0.5 overflow-hidden transition-all duration-300 ${
             isCollapsed
-              ? "max-w-0 opacity-0 pointer-events-none"
+              ? "pointer-events-none max-w-0 opacity-0"
               : "max-w-xs opacity-100"
           }`}
         >

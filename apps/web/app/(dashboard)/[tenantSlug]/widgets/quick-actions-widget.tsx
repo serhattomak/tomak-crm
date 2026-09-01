@@ -9,7 +9,6 @@ import {
   ChevronDown,
   ChevronUp,
   FileSpreadsheet,
-  FileText,
   Plus,
   RotateCcw,
   Settings2,
@@ -136,7 +135,9 @@ export function QuickActionsWidget({
   // Load configuration from local storage
   useEffect(() => {
     try {
-      const savedCollapsed = localStorage.getItem("crm_quick_actions_collapsed");
+      const savedCollapsed = localStorage.getItem(
+        "crm_quick_actions_collapsed"
+      );
       if (savedCollapsed !== null) {
         setIsCollapsed(savedCollapsed === "true");
       }
@@ -244,10 +245,10 @@ export function QuickActionsWidget({
 
       {/* Expandable Action Grid */}
       {!isCollapsed && (
-        <div className="mt-3.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="fade-in slide-in-from-top-1 mt-3.5 grid animate-in grid-cols-1 gap-2.5 duration-200 sm:grid-cols-2 lg:grid-cols-4">
           {visibleActions.length === 0 ? (
             <div className="col-span-full py-4 text-center">
-              <p className="text-zinc-500 text-xs dark:text-zinc-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Görüntülenecek hızlı işlem seçilmedi.
               </p>
               <button
@@ -274,14 +275,14 @@ export function QuickActionsWidget({
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-zinc-900 text-xs transition-colors group-hover:text-violet-600 dark:hover:text-zinc-100 dark:group-hover:text-violet-400">
+                    <div className="font-semibold text-xs text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
                       {act.title}
                     </div>
                     <div className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
                       {act.description}
                     </div>
                   </div>
-                  <Plus className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-700 dark:hover:text-zinc-500 dark:group-hover:text-zinc-200" />
+                  <Plus className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-700 dark:group-hover:text-zinc-200 dark:hover:text-zinc-500" />
                 </button>
               );
             })
@@ -291,15 +292,15 @@ export function QuickActionsWidget({
 
       {/* In-Place Customize Modal */}
       {isCustomizeOpen && (
-        <div className="fixed inset-0 z-50 flex animate-in fade-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
           <div className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
                   <Settings2 className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+                  <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Hızlı İşlemleri Özelleştir
                   </h4>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -338,7 +339,7 @@ export function QuickActionsWidget({
                         <Icon className="h-3.5 w-3.5" />
                       </div>
                       <div>
-                        <div className="font-semibold text-zinc-900 text-xs dark:text-zinc-100">
+                        <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                           {act.title}
                         </div>
                         <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
@@ -361,9 +362,9 @@ export function QuickActionsWidget({
               })}
             </div>
 
-            <div className="flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
               <button
-                className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-400 dark:hover:text-zinc-200"
+                className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                 onClick={handleResetDefaults}
                 type="button"
               >

@@ -1,34 +1,22 @@
 "use client";
 
 import {
-  AlertCircle,
   ArrowLeft,
-  Briefcase,
-  Building2,
-  Calendar,
   Check,
   CheckCircle2,
   Clock,
-  DollarSign,
   Edit2,
   ExternalLink,
-  FileSpreadsheet,
   FileText,
   Globe,
-  LifeBuoy,
   Mail,
   MapPin,
-  Package,
   Phone,
   PhoneCall,
   Pin,
   PinOff,
   Plus,
   Send,
-  ShoppingCart,
-  Tag,
-  TrendingUp,
-  User,
   Video,
   X,
 } from "lucide-react";
@@ -36,9 +24,9 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
-import { SalesRepPicker } from "@/components/entity-picker-modal";
 import {
   type AddCustomerActivityRequest,
   type AddCustomerContactRequest,
@@ -102,7 +90,7 @@ export default function CustomerDetailPage() {
   };
 
   const loadData = useCallback(async () => {
-    if (!activeTenant || !customerId) {
+    if (!(activeTenant && customerId)) {
       return;
     }
     try {
@@ -116,30 +104,54 @@ export default function CustomerDetailPage() {
           ApiClient.getTickets({ customerId }, activeTenant.id),
         ]);
 
-      if (custRes.status === "fulfilled" && custRes.value.success && custRes.value.data) {
+      if (
+        custRes.status === "fulfilled" &&
+        custRes.value.success &&
+        custRes.value.data
+      ) {
         setCustomer(custRes.value.data);
       } else {
         showToast("Müşteri bulunamadı.");
         router.push(`/${tenantSlug}/customers`);
       }
 
-      if (empRes.status === "fulfilled" && empRes.value.success && empRes.value.data) {
+      if (
+        empRes.status === "fulfilled" &&
+        empRes.value.success &&
+        empRes.value.data
+      ) {
         setEmployees(empRes.value.data.items);
       }
 
-      if (dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items) {
+      if (
+        dealsRes.status === "fulfilled" &&
+        dealsRes.value.success &&
+        dealsRes.value.data?.items
+      ) {
         setDeals(dealsRes.value.data.items);
       }
 
-      if (quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items) {
+      if (
+        quotesRes.status === "fulfilled" &&
+        quotesRes.value.success &&
+        quotesRes.value.data?.items
+      ) {
         setQuotes(quotesRes.value.data.items);
       }
 
-      if (ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items) {
+      if (
+        ordersRes.status === "fulfilled" &&
+        ordersRes.value.success &&
+        ordersRes.value.data?.items
+      ) {
         setOrders(ordersRes.value.data.items);
       }
 
-      if (ticketsRes.status === "fulfilled" && ticketsRes.value.success && ticketsRes.value.data?.items) {
+      if (
+        ticketsRes.status === "fulfilled" &&
+        ticketsRes.value.success &&
+        ticketsRes.value.data?.items
+      ) {
         setTickets(ticketsRes.value.data.items);
       }
     } catch {
@@ -155,7 +167,7 @@ export default function CustomerDetailPage() {
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!activeTenant || !customer || !quickNoteContent.trim()) {
+    if (!(activeTenant && customer && quickNoteContent.trim())) {
       return;
     }
 
@@ -184,7 +196,9 @@ export default function CustomerDetailPage() {
   };
 
   const handleTogglePinNote = (note: CustomerNoteDto) => {
-    if (!customer) return;
+    if (!customer) {
+      return;
+    }
     const updatedNotes = customer.notes.map((n) =>
       n.id === note.id ? { ...n, isPinned: !n.isPinned } : n
     );
@@ -193,7 +207,9 @@ export default function CustomerDetailPage() {
   };
 
   const handleSaveEditNote = (noteId: string) => {
-    if (!customer || !editingNoteContent.trim()) return;
+    if (!(customer && editingNoteContent.trim())) {
+      return;
+    }
     const updatedNotes = customer.notes.map((n) =>
       n.id === noteId ? { ...n, content: editingNoteContent.trim() } : n
     );
@@ -204,8 +220,12 @@ export default function CustomerDetailPage() {
   };
 
   const handleDeleteContact = async (contactId: string) => {
-    if (!activeTenant || !customer) return;
-    if (!confirm("Bu yetkili kişiyi silmek istediğinize emin misiniz?")) return;
+    if (!(activeTenant && customer)) {
+      return;
+    }
+    if (!confirm("Bu yetkili kişiyi silmek istediğinize emin misiniz?")) {
+      return;
+    }
 
     try {
       const res = await ApiClient.deleteCustomerContact(
@@ -227,7 +247,7 @@ export default function CustomerDetailPage() {
       <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
-          <span className="font-medium text-zinc-500 text-xs dark:text-zinc-400">
+          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Müşteri detayları yükleniyor...
           </span>
         </div>
@@ -246,7 +266,10 @@ export default function CustomerDetailPage() {
     { id: "orders", label: `Siparişler (${orders.length})` },
     { id: "tickets", label: `Destek (${tickets.length})` },
     { id: "contacts", label: `Yetkililer (${customer.contacts.length})` },
-    { id: "timeline", label: `Aktivite Geçmişi (${customer.activities.length})` },
+    {
+      id: "timeline",
+      label: `Aktivite Geçmişi (${customer.activities.length})`,
+    },
     { id: "notes", label: `Notlar (${customer.notes.length})` },
     { id: "finance", label: "Finans & Bakiye" },
   ];
@@ -278,8 +301,12 @@ export default function CustomerDetailPage() {
   };
 
   const sortedNotes = [...customer.notes].sort((a, b) => {
-    if (a.isPinned && !b.isPinned) return -1;
-    if (!a.isPinned && b.isPinned) return 1;
+    if (a.isPinned && !b.isPinned) {
+      return -1;
+    }
+    if (!a.isPinned && b.isPinned) {
+      return 1;
+    }
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
@@ -332,7 +359,10 @@ export default function CustomerDetailPage() {
               </span>
             </div>
             <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-              {customer.type === "Company" ? "Kurumsal Müşteri" : "Bireysel Müşteri"} • {customer.industry || "Sektör Belirtilmemiş"}
+              {customer.type === "Company"
+                ? "Kurumsal Müşteri"
+                : "Bireysel Müşteri"}{" "}
+              • {customer.industry || "Sektör Belirtilmemiş"}
             </p>
           </div>
         </div>
@@ -363,7 +393,7 @@ export default function CustomerDetailPage() {
         {/* Left Column: Quick Info Cards */}
         <div className="space-y-4">
           <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-            <h3 className="font-bold text-zinc-900 text-xs uppercase tracking-wider dark:text-zinc-100">
+            <h3 className="font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
               Temel İletişim Bilgileri
             </h3>
             <div className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-300">
@@ -377,7 +407,7 @@ export default function CustomerDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <a
-                    className="truncate hover:underline text-violet-600 dark:text-violet-400"
+                    className="truncate text-violet-600 hover:underline dark:text-violet-400"
                     href={`mailto:${customer.email}`}
                   >
                     {customer.email}
@@ -388,7 +418,7 @@ export default function CustomerDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <Globe className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <a
-                    className="truncate hover:underline text-violet-600 dark:text-violet-400"
+                    className="truncate text-violet-600 hover:underline dark:text-violet-400"
                     href={customer.website}
                     rel="noreferrer"
                     target="_blank"
@@ -410,16 +440,16 @@ export default function CustomerDetailPage() {
 
           {/* Assigned Sales Rep Card */}
           <div className="space-y-2.5 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-            <h3 className="font-bold text-zinc-900 text-xs uppercase tracking-wider dark:text-zinc-100">
+            <h3 className="font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
               Sorumlu Satış Temsilcisi
             </h3>
             {customer.assignedEmployeeName ? (
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 font-bold text-xs text-white shadow-2xs">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 font-bold text-white text-xs shadow-2xs">
                   {customer.assignedEmployeeName.charAt(0)}
                 </div>
                 <div>
-                  <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                  <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     {customer.assignedEmployeeName}
                   </div>
                   <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -428,7 +458,7 @@ export default function CustomerDetailPage() {
                 </div>
               </div>
             ) : (
-              <div className="text-zinc-400 text-xs dark:text-zinc-500">
+              <div className="text-xs text-zinc-400 dark:text-zinc-500">
                 Bu müşteriye henüz temsilci atanmadı.
               </div>
             )}
@@ -464,7 +494,10 @@ export default function CustomerDetailPage() {
                     Toplam Ciro
                   </span>
                   <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                    ₺{(customer.totalRevenue || totalOrdersAmount).toLocaleString("tr-TR")}
+                    ₺
+                    {(
+                      customer.totalRevenue || totalOrdersAmount
+                    ).toLocaleString("tr-TR")}
                   </div>
                 </div>
                 <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
@@ -525,7 +558,9 @@ export default function CustomerDetailPage() {
                           </span>
                         </div>
                         <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                          {new Date(act.performedAt).toLocaleDateString("tr-TR")}
+                          {new Date(act.performedAt).toLocaleDateString(
+                            "tr-TR"
+                          )}
                         </span>
                       </div>
                     ))}
@@ -539,7 +574,7 @@ export default function CustomerDetailPage() {
           {activeTab === "deals" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Müşteri Satış Fırsatları & Huniler
                 </h4>
                 <Link
@@ -552,7 +587,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {deals.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Bu müşteriye ait aktif fırsat bulunamadı.
                 </div>
               ) : (
@@ -572,7 +607,9 @@ export default function CustomerDetailPage() {
                           </span>
                         </div>
                         <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
-                          <span>Sorumlu: {deal.assignedUserName || "Atanmadı"}</span>
+                          <span>
+                            Sorumlu: {deal.assignedUserName || "Atanmadı"}
+                          </span>
                           <span>Durum: {deal.status}</span>
                         </div>
                       </div>
@@ -600,7 +637,7 @@ export default function CustomerDetailPage() {
           {activeTab === "quotes" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Müşteri Teklif Geçmişi
                 </h4>
                 <Link
@@ -613,7 +650,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {quotes.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Bu müşteriye henüz teklif oluşturulmadı.
                 </div>
               ) : (
@@ -634,7 +671,12 @@ export default function CustomerDetailPage() {
                         </div>
                         <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
                           <span>Revizyon: v{quote.revisionNumber}</span>
-                          <span>Tarih: {new Date(quote.createdAt).toLocaleDateString("tr-TR")}</span>
+                          <span>
+                            Tarih:{" "}
+                            {new Date(quote.createdAt).toLocaleDateString(
+                              "tr-TR"
+                            )}
+                          </span>
                         </div>
                       </div>
 
@@ -661,7 +703,7 @@ export default function CustomerDetailPage() {
           {activeTab === "orders" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Müşteri Siparişleri & Satışlar
                 </h4>
                 <Link
@@ -674,7 +716,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {orders.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Bu müşteriye ait kayıtlı sipariş bulunamadı.
                 </div>
               ) : (
@@ -699,12 +741,19 @@ export default function CustomerDetailPage() {
                                 : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
                             }`}
                           >
-                            {order.paymentStatus === "Paid" ? "Ödendi" : "Beklemede"}
+                            {order.paymentStatus === "Paid"
+                              ? "Ödendi"
+                              : "Beklemede"}
                           </span>
                         </div>
                         <div className="mt-1 flex items-center gap-3 text-[11px] text-zinc-400 dark:text-zinc-500">
                           <span>{order.itemsCount} Kalem Ürün</span>
-                          <span>Tarih: {new Date(order.createdAt).toLocaleDateString("tr-TR")}</span>
+                          <span>
+                            Tarih:{" "}
+                            {new Date(order.createdAt).toLocaleDateString(
+                              "tr-TR"
+                            )}
+                          </span>
                         </div>
                       </div>
 
@@ -731,7 +780,7 @@ export default function CustomerDetailPage() {
           {activeTab === "tickets" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Destek & Helpdesk Talepleri
                 </h4>
                 <Link
@@ -744,7 +793,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {tickets.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Bu müşteriye ait destek talebi bulunmuyor.
                 </div>
               ) : (
@@ -764,8 +813,8 @@ export default function CustomerDetailPage() {
                               ticket.priority === "Urgent"
                                 ? "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
                                 : ticket.priority === "High"
-                                ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
-                                : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                                  ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                                  : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                             }`}
                           >
                             {ticket.priority}
@@ -805,7 +854,7 @@ export default function CustomerDetailPage() {
           {activeTab === "contacts" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Kayıtlı Şirket Yetkilileri
                 </h4>
                 <button
@@ -819,7 +868,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {customer.contacts.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Henüz yetkili kişi kaydedilmedi.
                 </div>
               ) : (
@@ -832,7 +881,7 @@ export default function CustomerDetailPage() {
                       <div>
                         <div className="flex items-start justify-between">
                           <div>
-                            <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                            <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                               {contact.fullName}
                             </div>
                             <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -862,7 +911,7 @@ export default function CustomerDetailPage() {
                         </div>
                       </div>
 
-                      <div className="mt-3 flex justify-end border-t border-zinc-100 pt-2 dark:border-zinc-800">
+                      <div className="mt-3 flex justify-end border-zinc-100 border-t pt-2 dark:border-zinc-800">
                         <button
                           className="text-[11px] text-rose-600 hover:underline dark:text-rose-400"
                           onClick={() => handleDeleteContact(contact.id)}
@@ -882,7 +931,7 @@ export default function CustomerDetailPage() {
           {activeTab === "timeline" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Müşteri Etkileşim & Aktivite Geçmişi
                 </h4>
                 <button
@@ -896,7 +945,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {customer.activities.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-zinc-200 bg-white p-8 text-center text-zinc-400 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
                   Henüz aktivite kaydı bulunmuyor.
                 </div>
               ) : (
@@ -923,7 +972,9 @@ export default function CustomerDetailPage() {
                             {activity.title}
                           </span>
                           <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                            {new Date(activity.performedAt).toLocaleString("tr-TR")}
+                            {new Date(activity.performedAt).toLocaleString(
+                              "tr-TR"
+                            )}
                           </span>
                         </div>
                         {activity.description && (
@@ -947,19 +998,19 @@ export default function CustomerDetailPage() {
             <div className="space-y-4">
               {/* Add Note Card */}
               <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
-                <h4 className="mb-2 font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="mb-2 font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Özel Müşteri Notu Ekle
                 </h4>
                 <form onSubmit={handleAddNote}>
                   <textarea
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-zinc-900 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                     onChange={(e) => setQuickNoteContent(e.target.value)}
                     placeholder="Müşteri hakkında ekip içi notlarınızı buraya yazın..."
                     rows={3}
                     value={quickNoteContent}
                   />
                   <div className="mt-2 flex items-center justify-between">
-                    <label className="flex cursor-pointer items-center gap-1.5 text-zinc-600 text-xs select-none dark:text-zinc-300">
+                    <label className="flex cursor-pointer select-none items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-300">
                       <input
                         checked={quickNotePinned}
                         className="rounded text-violet-600 focus:ring-violet-500"
@@ -986,7 +1037,7 @@ export default function CustomerDetailPage() {
 
               {/* Notes List with Pin Highlight & In-Place Editing */}
               {customer.notes.length === 0 ? (
-                <div className="py-6 text-center text-zinc-400 text-xs dark:text-zinc-500">
+                <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Henüz not eklenmedi.
                 </div>
               ) : (
@@ -1017,7 +1068,9 @@ export default function CustomerDetailPage() {
                           <button
                             className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                             onClick={() => handleTogglePinNote(note)}
-                            title={note.isPinned ? "İğneyi Kaldır" : "Üste İğnele"}
+                            title={
+                              note.isPinned ? "İğneyi Kaldır" : "Üste İğnele"
+                            }
                             type="button"
                           >
                             {note.isPinned ? (
@@ -1045,8 +1098,10 @@ export default function CustomerDetailPage() {
                         <div className="space-y-2">
                           <textarea
                             autoFocus
-                            className="w-full rounded-lg border border-zinc-300 bg-white p-2.5 text-zinc-900 text-xs focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                            onChange={(e) => setEditingNoteContent(e.target.value)}
+                            className="w-full rounded-lg border border-zinc-300 bg-white p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            onChange={(e) =>
+                              setEditingNoteContent(e.target.value)
+                            }
                             rows={3}
                             value={editingNoteContent}
                           />
@@ -1084,7 +1139,7 @@ export default function CustomerDetailPage() {
           {activeTab === "finance" && (
             <div className="space-y-4">
               <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 dark:border-zinc-800/90 dark:bg-zinc-900/90">
-                <h4 className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Müşteri Finansal Özeti & Bakiye
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -1093,7 +1148,10 @@ export default function CustomerDetailPage() {
                       Toplam Sipariş Tutarı
                     </span>
                     <div className="mt-1 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                      ₺{totalOrdersAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                      ₺
+                      {totalOrdersAmount.toLocaleString("tr-TR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                   <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
@@ -1101,7 +1159,10 @@ export default function CustomerDetailPage() {
                       Tahsil Edilen (Ödenen)
                     </span>
                     <div className="mt-1 font-bold text-emerald-600 text-lg dark:text-emerald-400">
-                      ₺{totalPaidAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                      ₺
+                      {totalPaidAmount.toLocaleString("tr-TR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                   <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
@@ -1115,7 +1176,10 @@ export default function CustomerDetailPage() {
                           : "text-zinc-900 dark:text-zinc-100"
                       }`}
                     >
-                      ₺{totalPendingAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                      ₺
+                      {totalPendingAmount.toLocaleString("tr-TR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                 </div>
@@ -1229,7 +1293,7 @@ function AddContactModal({
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="flex w-full max-w-md flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Yetkili / İlgili Kişi Ekle
           </h3>
@@ -1315,7 +1379,7 @@ function AddContactModal({
             />
           </div>
 
-          <label className="flex cursor-pointer items-center gap-2 pt-1 select-none text-zinc-700 dark:text-zinc-300">
+          <label className="flex cursor-pointer select-none items-center gap-2 pt-1 text-zinc-700 dark:text-zinc-300">
             <input
               checked={formData.isPrimary}
               className="rounded text-violet-600 focus:ring-violet-500"
@@ -1329,7 +1393,7 @@ function AddContactModal({
             </span>
           </label>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
               className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -1413,7 +1477,7 @@ function AddActivityModal({
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="flex w-full max-w-md flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Müşteri Aktivitesi Ekle
           </h3>
@@ -1507,7 +1571,7 @@ function AddActivityModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
               className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -1573,7 +1637,9 @@ function EditCustomerModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name?.trim()) return;
+    if (!formData.name?.trim()) {
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -1593,7 +1659,7 @@ function EditCustomerModal({
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Müşteri Bilgilerini Düzenle
           </h3>
@@ -1613,7 +1679,9 @@ function EditCustomerModal({
             </label>
             <input
               className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
               type="text"
               value={formData.name || ""}
@@ -1627,7 +1695,9 @@ function EditCustomerModal({
               </label>
               <select
                 className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, type: e.target.value })
+                }
                 value={formData.type}
               >
                 <option value="Company">Kurumsal Şirket</option>
@@ -1640,7 +1710,9 @@ function EditCustomerModal({
               </label>
               <select
                 className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tier: e.target.value })
+                }
                 value={formData.tier}
               >
                 <option value="Standard">Standard</option>
@@ -1657,7 +1729,9 @@ function EditCustomerModal({
               </label>
               <input
                 className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 type="email"
                 value={formData.email || ""}
               />
@@ -1681,13 +1755,16 @@ function EditCustomerModal({
               employees={employees}
               onAddNew={() => setIsQuickAddOpen(true)}
               onChange={(empId) =>
-                setFormData({ ...formData, assignedEmployeeId: empId || undefined })
+                setFormData({
+                  ...formData,
+                  assignedEmployeeId: empId || undefined,
+                })
               }
               value={formData.assignedEmployeeId}
             />
           </div>
 
-          <div className="mt-5 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3.5 dark:border-zinc-800">
+          <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3.5 dark:border-zinc-800">
             <button
               className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}

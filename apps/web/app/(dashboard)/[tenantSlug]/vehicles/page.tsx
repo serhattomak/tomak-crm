@@ -5,58 +5,35 @@ import {
   AlertCircle,
   AlertTriangle,
   ArrowLeft,
-  Banknote,
   Boxes,
-  Calendar,
   Car,
   Check,
   CheckCircle2,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Clock,
   Download,
   ExternalLink,
   Eye,
   FileSpreadsheet,
   FileText,
-  Filter,
-  Flame,
-  Fuel,
-  Gauge,
-  HelpCircle,
-  Layers,
   LayoutGrid,
   List,
   Loader2,
-  Maximize2,
-  Milestone,
-  MoreVertical,
-  Package,
   Pencil,
   Plus,
   Printer,
-  RotateCcw,
   Search,
-  Settings,
-  Shield,
-  ShieldAlert,
-  Sparkles,
   Tag,
   Trash2,
   TrendingUp,
-  Truck,
   Upload,
-  User,
-  Users,
   Wrench,
   X,
-  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ApiClient,
   type CreatePartPayload,
@@ -87,7 +64,9 @@ export default function VehiclesPage() {
 
   // Tabs & Views
   const [activeTab, setActiveTab] = useState<ActiveTab>("catalog");
-  const [catalogViewMode, setCatalogViewMode] = useState<"grid" | "table">("grid");
+  const [catalogViewMode, setCatalogViewMode] = useState<"grid" | "table">(
+    "grid"
+  );
 
   // Catalog Filters
   const [search, setSearch] = useState("");
@@ -100,18 +79,30 @@ export default function VehiclesPage() {
 
   // EPC State
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null);
-  const [selectedSubsystemId, setSelectedSubsystemId] = useState<string | null>(null);
+  const [selectedSubsystemId, setSelectedSubsystemId] = useState<string | null>(
+    null
+  );
   const [selectedPartId, setSelectedPartId] = useState<string | null>(null);
   const [epcSearch, setEpcSearch] = useState("");
 
-  // Documents Filter
+  // Documents Filter & Preview
+  const [docSearch, setDocSearch] = useState("");
   const [docCategoryFilter, setDocCategoryFilter] = useState("");
   const [docTypeFilter, setDocTypeFilter] = useState("");
+  const [selectedPreviewDoc, setSelectedPreviewDoc] =
+    useState<VehicleDocumentDto | null>(null);
 
   // Detail Drawers & Modals
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleSummaryDto | null>(null);
+  const [selectedVehicle, setSelectedVehicle] =
+    useState<VehicleSummaryDto | null>(null);
   const [vehicleDetailTab, setVehicleDetailTab] = useState<
-    "overview" | "specs" | "dimensions" | "safety" | "equipment" | "warranty" | "docs"
+    | "overview"
+    | "specs"
+    | "dimensions"
+    | "safety"
+    | "equipment"
+    | "warranty"
+    | "docs"
   >("overview");
 
   const [isCreateVehicleOpen, setIsCreateVehicleOpen] = useState(false);
@@ -130,7 +121,9 @@ export default function VehiclesPage() {
 
   // Load all initial data
   const loadData = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setLoading(true);
     try {
       const [vehRes, epcRes, partsRes, docsRes] = await Promise.all([
@@ -171,23 +164,40 @@ export default function VehiclesPage() {
   }, [loadData]);
 
   // Unique lists for filters
-  const brands = Array.from(new Set(vehicles.map((v) => v.brand))).filter(Boolean).sort();
-  const segments = Array.from(new Set(vehicles.map((v) => v.segment))).filter(Boolean).sort();
+  const brands = Array.from(new Set(vehicles.map((v) => v.brand)))
+    .filter(Boolean)
+    .sort();
+  const segments = Array.from(new Set(vehicles.map((v) => v.segment)))
+    .filter(Boolean)
+    .sort();
 
   // Filtered Vehicles
   const filteredVehicles = vehicles.filter((v) => {
-    const hay = `${v.brand} ${v.model} ${v.trim} ${v.projectCode || ""} ${v.vinPrefix || ""}`.toLowerCase();
-    if (search && !hay.includes(search.toLowerCase())) return false;
-    if (selectedBrand && v.brand !== selectedBrand) return false;
-    if (selectedSegment && v.segment !== selectedSegment) return false;
-    if (selectedStatus && v.status !== selectedStatus) return false;
+    const hay =
+      `${v.brand} ${v.model} ${v.trim} ${v.projectCode || ""} ${v.vinPrefix || ""}`.toLowerCase();
+    if (search && !hay.includes(search.toLowerCase())) {
+      return false;
+    }
+    if (selectedBrand && v.brand !== selectedBrand) {
+      return false;
+    }
+    if (selectedSegment && v.segment !== selectedSegment) {
+      return false;
+    }
+    if (selectedStatus && v.status !== selectedStatus) {
+      return false;
+    }
     return true;
   });
 
   // Filtered Parts
   const filteredParts = parts.filter((p) => {
-    if (selectedSystemId && p.systemId !== selectedSystemId) return false;
-    if (selectedSubsystemId && p.subsystemId !== selectedSubsystemId) return false;
+    if (selectedSystemId && p.systemId !== selectedSystemId) {
+      return false;
+    }
+    if (selectedSubsystemId && p.subsystemId !== selectedSubsystemId) {
+      return false;
+    }
     if (epcSearch) {
       const s = epcSearch.toLowerCase();
       const match =
@@ -197,13 +207,41 @@ export default function VehiclesPage() {
         p.nameEn.toLowerCase().includes(s) ||
         (p.nameCn && p.nameCn.toLowerCase().includes(s)) ||
         (p.location && p.location.toLowerCase().includes(s));
-      if (!match) return false;
+      if (!match) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // Filtered Documents
+  const filteredDocuments = documents.filter((doc) => {
+    if (docCategoryFilter && doc.category !== docCategoryFilter) {
+      return false;
+    }
+    if (
+      docTypeFilter &&
+      doc.documentType.toUpperCase() !== docTypeFilter.toUpperCase()
+    ) {
+      return false;
+    }
+    if (docSearch.trim()) {
+      const q = docSearch.toLowerCase();
+      const matchName = doc.name.toLowerCase().includes(q);
+      const matchCategory = doc.category.toLowerCase().includes(q);
+      const matchVehicle = doc.vehicleName?.toLowerCase().includes(q);
+      const tags = parseJson<string[]>(doc.tagsJson, []);
+      const matchTags = tags.some((t) => t.toLowerCase().includes(q));
+      if (!(matchName || matchCategory || matchVehicle || matchTags)) {
+        return false;
+      }
     }
     return true;
   });
 
   // Selected EPC Part object
-  const selectedPart = parts.find((p) => p.id === selectedPartId) || filteredParts[0] || null;
+  const selectedPart =
+    parts.find((p) => p.id === selectedPartId) || filteredParts[0] || null;
 
   // Comparison Helpers
   const toggleCompare = (vehicleId: string) => {
@@ -224,7 +262,9 @@ export default function VehiclesPage() {
 
   // Safe JSON Parse helper
   const parseJson = <T,>(jsonStr: string | undefined, fallback: T): T => {
-    if (!jsonStr) return fallback;
+    if (!jsonStr) {
+      return fallback;
+    }
     try {
       return JSON.parse(jsonStr) as T;
     } catch {
@@ -289,36 +329,41 @@ export default function VehiclesPage() {
   // Delete Handlers triggering Design System Modal
   const handleDeleteVehicle = (id: string, name: string) => {
     setDeleteConfirmation({
-      isOpen: true,
-      type: "vehicle",
       id,
+      isOpen: true,
+      subtitle:
+        "Bu araca ait tüm teknik spesifikasyonlar, performans ve garanti kayıtları silinecektir.",
       title: name,
-      subtitle: "Bu araca ait tüm teknik spesifikasyonlar, performans ve garanti kayıtları silinecektir.",
+      type: "vehicle",
     });
   };
 
   const handleDeletePart = (id: string, name: string) => {
     setDeleteConfirmation({
-      isOpen: true,
-      type: "part",
       id,
+      isOpen: true,
+      subtitle:
+        "Bu parça elektronik parça kataloğundan ve patlatılmış şema montaj konumlarından kaldırılacaktır.",
       title: name,
-      subtitle: "Bu parça elektronik parça kataloğundan ve patlatılmış şema montaj konumlarından kaldırılacaktır.",
+      type: "part",
     });
   };
 
   const handleDeleteDocument = (id: string, name: string) => {
     setDeleteConfirmation({
-      isOpen: true,
-      type: "document",
       id,
+      isOpen: true,
+      subtitle:
+        "Bu servis bülteni / teknik doküman kalıcı olarak arşivden silinecektir.",
       title: name,
-      subtitle: "Bu servis bülteni / teknik doküman kalıcı olarak arşivden silinecektir.",
+      type: "document",
     });
   };
 
   const confirmDelete = async () => {
-    if (!deleteConfirmation || !activeTenant || isDeleting) return;
+    if (!(deleteConfirmation && activeTenant) || isDeleting) {
+      return;
+    }
     setIsDeleting(true);
 
     const { id, type } = deleteConfirmation;
@@ -326,7 +371,9 @@ export default function VehiclesPage() {
     try {
       if (type === "vehicle") {
         setVehicles((prev) => prev.filter((v) => v.id !== id));
-        if (selectedVehicle?.id === id) setSelectedVehicle(null);
+        if (selectedVehicle?.id === id) {
+          setSelectedVehicle(null);
+        }
         setCompareIds((prev) => prev.filter((cId) => cId !== id));
         const res = await ApiClient.deleteVehicle(id, activeTenant.id);
         if (res.success) {
@@ -337,7 +384,9 @@ export default function VehiclesPage() {
         }
       } else if (type === "part") {
         setParts((prev) => prev.filter((p) => p.id !== id));
-        if (selectedPartId === id) setSelectedPartId(null);
+        if (selectedPartId === id) {
+          setSelectedPartId(null);
+        }
         const res = await ApiClient.deleteEpcPart(id, activeTenant.id);
         if (res.success) {
           showToast("Parça başarıyla silindi.");
@@ -371,28 +420,53 @@ export default function VehiclesPage() {
       return;
     }
 
-    const headers = ["Özellik", ...comparedVehicles.map((v) => `${v.brand} ${v.model}${v.trim ? ` (${v.trim})` : ""}`)];
+    const headers = [
+      "Özellik",
+      ...comparedVehicles.map(
+        (v) => `${v.brand} ${v.model}${v.trim ? ` (${v.trim})` : ""}`
+      ),
+    ];
     const rows: string[][] = [
       ["Segment", ...comparedVehicles.map((v) => v.segment || "")],
-      ["Model Yılı", ...comparedVehicles.map((v) => (v.modelYear ? v.modelYear.toString() : ""))],
+      [
+        "Model Yılı",
+        ...comparedVehicles.map((v) =>
+          v.modelYear ? v.modelYear.toString() : ""
+        ),
+      ],
       ["Kasa Tipi", ...comparedVehicles.map((v) => v.bodyType || "")],
       ["Çekiş", ...comparedVehicles.map((v) => v.driveType || "")],
       ["Motor", ...comparedVehicles.map((v) => v.engine || "")],
       ["Şanzıman", ...comparedVehicles.map((v) => v.transmission || "")],
       ["Yakıt", ...comparedVehicles.map((v) => v.fuel || "")],
-      ["Fiyat USD", ...comparedVehicles.map((v) => (v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : ""))],
-      ["Fiyat TRY", ...comparedVehicles.map((v) => (v.priceTry ? `₺${v.priceTry.toLocaleString()}` : ""))],
+      [
+        "Fiyat USD",
+        ...comparedVehicles.map((v) =>
+          v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : ""
+        ),
+      ],
+      [
+        "Fiyat TRY",
+        ...comparedVehicles.map((v) =>
+          v.priceTry ? `₺${v.priceTry.toLocaleString()}` : ""
+        ),
+      ],
     ];
 
     const csvContent = [headers, ...rows]
-      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      )
       .join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `arac_karsilastirma_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute(
+      "download",
+      `arac_karsilastirma_${new Date().toISOString().slice(0, 10)}.csv`
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -410,27 +484,33 @@ export default function VehiclesPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col gap-4 border-b border-zinc-100 pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-zinc-100 border-b pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-            <Link className="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200" href={`/${tenantSlug}`}>
+            <Link
+              className="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200"
+              href={`/${tenantSlug}`}
+            >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Dashboard</span>
             </Link>
             <span>/</span>
-            <span className="font-bold text-violet-600 dark:text-violet-400">Otomotiv & Araçlar</span>
+            <span className="font-bold text-violet-600 dark:text-violet-400">
+              Otomotiv & Araçlar
+            </span>
           </div>
 
           <div className="mt-1 flex items-center gap-3">
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               Otomotiv & Araç İstihbarat Platformu
             </h1>
-            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-bold text-violet-700 border border-violet-200 dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300">
+            <span className="rounded-full border border-violet-200 bg-violet-50 px-2.5 py-0.5 font-bold text-violet-700 text-xs dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300">
               ULTRAND Engine
             </span>
           </div>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            Araç teknik kataloğu, çoklu kıyaslama masası, patlatılmış şemalı EPC parça kataloğu ve servis bültenleri
+            Araç teknik kataloğu, çoklu kıyaslama masası, patlatılmış şemalı EPC
+            parça kataloğu ve servis bültenleri
           </p>
         </div>
 
@@ -480,53 +560,68 @@ export default function VehiclesPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-semibold">Toplam Araç Modeli</span>
+            <span className="font-semibold text-xs">Toplam Araç Modeli</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Car className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">{vehicles.length}</div>
+          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+            {vehicles.length}
+          </div>
           <div className="mt-1 text-[11px] text-zinc-400">
-            {vehicles.filter((v) => v.status === "Active").length} Aktif · {vehicles.filter((v) => v.status === "Development").length} Ar-Ge
+            {vehicles.filter((v) => v.status === "Active").length} Aktif ·{" "}
+            {vehicles.filter((v) => v.status === "Development").length} Ar-Ge
           </div>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-semibold">Marka Portföyü</span>
+            <span className="font-semibold text-xs">Marka Portföyü</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <Tag className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">{brands.length}</div>
-          <div className="mt-1 text-[11px] text-zinc-400">Kendi Modellerimiz + Rakipler</div>
+          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+            {brands.length}
+          </div>
+          <div className="mt-1 text-[11px] text-zinc-400">
+            Kendi Modellerimiz + Rakipler
+          </div>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-semibold">EPC Yedek Parça</span>
+            <span className="font-semibold text-xs">EPC Yedek Parça</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Wrench className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">{parts.length}</div>
-          <div className="mt-1 text-[11px] text-zinc-400">{epcSystems.length} Ana Montaj Sisteminde</div>
+          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+            {parts.length}
+          </div>
+          <div className="mt-1 text-[11px] text-zinc-400">
+            {epcSystems.length} Ana Montaj Sisteminde
+          </div>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-            <span className="text-xs font-semibold">Teknik Doküman & TSB</span>
+            <span className="font-semibold text-xs">Teknik Doküman & TSB</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <FileText className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">{documents.length}</div>
-          <div className="mt-1 text-[11px] text-zinc-400">Kılavuzlar, Homologasyon & CAD</div>
+          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+            {documents.length}
+          </div>
+          <div className="mt-1 text-[11px] text-zinc-400">
+            Kılavuzlar, Homologasyon & CAD
+          </div>
         </div>
       </div>
 
       {/* Tabs Header */}
-      <div className="flex items-center gap-2 border-b border-zinc-200/80 dark:border-zinc-800">
+      <div className="flex items-center gap-2 border-zinc-200/80 border-b dark:border-zinc-800">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "catalog"
@@ -555,7 +650,7 @@ export default function VehiclesPage() {
           <TrendingUp className="h-4 w-4" />
           <span>Araç Karşılaştırma & Benchmarking</span>
           {compareIds.length > 0 && (
-            <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-700 dark:bg-violet-950/80 dark:text-violet-300">
+            <span className="rounded-full bg-violet-100 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/80 dark:text-violet-300">
               {compareIds.length} Seçili
             </span>
           )}
@@ -616,7 +711,7 @@ export default function VehiclesPage() {
               {/* Brand Filter */}
               <select
                 aria-label="Marka Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 text-xs font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setSelectedBrand(e.target.value)}
                 value={selectedBrand}
               >
@@ -631,7 +726,7 @@ export default function VehiclesPage() {
               {/* Segment Filter */}
               <select
                 aria-label="Segment Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 text-xs font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setSelectedSegment(e.target.value)}
                 value={selectedSegment}
               >
@@ -646,7 +741,7 @@ export default function VehiclesPage() {
               {/* Status Filter */}
               <select
                 aria-label="Durum Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 text-xs font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 value={selectedStatus}
               >
@@ -690,8 +785,14 @@ export default function VehiclesPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filteredVehicles.map((v) => {
                 const isCompared = compareIds.includes(v.id);
-                const engineSpec = parseJson<{ power?: string; torque?: string }>(v.engineSpecJson, {});
-                const performance = parseJson<{ accel?: string }>(v.performanceJson, {});
+                const engineSpec = parseJson<{
+                  power?: string;
+                  torque?: string;
+                }>(v.engineSpecJson, {});
+                const performance = parseJson<{ accel?: string }>(
+                  v.performanceJson,
+                  {}
+                );
 
                 return (
                   <div
@@ -710,18 +811,22 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </h3>
                             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                              {[v.trim, v.modelYear].filter(Boolean).join(" · ") || "Model"}
+                              {[v.trim, v.modelYear]
+                                .filter(Boolean)
+                                .join(" · ") || "Model"}
                             </p>
                           </div>
                         </div>
 
-                        <span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${getStatusBadge(v.status)}`}>
+                        <span
+                          className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(v.status)}`}
+                        >
                           {getStatusLabel(v.status)}
                         </span>
                       </div>
 
                       {/* Pills */}
-                      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px] font-semibold min-h-[22px]">
+                      <div className="mt-3 flex min-h-[22px] flex-wrap gap-1.5 font-semibold text-[10px]">
                         {v.segment && (
                           <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                             {v.segment}
@@ -742,8 +847,15 @@ export default function VehiclesPage() {
                             {v.projectCode}
                           </span>
                         )}
-                        {!v.segment && !v.fuel && !v.driveType && !v.projectCode && (
-                          <span className="text-zinc-400 text-[11px] italic">Temel Tanım</span>
+                        {!(
+                          v.segment ||
+                          v.fuel ||
+                          v.driveType ||
+                          v.projectCode
+                        ) && (
+                          <span className="text-[11px] text-zinc-400 italic">
+                            Temel Tanım
+                          </span>
                         )}
                       </div>
 
@@ -756,24 +868,30 @@ export default function VehiclesPage() {
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">0-100 km/s</div>
+                          <div className="text-[10px] text-zinc-400">
+                            0-100 km/s
+                          </div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                             {performance.accel || "—"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">Ref. Fiyat</div>
-                          <div className="font-bold text-xs text-emerald-600 dark:text-emerald-400">
-                            {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
+                          <div className="text-[10px] text-zinc-400">
+                            Ref. Fiyat
+                          </div>
+                          <div className="font-bold text-emerald-600 text-xs dark:text-emerald-400">
+                            {v.priceUsd
+                              ? `$${v.priceUsd.toLocaleString()}`
+                              : "—"}
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Bottom Actions */}
-                    <div className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                    <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
                       <button
-                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-semibold transition ${
+                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${
                           isCompared
                             ? "border-violet-600 bg-violet-50 text-violet-700 dark:border-violet-500 dark:bg-violet-950/60 dark:text-violet-300"
                             : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -781,7 +899,11 @@ export default function VehiclesPage() {
                         onClick={() => toggleCompare(v.id)}
                         type="button"
                       >
-                        {isCompared ? <Check className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
+                        {isCompared ? (
+                          <Check className="h-3.5 w-3.5" />
+                        ) : (
+                          <TrendingUp className="h-3.5 w-3.5" />
+                        )}
                         <span>{isCompared ? "Kıyaslamada" : "Kıyasla"}</span>
                       </button>
 
@@ -798,7 +920,7 @@ export default function VehiclesPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
+                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
                           onClick={() => {
                             setEditingVehicleId(v.id);
                             setIsCreateVehicleOpen(true);
@@ -809,8 +931,10 @@ export default function VehiclesPage() {
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                          onClick={() => handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)}
+                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                          onClick={() =>
+                            handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
+                          }
                           title="Aracı Sil"
                           type="button"
                         >
@@ -823,13 +947,14 @@ export default function VehiclesPage() {
               })}
 
               {filteredVehicles.length === 0 && (
-                <div className="col-span-full rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+                <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
                   <Car className="mx-auto h-10 w-10 text-zinc-400" />
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                     Arama Kriterlerine Uygun Araç Bulunamadı
                   </h3>
                   <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                    Filtreleri sıfırlayabilir veya sağ üstteki "+ Yeni Araç Ekle" butonuyla yeni bir model oluşturabilirsiniz.
+                    Filtreleri sıfırlayabilir veya sağ üstteki "+ Yeni Araç
+                    Ekle" butonuyla yeni bir model oluşturabilirsiniz.
                   </p>
                 </div>
               )}
@@ -841,14 +966,14 @@ export default function VehiclesPage() {
             <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-zinc-200 bg-zinc-50/70 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <tr className="border-zinc-200 border-b bg-zinc-50/70 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
                     <th className="py-3 pr-4 pl-5">Araç & Model</th>
-                    <th className="py-3 px-4">Segment</th>
-                    <th className="py-3 px-4">Model Yılı</th>
-                    <th className="py-3 px-4">Motor & Yakıt</th>
-                    <th className="py-3 px-4">Pazar</th>
-                    <th className="py-3 px-4">Ref. Fiyat (USD)</th>
-                    <th className="py-3 px-4">Durum</th>
+                    <th className="px-4 py-3">Segment</th>
+                    <th className="px-4 py-3">Model Yılı</th>
+                    <th className="px-4 py-3">Motor & Yakıt</th>
+                    <th className="px-4 py-3">Pazar</th>
+                    <th className="px-4 py-3">Ref. Fiyat (USD)</th>
+                    <th className="px-4 py-3">Durum</th>
                     <th className="py-3 pr-5 pl-4 text-right">İşlemler</th>
                   </tr>
                 </thead>
@@ -869,33 +994,52 @@ export default function VehiclesPage() {
                             <div className="font-bold text-zinc-900 dark:text-zinc-100">
                               {v.brand} {v.model}
                             </div>
-                            {v.trim && <div className="text-[11px] text-zinc-400">{v.trim}</div>}
+                            {v.trim && (
+                              <div className="text-[11px] text-zinc-400">
+                                {v.trim}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-medium text-zinc-700 dark:text-zinc-300">{v.segment || "—"}</td>
-                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.modelYear || "—"}</td>
-                      <td className="py-3 px-4">
-                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">{v.engine || "—"}</div>
+                      <td className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
+                        {v.segment || "—"}
+                      </td>
+                      <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                        {v.modelYear || "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">
+                          {v.engine || "—"}
+                        </div>
                         {(v.fuel || v.transmission) && (
                           <div className="text-[11px] text-zinc-400">
-                            {[v.fuel, v.transmission].filter(Boolean).join(" · ")}
+                            {[v.fuel, v.transmission]
+                              .filter(Boolean)
+                              .join(" · ")}
                           </div>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.market || "—"}</td>
-                      <td className="py-3 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                      <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                        {v.market || "—"}
+                      </td>
+                      <td className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                       </td>
-                      <td className="py-3 px-4">
-                        <span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${getStatusBadge(v.status)}`}>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(v.status)}`}
+                        >
                           {getStatusLabel(v.status)}
                         </span>
                       </td>
-                      <td className="py-3 pr-5 pl-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <td
+                        className="py-3 pr-5 pl-4 text-right"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="flex items-center justify-end gap-1">
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                             onClick={() => {
                               setSelectedVehicle(v);
                               setVehicleDetailTab("overview");
@@ -906,7 +1050,7 @@ export default function VehiclesPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
+                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
                             onClick={() => {
                               setEditingVehicleId(v.id);
                               setIsCreateVehicleOpen(true);
@@ -917,8 +1061,10 @@ export default function VehiclesPage() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                            onClick={() => handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)}
+                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                            onClick={() =>
+                              handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
+                            }
                             title="Aracı Sil"
                             type="button"
                           >
@@ -947,14 +1093,15 @@ export default function VehiclesPage() {
                 Karşılaştırma Masası ({comparedVehicles.length} Araç)
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Kendi modellerinizi ve rakipleri tüm teknik ve ticari boyutlarda yan yana kıyaslayın
+                Kendi modellerinizi ve rakipleri tüm teknik ve ticari boyutlarda
+                yan yana kıyaslayın
               </p>
 
               {/* Selected Pills */}
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {comparedVehicles.map((v) => (
                   <span
-                    className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-semibold text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-semibold text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     key={v.id}
                   >
                     <span>{v.icon}</span>
@@ -995,32 +1142,40 @@ export default function VehiclesPage() {
           </div>
 
           {comparedVehicles.length < 2 ? (
-            <div className="rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
               <TrendingUp className="mx-auto h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Karşılaştırma için en az 2 araç seçin
               </h3>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                "Araç Kataloğu" sekmesine giderek dilediğiniz araçların altındaki "Kıyasla" butonuna tıklayabilirsiniz.
+                "Araç Kataloğu" sekmesine giderek dilediğiniz araçların
+                altındaki "Kıyasla" butonuna tıklayabilirsiniz.
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
-                  <tr className="border-b border-zinc-200 bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-800/50">
-                    <th className="py-4 pr-4 pl-5 font-bold text-zinc-700 uppercase tracking-wider dark:text-zinc-300 w-56">
+                  <tr className="border-zinc-200 border-b bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-800/50">
+                    <th className="w-56 py-4 pr-4 pl-5 font-bold text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
                       Özellik Grubu
                     </th>
                     {comparedVehicles.map((v) => (
-                      <th className="py-4 px-4 font-bold text-zinc-900 dark:text-zinc-100 min-w-[180px]" key={v.id}>
+                      <th
+                        className="min-w-[180px] px-4 py-4 font-bold text-zinc-900 dark:text-zinc-100"
+                        key={v.id}
+                      >
                         <div className="flex items-center gap-2">
                           <span className="text-xl">{v.icon}</span>
                           <div>
                             <div>
                               {v.brand} {v.model}
                             </div>
-                            {v.trim && <div className="text-[10px] font-normal text-zinc-400">{v.trim}</div>}
+                            {v.trim && (
+                              <div className="font-normal text-[10px] text-zinc-400">
+                                {v.trim}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </th>
@@ -1030,82 +1185,142 @@ export default function VehiclesPage() {
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {/* Category: GENEL & KASA */}
                   <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
-                    <td className="py-2.5 pr-4 pl-5" colSpan={comparedVehicles.length + 1}>
+                    <td
+                      className="py-2.5 pr-4 pl-5"
+                      colSpan={comparedVehicles.length + 1}
+                    >
                       1. Genel Bilgiler & Kasa
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Segment</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Segment
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 font-semibold text-zinc-800 dark:text-zinc-200" key={v.id}>
+                      <td
+                        className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
+                        key={v.id}
+                      >
                         {v.segment || "—"}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Model Yılı</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Model Yılı
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
+                      <td
+                        className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
+                        key={v.id}
+                      >
                         {v.modelYear || "—"}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Kasa Tipi / Kapı</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Kasa Tipi / Kapı
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {v.bodyType || "—"}{v.doors || v.seats ? ` (${[v.doors ? `${v.doors} Kapı` : null, v.seats ? `${v.seats} Koltuk` : null].filter(Boolean).join(" / ")})` : ""}
+                      <td
+                        className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
+                        key={v.id}
+                      >
+                        {v.bodyType || "—"}
+                        {v.doors || v.seats
+                          ? ` (${[v.doors ? `${v.doors} Kapı` : null, v.seats ? `${v.seats} Koltuk` : null].filter(Boolean).join(" / ")})`
+                          : ""}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Pazar & Ülke</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Pazar & Ülke
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {[v.market, v.country].filter(Boolean).join(" · ") || "—"}
+                      <td
+                        className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
+                        key={v.id}
+                      >
+                        {[v.market, v.country].filter(Boolean).join(" · ") ||
+                          "—"}
                       </td>
                     ))}
                   </tr>
 
                   {/* Category: MOTOR & PERFORMANS */}
                   <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
-                    <td className="py-2.5 pr-4 pl-5" colSpan={comparedVehicles.length + 1}>
+                    <td
+                      className="py-2.5 pr-4 pl-5"
+                      colSpan={comparedVehicles.length + 1}
+                    >
                       2. Motor & Güç Aktarımı
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Motor & Yakıt</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Motor & Yakıt
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 font-semibold text-zinc-800 dark:text-zinc-200" key={v.id}>
-                        {v.engine || v.fuel ? `${v.engine || "—"}${v.fuel ? ` (${v.fuel})` : ""}` : "—"}
+                      <td
+                        className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
+                        key={v.id}
+                      >
+                        {v.engine || v.fuel
+                          ? `${v.engine || "—"}${v.fuel ? ` (${v.fuel})` : ""}`
+                          : "—"}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Şanzıman & Çekiş</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Şanzıman & Çekiş
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {[v.transmission, v.driveType].filter(Boolean).join(" · ") || "—"}
+                      <td
+                        className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
+                        key={v.id}
+                      >
+                        {[v.transmission, v.driveType]
+                          .filter(Boolean)
+                          .join(" · ") || "—"}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Maksimum Güç</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Maksimum Güç
+                    </td>
                     {comparedVehicles.map((v) => {
-                      const spec = parseJson<{ power?: string }>(v.engineSpecJson, {});
+                      const spec = parseJson<{ power?: string }>(
+                        v.engineSpecJson,
+                        {}
+                      );
                       return (
-                        <td className="py-2.5 px-4 font-bold text-violet-700 dark:text-violet-300" key={v.id}>
+                        <td
+                          className="px-4 py-2.5 font-bold text-violet-700 dark:text-violet-300"
+                          key={v.id}
+                        >
                           {spec.power || v.engine || "—"}
                         </td>
                       );
                     })}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">0-100 km/s Hızlanma</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      0-100 km/s Hızlanma
+                    </td>
                     {comparedVehicles.map((v) => {
-                      const perf = parseJson<{ accel?: string }>(v.performanceJson, {});
+                      const perf = parseJson<{ accel?: string }>(
+                        v.performanceJson,
+                        {}
+                      );
                       return (
-                        <td className="py-2.5 px-4 font-semibold text-zinc-800 dark:text-zinc-200" key={v.id}>
+                        <td
+                          className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
+                          key={v.id}
+                        >
                           {perf.accel || "—"}
                         </td>
                       );
@@ -1114,24 +1329,40 @@ export default function VehiclesPage() {
 
                   {/* Category: FİYAT & GARANTİ */}
                   <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
-                    <td className="py-2.5 pr-4 pl-5" colSpan={comparedVehicles.length + 1}>
+                    <td
+                      className="py-2.5 pr-4 pl-5"
+                      colSpan={comparedVehicles.length + 1}
+                    >
                       3. Fiyatlandırma & Garanti
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Referans Fiyat (USD)</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Referans Fiyat (USD)
+                    </td>
                     {comparedVehicles.map((v) => (
-                      <td className="py-2.5 px-4 font-bold text-emerald-600 dark:text-emerald-400" key={v.id}>
+                      <td
+                        className="px-4 py-2.5 font-bold text-emerald-600 dark:text-emerald-400"
+                        key={v.id}
+                      >
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Araç Garantisi</td>
+                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                      Araç Garantisi
+                    </td>
                     {comparedVehicles.map((v) => {
-                      const w = parseJson<{ vehicle?: string }>(v.warrantyJson, {});
+                      const w = parseJson<{ vehicle?: string }>(
+                        v.warrantyJson,
+                        {}
+                      );
                       return (
-                        <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
+                        <td
+                          className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
+                          key={v.id}
+                        >
                           {w.vehicle || "3 Yıl / 100.000 km"}
                         </td>
                       );
@@ -1148,9 +1379,9 @@ export default function VehiclesPage() {
       {/* TAB 3: EPC (ELECTRONIC PARTS CATALOG) */}
       {/* ========================================================= */}
       {activeTab === "epc" && (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 min-h-[600px]">
+        <div className="grid min-h-[600px] grid-cols-1 gap-4 lg:grid-cols-12">
           {/* Left Panel: Systems Tree (Col 3) */}
-          <div className="lg:col-span-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90 overflow-y-auto max-h-[700px]">
+          <div className="max-h-[700px] overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs lg:col-span-3 dark:border-zinc-800/90 dark:bg-zinc-900/90">
             <div className="mb-3 font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
               Sistem Ağacı (Montaj Grupları)
             </div>
@@ -1160,9 +1391,9 @@ export default function VehiclesPage() {
                 const isSelected = selectedSystemId === sys.id;
 
                 return (
-                  <div key={sys.id} className="space-y-0.5">
+                  <div className="space-y-0.5" key={sys.id}>
                     <button
-                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 font-semibold text-xs transition ${
                         isSelected
                           ? "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
                           : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -1184,12 +1415,12 @@ export default function VehiclesPage() {
 
                     {/* Subsystems */}
                     {isSelected && (
-                      <div className="pl-6 space-y-0.5 border-l-2 border-violet-200 dark:border-violet-900 ml-3 mt-1">
+                      <div className="mt-1 ml-3 space-y-0.5 border-violet-200 border-l-2 pl-6 dark:border-violet-900">
                         {sys.subsystems.map((sub) => (
                           <button
-                            className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition ${
+                            className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 font-medium text-[11px] transition ${
                               selectedSubsystemId === sub.id
-                                ? "bg-violet-100/80 text-violet-900 font-bold dark:bg-violet-900/50 dark:text-violet-200"
+                                ? "bg-violet-100/80 font-bold text-violet-900 dark:bg-violet-900/50 dark:text-violet-200"
                                 : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                             }`}
                             key={sub.id}
@@ -1197,7 +1428,9 @@ export default function VehiclesPage() {
                             type="button"
                           >
                             <span>{sub.name}</span>
-                            <span className="text-[10px] opacity-70">{sub.partsCount}</span>
+                            <span className="text-[10px] opacity-70">
+                              {sub.partsCount}
+                            </span>
                           </button>
                         ))}
                       </div>
@@ -1209,23 +1442,53 @@ export default function VehiclesPage() {
           </div>
 
           {/* Middle Panel: Exploded View & Parts Table (Col 6) */}
-          <div className="lg:col-span-6 space-y-4">
+          <div className="space-y-4 lg:col-span-6">
             {/* Exploded View Figure Card */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-              <div className="flex items-center justify-between mb-3">
+              <div className="mb-3 flex items-center justify-between">
                 <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                   Patlatılmış Şema & Hotspotlar (Exploded View)
                 </span>
-                <span className="text-[10px] text-zinc-400">Şemadaki numaralara tıklayarak parçayı seçin</span>
+                <span className="text-[10px] text-zinc-400">
+                  Şemadaki numaralara tıklayarak parçayı seçin
+                </span>
               </div>
 
               {/* Interactive SVG Diagram with Hotspots */}
-              <div className="relative h-60 w-full overflow-hidden rounded-xl border border-dashed border-zinc-300 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50 flex items-center justify-center">
+              <div className="relative flex h-60 w-full items-center justify-center overflow-hidden rounded-xl border border-zinc-300 border-dashed bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50">
                 <svg className="h-full w-full opacity-60" viewBox="0 0 400 220">
-                  <rect fill="currentColor" height="90" opacity="0.15" rx="16" width="220" x="90" y="65" />
-                  <circle cx="130" cy="170" fill="currentColor" opacity="0.3" r="22" />
-                  <circle cx="270" cy="170" fill="currentColor" opacity="0.3" r="22" />
-                  <rect fill="currentColor" height="40" opacity="0.2" rx="10" width="140" x="130" y="40" />
+                  <rect
+                    fill="currentColor"
+                    height="90"
+                    opacity="0.15"
+                    rx="16"
+                    width="220"
+                    x="90"
+                    y="65"
+                  />
+                  <circle
+                    cx="130"
+                    cy="170"
+                    fill="currentColor"
+                    opacity="0.3"
+                    r="22"
+                  />
+                  <circle
+                    cx="270"
+                    cy="170"
+                    fill="currentColor"
+                    opacity="0.3"
+                    r="22"
+                  />
+                  <rect
+                    fill="currentColor"
+                    height="40"
+                    opacity="0.2"
+                    rx="10"
+                    width="140"
+                    x="130"
+                    y="40"
+                  />
                 </svg>
 
                 {/* Hotspots */}
@@ -1241,7 +1504,9 @@ export default function VehiclesPage() {
                     { x: 50, y: 82 },
                   ];
 
-                  const defaultPos = defaultPositions[index % defaultPositions.length] || { x: 50, y: 50 };
+                  const defaultPos = defaultPositions[
+                    index % defaultPositions.length
+                  ] || { x: 50, y: 50 };
                   const pos = {
                     x: part.hotspotCoordX ?? defaultPos.x,
                     y: part.hotspotCoordY ?? defaultPos.y,
@@ -1253,7 +1518,7 @@ export default function VehiclesPage() {
                     <button
                       className={`absolute flex h-6 w-6 items-center justify-center rounded-full font-bold text-[10px] shadow-md transition-all ${
                         isHotspotSelected
-                          ? "bg-violet-600 text-white ring-4 ring-violet-400/50 scale-125 z-10"
+                          ? "z-10 scale-125 bg-violet-600 text-white ring-4 ring-violet-400/50"
                           : "bg-zinc-900 text-white hover:scale-110 dark:bg-white dark:text-zinc-900"
                       }`}
                       key={part.id}
@@ -1271,8 +1536,8 @@ export default function VehiclesPage() {
 
             {/* Parts List */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
-              <div className="flex items-center justify-between mb-3">
-                <div className="relative flex-1 max-w-xs">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="relative max-w-xs flex-1">
                   <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-zinc-400" />
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
@@ -1282,16 +1547,18 @@ export default function VehiclesPage() {
                     value={epcSearch}
                   />
                 </div>
-                <span className="text-[11px] font-bold text-zinc-500">{filteredParts.length} Parça</span>
+                <span className="font-bold text-[11px] text-zinc-500">
+                  {filteredParts.length} Parça
+                </span>
               </div>
 
-              <div className="divide-y divide-zinc-100 dark:divide-zinc-800 max-h-[360px] overflow-y-auto">
+              <div className="max-h-[360px] divide-y divide-zinc-100 overflow-y-auto dark:divide-zinc-800">
                 {filteredParts.map((p, idx) => {
                   const isPartSelected = selectedPart?.id === p.id;
 
                   return (
                     <div
-                      className={`flex cursor-pointer items-center justify-between p-2.5 transition rounded-xl ${
+                      className={`flex cursor-pointer items-center justify-between rounded-xl p-2.5 transition ${
                         isPartSelected
                           ? "bg-violet-50 dark:bg-violet-950/50"
                           : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
@@ -1300,20 +1567,28 @@ export default function VehiclesPage() {
                       onClick={() => setSelectedPartId(p.id)}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 text-[10px] font-bold text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-[10px] text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200">
                           {idx + 1}
                         </span>
                         <div>
-                          <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">{p.nameTr}</div>
-                          <div className="font-mono text-[10px] text-zinc-400">{p.partNumber}</div>
+                          <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                            {p.nameTr}
+                          </div>
+                          <div className="font-mono text-[10px] text-zinc-400">
+                            {p.partNumber}
+                          </div>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="text-zinc-500 dark:text-zinc-400">×{p.qtyPerAssembly}</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">${p.unitPrice}</span>
+                        <span className="text-zinc-500 dark:text-zinc-400">
+                          ×{p.qtyPerAssembly}
+                        </span>
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                          ${p.unitPrice}
+                        </span>
                         <button
-                          className="rounded-lg p-1 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
+                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditingPartId(p.id);
@@ -1330,25 +1605,29 @@ export default function VehiclesPage() {
                 })}
 
                 {filteredParts.length === 0 && (
-                  <div className="py-8 text-center text-xs text-zinc-400">Bu grupta parça bulunamadı.</div>
+                  <div className="py-8 text-center text-xs text-zinc-400">
+                    Bu grupta parça bulunamadı.
+                  </div>
                 )}
               </div>
             </div>
           </div>
 
           {/* Right Panel: Selected Part Details (Col 3) */}
-          <div className="lg:col-span-3 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs lg:col-span-3 dark:border-zinc-800/90 dark:bg-zinc-900/90">
             {selectedPart ? (
               <div className="space-y-4 text-xs">
-                <div className="flex items-start justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+                <div className="flex items-start justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
                   <div>
-                    <span className="font-mono text-[10px] font-bold text-violet-600 dark:text-violet-400">
+                    <span className="font-bold font-mono text-[10px] text-violet-600 dark:text-violet-400">
                       {selectedPart.partNumber}
                     </span>
-                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{selectedPart.nameTr}</h3>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      {selectedPart.nameTr}
+                    </h3>
                   </div>
                   <button
-                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
+                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1362,26 +1641,30 @@ export default function VehiclesPage() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                     <span className="text-zinc-400">English (EN):</span>
-                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedPart.nameEn}</span>
+                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                      {selectedPart.nameEn}
+                    </span>
                   </div>
                   {selectedPart.nameCn && (
-                    <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                    <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                       <span className="text-zinc-400">中文 (CN):</span>
-                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedPart.nameCn}</span>
+                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                        {selectedPart.nameCn}
+                      </span>
                     </div>
                   )}
-                  <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                     <span className="text-zinc-400">OEM No:</span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
                       {selectedPart.oemNumber || "—"}
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                     <span className="text-zinc-400">Stok Durumu:</span>
                     <span
-                      className={`font-bold px-2 py-0.5 rounded-md ${
+                      className={`rounded-md px-2 py-0.5 font-bold ${
                         selectedPart.stockQuantity > 20
                           ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                           : "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
@@ -1390,28 +1673,32 @@ export default function VehiclesPage() {
                       {selectedPart.stockQuantity} adet
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                     <span className="text-zinc-400">Birim Fiyat:</span>
                     <span className="font-bold text-emerald-600 dark:text-emerald-400">
                       ${selectedPart.unitPrice}
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-zinc-100 pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
                     <span className="text-zinc-400">Süperseksiyon:</span>
-                    <span className="text-zinc-600 dark:text-zinc-400">{selectedPart.supersession || "—"}</span>
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      {selectedPart.supersession || "—"}
+                    </span>
                   </div>
                 </div>
 
                 {selectedPart.notes && (
-                  <div className="rounded-xl bg-zinc-50 p-3 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300 text-[11px]">
+                  <div className="rounded-xl bg-zinc-50 p-3 text-[11px] text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                     {selectedPart.notes}
                   </div>
                 )}
 
-                <div className="pt-2 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800">
+                <div className="flex items-center justify-between border-zinc-100 border-t pt-2 dark:border-zinc-800">
                   <button
-                    className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40 transition"
-                    onClick={() => handleDeletePart(selectedPart.id, selectedPart.nameTr)}
+                    className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3 py-1.5 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40"
+                    onClick={() =>
+                      handleDeletePart(selectedPart.id, selectedPart.nameTr)
+                    }
                     type="button"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -1419,7 +1706,7 @@ export default function VehiclesPage() {
                   </button>
 
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-xs text-white hover:bg-violet-700 transition"
+                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs transition hover:bg-violet-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1433,8 +1720,11 @@ export default function VehiclesPage() {
               </div>
             ) : (
               <div className="flex h-full flex-col items-center justify-center py-20 text-center text-xs text-zinc-400">
-                <Wrench className="h-8 w-8 opacity-40 mb-2" />
-                <span>Detaylarını görmek için sol listeden veya şemadan bir parça seçin.</span>
+                <Wrench className="mb-2 h-8 w-8 opacity-40" />
+                <span>
+                  Detaylarını görmek için sol listeden veya şemadan bir parça
+                  seçin.
+                </span>
               </div>
             )}
           </div>
@@ -1446,76 +1736,201 @@ export default function VehiclesPage() {
       {/* ========================================================= */}
       {activeTab === "docs" && (
         <div className="space-y-4">
+          {/* Documents Control & Filter Bar */}
+          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs lg:flex-row lg:items-center lg:justify-between dark:border-zinc-800/90 dark:bg-zinc-900/90">
+            <div className="flex flex-1 flex-wrap items-center gap-2">
+              <div className="relative min-w-[240px] max-w-md flex-1">
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setDocSearch(e.target.value)}
+                  placeholder="Doküman adı, bülten no veya etiket ara..."
+                  type="text"
+                  value={docSearch}
+                />
+              </div>
+
+              {/* Category Pills */}
+              <div className="flex flex-wrap items-center gap-1">
+                {[
+                  "",
+                  "TSB",
+                  "Kullanım Kılavuzu",
+                  "Homologasyon",
+                  "EPC",
+                  "CAD",
+                  "Garanti",
+                ].map((cat) => (
+                  <button
+                    className={`rounded-xl px-2.5 py-1.5 font-semibold text-xs transition ${
+                      docCategoryFilter === cat
+                        ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                        : "border border-zinc-200/80 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                    }`}
+                    key={cat || "all"}
+                    onClick={() => setDocCategoryFilter(cat)}
+                    type="button"
+                  >
+                    {cat || "Tüm Kategoriler"}
+                  </button>
+                ))}
+              </div>
+
+              {/* Format Filter */}
+              <select
+                className="rounded-xl border border-zinc-200 bg-zinc-50/80 px-3 py-1.5 text-xs text-zinc-700 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                onChange={(e) => setDocTypeFilter(e.target.value)}
+                value={docTypeFilter}
+              >
+                <option value="">Tüm Formatlar</option>
+                <option value="PDF">PDF Dokümanı</option>
+                <option value="CAD">CAD / 3D Model</option>
+                <option value="Excel">Excel / Tablo</option>
+                <option value="Word">Word</option>
+                <option value="Görsel">Görsel / Şema</option>
+                <option value="Arşiv">Arşiv (ZIP/RAR)</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-3 self-end lg:self-auto">
+              <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
+                {filteredDocuments.length} Doküman
+              </span>
+              <button
+                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
+                onClick={() => setIsCreateDocOpen(true)}
+                type="button"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Yeni Doküman Yükle</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Documents Grid */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {documents.map((doc) => {
+            {filteredDocuments.map((doc) => {
               const tags = parseJson<string[]>(doc.tagsJson, []);
 
               return (
                 <div
-                  className="group flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition hover:border-violet-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90"
+                  className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition hover:border-violet-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90"
                   key={doc.id}
+                  onClick={() => setSelectedPreviewDoc(doc)}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                         {getDocIcon(doc.documentType)}
                       </div>
-                      <button
-                        className="rounded-lg p-1 text-zinc-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition"
-                        onClick={() => handleDeleteDocument(doc.id, doc.name)}
-                        type="button"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button
+                          className="rounded-lg p-1.5 text-zinc-400 opacity-0 transition hover:bg-rose-50 hover:text-rose-600 group-hover:opacity-100 dark:hover:bg-rose-950/40"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDocument(doc.id, doc.name);
+                          }}
+                          title="Dokümanı Sil"
+                          type="button"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
                     </div>
 
-                    <h4 className="mt-3 font-bold text-xs text-zinc-900 line-clamp-2 dark:text-zinc-100" title={doc.name}>
+                    <h4
+                      className="mt-3 line-clamp-2 font-bold text-xs text-zinc-900 transition group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400"
+                      title={doc.name}
+                    >
                       {doc.name}
                     </h4>
 
                     <div className="mt-1 flex items-center gap-2 text-[11px] text-zinc-400">
+                      <span className="font-semibold text-zinc-600 dark:text-zinc-300">
+                        {doc.category || "Genel"}
+                      </span>
+                      <span>·</span>
                       <span>{doc.documentType}</span>
                       <span>·</span>
                       <span>{doc.fileSize}</span>
                     </div>
 
                     {doc.vehicleName && (
-                      <div className="mt-2 text-[11px] font-semibold text-violet-600 dark:text-violet-400">
-                        🚘 {doc.vehicleName}
+                      <div className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                        <Car className="h-3 w-3" />
+                        <span>{doc.vehicleName}</span>
                       </div>
                     )}
 
-                    <div className="mt-3 flex flex-wrap gap-1">
-                      {tags.map((t) => (
-                        <span
-                          className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
-                          key={t}
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+                    {tags.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1">
+                        {tags.map((t) => (
+                          <span
+                            className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-semibold text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+                            key={t}
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  <div className="mt-4 border-t border-zinc-100 pt-3 text-[10px] text-zinc-400 flex justify-between items-center dark:border-zinc-800">
-                    <span>{new Date(doc.createdAt).toLocaleDateString("tr-TR")}</span>
-                    <span className="font-semibold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer">
-                      Görüntüle ↗
+                  <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800">
+                    <span>
+                      {new Date(doc.createdAt).toLocaleDateString("tr-TR")}
                     </span>
+                    <div
+                      className="flex items-center gap-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {doc.fileUrl && (
+                        <a
+                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-violet-600 dark:hover:bg-zinc-800"
+                          download={doc.name}
+                          href={doc.fileUrl}
+                          rel="noreferrer"
+                          target="_blank"
+                          title="Dosyayı İndir"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      <button
+                        className="flex items-center gap-0.5 font-semibold text-violet-600 hover:underline dark:text-violet-400"
+                        onClick={() => setSelectedPreviewDoc(doc)}
+                        type="button"
+                      >
+                        <span>İncele</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
             })}
 
-            {documents.length === 0 && (
-              <div className="col-span-full rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            {filteredDocuments.length === 0 && (
+              <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
                 <FileText className="mx-auto h-10 w-10 text-zinc-400" />
                 <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
-                  Henüz Doküman Yüklenmemiş
+                  {docSearch || docCategoryFilter || docTypeFilter
+                    ? "Aramanıza uygun doküman bulunamadı"
+                    : "Henüz Doküman Yüklenmemiş"}
                 </h3>
                 <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Kullanım kılavuzları, servis bültenleri (TSB) veya CAD dosyalarını yükleyebilirsiniz.
+                  {docSearch || docCategoryFilter || docTypeFilter
+                    ? "Filtreleri temizleyebilir veya yeni bir doküman yükleyebilirsiniz."
+                    : "Kullanım kılavuzları, servis bültenleri (TSB) veya CAD şemalarını sisteme yükleyin."}
                 </p>
+                <button
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
+                  onClick={() => setIsCreateDocOpen(true)}
+                  type="button"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Doküman Yükle</span>
+                </button>
               </div>
             )}
           </div>
@@ -1527,9 +1942,9 @@ export default function VehiclesPage() {
       {/* ========================================================= */}
       {selectedVehicle && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-          <div className="h-full w-full max-w-2xl overflow-y-auto border-l border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="h-full w-full max-w-2xl overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{selectedVehicle.icon}</span>
                 <div>
@@ -1537,14 +1952,20 @@ export default function VehiclesPage() {
                     {selectedVehicle.brand} {selectedVehicle.model}
                   </h2>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {[selectedVehicle.trim, selectedVehicle.modelYear, selectedVehicle.segment].filter(Boolean).join(" · ") || "Model Tanımı"}
+                    {[
+                      selectedVehicle.trim,
+                      selectedVehicle.modelYear,
+                      selectedVehicle.segment,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ") || "Model Tanımı"}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={() => {
                     setEditingVehicleId(selectedVehicle.id);
                     setIsCreateVehicleOpen(true);
@@ -1555,7 +1976,7 @@ export default function VehiclesPage() {
                   <span>Düzenle</span>
                 </button>
                 <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+                  className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   onClick={() => setSelectedVehicle(null)}
                   type="button"
                 >
@@ -1569,31 +1990,44 @@ export default function VehiclesPage() {
               <div>
                 <div className="text-[10px] text-zinc-400">Güç</div>
                 <div className="font-bold text-xs">
-                  {parseJson<{ power?: string }>(selectedVehicle.engineSpecJson, {}).power || selectedVehicle.engine || "—"}
+                  {parseJson<{ power?: string }>(
+                    selectedVehicle.engineSpecJson,
+                    {}
+                  ).power ||
+                    selectedVehicle.engine ||
+                    "—"}
                 </div>
               </div>
               <div>
                 <div className="text-[10px] text-zinc-400">0-100</div>
                 <div className="font-bold text-xs">
-                  {parseJson<{ accel?: string }>(selectedVehicle.performanceJson, {}).accel || "—"}
+                  {parseJson<{ accel?: string }>(
+                    selectedVehicle.performanceJson,
+                    {}
+                  ).accel || "—"}
                 </div>
               </div>
               <div>
                 <div className="text-[10px] text-zinc-400">Ort. Tüketim</div>
                 <div className="font-bold text-xs">
-                  {parseJson<{ combined?: string }>(selectedVehicle.fuelEcoJson, {}).combined || "—"}
+                  {parseJson<{ combined?: string }>(
+                    selectedVehicle.fuelEcoJson,
+                    {}
+                  ).combined || "—"}
                 </div>
               </div>
               <div>
                 <div className="text-[10px] text-zinc-400">Ref. Fiyat</div>
-                <div className="font-bold text-xs text-emerald-400">
-                  {selectedVehicle.priceUsd ? `$${selectedVehicle.priceUsd.toLocaleString()}` : "—"}
+                <div className="font-bold text-emerald-400 text-xs">
+                  {selectedVehicle.priceUsd
+                    ? `$${selectedVehicle.priceUsd.toLocaleString()}`
+                    : "—"}
                 </div>
               </div>
             </div>
 
             {/* Drawer Sub-Tabs */}
-            <div className="mt-4 flex gap-1 overflow-x-auto border-b border-zinc-100 pb-1 text-xs dark:border-zinc-800">
+            <div className="mt-4 flex gap-1 overflow-x-auto border-zinc-100 border-b pb-1 text-xs dark:border-zinc-800">
               {[
                 { id: "overview", label: "Genel Bakış" },
                 { id: "specs", label: "Teknik & Motor" },
@@ -1602,13 +2036,15 @@ export default function VehiclesPage() {
                 { id: "warranty", label: "Garanti" },
               ].map((tab) => (
                 <button
-                  className={`rounded-lg px-3 py-1.5 font-semibold transition whitespace-nowrap ${
+                  className={`whitespace-nowrap rounded-lg px-3 py-1.5 font-semibold transition ${
                     vehicleDetailTab === tab.id
                       ? "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
                       : "text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                   key={tab.id}
-                  onClick={() => setVehicleDetailTab(tab.id as typeof vehicleDetailTab)}
+                  onClick={() =>
+                    setVehicleDetailTab(tab.id as typeof vehicleDetailTab)
+                  }
                   type="button"
                 >
                   {tab.label}
@@ -1628,7 +2064,9 @@ export default function VehiclesPage() {
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Platform:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.platform || "—"}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.platform || "—"}
+                    </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Proje Kodu:</span>
@@ -1639,12 +2077,16 @@ export default function VehiclesPage() {
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Pazar & Ülke:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
-                      {[selectedVehicle.market, selectedVehicle.country].filter(Boolean).join(" · ") || "—"}
+                      {[selectedVehicle.market, selectedVehicle.country]
+                        .filter(Boolean)
+                        .join(" · ") || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Üretim Tesisi:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.plant || "—"}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.plant || "—"}
+                    </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">VIN Öneki:</span>
@@ -1659,19 +2101,27 @@ export default function VehiclesPage() {
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Motor:</span>
-                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedVehicle.engine || "—"}</span>
+                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.engine || "—"}
+                    </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Şanzıman:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.transmission || "—"}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.transmission || "—"}
+                    </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Çekiş Tipi:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.driveType || "—"}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.driveType || "—"}
+                    </span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Emisyon Standardı:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.emission || "—"}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      {selectedVehicle.emission || "—"}
+                    </span>
                   </div>
                 </div>
               )}
@@ -1689,18 +2139,26 @@ export default function VehiclesPage() {
                       <>
                         <div className="flex justify-between py-1.5">
                           <span className="text-zinc-400">Uzunluk:</span>
-                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">{dims.length || "—"} mm</span>
+                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                            {dims.length || "—"} mm
+                          </span>
                         </div>
                         <div className="flex justify-between py-1.5">
                           <span className="text-zinc-400">Genişlik:</span>
-                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">{dims.width || "—"} mm</span>
+                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                            {dims.width || "—"} mm
+                          </span>
                         </div>
                         <div className="flex justify-between py-1.5">
                           <span className="text-zinc-400">Yükseklik:</span>
-                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">{dims.height || "—"} mm</span>
+                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                            {dims.height || "—"} mm
+                          </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-zinc-400">Dingil Mesafesi:</span>
+                          <span className="text-zinc-400">
+                            Dingil Mesafesi:
+                          </span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.wheelbase || "—"} mm
                           </span>
@@ -1713,25 +2171,34 @@ export default function VehiclesPage() {
 
               {vehicleDetailTab === "safety" && (
                 <div className="space-y-3">
-                  <div className="flex justify-between border-b border-zinc-100 pb-2 dark:border-zinc-800">
+                  <div className="flex justify-between border-zinc-100 border-b pb-2 dark:border-zinc-800">
                     <span className="text-zinc-400">Hava Yastığı Sayısı:</span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
-                      {parseJson<{ airbags?: number }>(selectedVehicle.safetyJson, {}).airbags || 7} Adet
+                      {parseJson<{ airbags?: number }>(
+                        selectedVehicle.safetyJson,
+                        {}
+                      ).airbags || 7}{" "}
+                      Adet
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-zinc-400 block mb-2">ADAS Sürüş Destek Sistemleri:</span>
+                    <span className="mb-2 block text-zinc-400">
+                      ADAS Sürüş Destek Sistemleri:
+                    </span>
                     <div className="flex flex-wrap gap-1.5">
                       {(
-                        parseJson<{ adas?: string[] }>(selectedVehicle.safetyJson, {}).adas || [
+                        parseJson<{ adas?: string[] }>(
+                          selectedVehicle.safetyJson,
+                          {}
+                        ).adas || [
                           "Adaptif Hız Sabitleyici",
                           "Şerit Takip Asistanı",
                           "Otonom Acil Fren",
                         ]
                       ).map((item) => (
                         <span
-                          className="rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+                          className="rounded-lg bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 text-xs dark:bg-emerald-950/50 dark:text-emerald-300"
                           key={item}
                         >
                           ✓ {item}
@@ -1747,14 +2214,21 @@ export default function VehiclesPage() {
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Araç Garantisi:</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                      {parseJson<{ vehicle?: string }>(selectedVehicle.warrantyJson, {}).vehicle || "3 Yıl / 100.000 km"}
+                      {parseJson<{ vehicle?: string }>(
+                        selectedVehicle.warrantyJson,
+                        {}
+                      ).vehicle || "3 Yıl / 100.000 km"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Güç Aktarma Garantisi:</span>
+                    <span className="text-zinc-400">
+                      Güç Aktarma Garantisi:
+                    </span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                      {parseJson<{ powertrain?: string }>(selectedVehicle.warrantyJson, {}).powertrain ||
-                        "5 Yıl / 150.000 km"}
+                      {parseJson<{ powertrain?: string }>(
+                        selectedVehicle.warrantyJson,
+                        {}
+                      ).powertrain || "5 Yıl / 150.000 km"}
                     </span>
                   </div>
                 </div>
@@ -1762,9 +2236,9 @@ export default function VehiclesPage() {
             </div>
 
             {/* Drawer Action Footer */}
-            <div className="mt-6 flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800">
+            <div className="mt-6 flex items-center justify-between border-zinc-100 border-t pt-4 dark:border-zinc-800">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3.5 py-2 font-semibold text-xs text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40 transition"
+                className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3.5 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40"
                 onClick={() => {
                   const v = selectedVehicle;
                   setSelectedVehicle(null);
@@ -1777,7 +2251,7 @@ export default function VehiclesPage() {
               </button>
 
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-xs text-white shadow-xs hover:bg-violet-700 transition"
+                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
                 onClick={() => {
                   setEditingVehicleId(selectedVehicle.id);
                   setIsCreateVehicleOpen(true);
@@ -1798,11 +2272,15 @@ export default function VehiclesPage() {
       {/* ========================================================= */}
       {isCreateVehicleOpen && (
         <CreateEditVehicleModal
-          initialVehicle={vehicles.find((v) => v.id === editingVehicleId) || null}
+          initialVehicle={
+            vehicles.find((v) => v.id === editingVehicleId) || null
+          }
           onClose={() => setIsCreateVehicleOpen(false)}
           onSuccess={() => {
             setIsCreateVehicleOpen(false);
-            showToast(editingVehicleId ? "Araç güncellendi!" : "Yeni araç oluşturuldu!");
+            showToast(
+              editingVehicleId ? "Araç güncellendi!" : "Yeni araç oluşturuldu!"
+            );
             loadData();
           }}
           tenantId={activeTenant?.id || ""}
@@ -1818,7 +2296,9 @@ export default function VehiclesPage() {
           onClose={() => setIsCreatePartOpen(false)}
           onSuccess={() => {
             setIsCreatePartOpen(false);
-            showToast(editingPartId ? "Parça güncellendi!" : "Yeni parça eklendi!");
+            showToast(
+              editingPartId ? "Parça güncellendi!" : "Yeni parça eklendi!"
+            );
             loadData();
           }}
           systems={epcSystems}
@@ -1837,8 +2317,23 @@ export default function VehiclesPage() {
             showToast("Doküman başarıyla yüklendi!");
             loadData();
           }}
+          parts={parts}
           tenantId={activeTenant?.id || ""}
           vehicles={vehicles}
+        />
+      )}
+
+      {/* ========================================================= */}
+      {/* MODAL: DOCUMENT PREVIEW */}
+      {/* ========================================================= */}
+      {selectedPreviewDoc && (
+        <DocumentPreviewModal
+          document={selectedPreviewDoc}
+          onClose={() => setSelectedPreviewDoc(null)}
+          onDelete={(id, name) => {
+            setSelectedPreviewDoc(null);
+            handleDeleteDocument(id, name);
+          }}
         />
       )}
 
@@ -1876,10 +2371,16 @@ function CreateEditVehicleModal({
   const [brand, setBrand] = useState(initialVehicle?.brand || "");
   const [model, setModel] = useState(initialVehicle?.model || "");
   const [trim, setTrim] = useState(initialVehicle?.trim || "");
-  const [generation, setGeneration] = useState(initialVehicle?.generation || "");
+  const [generation, setGeneration] = useState(
+    initialVehicle?.generation || ""
+  );
   const [platform, setPlatform] = useState(initialVehicle?.platform || "");
-  const [projectCode, setProjectCode] = useState(initialVehicle?.projectCode || "");
-  const [modelYear, setModelYear] = useState<number | "">(initialVehicle?.modelYear ?? "");
+  const [projectCode, setProjectCode] = useState(
+    initialVehicle?.projectCode || ""
+  );
+  const [modelYear, setModelYear] = useState<number | "">(
+    initialVehicle?.modelYear ?? ""
+  );
   const [segment, setSegment] = useState(initialVehicle?.segment || "");
   const [bodyType, setBodyType] = useState(initialVehicle?.bodyType || "");
   const [market, setMarket] = useState(initialVehicle?.market || "");
@@ -1888,63 +2389,113 @@ function CreateEditVehicleModal({
   const [vinPrefix, setVinPrefix] = useState(initialVehicle?.vinPrefix || "");
   const [status, setStatus] = useState(initialVehicle?.status || "Active");
   const [icon, setIcon] = useState(initialVehicle?.icon || "");
-  const [priceUsd, setPriceUsd] = useState<number | "">(initialVehicle?.priceUsd ?? "");
-  const [priceTry, setPriceTry] = useState<number | "">(initialVehicle?.priceTry ?? "");
+  const [priceUsd, setPriceUsd] = useState<number | "">(
+    initialVehicle?.priceUsd ?? ""
+  );
+  const [priceTry, setPriceTry] = useState<number | "">(
+    initialVehicle?.priceTry ?? ""
+  );
 
   // 2. Güç Aktarımı & Şasi
   const [engine, setEngine] = useState(initialVehicle?.engine || "");
-  const [transmission, setTransmission] = useState(initialVehicle?.transmission || "");
+  const [transmission, setTransmission] = useState(
+    initialVehicle?.transmission || ""
+  );
   const [fuel, setFuel] = useState(initialVehicle?.fuel || "");
   const [driveType, setDriveType] = useState(initialVehicle?.driveType || "");
   const [emission, setEmission] = useState(initialVehicle?.emission || "");
   const [doors, setDoors] = useState<number | "">(initialVehicle?.doors ?? "");
   const [seats, setSeats] = useState<number | "">(initialVehicle?.seats ?? "");
 
-  const initialSuspension = initialVehicle ? JSON.parse(initialVehicle.suspensionJson || "{}") : {};
-  const [suspensionFront, setSuspensionFront] = useState(initialSuspension.front || "");
-  const [suspensionRear, setSuspensionRear] = useState(initialSuspension.rear || "");
+  const initialSuspension = initialVehicle
+    ? JSON.parse(initialVehicle.suspensionJson || "{}")
+    : {};
+  const [suspensionFront, setSuspensionFront] = useState(
+    initialSuspension.front || ""
+  );
+  const [suspensionRear, setSuspensionRear] = useState(
+    initialSuspension.rear || ""
+  );
 
-  const initialBrakes = initialVehicle ? JSON.parse(initialVehicle.brakesJson || "{}") : {};
+  const initialBrakes = initialVehicle
+    ? JSON.parse(initialVehicle.brakesJson || "{}")
+    : {};
   const [brakesFront, setBrakesFront] = useState(initialBrakes.front || "");
   const [brakesRear, setBrakesRear] = useState(initialBrakes.rear || "");
   const [tyres, setTyres] = useState(initialVehicle?.tyres || "");
 
   // 3. Boyutlar, Ağırlıklar & Motor Performansı
-  const initialDims = initialVehicle ? JSON.parse(initialVehicle.dimensionsJson || "{}") : {};
+  const initialDims = initialVehicle
+    ? JSON.parse(initialVehicle.dimensionsJson || "{}")
+    : {};
   const [length, setLength] = useState<number | "">(initialDims.length ?? "");
   const [width, setWidth] = useState<number | "">(initialDims.width ?? "");
   const [height, setHeight] = useState<number | "">(initialDims.height ?? "");
-  const [wheelbase, setWheelbase] = useState<number | "">(initialDims.wheelbase ?? "");
-  const [groundClearance, setGroundClearance] = useState<number | "">(initialDims.groundClearance ?? "");
-  const [cargoVolume, setCargoVolume] = useState<number | "">(initialDims.cargoVolume ?? "");
-  const [fuelTank, setFuelTank] = useState<number | "">(initialDims.fuelTank ?? "");
+  const [wheelbase, setWheelbase] = useState<number | "">(
+    initialDims.wheelbase ?? ""
+  );
+  const [groundClearance, setGroundClearance] = useState<number | "">(
+    initialDims.groundClearance ?? ""
+  );
+  const [cargoVolume, setCargoVolume] = useState<number | "">(
+    initialDims.cargoVolume ?? ""
+  );
+  const [fuelTank, setFuelTank] = useState<number | "">(
+    initialDims.fuelTank ?? ""
+  );
 
-  const initialWeights = initialVehicle ? JSON.parse(initialVehicle.weightsJson || "{}") : {};
-  const [curbWeight, setCurbWeight] = useState<number | "">(initialWeights.curb ?? "");
+  const initialWeights = initialVehicle
+    ? JSON.parse(initialVehicle.weightsJson || "{}")
+    : {};
+  const [curbWeight, setCurbWeight] = useState<number | "">(
+    initialWeights.curb ?? ""
+  );
   const [gvw, setGvw] = useState<number | "">(initialWeights.gvw ?? "");
-  const [payload, setPayload] = useState<number | "">(initialWeights.payload ?? "");
+  const [payload, setPayload] = useState<number | "">(
+    initialWeights.payload ?? ""
+  );
 
-  const initialEngineSpec = initialVehicle ? JSON.parse(initialVehicle.engineSpecJson || "{}") : {};
+  const initialEngineSpec = initialVehicle
+    ? JSON.parse(initialVehicle.engineSpecJson || "{}")
+    : {};
   const [power, setPower] = useState(initialEngineSpec.power || "");
   const [torque, setTorque] = useState(initialEngineSpec.torque || "");
-  const [displacement, setDisplacement] = useState(initialEngineSpec.displacement || "");
-  const [aspiration, setAspiration] = useState(initialEngineSpec.aspiration || "");
+  const [displacement, setDisplacement] = useState(
+    initialEngineSpec.displacement || ""
+  );
+  const [aspiration, setAspiration] = useState(
+    initialEngineSpec.aspiration || ""
+  );
 
-  const initialPerformance = initialVehicle ? JSON.parse(initialVehicle.performanceJson || "{}") : {};
+  const initialPerformance = initialVehicle
+    ? JSON.parse(initialVehicle.performanceJson || "{}")
+    : {};
   const [topSpeed, setTopSpeed] = useState(initialPerformance.topSpeed || "");
   const [accel, setAccel] = useState(initialPerformance.accel || "");
 
   // 4. Güvenlik, Garanti & Notlar
-  const initialSafety = initialVehicle ? JSON.parse(initialVehicle.safetyJson || "{}") : {};
-  const [airbags, setAirbags] = useState<number | "">(initialSafety.airbags ?? "");
+  const initialSafety = initialVehicle
+    ? JSON.parse(initialVehicle.safetyJson || "{}")
+    : {};
+  const [airbags, setAirbags] = useState<number | "">(
+    initialSafety.airbags ?? ""
+  );
   const [adasString, setAdasString] = useState(
     initialSafety.adas ? initialSafety.adas.join(", ") : ""
   );
 
-  const initialWarranty = initialVehicle ? JSON.parse(initialVehicle.warrantyJson || "{}") : {};
-  const [warrantyVehicle, setWarrantyVehicle] = useState(initialWarranty.vehicle || "");
-  const [warrantyPowertrain, setWarrantyPowertrain] = useState(initialWarranty.powertrain || "");
-  const [warrantyCorrosion, setWarrantyCorrosion] = useState(initialWarranty.corrosion || "");
+  const initialWarranty = initialVehicle
+    ? JSON.parse(initialVehicle.warrantyJson || "{}")
+    : {};
+  const [warrantyVehicle, setWarrantyVehicle] = useState(
+    initialWarranty.vehicle || ""
+  );
+  const [warrantyPowertrain, setWarrantyPowertrain] = useState(
+    initialWarranty.powertrain || ""
+  );
+  const [warrantyCorrosion, setWarrantyCorrosion] = useState(
+    initialWarranty.corrosion || ""
+  );
 
   const [notes, setNotes] = useState(initialVehicle?.notes || "");
   const [submitting, setSubmitting] = useState(false);
@@ -1961,7 +2512,10 @@ function CreateEditVehicleModal({
   ];
 
   const toggleAdasChip = (item: string) => {
-    const list = adasString.split(",").map((s: string) => s.trim()).filter(Boolean);
+    const list = adasString
+      .split(",")
+      .map((s: string) => s.trim())
+      .filter(Boolean);
     if (list.includes(item)) {
       setAdasString(list.filter((x: string) => x !== item).join(", "));
     } else {
@@ -1976,9 +2530,11 @@ function CreateEditVehicleModal({
       e.preventDefault();
       e.stopPropagation();
     }
-    if (step === 1 && !isStep1Valid) return;
+    if (step === 1 && !isStep1Valid) {
+      return;
+    }
     if (step < 4) {
-      setStep((s) => ((s + 1) as typeof step));
+      setStep((s) => (s + 1) as typeof step);
     }
   };
 
@@ -1988,7 +2544,7 @@ function CreateEditVehicleModal({
       e.stopPropagation();
     }
     if (step > 1) {
-      setStep((s) => ((s - 1) as typeof step));
+      setStep((s) => (s - 1) as typeof step);
     }
   };
 
@@ -2006,8 +2562,12 @@ function CreateEditVehicleModal({
       e.preventDefault();
       e.stopPropagation();
     }
-    if (step !== 4) return;
-    if (!brand.trim() || !model.trim() || submitting) return;
+    if (step !== 4) {
+      return;
+    }
+    if (!(brand.trim() && model.trim()) || submitting) {
+      return;
+    }
 
     setSubmitting(true);
     const payloadData: CreateVehiclePayload = {
@@ -2059,7 +2619,10 @@ function CreateEditVehicleModal({
       priceUsd: priceUsd ? Number(priceUsd) : undefined,
       projectCode: projectCode.trim() || undefined,
       safetyJson: JSON.stringify({
-        adas: adasString.split(",").map((s: string) => s.trim()).filter(Boolean),
+        adas: adasString
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean),
         airbags: airbags ? Number(airbags) : undefined,
       }),
       seats: seats ? Number(seats) : undefined,
@@ -2089,7 +2652,11 @@ function CreateEditVehicleModal({
 
     try {
       const res = initialVehicle
-        ? await ApiClient.updateVehicle(initialVehicle.id, payloadData as UpdateVehiclePayload, tenantId)
+        ? await ApiClient.updateVehicle(
+            initialVehicle.id,
+            payloadData as UpdateVehiclePayload,
+            tenantId
+          )
         : await ApiClient.createVehicle(payloadData, tenantId);
 
       if (res.success) {
@@ -2105,22 +2672,32 @@ function CreateEditVehicleModal({
   };
 
   const stepsConfig = [
-    { num: 1, title: "Genel & Pazar", desc: "Marka, model, segment ve fiyat" },
-    { num: 2, title: "Güç Aktarımı", desc: "Motor, şanzıman, yakıt ve şasi" },
-    { num: 3, title: "Boyut & Performans", desc: "Ölçüler, ağırlıklar, hız ve tork" },
-    { num: 4, title: "Güvenlik & Garanti", desc: "ADAS, garanti ve canlı önizleme" },
+    { desc: "Marka, model, segment ve fiyat", num: 1, title: "Genel & Pazar" },
+    { desc: "Motor, şanzıman, yakıt ve şasi", num: 2, title: "Güç Aktarımı" },
+    {
+      desc: "Ölçüler, ağırlıklar, hız ve tork",
+      num: 3,
+      title: "Boyut & Performans",
+    },
+    {
+      desc: "ADAS, garanti ve canlı önizleme",
+      num: 4,
+      title: "Güvenlik & Garanti",
+    },
   ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex flex-col w-full max-w-4xl rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[92vh] overflow-hidden">
+      <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl">{icon || "🚗"}</span>
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-                {initialVehicle ? "Araç Modelini Düzenle" : "Yeni Araç Modeli Ekle"}
+                {initialVehicle
+                  ? "Araç Modelini Düzenle"
+                  : "Yeni Araç Modeli Ekle"}
               </h3>
               {initialVehicle && (
                 <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
@@ -2129,7 +2706,8 @@ function CreateEditVehicleModal({
               )}
             </div>
             <p className="text-xs text-zinc-400">
-              Adım {step} / 4: {stepsConfig[step - 1]?.title} — {stepsConfig[step - 1]?.desc}
+              Adım {step} / 4: {stepsConfig[step - 1]?.title} —{" "}
+              {stepsConfig[step - 1]?.desc}
             </p>
           </div>
           <button
@@ -2142,7 +2720,7 @@ function CreateEditVehicleModal({
         </div>
 
         {/* Stepper Progress Header */}
-        <div className="grid grid-cols-4 border-b border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
+        <div className="grid grid-cols-4 border-zinc-100 border-b bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
           {stepsConfig.map((s) => {
             const isDone = step > s.num;
             const isCurrent = step === s.num;
@@ -2184,11 +2762,12 @@ function CreateEditVehicleModal({
                   >
                     {s.title}
                   </div>
-                  <div className="hidden sm:block truncate text-[10px] text-zinc-400">
+                  <div className="hidden truncate text-[10px] text-zinc-400 sm:block">
                     {s.num === 1 && (brand ? `${brand} ${model}` : "Temel")}
                     {s.num === 2 && (engine ? `${engine}` : "Motor")}
                     {s.num === 3 && (power ? `${power}` : "Teknik")}
-                    {s.num === 4 && (airbags ? `${airbags} Airbag` : "İnceleme")}
+                    {s.num === 4 &&
+                      (airbags ? `${airbags} Airbag` : "İnceleme")}
                   </div>
                 </div>
               </button>
@@ -2197,8 +2776,12 @@ function CreateEditVehicleModal({
         </div>
 
         {/* Wizard Form Content */}
-        <form className="flex flex-1 flex-col overflow-hidden" onKeyDown={handleKeyDown} onSubmit={(e) => e.preventDefault()}>
-          <div className="flex-1 overflow-y-auto p-6 text-xs space-y-4">
+        <form
+          className="flex flex-1 flex-col overflow-hidden"
+          onKeyDown={handleKeyDown}
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="flex-1 space-y-4 overflow-y-auto p-6 text-xs">
             {/* ADIM 1: GENEL BİLGİLER, PAZAR & ÜRETİM */}
             {step === 1 && (
               <div className="space-y-4">
@@ -2252,14 +2835,20 @@ function CreateEditVehicleModal({
                       </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setModelYear(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setModelYear(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 2025"
                         type="number"
                         value={modelYear}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Segment</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Segment
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="segment-options"
@@ -2279,7 +2868,9 @@ function CreateEditVehicleModal({
                       </datalist>
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Kasa Tipi</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Kasa Tipi
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="bodytype-options"
@@ -2305,7 +2896,9 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-4 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Pazar</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Pazar
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setMarket(e.target.value)}
@@ -2315,7 +2908,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Menşe Ülke</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Menşe Ülke
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setCountry(e.target.value)}
@@ -2325,7 +2920,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Üretim Tesisi</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Üretim Tesisi
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setPlant(e.target.value)}
@@ -2335,9 +2932,11 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">VIN Öneki</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        VIN Öneki
+                      </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 font-mono focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setVinPrefix(e.target.value)}
                         placeholder="WVU / JTM"
                         type="text"
@@ -2346,7 +2945,9 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Durum</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Durum
+                      </label>
                       <select
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setStatus(e.target.value)}
@@ -2358,7 +2959,9 @@ function CreateEditVehicleModal({
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">İkon / Emoji</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        İkon / Emoji
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
                         onChange={(e) => setIcon(e.target.value)}
@@ -2368,11 +2971,14 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fiyat (USD)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Fiyat (USD)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => {
-                          const val = e.target.value === "" ? "" : Number(e.target.value);
+                          const val =
+                            e.target.value === "" ? "" : Number(e.target.value);
                           setPriceUsd(val);
                           if (typeof val === "number" && !priceTry) {
                             setPriceTry(val * 35);
@@ -2384,10 +2990,16 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fiyat (TRY)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Fiyat (TRY)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setPriceTry(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setPriceTry(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 1120000"
                         type="number"
                         value={priceTry}
@@ -2398,7 +3010,9 @@ function CreateEditVehicleModal({
 
                 <div className="grid grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Proje Kodu</label>
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      Proje Kodu
+                    </label>
                     <input
                       className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setProjectCode(e.target.value)}
@@ -2408,7 +3022,9 @@ function CreateEditVehicleModal({
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Platform</label>
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      Platform
+                    </label>
                     <input
                       className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setPlatform(e.target.value)}
@@ -2418,7 +3034,9 @@ function CreateEditVehicleModal({
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Nesil / Seri</label>
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      Nesil / Seri
+                    </label>
                     <input
                       className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setGeneration(e.target.value)}
@@ -2440,7 +3058,9 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor Adı/Tipi</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Motor Adı/Tipi
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setEngine(e.target.value)}
@@ -2450,7 +3070,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Şanzıman</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Şanzıman
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTransmission(e.target.value)}
@@ -2460,7 +3082,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yakıt Türü</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Yakıt Türü
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="fuel-options"
@@ -2478,7 +3102,9 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Çekiş Tipi</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Çekiş Tipi
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="drive-options"
@@ -2494,7 +3120,9 @@ function CreateEditVehicleModal({
                       </datalist>
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Emisyon Sınıfı</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Emisyon Sınıfı
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setEmission(e.target.value)}
@@ -2504,18 +3132,32 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Kapı / Koltuk</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Kapı / Koltuk
+                      </label>
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) => setDoors(e.target.value === "" ? "" : Number(e.target.value))}
+                          onChange={(e) =>
+                            setDoors(
+                              e.target.value === ""
+                                ? ""
+                                : Number(e.target.value)
+                            )
+                          }
                           placeholder="Kapı (5)"
                           type="number"
                           value={doors}
                         />
                         <input
                           className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) => setSeats(e.target.value === "" ? "" : Number(e.target.value))}
+                          onChange={(e) =>
+                            setSeats(
+                              e.target.value === ""
+                                ? ""
+                                : Number(e.target.value)
+                            )
+                          }
                           placeholder="Koltuk (5)"
                           type="number"
                           value={seats}
@@ -2531,7 +3173,9 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Ön Süspansiyon</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Ön Süspansiyon
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setSuspensionFront(e.target.value)}
@@ -2541,7 +3185,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Arka Süspansiyon</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Arka Süspansiyon
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setSuspensionRear(e.target.value)}
@@ -2552,7 +3198,9 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fren Sistemi (Ön/Arka)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Fren Sistemi (Ön/Arka)
+                      </label>
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
@@ -2571,7 +3219,9 @@ function CreateEditVehicleModal({
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Lastik Ebatları</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Lastik Ebatları
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTyres(e.target.value)}
@@ -2594,40 +3244,64 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-4 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Uzunluk (mm)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Uzunluk (mm)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setLength(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setLength(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 4520"
                         type="number"
                         value={length}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Genişlik (mm)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Genişlik (mm)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setWidth(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setWidth(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 1840"
                         type="number"
                         value={width}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yükseklik (mm)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Yükseklik (mm)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setHeight(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setHeight(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 1650"
                         type="number"
                         value={height}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Dingil Mesafesi (mm)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Dingil Mesafesi (mm)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setWheelbase(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setWheelbase(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 2680"
                         type="number"
                         value={wheelbase}
@@ -2635,30 +3309,48 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yerden Yükseklik (mm)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Yerden Yükseklik (mm)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setGroundClearance(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setGroundClearance(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 185"
                         type="number"
                         value={groundClearance}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Bagaj Hacmi (L)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Bagaj Hacmi (L)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setCargoVolume(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setCargoVolume(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 480"
                         type="number"
                         value={cargoVolume}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Depo Hacmi (L)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Depo Hacmi (L)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setFuelTank(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setFuelTank(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 55"
                         type="number"
                         value={fuelTank}
@@ -2673,30 +3365,48 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Boş Ağırlık (kg)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Boş Ağırlık (kg)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setCurbWeight(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setCurbWeight(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 1480"
                         type="number"
                         value={curbWeight}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Azami Yüklü (GVW kg)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Azami Yüklü (GVW kg)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setGvw(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setGvw(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 1980"
                         type="number"
                         value={gvw}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">İstiap Haddi / Taşıma (kg)</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        İstiap Haddi / Taşıma (kg)
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setPayload(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          setPayload(
+                            e.target.value === "" ? "" : Number(e.target.value)
+                          )
+                        }
                         placeholder="Örn. 500"
                         type="number"
                         value={payload}
@@ -2704,7 +3414,9 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Güç</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Maksimum Güç
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setPower(e.target.value)}
@@ -2714,7 +3426,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Tork</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Maksimum Tork
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTorque(e.target.value)}
@@ -2724,7 +3438,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor Hacmi</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Motor Hacmi
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setDisplacement(e.target.value)}
@@ -2735,7 +3451,9 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">0-100 km/s Hızlanma</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        0-100 km/s Hızlanma
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setAccel(e.target.value)}
@@ -2745,7 +3463,9 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Hız</label>
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Maksimum Hız
+                      </label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTopSpeed(e.target.value)}
@@ -2762,10 +3482,10 @@ function CreateEditVehicleModal({
             {/* ADIM 4: GÜVENLİK, GARANTİ & CANLI ÖNİZLEME */}
             {step === 4 && (
               <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* Sol Kolon: Güvenlik, ADAS & Garanti Form Alanları */}
                   <div className="space-y-3">
-                    <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20 space-y-3">
+                    <div className="space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
                       <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
                         4.1 Güvenlik & ADAS Sistemleri
                       </h4>
@@ -2775,7 +3495,13 @@ function CreateEditVehicleModal({
                         </label>
                         <input
                           className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) => setAirbags(e.target.value === "" ? "" : Number(e.target.value))}
+                          onChange={(e) =>
+                            setAirbags(
+                              e.target.value === ""
+                                ? ""
+                                : Number(e.target.value)
+                            )
+                          }
                           placeholder="Örn. 7"
                           type="number"
                           value={airbags}
@@ -2791,7 +3517,7 @@ function CreateEditVehicleModal({
                             const isSelected = adasString.includes(opt);
                             return (
                               <button
-                                className={`rounded-lg px-2.5 py-1 text-[11px] font-medium transition ${
+                                className={`rounded-lg px-2.5 py-1 font-medium text-[11px] transition ${
                                   isSelected
                                     ? "bg-violet-600 text-white"
                                     : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
@@ -2821,7 +3547,7 @@ function CreateEditVehicleModal({
                       </div>
                     </div>
 
-                    <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20 space-y-3">
+                    <div className="space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
                       <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
                         4.2 Garanti Koşulları & Notlar
                       </h4>
@@ -2844,7 +3570,9 @@ function CreateEditVehicleModal({
                           </label>
                           <input
                             className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                            onChange={(e) => setWarrantyPowertrain(e.target.value)}
+                            onChange={(e) =>
+                              setWarrantyPowertrain(e.target.value)
+                            }
                             placeholder="Örn. 5 Yıl / 150.000 km"
                             type="text"
                             value={warrantyPowertrain}
@@ -2853,7 +3581,9 @@ function CreateEditVehicleModal({
                       </div>
 
                       <div className="space-y-1">
-                        <label className="font-medium text-zinc-700 dark:text-zinc-300">Notlar</label>
+                        <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                          Notlar
+                        </label>
                         <textarea
                           className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           onChange={(e) => setNotes(e.target.value)}
@@ -2867,18 +3597,22 @@ function CreateEditVehicleModal({
 
                   {/* Sağ Kolon: CANLI KART ÖNİZLEMESİ (Live Mini Preview) */}
                   <div className="flex flex-col rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50/50 via-white to-indigo-50/30 p-5 shadow-xs dark:border-violet-900/40 dark:from-violet-950/20 dark:via-zinc-900 dark:to-indigo-950/20">
-                    <div className="flex items-center justify-between pb-3 border-b border-violet-100 dark:border-violet-900/30">
-                      <span className="font-bold text-xs uppercase tracking-wider text-violet-600 dark:text-violet-400">
+                    <div className="flex items-center justify-between border-violet-100 border-b pb-3 dark:border-violet-900/30">
+                      <span className="font-bold text-violet-600 text-xs uppercase tracking-wider dark:text-violet-400">
                         ✦ Canlı Katalog Kartı Önizlemesi
                       </span>
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                        {status === "Active" ? "Satışta" : status === "Development" ? "Geliştirme" : "Durduruldu"}
+                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                        {status === "Active"
+                          ? "Satışta"
+                          : status === "Development"
+                            ? "Geliştirme"
+                            : "Durduruldu"}
                       </span>
                     </div>
 
-                    <div className="py-4 space-y-3">
+                    <div className="space-y-3 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md text-3xl dark:bg-zinc-800">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-3xl shadow-md dark:bg-zinc-800">
                           {icon || "🚗"}
                         </div>
                         <div>
@@ -2886,7 +3620,8 @@ function CreateEditVehicleModal({
                             {brand || "Marka"} {model || "Model"}
                           </div>
                           <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                            {trim || "Donanım"} • {modelYear || "2025"} • {segment || "Segment"}
+                            {trim || "Donanım"} • {modelYear || "2025"} •{" "}
+                            {segment || "Segment"}
                           </div>
                         </div>
                       </div>
@@ -2899,7 +3634,9 @@ function CreateEditVehicleModal({
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">0-100 km/s</div>
+                          <div className="text-[10px] text-zinc-400">
+                            0-100 km/s
+                          </div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {accel || "—"}
                           </div>
@@ -2928,7 +3665,9 @@ function CreateEditVehicleModal({
                         <div className="flex justify-between">
                           <span>Fiyat (USD):</span>
                           <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                            {priceUsd ? `$${Number(priceUsd).toLocaleString("en-US")}` : "—"}
+                            {priceUsd
+                              ? `$${Number(priceUsd).toLocaleString("en-US")}`
+                              : "—"}
                           </span>
                         </div>
                       </div>
@@ -2940,7 +3679,7 @@ function CreateEditVehicleModal({
           </div>
 
           {/* Stepper Footer Navigasyon */}
-          <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-center justify-between border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
               className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2983,13 +3722,11 @@ function CreateEditVehicleModal({
                   onClick={handleSaveVehicle}
                   type="button"
                 >
-                  {submitting ? (
-                    "Kaydediliyor..."
-                  ) : initialVehicle ? (
-                    "✓ Değişiklikleri Kaydet"
-                  ) : (
-                    "✓ Aracı Kataloğa Ekle"
-                  )}
+                  {submitting
+                    ? "Kaydediliyor..."
+                    : initialVehicle
+                      ? "✓ Değişiklikleri Kaydet"
+                      : "✓ Aracı Kataloğa Ekle"}
                 </button>
               )}
             </div>
@@ -3019,18 +3756,36 @@ function CreateEditPartModal({
   const [nameCn, setNameCn] = useState(initialPart?.nameCn || "");
   const [partNumber, setPartNumber] = useState(initialPart?.partNumber || "");
   const [oemNumber, setOemNumber] = useState(initialPart?.oemNumber || "");
-  const [systemId, setSystemId] = useState(initialPart?.systemId || systems[0]?.id || "");
-  const [subsystemId, setSubsystemId] = useState(initialPart?.subsystemId || systems[0]?.subsystems[0]?.id || "");
-  const [qtyPerAssembly, setQtyPerAssembly] = useState<number | "">(initialPart?.qtyPerAssembly ?? "");
-  const [location, setLocation] = useState(initialPart?.location || "");
-  const [stockQuantity, setStockQuantity] = useState<number | "">(initialPart?.stockQuantity ?? "");
-  const [unitPrice, setUnitPrice] = useState<number | "">(initialPart?.unitPrice ?? "");
-  const [supersession, setSupersession] = useState(initialPart?.supersession || "");
-  const [compatibleModels, setCompatibleModels] = useState(
-    initialPart ? JSON.parse(initialPart.compatibleModelsJson || "[]").join(", ") : ""
+  const [systemId, setSystemId] = useState(
+    initialPart?.systemId || systems[0]?.id || ""
   );
-  const [hotspotCoordX, setHotspotCoordX] = useState<number | "">(initialPart?.hotspotCoordX ?? "");
-  const [hotspotCoordY, setHotspotCoordY] = useState<number | "">(initialPart?.hotspotCoordY ?? "");
+  const [subsystemId, setSubsystemId] = useState(
+    initialPart?.subsystemId || systems[0]?.subsystems[0]?.id || ""
+  );
+  const [qtyPerAssembly, setQtyPerAssembly] = useState<number | "">(
+    initialPart?.qtyPerAssembly ?? ""
+  );
+  const [location, setLocation] = useState(initialPart?.location || "");
+  const [stockQuantity, setStockQuantity] = useState<number | "">(
+    initialPart?.stockQuantity ?? ""
+  );
+  const [unitPrice, setUnitPrice] = useState<number | "">(
+    initialPart?.unitPrice ?? ""
+  );
+  const [supersession, setSupersession] = useState(
+    initialPart?.supersession || ""
+  );
+  const [compatibleModels, setCompatibleModels] = useState(
+    initialPart
+      ? JSON.parse(initialPart.compatibleModelsJson || "[]").join(", ")
+      : ""
+  );
+  const [hotspotCoordX, setHotspotCoordX] = useState<number | "">(
+    initialPart?.hotspotCoordX ?? ""
+  );
+  const [hotspotCoordY, setHotspotCoordY] = useState<number | "">(
+    initialPart?.hotspotCoordY ?? ""
+  );
   const [notes, setNotes] = useState(initialPart?.notes || "");
   const [submitting, setSubmitting] = useState(false);
 
@@ -3038,13 +3793,20 @@ function CreateEditPartModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nameTr.trim() || !partNumber.trim() || submitting) return;
+    if (!(nameTr.trim() && partNumber.trim()) || submitting) {
+      return;
+    }
 
     setSubmitting(true);
     const payload: CreatePartPayload = {
-      compatibleModelsJson: JSON.stringify(compatibleModels.split(",").map((s: string) => s.trim()).filter(Boolean)),
-      hotspotCoordX: hotspotCoordX !== "" ? Number(hotspotCoordX) : undefined,
-      hotspotCoordY: hotspotCoordY !== "" ? Number(hotspotCoordY) : undefined,
+      compatibleModelsJson: JSON.stringify(
+        compatibleModels
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean)
+      ),
+      hotspotCoordX: hotspotCoordX === "" ? undefined : Number(hotspotCoordX),
+      hotspotCoordY: hotspotCoordY === "" ? undefined : Number(hotspotCoordY),
       location: location.trim() || "Motor Bölmesi",
       nameCn: nameCn.trim() || undefined,
       nameEn: nameEn.trim() || nameTr.trim(),
@@ -3052,17 +3814,21 @@ function CreateEditPartModal({
       notes: notes.trim() || undefined,
       oemNumber: oemNumber.trim() || undefined,
       partNumber: partNumber.trim(),
-      qtyPerAssembly: qtyPerAssembly !== "" ? Number(qtyPerAssembly) : 1,
-      stockQuantity: stockQuantity !== "" ? Number(stockQuantity) : 0,
+      qtyPerAssembly: qtyPerAssembly === "" ? 1 : Number(qtyPerAssembly),
+      stockQuantity: stockQuantity === "" ? 0 : Number(stockQuantity),
       subsystemId: subsystemId || undefined,
       supersession: supersession.trim() || undefined,
       systemId: systemId || undefined,
-      unitPrice: unitPrice !== "" ? Number(unitPrice) : 0,
+      unitPrice: unitPrice === "" ? 0 : Number(unitPrice),
     };
 
     try {
       const res = initialPart
-        ? await ApiClient.updateEpcPart(initialPart.id, payload as UpdatePartPayload, tenantId)
+        ? await ApiClient.updateEpcPart(
+            initialPart.id,
+            payload as UpdatePartPayload,
+            tenantId
+          )
         : await ApiClient.createEpcPart(payload, tenantId);
 
       if (res.success) {
@@ -3079,21 +3845,32 @@ function CreateEditPartModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex flex-col w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
+      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              {initialPart ? "EPC Parça Kartını Düzenle" : "Yeni EPC Parçası Ekle"}
+              {initialPart
+                ? "EPC Parça Kartını Düzenle"
+                : "Yeni EPC Parçası Ekle"}
             </h3>
-            <p className="text-xs text-zinc-400">Çok dilli isimlendirme (TR / EN / CN), OEM no, stok ve şema konumu</p>
+            <p className="text-xs text-zinc-400">
+              Çok dilli isimlendirme (TR / EN / CN), OEM no, stok ve şema konumu
+            </p>
           </div>
-          <button className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
+          <button
+            className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="flex flex-1 flex-col overflow-hidden" onSubmit={handleSubmit}>
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+        <form
+          className="flex flex-1 flex-col overflow-hidden"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex-1 space-y-4 overflow-y-auto p-6 text-xs">
             {/* Çok Dilli Parça Adları */}
             <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
               <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
@@ -3114,7 +3891,9 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Part Name (EN)</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Part Name (EN)
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNameEn(e.target.value)}
@@ -3124,7 +3903,9 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">零件名称 (CN)</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    零件名称 (CN)
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNameCn(e.target.value)}
@@ -3156,7 +3937,9 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">OEM No</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    OEM No
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setOemNumber(e.target.value)}
@@ -3166,12 +3949,16 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Ana Sistem</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Ana Sistem
+                  </label>
                   <select
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => {
                       setSystemId(e.target.value);
-                      const s = systems.find((sys) => sys.id === e.target.value);
+                      const s = systems.find(
+                        (sys) => sys.id === e.target.value
+                      );
                       if (s && s.subsystems.length > 0 && s.subsystems[0]) {
                         setSubsystemId(s.subsystems[0].id);
                       }
@@ -3186,7 +3973,9 @@ function CreateEditPartModal({
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Alt Sistem</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Alt Sistem
+                  </label>
                   <select
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setSubsystemId(e.target.value)}
@@ -3209,50 +3998,80 @@ function CreateEditPartModal({
               </h4>
               <div className="grid grid-cols-5 gap-3">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Miktarı</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Montaj Miktarı
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setQtyPerAssembly(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) =>
+                      setQtyPerAssembly(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                     placeholder="1"
                     type="number"
                     value={qtyPerAssembly}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Stok Adedi</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Stok Adedi
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setStockQuantity(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) =>
+                      setStockQuantity(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                     placeholder="0"
                     type="number"
                     value={stockQuantity}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Birim Fiyat ($)</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Birim Fiyat ($)
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) =>
+                      setUnitPrice(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                     placeholder="0"
                     type="number"
                     value={unitPrice}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema %X</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Şema %X
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setHotspotCoordX(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) =>
+                      setHotspotCoordX(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                     placeholder="% 0-100"
                     type="number"
                     value={hotspotCoordX}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema %Y</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Şema %Y
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setHotspotCoordY(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) =>
+                      setHotspotCoordY(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                     placeholder="% 0-100"
                     type="number"
                     value={hotspotCoordY}
@@ -3262,7 +4081,9 @@ function CreateEditPartModal({
 
               <div className="mt-3 grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Konumu</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Montaj Konumu
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     list="location-options"
@@ -3280,7 +4101,9 @@ function CreateEditPartModal({
                   </datalist>
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Süperseksiyon</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Süperseksiyon
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setSupersession(e.target.value)}
@@ -3290,7 +4113,9 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Uyumlu Modeller</label>
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Uyumlu Modeller
+                  </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setCompatibleModels(e.target.value)}
@@ -3302,7 +4127,9 @@ function CreateEditPartModal({
               </div>
 
               <div className="mt-3 space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Parça Notları</label>
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  Parça Notları
+                </label>
                 <textarea
                   className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNotes(e.target.value)}
@@ -3314,7 +4141,7 @@ function CreateEditPartModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
               className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -3327,7 +4154,11 @@ function CreateEditPartModal({
               disabled={submitting || !nameTr.trim() || !partNumber.trim()}
               type="submit"
             >
-              {submitting ? "Kaydediliyor..." : initialPart ? "Değişiklikleri Kaydet" : "Parçayı Ekle"}
+              {submitting
+                ? "Kaydediliyor..."
+                : initialPart
+                  ? "Değişiklikleri Kaydet"
+                  : "Parçayı Ekle"}
             </button>
           </div>
         </form>
@@ -3336,37 +4167,127 @@ function CreateEditPartModal({
   );
 }
 
-// --- 3. Temiz Doküman Yükleme Modalı ---
+// --- 3. Gelişmiş Doküman Yükleme Modalı (Drag & Drop + Auto Detect) ---
 function CreateDocumentModal({
   vehicles,
+  parts = [],
   tenantId,
   onClose,
   onSuccess,
 }: {
   vehicles: VehicleSummaryDto[];
+  parts?: VehiclePartDto[];
   tenantId: string;
   onClose: () => void;
   onSuccess: () => void;
 }) {
+  const [mode, setMode] = useState<"upload" | "url">("upload");
   const [name, setName] = useState("");
   const [documentType, setDocumentType] = useState("PDF");
   const [category, setCategory] = useState("Kullanım Kılavuzu");
   const [vehicleId, setVehicleId] = useState<string>("");
+  const [partId, setPartId] = useState<string>("");
   const [fileSize, setFileSize] = useState("");
-  const [tags, setTags] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>(["TSB"]);
+  const [customTagInput, setCustomTagInput] = useState("");
+
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const quickTagPresets = [
+    "TSB",
+    "Kullanım Kılavuzu",
+    "Motor",
+    "Garanti",
+    "Homologasyon",
+    "Elektrik",
+    "Bakım",
+    "HV Batarya",
+    "Şasi",
+    "Yazılım",
+  ];
+
+  const handleToggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const handleAddCustomTag = () => {
+    if (!customTagInput.trim()) {
+      return;
+    }
+    const cleanTag = customTagInput.trim();
+    if (!selectedTags.includes(cleanTag)) {
+      setSelectedTags((prev) => [...prev, cleanTag]);
+    }
+    setCustomTagInput("");
+  };
+
+  const handleFileUpload = async (file: File) => {
+    if (!file) {
+      return;
+    }
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await ApiClient.uploadVehicleDocument(formData, tenantId);
+      if (res.success && res.data) {
+        setFileUrl(res.data.fileUrl);
+        setUploadedFileName(file.name);
+        setFileSize(res.data.fileSize);
+        setDocumentType(res.data.documentType);
+        if (!name.trim()) {
+          setName(res.data.fileName);
+        }
+      } else {
+        setUploadError(
+          res.message || "Dosya yüklenemedi. Lütfen tekrar deneyin."
+        );
+      }
+    } catch {
+      setUploadError("Dosya yüklenirken bir bağlantı hatası oluştu.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        handleFileUpload(file);
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || submitting) return;
+    if (!name.trim() || submitting) {
+      return;
+    }
 
     setSubmitting(true);
     const payload: CreateVehicleDocumentPayload = {
       category,
       documentType,
       fileSize: fileSize.trim() || "1.2 MB",
+      fileUrl: fileUrl.trim() || undefined,
       name: name.trim(),
-      tagsJson: JSON.stringify(tags.split(",").map((s: string) => s.trim()).filter(Boolean)),
+      partId: partId || undefined,
+      tagsJson: JSON.stringify(selectedTags),
       vehicleId: vehicleId || undefined,
     };
 
@@ -3386,51 +4307,210 @@ function CreateDocumentModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex flex-col w-full max-w-lg rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
+      <div className="fade-in zoom-in-95 flex max-h-[92vh] w-full max-w-xl animate-in flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Teknik Doküman Yükle</h3>
-            <p className="text-xs text-zinc-400">Kılavuz, Servis Bülteni (TSB), Homologasyon veya CAD dosyası</p>
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              Teknik Doküman & Arşiv
+            </h3>
+            <p className="text-xs text-zinc-400">
+              Kılavuz, Servis Bülteni (TSB), Homologasyon veya CAD dosyası
+              yükleyin
+            </p>
           </div>
-          <button className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
+          <button
+            className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            onClick={onClose}
+            type="button"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="flex flex-1 flex-col overflow-hidden" onSubmit={handleSubmit}>
-          <div className="flex-1 overflow-y-auto p-6 space-y-3.5 text-xs">
+        {/* Mode Switcher */}
+        <div className="flex border-zinc-100 border-b bg-zinc-50/70 p-2 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="grid w-full grid-cols-2 gap-1 rounded-2xl bg-zinc-200/60 p-1 dark:bg-zinc-800">
+            <button
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${
+                mode === "upload"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              }`}
+              onClick={() => setMode("upload")}
+              type="button"
+            >
+              <Upload className="h-3.5 w-3.5" />
+              <span>Dosya Yükle (Drag & Drop)</span>
+            </button>
+            <button
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${
+                mode === "url"
+                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              }`}
+              onClick={() => setMode("url")}
+              type="button"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              <span>Harici URL / OEM Bağlantısı</span>
+            </button>
+          </div>
+        </div>
+
+        <form
+          className="flex flex-1 flex-col overflow-hidden"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex-1 space-y-4 overflow-y-auto p-6 text-xs">
+            {/* Upload Zone (Upload Mode) */}
+            {mode === "upload" ? (
+              <div className="space-y-2">
+                <input
+                  accept=".pdf,.dwg,.dxf,.step,.stp,.iges,.igs,.cad,.xlsx,.xls,.csv,.docx,.doc,.png,.jpg,.jpeg,.webp,.svg,.zip,.rar,.7z,.tar,.mp4"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFileUpload(e.target.files[0]);
+                    }
+                  }}
+                  ref={fileInputRef}
+                  type="file"
+                />
+
+                {uploadedFileName ? (
+                  <div className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/30">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
+                        <CheckCircle2 className="h-5 w-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate font-bold text-emerald-950 text-xs dark:text-emerald-100">
+                          {uploadedFileName}
+                        </div>
+                        <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
+                          {fileSize} · {documentType} olarak algılandı
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      className="shrink-0 rounded-xl border border-emerald-300 px-3 py-1.5 font-semibold text-[11px] text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+                      onClick={() => {
+                        setUploadedFileName(null);
+                        setFileUrl("");
+                      }}
+                      type="button"
+                    >
+                      Değiştir
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${
+                      isDragging
+                        ? "border-violet-500 bg-violet-50/50 dark:bg-violet-950/30"
+                        : "border-zinc-200 bg-zinc-50/60 hover:border-violet-400 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:border-violet-500"
+                    }`}
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDragging(true);
+                    }}
+                    onDrop={handleDrop}
+                  >
+                    {isUploading ? (
+                      <div className="flex flex-col items-center py-2">
+                        <Loader2 className="mb-2 h-8 w-8 animate-spin text-violet-600" />
+                        <span className="font-bold text-zinc-800 dark:text-zinc-200">
+                          Dosya Yükleniyor...
+                        </span>
+                        <span className="text-[11px] text-zinc-400">
+                          Format ve boyut taranıyor
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                          <Upload className="h-6 w-6" />
+                        </div>
+                        <span className="font-bold text-zinc-800 dark:text-zinc-200">
+                          Dosyayı buraya sürükleyip bırakın veya seçin
+                        </span>
+                        <span className="mt-1 text-[11px] text-zinc-400">
+                          PDF, CAD (.STEP/.DWG), Excel, Word, Görsel veya ZIP
+                          (Maks. 50 MB)
+                        </span>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {uploadError && (
+                  <div className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-rose-600 text-xs dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    <span>{uploadError}</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  Harici Doküman Linki / URL{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <ExternalLink className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setFileUrl(e.target.value)}
+                    placeholder="https://oem-portal.example.com/docs/tsb-2026-01.pdf"
+                    type="url"
+                    value={fileUrl}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Document Title */}
             <div className="space-y-1">
               <label className="font-medium text-zinc-700 dark:text-zinc-300">
-                Doküman Adı <span className="text-red-500">*</span>
+                Doküman Başlığı <span className="text-red-500">*</span>
               </label>
               <input
                 className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Örn. Voyager_Kullanim_Kilavuzu_2025.pdf"
+                placeholder="Örn. Voyager 2025 Periyodik Bakım ve Tork Tablosu"
                 required
                 type="text"
                 value={name}
               />
             </div>
 
+            {/* Type & Category */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Doküman Türü</label>
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  Doküman Formatı
+                </label>
                 <select
                   className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDocumentType(e.target.value)}
                   value={documentType}
                 >
                   <option value="PDF">PDF Dokümanı</option>
-                  <option value="Excel">Excel / Tablo</option>
-                  <option value="Word">Word Dokümanı</option>
-                  <option value="CAD">CAD / 3D Model (STEP)</option>
-                  <option value="TSB">Teknik Servis Bülteni</option>
-                  <option value="PowerPoint">Sunum (PPTX)</option>
+                  <option value="CAD">CAD / 3D Model (STEP/DWG)</option>
+                  <option value="Excel">Excel / Tablo (XLSX/CSV)</option>
+                  <option value="Word">Word Dokümanı (DOCX)</option>
+                  <option value="Görsel">Teknik Çizim / Görsel</option>
+                  <option value="Arşiv">Arşiv Paketi (ZIP/RAR)</option>
+                  <option value="Video">Eğitim Videosu (MP4)</option>
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Kategori</label>
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  Kategori
+                </label>
                 <select
                   className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setCategory(e.target.value)}
@@ -3446,63 +4526,348 @@ function CreateDocumentModal({
               </div>
             </div>
 
+            {/* Associations: Vehicle & Part */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Bağlı Araç</label>
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  İlişkili Araç Modeli
+                </label>
                 <select
                   className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setVehicleId(e.target.value)}
                   value={vehicleId}
                 >
-                  <option value="">— Genel (Bağlı Araç Yok) —</option>
+                  <option value="">— Genel (Tüm Araçlar) —</option>
                   {vehicles.map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.icon} {v.brand} {v.model} ({v.trim})
+                      {v.icon} {v.brand} {v.model} {v.trim ? `(${v.trim})` : ""}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Dosya Boyutu</label>
-                <input
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  İlişkili EPC Parçası
+                </label>
+                <select
                   className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setFileSize(e.target.value)}
-                  placeholder="Örn. 2.4 MB"
-                  type="text"
-                  value={fileSize}
-                />
+                  onChange={(e) => setPartId(e.target.value)}
+                  value={partId}
+                >
+                  <option value="">— Parça Bağlantısı Yok —</option>
+                  {parts.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.partNumber} - {p.nameTr}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
+            {/* File Size (auto or manual) */}
             <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Etiketler (Virgülle ayırın)</label>
+              <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                Dosya Boyutu
+              </label>
               <input
                 className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setTags(e.target.value)}
-                placeholder="Örn. TSB, Motor, Garanti, Homologasyon"
+                onChange={(e) => setFileSize(e.target.value)}
+                placeholder="Örn. 3.4 MB"
                 type="text"
-                value={tags}
+                value={fileSize}
               />
+            </div>
+
+            {/* Quick Tag Selector & Custom Tags */}
+            <div className="space-y-2">
+              <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                Etiketler
+              </label>
+              <div className="flex flex-wrap gap-1.5">
+                {quickTagPresets.map((tag) => {
+                  const isSelected = selectedTags.includes(tag);
+                  return (
+                    <button
+                      className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition ${
+                        isSelected
+                          ? "bg-violet-600 text-white shadow-2xs"
+                          : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                      }`}
+                      key={tag}
+                      onClick={() => handleToggleTag(tag)}
+                      type="button"
+                    >
+                      {isSelected ? "✓ " : "+ "}
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Custom Tag Input */}
+              <div className="flex items-center gap-2 pt-1">
+                <input
+                  className="flex-1 rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setCustomTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddCustomTag();
+                    }
+                  }}
+                  placeholder="Yeni etiket yazıp ekleyin..."
+                  type="text"
+                  value={customTagInput}
+                />
+                <button
+                  className="rounded-xl border border-zinc-200 px-3 py-2 font-semibold text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                  onClick={handleAddCustomTag}
+                  type="button"
+                >
+                  Ekle
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          {/* Modal Footer */}
+          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50"
-              disabled={submitting || !name.trim()}
+              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-xs transition hover:bg-violet-700 disabled:opacity-50"
+              disabled={submitting || isUploading || !name.trim()}
               type="submit"
             >
-              {submitting ? "Yükleniyor..." : "Dokümanı Kaydet"}
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Kaydediliyor...</span>
+                </>
+              ) : (
+                <>
+                  <Check className="h-4 w-4" />
+                  <span>Dokümanı Kaydet</span>
+                </>
+              )}
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  );
+}
+
+// --- 3.1 Gelişmiş Doküman Önizleme Modalı (PDF, Image, CAD, vs.) ---
+function DocumentPreviewModal({
+  document,
+  onClose,
+  onDelete,
+}: {
+  document: VehicleDocumentDto;
+  onClose: () => void;
+  onDelete: (id: string, name: string) => void;
+}) {
+  const isPdf =
+    document.documentType.toUpperCase() === "PDF" ||
+    document.fileUrl?.toLowerCase().endsWith(".pdf");
+  const isImage =
+    document.documentType.toUpperCase() === "GÖRSEL" ||
+    document.documentType.toUpperCase() === "IMAGE" ||
+    Boolean(document.fileUrl?.match(/\.(png|jpe?g|webp|svg)$/i));
+
+  const tags = (() => {
+    try {
+      return JSON.parse(document.tagsJson || "[]") as string[];
+    } catch {
+      return [];
+    }
+  })();
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-xs">
+      <div className="fade-in zoom-in-95 flex max-h-[92vh] w-full max-w-4xl animate-in flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
+        {/* Header */}
+        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
+              <FileText className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <h3
+                  className="truncate font-bold text-sm text-zinc-900 dark:text-zinc-100"
+                  title={document.name}
+                >
+                  {document.name}
+                </h3>
+                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  {document.documentType}
+                </span>
+                <span className="rounded-md bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                  {document.category}
+                </span>
+              </div>
+              <p className="text-[11px] text-zinc-400">
+                {document.fileSize} ·{" "}
+                {new Date(document.createdAt).toLocaleDateString("tr-TR")}{" "}
+                tarihinde yüklendi
+                {document.vehicleName && ` · 🚘 ${document.vehicleName}`}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {document.fileUrl && (
+              <>
+                <a
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  download={document.name}
+                  href={document.fileUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                  title="Dosyayı İndir"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>İndir</span>
+                </a>
+                <a
+                  className="flex items-center gap-1.5 rounded-xl bg-zinc-100 px-3 py-1.5 font-semibold text-xs text-zinc-800 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  href={document.fileUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                  title="Yeni Sekmede Aç"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Yeni Sekme</span>
+                </a>
+              </>
+            )}
+            <button
+              className="rounded-xl p-2 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40"
+              onClick={() => onDelete(document.id, document.name)}
+              title="Dokümanı Sil"
+              type="button"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+            <button
+              className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              onClick={onClose}
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Preview Viewer Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {isPdf && document.fileUrl ? (
+            <div className="h-[65vh] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
+              <iframe
+                className="h-full w-full"
+                src={`${document.fileUrl}#toolbar=1`}
+                title={document.name}
+              />
+            </div>
+          ) : isImage && document.fileUrl ? (
+            <div className="flex items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-800 dark:bg-zinc-950">
+              <img
+                alt={document.name}
+                className="max-h-[60vh] max-w-full rounded-xl object-contain shadow-md"
+                src={document.fileUrl}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50/70 p-12 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                <Boxes className="h-8 w-8" />
+              </div>
+              <h4 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                {document.name}
+              </h4>
+              <p className="mt-1 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
+                Bu doküman ({document.documentType}) tarayıcı içi doğrudan
+                önizlemeyi desteklemeyen bir formatta (CAD / Excel / STEP /
+                Arşiv) olabilir. Dosyayı indirerek ilgili CAD veya ofis
+                yazılımında açabilirsiniz.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                {document.fileUrl ? (
+                  <a
+                    className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2.5 font-bold text-white text-xs shadow-md transition hover:bg-violet-700"
+                    download={document.name}
+                    href={document.fileUrl}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Dosyayı İndir ({document.fileSize})</span>
+                  </a>
+                ) : (
+                  <span className="text-xs text-zinc-400">
+                    Fiziksel dosya bağlantısı bulunamadı.
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Metadata Footer */}
+          <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:border-zinc-800 dark:bg-zinc-800/30">
+            <div>
+              <span className="block text-[10px] text-zinc-400">Kategori</span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {document.category}
+              </span>
+            </div>
+            <div>
+              <span className="block text-[10px] text-zinc-400">
+                Dosya Boyutu
+              </span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {document.fileSize}
+              </span>
+            </div>
+            <div>
+              <span className="block text-[10px] text-zinc-400">
+                İlişkili Araç
+              </span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {document.vehicleName || "Genel (Tüm Filo)"}
+              </span>
+            </div>
+            <div>
+              <span className="block text-[10px] text-zinc-400">
+                İlişkili Parça
+              </span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {document.partName || "—"}
+              </span>
+            </div>
+          </div>
+
+          {tags.length > 0 && (
+            <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              <span className="mr-1 text-[11px] text-zinc-400">Etiketler:</span>
+              {tags.map((t) => (
+                <span
+                  className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                  key={t}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -3526,7 +4891,9 @@ function DeleteConfirmationModal({
   onClose: () => void;
   onConfirm: () => void;
 }) {
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const typeLabels: Record<string, string> = {
     document: "Teknik Doküman",
@@ -3536,13 +4903,13 @@ function DeleteConfirmationModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex flex-col w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 animate-in fade-in zoom-in-95 duration-150">
+      <div className="fade-in zoom-in-95 flex w-full max-w-md animate-in flex-col rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 ring-8 ring-rose-50 dark:ring-rose-950/30">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 ring-8 ring-rose-50 dark:bg-rose-950/60 dark:text-rose-400 dark:ring-rose-950/30">
             <Trash2 className="h-6 w-6" />
           </div>
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+            <span className="font-bold text-[11px] text-rose-600 uppercase tracking-wider dark:text-rose-400">
               Kalıcı Silme Onayı
             </span>
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -3552,24 +4919,26 @@ function DeleteConfirmationModal({
         </div>
 
         <div className="mt-4 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-800/40">
-          <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+          <div className="truncate font-semibold text-xs text-zinc-900 dark:text-zinc-100">
             {title}
           </div>
           {subtitle && (
-            <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            <p className="mt-1 text-[11px] text-zinc-500 leading-relaxed dark:text-zinc-400">
               {subtitle}
             </p>
           )}
         </div>
 
-        <div className="mt-4 flex items-center gap-2 text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 dark:bg-amber-950/40 dark:border-amber-900/60 dark:text-amber-300">
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-2.5 text-amber-700 text-xs dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-300">
           <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-          <span>Bu işlem geri alınamaz. İlgili kayıt kalıcı olarak kaldırılacaktır.</span>
+          <span>
+            Bu işlem geri alınamaz. İlgili kayıt kalıcı olarak kaldırılacaktır.
+          </span>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-2.5">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             disabled={loading}
             onClick={onClose}
             type="button"
@@ -3577,7 +4946,7 @@ function DeleteConfirmationModal({
             Vazgeç
           </button>
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-rose-600 px-5 py-2 font-bold text-xs text-white shadow-md hover:bg-rose-700 disabled:opacity-50 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-rose-600 px-5 py-2 font-bold text-white text-xs shadow-md transition hover:bg-rose-700 disabled:opacity-50"
             disabled={loading}
             onClick={onConfirm}
             type="button"
@@ -3599,5 +4968,3 @@ function DeleteConfirmationModal({
     </div>
   );
 }
-
-

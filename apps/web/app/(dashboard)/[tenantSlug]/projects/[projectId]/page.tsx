@@ -3,31 +3,19 @@
 
 import {
   AlertCircle,
-  AlertTriangle,
   ArrowLeft,
   Calendar,
   Check,
   CheckCircle2,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  ExternalLink,
   Flame,
   GripVertical,
   Kanban,
   Layers,
   ListTodo,
-  MessageSquare,
   Milestone,
-  MoreVertical,
   Plus,
-  RotateCcw,
   Save,
-  Search,
-  Tag,
   Trash2,
-  User,
-  Users,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -64,7 +52,9 @@ export default function ProjectDetailPage() {
   // Drag & Drop State
   const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-  const [dragOverSprintId, setDragOverSprintId] = useState<string | null | "backlog">(null);
+  const [dragOverSprintId, setDragOverSprintId] = useState<
+    string | null | "backlog"
+  >(null);
 
   // Active Tab & Filters
   const [activeTab, setActiveTab] = useState<ActiveTab>("backlog");
@@ -92,7 +82,9 @@ export default function ProjectDetailPage() {
   const [drawerAcceptance, setDrawerAcceptance] = useState("");
 
   const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
-  const [createItemSprintId, setCreateItemSprintId] = useState<string | null>(null);
+  const [createItemSprintId, setCreateItemSprintId] = useState<string | null>(
+    null
+  );
   const [isCreateSprintModalOpen, setIsCreateSprintModalOpen] = useState(false);
   const [isCreateEpicModalOpen, setIsCreateEpicModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -132,24 +124,43 @@ export default function ProjectDetailPage() {
   };
 
   const loadProjectData = useCallback(async () => {
-    if (!activeTenant || !projectId) return;
+    if (!(activeTenant && projectId)) {
+      return;
+    }
     setLoading(true);
     try {
-      const [projRes, sprintRes, epicRes, itemRes, empRes, custRes] = await Promise.all([
-        ApiClient.getProjectById(projectId, activeTenant.id),
-        ApiClient.getSprints(projectId, activeTenant.id),
-        ApiClient.getEpics(projectId, activeTenant.id),
-        ApiClient.getProjectBacklogItems(projectId, { pageSize: 300 }, activeTenant.id),
-        ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
-        ApiClient.getCustomers(activeTenant.id, { pageSize: 100 }),
-      ]);
+      const [projRes, sprintRes, epicRes, itemRes, empRes, custRes] =
+        await Promise.all([
+          ApiClient.getProjectById(projectId, activeTenant.id),
+          ApiClient.getSprints(projectId, activeTenant.id),
+          ApiClient.getEpics(projectId, activeTenant.id),
+          ApiClient.getProjectBacklogItems(
+            projectId,
+            { pageSize: 300 },
+            activeTenant.id
+          ),
+          ApiClient.getEmployees({ pageSize: 100 }, activeTenant.id),
+          ApiClient.getCustomers(activeTenant.id, { pageSize: 100 }),
+        ]);
 
-      if (projRes.success && projRes.data) setProject(projRes.data);
-      if (sprintRes.success && sprintRes.data) setSprints(sprintRes.data);
-      if (epicRes.success && epicRes.data) setEpics(epicRes.data);
-      if (itemRes.success && itemRes.data) setItems(itemRes.data.items);
-      if (empRes.success && empRes.data) setEmployees(empRes.data.items);
-      if (custRes.success && custRes.data) setCustomers(custRes.data.items);
+      if (projRes.success && projRes.data) {
+        setProject(projRes.data);
+      }
+      if (sprintRes.success && sprintRes.data) {
+        setSprints(sprintRes.data);
+      }
+      if (epicRes.success && epicRes.data) {
+        setEpics(epicRes.data);
+      }
+      if (itemRes.success && itemRes.data) {
+        setItems(itemRes.data.items);
+      }
+      if (empRes.success && empRes.data) {
+        setEmployees(empRes.data.items);
+      }
+      if (custRes.success && custRes.data) {
+        setCustomers(custRes.data.items);
+      }
     } catch {
       showToast("Proje verileri yüklenirken bir sorun oluştu.");
     } finally {
@@ -175,18 +186,27 @@ export default function ProjectDetailPage() {
       setDrawerEpicId(selectedItem.epicId || "");
       setDrawerSprintId(selectedItem.sprintId || "");
       setDrawerCustomerId(selectedItem.customerId || "");
-      setDrawerDueDate(selectedItem.dueDate ? selectedItem.dueDate.slice(0, 10) : "");
+      setDrawerDueDate(
+        selectedItem.dueDate ? selectedItem.dueDate.slice(0, 10) : ""
+      );
       setDrawerDescription(selectedItem.description || "");
       setDrawerAcceptance(selectedItem.acceptanceCriteria || "");
     }
   }, [selectedItem]);
 
   // Quick Update Field (Single Property)
-  const handleQuickUpdateItem = async (itemId: string, patch: Partial<BacklogItemDto>) => {
-    if (!activeTenant) return;
+  const handleQuickUpdateItem = async (
+    itemId: string,
+    patch: Partial<BacklogItemDto>
+  ) => {
+    if (!activeTenant) {
+      return;
+    }
 
     const currentItem = items.find((i) => i.id === itemId);
-    if (!currentItem) return;
+    if (!currentItem) {
+      return;
+    }
 
     const updated = { ...currentItem, ...patch };
 
@@ -200,23 +220,23 @@ export default function ProjectDetailPage() {
       await ApiClient.updateBacklogItem(
         itemId,
         {
-          title: updated.title,
-          type: updated.type,
-          status: updated.status,
-          priority: updated.priority,
-          storyPoints: updated.storyPoints,
-          estimatedHours: updated.estimatedHours,
-          loggedHours: updated.loggedHours,
+          acceptanceCriteria: updated.acceptanceCriteria || undefined,
+          assignedUserAvatar: updated.assignedUserAvatar || undefined,
           assignedUserId: updated.assignedUserId || undefined,
           assignedUserName: updated.assignedUserName || undefined,
-          assignedUserAvatar: updated.assignedUserAvatar || undefined,
-          epicId: updated.epicId || undefined,
-          sprintId: updated.sprintId || undefined,
           customerId: updated.customerId || undefined,
           customerName: updated.customerName || undefined,
-          dueDate: updated.dueDate || undefined,
           description: updated.description || undefined,
-          acceptanceCriteria: updated.acceptanceCriteria || undefined,
+          dueDate: updated.dueDate || undefined,
+          epicId: updated.epicId || undefined,
+          estimatedHours: updated.estimatedHours,
+          loggedHours: updated.loggedHours,
+          priority: updated.priority,
+          sprintId: updated.sprintId || undefined,
+          status: updated.status,
+          storyPoints: updated.storyPoints,
+          title: updated.title,
+          type: updated.type,
         },
         activeTenant.id
       );
@@ -228,7 +248,9 @@ export default function ProjectDetailPage() {
   // Save Drawer Full Edits
   const handleSaveDrawer = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedItem || !activeTenant || drawerSaving) return;
+    if (!(selectedItem && activeTenant) || drawerSaving) {
+      return;
+    }
 
     setDrawerSaving(true);
     const assignedEmployee = employees.find((e) => e.id === drawerAssigneeId);
@@ -238,52 +260,56 @@ export default function ProjectDetailPage() {
 
     const updated: BacklogItemDto = {
       ...selectedItem,
-      title: drawerTitle.trim(),
-      type: drawerType,
-      status: drawerStatus,
-      priority: drawerPriority,
-      storyPoints: Number(drawerStoryPoints) || 0,
-      estimatedHours: Number(drawerEstimatedHours) || 0,
-      loggedHours: Number(drawerLoggedHours) || 0,
+      acceptanceCriteria: drawerAcceptance.trim() || undefined,
+      assignedUserAvatar: assignedEmployee?.avatarUrl || undefined,
       assignedUserId: drawerAssigneeId || undefined,
       assignedUserName: assignedEmployee?.fullName || undefined,
-      assignedUserAvatar: assignedEmployee?.avatarUrl || undefined,
-      epicId: drawerEpicId || undefined,
-      epicName: epic?.name || undefined,
-      epicColor: epic?.color || undefined,
-      sprintId: drawerSprintId || undefined,
-      sprintName: sprint?.name || undefined,
       customerId: drawerCustomerId || undefined,
       customerName: customer?.name || undefined,
-      dueDate: drawerDueDate ? new Date(drawerDueDate).toISOString() : undefined,
       description: drawerDescription.trim() || undefined,
-      acceptanceCriteria: drawerAcceptance.trim() || undefined,
+      dueDate: drawerDueDate
+        ? new Date(drawerDueDate).toISOString()
+        : undefined,
+      epicColor: epic?.color || undefined,
+      epicId: drawerEpicId || undefined,
+      epicName: epic?.name || undefined,
+      estimatedHours: Number(drawerEstimatedHours) || 0,
+      loggedHours: Number(drawerLoggedHours) || 0,
+      priority: drawerPriority,
+      sprintId: drawerSprintId || undefined,
+      sprintName: sprint?.name || undefined,
+      status: drawerStatus,
+      storyPoints: Number(drawerStoryPoints) || 0,
+      title: drawerTitle.trim(),
+      type: drawerType,
     };
 
-    setItems((prev) => prev.map((i) => (i.id === selectedItem.id ? updated : i)));
+    setItems((prev) =>
+      prev.map((i) => (i.id === selectedItem.id ? updated : i))
+    );
     setSelectedItem(updated);
 
     try {
       const res = await ApiClient.updateBacklogItem(
         selectedItem.id,
         {
-          title: updated.title,
-          type: updated.type,
-          status: updated.status,
-          priority: updated.priority,
-          storyPoints: updated.storyPoints,
-          estimatedHours: updated.estimatedHours,
-          loggedHours: updated.loggedHours,
+          acceptanceCriteria: updated.acceptanceCriteria,
+          assignedUserAvatar: updated.assignedUserAvatar,
           assignedUserId: updated.assignedUserId,
           assignedUserName: updated.assignedUserName,
-          assignedUserAvatar: updated.assignedUserAvatar,
-          epicId: updated.epicId,
-          sprintId: updated.sprintId,
           customerId: updated.customerId,
           customerName: updated.customerName,
-          dueDate: updated.dueDate,
           description: updated.description,
-          acceptanceCriteria: updated.acceptanceCriteria,
+          dueDate: updated.dueDate,
+          epicId: updated.epicId,
+          estimatedHours: updated.estimatedHours,
+          loggedHours: updated.loggedHours,
+          priority: updated.priority,
+          sprintId: updated.sprintId,
+          status: updated.status,
+          storyPoints: updated.storyPoints,
+          title: updated.title,
+          type: updated.type,
         },
         activeTenant.id
       );
@@ -301,8 +327,14 @@ export default function ProjectDetailPage() {
 
   // Delete Item
   const handleDeleteItem = async (itemId: string) => {
-    if (!activeTenant) return;
-    if (!confirm("Bu iş maddesini kalıcı olarak silmek istediğinize emin misiniz?")) {
+    if (!activeTenant) {
+      return;
+    }
+    if (
+      !confirm(
+        "Bu iş maddesini kalıcı olarak silmek istediğinize emin misiniz?"
+      )
+    ) {
       return;
     }
 
@@ -326,31 +358,37 @@ export default function ProjectDetailPage() {
   // Handle Item Creation
   const handleCreateItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newItemTitle.trim() || !activeTenant || submittingItem) return;
+    if (!(newItemTitle.trim() && activeTenant) || submittingItem) {
+      return;
+    }
 
     setSubmittingItem(true);
     try {
-      const assignedEmployee = employees.find((e) => e.id === newItemAssigneeId);
+      const assignedEmployee = employees.find(
+        (e) => e.id === newItemAssigneeId
+      );
       const customer = customers.find((c) => c.id === newItemCustomerId);
 
       const res = await ApiClient.createBacklogItem(
         projectId,
         {
-          title: newItemTitle.trim(),
-          type: newItemType,
-          priority: newItemPriority,
-          storyPoints: Number(newItemStoryPoints) || 0,
-          sprintId: createItemSprintId || undefined,
-          epicId: newItemEpicId || undefined,
+          acceptanceCriteria: newItemAcceptance.trim() || undefined,
+          assignedUserAvatar: assignedEmployee?.avatarUrl || undefined,
           assignedUserId: newItemAssigneeId || undefined,
           assignedUserName: assignedEmployee?.fullName || undefined,
-          assignedUserAvatar: assignedEmployee?.avatarUrl || undefined,
           customerId: newItemCustomerId || undefined,
           customerName: customer?.name || undefined,
-          dueDate: newItemDueDate ? new Date(newItemDueDate).toISOString() : undefined,
           description: newItemDescription.trim() || undefined,
-          acceptanceCriteria: newItemAcceptance.trim() || undefined,
+          dueDate: newItemDueDate
+            ? new Date(newItemDueDate).toISOString()
+            : undefined,
+          epicId: newItemEpicId || undefined,
+          priority: newItemPriority,
+          sprintId: createItemSprintId || undefined,
           status: createItemSprintId ? "Todo" : "Backlog",
+          storyPoints: Number(newItemStoryPoints) || 0,
+          title: newItemTitle.trim(),
+          type: newItemType,
         },
         activeTenant.id
       );
@@ -380,16 +418,22 @@ export default function ProjectDetailPage() {
   // Handle Sprint Creation
   const handleCreateSprint = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newSprintName.trim() || !activeTenant) return;
+    if (!(newSprintName.trim() && activeTenant)) {
+      return;
+    }
 
     try {
       const res = await ApiClient.createSprint(
         projectId,
         {
-          name: newSprintName.trim(),
+          endDate: newSprintEndDate
+            ? new Date(newSprintEndDate).toISOString()
+            : undefined,
           goal: newSprintGoal.trim() || undefined,
-          startDate: newSprintStartDate ? new Date(newSprintStartDate).toISOString() : undefined,
-          endDate: newSprintEndDate ? new Date(newSprintEndDate).toISOString() : undefined,
+          name: newSprintName.trim(),
+          startDate: newSprintStartDate
+            ? new Date(newSprintStartDate).toISOString()
+            : undefined,
         },
         activeTenant.id
       );
@@ -410,9 +454,15 @@ export default function ProjectDetailPage() {
 
   // Handle Sprint Status Change
   const handleUpdateSprintStatus = async (sprintId: string, status: string) => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     try {
-      const res = await ApiClient.updateSprintStatus(sprintId, status, activeTenant.id);
+      const res = await ApiClient.updateSprintStatus(
+        sprintId,
+        status,
+        activeTenant.id
+      );
       if (res.success) {
         showToast(`Sprint durumu güncellendi: ${status}`);
         loadProjectData();
@@ -425,16 +475,20 @@ export default function ProjectDetailPage() {
   // Handle Epic Creation
   const handleCreateEpic = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newEpicName.trim() || !activeTenant) return;
+    if (!(newEpicName.trim() && activeTenant)) {
+      return;
+    }
 
     try {
       const res = await ApiClient.createEpic(
         projectId,
         {
-          name: newEpicName.trim(),
           color: newEpicColor,
           description: newEpicDescription.trim() || undefined,
-          dueDate: newEpicDueDate ? new Date(newEpicDueDate).toISOString() : undefined,
+          dueDate: newEpicDueDate
+            ? new Date(newEpicDueDate).toISOString()
+            : undefined,
+          name: newEpicName.trim(),
         },
         activeTenant.id
       );
@@ -453,15 +507,24 @@ export default function ProjectDetailPage() {
   };
 
   // Move Item to Sprint
-  const handleAssignToSprint = async (itemId: string, sprintId: string | null) => {
-    if (!activeTenant) return;
+  const handleAssignToSprint = async (
+    itemId: string,
+    sprintId: string | null
+  ) => {
+    if (!activeTenant) {
+      return;
+    }
     setItems((prev) =>
       prev.map((i) =>
         i.id === itemId
           ? {
               ...i,
               sprintId: sprintId || undefined,
-              status: sprintId ? (i.status === "Backlog" ? "Todo" : i.status) : "Backlog",
+              status: sprintId
+                ? i.status === "Backlog"
+                  ? "Todo"
+                  : i.status
+                : "Backlog",
             }
           : i
       )
@@ -476,7 +539,9 @@ export default function ProjectDetailPage() {
 
   // Move Item Status (Kanban)
   const handleMoveStatus = async (itemId: string, status: string) => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     setItems((prev) =>
       prev.map((i) => (i.id === itemId ? { ...i, status } : i))
     );
@@ -494,7 +559,9 @@ export default function ProjectDetailPage() {
   // Add Subtask
   const handleAddSubtask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newSubtaskTitle.trim() || !selectedItem || !activeTenant) return;
+    if (!(newSubtaskTitle.trim() && selectedItem && activeTenant)) {
+      return;
+    }
 
     try {
       const res = await ApiClient.addBacklogSubtask(
@@ -504,10 +571,15 @@ export default function ProjectDetailPage() {
       );
       if (res.success) {
         setNewSubtaskTitle("");
-        const itemRes = await ApiClient.getBacklogItemById(selectedItem.id, activeTenant.id);
+        const itemRes = await ApiClient.getBacklogItemById(
+          selectedItem.id,
+          activeTenant.id
+        );
         if (itemRes.success && itemRes.data) {
           setSelectedItem(itemRes.data);
-          setItems((prev) => prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i)));
+          setItems((prev) =>
+            prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i))
+          );
         }
       }
     } catch {
@@ -517,13 +589,20 @@ export default function ProjectDetailPage() {
 
   // Toggle Subtask
   const handleToggleSubtask = async (subtaskId: string) => {
-    if (!selectedItem || !activeTenant) return;
+    if (!(selectedItem && activeTenant)) {
+      return;
+    }
     try {
       await ApiClient.toggleBacklogSubtask(subtaskId, activeTenant.id);
-      const itemRes = await ApiClient.getBacklogItemById(selectedItem.id, activeTenant.id);
+      const itemRes = await ApiClient.getBacklogItemById(
+        selectedItem.id,
+        activeTenant.id
+      );
       if (itemRes.success && itemRes.data) {
         setSelectedItem(itemRes.data);
-        setItems((prev) => prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i)));
+        setItems((prev) =>
+          prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i))
+        );
       }
     } catch {
       showToast("Alt görev durumu güncellenemedi.");
@@ -533,7 +612,9 @@ export default function ProjectDetailPage() {
   // Add Comment
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCommentContent.trim() || !selectedItem || !activeTenant) return;
+    if (!(newCommentContent.trim() && selectedItem && activeTenant)) {
+      return;
+    }
 
     try {
       const res = await ApiClient.addBacklogComment(
@@ -546,10 +627,15 @@ export default function ProjectDetailPage() {
       );
       if (res.success) {
         setNewCommentContent("");
-        const itemRes = await ApiClient.getBacklogItemById(selectedItem.id, activeTenant.id);
+        const itemRes = await ApiClient.getBacklogItemById(
+          selectedItem.id,
+          activeTenant.id
+        );
         if (itemRes.success && itemRes.data) {
           setSelectedItem(itemRes.data);
-          setItems((prev) => prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i)));
+          setItems((prev) =>
+            prev.map((i) => (i.id === selectedItem.id ? itemRes.data! : i))
+          );
         }
       }
     } catch {
@@ -606,7 +692,7 @@ export default function ProjectDetailPage() {
           Proje Bulunamadı
         </h2>
         <Link
-          className="mt-4 font-semibold text-violet-600 text-sm hover:underline"
+          className="mt-4 font-semibold text-sm text-violet-600 hover:underline"
           href={`/${tenantSlug}/projects`}
         >
           ← Projeler Listesine Dön
@@ -626,7 +712,7 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col gap-4 border-b border-zinc-100 pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-zinc-100 border-b pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <Link
@@ -647,7 +733,7 @@ export default function ProjectDetailPage() {
               {project.name}
             </h1>
             {project.customerName && (
-              <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs font-semibold text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-semibold text-xs text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {project.customerName}
               </span>
             )}
@@ -688,7 +774,7 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-zinc-200/80 dark:border-zinc-800">
+      <div className="flex items-center gap-2 border-zinc-200/80 border-b dark:border-zinc-800">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "backlog"
@@ -717,7 +803,7 @@ export default function ProjectDetailPage() {
           <Kanban className="h-4 w-4" />
           <span>Aktif Sprint Panosu</span>
           {activeSprint && (
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300">
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300">
               {activeSprint.name}
             </span>
           )}
@@ -766,8 +852,11 @@ export default function ProjectDetailPage() {
               onDrop={(e) => {
                 e.preventDefault();
                 setDragOverSprintId(null);
-                const itemId = e.dataTransfer.getData("text/plain") || draggedItemId;
-                if (itemId) handleAssignToSprint(itemId, activeSprint.id);
+                const itemId =
+                  e.dataTransfer.getData("text/plain") || draggedItemId;
+                if (itemId) {
+                  handleAssignToSprint(itemId, activeSprint.id);
+                }
                 setDraggedItemId(null);
               }}
             >
@@ -797,18 +886,32 @@ export default function ProjectDetailPage() {
                   <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>
-                      {activeSprint.startDate ? new Date(activeSprint.startDate).toLocaleDateString("tr-TR") : "Başlangıç"} -{" "}
-                      {activeSprint.endDate ? new Date(activeSprint.endDate).toLocaleDateString("tr-TR") : "Bitiş"}
+                      {activeSprint.startDate
+                        ? new Date(activeSprint.startDate).toLocaleDateString(
+                            "tr-TR"
+                          )
+                        : "Başlangıç"}{" "}
+                      -{" "}
+                      {activeSprint.endDate
+                        ? new Date(activeSprint.endDate).toLocaleDateString(
+                            "tr-TR"
+                          )
+                        : "Bitiş"}
                     </span>
                   </div>
 
                   <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-bold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                    {items.filter((i) => i.sprintId === activeSprint.id).reduce((sum, i) => sum + i.storyPoints, 0)} Puan
+                    {items
+                      .filter((i) => i.sprintId === activeSprint.id)
+                      .reduce((sum, i) => sum + i.storyPoints, 0)}{" "}
+                    Puan
                   </span>
 
                   <button
                     className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 font-bold text-emerald-700 text-xs hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
-                    onClick={() => handleUpdateSprintStatus(activeSprint.id, "Completed")}
+                    onClick={() =>
+                      handleUpdateSprintStatus(activeSprint.id, "Completed")
+                    }
                     type="button"
                   >
                     Sprinti Tamamla
@@ -822,8 +925,10 @@ export default function ProjectDetailPage() {
                   .filter((i) => i.sprintId === activeSprint.id)
                   .map((item) => (
                     <div
-                      className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition active:cursor-grabbing hover:bg-white dark:hover:bg-zinc-800/80 ${
-                        draggedItemId === item.id ? "opacity-40 border-dashed border-emerald-400" : ""
+                      className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
+                        draggedItemId === item.id
+                          ? "border-emerald-400 border-dashed opacity-40"
+                          : ""
                       }`}
                       draggable
                       key={item.id}
@@ -840,7 +945,9 @@ export default function ProjectDetailPage() {
                     >
                       <div className="flex items-center gap-3 truncate">
                         <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
-                        <span className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}>
+                        <span
+                          className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                        >
                           {item.type}
                         </span>
                         <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
@@ -856,17 +963,22 @@ export default function ProjectDetailPage() {
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="flex items-center gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {/* Assignee Quick Picker */}
                         <select
                           aria-label="Atanan Temsilci"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[10px] font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                           onChange={(e) => {
-                            const emp = employees.find((emp) => emp.id === e.target.value);
+                            const emp = employees.find(
+                              (emp) => emp.id === e.target.value
+                            );
                             handleQuickUpdateItem(item.id, {
+                              assignedUserAvatar: emp?.avatarUrl || undefined,
                               assignedUserId: e.target.value || undefined,
                               assignedUserName: emp?.fullName || undefined,
-                              assignedUserAvatar: emp?.avatarUrl || undefined,
                             });
                           }}
                           value={item.assignedUserId || ""}
@@ -882,8 +994,12 @@ export default function ProjectDetailPage() {
                         {/* Story Points Quick Picker */}
                         <select
                           aria-label="Story Points"
-                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 text-[10px] font-bold text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                          onChange={(e) => handleQuickUpdateItem(item.id, { storyPoints: Number(e.target.value) })}
+                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
+                          onChange={(e) =>
+                            handleQuickUpdateItem(item.id, {
+                              storyPoints: Number(e.target.value),
+                            })
+                          }
                           value={item.storyPoints}
                         >
                           <option value={0}>0 SP</option>
@@ -898,8 +1014,12 @@ export default function ProjectDetailPage() {
                         {/* Priority Quick Picker */}
                         <select
                           aria-label="Öncelik"
-                          className={`rounded-lg border border-transparent px-2 py-1 text-[10px] font-bold ${getPriorityBadge(item.priority)}`}
-                          onChange={(e) => handleQuickUpdateItem(item.id, { priority: e.target.value })}
+                          className={`rounded-lg border border-transparent px-2 py-1 font-bold text-[10px] ${getPriorityBadge(item.priority)}`}
+                          onChange={(e) =>
+                            handleQuickUpdateItem(item.id, {
+                              priority: e.target.value,
+                            })
+                          }
                           value={item.priority}
                         >
                           <option value="Low">Düşük</option>
@@ -911,8 +1031,10 @@ export default function ProjectDetailPage() {
                         {/* Status Quick Picker */}
                         <select
                           aria-label="Durum"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[10px] font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                          onChange={(e) => handleMoveStatus(item.id, e.target.value)}
+                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                          onChange={(e) =>
+                            handleMoveStatus(item.id, e.target.value)
+                          }
                           value={item.status}
                         >
                           <option value="Todo">To Do</option>
@@ -934,9 +1056,11 @@ export default function ProjectDetailPage() {
                     </div>
                   ))}
 
-                {items.filter((i) => i.sprintId === activeSprint.id).length === 0 && (
+                {items.filter((i) => i.sprintId === activeSprint.id).length ===
+                  0 && (
                   <div className="p-4 text-center text-xs text-zinc-400">
-                    Bu sprintte henüz iş maddesi yok. Görevleri buraya sürükleyip bırakabilirsiniz.
+                    Bu sprintte henüz iş maddesi yok. Görevleri buraya
+                    sürükleyip bırakabilirsiniz.
                   </div>
                 )}
               </div>
@@ -946,7 +1070,10 @@ export default function ProjectDetailPage() {
           {/* Planning Sprints */}
           {planningSprints.map((sprint) => {
             const sprintItems = items.filter((i) => i.sprintId === sprint.id);
-            const totalPoints = sprintItems.reduce((acc, i) => acc + i.storyPoints, 0);
+            const totalPoints = sprintItems.reduce(
+              (acc, i) => acc + i.storyPoints,
+              0
+            );
 
             return (
               <div
@@ -969,8 +1096,11 @@ export default function ProjectDetailPage() {
                 onDrop={(e) => {
                   e.preventDefault();
                   setDragOverSprintId(null);
-                  const itemId = e.dataTransfer.getData("text/plain") || draggedItemId;
-                  if (itemId) handleAssignToSprint(itemId, sprint.id);
+                  const itemId =
+                    e.dataTransfer.getData("text/plain") || draggedItemId;
+                  if (itemId) {
+                    handleAssignToSprint(itemId, sprint.id);
+                  }
                   setDraggedItemId(null);
                 }}
               >
@@ -998,7 +1128,9 @@ export default function ProjectDetailPage() {
 
                     <button
                       className="rounded-xl bg-violet-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
-                      onClick={() => handleUpdateSprintStatus(sprint.id, "Active")}
+                      onClick={() =>
+                        handleUpdateSprintStatus(sprint.id, "Active")
+                      }
                       type="button"
                     >
                       Sprinti Başlat
@@ -1009,8 +1141,10 @@ export default function ProjectDetailPage() {
                 <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/30">
                   {sprintItems.map((item) => (
                     <div
-                      className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition active:cursor-grabbing hover:bg-white dark:hover:bg-zinc-800/80 ${
-                        draggedItemId === item.id ? "opacity-40 border-dashed border-violet-400" : ""
+                      className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
+                        draggedItemId === item.id
+                          ? "border-violet-400 border-dashed opacity-40"
+                          : ""
                       }`}
                       draggable
                       key={item.id}
@@ -1027,7 +1161,9 @@ export default function ProjectDetailPage() {
                     >
                       <div className="flex items-center gap-3 truncate">
                         <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
-                        <span className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}>
+                        <span
+                          className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                        >
                           {item.type}
                         </span>
                         <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
@@ -1038,17 +1174,22 @@ export default function ProjectDetailPage() {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="flex items-center gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {/* Assignee Quick Picker */}
                         <select
                           aria-label="Atanan Temsilci"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[10px] font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                           onChange={(e) => {
-                            const emp = employees.find((emp) => emp.id === e.target.value);
+                            const emp = employees.find(
+                              (emp) => emp.id === e.target.value
+                            );
                             handleQuickUpdateItem(item.id, {
+                              assignedUserAvatar: emp?.avatarUrl || undefined,
                               assignedUserId: e.target.value || undefined,
                               assignedUserName: emp?.fullName || undefined,
-                              assignedUserAvatar: emp?.avatarUrl || undefined,
                             });
                           }}
                           value={item.assignedUserId || ""}
@@ -1064,8 +1205,12 @@ export default function ProjectDetailPage() {
                         {/* Story Points */}
                         <select
                           aria-label="Story Points"
-                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 text-[10px] font-bold text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                          onChange={(e) => handleQuickUpdateItem(item.id, { storyPoints: Number(e.target.value) })}
+                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
+                          onChange={(e) =>
+                            handleQuickUpdateItem(item.id, {
+                              storyPoints: Number(e.target.value),
+                            })
+                          }
                           value={item.storyPoints}
                         >
                           <option value={0}>0 SP</option>
@@ -1100,7 +1245,8 @@ export default function ProjectDetailPage() {
 
                   {sprintItems.length === 0 && (
                     <div className="p-4 text-center text-xs text-zinc-400">
-                      Bu sprint henüz boş. Görevleri buraya sürükleyip bırakabilirsiniz.
+                      Bu sprint henüz boş. Görevleri buraya sürükleyip
+                      bırakabilirsiniz.
                     </div>
                   )}
                 </div>
@@ -1128,8 +1274,11 @@ export default function ProjectDetailPage() {
             onDrop={(e) => {
               e.preventDefault();
               setDragOverSprintId(null);
-              const itemId = e.dataTransfer.getData("text/plain") || draggedItemId;
-              if (itemId) handleAssignToSprint(itemId, null);
+              const itemId =
+                e.dataTransfer.getData("text/plain") || draggedItemId;
+              if (itemId) {
+                handleAssignToSprint(itemId, null);
+              }
               setDraggedItemId(null);
             }}
           >
@@ -1139,7 +1288,8 @@ export default function ProjectDetailPage() {
                   Backlog Havuzu (Atanmamış İşler)
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Sprintlere henüz dahil edilmemiş tüm gereksinimler ve görevler (Buraya sürükleyip bırakabilirsiniz)
+                  Sprintlere henüz dahil edilmemiş tüm gereksinimler ve görevler
+                  (Buraya sürükleyip bırakabilirsiniz)
                 </p>
               </div>
 
@@ -1151,8 +1301,10 @@ export default function ProjectDetailPage() {
             <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/30">
               {backlogPoolItems.map((item) => (
                 <div
-                  className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition active:cursor-grabbing hover:bg-white dark:hover:bg-zinc-800/80 ${
-                    draggedItemId === item.id ? "opacity-40 border-dashed border-violet-400" : ""
+                  className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
+                    draggedItemId === item.id
+                      ? "border-violet-400 border-dashed opacity-40"
+                      : ""
                   }`}
                   draggable
                   key={item.id}
@@ -1169,7 +1321,9 @@ export default function ProjectDetailPage() {
                 >
                   <div className="flex items-center gap-3 truncate">
                     <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
-                    <span className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}>
+                    <span
+                      className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                    >
                       {item.type}
                     </span>
                     <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
@@ -1185,17 +1339,22 @@ export default function ProjectDetailPage() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="flex items-center gap-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {/* Assignee Quick Picker */}
                     <select
                       aria-label="Atanan Temsilci"
-                      className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[10px] font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                      className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                       onChange={(e) => {
-                        const emp = employees.find((emp) => emp.id === e.target.value);
+                        const emp = employees.find(
+                          (emp) => emp.id === e.target.value
+                        );
                         handleQuickUpdateItem(item.id, {
+                          assignedUserAvatar: emp?.avatarUrl || undefined,
                           assignedUserId: e.target.value || undefined,
                           assignedUserName: emp?.fullName || undefined,
-                          assignedUserAvatar: emp?.avatarUrl || undefined,
                         });
                       }}
                       value={item.assignedUserId || ""}
@@ -1211,8 +1370,12 @@ export default function ProjectDetailPage() {
                     {/* Story Points */}
                     <select
                       aria-label="Story Points"
-                      className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 text-[10px] font-bold text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                      onChange={(e) => handleQuickUpdateItem(item.id, { storyPoints: Number(e.target.value) })}
+                      className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
+                      onChange={(e) =>
+                        handleQuickUpdateItem(item.id, {
+                          storyPoints: Number(e.target.value),
+                        })
+                      }
                       value={item.storyPoints}
                     >
                       <option value={0}>0 SP</option>
@@ -1227,8 +1390,12 @@ export default function ProjectDetailPage() {
                     {/* Priority */}
                     <select
                       aria-label="Öncelik"
-                      className={`rounded-lg border border-transparent px-2 py-1 text-[10px] font-bold ${getPriorityBadge(item.priority)}`}
-                      onChange={(e) => handleQuickUpdateItem(item.id, { priority: e.target.value })}
+                      className={`rounded-lg border border-transparent px-2 py-1 font-bold text-[10px] ${getPriorityBadge(item.priority)}`}
+                      onChange={(e) =>
+                        handleQuickUpdateItem(item.id, {
+                          priority: e.target.value,
+                        })
+                      }
                       value={item.priority}
                     >
                       <option value="Low">Düşük</option>
@@ -1240,8 +1407,10 @@ export default function ProjectDetailPage() {
                     {sprints.length > 0 && (
                       <select
                         aria-label="Sprinte Taşı"
-                        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[10px] font-semibold text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-violet-400"
-                        onChange={(e) => handleAssignToSprint(item.id, e.target.value)}
+                        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-[10px] text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-violet-400"
+                        onChange={(e) =>
+                          handleAssignToSprint(item.id, e.target.value)
+                        }
                         value=""
                       >
                         <option value="">Sprinte Taşı ▾</option>
@@ -1249,7 +1418,8 @@ export default function ProjectDetailPage() {
                           .filter((s) => s.status !== "Completed")
                           .map((s) => (
                             <option key={s.id} value={s.id}>
-                              {s.name} ({s.status === "Active" ? "Aktif" : "Plan"})
+                              {s.name} (
+                              {s.status === "Active" ? "Aktif" : "Plan"})
                             </option>
                           ))}
                       </select>
@@ -1269,7 +1439,8 @@ export default function ProjectDetailPage() {
 
               {backlogPoolItems.length === 0 && (
                 <div className="p-6 text-center text-xs text-zinc-400">
-                  Backlog havuzunda iş bulunmuyor. Yeni bir iş maddesi oluşturabilirsiniz.
+                  Backlog havuzunda iş bulunmuyor. Yeni bir iş maddesi
+                  oluşturabilirsiniz.
                 </div>
               )}
             </div>
@@ -1282,221 +1453,244 @@ export default function ProjectDetailPage() {
       {/* ========================================================= */}
       {activeTab === "board" && (
         <div>
-          {!activeSprint ? (
-            <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+          {activeSprint ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+              {(["Todo", "InProgress", "InReview", "Done"] as const).map(
+                (colStatus) => {
+                  const colTitle =
+                    colStatus === "Todo"
+                      ? "Yapılacak (To Do)"
+                      : colStatus === "InProgress"
+                        ? "İşlemde (In Progress)"
+                        : colStatus === "InReview"
+                          ? "İncelemede (In Review)"
+                          : "Tamamlandı (Done)";
+
+                  const colItems = items.filter(
+                    (i) =>
+                      i.sprintId === activeSprint.id && i.status === colStatus
+                  );
+
+                  const isOver = dragOverColumn === colStatus;
+
+                  return (
+                    <div
+                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${
+                        isOver
+                          ? "border-violet-500 bg-violet-50/70 ring-2 ring-violet-500 dark:border-violet-700 dark:bg-violet-950/40"
+                          : "border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800/80 dark:bg-zinc-900/50"
+                      }`}
+                      key={colStatus}
+                      onDragLeave={(e) => {
+                        if (
+                          !e.currentTarget.contains(e.relatedTarget as Node)
+                        ) {
+                          setDragOverColumn(null);
+                        }
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = "move";
+                        setDragOverColumn(colStatus);
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setDragOverColumn(null);
+                        const itemId =
+                          e.dataTransfer.getData("text/plain") || draggedItemId;
+                        if (itemId) {
+                          handleMoveStatus(itemId, colStatus);
+                        }
+                        setDraggedItemId(null);
+                      }}
+                    >
+                      <div className="mb-3 flex items-center justify-between px-1">
+                        <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
+                          {colTitle}
+                        </span>
+                        <span className="rounded-full bg-zinc-200/80 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                          {colItems.length}
+                        </span>
+                      </div>
+
+                      <div className="flex-1 space-y-2.5">
+                        {colItems.map((item) => {
+                          const isDragging = draggedItemId === item.id;
+
+                          return (
+                            <div
+                              className={`group rounded-xl border bg-white p-3.5 shadow-2xs transition-all dark:bg-zinc-800/90 ${
+                                isDragging
+                                  ? "scale-95 cursor-grabbing border-violet-500 border-dashed opacity-30 shadow-none"
+                                  : "cursor-grab border-zinc-200/80 hover:border-violet-300 hover:shadow-md active:cursor-grabbing dark:border-zinc-800 dark:hover:border-violet-700"
+                              }`}
+                              draggable
+                              key={item.id}
+                              onClick={() => setSelectedItem(item)}
+                              onDragEnd={() => {
+                                setDraggedItemId(null);
+                                setDragOverColumn(null);
+                              }}
+                              onDragStart={(e) => {
+                                setDraggedItemId(item.id);
+                                e.dataTransfer.setData("text/plain", item.id);
+                                e.dataTransfer.effectAllowed = "move";
+                              }}
+                            >
+                              <div className="flex items-center justify-between gap-1">
+                                <div className="flex items-center gap-1.5">
+                                  <GripVertical className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
+                                  <span
+                                    className={`rounded-md border px-1.5 py-0.5 font-bold text-[9px] ${getTypeBadge(item.type)}`}
+                                  >
+                                    {item.type}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-bold text-[10px] text-zinc-400">
+                                    {item.itemKey}
+                                  </span>
+                                  <button
+                                    className="p-0.5 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteItem(item.id);
+                                    }}
+                                    title="Sil"
+                                    type="button"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              </div>
+
+                              <h4 className="mt-2 line-clamp-2 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
+                                {item.title}
+                              </h4>
+
+                              {item.epicName && (
+                                <span className="mt-2 inline-block rounded-md bg-purple-50 px-1.5 py-0.5 font-bold text-[9px] text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
+                                  {item.epicName}
+                                </span>
+                              )}
+
+                              <div
+                                className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2 text-[10px] text-zinc-400 dark:border-zinc-700/60"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {/* Quick Story Points */}
+                                <select
+                                  aria-label="Story Points"
+                                  className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
+                                  onChange={(e) =>
+                                    handleQuickUpdateItem(item.id, {
+                                      storyPoints: Number(e.target.value),
+                                    })
+                                  }
+                                  value={item.storyPoints}
+                                >
+                                  <option value={0}>0 SP</option>
+                                  <option value={1}>1 SP</option>
+                                  <option value={2}>2 SP</option>
+                                  <option value={3}>3 SP</option>
+                                  <option value={5}>5 SP</option>
+                                  <option value={8}>8 SP</option>
+                                  <option value={13}>13 SP</option>
+                                </select>
+
+                                {/* Quick Assignee */}
+                                <select
+                                  aria-label="Atanan"
+                                  className="max-w-[100px] truncate rounded-md border border-zinc-200 bg-white px-1.5 py-0.5 font-medium text-[9px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                                  onChange={(e) => {
+                                    const emp = employees.find(
+                                      (emp) => emp.id === e.target.value
+                                    );
+                                    handleQuickUpdateItem(item.id, {
+                                      assignedUserAvatar:
+                                        emp?.avatarUrl || undefined,
+                                      assignedUserId:
+                                        e.target.value || undefined,
+                                      assignedUserName:
+                                        emp?.fullName || undefined,
+                                    });
+                                  }}
+                                  value={item.assignedUserId || ""}
+                                >
+                                  <option value="">Atanmamış</option>
+                                  {employees.map((emp) => (
+                                    <option key={emp.id} value={emp.id}>
+                                      {emp.fullName}
+                                    </option>
+                                  ))}
+                                </select>
+
+                                <div className="flex items-center gap-1">
+                                  {colStatus !== "Todo" && (
+                                    <button
+                                      className="rounded-md p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const prev =
+                                          colStatus === "Done"
+                                            ? "InReview"
+                                            : colStatus === "InReview"
+                                              ? "InProgress"
+                                              : "Todo";
+                                        handleMoveStatus(item.id, prev);
+                                      }}
+                                      title="Geri Al"
+                                      type="button"
+                                    >
+                                      ◀
+                                    </button>
+                                  )}
+                                  {colStatus !== "Done" && (
+                                    <button
+                                      className="rounded-md p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const next =
+                                          colStatus === "Todo"
+                                            ? "InProgress"
+                                            : colStatus === "InProgress"
+                                              ? "InReview"
+                                              : "Done";
+                                        handleMoveStatus(item.id, next);
+                                      }}
+                                      title="İlerlet"
+                                      type="button"
+                                    >
+                                      ▶
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        {colItems.length === 0 && (
+                          <div className="flex h-32 items-center justify-center rounded-xl border border-zinc-200/80 border-dashed p-6 text-center text-[11px] text-zinc-400 dark:border-zinc-800">
+                            Maddeleri buraya sürükleyin
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
               <Layers className="h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Aktif Sprint Bulunmuyor
               </h3>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Backlog planlama sekmesine giderek bir sprinti "Başlat" butonuna tıklayarak aktifleştirebilirsiniz.
+                Backlog planlama sekmesine giderek bir sprinti "Başlat" butonuna
+                tıklayarak aktifleştirebilirsiniz.
               </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-              {(["Todo", "InProgress", "InReview", "Done"] as const).map((colStatus) => {
-                const colTitle =
-                  colStatus === "Todo"
-                    ? "Yapılacak (To Do)"
-                    : colStatus === "InProgress"
-                    ? "İşlemde (In Progress)"
-                    : colStatus === "InReview"
-                    ? "İncelemede (In Review)"
-                    : "Tamamlandı (Done)";
-
-                const colItems = items.filter(
-                  (i) => i.sprintId === activeSprint.id && i.status === colStatus
-                );
-
-                const isOver = dragOverColumn === colStatus;
-
-                return (
-                  <div
-                    className={`flex flex-col rounded-2xl border p-3.5 transition-all min-h-[400px] ${
-                      isOver
-                        ? "border-violet-500 bg-violet-50/70 ring-2 ring-violet-500 dark:border-violet-700 dark:bg-violet-950/40"
-                        : "border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800/80 dark:bg-zinc-900/50"
-                    }`}
-                    key={colStatus}
-                    onDragLeave={(e) => {
-                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                        setDragOverColumn(null);
-                      }
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      e.dataTransfer.dropEffect = "move";
-                      setDragOverColumn(colStatus);
-                    }}
-                    onDrop={(e) => {
-                      e.preventDefault();
-                      setDragOverColumn(null);
-                      const itemId = e.dataTransfer.getData("text/plain") || draggedItemId;
-                      if (itemId) handleMoveStatus(itemId, colStatus);
-                      setDraggedItemId(null);
-                    }}
-                  >
-                    <div className="mb-3 flex items-center justify-between px-1">
-                      <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-                        {colTitle}
-                      </span>
-                      <span className="rounded-full bg-zinc-200/80 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                        {colItems.length}
-                      </span>
-                    </div>
-
-                    <div className="flex-1 space-y-2.5">
-                      {colItems.map((item) => {
-                        const isDragging = draggedItemId === item.id;
-
-                        return (
-                          <div
-                            className={`group rounded-xl border bg-white p-3.5 shadow-2xs transition-all dark:bg-zinc-800/90 ${
-                              isDragging
-                                ? "opacity-30 border-dashed border-violet-500 scale-95 shadow-none cursor-grabbing"
-                                : "cursor-grab active:cursor-grabbing border-zinc-200/80 hover:border-violet-300 hover:shadow-md dark:border-zinc-800 dark:hover:border-violet-700"
-                            }`}
-                            draggable
-                            key={item.id}
-                            onClick={() => setSelectedItem(item)}
-                            onDragEnd={() => {
-                              setDraggedItemId(null);
-                              setDragOverColumn(null);
-                            }}
-                            onDragStart={(e) => {
-                              setDraggedItemId(item.id);
-                              e.dataTransfer.setData("text/plain", item.id);
-                              e.dataTransfer.effectAllowed = "move";
-                            }}
-                          >
-                            <div className="flex items-center justify-between gap-1">
-                              <div className="flex items-center gap-1.5">
-                                <GripVertical className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
-                                <span className={`rounded-md border px-1.5 py-0.5 font-bold text-[9px] ${getTypeBadge(item.type)}`}>
-                                  {item.type}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="font-bold text-[10px] text-zinc-400">
-                                  {item.itemKey}
-                                </span>
-                                <button
-                                  className="p-0.5 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteItem(item.id);
-                                  }}
-                                  title="Sil"
-                                  type="button"
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </button>
-                              </div>
-                            </div>
-
-                            <h4 className="mt-2 font-semibold text-xs text-zinc-900 line-clamp-2 dark:text-zinc-100">
-                              {item.title}
-                            </h4>
-
-                            {item.epicName && (
-                              <span className="mt-2 inline-block rounded-md bg-purple-50 px-1.5 py-0.5 font-bold text-[9px] text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
-                                {item.epicName}
-                              </span>
-                            )}
-
-                            <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2 text-[10px] text-zinc-400 dark:border-zinc-700/60" onClick={(e) => e.stopPropagation()}>
-                              {/* Quick Story Points */}
-                              <select
-                                aria-label="Story Points"
-                                className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300 text-[10px]"
-                                onChange={(e) => handleQuickUpdateItem(item.id, { storyPoints: Number(e.target.value) })}
-                                value={item.storyPoints}
-                              >
-                                <option value={0}>0 SP</option>
-                                <option value={1}>1 SP</option>
-                                <option value={2}>2 SP</option>
-                                <option value={3}>3 SP</option>
-                                <option value={5}>5 SP</option>
-                                <option value={8}>8 SP</option>
-                                <option value={13}>13 SP</option>
-                              </select>
-
-                              {/* Quick Assignee */}
-                              <select
-                                aria-label="Atanan"
-                                className="rounded-md border border-zinc-200 bg-white px-1.5 py-0.5 text-[9px] font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 max-w-[100px] truncate"
-                                onChange={(e) => {
-                                  const emp = employees.find((emp) => emp.id === e.target.value);
-                                  handleQuickUpdateItem(item.id, {
-                                    assignedUserId: e.target.value || undefined,
-                                    assignedUserName: emp?.fullName || undefined,
-                                    assignedUserAvatar: emp?.avatarUrl || undefined,
-                                  });
-                                }}
-                                value={item.assignedUserId || ""}
-                              >
-                                <option value="">Atanmamış</option>
-                                {employees.map((emp) => (
-                                  <option key={emp.id} value={emp.id}>
-                                    {emp.fullName}
-                                  </option>
-                                ))}
-                              </select>
-
-                              <div className="flex items-center gap-1">
-                                {colStatus !== "Todo" && (
-                                  <button
-                                    className="rounded-md p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      const prev =
-                                        colStatus === "Done"
-                                          ? "InReview"
-                                          : colStatus === "InReview"
-                                          ? "InProgress"
-                                          : "Todo";
-                                      handleMoveStatus(item.id, prev);
-                                    }}
-                                    title="Geri Al"
-                                    type="button"
-                                  >
-                                    ◀
-                                  </button>
-                                )}
-                                {colStatus !== "Done" && (
-                                  <button
-                                    className="rounded-md p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      const next =
-                                        colStatus === "Todo"
-                                          ? "InProgress"
-                                          : colStatus === "InProgress"
-                                          ? "InReview"
-                                          : "Done";
-                                      handleMoveStatus(item.id, next);
-                                    }}
-                                    title="İlerlet"
-                                    type="button"
-                                  >
-                                    ▶
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-
-                      {colItems.length === 0 && (
-                        <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-zinc-200/80 p-6 text-center text-[11px] text-zinc-400 dark:border-zinc-800">
-                          Maddeleri buraya sürükleyin
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           )}
         </div>
@@ -1535,7 +1729,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {epic.description && (
-                  <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                  <p className="mt-3 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
                     {epic.description}
                   </p>
                 )}
@@ -1561,13 +1755,14 @@ export default function ProjectDetailPage() {
           })}
 
           {epics.length === 0 && (
-            <div className="col-span-full rounded-3xl border border-dashed border-zinc-200 bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
               <Milestone className="mx-auto h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Henüz Epik Oluşturulmamış
               </h3>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Büyük hedefleri epik olarak tanımlayıp iş maddelerini gruplayabilirsiniz.
+                Büyük hedefleri epik olarak tanımlayıp iş maddelerini
+                gruplayabilirsiniz.
               </p>
             </div>
           )}
@@ -1579,11 +1774,13 @@ export default function ProjectDetailPage() {
       {/* ========================================================= */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-          <div className="h-full w-full max-w-xl overflow-y-auto border-l border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="h-full w-full max-w-xl overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2">
-                <span className={`rounded-md border px-2 py-0.5 font-bold text-xs ${getTypeBadge(drawerType)}`}>
+                <span
+                  className={`rounded-md border px-2 py-0.5 font-bold text-xs ${getTypeBadge(drawerType)}`}
+                >
                   {drawerType}
                 </span>
                 <span className="font-bold text-sm text-zinc-500 dark:text-zinc-400">
@@ -1615,7 +1812,7 @@ export default function ProjectDetailPage() {
             <form className="mt-4 space-y-6" onSubmit={handleSaveDrawer}>
               {/* Editable Title */}
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                <label className="font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Başlık
                 </label>
                 <input
@@ -1630,11 +1827,11 @@ export default function ProjectDetailPage() {
               {/* Status, Priority, Story Points, Type Grid */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Durum
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs font-semibold text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerStatus(e.target.value)}
                     value={drawerStatus}
                   >
@@ -1647,11 +1844,11 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Öncelik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs font-semibold text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerPriority(e.target.value)}
                     value={drawerPriority}
                   >
@@ -1663,12 +1860,14 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Story Points
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs font-bold text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    onChange={(e) => setDrawerStoryPoints(Number(e.target.value))}
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-bold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    onChange={(e) =>
+                      setDrawerStoryPoints(Number(e.target.value))
+                    }
                     value={drawerStoryPoints}
                   >
                     <option value={0}>0 SP</option>
@@ -1682,11 +1881,11 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Tür
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs font-semibold text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerType(e.target.value)}
                     value={drawerType}
                   >
@@ -1702,7 +1901,7 @@ export default function ProjectDetailPage() {
               {/* Assignee, Epic, Sprint, Customer Grid */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Atanan Temsilci
                   </label>
                   <select
@@ -1720,7 +1919,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Epik
                   </label>
                   <select
@@ -1738,7 +1937,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Sprint
                   </label>
                   <select
@@ -1749,14 +1948,15 @@ export default function ProjectDetailPage() {
                     <option value="">Backlog Havuzu</option>
                     {sprints.map((sp) => (
                       <option key={sp.id} value={sp.id}>
-                        {sp.name} ({sp.status === "Active" ? "Aktif" : sp.status})
+                        {sp.name} (
+                        {sp.status === "Active" ? "Aktif" : sp.status})
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Müşteri Bağlantısı
                   </label>
                   <select
@@ -1777,13 +1977,15 @@ export default function ProjectDetailPage() {
               {/* Time Tracking (Estimated vs Logged) & Due Date */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Tahmini Efor (Saat)
                   </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
-                    onChange={(e) => setDrawerEstimatedHours(Number(e.target.value))}
+                    onChange={(e) =>
+                      setDrawerEstimatedHours(Number(e.target.value))
+                    }
                     step="0.5"
                     type="number"
                     value={drawerEstimatedHours}
@@ -1791,13 +1993,15 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Harcanan Efor (Saat)
                   </label>
                   <input
                     className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
-                    onChange={(e) => setDrawerLoggedHours(Number(e.target.value))}
+                    onChange={(e) =>
+                      setDrawerLoggedHours(Number(e.target.value))
+                    }
                     step="0.5"
                     type="number"
                     value={drawerLoggedHours}
@@ -1805,7 +2009,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 text-[11px] dark:text-zinc-300">
+                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Bitiş Tarihi
                   </label>
                   <input
@@ -1819,7 +2023,7 @@ export default function ProjectDetailPage() {
 
               {/* Description */}
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 text-xs dark:text-zinc-300">
+                <label className="font-medium text-xs text-zinc-700 dark:text-zinc-300">
                   Açıklama & Detaylar
                 </label>
                 <textarea
@@ -1848,20 +2052,24 @@ export default function ProjectDetailPage() {
               {/* Save Button */}
               <div className="flex justify-end">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95 disabled:opacity-50"
                   disabled={drawerSaving}
                   type="submit"
                 >
                   <Save className="h-4 w-4" />
-                  <span>{drawerSaving ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}</span>
+                  <span>
+                    {drawerSaving ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
+                  </span>
                 </button>
               </div>
             </form>
 
             {/* Subtasks (Checklist) */}
-            <div className="mt-8 border-t border-zinc-100 pt-6 dark:border-zinc-800">
+            <div className="mt-8 border-zinc-100 border-t pt-6 dark:border-zinc-800">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
-                Alt Görevler ({selectedItem.subtasks.filter((s) => s.isCompleted).length}/{selectedItem.subtasks.length})
+                Alt Görevler (
+                {selectedItem.subtasks.filter((s) => s.isCompleted).length}/
+                {selectedItem.subtasks.length})
               </h4>
 
               <form className="mt-2 flex gap-2" onSubmit={handleAddSubtask}>
@@ -1896,9 +2104,13 @@ export default function ProjectDetailPage() {
                       onClick={() => handleToggleSubtask(subtask.id)}
                       type="button"
                     >
-                      {subtask.isCompleted && <Check className="h-3 w-3 stroke-[3]" />}
+                      {subtask.isCompleted && (
+                        <Check className="h-3 w-3 stroke-[3]" />
+                      )}
                     </button>
-                    <span className={`flex-1 ${subtask.isCompleted ? "text-zinc-400 line-through dark:text-zinc-500" : "text-zinc-700 dark:text-zinc-300"}`}>
+                    <span
+                      className={`flex-1 ${subtask.isCompleted ? "text-zinc-400 line-through dark:text-zinc-500" : "text-zinc-700 dark:text-zinc-300"}`}
+                    >
                       {subtask.title}
                     </span>
                   </div>
@@ -1907,7 +2119,7 @@ export default function ProjectDetailPage() {
             </div>
 
             {/* Comments Feed */}
-            <div className="mt-8 border-t border-zinc-100 pt-6 dark:border-zinc-800">
+            <div className="mt-8 border-zinc-100 border-t pt-6 dark:border-zinc-800">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Ekip Yorumları ({selectedItem.comments.length})
               </h4>
@@ -1941,7 +2153,9 @@ export default function ProjectDetailPage() {
                       <span className="font-bold text-zinc-800 dark:text-zinc-200">
                         {c.userName}
                       </span>
-                      <span>{new Date(c.createdAt).toLocaleDateString("tr-TR")}</span>
+                      <span>
+                        {new Date(c.createdAt).toLocaleDateString("tr-TR")}
+                      </span>
                     </div>
                     <p className="mt-1 text-zinc-700 dark:text-zinc-300">
                       {c.content}
@@ -1960,7 +2174,7 @@ export default function ProjectDetailPage() {
       {isCreateItemModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
           <div className="w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni İş Maddesi Oluştur
               </h3>
@@ -1973,7 +2187,10 @@ export default function ProjectDetailPage() {
               </button>
             </div>
 
-            <form className="mt-4 space-y-3.5 text-xs" onSubmit={handleCreateItem}>
+            <form
+              className="mt-4 space-y-3.5 text-xs"
+              onSubmit={handleCreateItem}
+            >
               <div className="space-y-1">
                 <label className="font-medium text-zinc-700 dark:text-zinc-300">
                   Başlık *
@@ -2028,7 +2245,9 @@ export default function ProjectDetailPage() {
                   </label>
                   <select
                     className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewItemStoryPoints(Number(e.target.value))}
+                    onChange={(e) =>
+                      setNewItemStoryPoints(Number(e.target.value))
+                    }
                     value={newItemStoryPoints}
                   >
                     <option value={0}>0 (Belirsiz)</option>
@@ -2093,7 +2312,7 @@ export default function ProjectDetailPage() {
                 />
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
                 <button
                   className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateItemModalOpen(false)}
@@ -2120,7 +2339,7 @@ export default function ProjectDetailPage() {
       {isCreateSprintModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
           <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Sprint Başlat / Planla
               </h3>
@@ -2133,7 +2352,10 @@ export default function ProjectDetailPage() {
               </button>
             </div>
 
-            <form className="mt-4 space-y-3.5 text-xs" onSubmit={handleCreateSprint}>
+            <form
+              className="mt-4 space-y-3.5 text-xs"
+              onSubmit={handleCreateSprint}
+            >
               <div className="space-y-1">
                 <label className="font-medium text-zinc-700 dark:text-zinc-300">
                   Sprint Adı *
@@ -2187,7 +2409,7 @@ export default function ProjectDetailPage() {
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
                 <button
                   className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateSprintModalOpen(false)}
@@ -2214,7 +2436,7 @@ export default function ProjectDetailPage() {
       {isCreateEpicModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
           <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Epik Oluştur
               </h3>
@@ -2227,7 +2449,10 @@ export default function ProjectDetailPage() {
               </button>
             </div>
 
-            <form className="mt-4 space-y-3.5 text-xs" onSubmit={handleCreateEpic}>
+            <form
+              className="mt-4 space-y-3.5 text-xs"
+              onSubmit={handleCreateEpic}
+            >
               <div className="space-y-1">
                 <label className="font-medium text-zinc-700 dark:text-zinc-300">
                   Epik Adı *
@@ -2266,13 +2491,13 @@ export default function ProjectDetailPage() {
                         c === "purple"
                           ? "bg-purple-500"
                           : c === "blue"
-                          ? "bg-blue-500"
-                          : c === "emerald"
-                          ? "bg-emerald-500"
-                          : c === "amber"
-                          ? "bg-amber-500"
-                          : "bg-rose-500"
-                      } ${newEpicColor === c ? "border-zinc-900 dark:border-white scale-110" : "border-transparent opacity-60 hover:opacity-100"}`}
+                            ? "bg-blue-500"
+                            : c === "emerald"
+                              ? "bg-emerald-500"
+                              : c === "amber"
+                                ? "bg-amber-500"
+                                : "bg-rose-500"
+                      } ${newEpicColor === c ? "scale-110 border-zinc-900 dark:border-white" : "border-transparent opacity-60 hover:opacity-100"}`}
                       key={c}
                       onClick={() => setNewEpicColor(c)}
                       type="button"
@@ -2281,7 +2506,7 @@ export default function ProjectDetailPage() {
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
                 <button
                   className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateEpicModalOpen(false)}

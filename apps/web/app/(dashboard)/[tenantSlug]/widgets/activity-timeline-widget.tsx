@@ -5,11 +5,9 @@ import {
   Clock,
   DollarSign,
   FileSpreadsheet,
-  Package,
   PhoneCall,
   Plus,
   RefreshCw,
-  ShoppingBag,
   UserPlus,
 } from "lucide-react";
 import Link from "next/link";
@@ -29,17 +27,22 @@ export function ActivityTimelineWidget() {
     }
     setIsLoading(true);
     try {
-      const [quotesRes, dealsRes, customersRes, ordersRes] = await Promise.allSettled([
-        ApiClient.getQuotes({ pageSize: 4 }, activeTenant.id),
-        ApiClient.getDeals({ pageSize: 4 }, activeTenant.id),
-        ApiClient.getCustomers(activeTenant.id, { pageSize: 4 }),
-        ApiClient.getOrders({ pageSize: 4 }, activeTenant.id),
-      ]);
+      const [quotesRes, dealsRes, customersRes, ordersRes] =
+        await Promise.allSettled([
+          ApiClient.getQuotes({ pageSize: 4 }, activeTenant.id),
+          ApiClient.getDeals({ pageSize: 4 }, activeTenant.id),
+          ApiClient.getCustomers(activeTenant.id, { pageSize: 4 }),
+          ApiClient.getOrders({ pageSize: 4 }, activeTenant.id),
+        ]);
 
       const items: (ActivityItem & { rawDate: Date })[] = [];
 
       // 1. Process Quotes
-      if (quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items) {
+      if (
+        quotesRes.status === "fulfilled" &&
+        quotesRes.value.success &&
+        quotesRes.value.data?.items
+      ) {
         for (const q of quotesRes.value.data.items) {
           const date = new Date(q.updatedAt || q.createdAt || Date.now());
           const timeFormatted = date.toLocaleTimeString("tr-TR", {
@@ -68,7 +71,9 @@ export function ActivityTimelineWidget() {
             timestamp: timeFormatted,
             type,
             user: {
-              initials: (q.assignedUserName || "ST").substring(0, 2).toUpperCase(),
+              initials: (q.assignedUserName || "ST")
+                .substring(0, 2)
+                .toUpperCase(),
               name: q.assignedUserName || "Satış Ekibi",
             },
           });
@@ -76,7 +81,11 @@ export function ActivityTimelineWidget() {
       }
 
       // 2. Process Deals
-      if (dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items) {
+      if (
+        dealsRes.status === "fulfilled" &&
+        dealsRes.value.success &&
+        dealsRes.value.data?.items
+      ) {
         for (const d of dealsRes.value.data.items) {
           const date = new Date(d.updatedAt || d.createdAt || Date.now());
           const timeFormatted = date.toLocaleTimeString("tr-TR", {
@@ -101,7 +110,9 @@ export function ActivityTimelineWidget() {
             timestamp: timeFormatted,
             type: "deal",
             user: {
-              initials: (d.assignedUserName || "F").substring(0, 2).toUpperCase(),
+              initials: (d.assignedUserName || "F")
+                .substring(0, 2)
+                .toUpperCase(),
               name: d.assignedUserName || "Fırsat Yöneticisi",
             },
           });
@@ -109,7 +120,11 @@ export function ActivityTimelineWidget() {
       }
 
       // 3. Process Customers
-      if (customersRes.status === "fulfilled" && customersRes.value.success && customersRes.value.data?.items) {
+      if (
+        customersRes.status === "fulfilled" &&
+        customersRes.value.success &&
+        customersRes.value.data?.items
+      ) {
         for (const c of customersRes.value.data.items) {
           const date = new Date(c.createdAt || Date.now());
           const timeFormatted = date.toLocaleTimeString("tr-TR", {
@@ -133,7 +148,11 @@ export function ActivityTimelineWidget() {
       }
 
       // 4. Process Orders
-      if (ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items) {
+      if (
+        ordersRes.status === "fulfilled" &&
+        ordersRes.value.success &&
+        ordersRes.value.data?.items
+      ) {
         for (const o of ordersRes.value.data.items) {
           const date = new Date(o.createdAt || Date.now());
           const timeFormatted = date.toLocaleTimeString("tr-TR", {
@@ -176,13 +195,21 @@ export function ActivityTimelineWidget() {
   const getActionIcon = (type: ActivityItem["type"]) => {
     switch (type) {
       case "deal":
-        return <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />;
+        return (
+          <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+        );
       case "call":
-        return <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />;
+        return (
+          <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+        );
       case "lead":
-        return <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />;
+        return (
+          <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />
+        );
       case "task":
-        return <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />;
+        return (
+          <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+        );
       default:
         return <Clock className="h-3 w-3 text-zinc-600 dark:text-zinc-400" />;
     }
@@ -193,11 +220,11 @@ export function ActivityTimelineWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Canlı Aktivite Akışı
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -231,7 +258,7 @@ export function ActivityTimelineWidget() {
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Clock className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz işlem kaydı bulunmuyor
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -281,7 +308,7 @@ export function ActivityTimelineWidget() {
       </div>
 
       {activities.length > 0 && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <Link
             className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}

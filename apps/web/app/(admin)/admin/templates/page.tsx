@@ -1,29 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-  Sparkles,
-  Plus,
-  Edit,
-  Save,
-  Layers,
-  CheckCircle2,
-  X,
-  Loader2,
-  Code,
-  FileText,
-} from "lucide-react";
 import { toast } from "@workspace/ui/components/sonner";
+import { Edit, Loader2, Plus, Sparkles, X } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 
 interface IndustryTemplate {
+  createdAt: string;
+  defaultModules: string[];
+  description?: string;
   id: string;
   key: string;
-  name: string;
-  description?: string;
   labelsJson: string;
-  defaultModules: string[];
-  createdAt: string;
+  name: string;
 }
 
 const ALL_MODULES = [
@@ -54,30 +44,32 @@ export default function AdminTemplatesPage() {
     defaultModules: string[];
     labelsJson: string;
   }>({
-    key: "",
-    name: "",
-    description: "",
     defaultModules: ALL_MODULES.map((m) => m.key),
+    description: "",
+    key: "",
     labelsJson: JSON.stringify(
       {
-        modules: {
-          products: { displayName: "Hizmet / Ürün" },
-          customers: { displayName: "Müşteriler" },
-        },
         fields: {
           "products.name": "Başlık",
           "products.sku": "Kod",
+        },
+        modules: {
+          customers: { displayName: "Müşteriler" },
+          products: { displayName: "Hizmet / Ürün" },
         },
       },
       null,
       2
     ),
+    name: "",
   });
 
   const loadTemplates = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.get<IndustryTemplate[]>("/api/industry-templates");
+      const res = await apiClient.get<IndustryTemplate[]>(
+        "/api/industry-templates"
+      );
       if (res?.data) {
         setTemplates(res.data);
       }
@@ -94,23 +86,23 @@ export default function AdminTemplatesPage() {
 
   const handleOpenCreate = () => {
     setEditTemplate({
-      key: "",
-      name: "",
-      description: "",
       defaultModules: ALL_MODULES.map((m) => m.key),
+      description: "",
+      key: "",
       labelsJson: JSON.stringify(
         {
-          modules: {
-            products: { displayName: "Portföy / Ürün" },
-          },
           fields: {
             "products.name": "Başlık / İsim",
             "products.sku": "Referans No",
+          },
+          modules: {
+            products: { displayName: "Portföy / Ürün" },
           },
         },
         null,
         2
       ),
+      name: "",
     });
     setIsModalOpen(true);
   };
@@ -122,12 +114,12 @@ export default function AdminTemplatesPage() {
     } catch {}
 
     setEditTemplate({
+      defaultModules: tpl.defaultModules || [],
+      description: tpl.description || "",
       id: tpl.id,
       key: tpl.key,
-      name: tpl.name,
-      description: tpl.description || "",
-      defaultModules: tpl.defaultModules || [],
       labelsJson: formattedJson,
+      name: tpl.name,
     });
     setIsModalOpen(true);
   };
@@ -158,12 +150,12 @@ export default function AdminTemplatesPage() {
     try {
       setSaving(true);
       const res = await apiClient.post<any>("/api/admin/templates", {
+        defaultModules: editTemplate.defaultModules,
+        description: editTemplate.description || undefined,
         id: editTemplate.id || undefined,
         key: editTemplate.key,
-        name: editTemplate.name,
-        description: editTemplate.description || undefined,
         labelsJson: editTemplate.labelsJson,
-        defaultModules: editTemplate.defaultModules,
+        name: editTemplate.name,
       });
 
       if (res?.success) {
@@ -183,15 +175,18 @@ export default function AdminTemplatesPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">Sektör Şablonları</h1>
-          <p className="text-slate-500 text-xs mt-0.5">
-            Farklı sektörlerdeki müşteriler için hazır modül paketleri ve terminoloji sözlükleri oluşturun.
+          <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">
+            Sektör Şablonları
+          </h1>
+          <p className="mt-0.5 text-slate-500 text-xs">
+            Farklı sektörlerdeki müşteriler için hazır modül paketleri ve
+            terminoloji sözlükleri oluşturun.
           </p>
         </div>
         <button
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-500 active:scale-95"
           onClick={handleOpenCreate}
           type="button"
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-500 active:scale-95"
         >
           <Plus className="h-4 w-4" />
           <span>Yeni Sektör Şablonu Tanımla</span>
@@ -202,7 +197,7 @@ export default function AdminTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <div className="col-span-full py-12 text-center text-slate-400">
-            <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-600 mb-2" />
+            <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
             Şablonlar yükleniyor...
           </div>
         ) : (
@@ -214,41 +209,47 @@ export default function AdminTemplatesPage() {
 
             return (
               <div
-                key={tpl.id}
                 className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs transition-all hover:border-blue-200 hover:shadow-xs"
+                key={tpl.id}
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-200/60">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-amber-200/60 bg-amber-50 text-amber-600">
                         <Sparkles className="h-4 w-4" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-sm text-slate-900">{tpl.name}</h3>
-                        <p className="text-[10px] text-slate-400 font-mono">key: {tpl.key}</p>
+                        <h3 className="font-bold text-slate-900 text-sm">
+                          {tpl.name}
+                        </h3>
+                        <p className="font-mono text-[10px] text-slate-400">
+                          key: {tpl.key}
+                        </p>
                       </div>
                     </div>
                     <button
+                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
                       onClick={() => handleOpenEdit(tpl)}
-                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 hover:bg-white hover:border-blue-300 hover:text-blue-600 transition"
                       title="Şablonu Düzenle"
                     >
                       <Edit className="h-3.5 w-3.5" />
                     </button>
                   </div>
 
-                  <p className="text-xs text-slate-500 leading-relaxed">{tpl.description || "Açıklama yok"}</p>
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    {tpl.description || "Açıklama yok"}
+                  </p>
 
                   {/* Modules in Template */}
-                  <div className="space-y-1.5 pt-2 border-t border-slate-100">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <div className="space-y-1.5 border-slate-100 border-t pt-2">
+                    <span className="font-bold text-[10px] text-slate-400 uppercase tracking-wider">
                       Varsayılan Modüller ({tpl.defaultModules?.length || 0})
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {tpl.defaultModules?.map((m) => (
                         <span
+                          className="rounded-md bg-slate-100 px-2 py-0.5 font-medium text-[10px] text-slate-700"
                           key={m}
-                          className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700"
                         >
                           {m}
                         </span>
@@ -258,22 +259,30 @@ export default function AdminTemplatesPage() {
 
                   {/* Key Label Previews */}
                   {parsedLabels?.modules && (
-                    <div className="space-y-1.5 pt-2 border-t border-slate-100 text-[11px]">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <div className="space-y-1.5 border-slate-100 border-t pt-2 text-[11px]">
+                      <span className="font-bold text-[10px] text-slate-400 uppercase tracking-wider">
                         Terminoloji Dönüşümleri
                       </span>
-                      {Object.entries(parsedLabels.modules).map(([k, v]: [string, any]) => (
-                        <div key={k} className="flex justify-between text-slate-600">
-                          <span className="capitalize">{k}</span>
-                          <span className="font-semibold text-amber-700">➔ {v.displayName}</span>
-                        </div>
-                      ))}
+                      {Object.entries(parsedLabels.modules).map(
+                        ([k, v]: [string, any]) => (
+                          <div
+                            className="flex justify-between text-slate-600"
+                            key={k}
+                          >
+                            <span className="capitalize">{k}</span>
+                            <span className="font-semibold text-amber-700">
+                              ➔ {v.displayName}
+                            </span>
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 text-[10px] text-slate-400">
-                  Oluşturulma: {new Date(tpl.createdAt).toLocaleDateString("tr-TR")}
+                <div className="mt-4 border-slate-100 border-t pt-3 text-[10px] text-slate-400">
+                  Oluşturulma:{" "}
+                  {new Date(tpl.createdAt).toLocaleDateString("tr-TR")}
                 </div>
               </div>
             );
@@ -283,95 +292,117 @@ export default function AdminTemplatesPage() {
 
       {/* EDIT / CREATE TEMPLATE MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
-          <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+          <div className="max-h-[90vh] w-full max-w-2xl space-y-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-slate-100 border-b pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
                   <h2 className="font-bold text-base text-slate-900">
-                    {editTemplate.id ? "Sektör Şablonunu Düzenle" : "Yeni Sektör Şablonu Oluştur"}
+                    {editTemplate.id
+                      ? "Sektör Şablonunu Düzenle"
+                      : "Yeni Sektör Şablonu Oluştur"}
                   </h2>
-                  <p className="text-xs text-slate-500">Modülleri ve alan terminolojisini tanımlayın</p>
+                  <p className="text-slate-500 text-xs">
+                    Modülleri ve alan terminolojisini tanımlayın
+                  </p>
                 </div>
               </div>
               <button
-                onClick={() => setIsModalOpen(false)}
                 className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                onClick={() => setIsModalOpen(false)}
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveTemplate} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form className="space-y-4 text-xs" onSubmit={handleSaveTemplate}>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Şablon Adı *</label>
+                  <label className="mb-1 block font-bold text-slate-700">
+                    Şablon Adı *
+                  </label>
                   <input
-                    type="text"
-                    required
-                    value={editTemplate.name}
-                    onChange={(e) => setEditTemplate({ ...editTemplate, name: e.target.value })}
-                    placeholder="Örn: Otomotiv & Galeri"
                     className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    onChange={(e) =>
+                      setEditTemplate({ ...editTemplate, name: e.target.value })
+                    }
+                    placeholder="Örn: Otomotiv & Galeri"
+                    required
+                    type="text"
+                    value={editTemplate.name}
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Şablon Anahtarı (Key) *</label>
+                  <label className="mb-1 block font-bold text-slate-700">
+                    Şablon Anahtarı (Key) *
+                  </label>
                   <input
-                    type="text"
-                    required
-                    value={editTemplate.key}
+                    className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-mono text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     onChange={(e) =>
                       setEditTemplate({
                         ...editTemplate,
-                        key: e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""),
+                        key: e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9_-]/g, ""),
                       })
                     }
                     placeholder="Örn: automotive"
-                    className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono"
+                    required
+                    type="text"
+                    value={editTemplate.key}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Açıklama</label>
+                <label className="mb-1 block font-bold text-slate-700">
+                  Açıklama
+                </label>
                 <input
+                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  onChange={(e) =>
+                    setEditTemplate({
+                      ...editTemplate,
+                      description: e.target.value,
+                    })
+                  }
+                  placeholder="Şablonun hangi sektör ve iş modelleri için geçerli olduğu..."
                   type="text"
                   value={editTemplate.description}
-                  onChange={(e) => setEditTemplate({ ...editTemplate, description: e.target.value })}
-                  placeholder="Şablonun hangi sektör ve iş modelleri için geçerli olduğu..."
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               {/* Default Modules */}
               <div>
-                <label className="block font-bold text-slate-700 mb-2">
-                  Varsayılan Aktif Modüller ({editTemplate.defaultModules.length} seçildi)
+                <label className="mb-2 block font-bold text-slate-700">
+                  Varsayılan Aktif Modüller (
+                  {editTemplate.defaultModules.length} seçildi)
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2 sm:grid-cols-3">
                   {ALL_MODULES.map((mod) => {
-                    const checked = editTemplate.defaultModules.includes(mod.key);
+                    const checked = editTemplate.defaultModules.includes(
+                      mod.key
+                    );
                     return (
                       <label
+                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 text-[11px] transition ${
+                          checked
+                            ? "border-blue-200 bg-blue-50 font-medium text-blue-800"
+                            : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                        }`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
-                        className={`flex items-center justify-between p-2 rounded-xl cursor-pointer border text-[11px] transition ${
-                          checked
-                            ? "bg-blue-50 border-blue-200 text-blue-800 font-medium"
-                            : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                        }`}
                       >
                         <span>{mod.name}</span>
                         <input
-                          type="checkbox"
                           checked={checked}
-                          onChange={() => {}}
                           className="h-3 w-3 rounded text-blue-600 focus:ring-0"
+                          onChange={() => {}}
+                          type="checkbox"
                         />
                       </label>
                     );
@@ -381,33 +412,40 @@ export default function AdminTemplatesPage() {
 
               {/* JSON Labels Schema */}
               <div>
-                <div className="flex items-center justify-between mb-1">
+                <div className="mb-1 flex items-center justify-between">
                   <label className="block font-bold text-slate-700">
                     Terminoloji Sözlüğü (JSON Schema)
                   </label>
-                  <span className="text-[10px] text-slate-400 font-mono">modules & fields sözlüğü</span>
+                  <span className="font-mono text-[10px] text-slate-400">
+                    modules & fields sözlüğü
+                  </span>
                 </div>
                 <textarea
+                  className="w-full rounded-xl border border-slate-200 bg-slate-900 p-3 font-mono text-amber-300 text-xs leading-relaxed shadow-inner focus:border-blue-500 focus:outline-none"
+                  onChange={(e) =>
+                    setEditTemplate({
+                      ...editTemplate,
+                      labelsJson: e.target.value,
+                    })
+                  }
                   rows={8}
                   value={editTemplate.labelsJson}
-                  onChange={(e) => setEditTemplate({ ...editTemplate, labelsJson: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-900 p-3 font-mono text-xs text-amber-300 focus:border-blue-500 focus:outline-none leading-relaxed shadow-inner"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 border-slate-100 border-t pt-4">
                 <button
-                  type="button"
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs hover:bg-slate-50"
                   onClick={() => setIsModalOpen(false)}
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  type="button"
                 >
                   İptal
                 </button>
                 <button
-                  type="submit"
+                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-500 disabled:opacity-50"
                   disabled={saving}
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-50"
+                  type="submit"
                 >
                   {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>Şablonu Kaydet</span>

@@ -137,19 +137,23 @@
 
   html,
   body {
-    background: white !important;
-    color: #0f172a !important;
     height: auto !important;
     min-height: 100% !important;
     overflow: visible !important;
+    color: #0f172a !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    background: white !important;
   }
 
   /* Reset layout overflow traps on print */
-  div, main, section, aside, article {
-    overflow: visible !important;
+  div,
+  main,
+  section,
+  aside,
+  article {
     max-height: none !important;
+    overflow: visible !important;
   }
 
   /* Prevent page breaks inside cards */
@@ -163,4 +167,3 @@
     box-shadow: none !important;
   }
 }
-

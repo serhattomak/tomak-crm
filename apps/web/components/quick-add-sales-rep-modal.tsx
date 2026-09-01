@@ -28,11 +28,13 @@ export function QuickAddSalesRepModal({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+    if (!(firstName.trim() && lastName.trim() && email.trim())) {
       setError("Lütfen ad, soyad ve e-posta alanlarını doldurun.");
       return;
     }
@@ -70,7 +72,7 @@ export function QuickAddSalesRepModal({
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="relative flex w-full max-w-md flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               <UserPlus className="h-4 w-4" />
@@ -168,7 +170,7 @@ export function QuickAddSalesRepModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
               className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}

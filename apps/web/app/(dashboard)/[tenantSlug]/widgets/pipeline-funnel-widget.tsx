@@ -105,7 +105,7 @@ export function PipelineFunnelWidget({
               <Filter className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Satış Hunisi (Pipeline Aşamaları)
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -177,7 +177,7 @@ export function PipelineFunnelWidget({
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Layers className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz satış fırsatı bulunmuyor
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -196,9 +196,9 @@ export function PipelineFunnelWidget({
       </div>
 
       {hasData && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <Link
-            className="flex items-center justify-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400 dark:hover:text-violet-300"
+            className="flex items-center justify-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Pipeline Kanban Görünümünü Aç</span>

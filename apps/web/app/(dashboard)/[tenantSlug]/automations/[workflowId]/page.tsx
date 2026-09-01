@@ -1,34 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import {
+  AlertCircle,
   ArrowLeft,
-  Save,
+  Bell,
+  CheckCircle2,
+  ChevronDown,
+  Clock,
+  FileEdit,
+  Globe,
+  Layers,
   Play,
   Plus,
-  Trash2,
-  Bell,
-  Globe,
-  Clock,
-  UserCheck,
-  CheckCircle2,
-  AlertCircle,
-  XCircle,
-  FileEdit,
-  Layers,
-  ChevronDown,
-  X,
   RefreshCw,
+  Save,
+  Trash2,
+  UserCheck,
+  X,
+  XCircle,
 } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   ApiClient,
-  WorkflowConditionGroupDto,
-  WorkflowActionStepDto,
-  WorkflowTriggerConfigDto,
-  AutomationExecutionResultDto,
+  type AutomationExecutionResultDto,
+  type WorkflowActionStepDto,
+  type WorkflowConditionGroupDto,
+  type WorkflowTriggerConfigDto,
 } from "@/lib/api-client";
-import { toast } from "sonner";
 
 export default function WorkflowBuilderPage() {
   const params = useParams();
@@ -48,44 +48,48 @@ export default function WorkflowBuilderPage() {
   const [color, setColor] = useState<string>("blue");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<string>("Customer.Created");
-  const [triggerConfig, setTriggerConfig] = useState<WorkflowTriggerConfigDto>({});
+  const [triggerConfig, setTriggerConfig] = useState<WorkflowTriggerConfigDto>(
+    {}
+  );
   const [conditions, setConditions] = useState<WorkflowConditionGroupDto[]>([
     {
       logicalOperator: "AND",
       rules: [
         {
           field: "tier",
+          fieldType: "string",
           operator: "equals",
           value: "VIP",
-          fieldType: "string",
         },
       ],
     },
   ]);
   const [actions, setActions] = useState<WorkflowActionStepDto[]>([
     {
-      id: "act-1",
-      type: "notification",
-      title: "Hoşgeldin E-Postası Gönder",
-      order: 1,
       config: {
         channel: "Email",
+        message:
+          "Sayın {customerName}, özel müşteri programımıza hoş geldiniz.",
         title: "Aramıza Hoş Geldiniz!",
-        message: "Sayın {customerName}, özel müşteri programımıza hoş geldiniz.",
       },
+      id: "act-1",
+      order: 1,
+      title: "Hoşgeldin E-Postası Gönder",
+      type: "notification",
     },
   ]);
 
   // Simulation Modal State
   const [isSimulationOpen, setIsSimulationOpen] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [simulationResult, setSimulationResult] = useState<AutomationExecutionResultDto | null>(null);
+  const [simulationResult, setSimulationResult] =
+    useState<AutomationExecutionResultDto | null>(null);
   const [mockContext, setMockContext] = useState<Record<string, unknown>>({
     customerName: "Ahmet Yılmaz (Örnek)",
-    tier: "VIP",
-    totalAmount: 12500,
-    status: "Completed",
     priority: "Urgent",
+    status: "Completed",
+    tier: "VIP",
+    totalAmount: 12_500,
   });
 
   // Load existing workflow
@@ -97,7 +101,9 @@ export default function WorkflowBuilderPage() {
     let isMounted = true;
     ApiClient.getWorkflowById(workflowId, tenantSlug)
       .then((res) => {
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
         if (res.success && res.data) {
           const data = res.data;
           setName(data.name);
@@ -147,16 +153,16 @@ export default function WorkflowBuilderPage() {
       if (isNew) {
         const res = await ApiClient.createWorkflow(
           {
-            name,
-            description,
-            category,
-            icon,
-            color,
-            isActive,
-            triggerType,
-            triggerConfig,
-            conditions,
             actions,
+            category,
+            color,
+            conditions,
+            description,
+            icon,
+            isActive,
+            name,
+            triggerConfig,
+            triggerType,
           },
           tenantSlug
         );
@@ -171,17 +177,17 @@ export default function WorkflowBuilderPage() {
         const res = await ApiClient.updateWorkflow(
           workflowId,
           {
-            id: workflowId,
-            name,
-            description,
-            category,
-            icon,
-            color,
-            isActive,
-            triggerType,
-            triggerConfig,
-            conditions,
             actions,
+            category,
+            color,
+            conditions,
+            description,
+            icon,
+            id: workflowId,
+            isActive,
+            name,
+            triggerConfig,
+            triggerType,
           },
           tenantSlug
         );
@@ -212,9 +218,9 @@ export default function WorkflowBuilderPage() {
       const res = await ApiClient.testWorkflow(
         workflowId,
         {
-          id: workflowId,
           entityType: triggerType.split(".")[0],
-          mockContext: mockContext,
+          id: workflowId,
+          mockContext,
         },
         tenantSlug
       );
@@ -237,7 +243,14 @@ export default function WorkflowBuilderPage() {
       ...prev,
       {
         logicalOperator: "AND",
-        rules: [{ field: "status", operator: "equals", value: "Active", fieldType: "string" }],
+        rules: [
+          {
+            field: "status",
+            fieldType: "string",
+            operator: "equals",
+            value: "Active",
+          },
+        ],
       },
     ]);
   };
@@ -249,12 +262,19 @@ export default function WorkflowBuilderPage() {
   const addRuleToGroup = (groupIndex: number) => {
     setConditions((prev) =>
       prev.map((group, i) => {
-        if (i !== groupIndex) return group;
+        if (i !== groupIndex) {
+          return group;
+        }
         return {
           ...group,
           rules: [
             ...group.rules,
-            { field: "totalAmount", operator: "greaterThanOrEqual", value: "1000", fieldType: "number" },
+            {
+              field: "totalAmount",
+              fieldType: "number",
+              operator: "greaterThanOrEqual",
+              value: "1000",
+            },
           ],
         };
       })
@@ -264,7 +284,9 @@ export default function WorkflowBuilderPage() {
   const removeRuleFromGroup = (groupIndex: number, ruleIndex: number) => {
     setConditions((prev) =>
       prev.map((group, i) => {
-        if (i !== groupIndex) return group;
+        if (i !== groupIndex) {
+          return group;
+        }
         return {
           ...group,
           rules: group.rules.filter((_, r) => r !== ruleIndex),
@@ -281,11 +303,15 @@ export default function WorkflowBuilderPage() {
   ) => {
     setConditions((prev) =>
       prev.map((group, i) => {
-        if (i !== groupIndex) return group;
+        if (i !== groupIndex) {
+          return group;
+        }
         return {
           ...group,
           rules: group.rules.map((rule, r) => {
-            if (r !== ruleIndex) return rule;
+            if (r !== ruleIndex) {
+              return rule;
+            }
             return { ...rule, [field]: val };
           }),
         };
@@ -305,8 +331,8 @@ export default function WorkflowBuilderPage() {
         title = "Otomatik Bildirim Gönder";
         config = {
           channel: "InApp",
-          title: "Sistem Bildirimi",
           message: "{customerName} için işlem gerçekleşti.",
+          title: "Sistem Bildirimi",
         };
         break;
       case "updateRecord":
@@ -337,12 +363,12 @@ export default function WorkflowBuilderPage() {
     }
 
     const newAction: WorkflowActionStepDto = {
-      id: newId,
-      type,
-      title,
-      order: actions.length + 1,
-      delayMinutes,
       config,
+      delayMinutes,
+      id: newId,
+      order: actions.length + 1,
+      title,
+      type,
     };
 
     setActions((prev) => [...prev, newAction]);
@@ -355,7 +381,9 @@ export default function WorkflowBuilderPage() {
   const updateActionConfig = (id: string, key: string, val: unknown) => {
     setActions((prev) =>
       prev.map((a) => {
-        if (a.id !== id) return a;
+        if (a.id !== id) {
+          return a;
+        }
         return {
           ...a,
           config: {
@@ -375,63 +403,65 @@ export default function WorkflowBuilderPage() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
-        <div className="text-center space-y-3">
-          <RefreshCw className="h-8 w-8 text-blue-600 animate-spin mx-auto" />
-          <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Akış tasarımcısı hazırlanıyor...</p>
+      <div className="flex min-h-[60vh] flex-1 items-center justify-center">
+        <div className="space-y-3 text-center">
+          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-blue-600" />
+          <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
+            Akış tasarımcısı hazırlanıyor...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 space-y-6 p-4 md:p-8 max-w-5xl mx-auto">
+    <div className="mx-auto max-w-5xl flex-1 space-y-6 p-4 md:p-8">
       {/* 1. Header Toolbar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
+      <div className="flex flex-col gap-4 border-zinc-200 border-b pb-5 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
         <div className="flex items-center gap-3">
           <button
+            className="rounded-xl border border-zinc-200 p-2 text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={() => router.push(`/${tenantSlug}/automations`)}
-            className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
             <div className="flex items-center gap-2">
               <input
+                className="border-transparent border-b bg-transparent px-1 py-0.5 font-bold text-xl text-zinc-900 tracking-tight hover:border-zinc-300 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:text-zinc-100"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Akış Adı..."
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="text-xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-b border-transparent hover:border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:outline-none px-1 py-0.5 tracking-tight"
-                placeholder="Akış Adı..."
               />
-              <span className="bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400 text-xs font-semibold px-2 py-0.5 rounded-full">
+              <span className="rounded-full bg-blue-100 px-2 py-0.5 font-semibold text-blue-700 text-xs dark:bg-blue-950/60 dark:text-blue-400">
                 {isNew ? "Taslak" : isActive ? "Aktif" : "Pasif"}
               </span>
             </div>
             <input
-              type="text"
-              value={description}
+              className="mt-0.5 w-full border-transparent border-b bg-transparent px-1 py-0.5 text-xs text-zinc-500 hover:border-zinc-200 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-400"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Kısa açıklama ekleyin (isteğe bağlı)..."
-              className="text-xs text-zinc-500 dark:text-zinc-400 bg-transparent border-b border-transparent hover:border-zinc-200 dark:border-zinc-800 focus:border-blue-500 focus:outline-none px-1 py-0.5 w-full mt-0.5"
+              type="text"
+              value={description}
             />
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Active Switch */}
-          <div className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
-            <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 px-2">
+          <div className="flex items-center gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
+            <span className="px-2 font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               {isActive ? "Aktif" : "Pasif"}
             </span>
             <div
-              onClick={() => setIsActive(!isActive)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                 isActive ? "bg-emerald-500" : "bg-slate-300"
               }`}
+              onClick={() => setIsActive(!isActive)}
             >
               <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-zinc-900 shadow ring-0 transition duration-200 ease-in-out ${
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-zinc-900 ${
                   isActive ? "translate-x-5" : "translate-x-0"
                 }`}
               />
@@ -440,11 +470,11 @@ export default function WorkflowBuilderPage() {
 
           {!isNew && (
             <button
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-xs transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 dark:border-zinc-800 dark:text-zinc-300"
               onClick={() => {
                 setIsSimulationOpen(true);
                 handleRunSimulation();
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-blue-300 hover:bg-blue-50 text-zinc-700 dark:text-zinc-300 hover:text-blue-700 font-medium text-xs transition-all shadow-xs"
             >
               <Play className="h-3.5 w-3.5 fill-current" />
               <span>Simüle Et</span>
@@ -452,9 +482,9 @@ export default function WorkflowBuilderPage() {
           )}
 
           <button
-            onClick={handleSave}
+            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-blue-600/20 shadow-md transition-all hover:bg-blue-700 disabled:opacity-50"
             disabled={isSaving}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-all shadow-md shadow-blue-600/20 disabled:opacity-50"
+            onClick={handleSave}
           >
             {isSaving ? (
               <RefreshCw className="h-4 w-4 animate-spin" />
@@ -467,21 +497,21 @@ export default function WorkflowBuilderPage() {
       </div>
 
       {/* 2. Step Flow Canvas */}
-      <div className="space-y-6 relative">
+      <div className="relative space-y-6">
         {/* ======================================================== */}
         {/* NODE 1: TETİKLEYİCİ (TRIGGER) */}
         {/* ======================================================== */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-blue-200 p-6 shadow-sm relative">
-          <div className="flex items-center justify-between mb-4">
+        <div className="relative rounded-3xl border-2 border-blue-200 bg-white p-6 shadow-sm dark:bg-zinc-900">
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 font-bold text-white shadow-blue-500/20 shadow-md">
                 1
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600">
+                <span className="font-bold text-[11px] text-blue-600 uppercase tracking-wider">
                   TETİKLEYİCİ OLAY (WHEN)
                 </span>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Bu akış hangi olay gerçekleştiğinde başlasın?
                 </h3>
               </div>
@@ -489,9 +519,9 @@ export default function WorkflowBuilderPage() {
 
             <div className="flex items-center gap-2">
               <select
-                value={category}
+                className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-medium text-xs dark:border-zinc-800 dark:bg-zinc-800/50"
                 onChange={(e) => setCategory(e.target.value)}
-                className="px-2.5 py-1 text-xs border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 font-medium"
+                value={category}
               >
                 <option value="Customer">Kategori: Müşteri</option>
                 <option value="Sales">Kategori: Satış & Sipariş</option>
@@ -501,31 +531,47 @@ export default function WorkflowBuilderPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+          <div className="grid grid-cols-1 gap-4 rounded-2xl border border-zinc-100 bg-zinc-50 p-4 md:grid-cols-2 dark:border-zinc-800 dark:bg-zinc-800/50">
             <div>
-              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+              <label className="mb-1 block font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                 Tetikleyici CRM Olayı
               </label>
               <select
-                value={triggerType}
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
                 onChange={(e) => setTriggerType(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-blue-500"
+                value={triggerType}
               >
                 <optgroup label="Müşteri Olayları">
-                  <option value="Customer.Created">👤 Yeni Müşteri Oluşturulduğunda</option>
-                  <option value="Customer.Updated">🔄 Müşteri Bilgileri Güncellendiğinde</option>
+                  <option value="Customer.Created">
+                    👤 Yeni Müşteri Oluşturulduğunda
+                  </option>
+                  <option value="Customer.Updated">
+                    🔄 Müşteri Bilgileri Güncellendiğinde
+                  </option>
                 </optgroup>
                 <optgroup label="Sipariş & Satış Olayları">
-                  <option value="Order.Created">🛍️ Yeni Sipariş Alındığında</option>
-                  <option value="Order.StatusChanged">📦 Sipariş Durumu Değiştiğinde</option>
-                  <option value="Deal.StageChanged">📊 Satış Fırsatı Aşaması Değiştiğinde</option>
+                  <option value="Order.Created">
+                    🛍️ Yeni Sipariş Alındığında
+                  </option>
+                  <option value="Order.StatusChanged">
+                    📦 Sipariş Durumu Değiştiğinde
+                  </option>
+                  <option value="Deal.StageChanged">
+                    📊 Satış Fırsatı Aşaması Değiştiğinde
+                  </option>
                 </optgroup>
                 <optgroup label="Destek Masası Olayları">
-                  <option value="Ticket.Created">🎫 Yeni Destek Bileti Açıldığında</option>
-                  <option value="Ticket.SlaBreached">⏱️ SLA Çözüm Süresi Aşıldığında</option>
+                  <option value="Ticket.Created">
+                    🎫 Yeni Destek Bileti Açıldığında
+                  </option>
+                  <option value="Ticket.SlaBreached">
+                    ⏱️ SLA Çözüm Süresi Aşıldığında
+                  </option>
                 </optgroup>
                 <optgroup label="Entegrasyon">
-                  <option value="Webhook.Inbound">🌐 Gelen Webhook İsteği</option>
+                  <option value="Webhook.Inbound">
+                    🌐 Gelen Webhook İsteği
+                  </option>
                 </optgroup>
               </select>
             </div>
@@ -533,13 +579,18 @@ export default function WorkflowBuilderPage() {
             {/* Contextual Filters */}
             {triggerType === "Order.StatusChanged" && (
               <div>
-                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="mb-1 block font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                   Hedeflenen Sipariş Durumu
                 </label>
                 <select
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                  onChange={(e) =>
+                    setTriggerConfig({
+                      ...triggerConfig,
+                      targetStatus: e.target.value,
+                    })
+                  }
                   value={triggerConfig.targetStatus || "Completed"}
-                  onChange={(e) => setTriggerConfig({ ...triggerConfig, targetStatus: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-800 dark:text-zinc-200"
                 >
                   <option value="Completed">Tamamlandı (Completed)</option>
                   <option value="Shipped">Kargoya Verildi (Shipped)</option>
@@ -552,32 +603,32 @@ export default function WorkflowBuilderPage() {
         </div>
 
         {/* Connector Line 1 */}
-        <div className="flex justify-center -my-2 relative z-10">
-          <div className="w-0.5 h-8 bg-slate-300" />
+        <div className="relative z-10 -my-2 flex justify-center">
+          <div className="h-8 w-0.5 bg-slate-300" />
         </div>
 
         {/* ======================================================== */}
         {/* NODE 2: FİLTRE VE KOŞULLAR (IF / CONDITIONS) */}
         {/* ======================================================== */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-amber-200 p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
+        <div className="rounded-3xl border-2 border-amber-200 bg-white p-6 shadow-sm dark:bg-zinc-900">
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-md shadow-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-500 font-bold text-white shadow-amber-500/20 shadow-md">
                 2
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-600">
+                <span className="font-bold text-[11px] text-amber-600 uppercase tracking-wider">
                   KOŞULLAR & KURALLAR (IF / ONLY IF)
                 </span>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Hangi kriterler sağlandığında aksiyonlar çalışsın?
                 </h3>
               </div>
             </div>
 
             <button
+              className="flex items-center gap-1 rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 text-xs transition-all hover:bg-amber-100"
               onClick={addConditionGroup}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold text-xs transition-all"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Grup Ekle</span>
@@ -585,39 +636,48 @@ export default function WorkflowBuilderPage() {
           </div>
 
           {conditions.length === 0 ? (
-            <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/60 text-center">
-              <p className="text-xs text-amber-800 font-medium">
-                Koşul eklenmedi. Tetikleyici gerçekleştiğinde aksiyonlar <strong>her zaman</strong> çalışacaktır.
+            <div className="rounded-2xl border border-amber-200/60 bg-amber-50/50 p-4 text-center">
+              <p className="font-medium text-amber-800 text-xs">
+                Koşul eklenmedi. Tetikleyici gerçekleştiğinde aksiyonlar{" "}
+                <strong>her zaman</strong> çalışacaktır.
               </p>
             </div>
           ) : (
             <div className="space-y-4">
               {conditions.map((group, gIdx) => (
                 <div
+                  className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/40"
                   key={gIdx}
-                  className="bg-zinc-50/70 dark:bg-zinc-800/40 p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Kural Grubu {gIdx + 1}:</span>
+                      <span className="font-bold text-xs text-zinc-700 dark:text-zinc-300">
+                        Kural Grubu {gIdx + 1}:
+                      </span>
                       <select
-                        value={group.logicalOperator}
+                        className="rounded-md border border-zinc-300 bg-white px-2 py-0.5 font-bold text-blue-600 text-xs dark:border-zinc-700 dark:bg-zinc-900"
                         onChange={(e) => {
                           const val = e.target.value;
                           setConditions((prev) =>
-                            prev.map((g, i) => (i === gIdx ? { ...g, logicalOperator: val } : g))
+                            prev.map((g, i) =>
+                              i === gIdx ? { ...g, logicalOperator: val } : g
+                            )
                           );
                         }}
-                        className="px-2 py-0.5 rounded-md border border-zinc-300 dark:border-zinc-700 text-xs font-bold bg-white dark:bg-zinc-900 text-blue-600"
+                        value={group.logicalOperator}
                       >
-                        <option value="AND">TÜM kurallar sağlansın (VE / AND)</option>
-                        <option value="OR">HERHANGİ bir kural sağlansın (VEYA / OR)</option>
+                        <option value="AND">
+                          TÜM kurallar sağlansın (VE / AND)
+                        </option>
+                        <option value="OR">
+                          HERHANGİ bir kural sağlansın (VEYA / OR)
+                        </option>
                       </select>
                     </div>
 
                     <button
+                      className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
                       onClick={() => removeConditionGroup(gIdx)}
-                      className="text-zinc-400 dark:text-zinc-500 hover:text-red-600 p-1"
                       title="Grubu Kaldır"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -628,33 +688,43 @@ export default function WorkflowBuilderPage() {
                   <div className="space-y-2">
                     {group.rules.map((rule, rIdx) => (
                       <div
+                        className="flex flex-col items-center gap-2 rounded-xl border border-zinc-200 bg-white p-2.5 shadow-2xs md:flex-row dark:border-zinc-800 dark:bg-zinc-900"
                         key={rIdx}
-                        className="flex flex-col md:flex-row items-center gap-2 bg-white dark:bg-zinc-900 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-2xs"
                       >
                         {/* Field */}
                         <div className="w-full md:w-1/3">
                           <input
+                            className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 font-mono text-xs focus:bg-white dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900"
+                            onChange={(e) =>
+                              updateRule(gIdx, rIdx, "field", e.target.value)
+                            }
+                            placeholder="Alan adı (tier, totalAmount, status...)"
                             type="text"
                             value={rule.field}
-                            onChange={(e) => updateRule(gIdx, rIdx, "field", e.target.value)}
-                            placeholder="Alan adı (tier, totalAmount, status...)"
-                            className="w-full px-2.5 py-1.5 text-xs font-mono rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900"
                           />
                         </div>
 
                         {/* Operator */}
                         <div className="w-full md:w-1/3">
                           <select
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-semibold text-xs dark:border-zinc-800 dark:bg-zinc-900"
+                            onChange={(e) =>
+                              updateRule(gIdx, rIdx, "operator", e.target.value)
+                            }
                             value={rule.operator}
-                            onChange={(e) => updateRule(gIdx, rIdx, "operator", e.target.value)}
-                            className="w-full px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                           >
                             <option value="equals">Eşittir (Equals)</option>
-                            <option value="notEquals">Eşit Değildir (!=)</option>
+                            <option value="notEquals">
+                              Eşit Değildir (!=)
+                            </option>
                             <option value="greaterThan">Büyüktür (&gt;)</option>
-                            <option value="greaterThanOrEqual">Büyük ya da Eşit (&gt;=)</option>
+                            <option value="greaterThanOrEqual">
+                              Büyük ya da Eşit (&gt;=)
+                            </option>
                             <option value="lessThan">Küçüktür (&lt;)</option>
-                            <option value="lessThanOrEqual">Küçük ya da Eşit (&lt;=)</option>
+                            <option value="lessThanOrEqual">
+                              Küçük ya da Eşit (&lt;=)
+                            </option>
                             <option value="contains">İçerir (Contains)</option>
                             <option value="in">Listede Var (In)</option>
                             <option value="isNotEmpty">Dolu / Boş Değil</option>
@@ -662,17 +732,19 @@ export default function WorkflowBuilderPage() {
                         </div>
 
                         {/* Value */}
-                        <div className="w-full md:w-1/3 flex items-center gap-1.5">
+                        <div className="flex w-full items-center gap-1.5 md:w-1/3">
                           <input
+                            className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs focus:bg-white dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900"
+                            onChange={(e) =>
+                              updateRule(gIdx, rIdx, "value", e.target.value)
+                            }
+                            placeholder="Değer..."
                             type="text"
                             value={rule.value}
-                            onChange={(e) => updateRule(gIdx, rIdx, "value", e.target.value)}
-                            placeholder="Değer..."
-                            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 focus:bg-white dark:bg-zinc-900"
                           />
                           <button
+                            className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
                             onClick={() => removeRuleFromGroup(gIdx, rIdx)}
-                            className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-red-600"
                             title="Kuralı Sil"
                           >
                             <X className="h-4 w-4" />
@@ -683,8 +755,8 @@ export default function WorkflowBuilderPage() {
                   </div>
 
                   <button
+                    className="flex items-center gap-1 pt-1 font-semibold text-blue-600 text-xs hover:text-blue-800"
                     onClick={() => addRuleToGroup(gIdx)}
-                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 pt-1"
                   >
                     <Plus className="h-3 w-3" />
                     <span>Bu gruba kural ekle</span>
@@ -696,69 +768,69 @@ export default function WorkflowBuilderPage() {
         </div>
 
         {/* Connector Line 2 */}
-        <div className="flex justify-center -my-2 relative z-10">
-          <div className="w-0.5 h-8 bg-slate-300" />
+        <div className="relative z-10 -my-2 flex justify-center">
+          <div className="h-8 w-0.5 bg-slate-300" />
         </div>
 
         {/* ======================================================== */}
         {/* NODE 3: AKSİYON ZİNCİRİ (THEN / ACTIONS) */}
         {/* ======================================================== */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border-2 border-emerald-200 p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
+        <div className="rounded-3xl border-2 border-emerald-200 bg-white p-6 shadow-sm dark:bg-zinc-900">
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 font-bold text-white shadow-emerald-500/20 shadow-md">
                 3
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600">
+                <span className="font-bold text-[11px] text-emerald-600 uppercase tracking-wider">
                   OTOMATİK AKSİYONLAR (THEN / DO THIS)
                 </span>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Sırasıyla yürütülecek işlem adımları
                 </h3>
               </div>
             </div>
 
             {/* Add Action Step dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-sm transition-all">
+            <div className="group relative">
+              <button className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-sm transition-all hover:bg-emerald-700">
                 <Plus className="h-3.5 w-3.5" />
                 <span>Aksiyon Adımı Ekle</span>
                 <ChevronDown className="h-3 w-3" />
               </button>
 
-              <div className="absolute right-0 mt-1 w-56 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 p-1.5 hidden group-hover:block z-30 space-y-1">
+              <div className="absolute right-0 z-30 mt-1 hidden w-56 space-y-1 rounded-2xl border border-zinc-100 bg-white p-1.5 shadow-xl group-hover:block dark:border-zinc-800 dark:bg-zinc-900">
                 <button
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:text-zinc-300"
                   onClick={() => addAction("notification")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
                 >
                   <Bell className="h-3.5 w-3.5 text-blue-500" />
                   <span>Bildirim / E-Posta Gönder</span>
                 </button>
                 <button
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-purple-50 hover:text-purple-700 dark:text-zinc-300"
                   onClick={() => addAction("createRecord")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
                 >
                   <UserCheck className="h-3.5 w-3.5 text-purple-500" />
                   <span>Yeni Takip Görevi Aç</span>
                 </button>
                 <button
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-emerald-50 hover:text-emerald-700 dark:text-zinc-300"
                   onClick={() => addAction("updateRecord")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2"
                 >
                   <FileEdit className="h-3.5 w-3.5 text-emerald-500" />
                   <span>CRM Kaydını Güncelle</span>
                 </button>
                 <button
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-amber-50 hover:text-amber-700 dark:text-zinc-300"
                   onClick={() => addAction("webhook")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-amber-50 hover:text-amber-700 flex items-center gap-2"
                 >
                   <Globe className="h-3.5 w-3.5 text-amber-500" />
                   <span>Harici Webhook (HTTP POST)</span>
                 </button>
                 <button
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => addAction("delay")}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2"
                 >
                   <Clock className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
                   <span>Gecikme / Beklet (Delay)</span>
@@ -768,36 +840,40 @@ export default function WorkflowBuilderPage() {
           </div>
 
           {actions.length === 0 ? (
-            <div className="p-8 text-center bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-              <Layers className="h-8 w-8 text-zinc-400 dark:text-zinc-500 mx-auto mb-2" />
-              <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Henüz bir aksiyon adımı eklenmedi.</p>
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center dark:border-zinc-800 dark:bg-zinc-800/50">
+              <Layers className="mx-auto mb-2 h-8 w-8 text-zinc-400 dark:text-zinc-500" />
+              <p className="font-medium text-xs text-zinc-600 dark:text-zinc-400">
+                Henüz bir aksiyon adımı eklenmedi.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
               {actions.map((act, index) => (
                 <div
+                  className="relative rounded-2xl border border-zinc-200 bg-white p-4 shadow-xs transition-all hover:border-emerald-300 dark:border-zinc-800/90 dark:bg-zinc-900"
                   key={act.id}
-                  className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800/90 bg-white dark:bg-zinc-900 hover:border-emerald-300 transition-all shadow-xs relative"
                 >
-                  <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="mb-3 flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-center text-xs font-bold font-mono">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 font-bold font-mono text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                         {index + 1}
                       </span>
                       <input
+                        className="border-transparent border-b bg-transparent font-bold text-xs text-zinc-900 hover:border-zinc-300 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:text-zinc-100"
+                        onChange={(e) =>
+                          updateActionTitle(act.id, e.target.value)
+                        }
                         type="text"
                         value={act.title}
-                        onChange={(e) => updateActionTitle(act.id, e.target.value)}
-                        className="font-bold text-zinc-900 dark:text-zinc-100 text-xs bg-transparent border-b border-transparent hover:border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:outline-none"
                       />
-                      <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                      <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                         {act.type}
                       </span>
                     </div>
 
                     <button
+                      className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
                       onClick={() => removeAction(act.id)}
-                      className="text-zinc-400 dark:text-zinc-500 hover:text-red-600 p-1"
                       title="Adımı Sil"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -806,108 +882,153 @@ export default function WorkflowBuilderPage() {
 
                   {/* Config Fields based on Action Type */}
                   {act.type === "notification" && (
-                    <div className="space-y-2 bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs">
+                    <div className="space-y-2 rounded-xl border border-zinc-100 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Kanal</label>
+                          <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                            Kanal
+                          </label>
                           <select
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-medium dark:border-zinc-800 dark:bg-zinc-900"
+                            onChange={(e) =>
+                              updateActionConfig(
+                                act.id,
+                                "channel",
+                                e.target.value
+                              )
+                            }
                             value={(act.config.channel as string) || "InApp"}
-                            onChange={(e) => updateActionConfig(act.id, "channel", e.target.value)}
-                            className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-medium"
                           >
-                            <option value="InApp">Sistem İçi Bildirim (In-App)</option>
+                            <option value="InApp">
+                              Sistem İçi Bildirim (In-App)
+                            </option>
                             <option value="Email">E-Posta Şablonu</option>
                             <option value="SMS">SMS / WhatsApp</option>
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Başlık</label>
+                          <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                            Başlık
+                          </label>
                           <input
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 dark:border-zinc-800 dark:bg-zinc-900"
+                            onChange={(e) =>
+                              updateActionConfig(
+                                act.id,
+                                "title",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Bildirim başlığı..."
                             type="text"
                             value={(act.config.title as string) || ""}
-                            onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
-                            placeholder="Bildirim başlığı..."
-                            className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                           />
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">
-                          Mesaj İçeriği (Değişkenler: {"{customerName}"}, {"{totalAmount}"}, {"{orderNumber}"})
+                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                          Mesaj İçeriği (Değişkenler: {"{customerName}"},{" "}
+                          {"{totalAmount}"}, {"{orderNumber}"})
                         </label>
                         <textarea
+                          className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs dark:border-zinc-800 dark:bg-zinc-900"
+                          onChange={(e) =>
+                            updateActionConfig(
+                              act.id,
+                              "message",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Mesaj metni..."
                           rows={2}
                           value={(act.config.message as string) || ""}
-                          onChange={(e) => updateActionConfig(act.id, "message", e.target.value)}
-                          placeholder="Mesaj metni..."
-                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs"
                         />
                       </div>
                     </div>
                   )}
 
                   {act.type === "createRecord" && (
-                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs space-y-2">
-                      <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Görev / Not Başlığı</label>
+                    <div className="space-y-2 rounded-xl border border-zinc-100 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
+                      <label className="block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        Görev / Not Başlığı
+                      </label>
                       <input
+                        className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 dark:border-zinc-800 dark:bg-zinc-900"
+                        onChange={(e) =>
+                          updateActionConfig(act.id, "title", e.target.value)
+                        }
+                        placeholder="Örn: VIP Müşteri Takip Araması - {customerName}"
                         type="text"
                         value={(act.config.title as string) || ""}
-                        onChange={(e) => updateActionConfig(act.id, "title", e.target.value)}
-                        placeholder="Örn: VIP Müşteri Takip Araması - {customerName}"
-                        className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                       />
                     </div>
                   )}
 
                   {act.type === "updateRecord" && (
-                    <div className="grid grid-cols-2 gap-2 bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs">
+                    <div className="grid grid-cols-2 gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
                       <div>
-                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Güncellenecek Alan</label>
+                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                          Güncellenecek Alan
+                        </label>
                         <input
+                          className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
+                          onChange={(e) =>
+                            updateActionConfig(act.id, "field", e.target.value)
+                          }
                           type="text"
                           value={(act.config.field as string) || "status"}
-                          onChange={(e) => updateActionConfig(act.id, "field", e.target.value)}
-                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1">Yeni Değer</label>
+                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                          Yeni Değer
+                        </label>
                         <input
+                          className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
+                          onChange={(e) =>
+                            updateActionConfig(act.id, "value", e.target.value)
+                          }
                           type="text"
                           value={(act.config.value as string) || ""}
-                          onChange={(e) => updateActionConfig(act.id, "value", e.target.value)}
-                          className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                         />
                       </div>
                     </div>
                   )}
 
                   {act.type === "webhook" && (
-                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs space-y-2">
-                      <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Hedef URL (POST Endpoint)</label>
+                    <div className="space-y-2 rounded-xl border border-zinc-100 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
+                      <label className="block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        Hedef URL (POST Endpoint)
+                      </label>
                       <input
+                        className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
+                        onChange={(e) =>
+                          updateActionConfig(act.id, "url", e.target.value)
+                        }
+                        placeholder="https://api.hariciservis.com/webhook"
                         type="url"
                         value={(act.config.url as string) || ""}
-                        onChange={(e) => updateActionConfig(act.id, "url", e.target.value)}
-                        placeholder="https://api.hariciservis.com/webhook"
-                        className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
                       />
                     </div>
                   )}
 
                   {act.type === "delay" && (
-                    <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 text-xs flex items-center gap-3">
-                      <label className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">Bekleme Süresi (Dakika):</label>
+                    <div className="flex items-center gap-3 rounded-xl border border-zinc-100 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
+                      <label className="font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        Bekleme Süresi (Dakika):
+                      </label>
                       <input
-                        type="number"
-                        value={act.delayMinutes || 15}
+                        className="w-24 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
                         onChange={(e) => {
-                          const val = parseInt(e.target.value) || 0;
+                          const val = Number.parseInt(e.target.value) || 0;
                           setActions((prev) =>
-                            prev.map((a) => (a.id === act.id ? { ...a, delayMinutes: val } : a))
+                            prev.map((a) =>
+                              a.id === act.id ? { ...a, delayMinutes: val } : a
+                            )
                           );
                         }}
-                        className="w-24 px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg font-mono"
+                        type="number"
+                        value={act.delayMinutes || 15}
                       />
                     </div>
                   )}
@@ -920,75 +1041,105 @@ export default function WorkflowBuilderPage() {
 
       {/* 3. Live Simulation Modal */}
       {isSimulationOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="zoom-in-95 w-full max-w-xl animate-in space-y-4 rounded-3xl bg-white p-6 shadow-2xl dark:bg-zinc-900">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 rounded-xl">
+                <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Play className="h-4 w-4 fill-current" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Akış Simülatörü (Canlı Kural Testi)</h3>
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    Akış Simülatörü (Canlı Kural Testi)
+                  </h3>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Örnek veriyle akışın nasıl tepki vereceğini test edin.
                   </p>
                 </div>
               </div>
               <button
+                className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                 onClick={() => setIsSimulationOpen(false)}
-                className="p-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Mock input editor */}
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 space-y-2">
-              <span className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">Test Parametreleri</span>
+            <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-3 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+              <span className="font-bold text-[11px] text-zinc-500 uppercase dark:text-zinc-400">
+                Test Parametreleri
+              </span>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">customerName</label>
+                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                    customerName
+                  </label>
                   <input
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
+                    onChange={(e) =>
+                      setMockContext({
+                        ...mockContext,
+                        customerName: e.target.value,
+                      })
+                    }
                     type="text"
                     value={(mockContext.customerName as string) || ""}
-                    onChange={(e) => setMockContext({ ...mockContext, customerName: e.target.value })}
-                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">tier</label>
+                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                    tier
+                  </label>
                   <input
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
+                    onChange={(e) =>
+                      setMockContext({ ...mockContext, tier: e.target.value })
+                    }
                     type="text"
                     value={(mockContext.tier as string) || ""}
-                    onChange={(e) => setMockContext({ ...mockContext, tier: e.target.value })}
-                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">totalAmount</label>
+                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                    totalAmount
+                  </label>
                   <input
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
+                    onChange={(e) =>
+                      setMockContext({
+                        ...mockContext,
+                        totalAmount: Number(e.target.value),
+                      })
+                    }
                     type="number"
                     value={(mockContext.totalAmount as number) ?? 0}
-                    onChange={(e) => setMockContext({ ...mockContext, totalAmount: Number(e.target.value) })}
-                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">status</label>
+                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                    status
+                  </label>
                   <input
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
+                    onChange={(e) =>
+                      setMockContext({ ...mockContext, status: e.target.value })
+                    }
                     type="text"
                     value={(mockContext.status as string) || ""}
-                    onChange={(e) => setMockContext({ ...mockContext, status: e.target.value })}
-                    className="w-full px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg"
                   />
                 </div>
               </div>
               <button
-                onClick={handleRunSimulation}
+                className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-blue-600 py-1.5 font-semibold text-white text-xs transition-all hover:bg-blue-700"
                 disabled={isSimulating}
-                className="w-full py-1.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-1.5"
+                onClick={handleRunSimulation}
               >
-                {isSimulating ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5 fill-current" />}
+                {isSimulating ? (
+                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                )}
                 <span>Yeniden Test Et</span>
               </button>
             </div>
@@ -997,15 +1148,15 @@ export default function WorkflowBuilderPage() {
             {simulationResult && (
               <div className="space-y-3">
                 <div
-                  className={`p-3.5 rounded-2xl border text-xs ${
+                  className={`rounded-2xl border p-3.5 text-xs ${
                     simulationResult.status === "Success"
-                      ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-900"
                       : simulationResult.status === "Skipped"
-                      ? "bg-amber-50 border-amber-200 text-amber-900"
-                      : "bg-red-50 border-red-200 text-red-900"
+                        ? "border-amber-200 bg-amber-50 text-amber-900"
+                        : "border-red-200 bg-red-50 text-red-900"
                   }`}
                 >
-                  <div className="flex items-center gap-2 font-bold mb-1">
+                  <div className="mb-1 flex items-center gap-2 font-bold">
                     {simulationResult.status === "Success" ? (
                       <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                     ) : simulationResult.status === "Skipped" ? (
@@ -1015,33 +1166,41 @@ export default function WorkflowBuilderPage() {
                     )}
                     <span>Simülasyon Durumu: {simulationResult.status}</span>
                   </div>
-                  <p className="text-[11px] opacity-90">{simulationResult.conditionsSummary}</p>
+                  <p className="text-[11px] opacity-90">
+                    {simulationResult.conditionsSummary}
+                  </p>
                 </div>
 
-                <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 bg-zinc-50 dark:bg-zinc-800/50 space-y-2 max-h-56 overflow-y-auto">
-                  <span className="text-zinc-400 dark:text-zinc-500 text-[11px] font-semibold uppercase">
+                <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+                  <span className="font-semibold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                     Adım Logları ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
                     <div
+                      className="flex items-start justify-between rounded-lg border border-zinc-200/80 bg-white p-2.5 text-xs dark:border-zinc-800/90 dark:bg-zinc-900"
                       key={idx}
-                      className="bg-white dark:bg-zinc-900 p-2.5 rounded-lg border border-zinc-200/80 dark:border-zinc-800/90 flex items-start justify-between text-xs"
                     >
                       <div>
-                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">{log.stepTitle}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">{log.message}</div>
+                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">
+                          {log.stepTitle}
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                          {log.message}
+                        </div>
                       </div>
-                      <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">{log.executionDurationMs}ms</span>
+                      <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+                        {log.executionDurationMs}ms
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            <div className="pt-2 flex justify-end">
+            <div className="flex justify-end pt-2">
               <button
+                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-300"
                 onClick={() => setIsSimulationOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-slate-200 text-zinc-700 dark:text-zinc-300 text-xs font-semibold"
               >
                 Kapat
               </button>

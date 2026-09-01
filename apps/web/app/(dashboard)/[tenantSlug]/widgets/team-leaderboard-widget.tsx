@@ -30,34 +30,50 @@ export function TeamLeaderboardWidget() {
       }
       setIsLoading(true);
       try {
-        const [empRes, dealsRes, quotesRes, ordersRes] = await Promise.allSettled([
-          ApiClient.getEmployees({ pageSize: 50, status: "Active" }, activeTenant.id),
-          ApiClient.getDeals({ pageSize: 100 }, activeTenant.id),
-          ApiClient.getQuotes({ pageSize: 100 }, activeTenant.id),
-          ApiClient.getOrders({ pageSize: 100 }, activeTenant.id),
-        ]);
+        const [empRes, dealsRes, quotesRes, ordersRes] =
+          await Promise.allSettled([
+            ApiClient.getEmployees(
+              { pageSize: 50, status: "Active" },
+              activeTenant.id
+            ),
+            ApiClient.getDeals({ pageSize: 100 }, activeTenant.id),
+            ApiClient.getQuotes({ pageSize: 100 }, activeTenant.id),
+            ApiClient.getOrders({ pageSize: 100 }, activeTenant.id),
+          ]);
 
         const employees =
-          empRes.status === "fulfilled" && empRes.value.success && empRes.value.data?.items
+          empRes.status === "fulfilled" &&
+          empRes.value.success &&
+          empRes.value.data?.items
             ? empRes.value.data.items
             : [];
 
         const deals =
-          dealsRes.status === "fulfilled" && dealsRes.value.success && dealsRes.value.data?.items
+          dealsRes.status === "fulfilled" &&
+          dealsRes.value.success &&
+          dealsRes.value.data?.items
             ? dealsRes.value.data.items
             : [];
 
         const quotes =
-          quotesRes.status === "fulfilled" && quotesRes.value.success && quotesRes.value.data?.items
+          quotesRes.status === "fulfilled" &&
+          quotesRes.value.success &&
+          quotesRes.value.data?.items
             ? quotesRes.value.data.items
             : [];
 
         const orders =
-          ordersRes.status === "fulfilled" && ordersRes.value.success && ordersRes.value.data?.items
+          ordersRes.status === "fulfilled" &&
+          ordersRes.value.success &&
+          ordersRes.value.data?.items
             ? ordersRes.value.data.items
             : [];
 
-        if (employees.length === 0 && deals.length === 0 && orders.length === 0) {
+        if (
+          employees.length === 0 &&
+          deals.length === 0 &&
+          orders.length === 0
+        ) {
           setMembers([]);
           return;
         }
@@ -70,25 +86,33 @@ export function TeamLeaderboardWidget() {
 
         // 1. Seed with active employees
         for (const emp of employees) {
-          const empName = emp.fullName || `${emp.firstName} ${emp.lastName}`.trim() || emp.email;
-          const role = emp.jobPositionTitle || emp.departmentName || "Satış Temsilcisi";
+          const empName =
+            emp.fullName ||
+            `${emp.firstName} ${emp.lastName}`.trim() ||
+            emp.email;
+          const role =
+            emp.jobPositionTitle || emp.departmentName || "Satış Temsilcisi";
           scoreMap.set(emp.id, {
-            name: empName,
-            role,
             achieved: 0,
             dealsClosed: 0,
+            name: empName,
+            role,
           });
         }
 
         // 2. Aggregate won deals
         for (const deal of deals) {
-          if (deal.status === "Won" || deal.stageName?.toLowerCase().includes("kazan")) {
-            const key = deal.assignedUserId || deal.assignedUserName || "unassigned";
+          if (
+            deal.status === "Won" ||
+            deal.stageName?.toLowerCase().includes("kazan")
+          ) {
+            const key =
+              deal.assignedUserId || deal.assignedUserName || "unassigned";
             const existing = scoreMap.get(key) || {
-              name: deal.assignedUserName || "Temsilci",
-              role: "Hesap Yöneticisi",
               achieved: 0,
               dealsClosed: 0,
+              name: deal.assignedUserName || "Temsilci",
+              role: "Hesap Yöneticisi",
             };
             existing.achieved += Number(deal.value || 0);
             existing.dealsClosed += 1;
@@ -99,12 +123,13 @@ export function TeamLeaderboardWidget() {
         // 3. Aggregate accepted quotes
         for (const quote of quotes) {
           if (quote.status === "Accepted") {
-            const key = quote.assignedUserId || quote.assignedUserName || "unassigned";
+            const key =
+              quote.assignedUserId || quote.assignedUserName || "unassigned";
             const existing = scoreMap.get(key) || {
-              name: quote.assignedUserName || "Temsilci",
-              role: "Satış Uzmanı",
               achieved: 0,
               dealsClosed: 0,
+              name: quote.assignedUserName || "Temsilci",
+              role: "Satış Uzmanı",
             };
             existing.achieved += Number(quote.totalAmount || 0);
             existing.dealsClosed += 1;
@@ -114,8 +139,15 @@ export function TeamLeaderboardWidget() {
 
         // 4. Aggregate completed orders
         for (const order of orders) {
-          if (order.status === "Completed" || order.status === "Approved" || order.paymentStatus === "Paid") {
-            const key = (order as any).assignedUserId || order.customerName || "unassigned";
+          if (
+            order.status === "Completed" ||
+            order.status === "Approved" ||
+            order.paymentStatus === "Paid"
+          ) {
+            const key =
+              (order as any).assignedUserId ||
+              order.customerName ||
+              "unassigned";
             const existing = scoreMap.get(key);
             if (existing) {
               existing.achieved += Number(order.totalAmount || 0);
@@ -135,22 +167,27 @@ export function TeamLeaderboardWidget() {
               .substring(0, 2)
               .toUpperCase();
             const target = Math.max(
-              val.achieved > 0 ? Math.ceil((val.achieved * 1.25) / 1000) * 1000 : 50000,
-              25000
+              val.achieved > 0
+                ? Math.ceil((val.achieved * 1.25) / 1000) * 1000
+                : 50_000,
+              25_000
             );
             return {
-              id,
-              name: val.name,
-              role: val.role,
               achieved: val.achieved,
+              avatarColor:
+                AVATAR_COLORS[idx % AVATAR_COLORS.length] || "bg-violet-600",
               dealsClosed: val.dealsClosed,
-              target,
-              rank: 1,
+              id,
               initials,
-              avatarColor: AVATAR_COLORS[idx % AVATAR_COLORS.length] || "bg-violet-600",
+              name: val.name,
+              rank: 1,
+              role: val.role,
+              target,
             };
           })
-          .sort((a, b) => b.achieved - a.achieved || b.dealsClosed - a.dealsClosed)
+          .sort(
+            (a, b) => b.achieved - a.achieved || b.dealsClosed - a.dealsClosed
+          )
           .map((m, idx) => ({ ...m, rank: idx + 1 }))
           .slice(0, 5);
 
@@ -174,7 +211,7 @@ export function TeamLeaderboardWidget() {
         );
       case 2:
         return (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-zinc-600 text-xs dark:bg-zinc-800 dark:text-zinc-300">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             <Medal className="h-3 w-3" />
           </div>
         );
@@ -186,7 +223,7 @@ export function TeamLeaderboardWidget() {
         );
       default:
         return (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-500 text-xs dark:bg-zinc-800 dark:text-zinc-400">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 font-bold text-xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
             {rank}
           </div>
         );
@@ -198,11 +235,11 @@ export function TeamLeaderboardWidget() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400 shadow-2xs">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-sm dark:text-zinc-100">
+              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Satış Liderlik Tablosu
               </span>
               <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -234,7 +271,7 @@ export function TeamLeaderboardWidget() {
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
               <Trophy className="h-5 w-5" />
             </div>
-            <h4 className="font-bold text-zinc-800 text-xs dark:text-zinc-200">
+            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Henüz satış performansı kaydedilmedi
             </h4>
             <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
@@ -250,7 +287,7 @@ export function TeamLeaderboardWidget() {
                 <span>Fırsat Ekle</span>
               </Link>
               <Link
-                className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-bold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 href={`/${activeTenant?.slug || "workspace"}/orders`}
               >
                 <span>Sipariş Gir</span>
@@ -273,12 +310,12 @@ export function TeamLeaderboardWidget() {
                     <div className="flex items-center gap-2.5">
                       {getRankBadge(member.rank)}
                       <div
-                        className={`flex h-7 w-7 items-center justify-center rounded-full font-bold text-white text-[11px] ${member.avatarColor} shadow-2xs`}
+                        className={`flex h-7 w-7 items-center justify-center rounded-full font-bold text-[11px] text-white ${member.avatarColor} shadow-2xs`}
                       >
                         {member.initials}
                       </div>
                       <div>
-                        <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {member.name}
                         </div>
                         <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -288,7 +325,7 @@ export function TeamLeaderboardWidget() {
                     </div>
 
                     <div className="text-right">
-                      <div className="font-bold text-zinc-900 text-xs dark:text-zinc-100">
+                      <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         ₺{member.achieved.toLocaleString("tr-TR")}
                       </div>
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -325,7 +362,7 @@ export function TeamLeaderboardWidget() {
       </div>
 
       {members.length > 0 && (
-        <div className="mt-3 border-t border-zinc-100 pt-2.5 text-center dark:border-zinc-800/80">
+        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
           <Link
             className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
             href={`/${activeTenant?.slug || "workspace"}/orders`}

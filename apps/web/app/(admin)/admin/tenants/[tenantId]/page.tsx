@@ -1,57 +1,52 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
-import {
-  Building2,
-  ArrowLeft,
-  Sparkles,
-  Layers,
-  Save,
-  Trash2,
-  Plus,
-  ExternalLink,
-  CheckCircle2,
-  Sliders,
-  FileText,
-  Loader2,
-  RefreshCw,
-} from "lucide-react";
 import { toast } from "@workspace/ui/components/sonner";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Layers,
+  Loader2,
+  Plus,
+  Save,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 
 interface TenantDetail {
   id: string;
-  name: string;
-  slug: string;
   industry?: string;
   industryTemplateId?: string;
   isActive: boolean;
+  name: string;
+  slug: string;
 }
 
 interface TenantModuleItem {
-  moduleKey: string;
+  activatedAt?: string;
+  category: string;
   defaultDisplayName: string;
   displayNameOverride?: string;
-  category: string;
   isEnabled: boolean;
-  activatedAt?: string;
+  moduleKey: string;
 }
 
 interface IndustryTemplate {
   id: string;
   key: string;
-  name: string;
   labelsJson: string;
+  name: string;
 }
 
 interface TenantLabels {
-  tenantId: string;
+  fieldLabels: Record<string, string>;
   industryKey?: string;
   industryName?: string;
   moduleDisplayNames: Record<string, string>;
-  fieldLabels: Record<string, string>;
+  tenantId: string;
 }
 
 export default function AdminTenantDetailPage() {
@@ -69,31 +64,42 @@ export default function AdminTenantDetailPage() {
   const [labels, setLabels] = useState<TenantLabels | null>(null);
 
   // Editable Overrides: Array of { key, value }
-  const [customOverrides, setCustomOverrides] = useState<{ key: string; value: string }[]>([]);
+  const [customOverrides, setCustomOverrides] = useState<
+    { key: string; value: string }[]
+  >([]);
   const [newOverrideKey, setNewOverrideKey] = useState("");
   const [newOverrideValue, setNewOverrideValue] = useState("");
 
   const loadData = async () => {
-    if (!tenantId) return;
+    if (!tenantId) {
+      return;
+    }
     try {
       setLoading(true);
-      const [tenantsListRes, modulesRes, labelsRes, templatesRes] = await Promise.all([
-        apiClient.get<any[]>("/api/admin/tenants"),
-        apiClient.get<TenantModuleItem[]>(`/api/tenants/${tenantId}/modules`),
-        apiClient.get<TenantLabels>(`/api/tenants/${tenantId}/labels`),
-        apiClient.get<IndustryTemplate[]>("/api/industry-templates"),
-      ]);
+      const [tenantsListRes, modulesRes, labelsRes, templatesRes] =
+        await Promise.all([
+          apiClient.get<any[]>("/api/admin/tenants"),
+          apiClient.get<TenantModuleItem[]>(`/api/tenants/${tenantId}/modules`),
+          apiClient.get<TenantLabels>(`/api/tenants/${tenantId}/labels`),
+          apiClient.get<IndustryTemplate[]>("/api/industry-templates"),
+        ]);
 
       const found = tenantsListRes?.data?.find((t: any) => t.id === tenantId);
-      if (found) setTenant(found);
+      if (found) {
+        setTenant(found);
+      }
 
-      if (modulesRes?.data) setModules(modulesRes.data);
-      if (templatesRes?.data) setTemplates(templatesRes.data);
+      if (modulesRes?.data) {
+        setModules(modulesRes.data);
+      }
+      if (templatesRes?.data) {
+        setTemplates(templatesRes.data);
+      }
       if (labelsRes?.data) {
         setLabels(labelsRes.data);
-        const initialOverrides = Object.entries(labelsRes.data.fieldLabels || {}).map(
-          ([key, value]) => ({ key, value: String(value ?? "") })
-        );
+        const initialOverrides = Object.entries(
+          labelsRes.data.fieldLabels || {}
+        ).map(([key, value]) => ({ key, value: String(value ?? "") }));
         setCustomOverrides(initialOverrides);
       }
     } catch (err) {
@@ -108,17 +114,26 @@ export default function AdminTenantDetailPage() {
   }, [tenantId]);
 
   // Toggle module enabled status
-  const handleToggleModule = async (moduleKey: string, currentStatus: boolean, displayName?: string) => {
+  const handleToggleModule = async (
+    moduleKey: string,
+    currentStatus: boolean,
+    displayName?: string
+  ) => {
     try {
-      const res = await apiClient.put<any>(`/api/tenants/${tenantId}/modules/${moduleKey}`, {
-        tenantId,
-        moduleKey,
-        isEnabled: !currentStatus,
-        displayName: displayName || undefined,
-      });
+      const res = await apiClient.put<any>(
+        `/api/tenants/${tenantId}/modules/${moduleKey}`,
+        {
+          displayName: displayName || undefined,
+          isEnabled: !currentStatus,
+          moduleKey,
+          tenantId,
+        }
+      );
 
       if (res?.success) {
-        toast.success(`Modül ${!currentStatus ? "aktif edildi" : "devre dışı bırakıldı"}.`);
+        toast.success(
+          `Modül ${currentStatus ? "devre dışı bırakıldı" : "aktif edildi"}.`
+        );
         setModules((prev) =>
           prev.map((m) =>
             m.moduleKey === moduleKey ? { ...m, isEnabled: !currentStatus } : m
@@ -131,17 +146,25 @@ export default function AdminTenantDetailPage() {
   };
 
   // Update module custom display name
-  const handleUpdateModuleName = async (moduleKey: string, newDisplayName: string) => {
+  const handleUpdateModuleName = async (
+    moduleKey: string,
+    newDisplayName: string
+  ) => {
     const targetModule = modules.find((m) => m.moduleKey === moduleKey);
-    if (!targetModule) return;
+    if (!targetModule) {
+      return;
+    }
 
     try {
-      await apiClient.put<any>(`/api/tenants/${tenantId}/modules/${moduleKey}`, {
-        tenantId,
-        moduleKey,
-        isEnabled: targetModule.isEnabled,
-        displayName: newDisplayName.trim() || undefined,
-      });
+      await apiClient.put<any>(
+        `/api/tenants/${tenantId}/modules/${moduleKey}`,
+        {
+          displayName: newDisplayName.trim() || undefined,
+          isEnabled: targetModule.isEnabled,
+          moduleKey,
+          tenantId,
+        }
+      );
       toast.success("Modül görüntüleme adı güncellendi.");
     } catch (err) {
       toast.error("Görüntüleme adı kaydedilemedi.");
@@ -150,7 +173,7 @@ export default function AdminTenantDetailPage() {
 
   // Add a new label override
   const handleAddOverride = () => {
-    if (!newOverrideKey.trim() || !newOverrideValue.trim()) {
+    if (!(newOverrideKey.trim() && newOverrideValue.trim())) {
       toast.error("Etiket anahtarı ve değeri boş bırakılamaz.");
       return;
     }
@@ -158,7 +181,9 @@ export default function AdminTenantDetailPage() {
     const key = newOverrideKey.trim();
     const value = newOverrideValue.trim();
 
-    if (customOverrides.some((o) => o.key.toLowerCase() === key.toLowerCase())) {
+    if (
+      customOverrides.some((o) => o.key.toLowerCase() === key.toLowerCase())
+    ) {
       toast.error("Bu alan için zaten bir özel etiket tanımlanmış.");
       return;
     }
@@ -178,9 +203,9 @@ export default function AdminTenantDetailPage() {
     try {
       setSaving(true);
       const res = await apiClient.put<any>(`/api/tenants/${tenantId}/labels`, {
-        tenantId,
         industryTemplateId: tenant?.industryTemplateId || undefined,
         overrides: customOverrides,
+        tenantId,
       });
 
       if (res?.success) {
@@ -197,7 +222,7 @@ export default function AdminTenantDetailPage() {
   if (loading && !tenant) {
     return (
       <div className="flex h-64 items-center justify-center text-slate-500">
-        <Loader2 className="h-6 w-6 animate-spin text-blue-600 mr-2" />
+        <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600" />
         Firma bilgileri yükleniyor...
       </div>
     );
@@ -209,33 +234,35 @@ export default function AdminTenantDetailPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Link
-            href="/admin/tenants"
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition hover:bg-slate-50 hover:text-slate-900"
+            href="/admin/tenants"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">{tenant?.name}</h1>
+              <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">
+                {tenant?.name}
+              </h1>
               {tenant?.isActive ? (
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200/60">
+                <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700">
                   Aktif
                 </span>
               ) : (
-                <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200/60">
+                <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-[10px] text-rose-700">
                   Askıda
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 font-mono">/{tenant?.slug}</p>
+            <p className="font-mono text-slate-400 text-xs">/{tenant?.slug}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2.5">
           <Link
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-semibold text-slate-700 text-xs shadow-2xs transition hover:border-blue-300 hover:bg-slate-50 hover:text-blue-600"
             href={`/${tenant?.slug}`}
             target="_blank"
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600"
           >
             <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
             <span>Canlı Çalışma Alanını Aç</span>
@@ -244,26 +271,26 @@ export default function AdminTenantDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-200 space-x-1">
+      <div className="flex space-x-1 border-slate-200 border-b">
         <button
-          onClick={() => setActiveTab("modules")}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-bold transition ${
+          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "modules"
               ? "border-blue-600 text-blue-600"
               : "border-transparent text-slate-500 hover:text-slate-900"
           }`}
+          onClick={() => setActiveTab("modules")}
         >
           <Layers className="h-4 w-4" />
           <span>Modül Yetkilendirme & Paket</span>
         </button>
 
         <button
-          onClick={() => setActiveTab("labels")}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-bold transition ${
+          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "labels"
               ? "border-blue-600 text-blue-600"
               : "border-transparent text-slate-500 hover:text-slate-900"
           }`}
+          onClick={() => setActiveTab("labels")}
         >
           <Sparkles className="h-4 w-4 text-amber-500" />
           <span>Sektörel Terminoloji & Etiketler</span>
@@ -273,58 +300,71 @@ export default function AdminTenantDetailPage() {
       {/* TAB 1: MODULES MANAGEMENT */}
       {activeTab === "modules" && (
         <div className="space-y-4">
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600 flex items-center justify-between shadow-2xs">
+          <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 text-slate-600 text-xs shadow-2xs">
             <p>
-              Bu firmanın kullanıcılarının erişebileceği modülleri aşağıdan aktif/pasif yapabilir veya menüde görünecek özel ismi özelleştirebilirsiniz.
+              Bu firmanın kullanıcılarının erişebileceği modülleri aşağıdan
+              aktif/pasif yapabilir veya menüde görünecek özel ismi
+              özelleştirebilirsiniz.
             </p>
             <span className="font-bold text-blue-600">
-              {modules.filter((m) => m.isEnabled).length} / {modules.length} Aktif Modül
+              {modules.filter((m) => m.isEnabled).length} / {modules.length}{" "}
+              Aktif Modül
             </span>
           </div>
 
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((mod) => (
               <div
-                key={mod.moduleKey}
                 className={`rounded-2xl border p-4.5 transition-all ${
                   mod.isEnabled
                     ? "border-blue-200/80 bg-white shadow-xs"
                     : "border-slate-200/80 bg-slate-50/40 opacity-70"
                 }`}
+                key={mod.moduleKey}
               >
                 <div className="flex items-center justify-between">
-                  <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                  <span className="rounded-md bg-slate-100 px-2 py-0.5 font-bold text-[10px] text-slate-600 uppercase tracking-wider">
                     {mod.category}
                   </span>
                   <label className="relative inline-flex cursor-pointer items-center">
                     <input
-                      type="checkbox"
                       checked={mod.isEnabled}
-                      onChange={() =>
-                        handleToggleModule(mod.moduleKey, mod.isEnabled, mod.displayNameOverride)
-                      }
                       className="peer sr-only"
+                      onChange={() =>
+                        handleToggleModule(
+                          mod.moduleKey,
+                          mod.isEnabled,
+                          mod.displayNameOverride
+                        )
+                      }
+                      type="checkbox"
                     />
-                    <div className="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full" />
+                    <div className="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:top-[2px] after:left-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full" />
                   </label>
                 </div>
 
                 <div className="mt-3">
-                  <h3 className="font-bold text-sm text-slate-900">{mod.defaultDisplayName}</h3>
-                  <p className="text-[11px] text-slate-400 font-mono">key: {mod.moduleKey}</p>
+                  <h3 className="font-bold text-slate-900 text-sm">
+                    {mod.defaultDisplayName}
+                  </h3>
+                  <p className="font-mono text-[11px] text-slate-400">
+                    key: {mod.moduleKey}
+                  </p>
                 </div>
 
                 {/* Custom Display Name Input */}
-                <div className="mt-3 pt-3 border-t border-slate-100 space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500">
+                <div className="mt-3 space-y-1 border-slate-100 border-t pt-3">
+                  <label className="font-bold text-[10px] text-slate-500">
                     Menüde Görünecek Özel İsim:
                   </label>
                   <input
-                    type="text"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-2.5 py-1.5 text-slate-800 text-xs placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
                     defaultValue={mod.displayNameOverride ?? ""}
+                    onBlur={(e) =>
+                      handleUpdateModuleName(mod.moduleKey, e.target.value)
+                    }
                     placeholder={mod.defaultDisplayName}
-                    onBlur={(e) => handleUpdateModuleName(mod.moduleKey, e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-2.5 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                    type="text"
                   />
                 </div>
               </div>
@@ -337,55 +377,63 @@ export default function AdminTenantDetailPage() {
       {activeTab === "labels" && (
         <div className="space-y-6">
           {/* Active Industry Template Info */}
-          <div className="rounded-2xl border border-amber-200/80 bg-amber-50/40 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+          <div className="flex flex-col justify-between gap-4 rounded-2xl border border-amber-200/80 bg-amber-50/40 p-5 shadow-2xs sm:flex-row sm:items-center">
             <div>
-              <div className="flex items-center gap-2 font-bold text-sm text-amber-900">
+              <div className="flex items-center gap-2 font-bold text-amber-900 text-sm">
                 <Sparkles className="h-4 w-4 text-amber-600" />
-                <span>Tanımlı Sektör Şablonu: {labels?.industryName ?? labels?.industryKey ?? "Genel"}</span>
+                <span>
+                  Tanımlı Sektör Şablonu:{" "}
+                  {labels?.industryName ?? labels?.industryKey ?? "Genel"}
+                </span>
               </div>
-              <p className="text-xs text-slate-600 mt-1">
-                Aşağıdaki alan etiketleri, bu firmanın kullanıcıları formları ve tabloları kullanırken otomatik olarak uygulanır.
+              <p className="mt-1 text-slate-600 text-xs">
+                Aşağıdaki alan etiketleri, bu firmanın kullanıcıları formları ve
+                tabloları kullanırken otomatik olarak uygulanır.
               </p>
             </div>
             <button
-              onClick={handleSaveLabels}
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-semibold text-white text-xs shadow-sm hover:bg-blue-500 disabled:opacity-50"
               disabled={saving}
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-50"
+              onClick={handleSaveLabels}
             >
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              {saving ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
               <span>Değişiklikleri Kaydet</span>
             </button>
           </div>
 
           {/* Add New Override Box */}
-          <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 space-y-3 shadow-2xs">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-slate-600">
+          <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs">
+            <h3 className="font-bold text-slate-600 text-xs uppercase tracking-wider">
               Yeni Özel Alan Etiketi (Override) Ekle
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
                 <input
-                  type="text"
-                  value={newOverrideKey}
+                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-mono text-slate-900 text-xs placeholder-slate-400 focus:border-blue-500 focus:outline-none"
                   onChange={(e) => setNewOverrideKey(e.target.value)}
                   placeholder="Alan Anahtarı (örn: products.name)"
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none font-mono"
+                  type="text"
+                  value={newOverrideKey}
                 />
               </div>
               <div>
                 <input
-                  type="text"
-                  value={newOverrideValue}
+                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 text-xs placeholder-slate-400 focus:border-blue-500 focus:outline-none"
                   onChange={(e) => setNewOverrideValue(e.target.value)}
                   placeholder="Görünecek Etiket (örn: Araç Modeli)"
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none"
+                  type="text"
+                  value={newOverrideValue}
                 />
               </div>
               <div>
                 <button
-                  type="button"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-2.5 font-semibold text-slate-700 text-xs shadow-2xs hover:bg-slate-50"
                   onClick={handleAddOverride}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-white border border-slate-200 p-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs"
+                  type="button"
                 >
                   <Plus className="h-4 w-4 text-blue-600" />
                   <span>Listeye Ekle</span>
@@ -393,44 +441,64 @@ export default function AdminTenantDetailPage() {
               </div>
             </div>
             <p className="text-[11px] text-slate-400">
-              Örnekler: <code className="text-blue-600 font-semibold">products.name</code>, <code className="text-blue-600 font-semibold">products.sku</code>, <code className="text-blue-600 font-semibold">products.brand</code>, <code className="text-blue-600 font-semibold">customers.name</code>
+              Örnekler:{" "}
+              <code className="font-semibold text-blue-600">products.name</code>
+              ,{" "}
+              <code className="font-semibold text-blue-600">products.sku</code>,{" "}
+              <code className="font-semibold text-blue-600">
+                products.brand
+              </code>
+              ,{" "}
+              <code className="font-semibold text-blue-600">
+                customers.name
+              </code>
             </p>
           </div>
 
           {/* List of Custom Overrides */}
           <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xs">
-            <div className="p-4 border-b border-slate-100 font-bold text-xs uppercase tracking-wider text-slate-600 flex items-center justify-between">
-              <span>Bu Firmaya Özel Etiket Tanımları ({customOverrides.length})</span>
+            <div className="flex items-center justify-between border-slate-100 border-b p-4 font-bold text-slate-600 text-xs uppercase tracking-wider">
+              <span>
+                Bu Firmaya Özel Etiket Tanımları ({customOverrides.length})
+              </span>
             </div>
 
             <div className="divide-y divide-slate-100">
               {customOverrides.length === 0 ? (
-                <div className="p-8 text-center text-xs text-slate-400">
-                  Bu firmaya özel ezilmiş bir alan etiketi yok. Sektör şablonundan gelen varsayılanlar kullanılır.
+                <div className="p-8 text-center text-slate-400 text-xs">
+                  Bu firmaya özel ezilmiş bir alan etiketi yok. Sektör
+                  şablonundan gelen varsayılanlar kullanılır.
                 </div>
               ) : (
                 customOverrides.map((item) => (
-                  <div key={item.key} className="flex items-center justify-between p-3.5 text-xs">
+                  <div
+                    className="flex items-center justify-between p-3.5 text-xs"
+                    key={item.key}
+                  >
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-blue-700 font-semibold">{item.key}</span>
+                      <span className="font-mono font-semibold text-blue-700">
+                        {item.key}
+                      </span>
                       <span className="text-slate-400">➔</span>
                       <input
-                        type="text"
-                        value={item.value}
+                        className="rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-slate-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none"
                         onChange={(e) => {
                           const val = e.target.value;
                           setCustomOverrides((prev) =>
-                            prev.map((o) => (o.key === item.key ? { ...o, value: val } : o))
+                            prev.map((o) =>
+                              o.key === item.key ? { ...o, value: val } : o
+                            )
                           );
                         }}
-                        className="rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        type="text"
+                        value={item.value}
                       />
                     </div>
                     <button
-                      type="button"
+                      className="rounded-xl p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600"
                       onClick={() => handleRemoveOverride(item.key)}
-                      className="rounded-xl p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
                       title="Etiketi Kaldır"
+                      type="button"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

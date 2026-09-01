@@ -1,16 +1,7 @@
 /* Hallmark · component: tasks-checklist · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
-import {
-  AlertCircle,
-  Calendar,
-  Check,
-  CheckSquare,
-  Clock,
-  Filter,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { Check, CheckSquare, Clock, Plus, Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient, type CrmTaskDto } from "@/lib/api-client";
@@ -26,12 +17,16 @@ export function TasksChecklistWidget() {
   const [tasks, setTasks] = useState<CrmTaskDto[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [newTaskPriority, setNewTaskPriority] = useState<"low" | "medium" | "high" | "urgent">("medium");
+  const [newTaskPriority, setNewTaskPriority] = useState<
+    "low" | "medium" | "high" | "urgent"
+  >("medium");
   const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
   const [submitting, setSubmitting] = useState(false);
 
   const loadTasks = useCallback(async () => {
-    if (!activeTenant) return;
+    if (!activeTenant) {
+      return;
+    }
     try {
       const res = await ApiClient.getTasks({ pageSize: 50 }, activeTenant.id);
       if (res.success && res.data) {
@@ -56,9 +51,9 @@ export function TasksChecklistWidget() {
         t.id === taskId
           ? {
               ...t,
+              completedAt: nextStatus ? new Date().toISOString() : undefined,
               isCompleted: nextStatus,
               status: nextStatus ? "Completed" : "Pending",
-              completedAt: nextStatus ? new Date().toISOString() : undefined,
             }
           : t
       )
@@ -90,7 +85,7 @@ export function TasksChecklistWidget() {
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTaskTitle.trim() || !activeTenant || submitting) {
+    if (!(newTaskTitle.trim() && activeTenant) || submitting) {
       return;
     }
 
@@ -100,9 +95,9 @@ export function TasksChecklistWidget() {
     try {
       const res = await ApiClient.createTask(
         {
-          title,
-          priority: newTaskPriority,
           category: "Genel",
+          priority: newTaskPriority,
+          title,
         },
         activeTenant.id
       );
@@ -123,8 +118,12 @@ export function TasksChecklistWidget() {
     tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
 
   const filteredTasks = tasks.filter((t) => {
-    if (activeFilter === "pending") return !t.isCompleted;
-    if (activeFilter === "completed") return t.isCompleted;
+    if (activeFilter === "pending") {
+      return !t.isCompleted;
+    }
+    if (activeFilter === "completed") {
+      return t.isCompleted;
+    }
     return true;
   });
 
@@ -185,10 +184,13 @@ export function TasksChecklistWidget() {
         </div>
 
         {/* Quick Add Task Input with Priority Selector */}
-        <form className="mb-3 flex flex-col gap-2 sm:flex-row" onSubmit={handleAddTask}>
+        <form
+          className="mb-3 flex flex-col gap-2 sm:flex-row"
+          onSubmit={handleAddTask}
+        >
           <div className="relative flex flex-1 items-center">
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-800"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
               onChange={(e) => setNewTaskTitle(e.target.value)}
               placeholder="Yeni görev başlığı yazın..."
               type="text"
@@ -198,9 +200,11 @@ export function TasksChecklistWidget() {
 
           <div className="flex items-center gap-1.5">
             <select
-              className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-2 py-1.5 text-[11px] font-medium text-zinc-700 focus:border-emerald-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+              className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-2 py-1.5 font-medium text-[11px] text-zinc-700 focus:border-emerald-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
               onChange={(e) =>
-                setNewTaskPriority(e.target.value as "low" | "medium" | "high" | "urgent")
+                setNewTaskPriority(
+                  e.target.value as "low" | "medium" | "high" | "urgent"
+                )
               }
               value={newTaskPriority}
             >
@@ -269,8 +273,8 @@ export function TasksChecklistWidget() {
                 {activeFilter === "completed"
                   ? "Tamamlanan görev bulunmuyor"
                   : activeFilter === "pending"
-                  ? "Bekleyen tüm görevler tamamlandı! 🎉"
-                  : "Henüz planlanan görev bulunmuyor"}
+                    ? "Bekleyen tüm görevler tamamlandı! 🎉"
+                    : "Henüz planlanan görev bulunmuyor"}
               </h4>
               <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
                 Yukarıdaki alana bir görev yazarak listenizi oluşturabilirsiniz.
@@ -305,7 +309,9 @@ export function TasksChecklistWidget() {
                     <div className="space-y-0.5 truncate">
                       <p
                         className={`truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200 ${
-                          task.isCompleted ? "text-zinc-400 line-through dark:text-zinc-500" : ""
+                          task.isCompleted
+                            ? "text-zinc-400 line-through dark:text-zinc-500"
+                            : ""
                         }`}
                       >
                         {task.title}
@@ -370,13 +376,14 @@ export function TasksChecklistWidget() {
       </div>
 
       {tasks.length > 0 && (
-        <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2.5 font-medium text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
+        <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 font-medium text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
           <span>
             Kalan acil:{" "}
             <strong className="text-zinc-800 dark:text-zinc-200">
               {
-                tasks.filter((t) => !t.isCompleted && t.priority.toLowerCase() === "urgent")
-                  .length
+                tasks.filter(
+                  (t) => !t.isCompleted && t.priority.toLowerCase() === "urgent"
+                ).length
               }
             </strong>
           </span>
