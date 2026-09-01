@@ -13,6 +13,7 @@ public static class ModuleRegistry
         new("pipelines", "Pipeline & Akış", "Sales"),
         new("quotes", "Teklifler", "Sales"),
         new("shipping", "Kargo & Sevkiyat", "Sales"),
+        new("promotions", "Kampanya & Kuponlar", "Sales"),
 
         // HR & Payroll
         new("organization", "Organizasyon", "HR"),
@@ -20,9 +21,12 @@ public static class ModuleRegistry
         new("leaves", "İzinler & Takvim", "HR"),
         new("attendance", "Vardiya & PDKS", "HR"),
         new("recruitment", "İşe Alım", "HR"),
+        new("compliance", "Mevzuat & İş Hukuku", "HR"),
 
         // Communication & Tools
         new("chat", "Mesajlar", "Tools"),
+        new("tickets", "Destek Masası", "Tools"),
+        new("automations", "Otomasyon", "Tools"),
     ];
 
     public static ModuleDefinition? GetByKey(string key) =>

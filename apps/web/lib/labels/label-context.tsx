@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { apiClient } from "@/lib/api-client";
+import { usePermissions } from "@/lib/permissions/permission-context";
 
 export interface TenantLabels {
   tenantId: string;
@@ -60,6 +61,15 @@ export function LabelProvider({
   const [modules, setModules] = useState<TenantModuleStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  // Super Admin bypass: if current user is Super Admin, all modules are enabled
+  let isSuperAdmin = false;
+  try {
+    const permCtx = usePermissions();
+    isSuperAdmin = permCtx.isSuperAdmin ?? false;
+  } catch {
+    isSuperAdmin = false;
+  }
 
   const fetchLabelsAndModules = async () => {
     if (!tenantSlug && !tenantId) {
@@ -121,12 +131,18 @@ export function LabelProvider({
     return defaultText ?? DEFAULT_MODULE_NAMES[lower] ?? moduleKey;
   };
 
-  const isModuleEnabled = (moduleKey: string): boolean => {
-    // If no module config is fetched yet, default to enabled for standard workflow
-    if (modules.length === 0) return true;
-    const mod = modules.find((m) => m.moduleKey.toLowerCase() === moduleKey.toLowerCase());
-    return mod ? mod.isEnabled : true;
-  };
+  const isModuleEnabled = useCallback(
+    (moduleKey: string): boolean => {
+      // Super Admin sees all modules regardless of tenant_modules
+      if (isSuperAdmin) return true;
+      // If no module config is fetched yet, default to enabled for standard workflow
+      if (modules.length === 0) return true;
+      const mod = modules.find((m) => m.moduleKey.toLowerCase() === moduleKey.toLowerCase());
+      // If module not in registry, treat as enabled (consistent fallback)
+      return mod ? mod.isEnabled : true;
+    },
+    [modules, isSuperAdmin]
+  );
 
   const value = useMemo(
     () => ({
@@ -139,7 +155,7 @@ export function LabelProvider({
       isModuleEnabled,
       refetch: fetchLabelsAndModules,
     }),
-    [labels, modules, isLoading, error]
+    [labels, modules, isLoading, error, isModuleEnabled]
   );
 
   return <LabelContext.Provider value={value}>{children}</LabelContext.Provider>;

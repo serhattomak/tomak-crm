@@ -2,6 +2,7 @@ using CRM.BuildingBlocks.Caching;
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Tenants.Data;
 using Microsoft.AspNetCore.Builder;
@@ -22,7 +23,9 @@ public record TenantModuleDto(
 public record GetTenantModulesQuery(Guid TenantId) : IQuery<TenantModuleDto[]>;
 
 public class GetTenantModulesHandler(
-    TenantsDbContext dbContext) : IQueryHandler<GetTenantModulesQuery, TenantModuleDto[]>
+    TenantsDbContext dbContext,
+    ICurrentUser currentUser,
+    IPermissionService permissionService) : IQueryHandler<GetTenantModulesQuery, TenantModuleDto[]>
 {
     public async Task<Result<TenantModuleDto[]>> Handle(GetTenantModulesQuery request, CancellationToken cancellationToken)
     {
@@ -30,18 +33,23 @@ public class GetTenantModulesHandler(
             .Where(m => m.TenantId == request.TenantId)
             .ToListAsync(cancellationToken);
 
+        var isSuperAdmin = currentUser.Id.HasValue && await permissionService.IsSuperAdminAsync(currentUser.Id.Value, cancellationToken);
+
         // Merge with registry to show all modules (even unregistered ones)
         var result = ModuleRegistry.All.Select(def =>
         {
             var tenantModule = tenantModules.FirstOrDefault(
                 m => m.ModuleKey.Equals(def.Key, StringComparison.OrdinalIgnoreCase));
 
+            // Super Admin fallback: treat every registered module as enabled
+            var isEnabled = isSuperAdmin ? true : (tenantModule?.IsEnabled ?? false);
+
             return new TenantModuleDto(
                 def.Key,
                 def.DefaultDisplayName,
                 tenantModule?.DisplayName,
                 def.Category,
-                tenantModule?.IsEnabled ?? false,
+                isEnabled,
                 tenantModule?.ActivatedAt);
         }).ToArray();
 

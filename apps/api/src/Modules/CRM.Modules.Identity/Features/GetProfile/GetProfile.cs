@@ -17,7 +17,8 @@ public record UserProfileDto(
     string? FullName,
     string? AvatarUrl,
     IReadOnlySet<string> Permissions,
-    IReadOnlyList<string> Roles);
+    IReadOnlyList<string> Roles,
+    bool IsSuperAdmin);
 
 public record GetProfileQuery : IQuery<UserProfileDto>;
 
@@ -55,13 +56,16 @@ public class GetProfileHandler(
                 .ToListAsync(cancellationToken);
         }
 
+        var isSuperAdmin = await permissionService.IsSuperAdminAsync(userId, cancellationToken);
+
         return new UserProfileDto(
             user.Id,
             user.Email,
             user.FullName,
             user.AvatarUrl,
             permissions,
-            roles);
+            roles,
+            isSuperAdmin);
     }
 }
 

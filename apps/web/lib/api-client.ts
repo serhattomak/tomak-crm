@@ -68,6 +68,7 @@ export interface UserProfileDto {
   email: string;
   fullName?: string;
   id: string;
+  isSuperAdmin?: boolean;
   permissions: string[];
   roles: string[];
 }

@@ -1,5 +1,6 @@
 using CRM.BuildingBlocks.Caching;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -19,6 +20,18 @@ public class RequireModuleFilter(string moduleKey, IModuleAccessService moduleAc
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         var httpContext = context.HttpContext;
+
+        // Super Admin bypass: skip module check entirely
+        var currentUser = httpContext.RequestServices.GetService<ICurrentUser>();
+        var permissionService = httpContext.RequestServices.GetService<IPermissionService>();
+        if (currentUser?.Id.HasValue == true && permissionService != null)
+        {
+            if (await permissionService.IsSuperAdminAsync(currentUser.Id.Value, httpContext.RequestAborted))
+            {
+                return await next(context);
+            }
+        }
+
         var currentTenant = httpContext.RequestServices.GetService<ICurrentTenant>();
 
         if (currentTenant?.Id is null || currentTenant.Id.Value == Guid.Empty)

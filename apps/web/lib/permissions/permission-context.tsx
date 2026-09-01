@@ -20,6 +20,7 @@ interface PermissionContextType {
   hasAnyPermission: (permissionCodes: string[]) => boolean;
   hasPermission: (permissionCode: string) => boolean;
   isLoading: boolean;
+  isSuperAdmin: boolean;
   profile: UserProfileDto | null;
   refreshProfile: () => Promise<void>;
   refreshTenants: () => Promise<void>;
@@ -99,8 +100,37 @@ export function PermissionProvider({
     }
   }, [activeTenant?.id, refreshProfile]);
 
+  const isSuperAdmin = (() => {
+    if (!profile) {
+      return false;
+    }
+    // Direct boolean flag from API (profile.isSuperAdmin)
+    const raw = profile as unknown as { isSuperAdmin?: boolean };
+    if (raw.isSuperAdmin === true) {
+      return true;
+    }
+    // Roles include Super Admin variants
+    if (
+      profile.roles?.includes("Super Admin") ||
+      profile.roles?.includes("SuperAdmin") ||
+      profile.roles?.some(
+        (r) => r.toLowerCase().replace(/\s+/g, "") === "superadmin"
+      )
+    ) {
+      return true;
+    }
+    // Wildcard permission also implies super admin
+    if (profile.permissions?.includes("*")) {
+      return true;
+    }
+    return false;
+  })();
+
   const hasPermission = (permissionCode: string): boolean => {
     if (activeTenant?.isOwner) {
+      return true;
+    }
+    if (isSuperAdmin) {
       return true;
     }
     if (!profile) {
@@ -118,6 +148,9 @@ export function PermissionProvider({
 
   const hasAnyPermission = (permissionCodes: string[]): boolean => {
     if (activeTenant?.isOwner) {
+      return true;
+    }
+    if (isSuperAdmin) {
       return true;
     }
     if (!profile) {
@@ -140,6 +173,7 @@ export function PermissionProvider({
         hasAnyPermission,
         hasPermission,
         isLoading,
+        isSuperAdmin,
         profile,
         refreshProfile,
         refreshTenants,
