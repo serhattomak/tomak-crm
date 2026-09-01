@@ -12,6 +12,7 @@ import {
   Check,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   Clock,
   Download,
@@ -27,10 +28,12 @@ import {
   Layers,
   LayoutGrid,
   List,
+  Loader2,
   Maximize2,
   Milestone,
   MoreVertical,
   Package,
+  Pencil,
   Plus,
   Printer,
   RotateCcw,
@@ -273,51 +276,91 @@ export default function VehiclesPage() {
     }
   };
 
-  // Delete Vehicle
-  const handleDeleteVehicle = async (id: string, name: string) => {
-    if (!activeTenant) return;
-    if (!confirm(`"${name}" aracını ve tüm teknik kartını silmek istediğinize emin misiniz?`)) return;
+  // Delete Confirmation State
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    type: "vehicle" | "part" | "document";
+    id: string;
+    title: string;
+    subtitle?: string;
+  } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-    setVehicles((prev) => prev.filter((v) => v.id !== id));
-    if (selectedVehicle?.id === id) setSelectedVehicle(null);
-    setCompareIds((prev) => prev.filter((cId) => cId !== id));
-
-    try {
-      const res = await ApiClient.deleteVehicle(id, activeTenant.id);
-      if (res.success) showToast("Araç silindi.");
-    } catch {
-      loadData();
-    }
+  // Delete Handlers triggering Design System Modal
+  const handleDeleteVehicle = (id: string, name: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      type: "vehicle",
+      id,
+      title: name,
+      subtitle: "Bu araca ait tüm teknik spesifikasyonlar, performans ve garanti kayıtları silinecektir.",
+    });
   };
 
-  // Delete Part
-  const handleDeletePart = async (id: string, name: string) => {
-    if (!activeTenant) return;
-    if (!confirm(`"${name}" parçasını silmek istediğinize emin misiniz?`)) return;
-
-    setParts((prev) => prev.filter((p) => p.id !== id));
-    if (selectedPartId === id) setSelectedPartId(null);
-
-    try {
-      const res = await ApiClient.deleteEpcPart(id, activeTenant.id);
-      if (res.success) showToast("Parça silindi.");
-    } catch {
-      loadData();
-    }
+  const handleDeletePart = (id: string, name: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      type: "part",
+      id,
+      title: name,
+      subtitle: "Bu parça elektronik parça kataloğundan ve patlatılmış şema montaj konumlarından kaldırılacaktır.",
+    });
   };
 
-  // Delete Document
-  const handleDeleteDocument = async (id: string, name: string) => {
-    if (!activeTenant) return;
-    if (!confirm(`"${name}" dokümanını silmek istediğinize emin misiniz?`)) return;
+  const handleDeleteDocument = (id: string, name: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      type: "document",
+      id,
+      title: name,
+      subtitle: "Bu servis bülteni / teknik doküman kalıcı olarak arşivden silinecektir.",
+    });
+  };
 
-    setDocuments((prev) => prev.filter((d) => d.id !== id));
+  const confirmDelete = async () => {
+    if (!deleteConfirmation || !activeTenant || isDeleting) return;
+    setIsDeleting(true);
+
+    const { id, type } = deleteConfirmation;
 
     try {
-      const res = await ApiClient.deleteVehicleDocument(id, activeTenant.id);
-      if (res.success) showToast("Doküman silindi.");
+      if (type === "vehicle") {
+        setVehicles((prev) => prev.filter((v) => v.id !== id));
+        if (selectedVehicle?.id === id) setSelectedVehicle(null);
+        setCompareIds((prev) => prev.filter((cId) => cId !== id));
+        const res = await ApiClient.deleteVehicle(id, activeTenant.id);
+        if (res.success) {
+          showToast("Araç başarıyla silindi.");
+        } else {
+          loadData();
+          showToast(res.message || "Silme işlemi başarısız.");
+        }
+      } else if (type === "part") {
+        setParts((prev) => prev.filter((p) => p.id !== id));
+        if (selectedPartId === id) setSelectedPartId(null);
+        const res = await ApiClient.deleteEpcPart(id, activeTenant.id);
+        if (res.success) {
+          showToast("Parça başarıyla silindi.");
+        } else {
+          loadData();
+          showToast(res.message || "Silme işlemi başarısız.");
+        }
+      } else if (type === "document") {
+        setDocuments((prev) => prev.filter((d) => d.id !== id));
+        const res = await ApiClient.deleteVehicleDocument(id, activeTenant.id);
+        if (res.success) {
+          showToast("Doküman başarıyla silindi.");
+        } else {
+          loadData();
+          showToast(res.message || "Silme işlemi başarısız.");
+        }
+      }
     } catch {
       loadData();
+      showToast("İşlem sırasında bir hata oluştu.");
+    } finally {
+      setIsDeleting(false);
+      setDeleteConfirmation(null);
     }
   };
 
@@ -328,17 +371,17 @@ export default function VehiclesPage() {
       return;
     }
 
-    const headers = ["Özellik", ...comparedVehicles.map((v) => `${v.brand} ${v.model} (${v.trim})`)];
+    const headers = ["Özellik", ...comparedVehicles.map((v) => `${v.brand} ${v.model}${v.trim ? ` (${v.trim})` : ""}`)];
     const rows: string[][] = [
-      ["Segment", ...comparedVehicles.map((v) => v.segment)],
-      ["Model Yılı", ...comparedVehicles.map((v) => v.modelYear.toString())],
-      ["Kasa Tipi", ...comparedVehicles.map((v) => v.bodyType)],
-      ["Çekiş", ...comparedVehicles.map((v) => v.driveType)],
-      ["Motor", ...comparedVehicles.map((v) => v.engine)],
-      ["Şanzıman", ...comparedVehicles.map((v) => v.transmission)],
-      ["Yakıt", ...comparedVehicles.map((v) => v.fuel)],
-      ["Fiyat USD", ...comparedVehicles.map((v) => `$${v.priceUsd.toLocaleString()}`)],
-      ["Fiyat TRY", ...comparedVehicles.map((v) => `₺${v.priceTry.toLocaleString()}`)],
+      ["Segment", ...comparedVehicles.map((v) => v.segment || "")],
+      ["Model Yılı", ...comparedVehicles.map((v) => (v.modelYear ? v.modelYear.toString() : ""))],
+      ["Kasa Tipi", ...comparedVehicles.map((v) => v.bodyType || "")],
+      ["Çekiş", ...comparedVehicles.map((v) => v.driveType || "")],
+      ["Motor", ...comparedVehicles.map((v) => v.engine || "")],
+      ["Şanzıman", ...comparedVehicles.map((v) => v.transmission || "")],
+      ["Yakıt", ...comparedVehicles.map((v) => v.fuel || "")],
+      ["Fiyat USD", ...comparedVehicles.map((v) => (v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : ""))],
+      ["Fiyat TRY", ...comparedVehicles.map((v) => (v.priceTry ? `₺${v.priceTry.toLocaleString()}` : ""))],
     ];
 
     const csvContent = [headers, ...rows]
@@ -667,7 +710,7 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </h3>
                             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                              {v.trim} · {v.modelYear}
+                              {[v.trim, v.modelYear].filter(Boolean).join(" · ") || "Model"}
                             </p>
                           </div>
                         </div>
@@ -678,20 +721,29 @@ export default function VehiclesPage() {
                       </div>
 
                       {/* Pills */}
-                      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px] font-semibold">
-                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                          {v.segment}
-                        </span>
-                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                          {v.fuel}
-                        </span>
-                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                          {v.driveType}
-                        </span>
+                      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px] font-semibold min-h-[22px]">
+                        {v.segment && (
+                          <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                            {v.segment}
+                          </span>
+                        )}
+                        {v.fuel && (
+                          <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                            {v.fuel}
+                          </span>
+                        )}
+                        {v.driveType && (
+                          <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                            {v.driveType}
+                          </span>
+                        )}
                         {v.projectCode && (
                           <span className="rounded-md bg-purple-50 px-2 py-0.5 font-mono text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
                             {v.projectCode}
                           </span>
+                        )}
+                        {!v.segment && !v.fuel && !v.driveType && !v.projectCode && (
+                          <span className="text-zinc-400 text-[11px] italic">Temel Tanım</span>
                         )}
                       </div>
 
@@ -700,7 +752,7 @@ export default function VehiclesPage() {
                         <div>
                           <div className="text-[10px] text-zinc-400">Güç</div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-                            {engineSpec.power || v.engine}
+                            {engineSpec.power || v.engine || "—"}
                           </div>
                         </div>
                         <div>
@@ -712,7 +764,7 @@ export default function VehiclesPage() {
                         <div>
                           <div className="text-[10px] text-zinc-400">Ref. Fiyat</div>
                           <div className="font-bold text-xs text-emerald-600 dark:text-emerald-400">
-                            ${v.priceUsd.toLocaleString()}
+                            {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                           </div>
                         </div>
                       </div>
@@ -746,20 +798,20 @@ export default function VehiclesPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          className="rounded-lg p-1.5 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
                           onClick={() => {
                             setEditingVehicleId(v.id);
                             setIsCreateVehicleOpen(true);
                           }}
-                          title="Düzenle"
+                          title="Aracı Düzenle"
                           type="button"
                         >
-                          <Settings className="h-4 w-4" />
+                          <Pencil className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
+                          className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
                           onClick={() => handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)}
-                          title="Sil"
+                          title="Aracı Sil"
                           type="button"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -817,21 +869,23 @@ export default function VehiclesPage() {
                             <div className="font-bold text-zinc-900 dark:text-zinc-100">
                               {v.brand} {v.model}
                             </div>
-                            <div className="text-[11px] text-zinc-400">{v.trim}</div>
+                            {v.trim && <div className="text-[11px] text-zinc-400">{v.trim}</div>}
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-medium text-zinc-700 dark:text-zinc-300">{v.segment}</td>
-                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.modelYear}</td>
+                      <td className="py-3 px-4 font-medium text-zinc-700 dark:text-zinc-300">{v.segment || "—"}</td>
+                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.modelYear || "—"}</td>
                       <td className="py-3 px-4">
-                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">{v.engine}</div>
-                        <div className="text-[11px] text-zinc-400">
-                          {v.fuel} · {v.transmission}
-                        </div>
+                        <div className="font-semibold text-zinc-800 dark:text-zinc-200">{v.engine || "—"}</div>
+                        {(v.fuel || v.transmission) && (
+                          <div className="text-[11px] text-zinc-400">
+                            {[v.fuel, v.transmission].filter(Boolean).join(" · ")}
+                          </div>
+                        )}
                       </td>
-                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.market}</td>
+                      <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">{v.market || "—"}</td>
                       <td className="py-3 px-4 font-bold text-emerald-600 dark:text-emerald-400">
-                        ${v.priceUsd.toLocaleString()}
+                        {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                       </td>
                       <td className="py-3 px-4">
                         <span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${getStatusBadge(v.status)}`}>
@@ -841,7 +895,7 @@ export default function VehiclesPage() {
                       <td className="py-3 pr-5 pl-4 text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-1">
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
                             onClick={() => {
                               setSelectedVehicle(v);
                               setVehicleDetailTab("overview");
@@ -852,9 +906,20 @@ export default function VehiclesPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
+                            className="rounded-lg p-1.5 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
+                            onClick={() => {
+                              setEditingVehicleId(v.id);
+                              setIsCreateVehicleOpen(true);
+                            }}
+                            title="Aracı Düzenle"
+                            type="button"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button
+                            className="rounded-lg p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
                             onClick={() => handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)}
-                            title="Sil"
+                            title="Aracı Sil"
                             type="button"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -955,7 +1020,7 @@ export default function VehiclesPage() {
                             <div>
                               {v.brand} {v.model}
                             </div>
-                            <div className="text-[10px] font-normal text-zinc-400">{v.trim}</div>
+                            {v.trim && <div className="text-[10px] font-normal text-zinc-400">{v.trim}</div>}
                           </div>
                         </div>
                       </th>
@@ -973,7 +1038,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Segment</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 font-semibold text-zinc-800 dark:text-zinc-200" key={v.id}>
-                        {v.segment}
+                        {v.segment || "—"}
                       </td>
                     ))}
                   </tr>
@@ -981,7 +1046,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Model Yılı</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {v.modelYear}
+                        {v.modelYear || "—"}
                       </td>
                     ))}
                   </tr>
@@ -989,7 +1054,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Kasa Tipi / Kapı</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {v.bodyType} ({v.doors} Kapı / {v.seats} Koltuk)
+                        {v.bodyType || "—"}{v.doors || v.seats ? ` (${[v.doors ? `${v.doors} Kapı` : null, v.seats ? `${v.seats} Koltuk` : null].filter(Boolean).join(" / ")})` : ""}
                       </td>
                     ))}
                   </tr>
@@ -997,7 +1062,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Pazar & Ülke</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {v.market} · {v.country}
+                        {[v.market, v.country].filter(Boolean).join(" · ") || "—"}
                       </td>
                     ))}
                   </tr>
@@ -1012,7 +1077,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Motor & Yakıt</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 font-semibold text-zinc-800 dark:text-zinc-200" key={v.id}>
-                        {v.engine} ({v.fuel})
+                        {v.engine || v.fuel ? `${v.engine || "—"}${v.fuel ? ` (${v.fuel})` : ""}` : "—"}
                       </td>
                     ))}
                   </tr>
@@ -1020,7 +1085,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Şanzıman & Çekiş</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 text-zinc-700 dark:text-zinc-300" key={v.id}>
-                        {v.transmission} · {v.driveType}
+                        {[v.transmission, v.driveType].filter(Boolean).join(" · ") || "—"}
                       </td>
                     ))}
                   </tr>
@@ -1030,7 +1095,7 @@ export default function VehiclesPage() {
                       const spec = parseJson<{ power?: string }>(v.engineSpecJson, {});
                       return (
                         <td className="py-2.5 px-4 font-bold text-violet-700 dark:text-violet-300" key={v.id}>
-                          {spec.power || v.engine}
+                          {spec.power || v.engine || "—"}
                         </td>
                       );
                     })}
@@ -1057,7 +1122,7 @@ export default function VehiclesPage() {
                     <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">Referans Fiyat (USD)</td>
                     {comparedVehicles.map((v) => (
                       <td className="py-2.5 px-4 font-bold text-emerald-600 dark:text-emerald-400" key={v.id}>
-                        ${v.priceUsd.toLocaleString()}
+                        {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                       </td>
                     ))}
                   </tr>
@@ -1244,9 +1309,21 @@ export default function VehiclesPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 text-xs">
+                      <div className="flex items-center gap-2 text-xs">
                         <span className="text-zinc-500 dark:text-zinc-400">×{p.qtyPerAssembly}</span>
                         <span className="font-bold text-emerald-600 dark:text-emerald-400">${p.unitPrice}</span>
+                        <button
+                          className="rounded-lg p-1 text-zinc-400 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingPartId(p.id);
+                            setIsCreatePartOpen(true);
+                          }}
+                          title="Parçayı Düzenle"
+                          type="button"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
                       </div>
                     </div>
                   );
@@ -1271,15 +1348,16 @@ export default function VehiclesPage() {
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{selectedPart.nameTr}</h3>
                   </div>
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
                     }}
-                    title="Düzenle"
+                    title="Parçayı Düzenle"
                     type="button"
                   >
-                    <Settings className="h-4 w-4" />
+                    <Pencil className="h-3.5 w-3.5" />
+                    <span>Düzenle</span>
                   </button>
                 </div>
 
@@ -1330,14 +1408,26 @@ export default function VehiclesPage() {
                   </div>
                 )}
 
-                <div className="pt-2 flex justify-end">
+                <div className="pt-2 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800">
                   <button
-                    className="flex items-center gap-1 text-[11px] font-semibold text-rose-600 hover:underline"
+                    className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40 transition"
                     onClick={() => handleDeletePart(selectedPart.id, selectedPart.nameTr)}
                     type="button"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                     <span>Parçayı Sil</span>
+                  </button>
+
+                  <button
+                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-xs text-white hover:bg-violet-700 transition"
+                    onClick={() => {
+                      setEditingPartId(selectedPart.id);
+                      setIsCreatePartOpen(true);
+                    }}
+                    type="button"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                    <span>Düzenle</span>
                   </button>
                 </div>
               </div>
@@ -1447,14 +1537,25 @@ export default function VehiclesPage() {
                     {selectedVehicle.brand} {selectedVehicle.model}
                   </h2>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {selectedVehicle.trim} · {selectedVehicle.modelYear} · {selectedVehicle.segment}
+                    {[selectedVehicle.trim, selectedVehicle.modelYear, selectedVehicle.segment].filter(Boolean).join(" · ") || "Model Tanımı"}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
+                  onClick={() => {
+                    setEditingVehicleId(selectedVehicle.id);
+                    setIsCreateVehicleOpen(true);
+                  }}
+                  type="button"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                  <span>Düzenle</span>
+                </button>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
                   onClick={() => setSelectedVehicle(null)}
                   type="button"
                 >
@@ -1468,7 +1569,7 @@ export default function VehiclesPage() {
               <div>
                 <div className="text-[10px] text-zinc-400">Güç</div>
                 <div className="font-bold text-xs">
-                  {parseJson<{ power?: string }>(selectedVehicle.engineSpecJson, {}).power || selectedVehicle.engine}
+                  {parseJson<{ power?: string }>(selectedVehicle.engineSpecJson, {}).power || selectedVehicle.engine || "—"}
                 </div>
               </div>
               <div>
@@ -1486,7 +1587,7 @@ export default function VehiclesPage() {
               <div>
                 <div className="text-[10px] text-zinc-400">Ref. Fiyat</div>
                 <div className="font-bold text-xs text-emerald-400">
-                  ${selectedVehicle.priceUsd.toLocaleString()}
+                  {selectedVehicle.priceUsd ? `$${selectedVehicle.priceUsd.toLocaleString()}` : "—"}
                 </div>
               </div>
             </div>
@@ -1538,7 +1639,7 @@ export default function VehiclesPage() {
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Pazar & Ülke:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
-                      {selectedVehicle.market} · {selectedVehicle.country}
+                      {[selectedVehicle.market, selectedVehicle.country].filter(Boolean).join(" · ") || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
@@ -1558,19 +1659,19 @@ export default function VehiclesPage() {
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Motor:</span>
-                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedVehicle.engine}</span>
+                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedVehicle.engine || "—"}</span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Şanzıman:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.transmission}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.transmission || "—"}</span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Çekiş Tipi:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.driveType}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.driveType || "—"}</span>
                   </div>
                   <div className="flex justify-between py-1.5">
                     <span className="text-zinc-400">Emisyon Standardı:</span>
-                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.emission}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">{selectedVehicle.emission || "—"}</span>
                   </div>
                 </div>
               )}
@@ -1659,6 +1760,35 @@ export default function VehiclesPage() {
                 </div>
               )}
             </div>
+
+            {/* Drawer Action Footer */}
+            <div className="mt-6 flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800">
+              <button
+                className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3.5 py-2 font-semibold text-xs text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40 transition"
+                onClick={() => {
+                  const v = selectedVehicle;
+                  setSelectedVehicle(null);
+                  handleDeleteVehicle(v.id, `${v.brand} ${v.model}`);
+                }}
+                type="button"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>Aracı Sil</span>
+              </button>
+
+              <button
+                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-xs text-white shadow-xs hover:bg-violet-700 transition"
+                onClick={() => {
+                  setEditingVehicleId(selectedVehicle.id);
+                  setIsCreateVehicleOpen(true);
+                  setSelectedVehicle(null);
+                }}
+                type="button"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                <span>Spesifikasyonları Düzenle</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1711,11 +1841,24 @@ export default function VehiclesPage() {
           vehicles={vehicles}
         />
       )}
+
+      {/* ========================================================= */}
+      {/* MODAL: DELETE CONFIRMATION (DESIGN SYSTEM) */}
+      {/* ========================================================= */}
+      <DeleteConfirmationModal
+        isOpen={Boolean(deleteConfirmation?.isOpen)}
+        loading={isDeleting}
+        onClose={() => setDeleteConfirmation(null)}
+        onConfirm={confirmDelete}
+        subtitle={deleteConfirmation?.subtitle}
+        title={deleteConfirmation?.title || ""}
+        type={deleteConfirmation?.type || "vehicle"}
+      />
     </div>
   );
 }
 
-// --- 1. Comprehensive Create/Edit Vehicle Modal (100% HTML Match) ---
+// --- 1. Adım Adım Sihirbaz (Multi-step Wizard) Araç Modalı ---
 function CreateEditVehicleModal({
   initialVehicle,
   tenantId,
@@ -1727,133 +1870,233 @@ function CreateEditVehicleModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const [tab, setTab] = useState<"general" | "production" | "powertrain" | "dimensions" | "performance" | "safety">("general");
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
-  // General Fields
-  const [brand, setBrand] = useState(initialVehicle?.brand || "ULTRAND");
+  // 1. Temel Bilgiler & Pazar (Temiz / Boş Başlangıç)
+  const [brand, setBrand] = useState(initialVehicle?.brand || "");
   const [model, setModel] = useState(initialVehicle?.model || "");
-  const [trim, setTrim] = useState(initialVehicle?.trim || "Elite");
-  const [generation, setGeneration] = useState(initialVehicle?.generation || "1st Gen");
-  const [platform, setPlatform] = useState(initialVehicle?.platform || "P300");
+  const [trim, setTrim] = useState(initialVehicle?.trim || "");
+  const [generation, setGeneration] = useState(initialVehicle?.generation || "");
+  const [platform, setPlatform] = useState(initialVehicle?.platform || "");
   const [projectCode, setProjectCode] = useState(initialVehicle?.projectCode || "");
-  const [modelYear, setModelYear] = useState(initialVehicle?.modelYear || 2025);
-  const [segment, setSegment] = useState(initialVehicle?.segment || "C-SUV");
-  const [bodyType, setBodyType] = useState(initialVehicle?.bodyType || "SUV");
-  const [doors, setDoors] = useState(initialVehicle?.doors || 5);
-  const [seats, setSeats] = useState(initialVehicle?.seats || 5);
-
-  // Production & Market
-  const [market, setMarket] = useState(initialVehicle?.market || "TR / EU / MENA");
-  const [country, setCountry] = useState(initialVehicle?.country || "Türkiye");
-  const [plant, setPlant] = useState(initialVehicle?.plant || "Bursa Plant");
-  const [vinPrefix, setVinPrefix] = useState(initialVehicle?.vinPrefix || "WVU");
+  const [modelYear, setModelYear] = useState<number | "">(initialVehicle?.modelYear ?? "");
+  const [segment, setSegment] = useState(initialVehicle?.segment || "");
+  const [bodyType, setBodyType] = useState(initialVehicle?.bodyType || "");
+  const [market, setMarket] = useState(initialVehicle?.market || "");
+  const [country, setCountry] = useState(initialVehicle?.country || "");
+  const [plant, setPlant] = useState(initialVehicle?.plant || "");
+  const [vinPrefix, setVinPrefix] = useState(initialVehicle?.vinPrefix || "");
   const [status, setStatus] = useState(initialVehicle?.status || "Active");
-  const [icon, setIcon] = useState(initialVehicle?.icon || "🚙");
-  const [priceUsd, setPriceUsd] = useState(initialVehicle?.priceUsd || 32000);
-  const [priceTry, setPriceTry] = useState(initialVehicle?.priceTry || 1120000);
+  const [icon, setIcon] = useState(initialVehicle?.icon || "");
+  const [priceUsd, setPriceUsd] = useState<number | "">(initialVehicle?.priceUsd ?? "");
+  const [priceTry, setPriceTry] = useState<number | "">(initialVehicle?.priceTry ?? "");
 
-  // Powertrain
-  const [engine, setEngine] = useState(initialVehicle?.engine || "2.0L Turbo Petrol");
-  const [transmission, setTransmission] = useState(initialVehicle?.transmission || "8-Speed Automatic");
-  const [fuel, setFuel] = useState(initialVehicle?.fuel || "Petrol");
-  const [driveType, setDriveType] = useState(initialVehicle?.driveType || "AWD");
-  const [emission, setEmission] = useState(initialVehicle?.emission || "Euro 6d");
+  // 2. Güç Aktarımı & Şasi
+  const [engine, setEngine] = useState(initialVehicle?.engine || "");
+  const [transmission, setTransmission] = useState(initialVehicle?.transmission || "");
+  const [fuel, setFuel] = useState(initialVehicle?.fuel || "");
+  const [driveType, setDriveType] = useState(initialVehicle?.driveType || "");
+  const [emission, setEmission] = useState(initialVehicle?.emission || "");
+  const [doors, setDoors] = useState<number | "">(initialVehicle?.doors ?? "");
+  const [seats, setSeats] = useState<number | "">(initialVehicle?.seats ?? "");
 
-  // Dimensions & Weights
+  const initialSuspension = initialVehicle ? JSON.parse(initialVehicle.suspensionJson || "{}") : {};
+  const [suspensionFront, setSuspensionFront] = useState(initialSuspension.front || "");
+  const [suspensionRear, setSuspensionRear] = useState(initialSuspension.rear || "");
+
+  const initialBrakes = initialVehicle ? JSON.parse(initialVehicle.brakesJson || "{}") : {};
+  const [brakesFront, setBrakesFront] = useState(initialBrakes.front || "");
+  const [brakesRear, setBrakesRear] = useState(initialBrakes.rear || "");
+  const [tyres, setTyres] = useState(initialVehicle?.tyres || "");
+
+  // 3. Boyutlar, Ağırlıklar & Motor Performansı
   const initialDims = initialVehicle ? JSON.parse(initialVehicle.dimensionsJson || "{}") : {};
-  const [length, setLength] = useState(initialDims.length || 4520);
-  const [width, setWidth] = useState(initialDims.width || 1840);
-  const [height, setHeight] = useState(initialDims.height || 1650);
-  const [wheelbase, setWheelbase] = useState(initialDims.wheelbase || 2680);
-  const [groundClearance, setGroundClearance] = useState(initialDims.groundClearance || 175);
-  const [cargoVolume, setCargoVolume] = useState(initialDims.cargoVolume || 480);
-  const [fuelTank, setFuelTank] = useState(initialDims.fuelTank || 55);
+  const [length, setLength] = useState<number | "">(initialDims.length ?? "");
+  const [width, setWidth] = useState<number | "">(initialDims.width ?? "");
+  const [height, setHeight] = useState<number | "">(initialDims.height ?? "");
+  const [wheelbase, setWheelbase] = useState<number | "">(initialDims.wheelbase ?? "");
+  const [groundClearance, setGroundClearance] = useState<number | "">(initialDims.groundClearance ?? "");
+  const [cargoVolume, setCargoVolume] = useState<number | "">(initialDims.cargoVolume ?? "");
+  const [fuelTank, setFuelTank] = useState<number | "">(initialDims.fuelTank ?? "");
 
   const initialWeights = initialVehicle ? JSON.parse(initialVehicle.weightsJson || "{}") : {};
-  const [curbWeight, setCurbWeight] = useState(initialWeights.curb || 1480);
-  const [gvw, setGvw] = useState(initialWeights.gvw || 1980);
-  const [payload, setPayload] = useState(initialWeights.payload || 520);
+  const [curbWeight, setCurbWeight] = useState<number | "">(initialWeights.curb ?? "");
+  const [gvw, setGvw] = useState<number | "">(initialWeights.gvw ?? "");
+  const [payload, setPayload] = useState<number | "">(initialWeights.payload ?? "");
 
-  // Engine & Performance Specs
   const initialEngineSpec = initialVehicle ? JSON.parse(initialVehicle.engineSpecJson || "{}") : {};
-  const [power, setPower] = useState(initialEngineSpec.power || "238 hp");
-  const [torque, setTorque] = useState(initialEngineSpec.torque || "350 Nm");
-  const [displacement, setDisplacement] = useState(initialEngineSpec.displacement || "1998 cc");
+  const [power, setPower] = useState(initialEngineSpec.power || "");
+  const [torque, setTorque] = useState(initialEngineSpec.torque || "");
+  const [displacement, setDisplacement] = useState(initialEngineSpec.displacement || "");
+  const [aspiration, setAspiration] = useState(initialEngineSpec.aspiration || "");
 
   const initialPerformance = initialVehicle ? JSON.parse(initialVehicle.performanceJson || "{}") : {};
-  const [topSpeed, setTopSpeed] = useState(initialPerformance.topSpeed || "205 km/h");
-  const [accel, setAccel] = useState(initialPerformance.accel || "7.8 sn (0-100)");
+  const [topSpeed, setTopSpeed] = useState(initialPerformance.topSpeed || "");
+  const [accel, setAccel] = useState(initialPerformance.accel || "");
 
-  // Safety & Warranty
+  // 4. Güvenlik, Garanti & Notlar
   const initialSafety = initialVehicle ? JSON.parse(initialVehicle.safetyJson || "{}") : {};
-  const [airbags, setAirbags] = useState(initialSafety.airbags || 7);
+  const [airbags, setAirbags] = useState<number | "">(initialSafety.airbags ?? "");
   const [adasString, setAdasString] = useState(
-    initialSafety.adas ? initialSafety.adas.join(", ") : "Adaptif Hız Sabitleyici, Şerit Takip Asistanı, Kör Nokta Uyarısı, Otonom Acil Fren, 360° Kamera"
+    initialSafety.adas ? initialSafety.adas.join(", ") : ""
   );
 
   const initialWarranty = initialVehicle ? JSON.parse(initialVehicle.warrantyJson || "{}") : {};
-  const [warrantyVehicle, setWarrantyVehicle] = useState(initialWarranty.vehicle || "3 Yıl / 100.000 km");
-  const [warrantyPowertrain, setWarrantyPowertrain] = useState(initialWarranty.powertrain || "5 Yıl / 150.000 km");
+  const [warrantyVehicle, setWarrantyVehicle] = useState(initialWarranty.vehicle || "");
+  const [warrantyPowertrain, setWarrantyPowertrain] = useState(initialWarranty.powertrain || "");
+  const [warrantyCorrosion, setWarrantyCorrosion] = useState(initialWarranty.corrosion || "");
 
   const [notes, setNotes] = useState(initialVehicle?.notes || "");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Quick ADAS Chip Toggles
+  const quickAdasOptions = [
+    "Adaptif Hız Sabitleyici (ACC)",
+    "Şerit Takip Asistanı (LKA)",
+    "Kör Nokta Uyarısı (BSD)",
+    "Otonom Acil Fren (AEB)",
+    "360° Çevre Görüş Kamerası",
+    "Trafik İşareti Tanıma (TSR)",
+    "Arka Çapraz Trafik Uyarısı (RCTA)",
+  ];
+
+  const toggleAdasChip = (item: string) => {
+    const list = adasString.split(",").map((s: string) => s.trim()).filter(Boolean);
+    if (list.includes(item)) {
+      setAdasString(list.filter((x: string) => x !== item).join(", "));
+    } else {
+      setAdasString([...list, item].join(", "));
+    }
+  };
+
+  const isStep1Valid = brand.trim().length > 0 && model.trim().length > 0;
+
+  const handleNextStep = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (step === 1 && !isStep1Valid) return;
+    if (step < 4) {
+      setStep((s) => ((s + 1) as typeof step));
+    }
+  };
+
+  const handlePrevStep = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (step > 1) {
+      setStep((s) => ((s - 1) as typeof step));
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && e.target instanceof HTMLInputElement) {
+      e.preventDefault();
+      if (step < 4 && (step > 1 || isStep1Valid)) {
+        handleNextStep();
+      }
+    }
+  };
+
+  const handleSaveVehicle = async (e?: React.MouseEvent | React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (step !== 4) return;
     if (!brand.trim() || !model.trim() || submitting) return;
 
     setSubmitting(true);
     const payloadData: CreateVehiclePayload = {
-      bodyType: bodyType.trim(),
-      brakesJson: JSON.stringify({ front: "Havalandırmalı Disk", rear: bodyType === "Pickup" ? "Kampana" : "Disk" }),
+      bodyType: bodyType.trim() || undefined,
+      brakesJson: JSON.stringify({
+        front: brakesFront.trim() || undefined,
+        rear: brakesRear.trim() || undefined,
+      }),
       brand: brand.trim(),
-      comfortJson: JSON.stringify({ climate: "3 Bölgeli Klima", seats: "Deri, Isıtmalı/Soğutmalı, Elektrikli" }),
-      country: country.trim(),
-      dimensionsJson: JSON.stringify({ cargoVolume, fuelTank, groundClearance, height, length, wheelbase, width }),
-      doors: Number(doors),
-      driveType: driveType.trim(),
-      emission: emission.trim(),
-      engine: engine.trim(),
-      engineSpecJson: JSON.stringify({ aspiration: fuel === "Electric" ? "—" : "Turbo", cylinders: fuel === "Electric" ? "—" : "4", displacement, power, torque }),
-      equipmentJson: JSON.stringify(["LED Farlar", "Alaşım Jantlar", "Geri Görüş Kamerası", "Park Sensörleri", "Panoramik Cam Tavan"]),
-      fuel: fuel.trim(),
-      fuelEcoJson: JSON.stringify({ combined: "7.2 L/100km", urban: "8.5 L/100km", wltp: "7.4 L/100km (WLTP)" }),
+      comfortJson: JSON.stringify({}),
+      country: country.trim() || undefined,
+      dimensionsJson: JSON.stringify({
+        cargoVolume: cargoVolume ? Number(cargoVolume) : undefined,
+        fuelTank: fuelTank ? Number(fuelTank) : undefined,
+        groundClearance: groundClearance ? Number(groundClearance) : undefined,
+        height: height ? Number(height) : undefined,
+        length: length ? Number(length) : undefined,
+        wheelbase: wheelbase ? Number(wheelbase) : undefined,
+        width: width ? Number(width) : undefined,
+      }),
+      doors: doors ? Number(doors) : undefined,
+      driveType: driveType.trim() || undefined,
+      emission: emission.trim() || undefined,
+      engine: engine.trim() || undefined,
+      engineSpecJson: JSON.stringify({
+        aspiration: aspiration.trim() || undefined,
+        displacement: displacement.trim() || undefined,
+        power: power.trim() || undefined,
+        torque: torque.trim() || undefined,
+      }),
+      equipmentJson: JSON.stringify([]),
+      fuel: fuel.trim() || undefined,
+      fuelEcoJson: JSON.stringify({}),
       generation: generation.trim() || undefined,
       icon: icon.trim() || "🚗",
-      infotainmentJson: JSON.stringify({ features: ["Apple CarPlay", "Android Auto", "Sesli Asistan"], screen: '12.3" Dokunmatik Ekran' }),
+      infotainmentJson: JSON.stringify({}),
       internalCode: projectCode.trim() || undefined,
-      market: market.trim(),
+      market: market.trim() || undefined,
       model: model.trim(),
-      modelYear: Number(modelYear),
+      modelYear: modelYear ? Number(modelYear) : undefined,
       notes: notes.trim() || undefined,
-      performanceJson: JSON.stringify({ accel, topSpeed }),
+      performanceJson: JSON.stringify({
+        accel: accel.trim() || undefined,
+        topSpeed: topSpeed.trim() || undefined,
+      }),
       plant: plant.trim() || undefined,
       platform: platform.trim() || undefined,
-      priceTry: Number(priceTry) || Number(priceUsd) * 35,
-      priceUsd: Number(priceUsd),
+      priceTry: priceTry ? Number(priceTry) : undefined,
+      priceUsd: priceUsd ? Number(priceUsd) : undefined,
       projectCode: projectCode.trim() || undefined,
-      safetyJson: JSON.stringify({ adas: adasString.split(",").map((s: string) => s.trim()).filter(Boolean), airbags }),
-      seats: Number(seats),
-      segment: segment.trim(),
+      safetyJson: JSON.stringify({
+        adas: adasString.split(",").map((s: string) => s.trim()).filter(Boolean),
+        airbags: airbags ? Number(airbags) : undefined,
+      }),
+      seats: seats ? Number(seats) : undefined,
+      segment: segment.trim() || undefined,
       series: generation.trim() || undefined,
-      status: status.trim(),
-      suspensionJson: JSON.stringify({ front: bodyType === "Pickup" ? "Çift Yamuk Kol" : "MacPherson Strut", rear: bodyType === "Pickup" ? "Yaprak Yay (Rijit Aks)" : "Çok Bağlantılı (Multi-Link)" }),
-      transmission: transmission.trim(),
-      trim: trim.trim(),
-      tyres: bodyType === "Pickup" ? "265/60 R18" : "235/55 R19",
+      status: status.trim() || "Active",
+      suspensionJson: JSON.stringify({
+        front: suspensionFront.trim() || undefined,
+        rear: suspensionRear.trim() || undefined,
+      }),
+      transmission: transmission.trim() || undefined,
+      trim: trim.trim() || undefined,
+      tyres: tyres.trim() || undefined,
       variant: trim.trim() || undefined,
       vinPrefix: vinPrefix.trim() || undefined,
-      warrantyJson: JSON.stringify({ corrosion: "6 Yıl", powertrain: warrantyPowertrain, vehicle: warrantyVehicle }),
-      weightsJson: JSON.stringify({ curb: curbWeight, gvw, payload }),
+      warrantyJson: JSON.stringify({
+        corrosion: warrantyCorrosion.trim() || undefined,
+        powertrain: warrantyPowertrain.trim() || undefined,
+        vehicle: warrantyVehicle.trim() || undefined,
+      }),
+      weightsJson: JSON.stringify({
+        curb: curbWeight ? Number(curbWeight) : undefined,
+        gvw: gvw ? Number(gvw) : undefined,
+        payload: payload ? Number(payload) : undefined,
+      }),
     };
 
     try {
-      if (initialVehicle) {
-        await ApiClient.updateVehicle(initialVehicle.id, payloadData as UpdateVehiclePayload, tenantId);
+      const res = initialVehicle
+        ? await ApiClient.updateVehicle(initialVehicle.id, payloadData as UpdateVehiclePayload, tenantId)
+        : await ApiClient.createVehicle(payloadData, tenantId);
+
+      if (res.success) {
+        onSuccess();
       } else {
-        await ApiClient.createVehicle(payloadData, tenantId);
+        alert(res.message || "İşlem sırasında bir hata oluştu.");
       }
-      onSuccess();
     } catch {
       alert("İşlem sırasında bir hata oluştu.");
     } finally {
@@ -1861,535 +2104,895 @@ function CreateEditVehicleModal({
     }
   };
 
+  const stepsConfig = [
+    { num: 1, title: "Genel & Pazar", desc: "Marka, model, segment ve fiyat" },
+    { num: 2, title: "Güç Aktarımı", desc: "Motor, şanzıman, yakıt ve şasi" },
+    { num: 3, title: "Boyut & Performans", desc: "Ölçüler, ağırlıklar, hız ve tork" },
+    { num: 4, title: "Güvenlik & Garanti", desc: "ADAS, garanti ve canlı önizleme" },
+  ];
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] flex flex-col">
-        {/* Modal Head */}
-        <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+      <div className="flex flex-col w-full max-w-4xl rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[92vh] overflow-hidden">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              {initialVehicle ? "Araç Kartını Düzenle" : "Yeni Araç Modeli Ekle"}
-            </h3>
-            <p className="text-xs text-zinc-400">Teknik, ticari ve üretim spesifikasyonları</p>
+            <div className="flex items-center gap-2">
+              <span className="text-xl">{icon || "🚗"}</span>
+              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                {initialVehicle ? "Araç Modelini Düzenle" : "Yeni Araç Modeli Ekle"}
+              </h3>
+              {initialVehicle && (
+                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                  {initialVehicle.brand} {initialVehicle.model}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-zinc-400">
+              Adım {step} / 4: {stepsConfig[step - 1]?.title} — {stepsConfig[step - 1]?.desc}
+            </p>
           </div>
-          <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
-            <X className="h-4 w-4" />
+          <button
+            className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            onClick={onClose}
+            type="button"
+          >
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Section Tabs */}
-        <div className="flex gap-1 overflow-x-auto border-b border-zinc-100 py-2 text-xs dark:border-zinc-800">
-          {[
-            { id: "general", label: "1. Genel Bilgiler" },
-            { id: "production", label: "2. Pazar & Üretim" },
-            { id: "powertrain", label: "3. Güç Aktarımı" },
-            { id: "dimensions", label: "4. Boyut & Ağırlık" },
-            { id: "performance", label: "5. Motor & Performans" },
-            { id: "safety", label: "6. Güvenlik & Garanti" },
-          ].map((t) => (
-            <button
-              className={`rounded-lg px-3 py-1.5 font-semibold transition whitespace-nowrap ${
-                tab === t.id
-                  ? "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
-                  : "text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-              }`}
-              key={t.id}
-              onClick={() => setTab(t.id as typeof tab)}
-              type="button"
-            >
-              {t.label}
-            </button>
-          ))}
+        {/* Stepper Progress Header */}
+        <div className="grid grid-cols-4 border-b border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
+          {stepsConfig.map((s) => {
+            const isDone = step > s.num;
+            const isCurrent = step === s.num;
+            return (
+              <button
+                className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${
+                  isCurrent
+                    ? "bg-white shadow-xs ring-1 ring-violet-500/20 dark:bg-zinc-800"
+                    : isDone
+                      ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60"
+                      : "opacity-40"
+                }`}
+                key={s.num}
+                onClick={() => {
+                  if (s.num === 1 || isStep1Valid) {
+                    setStep(s.num as typeof step);
+                  }
+                }}
+                type="button"
+              >
+                <div
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${
+                    isCurrent
+                      ? "bg-violet-600 text-white shadow-xs"
+                      : isDone
+                        ? "bg-emerald-600 text-white"
+                        : "bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
+                  }`}
+                >
+                  {isDone ? "✓" : s.num}
+                </div>
+                <div className="min-w-0">
+                  <div
+                    className={`truncate font-semibold text-xs ${
+                      isCurrent
+                        ? "text-violet-600 dark:text-violet-400"
+                        : "text-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    {s.title}
+                  </div>
+                  <div className="hidden sm:block truncate text-[10px] text-zinc-400">
+                    {s.num === 1 && (brand ? `${brand} ${model}` : "Temel")}
+                    {s.num === 2 && (engine ? `${engine}` : "Motor")}
+                    {s.num === 3 && (power ? `${power}` : "Teknik")}
+                    {s.num === 4 && (airbags ? `${airbags} Airbag` : "İnceleme")}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Form Body */}
-        <form className="mt-4 flex-1 overflow-y-auto pr-1 space-y-4 text-xs" onSubmit={handleSubmit}>
-          {tab === "general" && (
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Marka *</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setBrand(e.target.value)}
-                  placeholder="Örn. ULTRAND, Toyota"
-                  required
-                  type="text"
-                  value={brand}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Model *</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setModel(e.target.value)}
-                  placeholder="Örn. Voyager, RAV4"
-                  required
-                  type="text"
-                  value={model}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Trim / Donanım</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setTrim(e.target.value)}
-                  placeholder="Elite / Comfort / Wildtrak"
-                  type="text"
-                  value={trim}
-                />
-              </div>
+        {/* Wizard Form Content */}
+        <form className="flex flex-1 flex-col overflow-hidden" onKeyDown={handleKeyDown} onSubmit={(e) => e.preventDefault()}>
+          <div className="flex-1 overflow-y-auto p-6 text-xs space-y-4">
+            {/* ADIM 1: GENEL BİLGİLER, PAZAR & ÜRETİM */}
+            {step === 1 && (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    1.1 Temel Araç Tanımı
+                  </h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Marka <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setBrand(e.target.value)}
+                        placeholder="Örn. ULTRAND, Toyota, Ford"
+                        required
+                        type="text"
+                        value={brand}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Model <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setModel(e.target.value)}
+                        placeholder="Örn. Voyager, RAV4, Ranger"
+                        required
+                        type="text"
+                        value={model}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Trim / Donanım Paketi
+                      </label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setTrim(e.target.value)}
+                        placeholder="Örn. Elite, Wildtrak, Premium"
+                        type="text"
+                        value={trim}
+                      />
+                    </div>
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Nesil / Generation</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setGeneration(e.target.value)}
-                  placeholder="1st Gen / 5th Gen"
-                  type="text"
-                  value={generation}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Platform</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setPlatform(e.target.value)}
-                  placeholder="P300 / TNGA-K / MQB Evo"
-                  type="text"
-                  value={platform}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Proje Kodu</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setProjectCode(e.target.value)}
-                  placeholder="ULT-VOY-01"
-                  type="text"
-                  value={projectCode}
-                />
-              </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        Model Yılı
+                      </label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setModelYear(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 2025"
+                        type="number"
+                        value={modelYear}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Segment</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        list="segment-options"
+                        onChange={(e) => setSegment(e.target.value)}
+                        placeholder="C-SUV, Pickup 1-Ton, Sedan D..."
+                        value={segment}
+                      />
+                      <datalist id="segment-options">
+                        <option value="B-SUV" />
+                        <option value="C-SUV" />
+                        <option value="D-SUV" />
+                        <option value="Pickup 1-Ton" />
+                        <option value="Sedan C" />
+                        <option value="Sedan D" />
+                        <option value="Hatchback B" />
+                        <option value="MPV" />
+                      </datalist>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Kasa Tipi</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        list="bodytype-options"
+                        onChange={(e) => setBodyType(e.target.value)}
+                        placeholder="SUV, Pickup, Sedan..."
+                        value={bodyType}
+                      />
+                      <datalist id="bodytype-options">
+                        <option value="SUV" />
+                        <option value="Pickup" />
+                        <option value="Sedan" />
+                        <option value="Hatchback" />
+                        <option value="MPV" />
+                        <option value="Coupe" />
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Model Yılı</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setModelYear(Number(e.target.value))}
-                  type="number"
-                  value={modelYear}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Segment</label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setSegment(e.target.value)}
-                  value={segment}
-                >
-                  <option value="B-SUV">B-SUV</option>
-                  <option value="C-SUV">C-SUV</option>
-                  <option value="D-SUV">D-SUV</option>
-                  <option value="Pickup 1-Ton">Pickup 1-Ton</option>
-                  <option value="Sedan C">Sedan C</option>
-                  <option value="Sedan D">Sedan D</option>
-                  <option value="Hatchback B">Hatchback B</option>
-                  <option value="MPV">MPV</option>
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Kasa Tipi</label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setBodyType(e.target.value)}
-                  value={bodyType}
-                >
-                  <option value="SUV">SUV</option>
-                  <option value="Pickup">Pickup</option>
-                  <option value="Sedan">Sedan</option>
-                  <option value="Hatchback">Hatchback</option>
-                  <option value="MPV">MPV</option>
-                  <option value="Coupe">Coupe</option>
-                </select>
-              </div>
-            </div>
-          )}
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    1.2 Pazar, Üretim & Fiyatlandırma
+                  </h4>
+                  <div className="grid grid-cols-4 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Pazar</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setMarket(e.target.value)}
+                        placeholder="Örn. TR / EU / MENA"
+                        type="text"
+                        value={market}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Menşe Ülke</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setCountry(e.target.value)}
+                        placeholder="Türkiye, Almanya..."
+                        type="text"
+                        value={country}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Üretim Tesisi</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setPlant(e.target.value)}
+                        placeholder="Bursa Plant..."
+                        type="text"
+                        value={plant}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">VIN Öneki</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 font-mono focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setVinPrefix(e.target.value)}
+                        placeholder="WVU / JTM"
+                        type="text"
+                        value={vinPrefix}
+                      />
+                    </div>
 
-          {tab === "production" && (
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Hedef Pazar</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setMarket(e.target.value)}
-                  placeholder="TR / EU / MENA / Global"
-                  type="text"
-                  value={market}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Menşe Ülke</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setCountry(e.target.value)}
-                  placeholder="Türkiye / Japonya / Almanya"
-                  type="text"
-                  value={country}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Üretim Tesisi</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setPlant(e.target.value)}
-                  placeholder="Bursa Plant"
-                  type="text"
-                  value={plant}
-                />
-              </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Durum</label>
+                      <select
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setStatus(e.target.value)}
+                        value={status}
+                      >
+                        <option value="Active">Aktif (Satışta)</option>
+                        <option value="Development">Geliştirme / Ar-Ge</option>
+                        <option value="Discontinued">Üretim Durduruldu</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">İkon / Emoji</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
+                        onChange={(e) => setIcon(e.target.value)}
+                        placeholder="🚗, 🚙, 🛻, ⚡"
+                        type="text"
+                        value={icon}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fiyat (USD)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => {
+                          const val = e.target.value === "" ? "" : Number(e.target.value);
+                          setPriceUsd(val);
+                          if (typeof val === "number" && !priceTry) {
+                            setPriceTry(val * 35);
+                          }
+                        }}
+                        placeholder="Örn. 32000"
+                        type="number"
+                        value={priceUsd}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fiyat (TRY)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setPriceTry(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 1120000"
+                        type="number"
+                        value={priceTry}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">VIN Öneki</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setVinPrefix(e.target.value)}
-                  placeholder="WVU / JTM / WVG"
-                  type="text"
-                  value={vinPrefix}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Durum</label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setStatus(e.target.value)}
-                  value={status}
-                >
-                  <option value="Active">Aktif (Satışta)</option>
-                  <option value="Development">Geliştirme / Ar-Ge</option>
-                  <option value="Discontinued">Üretim Durduruldu</option>
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">İkon (Emoji)</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setIcon(e.target.value)}
-                  placeholder="🚙, 🛻, 🚗, ⚡"
-                  type="text"
-                  value={icon}
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Referans Fiyat (USD)</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => {
-                    const usd = Number(e.target.value);
-                    setPriceUsd(usd);
-                    setPriceTry(usd * 35);
-                  }}
-                  type="number"
-                  value={priceUsd}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Referans Fiyat (TRY)</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setPriceTry(Number(e.target.value))}
-                  type="number"
-                  value={priceTry}
-                />
-              </div>
-            </div>
-          )}
-
-          {tab === "powertrain" && (
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setEngine(e.target.value)}
-                  placeholder="2.0L Turbo Petrol"
-                  type="text"
-                  value={engine}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Şanzıman</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setTransmission(e.target.value)}
-                  placeholder="8-Speed Automatic"
-                  type="text"
-                  value={transmission}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Yakıt Tipi</label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setFuel(e.target.value)}
-                  value={fuel}
-                >
-                  <option value="Petrol">Benzin (Petrol)</option>
-                  <option value="Diesel">Dizel (Diesel)</option>
-                  <option value="Hybrid">Hibrit (Hybrid)</option>
-                  <option value="PHEV">Plug-in Hibrit (PHEV)</option>
-                  <option value="Electric">Elektrikli (EV)</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Çekiş Tipi</label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setDriveType(e.target.value)}
-                  value={driveType}
-                >
-                  <option value="FWD">Önden Çekiş (FWD)</option>
-                  <option value="RWD">Arkadan İtiş (RWD)</option>
-                  <option value="AWD">Dört Tekerden Çekiş (AWD)</option>
-                  <option value="4x4">Arazi 4x4 (4WD)</option>
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Emisyon</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setEmission(e.target.value)}
-                  placeholder="Euro 6d / Euro 6e"
-                  type="text"
-                  value={emission}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Kapı / Koltuk</label>
-                <div className="grid grid-cols-2 gap-1">
-                  <input
-                    className="rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-center text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDoors(Number(e.target.value))}
-                    placeholder="Kapı"
-                    type="number"
-                    value={doors}
-                  />
-                  <input
-                    className="rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-center text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setSeats(Number(e.target.value))}
-                    placeholder="Koltuk"
-                    type="number"
-                    value={seats}
-                  />
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Proje Kodu</label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      onChange={(e) => setProjectCode(e.target.value)}
+                      placeholder="ULT-VOY-01"
+                      type="text"
+                      value={projectCode}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Platform</label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      onChange={(e) => setPlatform(e.target.value)}
+                      placeholder="P300 / TNGA-K"
+                      type="text"
+                      value={platform}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-medium text-zinc-700 dark:text-zinc-300">Nesil / Seri</label>
+                    <input
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      onChange={(e) => setGeneration(e.target.value)}
+                      placeholder="1st Gen"
+                      type="text"
+                      value={generation}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {tab === "dimensions" && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-4 gap-3">
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Uzunluk (mm)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setLength(Number(e.target.value))}
-                    type="number"
-                    value={length}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Genişlik (mm)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setWidth(Number(e.target.value))}
-                    type="number"
-                    value={width}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Yükseklik (mm)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setHeight(Number(e.target.value))}
-                    type="number"
-                    value={height}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Dingil Mesafesi (mm)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setWheelbase(Number(e.target.value))}
-                    type="number"
-                    value={wheelbase}
-                  />
-                </div>
-              </div>
+            {/* ADIM 2: GÜÇ AKTARIMI & ŞASİ */}
+            {step === 2 && (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    2.1 Güç Aktarma Organları
+                  </h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor Adı/Tipi</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setEngine(e.target.value)}
+                        placeholder="Örn. 2.0L Turbo Petrol, 2.5L Hybrid"
+                        type="text"
+                        value={engine}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Şanzıman</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setTransmission(e.target.value)}
+                        placeholder="Örn. 8-Speed Automatic, 7-Speed DCT"
+                        type="text"
+                        value={transmission}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yakıt Türü</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        list="fuel-options"
+                        onChange={(e) => setFuel(e.target.value)}
+                        placeholder="Benzin, Dizel, Hibrit, EV..."
+                        value={fuel}
+                      />
+                      <datalist id="fuel-options">
+                        <option value="Petrol" />
+                        <option value="Diesel" />
+                        <option value="Hybrid" />
+                        <option value="PHEV" />
+                        <option value="Electric" />
+                      </datalist>
+                    </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Boş Ağırlık (kg)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setCurbWeight(Number(e.target.value))}
-                    type="number"
-                    value={curbWeight}
-                  />
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Çekiş Tipi</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        list="drive-options"
+                        onChange={(e) => setDriveType(e.target.value)}
+                        placeholder="FWD, RWD, AWD, 4x4..."
+                        value={driveType}
+                      />
+                      <datalist id="drive-options">
+                        <option value="FWD" />
+                        <option value="RWD" />
+                        <option value="AWD" />
+                        <option value="4x4" />
+                      </datalist>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Emisyon Sınıfı</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setEmission(e.target.value)}
+                        placeholder="Euro 6d, Euro 6e"
+                        type="text"
+                        value={emission}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Kapı / Koltuk</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setDoors(e.target.value === "" ? "" : Number(e.target.value))}
+                          placeholder="Kapı (5)"
+                          type="number"
+                          value={doors}
+                        />
+                        <input
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setSeats(e.target.value === "" ? "" : Number(e.target.value))}
+                          placeholder="Koltuk (5)"
+                          type="number"
+                          value={seats}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Azami Yüklü Ağırlık (GVW kg)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setGvw(Number(e.target.value))}
-                    type="number"
-                    value={gvw}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Bagaj Hacmi (L)</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setCargoVolume(Number(e.target.value))}
-                    type="number"
-                    value={cargoVolume}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
 
-          {tab === "performance" && (
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Güç</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setPower(e.target.value)}
-                  placeholder="238 hp"
-                  type="text"
-                  value={power}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Tork</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setTorque(e.target.value)}
-                  placeholder="350 Nm"
-                  type="text"
-                  value={torque}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor Hacmi</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setDisplacement(e.target.value)}
-                  placeholder="1998 cc"
-                  type="text"
-                  value={displacement}
-                />
-              </div>
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    2.2 Şasi, Süspansiyon, Frenler & Lastik
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Ön Süspansiyon</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setSuspensionFront(e.target.value)}
+                        placeholder="Örn. MacPherson Strut / Çift Salıncak"
+                        type="text"
+                        value={suspensionFront}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Arka Süspansiyon</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setSuspensionRear(e.target.value)}
+                        placeholder="Örn. Multi-Link Bağımsız / Yaprak Yay"
+                        type="text"
+                        value={suspensionRear}
+                      />
+                    </div>
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">0-100 km/s Hızlanma</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setAccel(e.target.value)}
-                  placeholder="7.8 sn (0-100)"
-                  type="text"
-                  value={accel}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Hız</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setTopSpeed(e.target.value)}
-                  placeholder="205 km/h"
-                  type="text"
-                  value={topSpeed}
-                />
-              </div>
-            </div>
-          )}
-
-          {tab === "safety" && (
-            <div className="space-y-3">
-              <div className="grid grid-cols-3 gap-3">
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Hava Yastığı</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setAirbags(Number(e.target.value))}
-                    type="number"
-                    value={airbags}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Araç Garantisi</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setWarrantyVehicle(e.target.value)}
-                    placeholder="3 Yıl / 100.000 km"
-                    type="text"
-                    value={warrantyVehicle}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Güç Aktarma Garantisi</label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setWarrantyPowertrain(e.target.value)}
-                    placeholder="5 Yıl / 150.000 km"
-                    type="text"
-                    value={warrantyPowertrain}
-                  />
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Fren Sistemi (Ön/Arka)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setBrakesFront(e.target.value)}
+                          placeholder="Ön (Havadis Disk)"
+                          type="text"
+                          value={brakesFront}
+                        />
+                        <input
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setBrakesRear(e.target.value)}
+                          placeholder="Arka (Disk / Kampana)"
+                          type="text"
+                          value={brakesRear}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Lastik Ebatları</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setTyres(e.target.value)}
+                        placeholder="Örn. 235/55 R19 veya 265/60 R18"
+                        type="text"
+                        value={tyres}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+            )}
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">ADAS Özellikleri (Virgülle ayırın)</label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setAdasString(e.target.value)}
-                  placeholder="Adaptif Hız Sabitleyici, Şerit Takip, Kör Nokta Uyarısı"
-                  type="text"
-                  value={adasString}
-                />
+            {/* ADIM 3: BOYUTLAR, AĞIRLIKLAR & MOTOR PERFORMANSI */}
+            {step === 3 && (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    3.1 Ölçüler (mm) & Hacimler (L)
+                  </h4>
+                  <div className="grid grid-cols-4 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Uzunluk (mm)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setLength(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 4520"
+                        type="number"
+                        value={length}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Genişlik (mm)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setWidth(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 1840"
+                        type="number"
+                        value={width}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yükseklik (mm)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setHeight(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 1650"
+                        type="number"
+                        value={height}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Dingil Mesafesi (mm)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setWheelbase(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 2680"
+                        type="number"
+                        value={wheelbase}
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Yerden Yükseklik (mm)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setGroundClearance(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 185"
+                        type="number"
+                        value={groundClearance}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Bagaj Hacmi (L)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setCargoVolume(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 480"
+                        type="number"
+                        value={cargoVolume}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Depo Hacmi (L)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setFuelTank(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 55"
+                        type="number"
+                        value={fuelTank}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                  <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    3.2 Ağırlıklar (kg) & Performans Değerleri
+                  </h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Boş Ağırlık (kg)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setCurbWeight(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 1480"
+                        type="number"
+                        value={curbWeight}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Azami Yüklü (GVW kg)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setGvw(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 1980"
+                        type="number"
+                        value={gvw}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">İstiap Haddi / Taşıma (kg)</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setPayload(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="Örn. 500"
+                        type="number"
+                        value={payload}
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Güç</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setPower(e.target.value)}
+                        placeholder="Örn. 238 hp veya 175 kW"
+                        type="text"
+                        value={power}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Tork</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setTorque(e.target.value)}
+                        placeholder="Örn. 350 Nm"
+                        type="text"
+                        value={torque}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Motor Hacmi</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setDisplacement(e.target.value)}
+                        placeholder="Örn. 1998 cc"
+                        type="text"
+                        value={displacement}
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">0-100 km/s Hızlanma</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setAccel(e.target.value)}
+                        placeholder="Örn. 7.8 sn"
+                        type="text"
+                        value={accel}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-zinc-700 dark:text-zinc-300">Maksimum Hız</label>
+                      <input
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        onChange={(e) => setTopSpeed(e.target.value)}
+                        placeholder="Örn. 205 km/h"
+                        type="text"
+                        value={topSpeed}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
+            )}
 
-              <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">Notlar</label>
-                <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Bu araçla ilgili mühendislik, bayi veya filo notları..."
-                  rows={2}
-                  value={notes}
-                />
+            {/* ADIM 4: GÜVENLİK, GARANTİ & CANLI ÖNİZLEME */}
+            {step === 4 && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Sol Kolon: Güvenlik, ADAS & Garanti Form Alanları */}
+                  <div className="space-y-3">
+                    <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20 space-y-3">
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        4.1 Güvenlik & ADAS Sistemleri
+                      </h4>
+                      <div className="space-y-1">
+                        <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                          Hava Yastığı Adedi
+                        </label>
+                        <input
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setAirbags(e.target.value === "" ? "" : Number(e.target.value))}
+                          placeholder="Örn. 7"
+                          type="number"
+                          value={airbags}
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                          Hızlı ADAS Seçimi (Tıklayıp Ekleyin)
+                        </label>
+                        <div className="flex flex-wrap gap-1.5">
+                          {quickAdasOptions.map((opt) => {
+                            const isSelected = adasString.includes(opt);
+                            return (
+                              <button
+                                className={`rounded-lg px-2.5 py-1 text-[11px] font-medium transition ${
+                                  isSelected
+                                    ? "bg-violet-600 text-white"
+                                    : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                                }`}
+                                key={opt}
+                                onClick={() => toggleAdasChip(opt)}
+                                type="button"
+                              >
+                                {isSelected ? "✓ " : "+ "} {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                          Tüm Güvenlik & ADAS Listesi (Virgülle ayrılmış)
+                        </label>
+                        <textarea
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setAdasString(e.target.value)}
+                          placeholder="Adaptif Hız Sabitleyici, Kör Nokta, Şerit Takip..."
+                          rows={2}
+                          value={adasString}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20 space-y-3">
+                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        4.2 Garanti Koşulları & Notlar
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                            Araç Garantisi
+                          </label>
+                          <input
+                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            onChange={(e) => setWarrantyVehicle(e.target.value)}
+                            placeholder="Örn. 3 Yıl / 100.000 km"
+                            type="text"
+                            value={warrantyVehicle}
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                            Güç Aktarma Garantisi
+                          </label>
+                          <input
+                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            onChange={(e) => setWarrantyPowertrain(e.target.value)}
+                            placeholder="Örn. 5 Yıl / 150.000 km"
+                            type="text"
+                            value={warrantyPowertrain}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-medium text-zinc-700 dark:text-zinc-300">Notlar</label>
+                        <textarea
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          onChange={(e) => setNotes(e.target.value)}
+                          placeholder="Model yılı revizyonları, bayi filo notları veya özel üretim detayları..."
+                          rows={2}
+                          value={notes}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sağ Kolon: CANLI KART ÖNİZLEMESİ (Live Mini Preview) */}
+                  <div className="flex flex-col rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50/50 via-white to-indigo-50/30 p-5 shadow-xs dark:border-violet-900/40 dark:from-violet-950/20 dark:via-zinc-900 dark:to-indigo-950/20">
+                    <div className="flex items-center justify-between pb-3 border-b border-violet-100 dark:border-violet-900/30">
+                      <span className="font-bold text-xs uppercase tracking-wider text-violet-600 dark:text-violet-400">
+                        ✦ Canlı Katalog Kartı Önizlemesi
+                      </span>
+                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                        {status === "Active" ? "Satışta" : status === "Development" ? "Geliştirme" : "Durduruldu"}
+                      </span>
+                    </div>
+
+                    <div className="py-4 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md text-3xl dark:bg-zinc-800">
+                          {icon || "🚗"}
+                        </div>
+                        <div>
+                          <div className="font-black text-base text-zinc-900 dark:text-zinc-100">
+                            {brand || "Marka"} {model || "Model"}
+                          </div>
+                          <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                            {trim || "Donanım"} • {modelYear || "2025"} • {segment || "Segment"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 rounded-xl bg-white/80 p-3 shadow-2xs dark:bg-zinc-800/80">
+                        <div>
+                          <div className="text-[10px] text-zinc-400">Güç</div>
+                          <div className="font-bold text-zinc-800 dark:text-zinc-200">
+                            {power || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-zinc-400">0-100 km/s</div>
+                          <div className="font-bold text-zinc-800 dark:text-zinc-200">
+                            {accel || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-zinc-400">Çekiş</div>
+                          <div className="font-bold text-zinc-800 dark:text-zinc-200">
+                            {driveType || "—"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 text-[11px] text-zinc-600 dark:text-zinc-400">
+                        <div className="flex justify-between">
+                          <span>Motor:</span>
+                          <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                            {engine || "—"} ({fuel || "—"})
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Şanzıman:</span>
+                          <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                            {transmission || "—"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Fiyat (USD):</span>
+                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                            {priceUsd ? `$${Number(priceUsd).toLocaleString("en-US")}` : "—"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* Modal Footer */}
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          {/* Stepper Footer Navigasyon */}
+          <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
-              İptal
+              Vazgeç
             </button>
-            <button
-              className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700 disabled:opacity-50"
-              disabled={submitting}
-              type="submit"
-            >
-              {submitting ? "Kaydediliyor..." : initialVehicle ? "Değişiklikleri Kaydet" : "Aracı Oluştur"}
-            </button>
+
+            <div className="flex items-center gap-2">
+              {step > 1 && (
+                <button
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                  key="btn-step-prev"
+                  onClick={handlePrevStep}
+                  type="button"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Önceki Adım
+                </button>
+              )}
+
+              {step < 4 && (
+                <button
+                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-bold text-white shadow-xs hover:bg-violet-700 disabled:opacity-40"
+                  disabled={step === 1 && !isStep1Valid}
+                  key="btn-step-next"
+                  onClick={handleNextStep}
+                  type="button"
+                >
+                  Sonraki Adım
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
+
+              {step === 4 && (
+                <button
+                  className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50"
+                  disabled={submitting || !isStep1Valid}
+                  key="btn-step-save"
+                  onClick={handleSaveVehicle}
+                  type="button"
+                >
+                  {submitting ? (
+                    "Kaydediliyor..."
+                  ) : initialVehicle ? (
+                    "✓ Değişiklikleri Kaydet"
+                  ) : (
+                    "✓ Aracı Kataloğa Ekle"
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </form>
       </div>
@@ -2397,7 +3000,7 @@ function CreateEditVehicleModal({
   );
 }
 
-// --- 2. Comprehensive Create/Edit Part Modal (100% HTML Match) ---
+// --- 2. Gelişmiş EPC Parça Ekleme / Düzenleme Modalı (Temiz Başlangıç) ---
 function CreateEditPartModal({
   initialPart,
   systems,
@@ -2414,20 +3017,20 @@ function CreateEditPartModal({
   const [nameTr, setNameTr] = useState(initialPart?.nameTr || "");
   const [nameEn, setNameEn] = useState(initialPart?.nameEn || "");
   const [nameCn, setNameCn] = useState(initialPart?.nameCn || "");
-  const [partNumber, setPartNumber] = useState(initialPart?.partNumber || "ULT-10001");
-  const [oemNumber, setOemNumber] = useState(initialPart?.oemNumber || "OEM-500001");
+  const [partNumber, setPartNumber] = useState(initialPart?.partNumber || "");
+  const [oemNumber, setOemNumber] = useState(initialPart?.oemNumber || "");
   const [systemId, setSystemId] = useState(initialPart?.systemId || systems[0]?.id || "");
   const [subsystemId, setSubsystemId] = useState(initialPart?.subsystemId || systems[0]?.subsystems[0]?.id || "");
-  const [qtyPerAssembly, setQtyPerAssembly] = useState(initialPart?.qtyPerAssembly || 1);
-  const [location, setLocation] = useState(initialPart?.location || "Motor Bölmesi");
-  const [stockQuantity, setStockQuantity] = useState(initialPart?.stockQuantity || 50);
-  const [unitPrice, setUnitPrice] = useState(initialPart?.unitPrice || 120);
-  const [supersession, setSupersession] = useState(initialPart?.supersession || "—");
+  const [qtyPerAssembly, setQtyPerAssembly] = useState<number | "">(initialPart?.qtyPerAssembly ?? "");
+  const [location, setLocation] = useState(initialPart?.location || "");
+  const [stockQuantity, setStockQuantity] = useState<number | "">(initialPart?.stockQuantity ?? "");
+  const [unitPrice, setUnitPrice] = useState<number | "">(initialPart?.unitPrice ?? "");
+  const [supersession, setSupersession] = useState(initialPart?.supersession || "");
   const [compatibleModels, setCompatibleModels] = useState(
-    initialPart ? JSON.parse(initialPart.compatibleModelsJson || "[]").join(", ") : "ULTRAND Voyager, Ranger-X"
+    initialPart ? JSON.parse(initialPart.compatibleModelsJson || "[]").join(", ") : ""
   );
-  const [hotspotCoordX, setHotspotCoordX] = useState(initialPart?.hotspotCoordX || 45);
-  const [hotspotCoordY, setHotspotCoordY] = useState(initialPart?.hotspotCoordY || 35);
+  const [hotspotCoordX, setHotspotCoordX] = useState<number | "">(initialPart?.hotspotCoordX ?? "");
+  const [hotspotCoordY, setHotspotCoordY] = useState<number | "">(initialPart?.hotspotCoordY ?? "");
   const [notes, setNotes] = useState(initialPart?.notes || "");
   const [submitting, setSubmitting] = useState(false);
 
@@ -2440,30 +3043,33 @@ function CreateEditPartModal({
     setSubmitting(true);
     const payload: CreatePartPayload = {
       compatibleModelsJson: JSON.stringify(compatibleModels.split(",").map((s: string) => s.trim()).filter(Boolean)),
-      hotspotCoordX: Number(hotspotCoordX),
-      hotspotCoordY: Number(hotspotCoordY),
-      location: location.trim(),
+      hotspotCoordX: hotspotCoordX !== "" ? Number(hotspotCoordX) : undefined,
+      hotspotCoordY: hotspotCoordY !== "" ? Number(hotspotCoordY) : undefined,
+      location: location.trim() || "Motor Bölmesi",
       nameCn: nameCn.trim() || undefined,
       nameEn: nameEn.trim() || nameTr.trim(),
       nameTr: nameTr.trim(),
       notes: notes.trim() || undefined,
       oemNumber: oemNumber.trim() || undefined,
       partNumber: partNumber.trim(),
-      qtyPerAssembly: Number(qtyPerAssembly),
-      stockQuantity: Number(stockQuantity),
+      qtyPerAssembly: qtyPerAssembly !== "" ? Number(qtyPerAssembly) : 1,
+      stockQuantity: stockQuantity !== "" ? Number(stockQuantity) : 0,
       subsystemId: subsystemId || undefined,
-      supersession: supersession.trim() || "—",
+      supersession: supersession.trim() || undefined,
       systemId: systemId || undefined,
-      unitPrice: Number(unitPrice),
+      unitPrice: unitPrice !== "" ? Number(unitPrice) : 0,
     };
 
     try {
-      if (initialPart) {
-        await ApiClient.updateEpcPart(initialPart.id, payload as UpdatePartPayload, tenantId);
+      const res = initialPart
+        ? await ApiClient.updateEpcPart(initialPart.id, payload as UpdatePartPayload, tenantId)
+        : await ApiClient.createEpcPart(payload, tenantId);
+
+      if (res.success) {
+        onSuccess();
       } else {
-        await ApiClient.createEpcPart(payload, tenantId);
+        alert(res.message || "Parça kaydedilirken bir hata oluştu.");
       }
-      onSuccess();
     } catch {
       alert("Parça kaydedilirken bir hata oluştu.");
     } finally {
@@ -2473,230 +3079,255 @@ function CreateEditPartModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-2xl rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+      <div className="flex flex-col w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
           <div>
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
-              {initialPart ? "Parçayı Düzenle" : "Yeni EPC Parça Ekle"}
+              {initialPart ? "EPC Parça Kartını Düzenle" : "Yeni EPC Parçası Ekle"}
             </h3>
-            <p className="text-xs text-zinc-400">3 Dilli (TR / EN / CN) Parça & OEM Kartı</p>
+            <p className="text-xs text-zinc-400">Çok dilli isimlendirme (TR / EN / CN), OEM no, stok ve şema konumu</p>
           </div>
-          <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
-            <X className="h-4 w-4" />
+          <button className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="mt-4 space-y-3.5 text-xs" onSubmit={handleSubmit}>
-          {/* Multilingual Names */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Parça Adı (TR) *</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setNameTr(e.target.value)}
-                placeholder="Örn. Silindir Kapağı"
-                required
-                type="text"
-                value={nameTr}
-              />
+        <form className="flex flex-1 flex-col overflow-hidden" onSubmit={handleSubmit}>
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+            {/* Çok Dilli Parça Adları */}
+            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+              <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                1. Parça Tanımı & Çok Dilli Çeviriler
+              </h4>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Parça Adı (TR) <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setNameTr(e.target.value)}
+                    placeholder="Örn. Silindir Kapağı"
+                    required
+                    type="text"
+                    value={nameTr}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Part Name (EN)</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setNameEn(e.target.value)}
+                    placeholder="Cylinder Head"
+                    type="text"
+                    value={nameEn}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">零件名称 (CN)</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setNameCn(e.target.value)}
+                    placeholder="气缸盖"
+                    type="text"
+                    value={nameCn}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Part Name (EN)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setNameEn(e.target.value)}
-                placeholder="Cylinder Head"
-                type="text"
-                value={nameEn}
-              />
+
+            {/* Parça Numaraları & Montaj Sistemi */}
+            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+              <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                2. Numaralandırma & Sistem Hiyerarşisi
+              </h4>
+              <div className="grid grid-cols-4 gap-3">
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Parça No <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setPartNumber(e.target.value)}
+                    placeholder="ULT-10037"
+                    required
+                    type="text"
+                    value={partNumber}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">OEM No</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setOemNumber(e.target.value)}
+                    placeholder="OEM-500911"
+                    type="text"
+                    value={oemNumber}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Ana Sistem</label>
+                  <select
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => {
+                      setSystemId(e.target.value);
+                      const s = systems.find((sys) => sys.id === e.target.value);
+                      if (s && s.subsystems.length > 0 && s.subsystems[0]) {
+                        setSubsystemId(s.subsystems[0].id);
+                      }
+                    }}
+                    value={systemId}
+                  >
+                    {systems.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.icon} {s.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Alt Sistem</label>
+                  <select
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setSubsystemId(e.target.value)}
+                    value={subsystemId}
+                  >
+                    {selectedSys?.subsystems.map((sub) => (
+                      <option key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">零件名称 (CN)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setNameCn(e.target.value)}
-                placeholder="气缸盖"
-                type="text"
-                value={nameCn}
-              />
+
+            {/* Stok, Fiyat, Montaj & Konum */}
+            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+              <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                3. Stok, Fiyat, Konum & Şema Koordinatları
+              </h4>
+              <div className="grid grid-cols-5 gap-3">
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Miktarı</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setQtyPerAssembly(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="1"
+                    type="number"
+                    value={qtyPerAssembly}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Stok Adedi</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setStockQuantity(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="0"
+                    type="number"
+                    value={stockQuantity}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Birim Fiyat ($)</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="0"
+                    type="number"
+                    value={unitPrice}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema %X</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setHotspotCoordX(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="% 0-100"
+                    type="number"
+                    value={hotspotCoordX}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema %Y</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setHotspotCoordY(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="% 0-100"
+                    type="number"
+                    value={hotspotCoordY}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-3 grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Konumu</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    list="location-options"
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Motor Bölmesi, Şasi Altı..."
+                    value={location}
+                  />
+                  <datalist id="location-options">
+                    <option value="Motor Bölmesi" />
+                    <option value="Şasi Altı" />
+                    <option value="Ön Aks" />
+                    <option value="Arka Aks" />
+                    <option value="Kabin İçi" />
+                    <option value="Kaporta" />
+                  </datalist>
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Süperseksiyon</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setSupersession(e.target.value)}
+                    placeholder="ULT-9022 → ULT-10037"
+                    type="text"
+                    value={supersession}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-medium text-zinc-700 dark:text-zinc-300">Uyumlu Modeller</label>
+                  <input
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    onChange={(e) => setCompatibleModels(e.target.value)}
+                    placeholder="Voyager, Ranger-X..."
+                    type="text"
+                    value={compatibleModels}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-3 space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">Parça Notları</label>
+                <textarea
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Montaj torku, servis bülteni bağlantısı veya revizyon notları..."
+                  rows={2}
+                  value={notes}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Numbers & System Selection */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Parça Numarası *</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 font-mono dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setPartNumber(e.target.value)}
-                placeholder="ULT-10037"
-                required
-                type="text"
-                value={partNumber}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">OEM Numarası</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 font-mono dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setOemNumber(e.target.value)}
-                placeholder="OEM-500911"
-                type="text"
-                value={oemNumber}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Sistemi</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => {
-                  setSystemId(e.target.value);
-                  const s = systems.find((sys) => sys.id === e.target.value);
-                  if (s && s.subsystems.length > 0 && s.subsystems[0]) {
-                    setSubsystemId(s.subsystems[0].id);
-                  }
-                }}
-                value={systemId}
-              >
-                {systems.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.icon} {s.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Subsystem, Qty & Location */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Alt Sistem</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setSubsystemId(e.target.value)}
-                value={subsystemId}
-              >
-                {selectedSys?.subsystems.map((sub) => (
-                  <option key={sub.id} value={sub.id}>
-                    {sub.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Montaj Başına Miktar</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setQtyPerAssembly(Number(e.target.value))}
-                type="number"
-                value={qtyPerAssembly}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Konum</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setLocation(e.target.value)}
-                value={location}
-              >
-                <option value="Motor Bölmesi">Motor Bölmesi</option>
-                <option value="Şasi Altı">Şasi Altı</option>
-                <option value="Ön Aks">Ön Aks</option>
-                <option value="Arka Aks">Arka Aks</option>
-                <option value="Kabin İçi">Kabin İçi</option>
-                <option value="Kaporta">Kaporta</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Stock, Price & Hotspot */}
-          <div className="grid grid-cols-4 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Stok Miktarı</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setStockQuantity(Number(e.target.value))}
-                type="number"
-                value={stockQuantity}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Birim Fiyat (USD)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setUnitPrice(Number(e.target.value))}
-                type="number"
-                value={unitPrice}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema X (% 0-100)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setHotspotCoordX(Number(e.target.value))}
-                type="number"
-                value={hotspotCoordX}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Şema Y (% 0-100)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setHotspotCoordY(Number(e.target.value))}
-                type="number"
-                value={hotspotCoordY}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Süperseksiyon (Değişen Parça)</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 font-mono dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setSupersession(e.target.value)}
-                placeholder="ULT-9022 → ULT-10037"
-                type="text"
-                value={supersession}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Uyumlu Modeller</label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setCompatibleModels(e.target.value)}
-                placeholder="ULTRAND Voyager, Ranger-X"
-                type="text"
-                value={compatibleModels}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <label className="font-medium text-zinc-700 dark:text-zinc-300">Notlar</label>
-            <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Montaj torku, revizyon veya servis uyarıları..."
-              rows={2}
-              value={notes}
-            />
-          </div>
-
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
-              İptal
+              Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700 disabled:opacity-50"
-              disabled={submitting}
+              className="rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50"
+              disabled={submitting || !nameTr.trim() || !partNumber.trim()}
               type="submit"
             >
-              {submitting ? "Kaydediliyor..." : initialPart ? "Değişiklikleri Kaydet" : "Parça Ekle"}
+              {submitting ? "Kaydediliyor..." : initialPart ? "Değişiklikleri Kaydet" : "Parçayı Ekle"}
             </button>
           </div>
         </form>
@@ -2705,7 +3336,7 @@ function CreateEditPartModal({
   );
 }
 
-// --- 3. Create / Upload Document Modal ---
+// --- 3. Temiz Doküman Yükleme Modalı ---
 function CreateDocumentModal({
   vehicles,
   tenantId,
@@ -2721,8 +3352,8 @@ function CreateDocumentModal({
   const [documentType, setDocumentType] = useState("PDF");
   const [category, setCategory] = useState("Kullanım Kılavuzu");
   const [vehicleId, setVehicleId] = useState<string>("");
-  const [fileSize, setFileSize] = useState("2.4 MB");
-  const [tags, setTags] = useState("Kılavuz, Servis");
+  const [fileSize, setFileSize] = useState("");
+  const [tags, setTags] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -2733,15 +3364,19 @@ function CreateDocumentModal({
     const payload: CreateVehicleDocumentPayload = {
       category,
       documentType,
-      fileSize,
+      fileSize: fileSize.trim() || "1.2 MB",
       name: name.trim(),
-      tagsJson: JSON.stringify(tags.split(",").map((s) => s.trim()).filter(Boolean)),
+      tagsJson: JSON.stringify(tags.split(",").map((s: string) => s.trim()).filter(Boolean)),
       vehicleId: vehicleId || undefined,
     };
 
     try {
-      await ApiClient.createVehicleDocument(payload, tenantId);
-      onSuccess();
+      const res = await ApiClient.createVehicleDocument(payload, tenantId);
+      if (res.success) {
+        onSuccess();
+      } else {
+        alert(res.message || "Doküman kaydedilirken bir hata oluştu.");
+      }
     } catch {
       alert("Doküman kaydedilirken bir hata oluştu.");
     } finally {
@@ -2751,113 +3386,117 @@ function CreateDocumentModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
+      <div className="flex flex-col w-full max-w-lg rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800">
           <div>
             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">Teknik Doküman Yükle</h3>
-            <p className="text-xs text-zinc-400">TSB, Homologasyon, Kılavuz veya CAD dosyası</p>
+            <p className="text-xs text-zinc-400">Kılavuz, Servis Bülteni (TSB), Homologasyon veya CAD dosyası</p>
           </div>
-          <button className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
-            <X className="h-4 w-4" />
+          <button className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" onClick={onClose} type="button">
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form className="mt-4 space-y-3.5 text-xs" onSubmit={handleSubmit}>
-          <div className="space-y-1">
-            <label className="font-medium text-zinc-700 dark:text-zinc-300">Doküman Dosya Adı *</label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Örn. Voyager_Kullanim_Kilavuzu_2025.pdf"
-              required
-              type="text"
-              value={name}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
+        <form className="flex flex-1 flex-col overflow-hidden" onSubmit={handleSubmit}>
+          <div className="flex-1 overflow-y-auto p-6 space-y-3.5 text-xs">
             <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Doküman Türü</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setDocumentType(e.target.value)}
-                value={documentType}
-              >
-                <option value="PDF">PDF Dokümanı</option>
-                <option value="Excel">Excel / Tablo</option>
-                <option value="Word">Word Dokümanı</option>
-                <option value="CAD">CAD / 3D Model (STEP)</option>
-                <option value="TSB">Teknik Servis Bülteni</option>
-                <option value="PowerPoint">Sunum (PPTX)</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Kategori</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setCategory(e.target.value)}
-                value={category}
-              >
-                <option value="Kullanım Kılavuzu">Kullanım Kılavuzu</option>
-                <option value="TSB">Servis Bülteni (TSB)</option>
-                <option value="Homologasyon">Homologasyon (WVTA)</option>
-                <option value="EPC">EPC Parça Listesi</option>
-                <option value="CAD">CAD / Mühendislik</option>
-                <option value="Garanti">Garanti & Politika</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Bağlı Araç</label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setVehicleId(e.target.value)}
-                value={vehicleId}
-              >
-                <option value="">— Genel (Bağlı Araç Yok) —</option>
-                {vehicles.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.icon} {v.brand} {v.model} ({v.trim})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="font-medium text-zinc-700 dark:text-zinc-300">Dosya Boyutu</label>
+              <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                Doküman Adı <span className="text-red-500">*</span>
+              </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setFileSize(e.target.value)}
-                placeholder="2.4 MB / 860 KB"
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Örn. Voyager_Kullanim_Kilavuzu_2025.pdf"
+                required
                 type="text"
-                value={fileSize}
+                value={name}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">Doküman Türü</label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setDocumentType(e.target.value)}
+                  value={documentType}
+                >
+                  <option value="PDF">PDF Dokümanı</option>
+                  <option value="Excel">Excel / Tablo</option>
+                  <option value="Word">Word Dokümanı</option>
+                  <option value="CAD">CAD / 3D Model (STEP)</option>
+                  <option value="TSB">Teknik Servis Bülteni</option>
+                  <option value="PowerPoint">Sunum (PPTX)</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">Kategori</label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setCategory(e.target.value)}
+                  value={category}
+                >
+                  <option value="Kullanım Kılavuzu">Kullanım Kılavuzu</option>
+                  <option value="TSB">Servis Bülteni (TSB)</option>
+                  <option value="Homologasyon">Homologasyon (WVTA)</option>
+                  <option value="EPC">EPC Parça Listesi</option>
+                  <option value="CAD">CAD / Mühendislik</option>
+                  <option value="Garanti">Garanti & Politika</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">Bağlı Araç</label>
+                <select
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setVehicleId(e.target.value)}
+                  value={vehicleId}
+                >
+                  <option value="">— Genel (Bağlı Araç Yok) —</option>
+                  {vehicles.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.icon} {v.brand} {v.model} ({v.trim})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="font-medium text-zinc-700 dark:text-zinc-300">Dosya Boyutu</label>
+                <input
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  onChange={(e) => setFileSize(e.target.value)}
+                  placeholder="Örn. 2.4 MB"
+                  type="text"
+                  value={fileSize}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="font-medium text-zinc-700 dark:text-zinc-300">Etiketler (Virgülle ayırın)</label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="Örn. TSB, Motor, Garanti, Homologasyon"
+                type="text"
+                value={tags}
               />
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className="font-medium text-zinc-700 dark:text-zinc-300">Etiketler (Virgülle ayırın)</label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="TSB, Motor, Garanti, Homologasyon"
-              type="text"
-              value={tags}
-            />
-          </div>
-
-          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 border-t border-zinc-100 bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
-              İptal
+              Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700 disabled:opacity-50"
-              disabled={submitting}
+              className="rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50"
+              disabled={submitting || !name.trim()}
               type="submit"
             >
               {submitting ? "Yükleniyor..." : "Dokümanı Kaydet"}
@@ -2868,4 +3507,97 @@ function CreateDocumentModal({
     </div>
   );
 }
+
+// --- 4. Design System Silme Onay Modalı (Delete Confirmation Modal) ---
+function DeleteConfirmationModal({
+  isOpen,
+  type,
+  title,
+  subtitle,
+  loading,
+  onClose,
+  onConfirm,
+}: {
+  isOpen: boolean;
+  type: "vehicle" | "part" | "document";
+  title: string;
+  subtitle?: string;
+  loading: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}) {
+  if (!isOpen) return null;
+
+  const typeLabels: Record<string, string> = {
+    document: "Teknik Doküman",
+    part: "EPC Parçası",
+    vehicle: "Araç Modeli",
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+      <div className="flex flex-col w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 animate-in fade-in zoom-in-95 duration-150">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 ring-8 ring-rose-50 dark:ring-rose-950/30">
+            <Trash2 className="h-6 w-6" />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+              Kalıcı Silme Onayı
+            </span>
+            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              {typeLabels[type] || "Öğe"} Silinsin mi?
+            </h3>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-800/40">
+          <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+            {title}
+          </div>
+          {subtitle && (
+            <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+        </div>
+
+        <div className="mt-4 flex items-center gap-2 text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 dark:bg-amber-950/40 dark:border-amber-900/60 dark:text-amber-300">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+          <span>Bu işlem geri alınamaz. İlgili kayıt kalıcı olarak kaldırılacaktır.</span>
+        </div>
+
+        <div className="mt-6 flex items-center justify-end gap-2.5">
+          <button
+            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+            disabled={loading}
+            onClick={onClose}
+            type="button"
+          >
+            Vazgeç
+          </button>
+          <button
+            className="flex items-center gap-1.5 rounded-xl bg-rose-600 px-5 py-2 font-bold text-xs text-white shadow-md hover:bg-rose-700 disabled:opacity-50 transition"
+            disabled={loading}
+            onClick={onConfirm}
+            type="button"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <span>Siliniyor...</span>
+              </>
+            ) : (
+              <>
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>Evet, Sil</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 

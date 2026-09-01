@@ -25,22 +25,22 @@ public record VehicleSummaryDto(
     string? Platform,
     string? ProjectCode,
     string? InternalCode,
-    int ModelYear,
-    string Trim,
+    int? ModelYear,
+    string? Trim,
     string? Variant,
-    string Segment,
-    string BodyType,
-    int Doors,
-    int Seats,
-    string DriveType,
-    string Market,
-    string Country,
+    string? Segment,
+    string? BodyType,
+    int? Doors,
+    int? Seats,
+    string? DriveType,
+    string? Market,
+    string? Country,
     string? Plant,
     string? VinPrefix,
-    string Engine,
-    string Transmission,
-    string Fuel,
-    string Emission,
+    string? Engine,
+    string? Transmission,
+    string? Fuel,
+    string? Emission,
     string Status,
     string Icon,
     decimal PriceUsd,
@@ -78,26 +78,26 @@ public record CreateVehicleRequest(
     string? Platform,
     string? ProjectCode,
     string? InternalCode,
-    int ModelYear,
-    string Trim,
+    int? ModelYear,
+    string? Trim,
     string? Variant,
-    string Segment,
-    string BodyType,
-    int Doors,
-    int Seats,
-    string DriveType,
-    string Market,
-    string Country,
+    string? Segment,
+    string? BodyType,
+    int? Doors,
+    int? Seats,
+    string? DriveType,
+    string? Market,
+    string? Country,
     string? Plant,
     string? VinPrefix,
-    string Engine,
-    string Transmission,
-    string Fuel,
-    string Emission,
-    string Status,
-    string Icon,
-    decimal PriceUsd,
-    decimal PriceTry,
+    string? Engine,
+    string? Transmission,
+    string? Fuel,
+    string? Emission,
+    string? Status,
+    string? Icon,
+    decimal? PriceUsd,
+    decimal? PriceTry,
     string? DimensionsJson,
     string? WeightsJson,
     string? EngineSpecJson,
@@ -115,33 +115,33 @@ public record CreateVehicleRequest(
 );
 
 public record UpdateVehicleRequest(
-    string Brand,
-    string Model,
+    string? Brand,
+    string? Model,
     string? Series,
     string? Generation,
     string? Platform,
     string? ProjectCode,
     string? InternalCode,
-    int ModelYear,
-    string Trim,
+    int? ModelYear,
+    string? Trim,
     string? Variant,
-    string Segment,
-    string BodyType,
-    int Doors,
-    int Seats,
-    string DriveType,
-    string Market,
-    string Country,
+    string? Segment,
+    string? BodyType,
+    int? Doors,
+    int? Seats,
+    string? DriveType,
+    string? Market,
+    string? Country,
     string? Plant,
     string? VinPrefix,
-    string Engine,
-    string Transmission,
-    string Fuel,
-    string Emission,
-    string Status,
-    string Icon,
-    decimal PriceUsd,
-    decimal PriceTry,
+    string? Engine,
+    string? Transmission,
+    string? Fuel,
+    string? Emission,
+    string? Status,
+    string? Icon,
+    decimal? PriceUsd,
+    decimal? PriceTry,
     string? DimensionsJson,
     string? WeightsJson,
     string? EngineSpecJson,
@@ -182,7 +182,7 @@ public class GetVehiclesHandler(VehiclesDbContext db) : IRequestHandler<GetVehic
                 v.Model.ToLower().Contains(s) ||
                 (v.ProjectCode != null && v.ProjectCode.ToLower().Contains(s)) ||
                 (v.VinPrefix != null && v.VinPrefix.ToLower().Contains(s)) ||
-                v.Trim.ToLower().Contains(s));
+                (v.Trim != null && v.Trim.ToLower().Contains(s)));
         }
 
         if (!string.IsNullOrWhiteSpace(query.Brand))
@@ -325,33 +325,33 @@ public class CreateVehicleHandler(VehiclesDbContext db, ICurrentTenant currentTe
         var vehicle = new Vehicle
         {
             TenantId = currentTenant.Id.GetValueOrDefault(),
-            Brand = req.Brand.Trim(),
-            Model = req.Model.Trim(),
+            Brand = string.IsNullOrWhiteSpace(req.Brand) ? "Marka" : req.Brand.Trim(),
+            Model = string.IsNullOrWhiteSpace(req.Model) ? "Model" : req.Model.Trim(),
             Series = req.Series?.Trim(),
             Generation = req.Generation?.Trim(),
             Platform = req.Platform?.Trim(),
             ProjectCode = req.ProjectCode?.Trim(),
             InternalCode = req.InternalCode?.Trim() ?? req.ProjectCode?.Trim(),
             ModelYear = req.ModelYear,
-            Trim = req.Trim.Trim(),
+            Trim = req.Trim?.Trim(),
             Variant = req.Variant?.Trim(),
-            Segment = req.Segment.Trim(),
-            BodyType = req.BodyType.Trim(),
+            Segment = req.Segment?.Trim(),
+            BodyType = req.BodyType?.Trim(),
             Doors = req.Doors,
             Seats = req.Seats,
-            DriveType = req.DriveType.Trim(),
-            Market = req.Market.Trim(),
-            Country = req.Country.Trim(),
+            DriveType = req.DriveType?.Trim(),
+            Market = req.Market?.Trim(),
+            Country = req.Country?.Trim(),
             Plant = req.Plant?.Trim(),
             VinPrefix = req.VinPrefix?.Trim(),
-            Engine = req.Engine.Trim(),
-            Transmission = req.Transmission.Trim(),
-            Fuel = req.Fuel.Trim(),
-            Emission = req.Emission.Trim(),
-            Status = req.Status.Trim(),
+            Engine = req.Engine?.Trim(),
+            Transmission = req.Transmission?.Trim(),
+            Fuel = req.Fuel?.Trim(),
+            Emission = req.Emission?.Trim(),
+            Status = string.IsNullOrWhiteSpace(req.Status) ? "Active" : req.Status.Trim(),
             Icon = string.IsNullOrWhiteSpace(req.Icon) ? "🚗" : req.Icon.Trim(),
-            PriceUsd = req.PriceUsd,
-            PriceTry = req.PriceTry,
+            PriceUsd = req.PriceUsd ?? 0m,
+            PriceTry = req.PriceTry ?? 0m,
             DimensionsJson = req.DimensionsJson ?? "{}",
             WeightsJson = req.WeightsJson ?? "{}",
             EngineSpecJson = req.EngineSpecJson ?? "{}",
@@ -432,33 +432,33 @@ public class UpdateVehicleHandler(VehiclesDbContext db) : IRequestHandler<Update
         if (vehicle == null) return null;
 
         var req = command.Request;
-        vehicle.Brand = req.Brand.Trim();
-        vehicle.Model = req.Model.Trim();
-        vehicle.Series = req.Series?.Trim();
-        vehicle.Generation = req.Generation?.Trim();
-        vehicle.Platform = req.Platform?.Trim();
-        vehicle.ProjectCode = req.ProjectCode?.Trim();
-        vehicle.InternalCode = req.InternalCode?.Trim() ?? req.ProjectCode?.Trim();
-        vehicle.ModelYear = req.ModelYear;
-        vehicle.Trim = req.Trim.Trim();
-        vehicle.Variant = req.Variant?.Trim();
-        vehicle.Segment = req.Segment.Trim();
-        vehicle.BodyType = req.BodyType.Trim();
-        vehicle.Doors = req.Doors;
-        vehicle.Seats = req.Seats;
-        vehicle.DriveType = req.DriveType.Trim();
-        vehicle.Market = req.Market.Trim();
-        vehicle.Country = req.Country.Trim();
-        vehicle.Plant = req.Plant?.Trim();
-        vehicle.VinPrefix = req.VinPrefix?.Trim();
-        vehicle.Engine = req.Engine.Trim();
-        vehicle.Transmission = req.Transmission.Trim();
-        vehicle.Fuel = req.Fuel.Trim();
-        vehicle.Emission = req.Emission.Trim();
-        vehicle.Status = req.Status.Trim();
-        vehicle.Icon = string.IsNullOrWhiteSpace(req.Icon) ? "🚗" : req.Icon.Trim();
-        vehicle.PriceUsd = req.PriceUsd;
-        vehicle.PriceTry = req.PriceTry;
+        if (!string.IsNullOrWhiteSpace(req.Brand)) vehicle.Brand = req.Brand.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Model)) vehicle.Model = req.Model.Trim();
+        if (req.Series != null) vehicle.Series = req.Series.Trim();
+        if (req.Generation != null) vehicle.Generation = req.Generation.Trim();
+        if (req.Platform != null) vehicle.Platform = req.Platform.Trim();
+        if (req.ProjectCode != null) vehicle.ProjectCode = req.ProjectCode.Trim();
+        if (req.InternalCode != null) vehicle.InternalCode = req.InternalCode.Trim();
+        if (req.ModelYear.HasValue) vehicle.ModelYear = req.ModelYear.Value;
+        if (!string.IsNullOrWhiteSpace(req.Trim)) vehicle.Trim = req.Trim.Trim();
+        if (req.Variant != null) vehicle.Variant = req.Variant.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Segment)) vehicle.Segment = req.Segment.Trim();
+        if (!string.IsNullOrWhiteSpace(req.BodyType)) vehicle.BodyType = req.BodyType.Trim();
+        if (req.Doors.HasValue) vehicle.Doors = req.Doors.Value;
+        if (req.Seats.HasValue) vehicle.Seats = req.Seats.Value;
+        if (!string.IsNullOrWhiteSpace(req.DriveType)) vehicle.DriveType = req.DriveType.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Market)) vehicle.Market = req.Market.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Country)) vehicle.Country = req.Country.Trim();
+        if (req.Plant != null) vehicle.Plant = req.Plant.Trim();
+        if (req.VinPrefix != null) vehicle.VinPrefix = req.VinPrefix.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Engine)) vehicle.Engine = req.Engine.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Transmission)) vehicle.Transmission = req.Transmission.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Fuel)) vehicle.Fuel = req.Fuel.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Emission)) vehicle.Emission = req.Emission.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Status)) vehicle.Status = req.Status.Trim();
+        if (!string.IsNullOrWhiteSpace(req.Icon)) vehicle.Icon = req.Icon.Trim();
+        if (req.PriceUsd.HasValue) vehicle.PriceUsd = req.PriceUsd.Value;
+        if (req.PriceTry.HasValue) vehicle.PriceTry = req.PriceTry.Value;
         if (req.DimensionsJson != null) vehicle.DimensionsJson = req.DimensionsJson;
         if (req.WeightsJson != null) vehicle.WeightsJson = req.WeightsJson;
         if (req.EngineSpecJson != null) vehicle.EngineSpecJson = req.EngineSpecJson;
@@ -472,7 +472,7 @@ public class UpdateVehicleHandler(VehiclesDbContext db) : IRequestHandler<Update
         if (req.InfotainmentJson != null) vehicle.InfotainmentJson = req.InfotainmentJson;
         if (req.WarrantyJson != null) vehicle.WarrantyJson = req.WarrantyJson;
         if (req.EquipmentJson != null) vehicle.EquipmentJson = req.EquipmentJson;
-        vehicle.Notes = req.Notes;
+        if (req.Notes != null) vehicle.Notes = req.Notes;
         vehicle.UpdatedAt = DateTime.UtcNow;
 
         await db.SaveChangesAsync(cancellationToken);

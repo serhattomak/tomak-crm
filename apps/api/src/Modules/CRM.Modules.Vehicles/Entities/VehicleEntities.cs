@@ -45,11 +45,11 @@ public class Vehicle : ITenantScopedEntity
     public string? InternalCode { get; set; }
 
     [Column("model_year")]
-    public int ModelYear { get; set; } = 2025;
+    public int? ModelYear { get; set; }
 
     [Column("trim")]
     [MaxLength(100)]
-    public string Trim { get; set; } = "Base";
+    public string? Trim { get; set; }
 
     [Column("variant")]
     [MaxLength(100)]
@@ -57,29 +57,29 @@ public class Vehicle : ITenantScopedEntity
 
     [Column("segment")]
     [MaxLength(50)]
-    public string Segment { get; set; } = "C-SUV";
+    public string? Segment { get; set; }
 
     [Column("body_type")]
     [MaxLength(50)]
-    public string BodyType { get; set; } = "SUV";
+    public string? BodyType { get; set; }
 
     [Column("doors")]
-    public int Doors { get; set; } = 5;
+    public int? Doors { get; set; }
 
     [Column("seats")]
-    public int Seats { get; set; } = 5;
+    public int? Seats { get; set; }
 
     [Column("drive_type")]
     [MaxLength(50)]
-    public string DriveType { get; set; } = "FWD";
+    public string? DriveType { get; set; }
 
     [Column("market")]
     [MaxLength(100)]
-    public string Market { get; set; } = "Global";
+    public string? Market { get; set; }
 
     [Column("country")]
     [MaxLength(100)]
-    public string Country { get; set; } = "Türkiye";
+    public string? Country { get; set; }
 
     [Column("plant")]
     [MaxLength(150)]
@@ -91,19 +91,19 @@ public class Vehicle : ITenantScopedEntity
 
     [Column("engine")]
     [MaxLength(150)]
-    public string Engine { get; set; } = "2.0L Turbo";
+    public string? Engine { get; set; }
 
     [Column("transmission")]
     [MaxLength(100)]
-    public string Transmission { get; set; } = "8-Speed Automatic";
+    public string? Transmission { get; set; }
 
     [Column("fuel")]
     [MaxLength(50)]
-    public string Fuel { get; set; } = "Petrol";
+    public string? Fuel { get; set; }
 
     [Column("emission")]
     [MaxLength(50)]
-    public string Emission { get; set; } = "Euro 6d";
+    public string? Emission { get; set; }
 
     [Column("status")]
     [MaxLength(50)]
