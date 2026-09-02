@@ -147,7 +147,11 @@ public record QuoteTemplateDto(
     string? BankDetails,
     bool IsDefault,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    string? Subject = null,
+    string? HtmlBody = null,
+    IReadOnlyList<string>? Variables = null,
+    string? PreviewHtml = null
 );
 
 public record CreateQuoteItemRequest(
@@ -290,3 +294,55 @@ public record PublicAcceptQuoteRequest(
     string? CustomerNotes,
     string? AcceptedByName
 );
+
+/// <summary>
+/// Mapping helpers for QuoteTemplate entity ↔ DTO.
+/// Keeps subject/htmlBody/variables handling centralized and backward compatible (null allowed).
+/// </summary>
+public static class QuoteTemplateMappings
+{
+    /// <summary>
+    /// Maps QuoteTemplate entity to DTO, including Subject/HtmlBody/Variables via GetVariables().
+    /// PreviewHtml is optional and only populated for preview responses.
+    /// </summary>
+    public static QuoteTemplateDto ToDto(this CRM.Modules.Orders.Entities.QuoteTemplate entity, string? previewHtml = null)
+    {
+        IReadOnlyList<string> variables = entity.GetVariables();
+        return new QuoteTemplateDto(
+            entity.Id,
+            entity.Name,
+            entity.TermsAndConditions,
+            entity.PaymentTerms,
+            entity.DeliveryTerms,
+            entity.BankDetails,
+            entity.IsDefault,
+            entity.CreatedAt,
+            entity.UpdatedAt,
+            entity.Subject,
+            entity.HtmlBody,
+            variables,
+            previewHtml
+        );
+    }
+
+    /// <summary>
+    /// Applies DTO values onto an existing entity (reverse mapping). Handles trimming and Variables serialization.
+    /// </summary>
+    public static void ApplyToEntity(this QuoteTemplateDto dto, CRM.Modules.Orders.Entities.QuoteTemplate entity)
+    {
+        entity.Name = dto.Name.Trim();
+        entity.TermsAndConditions = dto.TermsAndConditions?.Trim();
+        entity.PaymentTerms = dto.PaymentTerms?.Trim();
+        entity.DeliveryTerms = dto.DeliveryTerms?.Trim();
+        entity.BankDetails = dto.BankDetails?.Trim();
+        entity.IsDefault = dto.IsDefault;
+        entity.Subject = dto.Subject?.Trim();
+        entity.HtmlBody = dto.HtmlBody;
+        if (dto.Variables is not null)
+        {
+            entity.SetVariables(new List<string>(dto.Variables));
+        }
+
+        entity.UpdatedAt = DateTime.UtcNow;
+    }
+}

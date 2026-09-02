@@ -2761,6 +2761,49 @@ export class ApiClient {
     );
   }
 
+  /**
+   * Preview a quote email template with Handlebars compilation.
+   * POST /api/quotes/templates/{id}/preview — uses mock quote data when quoteId omitted,
+   * or real quote data when quoteId provided. Variables overrides allow caller-supplied replacements.
+   * Returns rendered html + subject (both sanitized server-side; itemsTable is raw HTML table).
+   */
+  static async previewQuoteTemplate(
+    id: string,
+    data: { quoteId?: string; variables?: Record<string, string> } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<{ html: string; subject: string }>> {
+    return ApiClient.request<{ html: string; subject: string }>(
+      `/api/quotes/templates/${id}/preview`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  /**
+   * Test-send a quote email template (Phase 1: preview only, no real SMTP).
+   * POST /api/quotes/templates/{id}/test-send — validates toEmail server-side (EmailAddressAttribute),
+   * renders preview with real quote when quoteId provided else mock, logs + in-app notification.
+   * Returns previewHtml + sent + message (subject/toEmail also returned by backend via TestSendQuoteTemplateResponse).
+   * Error handling via ApiResponse.errorCode/message.
+   */
+  static async testSendQuoteTemplate(
+    id: string,
+    data: { toEmail: string; quoteId?: string },
+    tenantId?: string
+  ): Promise<ApiResponse<{ previewHtml: string; sent: boolean; message?: string }>> {
+    return ApiClient.request<{ previewHtml: string; sent: boolean; message?: string }>(
+      `/api/quotes/templates/${id}/test-send`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
   // Public quote views (unauthenticated)
   static async getPublicQuote(
     token: string
@@ -7006,6 +7049,36 @@ export interface QuoteTemplateDto {
   paymentTerms?: string;
   termsAndConditions?: string;
   updatedAt: string;
+  /** E-posta konu şablonu — örn. "Teklif {{quoteNumber}} - {{customerName}}", max 200 karakter. */
+  subject?: string;
+  /** Handlebars HTML gövdesi — {{variables}} içerebilir, itemsTable raw HTML içerir. */
+  htmlBody?: string;
+  /** Şablonun kullandığı Handlebars değişken anahtarları — örn. ["customerName","quoteNumber"] */
+  variables?: string[];
+  /** Önizleme sırasında döndürülen işlenmiş HTML — sadece preview/test-send yanıtlarında dolu. */
+  previewHtml?: string;
+}
+
+/**
+ * Preview response from POST /api/quotes/templates/{id}/preview
+ * Backend returns { html, subject } (camelCase via JSON naming policy).
+ */
+export interface PreviewQuoteTemplateResponse {
+  html: string;
+  subject: string;
+}
+
+/**
+ * Test-send response from POST /api/quotes/templates/{id}/test-send
+ * Backend returns { previewHtml, subject, sent, message, toEmail } (camelCase).
+ * message/subject/toEmail optional for backward compat; previewHtml + sent are required.
+ */
+export interface TestSendQuoteTemplateResponse {
+  message?: string;
+  previewHtml: string;
+  sent: boolean;
+  subject?: string;
+  toEmail?: string;
 }
 
 export interface PublicQuoteViewDto {

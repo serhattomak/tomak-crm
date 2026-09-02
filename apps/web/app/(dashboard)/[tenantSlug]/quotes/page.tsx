@@ -32,6 +32,7 @@ import {
   FileText,
   History,
   Link as LinkIcon,
+  Mail,
   Package,
   Plus,
   Printer,
@@ -49,9 +50,12 @@ import {
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
+import { TemplatePreview } from "@/components/quotes/TemplatePreview";
+import { TestSendModal } from "@/components/quotes/TestSendModal";
+import { VariableChips } from "@/components/quotes/VariableChips";
 import {
   ApiClient,
   type CustomerListDto,
@@ -317,7 +321,7 @@ export default function QuotesPage() {
             type="button"
           >
             <Settings className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
-            <span>Şart Şablonları</span>
+            <span>E-posta Şablonları</span>
           </button>
 
           <button
@@ -3241,7 +3245,13 @@ function QuoteDetailDrawer({
 }
 
 // ============================================================================
-// QUOTE TEMPLATES MODAL
+// QUOTE TEMPLATES MODAL — Split-pane editor (Subject + HtmlBody + chips)
+// Decision: UPGRADE MODAL to split-pane (less navigation changes, preserves
+// existing quotes/page.tsx flow). Page route /quotes/templates not created;
+// modal is the single entry. PermissionGate Quotes.Templates wraps editor.
+// Right pane: live preview iframe sandbox="allow-same-origin" srcDoc with
+// 400ms debounced ApiClient.previewQuoteTemplate, zoom 60-140% + copy HTML,
+// quote selector for real-data preview, + Test Gönder modal (subtask 06).
 // ============================================================================
 function QuoteTemplatesModal({
   isOpen,
@@ -3253,15 +3263,37 @@ function QuoteTemplatesModal({
   const { activeTenant } = usePermissions();
   const [templates, setTemplates] = useState<QuoteTemplateDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
-  // Form State
+  // Form state — email template fields + legacy fields for backward compat
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
+  const [subject, setSubject] = useState("");
+  const [htmlBody, setHtmlBody] = useState("");
   const [termsAndConditions, setTermsAndConditions] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [deliveryTerms, setDeliveryTerms] = useState("");
   const [bankDetails, setBankDetails] = useState("");
   const [isDefault, setIsDefault] = useState(false);
+  const [subjectError, setSubjectError] = useState<string | undefined>(undefined);
+  const [htmlBodyError, setHtmlBodyError] = useState<string | undefined>(undefined);
+  const [nameError, setNameError] = useState<string | undefined>(undefined);
+  const [showExtraFields, setShowExtraFields] = useState(false);
+  const htmlBodyRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Preview + test-send state — subtask 06
+  const [previewHtml, setPreviewHtml] = useState<string>("");
+  const [previewSubject, setPreviewSubject] = useState<string>("");
+  const [isPreviewLoading, setIsPreviewLoading] = useState<boolean>(false);
+  const [previewError, setPreviewError] = useState<string | null>(null);
+  const [previewZoom, setPreviewZoom] = useState<60 | 80 | 100 | 140>(100);
+  const [previewQuoteId, setPreviewQuoteId] = useState<string | null>(null);
+  const [previewQuotes, setPreviewQuotes] = useState<QuoteSummaryDto[]>([]);
+  const [isQuotesLoading, setIsQuotesLoading] = useState<boolean>(false);
+  const [isTestSendOpen, setIsTestSendOpen] = useState<boolean>(false);
+  const previewRequestIdRef = useRef<number>(0);
 
   const fetchTemplates = useCallback(async () => {
     if (!activeTenant?.id) {
@@ -3284,236 +3316,749 @@ function QuoteTemplatesModal({
     fetchTemplates();
   }, [fetchTemplates]);
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!(activeTenant?.id && name.trim())) {
-      return;
-    }
+  const resetForm = useCallback(() => {
+    setEditingId(null);
+    setName("");
+    setSubject("");
+    setHtmlBody("");
+    setTermsAndConditions("");
+    setPaymentTerms("");
+    setDeliveryTerms("");
+    setBankDetails("");
+    setIsDefault(false);
+    setSubjectError(undefined);
+    setHtmlBodyError(undefined);
+    setNameError(undefined);
+    setShowExtraFields(false);
+  }, []);
 
-    try {
-      if (editingId) {
-        await ApiClient.updateQuoteTemplate(
-          editingId,
-          {
-            bankDetails,
-            deliveryTerms,
-            isDefault,
-            name,
-            paymentTerms,
-            termsAndConditions,
-          },
-          activeTenant.id
-        );
-        toast.success("Şablon güncellendi");
-      } else {
-        await ApiClient.createQuoteTemplate(
-          {
-            bankDetails,
-            deliveryTerms,
-            isDefault,
-            name,
-            paymentTerms,
-            termsAndConditions,
-          },
-          activeTenant.id
-        );
-        toast.success("Yeni şablon oluşturuldu");
-      }
-      setEditingId(null);
-      setName("");
-      setTermsAndConditions("");
-      setPaymentTerms("");
-      setDeliveryTerms("");
-      setBankDetails("");
-      setIsDefault(false);
-      fetchTemplates();
-    } catch {
-      toast.error("İşlem sırasında hata oluştu");
-    }
-  };
+  const handleSelectNew = useCallback(() => {
+    resetForm();
+  }, [resetForm]);
 
-  const handleEdit = (tmpl: QuoteTemplateDto) => {
+  const handleEdit = useCallback((tmpl: QuoteTemplateDto) => {
     setEditingId(tmpl.id);
     setName(tmpl.name);
-    setTermsAndConditions(tmpl.termsAndConditions || "");
-    setPaymentTerms(tmpl.paymentTerms || "");
-    setDeliveryTerms(tmpl.deliveryTerms || "");
-    setBankDetails(tmpl.bankDetails || "");
+    setSubject(tmpl.subject ?? "");
+    setHtmlBody(tmpl.htmlBody ?? "");
+    setTermsAndConditions(tmpl.termsAndConditions ?? "");
+    setPaymentTerms(tmpl.paymentTerms ?? "");
+    setDeliveryTerms(tmpl.deliveryTerms ?? "");
+    setBankDetails(tmpl.bankDetails ?? "");
     setIsDefault(tmpl.isDefault);
-  };
+    setSubjectError(undefined);
+    setHtmlBodyError(undefined);
+    setNameError(undefined);
+    // Show extra fields if legacy content exists
+    if (
+      tmpl.paymentTerms ||
+      tmpl.deliveryTerms ||
+      tmpl.bankDetails ||
+      tmpl.termsAndConditions
+    ) {
+      setShowExtraFields(true);
+    }
+  }, []);
 
-  const handleDelete = async (id: string) => {
+  const extractVariables = useCallback((text: string): string[] => {
+    const found = new Set<string>();
+    for (const match of text.matchAll(/\{\{\s*(\w+)\s*\}\}/g)) {
+      const varName = match[1];
+      if (varName) {
+        found.add(varName);
+      }
+    }
+    return Array.from(found);
+  }, []);
+
+  const insertVariable = useCallback(
+    (varName: string): void => {
+      const token = `{{${varName}}}`;
+      const el = htmlBodyRef.current;
+      if (!el) {
+        setHtmlBody((prev) => `${prev}${token}`);
+        return;
+      }
+      const start = el.selectionStart ?? htmlBody.length;
+      const end = el.selectionEnd ?? htmlBody.length;
+      const before = htmlBody.slice(0, start);
+      const after = htmlBody.slice(end);
+      const next = `${before}${token}${after}`;
+      setHtmlBody(next);
+      // Preserve cursor — requestAnimationFrame keeps focus + undo stack
+      const pos = start + token.length;
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(pos, pos);
+      });
+    },
+    [htmlBody]
+  );
+
+  const fallbackHtml: string = useMemo<string>(() => {
+    const safeSubject: string = (subject.trim() || "(Konu yok)")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    const body: string =
+      htmlBody.trim() ||
+      "<p style='color:#71717a;font-size:13px'>Önizleme için HTML gövdesi girin…</p>";
+    return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;padding:16px;color:#18181b;line-height:1.6;font-size:13px} h1,h2,h3{font-weight:700;margin:8px 0} p{margin:6px 0} table{border-collapse:collapse;width:100%;margin:12px 0} th,td{border:1px solid #e4e4e7;padding:6px 8px;text-align:left;font-size:12px} th{background:#f4f4f5} a{color:#2563eb;word-break:break-all}</style></head><body><p style="font-size:11px;color:#71717a;border-bottom:1px solid #e4e4e7;padding-bottom:8px;margin-bottom:12px">Konu: ${safeSubject}</p>${body}</body></html>`;
+  }, [subject, htmlBody]);
+
+  const handleCopyHtml = useCallback(async (): Promise<void> => {
+    const html: string = previewHtml || fallbackHtml;
+    try {
+      await navigator.clipboard.writeText(html);
+      toast.success("Kopyalandı");
+    } catch {
+      toast.error("Kopyalama başarısız");
+    }
+  }, [previewHtml, fallbackHtml]);
+
+  const validateForm = useCallback((): boolean => {
+    let valid = true;
+    if (!name.trim()) {
+      setNameError("Şablon adı zorunlu");
+      valid = false;
+    } else {
+      setNameError(undefined);
+    }
+    if (!subject.trim()) {
+      setSubjectError("Konu zorunlu");
+      valid = false;
+    } else if (subject.length > 200) {
+      setSubjectError("En fazla 200 karakter");
+      valid = false;
+    } else {
+      setSubjectError(undefined);
+    }
+    if (!htmlBody.trim()) {
+      setHtmlBodyError("HTML gövdesi zorunlu");
+      valid = false;
+    } else {
+      setHtmlBodyError(undefined);
+    }
+    return valid;
+  }, [name, subject, htmlBody]);
+
+  const handleSave = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!activeTenant?.id) {
+        return;
+      }
+      if (!validateForm()) {
+        return;
+      }
+      const variables = extractVariables(`${subject} ${htmlBody}`);
+      setIsSaving(true);
+      try {
+        const payload: Partial<QuoteTemplateDto> = {
+          bankDetails: bankDetails.trim() || undefined,
+          deliveryTerms: deliveryTerms.trim() || undefined,
+          htmlBody: htmlBody.trim(),
+          isDefault,
+          name: name.trim(),
+          paymentTerms: paymentTerms.trim() || undefined,
+          subject: subject.trim(),
+          termsAndConditions: termsAndConditions.trim() || undefined,
+          variables,
+        };
+        if (editingId) {
+          const res = await ApiClient.updateQuoteTemplate(
+            editingId,
+            payload,
+            activeTenant.id
+          );
+          if (!res.success) {
+            toast.error(res.message || "Güncelleme başarısız");
+            return;
+          }
+          toast.success("Şablon güncellendi");
+        } else {
+          const res = await ApiClient.createQuoteTemplate(
+            payload,
+            activeTenant.id
+          );
+          if (!res.success) {
+            toast.error(res.message || "Oluşturma başarısız");
+            return;
+          }
+          toast.success("Yeni şablon oluşturuldu");
+        }
+        // Optimistic IsDefault: single default per tenant — refresh list
+        resetForm();
+        await fetchTemplates();
+      } catch {
+        toast.error("İşlem sırasında hata oluştu");
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [
+      activeTenant?.id,
+      bankDetails,
+      deliveryTerms,
+      editingId,
+      extractVariables,
+      fetchTemplates,
+      htmlBody,
+      isDefault,
+      name,
+      paymentTerms,
+      resetForm,
+      subject,
+      termsAndConditions,
+      validateForm,
+    ]
+  );
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!(activeTenant?.id && deleteConfirmId)) {
+      return;
+    }
+    setIsDeletingId(deleteConfirmId);
+    try {
+      const res = await ApiClient.deleteQuoteTemplate(
+        deleteConfirmId,
+        activeTenant.id
+      );
+      if (!res.success) {
+        toast.error(res.message || "Silinemedi");
+        return;
+      }
+      toast.success("Şablon silindi");
+      if (editingId === deleteConfirmId) {
+        resetForm();
+      }
+      setDeleteConfirmId(null);
+      await fetchTemplates();
+    } catch {
+      toast.error("Silinemedi");
+    } finally {
+      setIsDeletingId(null);
+    }
+  }, [activeTenant?.id, deleteConfirmId, editingId, fetchTemplates, resetForm]);
+
+  // Debounced preview — 400ms on subject/htmlBody/quoteId change, abort previous via AbortController + requestId race guard
+  useEffect(() => {
+    if (!editingId) {
+      setPreviewHtml("");
+      setPreviewSubject("");
+      setPreviewError(null);
+      setIsPreviewLoading(false);
+      return;
+    }
+    if (!subject.trim() && !htmlBody.trim()) {
+      setPreviewHtml("");
+      setPreviewSubject("");
+      setPreviewError(null);
+      setIsPreviewLoading(false);
+      return;
+    }
     if (!activeTenant?.id) {
       return;
     }
-    try {
-      await ApiClient.deleteQuoteTemplate(id, activeTenant.id);
-      toast.success("Şablon silindi");
-      fetchTemplates();
-    } catch {
-      toast.error("Silinemedi");
-    }
-  };
+    const controller = new AbortController();
+    const currentId = (previewRequestIdRef.current += 1);
+    setIsPreviewLoading(true);
+    setPreviewError(null);
+    const handle = window.setTimeout(async () => {
+      if (controller.signal.aborted) {
+        return;
+      }
+      try {
+        const res = await ApiClient.previewQuoteTemplate(
+          editingId,
+          { quoteId: previewQuoteId ?? undefined, variables: {} },
+          activeTenant.id
+        );
+        if (controller.signal.aborted || previewRequestIdRef.current !== currentId) {
+          return;
+        }
+        if (res.success && res.data) {
+          setPreviewHtml(res.data.html);
+          setPreviewSubject(res.data.subject ?? "");
+          setPreviewError(null);
+        } else {
+          setPreviewError(res.message || "Önizleme alınamadı");
+          setPreviewHtml("");
+          setPreviewSubject("");
+        }
+      } catch {
+        if (controller.signal.aborted || previewRequestIdRef.current !== currentId) {
+          return;
+        }
+        setPreviewError("Önizleme sırasında hata oluştu");
+        setPreviewHtml("");
+        setPreviewSubject("");
+      } finally {
+        if (!controller.signal.aborted && previewRequestIdRef.current === currentId) {
+          setIsPreviewLoading(false);
+        }
+      }
+    }, 400);
+    return () => {
+      controller.abort();
+      window.clearTimeout(handle);
+    };
+  }, [editingId, subject, htmlBody, previewQuoteId, activeTenant?.id]);
 
-  // Close on Escape key
+  // Fetch recent quotes for real-data preview selector
+  useEffect(() => {
+    if (!isOpen || !activeTenant?.id) {
+      return;
+    }
+    let cancelled = false;
+    const fetchQuotesForPreview = async (): Promise<void> => {
+      setIsQuotesLoading(true);
+      try {
+        const res = await ApiClient.getQuotes(
+          { pageSize: 20 },
+          activeTenant.id
+        );
+        if (!cancelled && res.success && res.data) {
+          setPreviewQuotes(res.data.items ?? []);
+        }
+      } catch {
+        // ignore preview quote fetch errors
+      } finally {
+        if (!cancelled) {
+          setIsQuotesLoading(false);
+        }
+      }
+    };
+    void fetchQuotesForPreview();
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, activeTenant?.id]);
+
+  // Close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (isTestSendOpen) {
+          setIsTestSendOpen(false);
+          return;
+        }
         onClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [isTestSendOpen, onClose]);
+
+  if (!isOpen) {
+    return null;
+  }
+
+  const selectedTemplate = editingId
+    ? templates.find((t) => t.id === editingId) ?? null
+    : null;
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-2xl flex-col space-y-5 overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b pb-4 dark:border-zinc-800/90">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-              <Settings className="h-5 w-5" />
-            </div>
-            <div className="min-w-0">
-              <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-zinc-100">
-                Teklif Şart & Banka Şablonları
-              </h3>
-              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-                Tekliflerde tek tıkla kullanılan hazır şartnameler
+      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <PermissionGate
+          fallback={
+            <div className="p-8 text-center">
+              <p className="font-semibold text-sm text-zinc-700 dark:text-zinc-300">
+                Bu alanı görüntülemek için yetkiniz yok.
               </p>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Yöneticinizden Quotes.Templates izni isteyin.
+              </p>
+              <button
+                className="mt-4 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                onClick={onClose}
+                type="button"
+              >
+                Kapat
+              </button>
+            </div>
+          }
+          permission="Quotes.Templates"
+        >
+          {/* Header — Bento, 1px border, Geist, 4pt spacing, 8-20px radii */}
+          <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b bg-white/80 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4 dark:border-zinc-800/90 dark:bg-zinc-900/80">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                <Settings className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="truncate font-bold text-sm text-zinc-900 tracking-tight sm:text-base dark:text-zinc-100">
+                  E-posta Şablonları
+                </h3>
+                <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                  Handlebars konu + HTML gövdesi — değişken ekle, varsayılan
+                  seç, kaydet
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="hidden rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:inline-flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                onClick={handleSelectNew}
+                type="button"
+              >
+                <Plus className="mr-1 h-3.5 w-3.5" />
+                Yeni Şablon
+              </button>
+              <button
+                className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                onClick={onClose}
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
           </div>
-          <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
 
-        {/* Existing Templates list */}
-        <div className="custom-scrollbar max-h-48 space-y-2 overflow-y-auto">
-          {templates.map((t) => (
-            <div
-              className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30"
-              key={t.id}
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-                  {t.name}
+          {/* Body — Workbench Bento Grid, responsive stacked on mobile */}
+          <div className="custom-scrollbar flex flex-1 flex-col overflow-hidden">
+            {/* Template list strip */}
+            <div className="shrink-0 border-zinc-200/60 border-b bg-zinc-50/60 px-3 py-2.5 sm:px-4 dark:border-zinc-800/60 dark:bg-zinc-800/20">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
+                  Şablonlar ({templates.length})
                 </span>
-                {t.isDefault && (
-                  <span className="rounded bg-blue-100 px-2 py-0.5 font-bold text-[9px] text-blue-700">
-                    Varsayılan
+                {isLoading ? (
+                  <span className="inline-flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <RefreshCw className="h-3 w-3 animate-spin" />
+                    Yükleniyor...
                   </span>
+                ) : null}
+              </div>
+              <div className="custom-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
+                {templates.length === 0 && !isLoading ? (
+                  <span className="rounded-xl border border-dashed border-zinc-300 bg-white px-3 py-2 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
+                    Henüz şablon yok — sağdaki editörden oluşturun.
+                  </span>
+                ) : (
+                  templates.map((t) => {
+                    const isActive = t.id === editingId;
+                    return (
+                      <button
+                        className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-left shadow-2xs transition ${
+                          isActive
+                            ? "border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100"
+                            : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                        }`}
+                        key={t.id}
+                        onClick={() => handleEdit(t)}
+                        type="button"
+                      >
+                        <span className="max-w-[160px] truncate font-semibold text-xs">
+                          {t.name}
+                        </span>
+                        {t.isDefault ? (
+                          <span className="rounded-full bg-blue-600 px-1.5 py-0.5 font-bold text-[9px] text-white">
+                            Varsayılan
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  })
                 )}
               </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  className="rounded-lg bg-blue-50 px-2.5 py-1 font-semibold text-[11px] text-blue-600 transition hover:bg-blue-100"
-                  onClick={() => handleEdit(t)}
-                  type="button"
-                >
-                  Düzenle
-                </button>
-                <button
-                  className="p-1 text-zinc-400 transition hover:text-rose-600 dark:text-zinc-500"
-                  onClick={() => handleDelete(t.id)}
-                  type="button"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+            </div>
+
+            {/* Split-pane editor: left = editor, right = preview placeholder */}
+            <div className="grid flex-1 grid-cols-1 gap-0 overflow-hidden lg:grid-cols-2">
+              {/* Left pane — editor (Bento card, 1px border, blur) */}
+              <div className="custom-scrollbar overflow-y-auto border-zinc-200 p-4 sm:p-5 lg:border-r dark:border-zinc-800">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="mb-3 flex items-center justify-between">
+                    <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
+                      {editingId ? "Şablonu Düzenle" : "Yeni Şablon"}
+                      {selectedTemplate?.isDefault ? (
+                        <span className="ml-2 rounded bg-blue-100 px-1.5 py-0.5 font-bold text-[9px] text-blue-700">
+                          Varsayılan
+                        </span>
+                      ) : null}
+                    </h4>
+                    {editingId ? (
+                      <button
+                        className="rounded-lg px-2 py-1 text-[11px] text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                        onClick={handleSelectNew}
+                        type="button"
+                      >
+                        Temizle
+                      </button>
+                    ) : null}
+                  </div>
+
+                  <form className="space-y-4" onSubmit={handleSave}>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs" required>
+                        Şablon Adı
+                      </Label>
+                      <Input
+                        error={nameError}
+                        maxLength={255}
+                        onChange={(
+                          e: React.ChangeEvent<HTMLInputElement>
+                        ) => setName(e.target.value)}
+                        placeholder="Örn: Standart Kurumsal Teklif"
+                        required
+                        value={name}
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-xs" required>
+                        E-posta Konusu
+                      </Label>
+                      <Input
+                        error={subjectError}
+                        maxLength={200}
+                        onChange={(
+                          e: React.ChangeEvent<HTMLInputElement>
+                        ) => setSubject(e.target.value)}
+                        placeholder="{{companyName}} Teklif #{{quoteNumber}}"
+                        required
+                        value={subject}
+                      />
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-500">
+                        {subject.length}/200 — Handlebars değişkenleri
+                        desteklenir
+                      </p>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-xs" required>
+                        E-posta HTML Gövdesi
+                      </Label>
+                      <Textarea
+                        className="min-h-[180px] font-mono text-xs leading-relaxed"
+                        error={htmlBodyError}
+                        onChange={(
+                          e: React.ChangeEvent<HTMLTextAreaElement>
+                        ) => setHtmlBody(e.target.value)}
+                        placeholder="<h1>Merhaba {{customerName}}</h1> <p>Teklif tutarı: {{totalAmount}}</p> {{itemsTable}}"
+                        ref={htmlBodyRef}
+                        required
+                        rows={12}
+                        value={htmlBody}
+                      />
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+                      <VariableChips onInsert={insertVariable} />
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900">
+                      <div>
+                        <p className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
+                          Varsayılan şablon
+                        </p>
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                          Yeni tekliflerde otomatik seçilir
+                        </p>
+                      </div>
+                      <Checkbox
+                        checked={isDefault}
+                        onCheckedChange={(checked) =>
+                          setIsDefault(checked === true)
+                        }
+                      />
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800">
+                      <button
+                        className="flex w-full items-center justify-between px-3 py-2.5 text-left"
+                        onClick={() => setShowExtraFields((prev) => !prev)}
+                        type="button"
+                      >
+                        <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
+                          Ek Alanlar
+                        </span>
+                        <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                          {showExtraFields ? "Gizle" : "Göster"}
+                        </span>
+                      </button>
+                      {showExtraFields ? (
+                        <div className="space-y-3 border-zinc-200 border-t p-3 dark:border-zinc-800">
+                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div className="space-y-1.5">
+                              <Label className="text-xs">
+                                Ödeme Şartları
+                              </Label>
+                              <Textarea
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLTextAreaElement>
+                                ) => setPaymentTerms(e.target.value)}
+                                placeholder="Ödeme koşulları..."
+                                rows={2}
+                                value={paymentTerms}
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label className="text-xs">
+                                Teslimat Koşulları
+                              </Label>
+                              <Textarea
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLTextAreaElement>
+                                ) => setDeliveryTerms(e.target.value)}
+                                placeholder="Teslimat koşulları..."
+                                rows={2}
+                                value={deliveryTerms}
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-xs">
+                              Banka & IBAN Bilgileri
+                            </Label>
+                            <Textarea
+                              onChange={(
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                              ) => setBankDetails(e.target.value)}
+                              placeholder="Banka bilgileri..."
+                              rows={2}
+                              value={bankDetails}
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-xs">
+                              Genel Şartlar & Koşullar
+                            </Label>
+                            <Textarea
+                              onChange={(
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                              ) => setTermsAndConditions(e.target.value)}
+                              placeholder="Genel hükümler..."
+                              rows={2}
+                              value={termsAndConditions}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 pt-2">
+                      {editingId ? (
+                        <button
+                          className="rounded-xl border border-rose-200 bg-white px-4 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/50 dark:bg-zinc-900 dark:text-rose-400 dark:hover:bg-rose-950/30"
+                          disabled={isSaving || isDeletingId === editingId}
+                          onClick={() => setDeleteConfirmId(editingId)}
+                          type="button"
+                        >
+                          {isDeletingId === editingId ? "Siliniyor..." : "Sil"}
+                        </button>
+                      ) : (
+                        <span />
+                      )}
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                          onClick={() => {
+                            if (editingId) {
+                              const orig = templates.find(
+                                (t) => t.id === editingId
+                              );
+                              if (orig) {
+                                handleEdit(orig);
+                              }
+                            } else {
+                              resetForm();
+                            }
+                          }}
+                          type="button"
+                        >
+                          Sıfırla
+                        </button>
+                        <button
+                          className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+                          disabled={isSaving}
+                          type="submit"
+                        >
+                          {isSaving
+                            ? "Kaydediliyor..."
+                            : editingId
+                              ? "Güncelle"
+                              : "Şablonu Kaydet"}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              {/* Right pane — live preview iframe + zoom/copy + test-send (subtask 06) */}
+              <div className="flex flex-col overflow-hidden bg-zinc-50/50 p-4 sm:p-5 dark:bg-zinc-800/20">
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <button
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+                    disabled={!editingId}
+                    onClick={() => setIsTestSendOpen(true)}
+                    type="button"
+                  >
+                    <Mail className="h-3.5 w-3.5" />
+                    <span>Test Gönder</span>
+                  </button>
+                  {!editingId ? (
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      Kaydedilmemiş şablon — yerel fallback önizleme
+                    </span>
+                  ) : null}
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <TemplatePreview
+                    error={previewError}
+                    fallbackHtml={fallbackHtml}
+                    isLoading={isPreviewLoading}
+                    isQuotesLoading={isQuotesLoading}
+                    onCopy={handleCopyHtml}
+                    onQuoteChange={setPreviewQuoteId}
+                    onZoomChange={setPreviewZoom}
+                    previewHtml={previewHtml}
+                    previewSubject={previewSubject}
+                    quoteId={previewQuoteId}
+                    quoteOptions={previewQuotes}
+                    zoom={previewZoom}
+                  />
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Create/Edit Form */}
-        <form
-          className="space-y-3 border-zinc-200 border-t pt-3 dark:border-zinc-800"
-          onSubmit={handleSave}
-        >
-          <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-            {editingId ? "Şablonu Düzenle" : "Yeni Şablon Ekle"}
-          </h4>
-
-          <div>
-            <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-              Şablon Adı *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Örn: Standart Kurumsal Lisans Şartnamesi"
-              required
-              type="text"
-              value={name}
-            />
           </div>
+        </PermissionGate>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                Ödeme Şartları
-              </label>
-              <textarea
-                className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setPaymentTerms(e.target.value)}
-                rows={2}
-                value={paymentTerms}
-              />
-            </div>
-            <div>
-              <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                Teslimat Koşulları
-              </label>
-              <textarea
-                className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setDeliveryTerms(e.target.value)}
-                rows={2}
-                value={deliveryTerms}
-              />
-            </div>
-          </div>
+        <ConfirmDialog
+          cancelText="Vazgeç"
+          confirmText="Evet, sil"
+          description={
+            deleteConfirmId
+              ? `"${templates.find((t) => t.id === deleteConfirmId)?.name ?? "Bu şablon"}" kalıcı olarak silinecek. Bu işlem geri alınamaz.`
+              : "Bu şablon silinecek."
+          }
+          loading={isDeletingId !== null}
+          onConfirm={handleDeleteConfirm}
+          onOpenChange={(open) => {
+            if (!open) {
+              setDeleteConfirmId(null);
+            }
+          }}
+          open={deleteConfirmId !== null}
+          title="Şablonu sil?"
+          variant="destructive"
+        />
 
-          <div>
-            <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-              Banka & IBAN Bilgileri
-            </label>
-            <textarea
-              className="w-full rounded-xl border border-zinc-200 p-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setBankDetails(e.target.value)}
-              rows={2}
-              value={bankDetails}
-            />
-          </div>
-
-          <label className="flex cursor-pointer items-center gap-2 pt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
-            <input
-              checked={isDefault}
-              className="rounded text-blue-600 focus:ring-0"
-              onChange={(e) => setIsDefault(e.target.checked)}
-              type="checkbox"
-            />
-            <span>Varsayılan şablon olarak kullan</span>
-          </label>
-
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
-              type="submit"
-            >
-              {editingId ? "Güncelle" : "Şablonu Kaydet"}
-            </button>
-          </div>
-        </form>
+        <TestSendModal
+          initialQuoteId={previewQuoteId}
+          isOpen={isTestSendOpen}
+          onClose={() => setIsTestSendOpen(false)}
+          quoteOptions={previewQuotes}
+          templateId={editingId}
+          templateName={selectedTemplate?.name}
+        />
       </div>
     </div>
   );

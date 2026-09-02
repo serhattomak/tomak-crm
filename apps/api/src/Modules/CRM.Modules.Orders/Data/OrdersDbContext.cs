@@ -264,6 +264,9 @@ public class OrdersDbContext(
             entity.Property(e => e.DeliveryTerms).HasColumnName("delivery_terms");
             entity.Property(e => e.BankDetails).HasColumnName("bank_details");
             entity.Property(e => e.IsDefault).HasColumnName("is_default");
+            entity.Property(e => e.Subject).HasColumnName("subject").HasMaxLength(200);
+            entity.Property(e => e.HtmlBody).HasColumnName("html_body");
+            entity.Property(e => e.VariablesJson).HasColumnName("variables_json").HasColumnType("jsonb").HasDefaultValue("[]");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 

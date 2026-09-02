@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Customers.Entities;
 
@@ -113,6 +115,61 @@ public class QuoteTemplate : ITenantScopedEntity
     public string? DeliveryTerms { get; set; }
     public string? BankDetails { get; set; }
     public bool IsDefault { get; set; } = false;
+
+    [MaxLength(200)]
+    public string? Subject { get; set; }
+
+    public string? HtmlBody { get; set; }
+
+    public string VariablesJson { get; set; } = "[]";
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// Deserializes VariablesJson (jsonb array of strings) to a list.
+    /// Returns empty list when JSON is null/empty or deserialization fails.
+    /// </summary>
+    public List<string> GetVariables()
+    {
+        if (string.IsNullOrWhiteSpace(VariablesJson))
+        {
+            return [];
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<string>>(VariablesJson) ?? [];
+        }
+        catch (JsonException)
+        {
+            return [];
+        }
+    }
+
+    /// <summary>
+    /// Serializes the given variable names into VariablesJson.
+    /// </summary>
+    public void SetVariables(List<string> vars)
+    {
+        VariablesJson = JsonSerializer.Serialize(vars ?? []);
+    }
+
+    /// <summary>
+    /// Overload for array-based callers — satisfies spec requiring string[] helpers.
+    /// </summary>
+    public string[] GetVariablesArray()
+    {
+        return [.. GetVariables()];
+    }
+
+    /// <summary>
+    /// Overload for array-based callers (e.g., Create/Update commands with string[]?).
+    /// Kept to avoid breaking existing callers — collection-expression callers should use
+    /// <see cref="SetVariables(List{string})"/> with explicit List construction.
+    /// </summary>
+    public void SetVariables(string[] vars)
+    {
+        VariablesJson = JsonSerializer.Serialize(vars ?? Array.Empty<string>());
+    }
 }
