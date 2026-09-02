@@ -26,6 +26,7 @@ import { ActivityTimelineWidget } from "./widgets/activity-timeline-widget";
 import { CustomizeWidgetsModal } from "./widgets/customize-widgets-modal";
 import type { DashboardTab, DateRange } from "./widgets/dashboard-types";
 import { DealsTableWidget } from "./widgets/deals-table-widget";
+import { DraggableWidgetWrapper } from "./widgets/draggable-widget-wrapper";
 import { KpiMetricsWidget } from "./widgets/kpi-metrics-widget";
 import { LeadSourcesWidget } from "./widgets/lead-sources-widget";
 import { PipelineFunnelWidget } from "./widgets/pipeline-funnel-widget";
@@ -40,7 +41,10 @@ import { SalesGaugeWidget } from "./widgets/sales-gauge-widget";
 import { TasksChecklistWidget } from "./widgets/tasks-checklist-widget";
 import { TeamLeaderboardWidget } from "./widgets/team-leaderboard-widget";
 import { UpcomingMeetingsWidget } from "./widgets/upcoming-meetings-widget";
-import { DEFAULT_WIDGET_IDS_BY_TAB } from "./widgets/widget-registry";
+import {
+  DEFAULT_WIDGET_IDS_BY_TAB,
+  WIDGET_REGISTRY,
+} from "./widgets/widget-registry";
 
 export default function WorkspaceOverviewPage() {
   const params = useParams();
@@ -57,6 +61,13 @@ export default function WorkspaceOverviewPage() {
   const [quickCreateType, setQuickCreateType] =
     useState<QuickActionType | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Drag and Drop State
+  const [draggedWidgetId, setDraggedWidgetId] = useState<string | null>(null);
+  const [dragOverWidgetId, setDragOverWidgetId] = useState<string | null>(null);
+  const [dropPosition, setDropPosition] = useState<"before" | "after" | null>(
+    null
+  );
 
   // Widget layouts stored per tab and tenant
   const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(
@@ -134,6 +145,7 @@ export default function WorkspaceOverviewPage() {
       [activeTab]: DEFAULT_WIDGET_IDS_BY_TAB[activeTab] || [],
     };
     saveWidgets(newLayout);
+    showToast("Pano varsayılan widget düzenine sıfırlandı.");
   };
 
   const showToast = (message: string) => {
@@ -141,6 +153,88 @@ export default function WorkspaceOverviewPage() {
     setTimeout(() => {
       setToastMessage(null);
     }, 4000);
+  };
+
+  // Drag and Drop Event Handlers
+  const handleDragStart = (e: React.DragEvent, widgetId: string) => {
+    setDraggedWidgetId(widgetId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", widgetId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedWidgetId(null);
+    setDragOverWidgetId(null);
+    setDropPosition(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent, targetWidgetId: string) => {
+    e.preventDefault();
+    if (!draggedWidgetId || draggedWidgetId === targetWidgetId) {
+      return;
+    }
+
+    e.dataTransfer.dropEffect = "move";
+    const rect = e.currentTarget.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    const pos = e.clientY < midY ? "before" : "after";
+
+    if (dragOverWidgetId !== targetWidgetId || dropPosition !== pos) {
+      setDragOverWidgetId(targetWidgetId);
+      setDropPosition(pos);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent, targetWidgetId: string) => {
+    const relatedTarget = e.relatedTarget as Node | null;
+    if (relatedTarget && e.currentTarget.contains(relatedTarget)) {
+      return;
+    }
+    if (dragOverWidgetId === targetWidgetId) {
+      setDragOverWidgetId(null);
+      setDropPosition(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetWidgetId: string) => {
+    e.preventDefault();
+    const sourceId = e.dataTransfer.getData("text/plain") || draggedWidgetId;
+    if (!sourceId || sourceId === targetWidgetId) {
+      handleDragEnd();
+      return;
+    }
+
+    const currentList = [...currentTabWidgets];
+    const sourceIndex = currentList.indexOf(sourceId);
+    const targetIndex = currentList.indexOf(targetWidgetId);
+
+    if (sourceIndex === -1 || targetIndex === -1) {
+      handleDragEnd();
+      return;
+    }
+
+    // Remove item from source
+    const [movedItem] = currentList.splice(sourceIndex, 1);
+    if (!movedItem) {
+      handleDragEnd();
+      return;
+    }
+
+    // Re-find target index
+    const newTargetIndex = currentList.indexOf(targetWidgetId);
+    const insertIndex =
+      dropPosition === "after" ? newTargetIndex + 1 : newTargetIndex;
+
+    currentList.splice(insertIndex, 0, movedItem);
+
+    const newLayout = {
+      ...widgetsByTab,
+      [activeTab]: currentList,
+    };
+
+    saveWidgets(newLayout);
+    showToast("Pano widget düzeni güncellendi.");
+    handleDragEnd();
   };
 
   const tabs: { id: DashboardTab; label: string }[] = [
@@ -163,103 +257,105 @@ export default function WorkspaceOverviewPage() {
     const isLeadSourcesActive = currentTabWidgets.includes("lead-sources");
     const isTasksActive = currentTabWidgets.includes("tasks-checklist");
 
+    let spanClass = "col-span-12 lg:col-span-6";
+    let widgetContent: React.ReactNode = null;
+
     switch (widgetId) {
       case "kpi-metrics":
-        return (
-          <div className="col-span-12" key="kpi-metrics">
-            <KpiMetricsWidget dateRange={dateRange} />
-          </div>
-        );
+        spanClass = "col-span-12";
+        widgetContent = <KpiMetricsWidget dateRange={dateRange} />;
+        break;
 
-      case "revenue-chart": {
-        const spanClass = isSalesGaugeActive
+      case "revenue-chart":
+        spanClass = isSalesGaugeActive
           ? "col-span-12 lg:col-span-8"
           : "col-span-12";
-        return (
-          <div className={spanClass} key="revenue-chart">
-            <RevenueChartWidget dateRange={dateRange} />
-          </div>
-        );
-      }
+        widgetContent = <RevenueChartWidget dateRange={dateRange} />;
+        break;
 
-      case "sales-gauge": {
-        const spanClass = isRevenueChartActive
+      case "sales-gauge":
+        spanClass = isRevenueChartActive
           ? "col-span-12 lg:col-span-4"
           : "col-span-12 lg:col-span-6";
-        return (
-          <div className={spanClass} key="sales-gauge">
-            <SalesGaugeWidget dateRange={dateRange} />
-          </div>
-        );
-      }
+        widgetContent = <SalesGaugeWidget dateRange={dateRange} />;
+        break;
 
       case "pipeline-funnel":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="pipeline-funnel">
-            <PipelineFunnelWidget dateRange={dateRange} />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <PipelineFunnelWidget dateRange={dateRange} />;
+        break;
 
       case "deals-table":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="deals-table">
-            <DealsTableWidget />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <DealsTableWidget />;
+        break;
 
       case "quotes-summary":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="quotes-summary">
-            <QuotesSummaryWidget />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <QuotesSummaryWidget />;
+        break;
 
-      case "lead-sources": {
-        const spanClass = isTasksActive
+      case "lead-sources":
+        spanClass = isTasksActive
           ? "col-span-12 lg:col-span-4"
           : "col-span-12 lg:col-span-6";
-        return (
-          <div className={spanClass} key="lead-sources">
-            <LeadSourcesWidget dateRange={dateRange} />
-          </div>
-        );
-      }
+        widgetContent = <LeadSourcesWidget dateRange={dateRange} />;
+        break;
 
-      case "tasks-checklist": {
-        const spanClass = isLeadSourcesActive
+      case "tasks-checklist":
+        spanClass = isLeadSourcesActive
           ? "col-span-12 lg:col-span-8"
           : "col-span-12";
-        return (
-          <div className={spanClass} key="tasks-checklist">
-            <TasksChecklistWidget />
-          </div>
-        );
-      }
+        widgetContent = <TasksChecklistWidget />;
+        break;
 
       case "upcoming-meetings":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="upcoming-meetings">
-            <UpcomingMeetingsWidget />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <UpcomingMeetingsWidget />;
+        break;
 
       case "activity-timeline":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="activity-timeline">
-            <ActivityTimelineWidget />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <ActivityTimelineWidget />;
+        break;
 
       case "team-leaderboard":
-        return (
-          <div className="col-span-12 lg:col-span-6" key="team-leaderboard">
-            <TeamLeaderboardWidget />
-          </div>
-        );
+        spanClass = "col-span-12 lg:col-span-6";
+        widgetContent = <TeamLeaderboardWidget />;
+        break;
 
       default:
         return null;
     }
+
+    const meta = WIDGET_REGISTRY.find((w) => w.id === widgetId);
+    const index = currentTabWidgets.indexOf(widgetId);
+    const isFirst = index === 0;
+    const isLast = index === currentTabWidgets.length - 1;
+
+    return (
+      <DraggableWidgetWrapper
+        dropPosition={dragOverWidgetId === widgetId ? dropPosition : null}
+        isDragOver={dragOverWidgetId === widgetId}
+        isDragging={draggedWidgetId === widgetId}
+        isFirst={isFirst}
+        isLast={isLast}
+        key={widgetId}
+        onDragEnd={handleDragEnd}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDragStart={handleDragStart}
+        onDrop={handleDrop}
+        onHide={() => handleToggleWidget(widgetId)}
+        onMoveDown={() => handleMoveWidget(widgetId, "down")}
+        onMoveUp={() => handleMoveWidget(widgetId, "up")}
+        spanClass={spanClass}
+        widgetId={widgetId}
+        widgetTitle={meta?.title}
+      >
+        {widgetContent}
+      </DraggableWidgetWrapper>
+    );
   };
 
   return (
@@ -447,6 +543,17 @@ export default function WorkspaceOverviewPage() {
               </div>
             )}
           </div>
+
+          {/* Reset Layout */}
+          <button
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 transition"
+            onClick={handleResetDefaults}
+            title="Pano yerleşimini varsayılan fabrika ayarlarına döndür"
+            type="button"
+          >
+            <RotateCcw className="h-3.5 w-3.5 text-zinc-400" />
+            <span className="hidden sm:inline">Düzeni Sıfırla</span>
+          </button>
 
           {/* Quick PDF / Print Export */}
           <button
