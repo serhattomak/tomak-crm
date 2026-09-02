@@ -27,6 +27,7 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
+  Download,
   Eye,
   FileSpreadsheet,
   FileText,
@@ -53,6 +54,10 @@ import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
+import {
+  type QuoteForEmail,
+  SendQuoteEmailModal,
+} from "@/components/quotes/send-quote-email-modal";
 import { TemplatePreview } from "@/components/quotes/TemplatePreview";
 import { TestSendModal } from "@/components/quotes/TestSendModal";
 import { VariableChips } from "@/components/quotes/VariableChips";
@@ -155,6 +160,7 @@ export default function QuotesPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [printQuoteId, setPrintQuoteId] = useState<string | null>(null);
+  const [emailQuote, setEmailQuote] = useState<QuoteForEmail | null>(null);
 
   // Fetch Quotes
   const fetchQuotes = useCallback(async () => {
@@ -214,25 +220,35 @@ export default function QuotesPage() {
 
   // ── Bulk operations ────────────────────────────────────────────────────────
   const allPageIds = quotes.map((q) => q.id);
-  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
-  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+  const allSelected =
+    allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected =
+    allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
 
   const toggleSelectAll = () => {
-    if (allSelected) setSelectedIds(new Set());
-    else setSelectedIds(new Set(allPageIds));
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(allPageIds));
+    }
   };
 
   const toggleSelectOne = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
 
   const handleBulkDelete = async () => {
-    if (!(activeTenant?.id && selectedIds.size > 0)) return;
+    if (!(activeTenant?.id && selectedIds.size > 0)) {
+      return;
+    }
     setIsBulkDeleting(true);
     try {
       const { deletedCount, failedCount } = await ApiClient.bulkDeleteQuotes(
@@ -243,7 +259,9 @@ export default function QuotesPage() {
       fetchQuotes();
       fetchStats();
       if (failedCount > 0) {
-        toast.info(`${deletedCount} teklif silindi, ${failedCount} silinemedi.`);
+        toast.info(
+          `${deletedCount} teklif silindi, ${failedCount} silinemedi.`
+        );
       } else {
         toast.success(`${deletedCount} teklif başarıyla silindi.`);
       }
@@ -649,16 +667,18 @@ export default function QuotesPage() {
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
                   <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <th className="py-3.5 pl-4 pr-2 w-10">
+                    <th className="w-10 py-3.5 pr-2 pl-4">
                       <Checkbox
-                        checked={allSelected}
-                        onCheckedChange={toggleSelectAll}
                         aria-label="Tümünü seç"
+                        checked={allSelected}
                         data-indeterminate={someSelected}
+                        onCheckedChange={toggleSelectAll}
                       />
                     </th>
                     <th className="px-4 py-3.5">Teklif No &amp; Revizyon</th>
-                    <th className="px-4 py-3.5">Teklif Başlığı &amp; Müşteri</th>
+                    <th className="px-4 py-3.5">
+                      Teklif Başlığı &amp; Müşteri
+                    </th>
                     <th className="px-4 py-3.5">Durum</th>
                     <th className="px-4 py-3.5">Tutar &amp; İskonto</th>
                     <th className="px-4 py-3.5">Geçerlilik</th>
@@ -674,20 +694,20 @@ export default function QuotesPage() {
                           selectedIds.has(quote.id)
                             ? "bg-blue-50/60 dark:bg-blue-950/20"
                             : quote.status === "RevisionRequested"
-                            ? "border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
-                            : ""
+                              ? "border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
+                              : ""
                         }`}
                         key={quote.id}
                         onClick={() => handleOpenDetail(quote.id)}
                       >
                         <td
-                          className="py-3.5 pl-4 pr-2 w-10"
+                          className="w-10 py-3.5 pr-2 pl-4"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Checkbox
+                            aria-label={`${quote.quoteNumber} seç`}
                             checked={selectedIds.has(quote.id)}
                             onCheckedChange={() => toggleSelectOne(quote.id)}
-                            aria-label={`${quote.quoteNumber} seç`}
                           />
                         </td>
                         {/* 1. Quote Number & Revision Badge */}
@@ -780,8 +800,53 @@ export default function QuotesPage() {
 
                             <button
                               className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              onClick={async () => {
+                                toast.info("PDF hazırlanıyor...");
+                                const blob = await ApiClient.downloadQuotePdf(
+                                  quote.id,
+                                  activeTenant?.slug || activeTenant?.id
+                                );
+                                if (blob) {
+                                  const url = window.URL.createObjectURL(blob);
+                                  const a = document.createElement("a");
+                                  a.href = url;
+                                  a.download = `Teklif-${quote.quoteNumber}.pdf`;
+                                  document.body.appendChild(a);
+                                  a.click();
+                                  window.URL.revokeObjectURL(url);
+                                  a.remove();
+                                  toast.success("PDF başarıyla indirildi.");
+                                } else {
+                                  toast.error("PDF oluşturulamadı.");
+                                }
+                              }}
+                              title="PDF İndir (QuestPDF)"
+                              type="button"
+                            >
+                              <Download className="h-4 w-4" />
+                            </button>
+
+                            <button
+                              className="rounded-lg p-1.5 text-blue-500 transition hover:bg-blue-50 hover:text-blue-700 dark:text-blue-400 dark:hover:bg-blue-950/50"
+                              onClick={() => {
+                                setEmailQuote({
+                                  currency: quote.currency,
+                                  customerName: quote.customerName,
+                                  id: quote.id,
+                                  quoteNumber: quote.quoteNumber,
+                                  totalAmount: quote.totalAmount,
+                                });
+                              }}
+                              title="E-posta ile Gönder"
+                              type="button"
+                            >
+                              <Mail className="h-4 w-4" />
+                            </button>
+
+                            <button
+                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={() => setPrintQuoteId(quote.id)}
-                              title="Yazdır / PDF"
+                              title="Yazdır / Önizle"
                               type="button"
                             >
                               <Printer className="h-4 w-4" />
@@ -827,6 +892,7 @@ export default function QuotesPage() {
       {selectedQuoteId && (
         <QuoteDetailDrawer
           onClose={handleCloseDetail}
+          onEmailQuote={(q) => setEmailQuote(q)}
           onPrint={(qid) => setPrintQuoteId(qid)}
           onUpdated={() => {
             fetchQuotes();
@@ -852,10 +918,22 @@ export default function QuotesPage() {
         />
       )}
 
+      {/* 9. Send Quote Email Modal */}
+      {emailQuote && (
+        <SendQuoteEmailModal
+          isOpen={Boolean(emailQuote)}
+          onClose={() => setEmailQuote(null)}
+          onSuccess={() => {
+            fetchQuotes();
+            fetchStats();
+          }}
+          quote={emailQuote}
+          tenantSlug={tenantSlug}
+        />
+      )}
+
       {/* Bulk Action Bar */}
       <BulkActionBar
-        selectedCount={selectedIds.size}
-        onClear={() => setSelectedIds(new Set())}
         actions={[
           {
             disabled: isBulkDeleting,
@@ -865,6 +943,8 @@ export default function QuotesPage() {
             variant: "danger",
           },
         ]}
+        onClear={() => setSelectedIds(new Set())}
+        selectedCount={selectedIds.size}
       />
     </div>
   );
@@ -2009,11 +2089,13 @@ function QuoteDetailDrawer({
   onClose,
   onUpdated,
   onPrint,
+  onEmailQuote,
 }: {
   quoteId: string;
   onClose: () => void;
   onUpdated: () => void;
   onPrint: (id: string) => void;
+  onEmailQuote?: (quote: QuoteForEmail) => void;
 }) {
   const { activeTenant, profile } = usePermissions();
   const [quote, setQuote] = useState<QuoteDetailDto | null>(null);
@@ -2341,8 +2423,40 @@ function QuoteDetailDrawer({
           <div className="flex shrink-0 items-center gap-1">
             <button
               className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+              onClick={async () => {
+                if (!quote) {
+                  return;
+                }
+                toast.info("PDF hazırlanıyor...");
+                const blob = await ApiClient.downloadQuotePdf(
+                  quote.id,
+                  activeTenant?.slug || activeTenant?.id
+                );
+                if (blob) {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `Teklif-${quote.quoteNumber}.pdf`;
+                  document.body.appendChild(a);
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                  a.remove();
+                  toast.success("PDF başarıyla indirildi.");
+                } else {
+                  toast.error("PDF oluşturulamadı.");
+                }
+              }}
+              title="PDF İndir (QuestPDF)"
+              type="button"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">PDF</span>
+            </button>
+
+            <button
+              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={() => quote && onPrint(quote.id)}
-              title="Yazdır / PDF"
+              title="Yazdır / Önizle"
               type="button"
             >
               <Printer className="h-3.5 w-3.5" />
@@ -2554,13 +2668,56 @@ function QuoteDetailDrawer({
                 <button
                   className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
                   disabled={isActionLoading}
-                  onClick={handleSend}
+                  onClick={() => {
+                    if (onEmailQuote) {
+                      onEmailQuote({
+                        currency: quote.currency,
+                        customerName: quote.customerName,
+                        id: quote.id,
+                        quoteNumber: quote.quoteNumber,
+                        totalAmount: quote.totalAmount,
+                      });
+                    } else {
+                      handleSend();
+                    }
+                  }}
                   type="button"
                 >
-                  <Send className="h-3.5 w-3.5" />
-                  <span>Müşteriye Gönder</span>
+                  <Mail className="h-3.5 w-3.5" />
+                  <span>E-posta & PDF Gönder</span>
                 </button>
               )}
+
+              <button
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                onClick={async () => {
+                  if (!quote) {
+                    return;
+                  }
+                  toast.info("PDF hazırlanıyor...");
+                  const blob = await ApiClient.downloadQuotePdf(
+                    quote.id,
+                    activeTenant?.slug || activeTenant?.id
+                  );
+                  if (blob) {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `Teklif-${quote.quoteNumber}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                    toast.success("PDF başarıyla indirildi.");
+                  } else {
+                    toast.error("PDF oluşturulamadı.");
+                  }
+                }}
+                type="button"
+              >
+                <Download className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+                <span>PDF İndir</span>
+              </button>
 
               <button
                 className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -3277,8 +3434,12 @@ function QuoteTemplatesModal({
   const [deliveryTerms, setDeliveryTerms] = useState("");
   const [bankDetails, setBankDetails] = useState("");
   const [isDefault, setIsDefault] = useState(false);
-  const [subjectError, setSubjectError] = useState<string | undefined>(undefined);
-  const [htmlBodyError, setHtmlBodyError] = useState<string | undefined>(undefined);
+  const [subjectError, setSubjectError] = useState<string | undefined>(
+    undefined
+  );
+  const [htmlBodyError, setHtmlBodyError] = useState<string | undefined>(
+    undefined
+  );
   const [nameError, setNameError] = useState<string | undefined>(undefined);
   const [showExtraFields, setShowExtraFields] = useState(false);
   const htmlBodyRef = useRef<HTMLTextAreaElement | null>(null);
@@ -3417,11 +3578,11 @@ function QuoteTemplatesModal({
 
   const validateForm = useCallback((): boolean => {
     let valid = true;
-    if (!name.trim()) {
+    if (name.trim()) {
+      setNameError(undefined);
+    } else {
       setNameError("Şablon adı zorunlu");
       valid = false;
-    } else {
-      setNameError(undefined);
     }
     if (!subject.trim()) {
       setSubjectError("Konu zorunlu");
@@ -3432,11 +3593,11 @@ function QuoteTemplatesModal({
     } else {
       setSubjectError(undefined);
     }
-    if (!htmlBody.trim()) {
+    if (htmlBody.trim()) {
+      setHtmlBodyError(undefined);
+    } else {
       setHtmlBodyError("HTML gövdesi zorunlu");
       valid = false;
-    } else {
-      setHtmlBodyError(undefined);
     }
     return valid;
   }, [name, subject, htmlBody]);
@@ -3549,7 +3710,7 @@ function QuoteTemplatesModal({
       setIsPreviewLoading(false);
       return;
     }
-    if (!subject.trim() && !htmlBody.trim()) {
+    if (!(subject.trim() || htmlBody.trim())) {
       setPreviewHtml("");
       setPreviewSubject("");
       setPreviewError(null);
@@ -3573,7 +3734,10 @@ function QuoteTemplatesModal({
           { quoteId: previewQuoteId ?? undefined, variables: {} },
           activeTenant.id
         );
-        if (controller.signal.aborted || previewRequestIdRef.current !== currentId) {
+        if (
+          controller.signal.aborted ||
+          previewRequestIdRef.current !== currentId
+        ) {
           return;
         }
         if (res.success && res.data) {
@@ -3586,14 +3750,20 @@ function QuoteTemplatesModal({
           setPreviewSubject("");
         }
       } catch {
-        if (controller.signal.aborted || previewRequestIdRef.current !== currentId) {
+        if (
+          controller.signal.aborted ||
+          previewRequestIdRef.current !== currentId
+        ) {
           return;
         }
         setPreviewError("Önizleme sırasında hata oluştu");
         setPreviewHtml("");
         setPreviewSubject("");
       } finally {
-        if (!controller.signal.aborted && previewRequestIdRef.current === currentId) {
+        if (
+          !controller.signal.aborted &&
+          previewRequestIdRef.current === currentId
+        ) {
           setIsPreviewLoading(false);
         }
       }
@@ -3606,7 +3776,7 @@ function QuoteTemplatesModal({
 
   // Fetch recent quotes for real-data preview selector
   useEffect(() => {
-    if (!isOpen || !activeTenant?.id) {
+    if (!(isOpen && activeTenant?.id)) {
       return;
     }
     let cancelled = false;
@@ -3654,7 +3824,7 @@ function QuoteTemplatesModal({
   }
 
   const selectedTemplate = editingId
-    ? templates.find((t) => t.id === editingId) ?? null
+    ? (templates.find((t) => t.id === editingId) ?? null)
     : null;
 
   return (
@@ -3737,7 +3907,7 @@ function QuoteTemplatesModal({
               </div>
               <div className="custom-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
                 {templates.length === 0 && !isLoading ? (
-                  <span className="rounded-xl border border-dashed border-zinc-300 bg-white px-3 py-2 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
+                  <span className="rounded-xl border border-zinc-300 border-dashed bg-white px-3 py-2 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
                     Henüz şablon yok — sağdaki editörden oluşturun.
                   </span>
                 ) : (
@@ -3802,9 +3972,9 @@ function QuoteTemplatesModal({
                       <Input
                         error={nameError}
                         maxLength={255}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => setName(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setName(e.target.value)
+                        }
                         placeholder="Örn: Standart Kurumsal Teklif"
                         required
                         value={name}
@@ -3818,9 +3988,9 @@ function QuoteTemplatesModal({
                       <Input
                         error={subjectError}
                         maxLength={200}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => setSubject(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setSubject(e.target.value)
+                        }
                         placeholder="{{companyName}} Teklif #{{quoteNumber}}"
                         required
                         value={subject}
@@ -3838,9 +4008,9 @@ function QuoteTemplatesModal({
                       <Textarea
                         className="min-h-[180px] font-mono text-xs leading-relaxed"
                         error={htmlBodyError}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLTextAreaElement>
-                        ) => setHtmlBody(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                          setHtmlBody(e.target.value)
+                        }
                         placeholder="<h1>Merhaba {{customerName}}</h1> <p>Teklif tutarı: {{totalAmount}}</p> {{itemsTable}}"
                         ref={htmlBodyRef}
                         required
@@ -3887,9 +4057,7 @@ function QuoteTemplatesModal({
                         <div className="space-y-3 border-zinc-200 border-t p-3 dark:border-zinc-800">
                           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <div className="space-y-1.5">
-                              <Label className="text-xs">
-                                Ödeme Şartları
-                              </Label>
+                              <Label className="text-xs">Ödeme Şartları</Label>
                               <Textarea
                                 onChange={(
                                   e: React.ChangeEvent<HTMLTextAreaElement>
@@ -4004,11 +4172,11 @@ function QuoteTemplatesModal({
                     <Mail className="h-3.5 w-3.5" />
                     <span>Test Gönder</span>
                   </button>
-                  {!editingId ? (
+                  {editingId ? null : (
                     <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                       Kaydedilmemiş şablon — yerel fallback önizleme
                     </span>
-                  ) : null}
+                  )}
                 </div>
                 <div className="flex-1 overflow-hidden">
                   <TemplatePreview

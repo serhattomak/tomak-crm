@@ -29,6 +29,9 @@ public static class OrdersModuleExtensions
         // Email template renderer — Scoped per spec, Handlebars-like without external dep for phase 1
         services.AddScoped<ITemplateRenderer, HandlebarsRenderer>();
 
+        // QuestPDF Quote document generator
+        services.AddSingleton<CRM.Modules.Orders.Features.Quotes.Services.IQuotePdfGenerator, CRM.Modules.Orders.Features.Quotes.Services.QuotePdfGenerator>();
+
         return services;
     }
 }

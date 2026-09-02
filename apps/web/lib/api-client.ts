@@ -2631,6 +2631,59 @@ export class ApiClient {
     );
   }
 
+  static async downloadQuotePdf(
+    id: string,
+    tenantId?: string
+  ): Promise<Blob | null> {
+    const token = await ApiClient.getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    if (tenantId) {
+      headers["X-Tenant-Id"] = tenantId;
+      headers["X-Tenant-Slug"] = tenantId;
+    }
+    const res = await fetch(`${API_BASE_URL}/api/quotes/${id}/pdf`, {
+      headers,
+    });
+    if (!res.ok) {
+      return null;
+    }
+    return await res.blob();
+  }
+
+  static async sendQuoteEmail(
+    id: string,
+    data: {
+      accountId?: string;
+      attachPdf?: boolean;
+      body?: string;
+      cc?: string[];
+      subject?: string;
+      templateId?: string;
+      to?: string[];
+    },
+    tenantId?: string
+  ): Promise<
+    ApiResponse<{
+      message?: string;
+      quoteNumber: string;
+      recipients: string[];
+      sentAt: string;
+      success: boolean;
+    }>
+  > {
+    return ApiClient.request(
+      `/api/quotes/${id}/send-email`,
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
   static async acceptQuote(
     id: string,
     data: { autoConvertToOrder: boolean } = { autoConvertToOrder: true },
@@ -2793,8 +2846,14 @@ export class ApiClient {
     id: string,
     data: { toEmail: string; quoteId?: string },
     tenantId?: string
-  ): Promise<ApiResponse<{ previewHtml: string; sent: boolean; message?: string }>> {
-    return ApiClient.request<{ previewHtml: string; sent: boolean; message?: string }>(
+  ): Promise<
+    ApiResponse<{ previewHtml: string; sent: boolean; message?: string }>
+  > {
+    return ApiClient.request<{
+      previewHtml: string;
+      sent: boolean;
+      message?: string;
+    }>(
       `/api/quotes/templates/${id}/test-send`,
       {
         body: JSON.stringify(data),
@@ -4960,14 +5019,30 @@ export class ApiClient {
     tenantId?: string
   ): Promise<ApiResponse<PagedResult<EmailMessageDto>>> {
     const q = new URLSearchParams();
-    if (params.accountId) q.set("accountId", params.accountId);
-    if (params.direction) q.set("direction", params.direction);
-    if (params.status) q.set("status", params.status);
-    if (params.customerId) q.set("customerId", params.customerId);
-    if (typeof params.isRead === "boolean") q.set("isRead", String(params.isRead));
-    if (params.search) q.set("search", params.search);
-    if (params.page) q.set("page", String(params.page));
-    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+    if (params.accountId) {
+      q.set("accountId", params.accountId);
+    }
+    if (params.direction) {
+      q.set("direction", params.direction);
+    }
+    if (params.status) {
+      q.set("status", params.status);
+    }
+    if (params.customerId) {
+      q.set("customerId", params.customerId);
+    }
+    if (typeof params.isRead === "boolean") {
+      q.set("isRead", String(params.isRead));
+    }
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
     const qs = q.toString();
     return await ApiClient.request<PagedResult<EmailMessageDto>>(
       `/api/email/messages${qs ? `?${qs}` : ""}`,
@@ -7295,20 +7370,20 @@ export interface QuoteTemplateDto {
   bankDetails?: string;
   createdAt: string;
   deliveryTerms?: string;
+  /** Handlebars HTML gövdesi — {{variables}} içerebilir, itemsTable raw HTML içerir. */
+  htmlBody?: string;
   id: string;
   isDefault: boolean;
   name: string;
   paymentTerms?: string;
-  termsAndConditions?: string;
-  updatedAt: string;
-  /** E-posta konu şablonu — örn. "Teklif {{quoteNumber}} - {{customerName}}", max 200 karakter. */
-  subject?: string;
-  /** Handlebars HTML gövdesi — {{variables}} içerebilir, itemsTable raw HTML içerir. */
-  htmlBody?: string;
-  /** Şablonun kullandığı Handlebars değişken anahtarları — örn. ["customerName","quoteNumber"] */
-  variables?: string[];
   /** Önizleme sırasında döndürülen işlenmiş HTML — sadece preview/test-send yanıtlarında dolu. */
   previewHtml?: string;
+  /** E-posta konu şablonu — örn. "Teklif {{quoteNumber}} - {{customerName}}", max 200 karakter. */
+  subject?: string;
+  termsAndConditions?: string;
+  updatedAt: string;
+  /** Şablonun kullandığı Handlebars değişken anahtarları — örn. ["customerName","quoteNumber"] */
+  variables?: string[];
 }
 
 /**
@@ -8996,18 +9071,18 @@ export interface CreateVehicleDocumentPayload {
 // Email Module Interfaces
 // ==========================================
 export interface EmailAccountDto {
-  id: string;
-  tenantId: string;
+  createdAt: string;
+  description?: string;
   email: string;
-  provider: "generic_imap" | "resend" | string;
+  id: string;
   imapHost?: string;
   imapPort: number;
+  isActive: boolean;
+  provider: "generic_imap" | "resend" | string;
+  secretMasked?: string;
   smtpHost?: string;
   smtpPort: number;
-  isActive: boolean;
-  description?: string;
-  secretMasked?: string;
-  createdAt: string;
+  tenantId: string;
   updatedAt: string;
 }
 
@@ -9017,58 +9092,57 @@ export interface EmailAccountDetailDto extends EmailAccountDto {
 }
 
 export interface TestEmailAccountConnectionResultDto {
-  success: boolean;
-  message?: string;
-  imapSuccess: boolean;
   imapMessage?: string;
-  smtpSuccess: boolean;
+  imapSuccess: boolean;
+  message?: string;
   smtpMessage?: string;
+  smtpSuccess: boolean;
+  success: boolean;
 }
 
 export interface EmailAttachmentDto {
+  createdAt: string;
+  filename: string;
   id: string;
   messageId: string;
-  filename: string;
   mimeType?: string;
   sizeBytes: number;
   storagePath: string;
-  createdAt: string;
 }
 
 export interface EmailMessageDto {
-  id: string;
-  tenantId: string;
   accountId: string;
-  threadId?: string;
-  direction: "Inbound" | "Outbound" | string;
-  status: "Received" | "Sent" | "Draft" | "Failed" | "Sending" | string;
-  fromAddress: string;
-  toAddresses: string[];
-  ccAddresses?: string[];
-  subject?: string;
-  htmlBody?: string;
-  textBody?: string;
-  externalId?: string;
-  customerId?: string;
-  quoteId?: string;
-  ticketId?: string;
-  isRead: boolean;
-  hasAttachments: boolean;
   attachments: EmailAttachmentDto[];
+  ccAddresses?: string[];
   createdAt: string;
+  customerId?: string;
+  direction: "Inbound" | "Outbound" | string;
+  externalId?: string;
+  fromAddress: string;
+  hasAttachments: boolean;
+  htmlBody?: string;
+  id: string;
+  isRead: boolean;
+  quoteId?: string;
+  status: "Received" | "Sent" | "Draft" | "Failed" | "Sending" | string;
+  subject?: string;
+  tenantId: string;
+  textBody?: string;
+  threadId?: string;
+  ticketId?: string;
+  toAddresses: string[];
 }
 
 export interface EmailThreadDto {
-  threadId: string;
-  subject?: string;
   messages: EmailMessageDto[];
+  subject?: string;
+  threadId: string;
 }
 
 export interface EmailStatsDto {
   inboxTotal: number;
-  unreadCount: number;
   sentToday: number;
+  unreadCount: number;
 }
 
 export type PagedEmailMessages = PagedResult<EmailMessageDto>;
-
