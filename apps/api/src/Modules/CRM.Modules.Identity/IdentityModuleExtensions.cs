@@ -24,6 +24,7 @@ public static class IdentityModuleExtensions
         });
 
         services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped<CRM.BuildingBlocks.Realtime.INotificationStore, NotificationStore>();
 
         return services;
     }

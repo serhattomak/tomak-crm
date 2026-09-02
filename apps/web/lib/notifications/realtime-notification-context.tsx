@@ -1,12 +1,13 @@
 "use client";
 
 import {
-  HubConnection,
+  type HubConnection,
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
 import { useRouter } from "next/navigation";
-import React, {
+import type React from "react";
+import {
   createContext,
   useCallback,
   useContext,
@@ -15,6 +16,7 @@ import React, {
   useState,
 } from "react";
 import { toast } from "sonner";
+import { ApiClient, type NotificationDto } from "@/lib/api-client";
 import { playNotificationChime } from "./audio-chime";
 
 export interface RealtimeNotification {
@@ -30,23 +32,29 @@ export interface RealtimeNotification {
 }
 
 interface RealtimeNotificationContextType {
-  isConnected: boolean;
-  notifications: RealtimeNotification[];
-  unreadCount: number;
-  markAsRead: (id: string) => void;
-  markAllAsRead: () => void;
-  deleteNotification: (id: string) => void;
   clearAll: () => void;
+  deleteNotification: (id: string) => void;
+  isConnected: boolean;
+  markAllAsRead: () => void;
+  markAsRead: (id: string) => void;
+  notifications: RealtimeNotification[];
+  refreshNotifications: () => Promise<void>;
   triggerTestNotification: (
     preset?: "order" | "quote" | "deal" | "stock" | "support"
   ) => void;
+  unreadCount: number;
 }
 
 const RealtimeNotificationContext =
   createContext<RealtimeNotificationContextType | null>(null);
 
-function resolveTargetLink(linkUrl?: string, tenantSlug?: string): string | undefined {
-  if (!linkUrl) return undefined;
+function resolveTargetLink(
+  linkUrl?: string,
+  tenantSlug?: string
+): string | undefined {
+  if (!linkUrl) {
+    return;
+  }
   if (linkUrl.startsWith("/")) {
     return `/${tenantSlug || "workspace"}${linkUrl}`;
   }
@@ -55,17 +63,43 @@ function resolveTargetLink(linkUrl?: string, tenantSlug?: string): string | unde
 
 function inferCategory(title: string): RealtimeNotification["category"] {
   const lower = title.toLowerCase();
-  if (lower.includes("sipariş") || lower.includes("order")) return "order";
-  if (lower.includes("teklif") || lower.includes("quote")) return "quote";
-  if (lower.includes("stok") || lower.includes("envanter")) return "stock";
-  if (lower.includes("destek") || lower.includes("mesaj")) return "support";
+  if (lower.includes("sipariş") || lower.includes("order")) {
+    return "order";
+  }
+  if (lower.includes("teklif") || lower.includes("quote")) {
+    return "quote";
+  }
+  if (lower.includes("stok") || lower.includes("envanter")) {
+    return "stock";
+  }
+  if (lower.includes("destek") || lower.includes("mesaj")) {
+    return "support";
+  }
   return "deal";
 }
 
 function resolvePriority(type: string): RealtimeNotification["priority"] {
-  if (type === "error") return "urgent";
-  if (type === "warning") return "high";
+  if (type === "error") {
+    return "urgent";
+  }
+  if (type === "warning") {
+    return "high";
+  }
   return "medium";
+}
+
+function mapDtoToRealtime(dto: NotificationDto): RealtimeNotification {
+  return {
+    badgeText: undefined,
+    category: inferCategory(dto.title),
+    createdAt: dto.createdAt,
+    description: dto.message,
+    id: dto.id,
+    link: dto.linkUrl || "",
+    priority: resolvePriority(dto.type),
+    read: dto.isRead,
+    title: dto.title,
+  };
 }
 
 function displayToast(
@@ -78,81 +112,20 @@ function displayToast(
   const action =
     targetLink && onNavigate
       ? {
-          label: type === "warning" || type === "error" ? "İncele" : "Görüntüle",
+          label:
+            type === "warning" || type === "error" ? "İncele" : "Görüntüle",
           onClick: () => onNavigate(targetLink),
         }
       : undefined;
 
   if (type === "success") {
-    toast.success(title, { description: message, action });
+    toast.success(title, { action, description: message });
   } else if (type === "warning" || type === "error") {
-    toast.error(title, { description: message, action });
+    toast.error(title, { action, description: message });
   } else {
-    toast(title, { description: message, action });
+    toast(title, { action, description: message });
   }
 }
-
-const DEFAULT_INITIAL_NOTIFICATIONS: RealtimeNotification[] = [
-  {
-    badgeText: "Teklif #QT-2026-089",
-    category: "quote",
-    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-    description:
-      "Ahmet Yılmaz (Acme A.Ş.) teklif için revizyon istedi: 'Ödeme vadesi 45 gün olarak güncellenebilir mi?'",
-    id: "notif-1",
-    link: "/quotes",
-    priority: "urgent",
-    read: false,
-    title: "Revizyon Talebi Alındı",
-  },
-  {
-    badgeText: "Canlı Destek",
-    category: "support",
-    createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-    description:
-      "Selin Kaya sipariş teslimat durumu hakkında canlı destek oturumu başlattı.",
-    id: "notif-2",
-    link: "/messages",
-    priority: "high",
-    read: false,
-    title: "Yeni Destek Talebi Başlatıldı",
-  },
-  {
-    badgeText: "Satış Hattı",
-    category: "deal",
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    description:
-      "Bulut Bilişim Projesi fırsatı 'Kazanıldı' aşamasına taşındı (145.000 ₺).",
-    id: "notif-3",
-    link: "/pipelines",
-    priority: "medium",
-    read: false,
-    title: "Fırsat Kazanıldı 🎉",
-  },
-  {
-    badgeText: "Sipariş #ORD-014",
-    category: "order",
-    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-    description:
-      "Global Teknoloji Ltd. #ORD-2026-014 numaralı siparişi onayladı (42.500 ₺).",
-    id: "notif-4",
-    link: "/orders",
-    priority: "medium",
-    read: true,
-    title: "Yeni Sipariş Oluşturuldu",
-  },
-  {
-    badgeText: "Sevkiyat",
-    category: "shipment",
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    description: "#SHP-2026-104 numaralı kargo Yurtiçi Kargo ile yola çıktı.",
-    id: "notif-5",
-    link: "/shipments",
-    priority: "low",
-    read: true,
-    title: "Sevkiyat Kargoya Verildi",
-  },
-];
 
 export function RealtimeNotificationProvider({
   tenantId,
@@ -172,24 +145,6 @@ export function RealtimeNotificationProvider({
 
   const storageKey = `crm_notifications_${tenantSlug || "default"}`;
 
-  // 1. Initial LocalStorage Sync
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        setNotifications(JSON.parse(saved));
-      } else {
-        setNotifications(DEFAULT_INITIAL_NOTIFICATIONS);
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify(DEFAULT_INITIAL_NOTIFICATIONS)
-        );
-      }
-    } catch {
-      setNotifications(DEFAULT_INITIAL_NOTIFICATIONS);
-    }
-  }, [storageKey]);
-
   // Sync state to localStorage
   const syncNotifications = useCallback(
     (newList: RealtimeNotification[]) => {
@@ -202,6 +157,37 @@ export function RealtimeNotificationProvider({
     },
     [storageKey]
   );
+
+  // 1. Initial LocalStorage Cache + Backend API Fetch
+  const refreshNotifications = useCallback(async () => {
+    if (!tenantSlug) {
+      return;
+    }
+    try {
+      const res = await ApiClient.getNotifications(tenantSlug, {
+        pageSize: 50,
+      });
+      if (res.success && res.data?.items) {
+        const remoteList = res.data.items.map(mapDtoToRealtime);
+        syncNotifications(remoteList);
+      }
+    } catch {
+      // ignore network errors
+    }
+  }, [tenantSlug, syncNotifications]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        setNotifications(JSON.parse(saved));
+      }
+    } catch {
+      // ignore
+    }
+
+    refreshNotifications();
+  }, [storageKey, refreshNotifications]);
 
   // 2. Incoming Notification Handler
   const handleIncomingNotification = useCallback(
@@ -218,12 +204,8 @@ export function RealtimeNotificationProvider({
       playNotificationChime(type);
 
       const targetLink = resolveTargetLink(payload.linkUrl, tenantSlug);
-      displayToast(
-        payload.title,
-        payload.message,
-        type,
-        targetLink,
-        (url) => router.push(url)
+      displayToast(payload.title, payload.message, type, targetLink, (url) =>
+        router.push(url)
       );
 
       const cat = inferCategory(payload.title);
@@ -255,7 +237,9 @@ export function RealtimeNotificationProvider({
 
   // 3. Connect to SignalR Hub
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
 
     const hubUrl = `${window.location.origin}/hubs/crm?tenantId=${
       tenantId || ""
@@ -263,7 +247,7 @@ export function RealtimeNotificationProvider({
 
     const connection = new HubConnectionBuilder()
       .withUrl(hubUrl)
-      .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
+      .withAutomaticReconnect([0, 2000, 5000, 10_000, 30_000])
       .configureLogging(LogLevel.None)
       .build();
 
@@ -328,7 +312,8 @@ export function RealtimeNotificationProvider({
         },
         support: {
           linkUrl: "/messages",
-          message: "Müşteri temsilcisine yeni bir canlı destek talebi iletildi.",
+          message:
+            "Müşteri temsilcisine yeni bir canlı destek talebi iletildi.",
           title: "Yeni Müşteri Mesajı 💬",
           type: "info" as const,
         },
@@ -348,26 +333,52 @@ export function RealtimeNotificationProvider({
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const markAsRead = (id: string) => {
-    const updated = notifications.map((n) =>
-      n.id === id ? { ...n, read: true } : n
-    );
-    syncNotifications(updated);
-  };
+  const markAsRead = useCallback(
+    (id: string) => {
+      const updated = notifications.map((n) =>
+        n.id === id ? { ...n, read: true } : n
+      );
+      syncNotifications(updated);
+      if (tenantSlug) {
+        ApiClient.markNotificationAsRead(id, tenantSlug).catch(() => {
+          // ignore network error
+        });
+      }
+    },
+    [notifications, syncNotifications, tenantSlug]
+  );
 
-  const markAllAsRead = () => {
+  const markAllAsRead = useCallback(() => {
     const updated = notifications.map((n) => ({ ...n, read: true }));
     syncNotifications(updated);
-  };
+    if (tenantSlug) {
+      ApiClient.markAllNotificationsAsRead(tenantSlug).catch(() => {
+        // ignore network error
+      });
+    }
+  }, [notifications, syncNotifications, tenantSlug]);
 
-  const deleteNotification = (id: string) => {
-    const updated = notifications.filter((n) => n.id !== id);
-    syncNotifications(updated);
-  };
+  const deleteNotification = useCallback(
+    (id: string) => {
+      const updated = notifications.filter((n) => n.id !== id);
+      syncNotifications(updated);
+      if (tenantSlug) {
+        ApiClient.deleteNotification(id, tenantSlug).catch(() => {
+          // ignore network error
+        });
+      }
+    },
+    [notifications, syncNotifications, tenantSlug]
+  );
 
-  const clearAll = () => {
+  const clearAll = useCallback(() => {
     syncNotifications([]);
-  };
+    if (tenantSlug) {
+      ApiClient.clearAllNotifications(tenantSlug).catch(() => {
+        // ignore network error
+      });
+    }
+  }, [syncNotifications, tenantSlug]);
 
   return (
     <RealtimeNotificationContext.Provider
@@ -378,6 +389,7 @@ export function RealtimeNotificationProvider({
         markAllAsRead,
         markAsRead,
         notifications,
+        refreshNotifications,
         triggerTestNotification,
         unreadCount,
       }}

@@ -14,6 +14,7 @@ public class IdentityDbContext(
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<TenantMember> TenantMembers => Set<TenantMember>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -116,6 +117,25 @@ public class IdentityDbContext(
             entity.HasOne(e => e.User)
                   .WithMany()
                   .HasForeignKey(e => e.UserId);
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 7. Notification
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Title).HasColumnName("title").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Message).HasColumnName("message").IsRequired();
+            entity.Property(e => e.LinkUrl).HasColumnName("link_url").HasMaxLength(500);
+            entity.Property(e => e.Type).HasColumnName("type").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Category).HasColumnName("category").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.IsRead).HasColumnName("is_read").IsRequired();
+            entity.Property(e => e.ReadAt).HasColumnName("read_at");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });

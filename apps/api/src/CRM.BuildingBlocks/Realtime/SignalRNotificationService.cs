@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace CRM.BuildingBlocks.Realtime;
 
 public class SignalRNotificationService(
     IHubContext<CrmHub> hubContext,
+    IServiceProvider serviceProvider,
     ILogger<SignalRNotificationService> logger) : ICrmNotificationService
 {
     public async Task SendToTenantAsync(Guid tenantId, string eventName, object data, CancellationToken ct = default)
@@ -40,8 +42,34 @@ public class SignalRNotificationService(
         string type = "info",
         CancellationToken ct = default)
     {
+        var notificationId = Guid.NewGuid();
+
+        // 1. Try to persist into database if INotificationStore is available
+        try
+        {
+            using var scope = serviceProvider.CreateScope();
+            var store = scope.ServiceProvider.GetService<INotificationStore>();
+            if (store != null)
+            {
+                notificationId = await store.CreateNotificationAsync(
+                    tenantId,
+                    userId,
+                    title,
+                    message,
+                    linkUrl,
+                    type,
+                    "general",
+                    ct);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Could not persist notification to database for tenant {TenantId}", tenantId);
+        }
+
+        // 2. Broadcast over SignalR
         var payload = new CrmNotificationPayload(
-            Id: Guid.NewGuid(),
+            Id: notificationId,
             Title: title,
             Message: message,
             LinkUrl: linkUrl,

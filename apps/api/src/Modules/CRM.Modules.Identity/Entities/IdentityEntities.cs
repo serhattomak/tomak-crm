@@ -79,3 +79,19 @@ public class TenantMember : ITenantScopedEntity
 
     public User? User { get; set; }
 }
+
+[Table("notifications", Schema = "public")]
+public class Notification : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid? UserId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public string? LinkUrl { get; set; }
+    public string Type { get; set; } = "info";
+    public string Category { get; set; } = "general";
+    public bool IsRead { get; set; } = false;
+    public DateTime? ReadAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}

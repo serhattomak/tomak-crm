@@ -2754,6 +2754,76 @@ export class ApiClient {
     return { deletedCount, failedCount: ids.length - deletedCount };
   }
 
+  // Notifications
+  static async getNotifications(
+    tenantId?: string,
+    params?: {
+      isRead?: boolean;
+      page?: number;
+      pageSize?: number;
+    }
+  ): Promise<ApiResponse<PagedNotificationsResponse>> {
+    const query = new URLSearchParams();
+    if (params?.isRead !== undefined) {
+      query.set("isRead", String(params.isRead));
+    }
+    if (params?.page) {
+      query.set("page", String(params.page));
+    }
+    if (params?.pageSize) {
+      query.set("pageSize", String(params.pageSize));
+    }
+    const qs = query.toString();
+    const endpoint = `/api/notifications${qs ? `?${qs}` : ""}`;
+    return ApiClient.request<PagedNotificationsResponse>(
+      endpoint,
+      {},
+      tenantId
+    );
+  }
+
+  static async markNotificationAsRead(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/notifications/${id}/read`,
+      { method: "POST" },
+      tenantId
+    );
+  }
+
+  static async markAllNotificationsAsRead(
+    tenantId?: string
+  ): Promise<ApiResponse<number>> {
+    return ApiClient.request<number>(
+      "/api/notifications/read-all",
+      { method: "POST" },
+      tenantId
+    );
+  }
+
+  static async deleteNotification(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/notifications/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async clearAllNotifications(
+    tenantId?: string
+  ): Promise<ApiResponse<number>> {
+    return ApiClient.request<number>(
+      "/api/notifications/clear-all",
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
   static async getQuoteStats(
     tenantId?: string
   ): Promise<ApiResponse<QuoteStatsResponse>> {
@@ -9146,3 +9216,31 @@ export interface EmailStatsDto {
 }
 
 export type PagedEmailMessages = PagedResult<EmailMessageDto>;
+
+export interface NotificationDto {
+  category:
+    | "order"
+    | "quote"
+    | "deal"
+    | "stock"
+    | "support"
+    | "email"
+    | "general"
+    | string;
+  createdAt: string;
+  id: string;
+  isRead: boolean;
+  linkUrl?: string;
+  message: string;
+  readAt?: string;
+  tenantId: string;
+  title: string;
+  type: "info" | "success" | "warning" | "error" | string;
+  userId?: string;
+}
+
+export interface PagedNotificationsResponse {
+  items: NotificationDto[];
+  totalCount: number;
+  unreadCount: number;
+}
