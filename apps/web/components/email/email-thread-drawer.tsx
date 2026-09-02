@@ -7,11 +7,13 @@ import {
   ChevronUp,
   Download,
   Forward,
+  LifeBuoy,
   Loader2,
   Mail,
   MailOpen,
   Paperclip,
   Reply,
+  UserPlus,
   X,
 } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -24,6 +26,8 @@ import {
   type EmailThreadDto,
 } from "@/lib/api-client";
 import { renderEmailPreviewHtml } from "@/lib/email-preview";
+import { ConvertToLeadModal } from "./convert-to-lead-modal";
+import { ConvertToTicketModal } from "./convert-to-ticket-modal";
 
 interface EmailThreadDrawerProps {
   isOpen: boolean;
@@ -62,6 +66,8 @@ interface MessageCardProps {
   index: number;
   isExpanded: boolean;
   message: EmailMessageDto;
+  onConvertToLead: (message: EmailMessageDto) => void;
+  onConvertToTicket: (message: EmailMessageDto) => void;
   onReply: (message: EmailMessageDto, isForward?: boolean) => void;
   onToggleExpand: (id: string) => void;
   onToggleRead: (message: EmailMessageDto) => void;
@@ -71,6 +77,8 @@ interface MessageCardBodyProps {
   index: number;
   isDark: boolean;
   message: EmailMessageDto;
+  onConvertToLead: () => void;
+  onConvertToTicket: () => void;
   onForward: () => void;
   onRead: () => void;
   onReply: () => void;
@@ -80,6 +88,8 @@ function MessageCardBody({
   index,
   isDark,
   message,
+  onConvertToLead,
+  onConvertToTicket,
   onForward,
   onRead,
   onReply,
@@ -164,6 +174,24 @@ function MessageCardBody({
             <Forward className="h-3.5 w-3.5" />
             İlet
           </button>
+          <button
+            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50/50 px-2.5 py-1.5 font-medium text-blue-700 text-xs hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
+            onClick={onConvertToLead}
+            title="E-postayı satış fırsatına dönüştür"
+            type="button"
+          >
+            <UserPlus className="h-3.5 w-3.5" />
+            Fırsat Yap
+          </button>
+          <button
+            className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50/50 px-2.5 py-1.5 font-medium text-purple-700 text-xs hover:bg-purple-100 dark:border-purple-900/60 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-900/60"
+            onClick={onConvertToTicket}
+            title="E-postayı destek talebine dönüştür"
+            type="button"
+          >
+            <LifeBuoy className="h-3.5 w-3.5" />
+            Talep Aç
+          </button>
         </div>
 
         <button
@@ -192,6 +220,8 @@ function MessageCard({
   index,
   isExpanded,
   message,
+  onConvertToLead,
+  onConvertToTicket,
   onReply,
   onToggleExpand,
   onToggleRead,
@@ -221,6 +251,14 @@ function MessageCard({
   const handleReadClick = useCallback(() => {
     onToggleRead(message);
   }, [onToggleRead, message]);
+
+  const handleConvertToLeadClick = useCallback(() => {
+    onConvertToLead(message);
+  }, [onConvertToLead, message]);
+
+  const handleConvertToTicketClick = useCallback(() => {
+    onConvertToTicket(message);
+  }, [onConvertToTicket, message]);
 
   return (
     <div
@@ -299,6 +337,8 @@ function MessageCard({
           index={index}
           isDark={isDark}
           message={message}
+          onConvertToLead={handleConvertToLeadClick}
+          onConvertToTicket={handleConvertToTicketClick}
           onForward={handleForwardClick}
           onRead={handleReadClick}
           onReply={handleReplyClick}
@@ -407,6 +447,51 @@ export function EmailThreadDrawer({
     [tenantId, onStatusChange]
   );
 
+  const [leadModalMessage, setLeadModalMessage] =
+    useState<EmailMessageDto | null>(null);
+  const [ticketModalMessage, setTicketModalMessage] =
+    useState<EmailMessageDto | null>(null);
+
+  const handleOpenLeadModal = useCallback((msg: EmailMessageDto) => {
+    setLeadModalMessage(msg);
+  }, []);
+
+  const handleCloseLeadModal = useCallback(() => {
+    setLeadModalMessage(null);
+  }, []);
+
+  const handleOpenTicketModal = useCallback((msg: EmailMessageDto) => {
+    setTicketModalMessage(msg);
+  }, []);
+
+  const handleCloseTicketModal = useCallback(() => {
+    setTicketModalMessage(null);
+  }, []);
+
+  const handleHeaderConvertToLead = useCallback(() => {
+    if (!thread?.messages || thread.messages.length === 0) {
+      return;
+    }
+    const msgs = [...thread.messages].reverse();
+    const lastInbound =
+      msgs.find((m: EmailMessageDto) => m.direction !== "Outbound") || msgs[0];
+    if (lastInbound) {
+      setLeadModalMessage(lastInbound);
+    }
+  }, [thread]);
+
+  const handleHeaderConvertToTicket = useCallback(() => {
+    if (!thread?.messages || thread.messages.length === 0) {
+      return;
+    }
+    const msgs = [...thread.messages].reverse();
+    const lastInbound =
+      msgs.find((m: EmailMessageDto) => m.direction !== "Outbound") || msgs[0];
+    if (lastInbound) {
+      setTicketModalMessage(lastInbound);
+    }
+  }, [thread]);
+
   if (!isOpen) {
     return null;
   }
@@ -452,14 +537,35 @@ export function EmailThreadDrawer({
                 </div>
               </div>
             </div>
-            <button
-              aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 font-medium text-blue-700 text-xs hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
+                onClick={handleHeaderConvertToLead}
+                title="E-postadan Müşteri ve Satış Fırsatı Oluştur"
+                type="button"
+              >
+                <UserPlus className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Fırsata Dönüştür</span>
+              </button>
+              <button
+                className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1.5 font-medium text-purple-700 text-xs hover:bg-purple-100 dark:border-purple-900/60 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-900/60"
+                onClick={handleHeaderConvertToTicket}
+                title="E-postadan Destek Talebi Aç"
+                type="button"
+              >
+                <LifeBuoy className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Destek Talebi Aç</span>
+              </button>
+              <button
+                aria-label="Kapat"
+                className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                onClick={onClose}
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           {/* Content */}
@@ -496,6 +602,8 @@ export function EmailThreadDrawer({
                     isExpanded={expandedMessageIds.has(message.id)}
                     key={message.id}
                     message={message}
+                    onConvertToLead={handleOpenLeadModal}
+                    onConvertToTicket={handleOpenTicketModal}
                     onReply={onReply}
                     onToggleExpand={toggleExpand}
                     onToggleRead={handleToggleRead}
@@ -505,6 +613,19 @@ export function EmailThreadDrawer({
           </div>
         </div>
       </div>
+
+      <ConvertToLeadModal
+        isOpen={Boolean(leadModalMessage)}
+        message={leadModalMessage}
+        onClose={handleCloseLeadModal}
+        tenantSlug={tenantId}
+      />
+      <ConvertToTicketModal
+        isOpen={Boolean(ticketModalMessage)}
+        message={ticketModalMessage}
+        onClose={handleCloseTicketModal}
+        tenantSlug={tenantId}
+      />
     </div>
   );
 }
