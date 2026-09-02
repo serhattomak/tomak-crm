@@ -2771,6 +2771,14 @@ export class ApiClient {
     );
   }
 
+  static async getPortalView(
+    token: string
+  ): Promise<ApiResponse<PortalViewDto>> {
+    return ApiClient.request<PortalViewDto>(`/api/public/portal/${token}`, {
+      method: "GET",
+    });
+  }
+
   static async publicAcceptQuote(
     token: string,
     data: { acceptedByName?: string; customerNotes?: string }
@@ -6848,6 +6856,8 @@ export interface PublicQuoteViewDto {
   totalAmount: number;
   validUntil?: string;
 }
+
+export type PortalViewDto = PublicQuoteViewDto;
 
 // --- HelpDesk & Ticket DTOs ---
 export interface TicketListDto {

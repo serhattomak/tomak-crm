@@ -70,7 +70,12 @@ public class PublicQuoteHandler(
             throw new NotFoundException("Teklif bulunamadı veya bağlantı geçersiz.");
         }
 
-        // If status was Sent, mark as Viewed on first customer visit
+        if (quote.ValidUntil != null && quote.ValidUntil < DateTime.UtcNow)
+        {
+            throw new NotFoundException("Teklifin geçerlilik süresi dolmuştur.");
+        }
+
+        // If status was Sent, mark as Viewed on first customer visit (only when not expired)
         if (quote.Status == "Sent")
         {
             quote.Status = "Viewed";
@@ -154,6 +159,11 @@ public class PublicQuoteHandler(
         if (quote == null)
         {
             throw new NotFoundException("Teklif bulunamadı.");
+        }
+
+        if (quote.ValidUntil != null && quote.ValidUntil < DateTime.UtcNow)
+        {
+            throw new NotFoundException("Teklifin geçerlilik süresi dolmuştur.");
         }
 
         if (quote.Status is "Accepted" or "ConvertedToOrder")
@@ -307,6 +317,11 @@ public class PublicQuoteHandler(
             throw new NotFoundException("Teklif bulunamadı.");
         }
 
+        if (quote.ValidUntil != null && quote.ValidUntil < DateTime.UtcNow)
+        {
+            throw new NotFoundException("Teklifin geçerlilik süresi dolmuştur.");
+        }
+
         quote.Status = "RevisionRequested";
         quote.UpdatedAt = DateTime.UtcNow;
 
@@ -375,6 +390,18 @@ public class PublicQuoteEndpoints : IEndpoint
         })
         .AllowAnonymous()
         .WithName("GetPublicQuote")
+        .WithTags("Public Quotes");
+
+        app.MapGet("/api/public/portal/{token}", async (
+            string token,
+            MediatR.ISender sender,
+            CancellationToken ct) =>
+        {
+            var result = await sender.Send(new GetPublicQuoteQuery(token), ct);
+            return Results.Ok(ApiResponse<PublicQuoteViewDto>.Ok(result.Value));
+        })
+        .AllowAnonymous()
+        .WithName("GetPortalQuote")
         .WithTags("Public Quotes");
 
         app.MapPost("/api/public/quotes/{token}/accept", async (

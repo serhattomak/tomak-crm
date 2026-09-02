@@ -73,6 +73,53 @@ const formatCurrency = (amount: number, currency = "TRY") =>
     style: "currency",
   }).format(amount || 0);
 
+function getExpiryStatus(validUntil?: string): {
+  isExpired: boolean;
+  isExpiringSoon: boolean;
+} {
+  if (!validUntil) {
+    return { isExpired: false, isExpiringSoon: false };
+  }
+  const isExpired = new Date(validUntil) < new Date();
+  if (isExpired) {
+    return { isExpired: true, isExpiringSoon: false };
+  }
+  const diffDays = Math.ceil(
+    (new Date(validUntil).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  );
+  const isExpiringSoon = diffDays <= 3 && diffDays >= 0;
+  return { isExpired, isExpiringSoon };
+}
+
+function QuoteExpiryBadge({ validUntil }: { validUntil?: string }) {
+  if (!validUntil) {
+    return <span>Süresiz</span>;
+  }
+  const { isExpired, isExpiringSoon } = getExpiryStatus(validUntil);
+  if (isExpired) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50 px-2 py-0.5 font-bold text-[10px] text-rose-700 dark:border-rose-800/60 dark:bg-rose-950/60 dark:text-rose-300">
+        <Clock className="h-3 w-3" />
+        Süresi doldu
+      </span>
+    );
+  }
+  if (isExpiringSoon) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-[10px] text-amber-700 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
+        <Clock className="h-3 w-3" />
+        Son 3 gün
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1">
+      <Clock className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+      <span>{new Date(validUntil).toLocaleDateString("tr-TR")}</span>
+    </span>
+  );
+}
+
 export default function QuotesPage() {
   const params = useParams();
   const router = useRouter();
@@ -528,17 +575,39 @@ export default function QuotesPage() {
                       <span className="text-zinc-400 dark:text-zinc-500">
                         {quote.itemCount} Kalem
                       </span>
-                      {quote.validUntil && (
-                        <>
-                          <span className="text-slate-300">•</span>
-                          <span>
-                            SKT:{" "}
-                            {new Date(quote.validUntil).toLocaleDateString(
-                              "tr-TR"
-                            )}
-                          </span>
-                        </>
-                      )}
+                      {quote.validUntil
+                        ? (() => {
+                            const { isExpired, isExpiringSoon } =
+                              getExpiryStatus(quote.validUntil);
+                            if (isExpired) {
+                              return (
+                                <span className="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50 px-1.5 py-0.5 font-bold text-[10px] text-rose-700 dark:border-rose-800/60 dark:bg-rose-950/60 dark:text-rose-300">
+                                  <Clock className="h-3 w-3" />
+                                  Süresi doldu
+                                </span>
+                              );
+                            }
+                            if (isExpiringSoon) {
+                              return (
+                                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-1.5 py-0.5 font-bold text-[10px] text-amber-700 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
+                                  <Clock className="h-3 w-3" />
+                                  Son 3 gün
+                                </span>
+                              );
+                            }
+                            return (
+                              <>
+                                <span className="text-slate-300">•</span>
+                                <span>
+                                  SKT:{" "}
+                                  {new Date(
+                                    quote.validUntil as string
+                                  ).toLocaleDateString("tr-TR")}
+                                </span>
+                              </>
+                            );
+                          })()
+                        : null}
                     </div>
                     <div
                       className="flex items-center gap-1"
@@ -547,9 +616,9 @@ export default function QuotesPage() {
                       <button
                         className="rounded-lg p-1.5 text-zinc-400 hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                         onClick={() => {
-                          const publicUrl = `${window.location.origin}/quotes/view/${quote.publicViewToken}`;
+                          const publicUrl = `${window.location.origin}/portal/${quote.publicViewToken}`;
                           navigator.clipboard.writeText(publicUrl);
-                          toast.success("Müşteri linki kopyalandı");
+                          toast.success("Bağlantı kopyalandı");
                         }}
                         title="Link Kopyala"
                         type="button"
@@ -667,20 +736,9 @@ export default function QuotesPage() {
                           )}
                         </td>
 
-                        {/* 5. Valid Until */}
+                        {/* 5. Valid Until — expiry badge: rose 'Süresi doldu', amber 'Son 3 gün', or tr-TR date */}
                         <td className="whitespace-nowrap px-4 py-3.5 text-[11px] text-zinc-500 dark:text-zinc-400">
-                          {quote.validUntil ? (
-                            <div className="flex items-center gap-1">
-                              <Clock className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
-                              <span>
-                                {new Date(quote.validUntil).toLocaleDateString(
-                                  "tr-TR"
-                                )}
-                              </span>
-                            </div>
-                          ) : (
-                            <span>Süresiz</span>
-                          )}
+                          <QuoteExpiryBadge validUntil={quote.validUntil} />
                         </td>
 
                         {/* 6. Assigned User */}
@@ -728,11 +786,9 @@ export default function QuotesPage() {
                             <button
                               className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                               onClick={() => {
-                                const publicUrl = `${window.location.origin}/quotes/view/${quote.publicViewToken}`;
+                                const publicUrl = `${window.location.origin}/portal/${quote.publicViewToken}`;
                                 navigator.clipboard.writeText(publicUrl);
-                                toast.success(
-                                  "Müşteri dijital teklif linki panoya kopyalandı"
-                                );
+                                toast.success("Bağlantı kopyalandı");
                               }}
                               title="Müşteri Linkini Kopyala"
                               type="button"
@@ -2295,9 +2351,9 @@ function QuoteDetailDrawer({
                 if (!quote) {
                   return;
                 }
-                const publicUrl = `${window.location.origin}/quotes/view/${quote.publicViewToken}`;
+                const publicUrl = `${window.location.origin}/portal/${quote.publicViewToken}`;
                 navigator.clipboard.writeText(publicUrl);
-                toast.success("Müşteri linki kopyalandı");
+                toast.success("Bağlantı kopyalandı");
               }}
               title="Müşteri Linkini Kopyala"
               type="button"

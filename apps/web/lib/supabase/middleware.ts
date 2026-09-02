@@ -62,7 +62,9 @@ export async function updateSession(request: NextRequest) {
   const isPublicPage =
     isAuthPage ||
     pathname.startsWith("/quotes/view/") ||
-    pathname.startsWith("/public/");
+    pathname.startsWith("/public/") ||
+    pathname.startsWith("/portal/") ||
+    pathname === "/portal";
 
   const {
     data: { user },
