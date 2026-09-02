@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -33,6 +34,7 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
 import {
   ApiClient,
@@ -43,6 +45,7 @@ import {
   type OrderStatsDto,
   type ProductListDto,
 } from "@/lib/api-client";
+import { useUrlFilters } from "@/lib/hooks/use-url-filters";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function OrdersPage() {
@@ -50,6 +53,7 @@ export default function OrdersPage() {
   const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
+  const { getParam, getIntParam, setParams } = useUrlFilters();
 
   const [orders, setOrders] = useState<OrderListDto[]>([]);
   const [stats, setStats] = useState<OrderStatsDto | null>(null);
@@ -57,14 +61,22 @@ export default function OrdersPage() {
   const [products, setProducts] = useState<ProductListDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
   const [pageSize] = useState(25);
 
-  // Filters
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [paymentStatusFilter, setPaymentStatusFilter] = useState("");
-  const [viewMode, setViewMode] = useState<"table" | "kanban">("table");
+  // Filters — initialized from URL
+  const [search, setSearch] = useState(() => getParam("search", ""));
+  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState(() =>
+    getParam("paymentStatus", "")
+  );
+  const [page, setPage] = useState(() => getIntParam("page", 1));
+  const [viewMode, setViewMode] = useState<"table" | "kanban">(() =>
+    getParam("view", "table") === "kanban" ? "kanban" : "table"
+  );
+
+  // Bulk selection
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   // Modals & Actions
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -147,6 +159,82 @@ export default function OrdersPage() {
     } catch {
       showToast("Silme sırasında hata oluştu.");
     }
+  };
+
+  // ── Bulk operations ────────────────────────────────────────────────────────
+  const allPageIds = orders.map((o) => o.id);
+  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+
+  const toggleSelectAll = () => {
+    if (allSelected) setSelectedIds(new Set());
+    else setSelectedIds(new Set(allPageIds));
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!(activeTenant && selectedIds.size > 0)) return;
+    setIsBulkDeleting(true);
+    try {
+      const { deletedCount, failedCount } = await ApiClient.bulkDeleteOrders(
+        Array.from(selectedIds),
+        activeTenant.id
+      );
+      setSelectedIds(new Set());
+      loadData();
+      if (failedCount > 0) {
+        showToast(`${deletedCount} sipariş silindi, ${failedCount} silinemedi.`);
+      } else {
+        showToast(`${deletedCount} sipariş başarıyla silindi.`);
+      }
+    } catch {
+      showToast("Toplu silme sırasında hata oluştu.");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
+  // ── URL-synced filter setters ───────────────────────────────────────────────
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+    setParams({ page: undefined, search: val || undefined });
+  };
+  const handleStatusFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setStatusFilter(v);
+    setPage(1);
+    setParams({ page: undefined, status: v || undefined });
+  };
+  const handlePaymentStatusFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setPaymentStatusFilter(v);
+    setPage(1);
+    setParams({ page: undefined, paymentStatus: v || undefined });
+  };
+  const handleResetFilters = () => {
+    setSearch("");
+    setStatusFilter("");
+    setPaymentStatusFilter("");
+    setPage(1);
+    setParams({
+      page: undefined,
+      paymentStatus: undefined,
+      search: undefined,
+      status: undefined,
+    });
+  };
+  const handleViewMode = (mode: "table" | "kanban") => {
+    setViewMode(mode);
+    setParams({ view: mode === "kanban" ? "kanban" : undefined });
   };
 
   const getStatusBadge = (status: string) => {
@@ -401,7 +489,7 @@ export default function OrdersPage() {
         <div className="max-w-md flex-1">
           <Input
             leftIcon={<Search />}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Sipariş no, Müşteri adı, Fatura no veya Takip no ara..."
             value={search}
           />
@@ -412,7 +500,7 @@ export default function OrdersPage() {
           {/* Status Filter */}
           <div className="w-40">
             <Select
-              onValueChange={(val) => setStatusFilter(val === "all" ? "" : val)}
+              onValueChange={handleStatusFilter}
               value={statusFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -434,9 +522,7 @@ export default function OrdersPage() {
           {/* Payment Status Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) =>
-                setPaymentStatusFilter(val === "all" ? "" : val)
-              }
+              onValueChange={handlePaymentStatusFilter}
               value={paymentStatusFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -455,11 +541,7 @@ export default function OrdersPage() {
           {(search || statusFilter || paymentStatusFilter) && (
             <button
               className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
-              onClick={() => {
-                setSearch("");
-                setStatusFilter("");
-                setPaymentStatusFilter("");
-              }}
+              onClick={handleResetFilters}
               type="button"
             >
               <RotateCcw className="h-3 w-3" />
@@ -475,7 +557,7 @@ export default function OrdersPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("table")}
+              onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
             >
@@ -487,7 +569,7 @@ export default function OrdersPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("kanban")}
+              onClick={() => handleViewMode("kanban")}
               title="Kanban Pipeline Görünümü"
               type="button"
             >
@@ -537,7 +619,15 @@ export default function OrdersPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pr-4 pl-6">Sipariş No & Tarih</th>
+                  <th className="py-3.5 pl-4 pr-2 w-10">
+                    <Checkbox
+                      checked={allSelected}
+                      onCheckedChange={toggleSelectAll}
+                      aria-label="Tümünü seç"
+                      data-indeterminate={someSelected}
+                    />
+                  </th>
+                  <th className="py-3.5 pr-4 pl-2">Sipariş No &amp; Tarih</th>
                   <th className="px-4 py-3.5">Müşteri</th>
                   <th className="px-4 py-3.5">Durum</th>
                   <th className="px-4 py-3.5">Ödeme Durumu</th>
@@ -550,10 +640,20 @@ export default function OrdersPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {orders.map((o) => (
                   <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
+                    className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
+                      selectedIds.has(o.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                    }`}
                     key={o.id}
                   >
-                    <td className="py-4 pr-4 pl-6">
+                    <td className="py-4 pl-4 pr-2 w-10">
+                      <Checkbox
+                        checked={selectedIds.has(o.id)}
+                        onCheckedChange={() => toggleSelectOne(o.id)}
+                        aria-label={`${o.orderNumber} seç`}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </td>
+                    <td className="py-4 pr-4 pl-2">
                       <Link
                         className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
                         href={`/${tenantSlug}/orders/${o.id}`}
@@ -791,6 +891,21 @@ export default function OrdersPage() {
           </div>
         </div>
       )}
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={selectedIds.size}
+        onClear={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            disabled: isBulkDeleting,
+            icon: <BulkDeleteIcon />,
+            label: isBulkDeleting ? "Siliniyor..." : "Seçilenleri Sil",
+            onClick: handleBulkDelete,
+            variant: "danger",
+          },
+        ]}
+      />
     </div>
   );
 }

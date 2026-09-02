@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
@@ -49,6 +50,7 @@ import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
 import {
   ApiClient,
@@ -60,6 +62,7 @@ import {
   type QuoteSummaryDto,
   type QuoteTemplateDto,
 } from "@/lib/api-client";
+import { useUrlFilters } from "@/lib/hooks/use-url-filters";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 // Currency Formatter Helper
@@ -76,6 +79,7 @@ export default function QuotesPage() {
   const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
+  const { getParam, setParams } = useUrlFilters();
 
   // State
   const [quotes, setQuotes] = useState<QuoteSummaryDto[]>([]);
@@ -83,10 +87,18 @@ export default function QuotesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
-  // Filters
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("All");
-  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
+  // Filters — initialized from URL
+  const [searchTerm, setSearchTerm] = useState(() => getParam("search", ""));
+  const [selectedStatus, setSelectedStatus] = useState<string>(() =>
+    getParam("status", "All")
+  );
+  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(() =>
+    getParam("quoteId", null as unknown as string)
+  );
+
+  // Bulk selection
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   // Modals
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -144,10 +156,73 @@ export default function QuotesPage() {
   // Check URL query for direct quote detail opening
   useEffect(() => {
     const qid = searchParams.get("quoteId");
-    if (qid) {
+    if (qid && qid !== selectedQuoteId) {
       setSelectedQuoteId(qid);
     }
-  }, [searchParams]);
+  }, [searchParams, selectedQuoteId]);
+
+  // ── Bulk operations ────────────────────────────────────────────────────────
+  const allPageIds = quotes.map((q) => q.id);
+  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+
+  const toggleSelectAll = () => {
+    if (allSelected) setSelectedIds(new Set());
+    else setSelectedIds(new Set(allPageIds));
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!(activeTenant?.id && selectedIds.size > 0)) return;
+    setIsBulkDeleting(true);
+    try {
+      const { deletedCount, failedCount } = await ApiClient.bulkDeleteQuotes(
+        Array.from(selectedIds),
+        activeTenant.id
+      );
+      setSelectedIds(new Set());
+      fetchQuotes();
+      fetchStats();
+      if (failedCount > 0) {
+        toast.info(`${deletedCount} teklif silindi, ${failedCount} silinemedi.`);
+      } else {
+        toast.success(`${deletedCount} teklif başarıyla silindi.`);
+      }
+    } catch {
+      toast.error("Toplu silme sırasında hata oluştu");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
+  // ── URL-synced handlers ───────────────────────────────────────────────────
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setParams({ search: val || undefined });
+  };
+
+  const handleStatusChange = (status: string) => {
+    setSelectedStatus(status);
+    setParams({ status: status === "All" ? undefined : status });
+  };
+
+  const handleOpenDetail = (quoteId: string) => {
+    setSelectedQuoteId(quoteId);
+    setParams({ quoteId });
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedQuoteId(null);
+    setParams({ quoteId: undefined });
+  };
 
   // Status Tab counts helper
   const statusCounts = useMemo(
@@ -345,7 +420,7 @@ export default function QuotesPage() {
                     : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 }`}
                 key={tab.key}
-                onClick={() => setSelectedStatus(tab.key)}
+                onClick={() => handleStatusChange(tab.key)}
                 type="button"
               >
                 <span>{tab.label}</span>
@@ -368,7 +443,7 @@ export default function QuotesPage() {
           <div className="w-full flex-1">
             <Input
               leftIcon={<Search />}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Teklif no, başlık veya müşteri adına göre ara..."
               value={searchTerm}
             />
@@ -501,10 +576,18 @@ export default function QuotesPage() {
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
                   <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <th className="px-4 py-3.5">Teklif No & Revizyon</th>
-                    <th className="px-4 py-3.5">Teklif Başlığı & Müşteri</th>
+                    <th className="py-3.5 pl-4 pr-2 w-10">
+                      <Checkbox
+                        checked={allSelected}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Tümünü seç"
+                        data-indeterminate={someSelected}
+                      />
+                    </th>
+                    <th className="px-4 py-3.5">Teklif No &amp; Revizyon</th>
+                    <th className="px-4 py-3.5">Teklif Başlığı &amp; Müşteri</th>
                     <th className="px-4 py-3.5">Durum</th>
-                    <th className="px-4 py-3.5">Tutar & İskonto</th>
+                    <th className="px-4 py-3.5">Tutar &amp; İskonto</th>
                     <th className="px-4 py-3.5">Geçerlilik</th>
                     <th className="px-4 py-3.5">Temsilci</th>
                     <th className="px-4 py-3.5 text-right">Aksiyonlar</th>
@@ -515,13 +598,25 @@ export default function QuotesPage() {
                     return (
                       <tr
                         className={`group cursor-pointer transition hover:bg-blue-50/40 dark:hover:bg-zinc-800/40 ${
-                          quote.status === "RevisionRequested"
+                          selectedIds.has(quote.id)
+                            ? "bg-blue-50/60 dark:bg-blue-950/20"
+                            : quote.status === "RevisionRequested"
                             ? "border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
                             : ""
                         }`}
                         key={quote.id}
-                        onClick={() => setSelectedQuoteId(quote.id)}
+                        onClick={() => handleOpenDetail(quote.id)}
                       >
+                        <td
+                          className="py-3.5 pl-4 pr-2 w-10"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Checkbox
+                            checked={selectedIds.has(quote.id)}
+                            onCheckedChange={() => toggleSelectOne(quote.id)}
+                            aria-label={`${quote.quoteNumber} seç`}
+                          />
+                        </td>
                         {/* 1. Quote Number & Revision Badge */}
                         <td className="whitespace-nowrap px-4 py-3.5">
                           <div className="flex items-center gap-2">
@@ -671,7 +766,7 @@ export default function QuotesPage() {
       {/* 6. Quote Detail Drawer */}
       {selectedQuoteId && (
         <QuoteDetailDrawer
-          onClose={() => setSelectedQuoteId(null)}
+          onClose={handleCloseDetail}
           onPrint={(qid) => setPrintQuoteId(qid)}
           onUpdated={() => {
             fetchQuotes();
@@ -696,6 +791,21 @@ export default function QuotesPage() {
           quoteId={printQuoteId}
         />
       )}
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={selectedIds.size}
+        onClear={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            disabled: isBulkDeleting,
+            icon: <BulkDeleteIcon />,
+            label: isBulkDeleting ? "Siliniyor..." : "Seçilenleri Sil",
+            onClick: handleBulkDelete,
+            variant: "danger",
+          },
+        ]}
+      />
     </div>
   );
 }

@@ -47,11 +47,13 @@ import { useTheme } from "next-themes";
 import type React from "react";
 import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
 import { CommandPalette } from "@/components/command-palette";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { NotificationCenter } from "@/components/notification-center";
 import { PermissionGate } from "@/components/permission-gate";
 import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
 import { TenantSwitcher } from "@/components/tenant-switcher";
 import { LabelProvider, useLabels } from "@/lib/labels/label-context";
+import { RealtimeNotificationProvider } from "@/lib/notifications/realtime-notification-context";
 import {
   PermissionProvider,
   usePermissions,
@@ -194,7 +196,7 @@ function DashboardLayoutInner({
   const router = useRouter();
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
-  const { profile } = usePermissions();
+  const { profile, activeTenant } = usePermissions();
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -417,7 +419,10 @@ function DashboardLayoutInner({
   ];
 
   return (
-    <>
+    <RealtimeNotificationProvider
+      tenantId={activeTenant?.id}
+      tenantSlug={tenantSlug}
+    >
       <div className="flex h-screen w-full flex-col overflow-hidden bg-zinc-100/70 font-sans text-zinc-900 antialiased md:flex-row md:gap-3 md:p-3 dark:bg-zinc-950 dark:text-zinc-100 print:m-0 print:block print:h-auto print:overflow-visible print:bg-white print:p-0">
         {/* Mobile Top Header Bar */}
         <header className="sticky top-0 z-30 flex items-center justify-between border-zinc-200/80 border-b bg-white/95 px-3.5 py-2.5 backdrop-blur-md md:hidden dark:border-zinc-800/80 dark:bg-zinc-900/95 print:hidden">
@@ -451,6 +456,7 @@ function DashboardLayoutInner({
                 <Moon className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
               )}
             </button>
+            <LanguageSwitcher variant="minimal" />
             <NotificationCenter buttonClassName="relative flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300" />
             <button
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300"
@@ -616,8 +622,11 @@ function DashboardLayoutInner({
               </div>
             </div>
 
-            {/* Bottom: Theme Toggle & Profile Avatar */}
+            {/* Bottom: Language Switcher, Theme Toggle & Profile Avatar */}
             <div className="flex flex-col items-center gap-2.5 border-zinc-200/80 border-t pt-2.5 dark:border-zinc-800">
+              {/* Language Switcher */}
+              <LanguageSwitcher variant="minimal" />
+
               {/* Theme Toggle */}
               <button
                 className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/70 bg-white text-zinc-600 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
@@ -791,7 +800,7 @@ function DashboardLayoutInner({
         isOpen={isShortcutsHelpOpen}
         onClose={() => setIsShortcutsHelpOpen(false)}
       />
-    </>
+    </RealtimeNotificationProvider>
   );
 }
 

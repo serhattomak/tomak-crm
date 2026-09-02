@@ -1,6 +1,7 @@
 /* Hallmark · component: customers-list · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import {
@@ -35,6 +36,7 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { PermissionGate } from "@/components/permission-gate";
 import { PhoneInput } from "@/components/phone-input";
@@ -46,6 +48,7 @@ import {
   type CustomerStatsDto,
   type EmployeeDto,
 } from "@/lib/api-client";
+import { useUrlFilters } from "@/lib/hooks/use-url-filters";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function CustomersPage() {
@@ -53,21 +56,28 @@ export default function CustomersPage() {
   const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
+  const { getParam, getIntParam, setParams } = useUrlFilters();
 
   const [customers, setCustomers] = useState<CustomerListDto[]>([]);
   const [stats, setStats] = useState<CustomerStatsDto | null>(null);
   const [employees, setEmployees] = useState<EmployeeDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page] = useState(1);
   const [pageSize] = useState(25);
 
-  // Filters
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [tierFilter, setTierFilter] = useState("");
-  const [viewMode, setViewMode] = useState<"table" | "grid">("table");
+  // Filters — initialized from URL
+  const [search, setSearch] = useState(() => getParam("search", ""));
+  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
+  const [typeFilter, setTypeFilter] = useState(() => getParam("type", ""));
+  const [tierFilter, setTierFilter] = useState(() => getParam("tier", ""));
+  const [page] = useState(() => getIntParam("page", 1));
+  const [viewMode, setViewMode] = useState<"table" | "grid">(() =>
+    getParam("view", "table") === "grid" ? "grid" : "table"
+  );
+
+  // Bulk selection
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   // Modals & Messages
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(
@@ -201,6 +211,79 @@ export default function CustomersPage() {
     } catch {
       showToast("Silme sırasında hata oluştu.");
     }
+  };
+
+  // ── Bulk operations ────────────────────────────────────────────────────────
+  const allPageIds = customers.map((c) => c.id);
+  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+
+  const toggleSelectAll = () => {
+    if (allSelected) setSelectedIds(new Set());
+    else setSelectedIds(new Set(allPageIds));
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!(activeTenant && selectedIds.size > 0)) return;
+    setIsBulkDeleting(true);
+    try {
+      const { deletedCount, failedCount } = await ApiClient.bulkDeleteCustomers(
+        Array.from(selectedIds),
+        activeTenant.id
+      );
+      setSelectedIds(new Set());
+      loadData();
+      if (failedCount > 0) {
+        showToast(`${deletedCount} müşteri silindi, ${failedCount} silinemedi.`);
+      } else {
+        showToast(`${deletedCount} müşteri başarıyla silindi.`);
+      }
+    } catch {
+      showToast("Toplu silme sırasında hata oluştu.");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
+  // ── URL-synced filter setters ───────────────────────────────────────────────
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setParams({ search: val || undefined });
+  };
+  const handleStatusFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setStatusFilter(v);
+    setParams({ status: v || undefined });
+  };
+  const handleTypeFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setTypeFilter(v);
+    setParams({ type: v || undefined });
+  };
+  const handleTierFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setTierFilter(v);
+    setParams({ tier: v || undefined });
+  };
+  const handleResetFilters = () => {
+    setSearch("");
+    setStatusFilter("");
+    setTypeFilter("");
+    setTierFilter("");
+    setParams({ search: undefined, status: undefined, tier: undefined, type: undefined });
+  };
+  const handleViewMode = (mode: "table" | "grid") => {
+    setViewMode(mode);
+    setParams({ view: mode === "grid" ? "grid" : undefined });
   };
 
   const getStatusBadge = (status: string) => {
@@ -401,7 +484,7 @@ export default function CustomersPage() {
         <div className="max-w-md flex-1">
           <Input
             leftIcon={<Search />}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
             value={search}
           />
@@ -412,7 +495,7 @@ export default function CustomersPage() {
           {/* Type Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) => setTypeFilter(val === "all" ? "" : val)}
+              onValueChange={handleTypeFilter}
               value={typeFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -429,7 +512,7 @@ export default function CustomersPage() {
           {/* Status Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) => setStatusFilter(val === "all" ? "" : val)}
+              onValueChange={handleStatusFilter}
               value={statusFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -448,7 +531,7 @@ export default function CustomersPage() {
           {/* Tier Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) => setTierFilter(val === "all" ? "" : val)}
+              onValueChange={handleTierFilter}
               value={tierFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -468,12 +551,7 @@ export default function CustomersPage() {
           {(search || statusFilter || typeFilter || tierFilter) && (
             <button
               className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300"
-              onClick={() => {
-                setSearch("");
-                setStatusFilter("");
-                setTypeFilter("");
-                setTierFilter("");
-              }}
+              onClick={handleResetFilters}
               type="button"
             >
               <RotateCcw className="h-3 w-3" />
@@ -489,7 +567,7 @@ export default function CustomersPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-700 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("table")}
+              onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
             >
@@ -501,7 +579,7 @@ export default function CustomersPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-700 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("grid")}
+              onClick={() => handleViewMode("grid")}
               title="Kart Görünümü"
               type="button"
             >
@@ -551,7 +629,15 @@ export default function CustomersPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pr-4 pl-6">Müşteri / Şirket</th>
+                  <th className="py-3.5 pl-4 pr-2 w-10">
+                    <Checkbox
+                      checked={allSelected}
+                      onCheckedChange={toggleSelectAll}
+                      aria-label="Tümünü seç"
+                      data-indeterminate={someSelected}
+                    />
+                  </th>
+                  <th className="py-3.5 pr-4 pl-2">Müşteri / Şirket</th>
                   <th className="px-4 py-3.5">Statü & Segment</th>
                   <th className="px-4 py-3.5">İletişim</th>
                   <th className="px-4 py-3.5">Konum</th>
@@ -563,10 +649,20 @@ export default function CustomersPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {customers.map((c) => (
                   <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
+                    className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 ${
+                      selectedIds.has(c.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                    }`}
                     key={c.id}
                   >
-                    <td className="py-4 pr-4 pl-6">
+                    <td className="py-4 pl-4 pr-2 w-10">
+                      <Checkbox
+                        checked={selectedIds.has(c.id)}
+                        onCheckedChange={() => toggleSelectOne(c.id)}
+                        aria-label={`${c.name} seç`}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </td>
+                    <td className="py-4 pr-4 pl-2">
                       <Link
                         className="flex items-center gap-3"
                         href={`/${tenantSlug}/customers/${c.id}`}
@@ -847,6 +943,21 @@ export default function CustomersPage() {
           </div>
         </div>
       )}
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={selectedIds.size}
+        onClear={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            disabled: isBulkDeleting,
+            icon: <BulkDeleteIcon />,
+            label: isBulkDeleting ? "Siliniyor..." : "Seçilenleri Sil",
+            onClick: handleBulkDelete,
+            variant: "danger",
+          },
+        ]}
+      />
     </div>
   );
 }

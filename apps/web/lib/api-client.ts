@@ -783,6 +783,20 @@ export class ApiClient {
     );
   }
 
+  /** Paralel toplu silme — fulfilled olanlar silinir, rejected olanlar atlanır */
+  static async bulkDeleteCustomers(
+    ids: string[],
+    tenantId: string
+  ): Promise<{ deletedCount: number; failedCount: number }> {
+    const results = await Promise.allSettled(
+      ids.map((id) => ApiClient.deleteCustomer(id, tenantId))
+    );
+    const deletedCount = results.filter(
+      (r) => r.status === "fulfilled" && r.value.success
+    ).length;
+    return { deletedCount, failedCount: ids.length - deletedCount };
+  }
+
   static async addCustomerContact(
     customerId: string,
     data: AddCustomerContactRequest,
@@ -945,6 +959,20 @@ export class ApiClient {
       },
       tenantId
     );
+  }
+
+  /** Paralel toplu silme — fulfilled olanlar silinir, rejected olanlar atlanır */
+  static async bulkDeleteProducts(
+    ids: string[],
+    tenantId: string
+  ): Promise<{ deletedCount: number; failedCount: number }> {
+    const results = await Promise.allSettled(
+      ids.map((id) => ApiClient.deleteProduct(id, tenantId))
+    );
+    const deletedCount = results.filter(
+      (r) => r.status === "fulfilled" && r.value.success
+    ).length;
+    return { deletedCount, failedCount: ids.length - deletedCount };
   }
 
   static async adjustProductStock(
@@ -1149,6 +1177,20 @@ export class ApiClient {
       },
       tenantId
     );
+  }
+
+  /** Paralel toplu silme — fulfilled olanlar silinir, rejected olanlar atlanır */
+  static async bulkDeleteOrders(
+    ids: string[],
+    tenantId: string
+  ): Promise<{ deletedCount: number; failedCount: number }> {
+    const results = await Promise.allSettled(
+      ids.map((id) => ApiClient.deleteOrder(id, tenantId))
+    );
+    const deletedCount = results.filter(
+      (r) => r.status === "fulfilled" && r.value.success
+    ).length;
+    return { deletedCount, failedCount: ids.length - deletedCount };
   }
 
   // ==========================================
@@ -2643,6 +2685,20 @@ export class ApiClient {
       { method: "DELETE" },
       tenantId
     );
+  }
+
+  /** Paralel toplu silme — fulfilled olanlar silinir, rejected olanlar atlanır */
+  static async bulkDeleteQuotes(
+    ids: string[],
+    tenantId: string
+  ): Promise<{ deletedCount: number; failedCount: number }> {
+    const results = await Promise.allSettled(
+      ids.map((id) => ApiClient.deleteQuote(id, tenantId))
+    );
+    const deletedCount = results.filter(
+      (r) => r.status === "fulfilled" && r.value.success
+    ).length;
+    return { deletedCount, failedCount: ids.length - deletedCount };
   }
 
   static async getQuoteStats(

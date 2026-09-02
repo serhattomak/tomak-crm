@@ -12,21 +12,26 @@ import {
 } from "@workspace/ui/components/select";
 import {
   ArrowLeft,
+  Calendar,
   Check,
   CheckCircle2,
   Clock,
   Edit2,
   ExternalLink,
   FileText,
+  Filter,
   Globe,
   Mail,
   MapPin,
+  MessageSquare,
   Phone,
   PhoneCall,
   Pin,
   PinOff,
   Plus,
+  Search,
   Send,
+  Sparkles,
   Video,
   X,
 } from "lucide-react";
@@ -82,6 +87,9 @@ export default function CustomerDetailPage() {
   // Modals & Submissions
   const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);
   const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
+  const [activityModalType, setActivityModalType] = useState<string>("Call");
+  const [activityTypeFilter, setActivityTypeFilter] = useState<string>("All");
+  const [activitySearch, setActivitySearch] = useState<string>("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -937,69 +945,335 @@ export default function CustomerDetailPage() {
             </div>
           )}
 
-          {/* TAB 7: TIMELINE */}
+          {/* TAB 7: TIMELINE & TOUCHPOINTS */}
           {activeTab === "timeline" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
-                  Müşteri Etkileşim & Aktivite Geçmişi
-                </h4>
+            <div className="space-y-6">
+              {/* 1. Quick Touchpoint Actions Bar */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
-                  onClick={() => setIsAddActivityModalOpen(true)}
+                  className="group flex items-center gap-3 rounded-2xl border border-emerald-200/80 bg-emerald-50/40 p-3.5 text-left transition-all hover:border-emerald-300 hover:bg-emerald-50/80 hover:shadow-xs active:scale-[0.98] dark:border-emerald-900/60 dark:bg-emerald-950/20 dark:hover:bg-emerald-950/40"
+                  onClick={() => {
+                    setActivityModalType("Call");
+                    setIsAddActivityModalOpen(true);
+                  }}
                   type="button"
                 >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Aktivite Ekle</span>
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-2xs transition group-hover:scale-105">
+                    <PhoneCall className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="block font-bold text-xs text-emerald-900 dark:text-emerald-200">
+                      Telefon Görüşmesi
+                    </span>
+                    <span className="text-[10px] text-emerald-700/80 dark:text-emerald-400">
+                      Arama kaydı ekle
+                    </span>
+                  </div>
+                </button>
+
+                <button
+                  className="group flex items-center gap-3 rounded-2xl border border-violet-200/80 bg-violet-50/40 p-3.5 text-left transition-all hover:border-violet-300 hover:bg-violet-50/80 hover:shadow-xs active:scale-[0.98] dark:border-violet-900/60 dark:bg-violet-950/20 dark:hover:bg-violet-950/40"
+                  onClick={() => {
+                    setActivityModalType("Meeting");
+                    setIsAddActivityModalOpen(true);
+                  }}
+                  type="button"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white shadow-2xs transition group-hover:scale-105">
+                    <Video className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="block font-bold text-xs text-violet-900 dark:text-violet-200">
+                      Toplantı / Ziyaret
+                    </span>
+                    <span className="text-[10px] text-violet-700/80 dark:text-violet-400">
+                      Görüşme notu ekle
+                    </span>
+                  </div>
+                </button>
+
+                <button
+                  className="group flex items-center gap-3 rounded-2xl border border-blue-200/80 bg-blue-50/40 p-3.5 text-left transition-all hover:border-blue-300 hover:bg-blue-50/80 hover:shadow-xs active:scale-[0.98] dark:border-blue-900/60 dark:bg-blue-950/20 dark:hover:bg-blue-950/40"
+                  onClick={() => {
+                    setActivityModalType("Email");
+                    setIsAddActivityModalOpen(true);
+                  }}
+                  type="button"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-2xs transition group-hover:scale-105">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="block font-bold text-xs text-blue-900 dark:text-blue-200">
+                      E-Posta İletişimi
+                    </span>
+                    <span className="text-[10px] text-blue-700/80 dark:text-blue-400">
+                      Yazışma kaydı düş
+                    </span>
+                  </div>
+                </button>
+
+                <button
+                  className="group flex items-center gap-3 rounded-2xl border border-amber-200/80 bg-amber-50/40 p-3.5 text-left transition-all hover:border-amber-300 hover:bg-amber-50/80 hover:shadow-xs active:scale-[0.98] dark:border-amber-900/60 dark:bg-amber-950/20 dark:hover:bg-amber-950/40"
+                  onClick={() => {
+                    setActivityModalType("Note");
+                    setIsAddActivityModalOpen(true);
+                  }}
+                  type="button"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-600 text-white shadow-2xs transition group-hover:scale-105">
+                    <FileText className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="block font-bold text-xs text-amber-900 dark:text-amber-200">
+                      Önemli Not
+                    </span>
+                    <span className="text-[10px] text-amber-700/80 dark:text-amber-400">
+                      Müşteri notu ekle
+                    </span>
+                  </div>
                 </button>
               </div>
 
-              {customer.activities.length === 0 ? (
-                <div className="rounded-2xl border border-zinc-200 border-dashed bg-white p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
-                  Henüz aktivite kaydı bulunmuyor.
+              {/* 2. Filters & Search Bar */}
+              <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900">
+                {/* Search Input */}
+                <div className="max-w-xs flex-1">
+                  <Input
+                    leftIcon={<Search />}
+                    onChange={(e) => setActivitySearch(e.target.value)}
+                    placeholder="Aktivitelerde ara..."
+                    value={activitySearch}
+                  />
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  {customer.activities.map((activity) => (
-                    <div
-                      className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
-                      key={activity.id}
-                    >
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                        {activity.activityType === "Call" ? (
-                          <PhoneCall className="h-4 w-4" />
-                        ) : activity.activityType === "Meeting" ? (
-                          <Video className="h-4 w-4" />
-                        ) : activity.activityType === "Email" ? (
-                          <Mail className="h-4 w-4" />
-                        ) : (
-                          <FileText className="h-4 w-4" />
-                        )}
+
+                {/* Filter Pills */}
+                <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                  {[
+                    { key: "All", label: "Tümü", count: customer.activities.length },
+                    {
+                      key: "Call",
+                      label: "Aramalar",
+                      count: customer.activities.filter((a) => a.activityType === "Call").length,
+                    },
+                    {
+                      key: "Meeting",
+                      label: "Toplantılar",
+                      count: customer.activities.filter((a) => a.activityType === "Meeting").length,
+                    },
+                    {
+                      key: "Email",
+                      label: "E-Postalar",
+                      count: customer.activities.filter((a) => a.activityType === "Email").length,
+                    },
+                    {
+                      key: "Note",
+                      label: "Notlar",
+                      count: customer.activities.filter((a) => a.activityType === "Note").length,
+                    },
+                    {
+                      key: "System",
+                      label: "Sistem",
+                      count: customer.activities.filter(
+                        (a) =>
+                          a.activityType !== "Call" &&
+                          a.activityType !== "Meeting" &&
+                          a.activityType !== "Email" &&
+                          a.activityType !== "Note"
+                      ).length,
+                    },
+                  ].map((tab) => {
+                    const isSelected = activityTypeFilter === tab.key;
+                    return (
+                      <button
+                        className={`flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 font-semibold text-xs transition-all ${
+                          isSelected
+                            ? "bg-blue-600 text-white shadow-xs"
+                            : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-zinc-800/60 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                        }`}
+                        key={tab.key}
+                        onClick={() => setActivityTypeFilter(tab.key)}
+                        type="button"
+                      >
+                        <span>{tab.label}</span>
+                        <span
+                          className={`rounded-full px-1.5 py-0.2 font-bold text-[10px] ${
+                            isSelected
+                              ? "bg-blue-700/80 text-white"
+                              : "bg-zinc-200/80 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
+                          }`}
+                        >
+                          {tab.count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3. Connected Vertical Timeline */}
+              {(() => {
+                const filtered = customer.activities.filter((act) => {
+                  if (activityTypeFilter !== "All") {
+                    if (activityTypeFilter === "System") {
+                      if (
+                        act.activityType === "Call" ||
+                        act.activityType === "Meeting" ||
+                        act.activityType === "Email" ||
+                        act.activityType === "Note"
+                      ) {
+                        return false;
+                      }
+                    } else if (act.activityType !== activityTypeFilter) {
+                      return false;
+                    }
+                  }
+                  if (activitySearch.trim()) {
+                    const q = activitySearch.toLowerCase();
+                    const matchTitle = act.title.toLowerCase().includes(q);
+                    const matchDesc = act.description?.toLowerCase().includes(q);
+                    if (!matchTitle && !matchDesc) return false;
+                  }
+                  return true;
+                });
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white p-12 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+                        <MessageSquare className="h-6 w-6" />
                       </div>
-                      <div className="flex-1 text-xs">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                            {activity.title}
-                          </span>
-                          <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                            {new Date(activity.performedAt).toLocaleString(
-                              "tr-TR"
-                            )}
-                          </span>
-                        </div>
-                        {activity.description && (
-                          <p className="mt-1 text-zinc-600 dark:text-zinc-300">
-                            {activity.description}
-                          </p>
-                        )}
-                        <div className="mt-2 flex items-center gap-2 text-[10px] text-zinc-400 dark:text-zinc-500">
-                          <span>Tür: {activity.activityType}</span>
-                        </div>
-                      </div>
+                      <h4 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                        Aktivite Bulunamadı
+                      </h4>
+                      <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+                        {activitySearch || activityTypeFilter !== "All"
+                          ? "Arama veya filtre kriterlerinize uygun aktivite bulunamadı."
+                          : "Bu müşteriye ait henüz bir etkileşim kaydı girilmedi."}
+                      </p>
+                      <button
+                        className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+                        onClick={() => {
+                          setActivityModalType("Call");
+                          setIsAddActivityModalOpen(true);
+                        }}
+                        type="button"
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span>İlk Aktiviteyi Kaydet</span>
+                      </button>
                     </div>
-                  ))}
-                </div>
-              )}
+                  );
+                }
+
+                return (
+                  <div className="relative pl-6 before:absolute before:top-3 before:bottom-3 before:left-[17px] before:w-0.5 before:bg-zinc-200 dark:before:bg-zinc-800">
+                    <div className="space-y-6">
+                      {filtered.map((activity) => {
+                        const isCall = activity.activityType === "Call";
+                        const isMeeting = activity.activityType === "Meeting";
+                        const isEmail = activity.activityType === "Email";
+                        const isNote = activity.activityType === "Note";
+
+                        const nodeBg = isCall
+                          ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                          : isMeeting
+                          ? "bg-violet-500 text-white shadow-violet-500/20"
+                          : isEmail
+                          ? "bg-blue-500 text-white shadow-blue-500/20"
+                          : isNote
+                          ? "bg-amber-500 text-white shadow-amber-500/20"
+                          : "bg-zinc-500 text-white shadow-zinc-500/20";
+
+                        const badgeColor = isCall
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800"
+                          : isMeeting
+                          ? "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/60 dark:text-violet-300 dark:border-violet-800"
+                          : isEmail
+                          ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800"
+                          : isNote
+                          ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800"
+                          : "bg-zinc-50 text-zinc-700 border-zinc-200 dark:bg-zinc-800/60 dark:text-zinc-300 dark:border-zinc-700";
+
+                        const badgeLabel = isCall
+                          ? "Telefon Araması"
+                          : isMeeting
+                          ? "Toplantı"
+                          : isEmail
+                          ? "E-Posta"
+                          : isNote
+                          ? "Not"
+                          : activity.activityType || "Sistem";
+
+                        const dateObj = new Date(activity.performedAt);
+                        const isToday =
+                          new Date().toDateString() === dateObj.toDateString();
+
+                        return (
+                          <div className="relative flex items-start gap-4" key={activity.id}>
+                            {/* Timeline Node Icon */}
+                            <div
+                              className={`-left-6 relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full shadow-md ring-4 ring-white dark:ring-zinc-950 ${nodeBg}`}
+                            >
+                              {isCall ? (
+                                <PhoneCall className="h-3.5 w-3.5" />
+                              ) : isMeeting ? (
+                                <Video className="h-3.5 w-3.5" />
+                              ) : isEmail ? (
+                                <Mail className="h-3.5 w-3.5" />
+                              ) : isNote ? (
+                                <FileText className="h-3.5 w-3.5" />
+                              ) : (
+                                <Sparkles className="h-3.5 w-3.5" />
+                              )}
+                            </div>
+
+                            {/* Timeline Content Card */}
+                            <div className="-ml-3 flex-1 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs transition-all hover:border-zinc-300 hover:shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${badgeColor}`}
+                                  >
+                                    {badgeLabel}
+                                  </span>
+                                  <h5 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                                    {activity.title}
+                                  </h5>
+                                </div>
+
+                                <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+                                  <Clock className="h-3 w-3" />
+                                  <span>
+                                    {isToday
+                                      ? `Bugün ${dateObj.toLocaleTimeString("tr-TR", {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}`
+                                      : dateObj.toLocaleString("tr-TR", {
+                                          day: "2-digit",
+                                          month: "short",
+                                          year: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {activity.description && (
+                                <p className="mt-2 text-xs text-zinc-600 leading-relaxed dark:text-zinc-300">
+                                  {activity.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
 
@@ -1218,6 +1492,7 @@ export default function CustomerDetailPage() {
       {isAddActivityModalOpen && (
         <AddActivityModal
           customerId={customer.id}
+          initialType={activityModalType}
           isOpen={isAddActivityModalOpen}
           onClose={() => setIsAddActivityModalOpen(false)}
           onSuccess={() => {
@@ -1431,20 +1706,28 @@ function AddActivityModal({
   onSuccess,
   tenantId,
   customerId,
+  initialType = "Call",
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   tenantId: string;
   customerId: string;
+  initialType?: string;
 }) {
   const [formData, setFormData] = useState({
     activityDate: new Date().toISOString().split("T")[0],
     activityTime: "14:00",
     description: "",
     subject: "",
-    type: "Call",
+    type: initialType || "Call",
   });
+
+  useEffect(() => {
+    if (initialType) {
+      setFormData((prev) => ({ ...prev, type: initialType }));
+    }
+  }, [initialType]);
 
   const [submitting, setSubmitting] = useState(false);
 

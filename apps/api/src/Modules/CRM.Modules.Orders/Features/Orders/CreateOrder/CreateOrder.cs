@@ -1,6 +1,7 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Realtime;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Orders.Data;
 using CRM.Modules.Orders.Entities;
@@ -59,7 +60,8 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderCommand>
 public class CreateOrderHandler(
     OrdersDbContext dbContext,
     ProductsDbContext productsDbContext,
-    ICurrentTenant currentTenant) : ICommandHandler<CreateOrderCommand, Guid>
+    ICurrentTenant currentTenant,
+    ICrmNotificationService notificationService) : ICommandHandler<CreateOrderCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
@@ -225,6 +227,15 @@ public class CreateOrderHandler(
 
         dbContext.Orders.Add(order);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        _ = notificationService.SendNotificationAsync(
+            tenantId,
+            null,
+            title: "Yeni Sipariş Alındı 🛒",
+            message: $"{order.CustomerName} için {order.OrderNumber} numaralı sipariş ({order.TotalAmount:N2} {currency}) oluşturuldu.",
+            linkUrl: "/orders",
+            type: "success",
+            ct: CancellationToken.None);
 
         return Result.Success(order.Id);
     }

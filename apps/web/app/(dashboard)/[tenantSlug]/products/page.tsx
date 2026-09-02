@@ -31,9 +31,10 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
 import {
   type AdjustProductStockRequest,
@@ -43,6 +44,7 @@ import {
   type ProductListDto,
   type ProductStatsDto,
 } from "@/lib/api-client";
+import { useUrlFilters } from "@/lib/hooks/use-url-filters";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 export default function ProductsPage() {
@@ -50,22 +52,29 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const tenantSlug = (params?.tenantSlug as string) || "";
   const { activeTenant } = usePermissions();
+  const { getParam, getIntParam, setParams } = useUrlFilters();
 
   const [products, setProducts] = useState<ProductListDto[]>([]);
   const [categories, setCategories] = useState<ProductCategoryDto[]>([]);
   const [stats, setStats] = useState<ProductStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
   const [pageSize] = useState(25);
 
-  // Filters
-  const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [stockStatusFilter, setStockStatusFilter] = useState("");
-  const [viewMode, setViewMode] = useState<"table" | "grid">("table");
+  // Filters — initialized from URL
+  const [search, setSearch] = useState(() => getParam("search", ""));
+  const [typeFilter, setTypeFilter] = useState(() => getParam("type", ""));
+  const [categoryFilter, setCategoryFilter] = useState(() => getParam("category", ""));
+  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
+  const [stockStatusFilter, setStockStatusFilter] = useState(() => getParam("stockStatus", ""));
+  const [page, setPage] = useState(() => getIntParam("page", 1));
+  const [viewMode, setViewMode] = useState<"table" | "grid">(() =>
+    getParam("view", "table") === "grid" ? "grid" : "table"
+  );
+
+  // Bulk selection
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   // Modals & Actions
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -160,6 +169,101 @@ export default function ProductsPage() {
     } catch {
       showToast("Silme sırasında hata oluştu.");
     }
+  };
+
+  // ── Bulk operations ─────────────────────────────────────────────────────────
+  const allPageIds = products.map((p) => p.id);
+  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+
+  const toggleSelectAll = () => {
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(allPageIds));
+    }
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!(activeTenant && selectedIds.size > 0)) return;
+    setIsBulkDeleting(true);
+    try {
+      const { deletedCount, failedCount } = await ApiClient.bulkDeleteProducts(
+        Array.from(selectedIds),
+        activeTenant.id
+      );
+      setSelectedIds(new Set());
+      loadData();
+      if (failedCount > 0) {
+        showToast(`${deletedCount} ürün silindi, ${failedCount} silinemedi.`);
+      } else {
+        showToast(`${deletedCount} ürün başarıyla silindi.`);
+      }
+    } catch {
+      showToast("Toplu silme sırasında hata oluştu.");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
+  // ── URL-synced filter setters ────────────────────────────────────────────────
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+    setParams({ page: undefined, search: val || undefined });
+  };
+  const handleTypeFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setTypeFilter(v);
+    setPage(1);
+    setParams({ page: undefined, type: v || undefined });
+  };
+  const handleCategoryFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setCategoryFilter(v);
+    setPage(1);
+    setParams({ category: v || undefined, page: undefined });
+  };
+  const handleStatusFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setStatusFilter(v);
+    setPage(1);
+    setParams({ page: undefined, status: v || undefined });
+  };
+  const handleStockStatusFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setStockStatusFilter(v);
+    setPage(1);
+    setParams({ page: undefined, stockStatus: v || undefined });
+  };
+  const handleResetFilters = () => {
+    setSearch("");
+    setTypeFilter("");
+    setCategoryFilter("");
+    setStatusFilter("");
+    setStockStatusFilter("");
+    setPage(1);
+    setParams({
+      category: undefined,
+      page: undefined,
+      search: undefined,
+      status: undefined,
+      stockStatus: undefined,
+      type: undefined,
+    });
+  };
+  const handleViewMode = (mode: "table" | "grid") => {
+    setViewMode(mode);
+    setParams({ view: mode === "grid" ? "grid" : undefined });
   };
 
   const getTypeBadge = (type: string) => {
@@ -368,7 +472,7 @@ export default function ProductsPage() {
         <div className="max-w-md flex-1">
           <Input
             leftIcon={<Search />}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Ürün adı, SKU, Barkod veya Marka ara..."
             value={search}
           />
@@ -379,7 +483,7 @@ export default function ProductsPage() {
           {/* Type Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) => setTypeFilter(val === "all" ? "" : val)}
+              onValueChange={handleTypeFilter}
               value={typeFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -398,9 +502,7 @@ export default function ProductsPage() {
           {/* Category Filter */}
           <div className="w-44">
             <Select
-              onValueChange={(val) =>
-                setCategoryFilter(val === "all" ? "" : val)
-              }
+              onValueChange={handleCategoryFilter}
               value={categoryFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -421,9 +523,7 @@ export default function ProductsPage() {
           {/* Stock Status Filter */}
           <div className="w-40">
             <Select
-              onValueChange={(val) =>
-                setStockStatusFilter(val === "all" ? "" : val)
-              }
+              onValueChange={handleStockStatusFilter}
               value={stockStatusFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -441,7 +541,7 @@ export default function ProductsPage() {
           {/* Status Filter */}
           <div className="w-36">
             <Select
-              onValueChange={(val) => setStatusFilter(val === "all" ? "" : val)}
+              onValueChange={handleStatusFilter}
               value={statusFilter || "all"}
             >
               <SelectTrigger className="h-9">
@@ -465,13 +565,7 @@ export default function ProductsPage() {
             stockStatusFilter) && (
             <button
               className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
-              onClick={() => {
-                setSearch("");
-                setTypeFilter("");
-                setCategoryFilter("");
-                setStatusFilter("");
-                setStockStatusFilter("");
-              }}
+              onClick={handleResetFilters}
               type="button"
             >
               <RotateCcw className="h-3 w-3" />
@@ -487,7 +581,7 @@ export default function ProductsPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("table")}
+              onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
             >
@@ -499,7 +593,7 @@ export default function ProductsPage() {
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
-              onClick={() => setViewMode("grid")}
+              onClick={() => handleViewMode("grid")}
               title="Görsel Kart Görünümü"
               type="button"
             >
@@ -549,9 +643,17 @@ export default function ProductsPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pr-4 pl-6">Ürün / Hizmet</th>
-                  <th className="px-4 py-3.5">Kategori & Marka</th>
-                  <th className="px-4 py-3.5">Tip & Durum</th>
+                  <th className="py-3.5 pl-4 pr-2 w-10">
+                    <Checkbox
+                      checked={allSelected}
+                      onCheckedChange={toggleSelectAll}
+                      aria-label="Tümünü seç"
+                      data-indeterminate={someSelected}
+                    />
+                  </th>
+                  <th className="py-3.5 pr-4 pl-2">Ürün / Hizmet</th>
+                  <th className="px-4 py-3.5">Kategori &amp; Marka</th>
+                  <th className="px-4 py-3.5">Tip &amp; Durum</th>
                   <th className="px-4 py-3.5">Stok Durumu</th>
                   <th className="px-4 py-3.5 text-right">Maliyet</th>
                   <th className="px-4 py-3.5 text-right">Satış Fiyatı</th>
@@ -562,10 +664,20 @@ export default function ProductsPage() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {products.map((p) => (
                   <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
+                    className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
+                      selectedIds.has(p.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                    }`}
                     key={p.id}
                   >
-                    <td className="py-4 pr-4 pl-6">
+                    <td className="py-4 pl-4 pr-2 w-10">
+                      <Checkbox
+                        checked={selectedIds.has(p.id)}
+                        onCheckedChange={() => toggleSelectOne(p.id)}
+                        aria-label={`${p.name} seç`}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </td>
+                    <td className="py-4 pr-4 pl-2">
                       <Link
                         className="flex items-center gap-3"
                         href={`/${tenantSlug}/products/${p.id}`}
@@ -930,6 +1042,21 @@ export default function ProductsPage() {
           </div>
         </div>
       )}
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={selectedIds.size}
+        onClear={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            disabled: isBulkDeleting,
+            icon: <BulkDeleteIcon />,
+            label: isBulkDeleting ? "Siliniyor..." : "Seçilenleri Sil",
+            onClick: handleBulkDelete,
+            variant: "danger",
+          },
+        ]}
+      />
     </div>
   );
 }

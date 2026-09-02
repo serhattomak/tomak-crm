@@ -1,6 +1,7 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Realtime;
 using CRM.Modules.Customers.Data;
 using CRM.Modules.Customers.Entities;
 using CRM.Modules.Orders.Data;
@@ -51,7 +52,8 @@ public record PublicRequestRevisionCommand(string Token, string Feedback) : ICom
 public class PublicQuoteHandler(
     OrdersDbContext dbContext,
     CustomersDbContext customersDbContext,
-    TenantsDbContext tenantsDbContext) :
+    TenantsDbContext tenantsDbContext,
+    ICrmNotificationService notificationService) :
     IQueryHandler<GetPublicQuoteQuery, PublicQuoteViewDto>,
     ICommandHandler<PublicAcceptQuoteCommand, bool>,
     ICommandHandler<PublicRequestRevisionCommand, bool>
@@ -281,6 +283,16 @@ public class PublicQuoteHandler(
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        _ = notificationService.SendNotificationAsync(
+            quote.TenantId,
+            null,
+            title: "Teklif Onaylandı! 🎉",
+            message: $"{quote.CustomerName} ({quote.QuoteNumber}) teklifini dijital imza ile onayladı.",
+            linkUrl: "/quotes",
+            type: "success",
+            ct: CancellationToken.None);
+
         return Result.Success(true);
     }
 
@@ -335,6 +347,16 @@ public class PublicQuoteHandler(
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        _ = notificationService.SendNotificationAsync(
+            quote.TenantId,
+            null,
+            title: "Teklif Revizyon Talebi Alındı ⚠️",
+            message: $"{quote.CustomerName} ({quote.QuoteNumber}) için revizyon istedi: {request.Feedback}",
+            linkUrl: "/quotes",
+            type: "warning",
+            ct: CancellationToken.None);
+
         return Result.Success(true);
     }
 }
