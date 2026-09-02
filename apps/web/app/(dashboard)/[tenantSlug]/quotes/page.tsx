@@ -1,7 +1,19 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
+import { Textarea } from "@workspace/ui/components/textarea";
 import {
   AlertCircle,
   AlertTriangle,
@@ -353,13 +365,11 @@ export default function QuotesPage() {
 
         {/* Search Input */}
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <div className="relative w-full flex-1">
-            <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
-            <input
-              className="w-full rounded-2xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-10 text-xs text-zinc-900 transition placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+          <div className="w-full flex-1">
+            <Input
+              leftIcon={<Search />}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Teklif no, başlık veya müşteri adına göre ara..."
-              type="text"
               value={searchTerm}
             />
           </div>
@@ -1182,70 +1192,80 @@ function CreateQuoteModal({
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {/* Customer select or text */}
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Müşteri Seçin
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                  onChange={(e) => handleCustomerPick(e.target.value)}
-                  value={customerId}
+                <Label className="mb-1">Müşteri Seçin</Label>
+                <Select
+                  onValueChange={(val) =>
+                    handleCustomerPick(val === "none" ? "" : val)
+                  }
+                  value={customerId || "none"}
                 >
-                  <option value="">-- Müşteri Listesinden Seç --</option>
-                  {customers.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="-- Müşteri Listesinden Seç --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">
+                      -- Müşteri Listesinden Seç --
+                    </SelectItem>
+                    {customers.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Customer Name */}
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Müşteri Ünvanı *
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                <Label className="mb-1" required>
+                  Müşteri Ünvanı
+                </Label>
+                <Input
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Örn: ABC Holding A.Ş."
                   required
-                  type="text"
                   value={customerName}
                 />
               </div>
 
               {/* Deal Link */}
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                <Label className="mb-1">
                   Bağlı Pipeline Fırsatı (Opsiyonel)
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                  onChange={(e) => handleDealPick(e.target.value)}
-                  value={dealId}
+                </Label>
+                <Select
+                  onValueChange={(val) =>
+                    handleDealPick(val === "none" ? "" : val)
+                  }
+                  value={dealId || "none"}
                 >
-                  <option value="">-- Fırsat Bağlantısı Yok --</option>
-                  {deals.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.title} ({formatCurrency(d.value, d.currency)})
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="-- Fırsat Bağlantısı Yok --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">
+                      -- Fırsat Bağlantısı Yok --
+                    </SelectItem>
+                    {deals.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>
+                        {d.title} ({formatCurrency(d.value, d.currency)})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {/* Proposal Title */}
               <div className="sm:col-span-2">
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Teklif Başlığı *
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                <Label className="mb-1" required>
+                  Teklif Başlığı
+                </Label>
+                <Input
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Örn: Yıllık Yazılım ve Altyapı Lisans Teklifi"
                   required
-                  type="text"
                   value={title}
                 />
               </div>
@@ -1253,35 +1273,33 @@ function CreateQuoteModal({
               {/* Currency & Validity */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Para Birimi
-                  </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                    onChange={(e) => setCurrency(e.target.value)}
-                    value={currency}
-                  >
-                    <option value="TRY">TRY (₺)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                  </select>
+                  <Label className="mb-1">Para Birimi</Label>
+                  <Select onValueChange={setCurrency} value={currency}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="TRY">TRY (₺)</SelectItem>
+                      <SelectItem value="USD">USD ($)</SelectItem>
+                      <SelectItem value="EUR">EUR (€)</SelectItem>
+                      <SelectItem value="GBP">GBP (£)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Geçerlilik
-                  </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                    onChange={(e) => setValidDays(e.target.value)}
-                    value={validDays}
-                  >
-                    <option value="7">7 Gün</option>
-                    <option value="15">15 Gün</option>
-                    <option value="30">30 Gün</option>
-                    <option value="60">60 Gün</option>
-                  </select>
+                  <Label className="mb-1">Geçerlilik</Label>
+                  <Select onValueChange={setValidDays} value={validDays}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="7">7 Gün</SelectItem>
+                      <SelectItem value="15">15 Gün</SelectItem>
+                      <SelectItem value="30">30 Gün</SelectItem>
+                      <SelectItem value="60">60 Gün</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -1342,27 +1360,32 @@ function CreateQuoteModal({
                         <td className="px-3 py-2.5">
                           <div className="space-y-1">
                             {products.length > 0 && (
-                              <select
-                                className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[11px] text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                                onChange={(e) =>
+                              <Select
+                                onValueChange={(val) =>
                                   handleItemChange(
                                     idx,
                                     "productId",
-                                    e.target.value
+                                    val === "none" ? "" : val
                                   )
                                 }
-                                value={item.productId || ""}
+                                value={item.productId || "none"}
                               >
-                                <option value="">
-                                  -- Katalogdan Seç (Opsiyonel) --
-                                </option>
-                                {products.map((p) => (
-                                  <option key={p.id} value={p.id}>
-                                    {p.name} (
-                                    {formatCurrency(p.sellingPrice, currency)})
-                                  </option>
-                                ))}
-                              </select>
+                                <SelectTrigger className="h-7 text-[11px]">
+                                  <SelectValue placeholder="-- Katalogdan Seç (Opsiyonel) --" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="none">
+                                    -- Katalogdan Seç (Opsiyonel) --
+                                  </SelectItem>
+                                  {products.map((p) => (
+                                    <SelectItem key={p.id} value={p.id}>
+                                      {p.name} (
+                                      {formatCurrency(p.sellingPrice, currency)}
+                                      )
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             )}
                             <input
                               className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
@@ -1401,20 +1424,20 @@ function CreateQuoteModal({
                         </td>
 
                         {/* Quantity */}
-                        <td className="px-2 py-2.5">
-                          <input
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                            min="0.01"
-                            onChange={(e) =>
+                        <td className="w-24 px-2 py-2.5">
+                          <NumberInput
+                            inputSize="sm"
+                            min={0.01}
+                            onChange={(val) =>
                               handleItemChange(
                                 idx,
                                 "quantity",
-                                Number.parseFloat(e.target.value) || 0
+                                val ?? 0
                               )
                             }
                             required
-                            step="0.01"
-                            type="number"
+                            showStepper
+                            step={1}
                             value={item.quantity}
                           />
                         </td>
@@ -1432,64 +1455,69 @@ function CreateQuoteModal({
                         </td>
 
                         {/* Unit Price */}
-                        <td className="px-2 py-2.5">
-                          <input
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-right font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                            min="0"
-                            onChange={(e) =>
+                        <td className="w-28 px-2 py-2.5">
+                          <NumberInput
+                            inputSize="sm"
+                            min={0}
+                            onChange={(val) =>
                               handleItemChange(
                                 idx,
                                 "unitPrice",
-                                Number.parseFloat(e.target.value) || 0
+                                val ?? 0
                               )
                             }
+                            prefix={currency === "USD" ? "$" : currency === "EUR" ? "€" : currency === "GBP" ? "£" : "₺"}
                             required
-                            step="0.01"
-                            type="number"
+                            step={0.01}
                             value={item.unitPrice}
                           />
                         </td>
 
                         {/* Discount Rate */}
-                        <td className="px-2 py-2.5">
-                          <input
-                            className={`w-full rounded-lg border px-2 py-1 text-center font-bold text-xs focus:outline-none ${
+                        <td className="w-20 px-2 py-2.5">
+                          <NumberInput
+                            className={
                               item.discountRate > 20
-                                ? "border-amber-400 bg-amber-50 text-amber-800"
-                                : "border-zinc-200 bg-white text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                            }`}
-                            max="100"
-                            min="0"
-                            onChange={(e) =>
+                                ? "border-amber-400 bg-amber-50 text-amber-800 dark:border-amber-500/50 dark:bg-amber-950/30 dark:text-amber-300"
+                                : undefined
+                            }
+                            inputSize="sm"
+                            max={100}
+                            min={0}
+                            onChange={(val) =>
                               handleItemChange(
                                 idx,
                                 "discountRate",
-                                Number.parseFloat(e.target.value) || 0
+                                val ?? 0
                               )
                             }
-                            type="number"
+                            suffix="%"
                             value={item.discountRate}
                           />
                         </td>
 
                         {/* Tax Rate */}
                         <td className="px-2 py-2.5">
-                          <select
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-1.5 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                            onChange={(e) =>
+                          <Select
+                            onValueChange={(val) =>
                               handleItemChange(
                                 idx,
                                 "taxRate",
-                                Number.parseFloat(e.target.value) || 0
+                                Number.parseFloat(val) || 0
                               )
                             }
-                            value={item.taxRate}
+                            value={String(item.taxRate)}
                           >
-                            <option value="0">%0</option>
-                            <option value="1">%1</option>
-                            <option value="10">%10</option>
-                            <option value="20">%20</option>
-                          </select>
+                            <SelectTrigger className="h-7 text-xs">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="0">%0</SelectItem>
+                              <SelectItem value="1">%1</SelectItem>
+                              <SelectItem value="10">%10</SelectItem>
+                              <SelectItem value="20">%20</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </td>
 
                         {/* Total Price */}
@@ -1551,29 +1579,26 @@ function CreateQuoteModal({
                   </div>
 
                   {discountType === "Percentage" ? (
-                    <input
-                      className="w-24 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                      max="100"
-                      min="0"
-                      onChange={(e) =>
-                        setDiscountRate(Number.parseFloat(e.target.value) || 0)
-                      }
+                    <NumberInput
+                      className="w-24 font-bold"
+                      inputSize="sm"
+                      max={100}
+                      min={0}
+                      onChange={(val) => setDiscountRate(val ?? 0)}
                       placeholder="%"
-                      type="number"
-                      value={discountRate || ""}
+                      suffix="%"
+                      value={discountRate || undefined}
                     />
                   ) : (
-                    <input
-                      className="w-32 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                      min="0"
-                      onChange={(e) =>
-                        setDiscountAmount(
-                          Number.parseFloat(e.target.value) || 0
-                        )
-                      }
+                    <NumberInput
+                      className="w-32 font-bold"
+                      inputSize="sm"
+                      min={0}
+                      onChange={(val) => setDiscountAmount(val ?? 0)}
                       placeholder="Tutar"
-                      type="number"
-                      value={discountAmount || ""}
+                      prefix={currency === "USD" ? "$" : currency === "EUR" ? "€" : currency === "GBP" ? "£" : "₺"}
+                      step={0.01}
+                      value={discountAmount || undefined}
                     />
                   )}
                 </div>
@@ -1639,42 +1664,38 @@ function CreateQuoteModal({
             </h3>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Ödeme Yöntemi
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  value={paymentMethod}
-                >
-                  <option value="BankTransfer">Havale / EFT</option>
-                  <option value="CreditCard">Kredi Kartı</option>
-                  <option value="Cash">Nakit</option>
-                  <option value="Check">Çek / Senet</option>
-                  <option value="OpenAccount">Açık Hesap (Cari)</option>
-                </select>
+                <Label className="mb-1">Ödeme Yöntemi</Label>
+                <Select onValueChange={setPaymentMethod} value={paymentMethod}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="BankTransfer">Havale / EFT</SelectItem>
+                    <SelectItem value="CreditCard">Kredi Kartı</SelectItem>
+                    <SelectItem value="Cash">Nakit</SelectItem>
+                    <SelectItem value="Check">Çek / Senet</SelectItem>
+                    <SelectItem value="OpenAccount">
+                      Açık Hesap (Cari)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Vade (Gün)
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
-                  min="0"
-                  onChange={(e) => setPaymentDueDays(e.target.value)}
+                <Label className="mb-1">Vade (Gün)</Label>
+                <NumberInput
+                  min={0}
+                  onChange={(val) => setPaymentDueDays(val !== undefined ? String(val) : "")}
                   placeholder="Örn: 30"
-                  type="number"
-                  value={paymentDueDays}
+                  showStepper
+                  step={1}
+                  value={paymentDueDays ? Number(paymentDueDays) : undefined}
                 />
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                  Vade Tarihi
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
-                  onChange={(e) => setPaymentDueDate(e.target.value)}
-                  type="date"
+                <Label className="mb-1">Vade Tarihi</Label>
+                <DatePicker
+                  onChange={setPaymentDueDate}
+                  placeholder="Vade tarihi seçin"
                   value={paymentDueDate}
                 />
               </div>
@@ -1694,18 +1715,26 @@ function CreateQuoteModal({
                   <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                     Şablon Seç:
                   </span>
-                  <select
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1 font-semibold text-xs text-zinc-800 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                    onChange={(e) => handleTemplateChange(e.target.value)}
-                    value={selectedTemplateId}
-                  >
-                    <option value="">-- Şablon Seçin --</option>
-                    {templates.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.name} {t.isDefault ? "(Varsayılan)" : ""}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="w-56">
+                    <Select
+                      onValueChange={(val) =>
+                        handleTemplateChange(val === "none" ? "" : val)
+                      }
+                      value={selectedTemplateId || "none"}
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue placeholder="-- Şablon Seçin --" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">-- Şablon Seçin --</SelectItem>
+                        {templates.map((t) => (
+                          <SelectItem key={t.id} value={t.id}>
+                            {t.name} {t.isDefault ? "(Varsayılan)" : ""}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               )}
             </div>
@@ -2760,34 +2789,35 @@ function QuoteDetailDrawer({
                     <span className="min-w-0 flex-1 truncate font-semibold text-xs">
                       {qItem?.productName || `Kalem ${idx + 1}`}
                     </span>
-                    <input
-                      className="w-20 rounded-lg border border-zinc-200 px-2 py-1 text-center text-xs dark:border-zinc-800"
-                      min="0.01"
-                      onChange={(e) => {
-                        const v = Number.parseFloat(e.target.value) || 0;
+                    <NumberInput
+                      className="w-20 text-center"
+                      inputSize="sm"
+                      min={0.01}
+                      onChange={(val) => {
+                        const v = val ?? 0;
                         setRevisionItems((prev) =>
                           prev.map((p) =>
                             p.id === ri.id ? { ...p, quantity: v } : p
                           )
                         );
                       }}
-                      step="0.01"
-                      type="number"
+                      step={1}
                       value={ri.quantity}
                     />
-                    <input
-                      className="w-24 rounded-lg border border-zinc-200 px-2 py-1 text-right font-semibold text-xs dark:border-zinc-800"
-                      min="0"
-                      onChange={(e) => {
-                        const v = Number.parseFloat(e.target.value) || 0;
+                    <NumberInput
+                      className="w-24 text-right"
+                      inputSize="sm"
+                      min={0}
+                      onChange={(val) => {
+                        const v = val ?? 0;
                         setRevisionItems((prev) =>
                           prev.map((p) =>
                             p.id === ri.id ? { ...p, unitPrice: v } : p
                           )
                         );
                       }}
-                      step="0.01"
-                      type="number"
+                      prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                      step={0.01}
                       value={ri.unitPrice}
                     />
                   </div>
@@ -2797,22 +2827,16 @@ function QuoteDetailDrawer({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
-                  Vade Tarihi (Ödeme)
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 p-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800"
-                  onChange={(e) => setRevisionPaymentDueDate(e.target.value)}
-                  type="date"
+                <Label className="mb-1">Vade Tarihi (Ödeme)</Label>
+                <DatePicker
+                  onChange={setRevisionPaymentDueDate}
+                  placeholder="Vade tarihi seçin"
                   value={revisionPaymentDueDate}
                 />
               </div>
               <div>
-                <label className="mb-1 block font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
-                  Revizyon Gerekçesi / Notu
-                </label>
-                <textarea
-                  className="w-full rounded-xl border border-zinc-200 p-2 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800"
+                <Label className="mb-1">Revizyon Gerekçesi / Notu</Label>
+                <Textarea
                   onChange={(e) => setRevisionNotes(e.target.value)}
                   placeholder="Örn: Müşteri %5 ek iskonto talep etti"
                   rows={2}
@@ -2894,46 +2918,45 @@ function QuoteDetailDrawer({
                           {ci.productName}
                         </span>
                       </label>
-                      <input
-                        className="ml-auto w-16 rounded-lg border border-zinc-200 px-2 py-1 text-center text-xs disabled:opacity-40 dark:border-zinc-800"
+                      <NumberInput
+                        className="ml-auto w-20 text-center"
                         disabled={!ci.isSelected}
-                        min="0.01"
-                        onChange={(e) =>
+                        inputSize="sm"
+                        min={0.01}
+                        onChange={(val) =>
                           setConvertItems((prev) =>
                             prev.map((p) =>
                               p.quoteItemId === ci.quoteItemId
                                 ? {
                                     ...p,
-                                    quantity:
-                                      Number.parseFloat(e.target.value) || 0,
+                                    quantity: val ?? 0,
                                   }
                                 : p
                             )
                           )
                         }
-                        step="0.01"
-                        type="number"
+                        step={1}
                         value={ci.quantity}
                       />
-                      <input
-                        className="w-20 rounded-lg border border-zinc-200 px-2 py-1 text-right font-semibold text-xs disabled:opacity-40 dark:border-zinc-800"
+                      <NumberInput
+                        className="w-24 text-right"
                         disabled={!ci.isSelected}
-                        min="0"
-                        onChange={(e) =>
+                        inputSize="sm"
+                        min={0}
+                        onChange={(val) =>
                           setConvertItems((prev) =>
                             prev.map((p) =>
                               p.quoteItemId === ci.quoteItemId
                                 ? {
                                     ...p,
-                                    unitPrice:
-                                      Number.parseFloat(e.target.value) || 0,
+                                    unitPrice: val ?? 0,
                                   }
                                 : p
                             )
                           )
                         }
-                        step="0.01"
-                        type="number"
+                        prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                        step={0.01}
                         value={ci.unitPrice}
                       />
                     </div>
@@ -2941,54 +2964,50 @@ function QuoteDetailDrawer({
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   <div>
-                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Kargo Ücreti
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
-                      min="0"
-                      onChange={(e) => setConvertShippingFee(e.target.value)}
-                      step="0.01"
-                      type="number"
-                      value={convertShippingFee}
+                    <Label className="mb-1">Kargo Ücreti</Label>
+                    <NumberInput
+                      min={0}
+                      onChange={(val) =>
+                        setConvertShippingFee(val !== undefined ? String(val) : "0")
+                      }
+                      prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                      step={0.01}
+                      value={convertShippingFee ? Number(convertShippingFee) : 0}
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Vade Tarihi
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
-                      onChange={(e) => setConvertDueDate(e.target.value)}
-                      type="date"
+                    <Label className="mb-1">Vade Tarihi</Label>
+                    <DatePicker
+                      onChange={setConvertDueDate}
+                      placeholder="Vade tarihi seçin"
                       value={convertDueDate}
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Ödeme Yöntemi
-                    </label>
-                    <select
-                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
-                      onChange={(e) => setConvertPaymentMethod(e.target.value)}
+                    <Label className="mb-1">Ödeme Yöntemi</Label>
+                    <Select
+                      onValueChange={setConvertPaymentMethod}
                       value={convertPaymentMethod}
                     >
-                      <option value="BankTransfer">Havale / EFT</option>
-                      <option value="CreditCard">Kredi Kartı</option>
-                      <option value="Cash">Nakit</option>
-                      <option value="Check">Çek / Senet</option>
-                      <option value="OpenAccount">Açık Hesap</option>
-                    </select>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="BankTransfer">
+                          Havale / EFT
+                        </SelectItem>
+                        <SelectItem value="CreditCard">Kredi Kartı</SelectItem>
+                        <SelectItem value="Cash">Nakit</SelectItem>
+                        <SelectItem value="Check">Çek / Senet</SelectItem>
+                        <SelectItem value="OpenAccount">Açık Hesap</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
-                    <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Sipariş Notu
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-zinc-200 px-3 py-2 text-xs dark:border-zinc-800"
+                    <Label className="mb-1">Sipariş Notu</Label>
+                    <Input
                       onChange={(e) => setConvertNotes(e.target.value)}
                       placeholder="Not"
-                      type="text"
                       value={convertNotes}
                     />
                   </div>

@@ -1,5 +1,15 @@
 "use client";
 
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import {
   AlertCircle,
   CheckCircle2,
@@ -388,13 +398,11 @@ export default function OrdersPage() {
       {/* 3. Filters & View Switcher Bar */}
       <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
         {/* Search */}
-        <div className="relative max-w-md flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
-          <input
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+        <div className="max-w-md flex-1">
+          <Input
+            leftIcon={<Search />}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Sipariş no, Müşteri adı, Fatura no veya Takip no ara..."
-            type="text"
             value={search}
           />
         </div>
@@ -402,32 +410,46 @@ export default function OrdersPage() {
         {/* Filter Dropdowns */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Status Filter */}
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-            onChange={(e) => setStatusFilter(e.target.value)}
-            value={statusFilter}
-          >
-            <option value="">Tüm Durumlar</option>
-            <option value="Draft">Taslak</option>
-            <option value="PendingApproval">Onay Bekliyor</option>
-            <option value="Confirmed">Onaylandı</option>
-            <option value="Processing">Hazırlanıyor</option>
-            <option value="Shipped">Kargoda / Yolda</option>
-            <option value="Delivered">Teslim Edildi</option>
-            <option value="Cancelled">İptal Edildi</option>
-          </select>
+          <div className="w-40">
+            <Select
+              onValueChange={(val) => setStatusFilter(val === "all" ? "" : val)}
+              value={statusFilter || "all"}
+            >
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Tüm Durumlar" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Durumlar</SelectItem>
+                <SelectItem value="Draft">Taslak</SelectItem>
+                <SelectItem value="PendingApproval">Onay Bekliyor</SelectItem>
+                <SelectItem value="Confirmed">Onaylandı</SelectItem>
+                <SelectItem value="Processing">Hazırlanıyor</SelectItem>
+                <SelectItem value="Shipped">Kargoda / Yolda</SelectItem>
+                <SelectItem value="Delivered">Teslim Edildi</SelectItem>
+                <SelectItem value="Cancelled">İptal Edildi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Payment Status Filter */}
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-            onChange={(e) => setPaymentStatusFilter(e.target.value)}
-            value={paymentStatusFilter}
-          >
-            <option value="">Tüm Ödemeler</option>
-            <option value="Unpaid">Ödenmedi</option>
-            <option value="PartiallyPaid">Kısmi Ödendi</option>
-            <option value="Paid">Tamamı Ödendi</option>
-          </select>
+          <div className="w-36">
+            <Select
+              onValueChange={(val) =>
+                setPaymentStatusFilter(val === "all" ? "" : val)
+              }
+              value={paymentStatusFilter || "all"}
+            >
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Tüm Ödemeler" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Ödemeler</SelectItem>
+                <SelectItem value="Unpaid">Ödenmedi</SelectItem>
+                <SelectItem value="PartiallyPaid">Kısmi Ödendi</SelectItem>
+                <SelectItem value="Paid">Tamamı Ödendi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Reset Filters */}
           {(search || statusFilter || paymentStatusFilter) && (
@@ -1042,36 +1064,43 @@ function CreateOrderWizardModal({
           {/* 1. Customer & Status Section */}
           <div className="grid grid-cols-1 gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:grid-cols-3 dark:border-zinc-800/90 dark:bg-zinc-800/30">
             <div className="sm:col-span-2">
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Müşteri Seçin *
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => handleCustomerChange(e.target.value)}
-                value={selectedCustomerId}
+              <Label className="mb-1" required>
+                Müşteri Seçin
+              </Label>
+              <Select
+                onValueChange={(val) =>
+                  handleCustomerChange(val === "none" ? "" : val)
+                }
+                value={selectedCustomerId || "none"}
               >
-                <option value="">Kayıtlı Müşteri Seçin...</option>
-                {customers.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} {c.city ? `(${c.city})` : ""}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Kayıtlı Müşteri Seçin..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Kayıtlı Müşteri Seçin...</SelectItem>
+                  {customers.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.name} {c.city ? `(${c.city})` : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Başlangıç Durumu
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setStatus(e.target.value)}
-                value={status}
-              >
-                <option value="Confirmed">Onaylandı (Stoktan Düş)</option>
-                <option value="Draft">Taslak</option>
-                <option value="PendingApproval">Onay Bekliyor</option>
-              </select>
+              <Label className="mb-1">Başlangıç Durumu</Label>
+              <Select onValueChange={setStatus} value={status}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Confirmed">
+                    Onaylandı (Stoktan Düş)
+                  </SelectItem>
+                  <SelectItem value="Draft">Taslak</SelectItem>
+                  <SelectItem value="PendingApproval">Onay Bekliyor</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -1083,30 +1112,44 @@ function CreateOrderWizardModal({
 
             {/* Quick Item Add Strip */}
             <div className="flex flex-wrap items-center gap-2 rounded-xl bg-zinc-50 p-2.5 dark:bg-zinc-800/50">
-              <select
-                className="min-w-[200px] flex-1 rounded-lg border border-zinc-200 bg-white p-2 text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setPickerProdId(e.target.value)}
-                value={pickerProdId}
-              >
-                <option value="">Katalogdan Ürün / Hizmet Seçin...</option>
-                {products.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} (₺{p.sellingPrice} •{" "}
-                    {p.trackInventory ? `Stok: ${p.currentStock}` : "Hizmet"})
-                  </option>
-                ))}
-              </select>
+              <div className="min-w-[200px] flex-1">
+                <Select
+                  onValueChange={(val) =>
+                    setPickerProdId(val === "none" ? "" : val)
+                  }
+                  value={pickerProdId || "none"}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Katalogdan Ürün / Hizmet Seçin..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">
+                      Katalogdan Ürün / Hizmet Seçin...
+                    </SelectItem>
+                    {products.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name} (₺{p.sellingPrice} •{" "}
+                        {p.trackInventory
+                          ? `Stok: ${p.currentStock}`
+                          : "Hizmet"}
+                        )
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              <input
-                className="w-20 rounded-lg border border-zinc-200 bg-white p-2 text-center text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                min="1"
-                onChange={(e) =>
-                  setPickerQty(Number.parseFloat(e.target.value) || 1)
-                }
-                placeholder="Adet"
-                type="number"
-                value={pickerQty}
-              />
+              <div className="w-24">
+                <NumberInput
+                  className="text-center"
+                  min={1}
+                  onChange={(val) => setPickerQty(val ?? 1)}
+                  placeholder="Adet"
+                  showStepper
+                  step={1}
+                  value={pickerQty}
+                />
+              </div>
 
               <button
                 className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
@@ -1165,20 +1208,19 @@ function CreateOrderWizardModal({
                             )}
                           </td>
                           <td className="px-3 py-2.5 text-center">
-                            <input
-                              className="w-16 rounded-md border border-zinc-200 p-1 text-center font-bold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100"
-                              min="0.01"
-                              onChange={(e) => {
+                            <NumberInput
+                              className="w-20 text-center"
+                              inputSize="sm"
+                              min={0.01}
+                              onChange={(val) => {
                                 const newItems = [...items];
                                 const currentItem = newItems[idx];
                                 if (currentItem) {
-                                  currentItem.quantity =
-                                    Number.parseFloat(e.target.value) || 1;
+                                  currentItem.quantity = val ?? 1;
                                   setItems(newItems);
                                 }
                               }}
-                              step="0.01"
-                              type="number"
+                              step={1}
                               value={item.quantity}
                             />
                           </td>
@@ -1192,20 +1234,20 @@ function CreateOrderWizardModal({
                             %{item.taxRate}
                           </td>
                           <td className="px-3 py-2.5 text-center">
-                            <input
-                              className="w-14 rounded-md border border-zinc-200 p-1 text-center text-zinc-900 dark:border-zinc-800 dark:text-zinc-100"
-                              max="100"
-                              min="0"
-                              onChange={(e) => {
+                            <NumberInput
+                              className="w-16 text-center"
+                              inputSize="sm"
+                              max={100}
+                              min={0}
+                              onChange={(val) => {
                                 const newItems = [...items];
                                 const currentItem = newItems[idx];
                                 if (currentItem) {
-                                  currentItem.discountRate =
-                                    Number.parseFloat(e.target.value) || 0;
+                                  currentItem.discountRate = val ?? 0;
                                   setItems(newItems);
                                 }
                               }}
-                              type="number"
+                              suffix="%"
                               value={item.discountRate || 0}
                             />
                           </td>
@@ -1267,65 +1309,57 @@ function CreateOrderWizardModal({
             <div className="space-y-3 lg:col-span-7">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                    Ödeme Yöntemi
-                  </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  <Label className="mb-1">Ödeme Yöntemi</Label>
+                  <Select
+                    onValueChange={setPaymentMethod}
                     value={paymentMethod}
                   >
-                    <option value="BankTransfer">Havale / EFT</option>
-                    <option value="CreditCard">Kredi Kartı</option>
-                    <option value="Cash">Nakit</option>
-                    <option value="Check">Çek / Senet</option>
-                    <option value="OpenAccount">Açık Hesap (Cari)</option>
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="BankTransfer">Havale / EFT</SelectItem>
+                      <SelectItem value="CreditCard">Kredi Kartı</SelectItem>
+                      <SelectItem value="Cash">Nakit</SelectItem>
+                      <SelectItem value="Check">Çek / Senet</SelectItem>
+                      <SelectItem value="OpenAccount">
+                        Açık Hesap (Cari)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                    Kargo Bedeli (₺)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute top-2 left-3 font-semibold text-zinc-400 dark:text-zinc-500">
-                      ₺
-                    </span>
-                    <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-7 font-medium text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                      min="0"
-                      onChange={(e) =>
-                        setShippingFee(Number.parseFloat(e.target.value) || 0)
-                      }
-                      placeholder="0.00"
-                      step="0.01"
-                      type="number"
-                      value={shippingFee || ""}
-                    />
-                  </div>
+                  <Label className="mb-1">Kargo Bedeli (₺)</Label>
+                  <NumberInput
+                    min={0}
+                    onChange={(val) => setShippingFee(val ?? 0)}
+                    placeholder="0.00"
+                    prefix="₺"
+                    step={0.01}
+                    value={shippingFee || undefined}
+                  />
                 </div>
               </div>
 
               {/* Coupon / Promotion Section */}
-              <div className="rounded-2xl border border-violet-100 bg-violet-50/40 p-3 dark:border-violet-950/50 dark:bg-violet-950/20">
-                <label className="mb-1 block font-semibold text-violet-900 text-xs dark:text-violet-200">
+              <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-3 dark:border-blue-950/50 dark:bg-blue-950/20">
+                <Label className="mb-1 text-blue-900 dark:text-blue-200">
                   Kupon veya Promosyon Kodu
-                </label>
+                </Label>
                 <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <Ticket className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-violet-500" />
-                    <input
-                      className="w-full rounded-xl border border-violet-200 bg-white py-1.5 pr-3 pl-8 font-mono text-xs text-zinc-900 uppercase focus:border-violet-500 focus:outline-none dark:border-violet-900/60 dark:bg-zinc-900 dark:text-zinc-100"
+                  <div className="flex-1">
+                    <Input
+                      leftIcon={<Ticket className="text-blue-500" />}
                       onChange={(e) =>
                         setCouponCode(e.target.value.toUpperCase())
                       }
                       placeholder="Örn: BAHAR2026"
-                      type="text"
                       value={couponCode}
                     />
                   </div>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
                     disabled={promoLoading || items.length === 0}
                     onClick={handleApplyPromotion}
                     type="button"
@@ -1351,11 +1385,11 @@ function CreateOrderWizardModal({
                   <div className="mt-2 space-y-1">
                     {appliedPromotions.map((p, idx) => (
                       <div
-                        className="flex items-center justify-between font-medium text-[11px] text-violet-800 dark:text-violet-300"
+                        className="flex items-center justify-between font-medium text-[11px] text-blue-800 dark:text-blue-300"
                         key={idx}
                       >
                         <span className="flex items-center gap-1">
-                          <Tag className="h-3 w-3 text-violet-500" />
+                          <Tag className="h-3 w-3 text-blue-500" />
                           {p.name} ({p.desc})
                         </span>
                         <span className="font-bold text-emerald-600">
@@ -1379,18 +1413,13 @@ function CreateOrderWizardModal({
                     <span className="absolute top-2 left-3 font-semibold text-zinc-400 dark:text-zinc-500">
                       ₺
                     </span>
-                    <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-7 font-medium text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                      min="0"
-                      onChange={(e) =>
-                        setGeneralDiscount(
-                          Number.parseFloat(e.target.value) || 0
-                        )
-                      }
+                    <NumberInput
+                      min={0}
+                      onChange={(val) => setGeneralDiscount(val ?? 0)}
                       placeholder="0.00"
-                      step="0.01"
-                      type="number"
-                      value={generalDiscount || ""}
+                      prefix="₺"
+                      step={0.01}
+                      value={generalDiscount || undefined}
                     />
                   </div>
                 </div>

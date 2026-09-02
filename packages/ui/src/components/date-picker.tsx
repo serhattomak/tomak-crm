@@ -9,7 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { Popover as PopoverPrimitive } from "radix-ui";
-import * as React from "react";
+import { type MouseEvent, useMemo, useState } from "react";
 
 const TURKISH_MONTHS = [
   "Ocak",
@@ -27,6 +27,13 @@ const TURKISH_MONTHS = [
 ];
 
 const TURKISH_DAYS_SHORT = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
+
+function formatDateString(d: Date) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
 
 export interface DatePickerProps {
   className?: string;
@@ -49,23 +56,15 @@ export function DatePicker({
   maxDate,
   clearable = true,
 }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   // Current viewed month/year in calendar
   const initialDate = value ? new Date(value) : new Date();
-  const [viewYear, setViewYear] = React.useState(initialDate.getFullYear());
-  const [viewMonth, setViewMonth] = React.useState(initialDate.getMonth()); // 0-11
-
-  // Format YYYY-MM-DD
-  const formatDateString = (d: Date) => {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-  };
+  const [viewYear, setViewYear] = useState(initialDate.getFullYear());
+  const [viewMonth, setViewMonth] = useState(initialDate.getMonth()); // 0-11
 
   // Format Turkish display (15 Mart 2026)
-  const displayFormatted = React.useMemo(() => {
+  const displayFormatted = useMemo(() => {
     if (!value) {
       return null;
     }
@@ -79,7 +78,12 @@ export function DatePicker({
     const y = Number.parseInt(p0, 10);
     const m = Number.parseInt(p1, 10) - 1;
     const d = Number.parseInt(p2, 10);
-    if (isNaN(y) || isNaN(m) || isNaN(d) || !TURKISH_MONTHS[m]) {
+    if (
+      Number.isNaN(y) ||
+      Number.isNaN(m) ||
+      Number.isNaN(d) ||
+      !TURKISH_MONTHS[m]
+    ) {
       return value;
     }
     return `${d} ${TURKISH_MONTHS[m]} ${y}`;
@@ -104,7 +108,7 @@ export function DatePicker({
   };
 
   // Calculate days in current month view
-  const calendarDays = React.useMemo(() => {
+  const calendarDays = useMemo(() => {
     const firstDayOfMonth = new Date(viewYear, viewMonth, 1);
     const lastDayOfMonth = new Date(viewYear, viewMonth + 1, 0);
 
@@ -159,7 +163,7 @@ export function DatePicker({
     setOpen(false);
   };
 
-  const handleClear = (e: React.MouseEvent) => {
+  const handleClear = (e: MouseEvent) => {
     e.stopPropagation();
     onChange?.("");
   };
@@ -169,7 +173,7 @@ export function DatePicker({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             className
           )}
           type="button"
@@ -187,14 +191,14 @@ export function DatePicker({
           </div>
 
           <div className="flex shrink-0 items-center gap-1">
-            {clearable && value && (
+            {clearable && value ? (
               <span
                 className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={handleClear}
               >
                 <X className="h-3.5 w-3.5" />
               </span>
-            )}
+            ) : null}
           </div>
         </button>
       </PopoverPrimitive.Trigger>
@@ -248,14 +252,14 @@ export function DatePicker({
                     !d.isCurrentMonth && "text-zinc-300 dark:text-zinc-600",
                     d.isCurrentMonth &&
                       !isSelected &&
-                      "text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300",
+                      "text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300",
                     isToday &&
                       !isSelected &&
-                      "border border-violet-300 bg-violet-50/50 font-bold text-violet-700 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300",
+                      "border border-blue-300 bg-blue-50/50 font-bold text-blue-700 dark:border-blue-700 dark:bg-blue-950/40 dark:text-blue-300",
                     isSelected &&
-                      "bg-violet-600 font-bold text-white shadow-xs hover:bg-violet-700"
+                      "bg-blue-600 font-bold text-white shadow-xs hover:bg-blue-700"
                   )}
-                  key={idx}
+                  key={d.dateStr}
                   onClick={() => handleSelectDay(d.dateStr)}
                   type="button"
                 >
@@ -268,7 +272,7 @@ export function DatePicker({
           {/* Quick Preset Footers */}
           <div className="mt-2 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-[11px] dark:border-zinc-800">
             <button
-              className="font-bold text-violet-600 hover:text-violet-700 dark:hover:text-violet-400"
+              className="font-bold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
               onClick={handleSetToday}
               type="button"
             >
@@ -306,9 +310,9 @@ export function DateRangePicker({
   placeholder = "Tarih aralığı seçiniz",
   className,
 }: DateRangePickerProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const displayString = React.useMemo(() => {
+  const displayString = useMemo(() => {
     if (startDate && endDate) {
       return `${startDate} → ${endDate}`;
     }
@@ -361,7 +365,7 @@ export function DateRangePicker({
       <PopoverPrimitive.Trigger asChild>
         <button
           className={cn(
-            "flex h-9 items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all hover:border-zinc-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700",
+            "flex h-9 items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700",
             className
           )}
           type="button"
@@ -382,35 +386,35 @@ export function DateRangePicker({
           </div>
           <div className="space-y-1 font-semibold text-xs">
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300"
               onClick={() => handleQuickPreset("today")}
               type="button"
             >
               Bugün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300"
               onClick={() => handleQuickPreset("thisMonth")}
               type="button"
             >
               Bu Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300"
               onClick={() => handleQuickPreset("lastMonth")}
               type="button"
             >
               Geçen Ay
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300"
               onClick={() => handleQuickPreset("last30Days")}
               type="button"
             >
               Son 30 Gün
             </button>
             <button
-              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-violet-50 hover:text-violet-700 dark:hover:bg-zinc-800 dark:hover:text-violet-300 dark:hover:text-zinc-300"
+              className="w-full rounded-xl px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-zinc-800 dark:hover:text-blue-300 dark:hover:text-zinc-300"
               onClick={() => handleQuickPreset("thisYear")}
               type="button"
             >

@@ -1,6 +1,18 @@
 "use client";
 
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
+import { Textarea } from "@workspace/ui/components/textarea";
 import {
   ArrowLeft,
   Banknote,
@@ -793,31 +805,35 @@ function ChangeStatusModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Yeni Aşama / Durum *
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-bold text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-              onChange={(e) => setNewStatus(e.target.value)}
-              value={newStatus}
-            >
-              <option value="Draft">Taslak</option>
-              <option value="PendingApproval">Onay Bekliyor</option>
-              <option value="Confirmed">Onaylandı (Stoktan Düş)</option>
-              <option value="Processing">Hazırlanıyor</option>
-              <option value="Shipped">Kargoda / Yolda</option>
-              <option value="Delivered">Teslim Edildi (Tamamlandı)</option>
-              <option value="Cancelled">İptal Edildi (Stoğa İade Et)</option>
-              <option value="Refunded">İade Edildi</option>
-            </select>
+            <Label className="mb-1" required>
+              Yeni Aşama / Durum
+            </Label>
+            <Select onValueChange={setNewStatus} value={newStatus}>
+              <SelectTrigger className="h-10 font-bold">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Draft">Taslak</SelectItem>
+                <SelectItem value="PendingApproval">Onay Bekliyor</SelectItem>
+                <SelectItem value="Confirmed">
+                  Onaylandı (Stoktan Düş)
+                </SelectItem>
+                <SelectItem value="Processing">Hazırlanıyor</SelectItem>
+                <SelectItem value="Shipped">Kargoda / Yolda</SelectItem>
+                <SelectItem value="Delivered">
+                  Teslim Edildi (Tamamlandı)
+                </SelectItem>
+                <SelectItem value="Cancelled">
+                  İptal Edildi (Stoğa İade Et)
+                </SelectItem>
+                <SelectItem value="Refunded">İade Edildi</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Açıklama / Durum Notu
-            </label>
-            <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+            <Label className="mb-1">Açıklama / Durum Notu</Label>
+            <Textarea
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Örn: Müşteri arandı, sevkiyat yarın yola çıkacak..."
               rows={3}
@@ -961,18 +977,15 @@ function AddPaymentModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Tahsil Edilen Tutar (₺) *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 font-extrabold text-sm text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-              min="0.01"
-              onChange={(e) =>
-                setAmount(Number.parseFloat(e.target.value) || 0)
-              }
+            <Label className="mb-1" required>
+              Tahsil Edilen Tutar (₺)
+            </Label>
+            <NumberInput
+              min={0.01}
+              onChange={(val) => setAmount(val ?? 0)}
+              prefix="₺"
               required
-              step="0.01"
-              type="number"
+              step={0.01}
               value={amount}
             />
           </div>
@@ -988,65 +1001,52 @@ function AddPaymentModal({
           )}
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Ödeme Yöntemi *
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              value={paymentMethod}
-            >
-              <option value="BankTransfer">Havale / EFT</option>
-              <option value="CreditCard">Kredi Kartı</option>
-              <option value="Cash">Nakit</option>
-              <option value="Check">Çek / Senet</option>
-              <option value="OpenAccount">Açık Hesap (Cari)</option>
-            </select>
+            <Label className="mb-1" required>
+              Ödeme Yöntemi
+            </Label>
+            <Select onValueChange={setPaymentMethod} value={paymentMethod}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="BankTransfer">Havale / EFT</SelectItem>
+                <SelectItem value="CreditCard">Kredi Kartı</SelectItem>
+                <SelectItem value="Cash">Nakit</SelectItem>
+                <SelectItem value="Check">Çek / Senet</SelectItem>
+                <SelectItem value="OpenAccount">Açık Hesap (Cari)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Ödeme Tarihi *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-              onChange={(e) => setPaymentDate(e.target.value)}
-              required
-              type="date"
+            <Label className="mb-1" required>
+              Ödeme Tarihi
+            </Label>
+            <DatePicker
+              onChange={setPaymentDate}
+              placeholder="Ödeme tarihi seçin"
               value={paymentDate}
             />
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Dekont / İşlem Referans No
-            </label>
-            <input
-              className={`w-full rounded-xl border bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 ${fieldError ? "border-rose-400 bg-rose-50/50" : "border-zinc-200 dark:border-zinc-800"}`}
+            <Label className="mb-1">Dekont / İşlem Referans No</Label>
+            <Input
+              error={fieldError || undefined}
               onChange={(e) => {
                 setReferenceNumber(e.target.value);
                 setFieldError(null);
               }}
               placeholder="Örn: TR849000..."
-              type="text"
               value={referenceNumber}
             />
-            {fieldError && (
-              <p className="mt-1 font-medium text-rose-600 text-xs">
-                {fieldError}
-              </p>
-            )}
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Tahsilat Notu
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+            <Label className="mb-1">Tahsilat Notu</Label>
+            <Input
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Örn: Kalan bakiyenin ilk taksiti..."
-              type="text"
               value={notes}
             />
           </div>

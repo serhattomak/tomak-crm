@@ -1,5 +1,7 @@
 "use client";
 
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
 import {
   Select,
   SelectContent,
@@ -254,28 +256,23 @@ export default function UsersManagementPage() {
               onSubmit={handleInvite}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
+                <Label className="mb-1.5" required>
                   Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute top-3 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
-                    onChange={(e) => setInviteEmail(e.target.value)}
-                    placeholder="teammate@company.com"
-                    required
-                    type="email"
-                    value={inviteEmail}
-                  />
-                </div>
+                </Label>
+                <Input
+                  leftIcon={<Mail />}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  placeholder="teammate@company.com"
+                  required
+                  type="email"
+                  value={inviteEmail}
+                />
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-                  Initial Role
-                </label>
+                <Label className="mb-1.5">Initial Role</Label>
                 <Select onValueChange={setInviteRoleId} value={inviteRoleId}>
-                  <SelectTrigger className="bg-white dark:bg-zinc-900">
+                  <SelectTrigger>
                     <SelectValue placeholder="Rol Seçiniz" />
                   </SelectTrigger>
                   <SelectContent>

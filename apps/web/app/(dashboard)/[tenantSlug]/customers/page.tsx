@@ -1,6 +1,15 @@
 /* Hallmark · component: customers-list · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import {
   Building2,
   CheckCircle2,
@@ -254,7 +263,7 @@ export default function CustomersPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Müşteriler
             </h1>
-            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
               {totalCount} Kayıt
             </span>
           </div>
@@ -279,7 +288,7 @@ export default function CustomersPage() {
 
           <PermissionGate permission="Customers.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -303,7 +312,7 @@ export default function CustomersPage() {
                 {stats?.totalCustomers ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Users className="h-5 w-5" />
             </div>
           </div>
@@ -389,13 +398,11 @@ export default function CustomersPage() {
       {/* 3. Filters & View Switcher Bar */}
       <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center dark:border-zinc-800/90 dark:bg-zinc-900/90">
         {/* Search */}
-        <div className="relative max-w-md flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
-          <input
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+        <div className="max-w-md flex-1">
+          <Input
+            leftIcon={<Search />}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
-            type="text"
             value={search}
           />
         </div>
@@ -403,41 +410,59 @@ export default function CustomersPage() {
         {/* Filter Dropdowns */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Type Filter */}
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-            onChange={(e) => setTypeFilter(e.target.value)}
-            value={typeFilter}
-          >
-            <option value="">Tüm Tipler</option>
-            <option value="Company">Kurumsal (Şirket)</option>
-            <option value="Individual">Bireysel (Şahıs)</option>
-          </select>
+          <div className="w-36">
+            <Select
+              onValueChange={(val) => setTypeFilter(val === "all" ? "" : val)}
+              value={typeFilter || "all"}
+            >
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Tüm Tipler" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Tipler</SelectItem>
+                <SelectItem value="Company">Kurumsal (Şirket)</SelectItem>
+                <SelectItem value="Individual">Bireysel (Şahıs)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Status Filter */}
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-            onChange={(e) => setStatusFilter(e.target.value)}
-            value={statusFilter}
-          >
-            <option value="">Tüm Statüler</option>
-            <option value="Active">Aktif</option>
-            <option value="Lead">Potansiyel (Lead)</option>
-            <option value="Passive">Pasif</option>
-            <option value="Churned">Kaybedildi</option>
-          </select>
+          <div className="w-36">
+            <Select
+              onValueChange={(val) => setStatusFilter(val === "all" ? "" : val)}
+              value={statusFilter || "all"}
+            >
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Tüm Statüler" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Statüler</SelectItem>
+                <SelectItem value="Active">Aktif</SelectItem>
+                <SelectItem value="Lead">Potansiyel (Lead)</SelectItem>
+                <SelectItem value="Passive">Pasif</SelectItem>
+                <SelectItem value="Churned">Kaybedildi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Tier Filter */}
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-            onChange={(e) => setTierFilter(e.target.value)}
-            value={tierFilter}
-          >
-            <option value="">Tüm Segmentler</option>
-            <option value="VIP">VIP</option>
-            <option value="Enterprise">Enterprise</option>
-            <option value="SME">KOBİ (SME)</option>
-            <option value="Standard">Standart</option>
-          </select>
+          <div className="w-36">
+            <Select
+              onValueChange={(val) => setTierFilter(val === "all" ? "" : val)}
+              value={tierFilter || "all"}
+            >
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Tüm Segmentler" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Segmentler</SelectItem>
+                <SelectItem value="VIP">VIP</SelectItem>
+                <SelectItem value="Enterprise">Enterprise</SelectItem>
+                <SelectItem value="SME">KOBİ (SME)</SelectItem>
+                <SelectItem value="Standard">Standart</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Reset Filters */}
           {(search || statusFilter || typeFilter || tierFilter) && (
@@ -490,7 +515,7 @@ export default function CustomersPage() {
       {loading ? (
         <div className="flex h-64 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex flex-col items-center gap-2">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
             <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
               Müşteriler yükleniyor...
             </span>
@@ -510,7 +535,7 @@ export default function CustomersPage() {
           </p>
           <PermissionGate permission="Customers.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -549,7 +574,7 @@ export default function CustomersPage() {
                         <div
                           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-bold text-xs shadow-2xs ${
                             c.type === "Company"
-                              ? "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-400"
+                              ? "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                               : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                           }`}
                         >
@@ -560,7 +585,7 @@ export default function CustomersPage() {
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
+                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:hover:text-zinc-100">
                             {c.name}
                           </div>
                           <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -693,7 +718,7 @@ export default function CustomersPage() {
                     <div
                       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-bold text-sm shadow-2xs ${
                         c.type === "Company"
-                          ? "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-400"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                           : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                       }`}
                     >
@@ -705,7 +730,7 @@ export default function CustomersPage() {
                     </div>
                     <div>
                       <Link
-                        className="font-bold text-sm text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100"
+                        className="font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:hover:text-zinc-100"
                         href={`/${tenantSlug}/customers/${c.id}`}
                       >
                         {c.name}
@@ -762,7 +787,7 @@ export default function CustomersPage() {
                 </div>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-violet-700 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-blue-700 active:scale-[0.98]"
                   href={`/${tenantSlug}/customers/${c.id}`}
                 >
                   <span>Detay (360°)</span>
@@ -996,13 +1021,12 @@ function CreateCustomerModal({
             {/* Core Info */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+                <Label className="mb-1" required>
                   {formData.type === "Company"
-                    ? "Şirket / Kurum Adı *"
-                    : "Müşteri Adı Soyadı *"}
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
+                    ? "Şirket / Kurum Adı"
+                    : "Müşteri Adı Soyadı"}
+                </Label>
+                <Input
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -1012,17 +1036,14 @@ function CreateCustomerModal({
                       : "Ahmet Yılmaz"
                   }
                   required
-                  type="text"
                   value={formData.name}
                 />
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  E-Posta
-                </label>
-                <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
+                <Label className="mb-1">E-Posta</Label>
+                <Input
+                  leftIcon={<Mail />}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
@@ -1033,9 +1054,7 @@ function CreateCustomerModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Telefon (Doğrulama & Maske)
-                </label>
+                <Label className="mb-1">Telefon (Doğrulama & Maske)</Label>
                 <PhoneInput
                   onChange={(val) => setFormData({ ...formData, phone: val })}
                   placeholder="+90 (5XX) XXX XX XX"
@@ -1044,39 +1063,43 @@ function CreateCustomerModal({
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Statü
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, status: e.target.value })
+                <Label className="mb-1">Statü</Label>
+                <Select
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, status: val })
                   }
                   value={formData.status}
                 >
-                  <option value="Lead">Potansiyel (Lead)</option>
-                  <option value="Active">Aktif Müşteri</option>
-                  <option value="Passive">Pasif</option>
-                  <option value="Churned">Kaybedildi</option>
-                </select>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Lead">Potansiyel (Lead)</SelectItem>
+                    <SelectItem value="Active">Aktif Müşteri</SelectItem>
+                    <SelectItem value="Passive">Pasif</SelectItem>
+                    <SelectItem value="Churned">Kaybedildi</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
-                <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                  Segment / Seviye
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) =>
-                    setFormData({ ...formData, tier: e.target.value })
+                <Label className="mb-1">Segment / Seviye</Label>
+                <Select
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, tier: val })
                   }
                   value={formData.tier}
                 >
-                  <option value="Standard">Standart</option>
-                  <option value="VIP">VIP</option>
-                  <option value="Enterprise">Enterprise</option>
-                  <option value="SME">KOBİ (SME)</option>
-                </select>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Standard">Standart</SelectItem>
+                    <SelectItem value="VIP">VIP</SelectItem>
+                    <SelectItem value="Enterprise">Enterprise</SelectItem>
+                    <SelectItem value="SME">KOBİ (SME)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
@@ -1084,7 +1107,7 @@ function CreateCustomerModal({
                   Sektör
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                   onChange={(e) =>
                     setFormData({ ...formData, industry: e.target.value })
                   }
@@ -1121,7 +1144,7 @@ function CreateCustomerModal({
                 </h4>
                 <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1133,7 +1156,7 @@ function CreateCustomerModal({
                     value={formData.initialContactFirstName}
                   />
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1145,7 +1168,7 @@ function CreateCustomerModal({
                     value={formData.initialContactLastName}
                   />
                   <input
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                    className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1180,7 +1203,7 @@ function CreateCustomerModal({
                 Vazgeç
               </button>
               <button
-                className="rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+                className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
                 disabled={submitting}
                 type="submit"
               >

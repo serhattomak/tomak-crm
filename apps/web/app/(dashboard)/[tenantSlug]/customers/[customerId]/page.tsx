@@ -1,5 +1,15 @@
 "use client";
 
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import {
   ArrowLeft,
   Check,
@@ -246,7 +256,7 @@ export default function CustomerDetailPage() {
     return (
       <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col items-center gap-2">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Müşteri detayları yükleniyor...
           </span>
@@ -279,7 +289,7 @@ export default function CustomerDetailPage() {
       case "Active":
         return "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
       case "Lead":
-        return "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300 border-violet-200 dark:border-violet-800";
+        return "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800";
       case "Churned":
         return "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800";
       default:
@@ -378,7 +388,7 @@ export default function CustomerDetailPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98]"
+            className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
             onClick={() => setIsAddActivityModalOpen(true)}
             type="button"
           >
@@ -407,7 +417,7 @@ export default function CustomerDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <a
-                    className="truncate text-violet-600 hover:underline dark:text-violet-400"
+                    className="truncate text-blue-600 hover:underline dark:text-blue-400"
                     href={`mailto:${customer.email}`}
                   >
                     {customer.email}
@@ -418,7 +428,7 @@ export default function CustomerDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <Globe className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <a
-                    className="truncate text-violet-600 hover:underline dark:text-violet-400"
+                    className="truncate text-blue-600 hover:underline dark:text-blue-400"
                     href={customer.website}
                     rel="noreferrer"
                     target="_blank"
@@ -445,7 +455,7 @@ export default function CustomerDetailPage() {
             </h3>
             {customer.assignedEmployeeName ? (
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 font-bold text-white text-xs shadow-2xs">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 font-bold text-white text-xs shadow-2xs">
                   {customer.assignedEmployeeName.charAt(0)}
                 </div>
                 <div>
@@ -473,7 +483,7 @@ export default function CustomerDetailPage() {
               <button
                 className={`whitespace-nowrap rounded-lg px-3 py-1.5 font-semibold text-xs transition-all ${
                   activeTab === tab.id
-                    ? "bg-violet-600 text-white shadow-2xs"
+                    ? "bg-blue-600 text-white shadow-2xs"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
                 key={tab.id}
@@ -533,7 +543,7 @@ export default function CustomerDetailPage() {
                     Son Müşteri Aktiviteleri
                   </h4>
                   <button
-                    className="font-bold text-[11px] text-violet-600 hover:underline dark:text-violet-400"
+                    className="font-bold text-[11px] text-blue-600 hover:underline dark:text-blue-400"
                     onClick={() => setActiveTab("timeline")}
                     type="button"
                   >
@@ -578,7 +588,7 @@ export default function CustomerDetailPage() {
                   Müşteri Satış Fırsatları & Huniler
                 </h4>
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   href={`/${tenantSlug}/pipelines?create=true`}
                 >
                   <Plus className="h-3.5 w-3.5" />
@@ -641,7 +651,7 @@ export default function CustomerDetailPage() {
                   Müşteri Teklif Geçmişi
                 </h4>
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   href={`/${tenantSlug}/quotes`}
                 >
                   <Plus className="h-3.5 w-3.5" />
@@ -665,7 +675,7 @@ export default function CustomerDetailPage() {
                           <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {quote.quoteNumber} - {quote.title}
                           </span>
-                          <span className="rounded-md bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                          <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                             {quote.status}
                           </span>
                         </div>
@@ -707,7 +717,7 @@ export default function CustomerDetailPage() {
                   Müşteri Siparişleri & Satışlar
                 </h4>
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   href={`/${tenantSlug}/orders`}
                 >
                   <Plus className="h-3.5 w-3.5" />
@@ -784,7 +794,7 @@ export default function CustomerDetailPage() {
                   Destek & Helpdesk Talepleri
                 </h4>
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   href={`/${tenantSlug}/tickets`}
                 >
                   <Plus className="h-3.5 w-3.5" />
@@ -819,7 +829,7 @@ export default function CustomerDetailPage() {
                           >
                             {ticket.priority}
                           </span>
-                          <span className="rounded-md bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                          <span className="rounded-md bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                             {ticket.status}
                           </span>
                         </div>
@@ -858,7 +868,7 @@ export default function CustomerDetailPage() {
                   Kayıtlı Şirket Yetkilileri
                 </h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   onClick={() => setIsAddContactModalOpen(true)}
                   type="button"
                 >
@@ -889,7 +899,7 @@ export default function CustomerDetailPage() {
                             </div>
                           </div>
                           {contact.isPrimary && (
-                            <span className="rounded-md bg-violet-50 px-1.5 py-0.5 font-bold text-[9px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                            <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-bold text-[9px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                               Birincil
                             </span>
                           )}
@@ -935,7 +945,7 @@ export default function CustomerDetailPage() {
                   Müşteri Etkileşim & Aktivite Geçmişi
                 </h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                   onClick={() => setIsAddActivityModalOpen(true)}
                   type="button"
                 >
@@ -955,7 +965,7 @@ export default function CustomerDetailPage() {
                       className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
                       key={activity.id}
                     >
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                         {activity.activityType === "Call" ? (
                           <PhoneCall className="h-4 w-4" />
                         ) : activity.activityType === "Meeting" ? (
@@ -1003,7 +1013,7 @@ export default function CustomerDetailPage() {
                 </h4>
                 <form onSubmit={handleAddNote}>
                   <textarea
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
                     onChange={(e) => setQuickNoteContent(e.target.value)}
                     placeholder="Müşteri hakkında ekip içi notlarınızı buraya yazın..."
                     rows={3}
@@ -1013,7 +1023,7 @@ export default function CustomerDetailPage() {
                     <label className="flex cursor-pointer select-none items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-300">
                       <input
                         checked={quickNotePinned}
-                        className="rounded text-violet-600 focus:ring-violet-500"
+                        className="rounded text-blue-600 focus:ring-blue-500"
                         onChange={(e) => setQuickNotePinned(e.target.checked)}
                         type="checkbox"
                       />
@@ -1022,7 +1032,7 @@ export default function CustomerDetailPage() {
                     </label>
 
                     <button
-                      className="flex items-center gap-1 rounded-xl bg-violet-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95 disabled:opacity-50"
                       disabled={!quickNoteContent.trim() || submittingNote}
                       type="submit"
                     >
@@ -1098,7 +1108,7 @@ export default function CustomerDetailPage() {
                         <div className="space-y-2">
                           <textarea
                             autoFocus
-                            className="w-full rounded-lg border border-zinc-300 bg-white p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            className="w-full rounded-lg border border-zinc-300 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                             onChange={(e) =>
                               setEditingNoteContent(e.target.value)
                             }
@@ -1114,7 +1124,7 @@ export default function CustomerDetailPage() {
                               İptal
                             </button>
                             <button
-                              className="flex items-center gap-1 rounded-lg bg-violet-600 px-3 py-1 font-semibold text-[11px] text-white hover:bg-violet-700"
+                              className="flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1 font-semibold text-[11px] text-white hover:bg-blue-700"
                               onClick={() => handleSaveEditNote(note.id)}
                               type="button"
                             >
@@ -1313,7 +1323,7 @@ function AddContactModal({
                 Ad *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
@@ -1327,7 +1337,7 @@ function AddContactModal({
                 Soyad *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
@@ -1343,7 +1353,7 @@ function AddContactModal({
               Ünvan / Pozisyon
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
@@ -1358,7 +1368,7 @@ function AddContactModal({
               E-Posta
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
@@ -1382,7 +1392,7 @@ function AddContactModal({
           <label className="flex cursor-pointer select-none items-center gap-2 pt-1 text-zinc-700 dark:text-zinc-300">
             <input
               checked={formData.isPrimary}
-              className="rounded text-violet-600 focus:ring-violet-500"
+              className="rounded text-blue-600 focus:ring-blue-500"
               onChange={(e) =>
                 setFormData({ ...formData, isPrimary: e.target.checked })
               }
@@ -1402,7 +1412,7 @@ function AddContactModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1492,60 +1502,57 @@ function AddActivityModal({
 
         <form className="space-y-3 text-xs" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Aktivite Türü *
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) =>
-                setFormData({ ...formData, type: e.target.value })
-              }
+            <Label className="mb-1" required>
+              Aktivite Türü
+            </Label>
+            <Select
+              onValueChange={(val) => setFormData({ ...formData, type: val })}
               value={formData.type}
             >
-              <option value="Call">Telefon Araması</option>
-              <option value="Meeting">Toplantı / Görüşme</option>
-              <option value="Email">E-Posta İletişimi</option>
-              <option value="Note">Not / Bilgilendirme</option>
-            </select>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Call">Telefon Araması</SelectItem>
+                <SelectItem value="Meeting">Toplantı / Görüşme</SelectItem>
+                <SelectItem value="Email">E-Posta İletişimi</SelectItem>
+                <SelectItem value="Note">Not / Bilgilendirme</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Konu / Başlık *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+            <Label className="mb-1" required>
+              Konu / Başlık
+            </Label>
+            <Input
               onChange={(e) =>
                 setFormData({ ...formData, subject: e.target.value })
               }
               placeholder="Örn: Yıllık Sözleşme Yenileme Görüşmesi"
               required
-              type="text"
               value={formData.subject}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Tarih *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, activityDate: e.target.value })
+              <Label className="mb-1" required>
+                Tarih
+              </Label>
+              <DatePicker
+                onChange={(val) =>
+                  setFormData({ ...formData, activityDate: val })
                 }
-                required
-                type="date"
+                placeholder="Tarih seçin"
                 value={formData.activityDate}
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Saat *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              <Label className="mb-1" required>
+                Saat
+              </Label>
+              <Input
                 onChange={(e) =>
                   setFormData({ ...formData, activityTime: e.target.value })
                 }
@@ -1561,7 +1568,7 @@ function AddActivityModal({
               Açıklama & Detaylar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
@@ -1580,7 +1587,7 @@ function AddActivityModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1678,7 +1685,7 @@ function EditCustomerModal({
               Müşteri Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1690,45 +1697,43 @@ function EditCustomerModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Müşteri Türü
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, type: e.target.value })
-                }
+              <Label className="mb-1">Müşteri Türü</Label>
+              <Select
+                onValueChange={(val) => setFormData({ ...formData, type: val })}
                 value={formData.type}
               >
-                <option value="Company">Kurumsal Şirket</option>
-                <option value="Individual">Bireysel Müşteri</option>
-              </select>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Company">Kurumsal Şirket</SelectItem>
+                  <SelectItem value="Individual">Bireysel Müşteri</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Segment (Tier)
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, tier: e.target.value })
-                }
+              <Label className="mb-1">Segment (Tier)</Label>
+              <Select
+                onValueChange={(val) => setFormData({ ...formData, tier: val })}
                 value={formData.tier}
               >
-                <option value="Standard">Standard</option>
-                <option value="VIP">VIP</option>
-                <option value="Enterprise">Enterprise</option>
-              </select>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Standard">Standard</SelectItem>
+                  <SelectItem value="VIP">VIP</SelectItem>
+                  <SelectItem value="Enterprise">Enterprise</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                E-Posta
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              <Label className="mb-1">E-Posta</Label>
+              <Input
+                leftIcon={<Mail />}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
@@ -1773,7 +1778,7 @@ function EditCustomerModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

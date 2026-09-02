@@ -1,5 +1,15 @@
 "use client";
 
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import {
   ArrowDownRight,
   ArrowLeft,
@@ -519,42 +529,39 @@ export default function ProductDetailPage() {
                   >
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                       <div>
-                        <select
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                          onChange={(e) =>
-                            setQuickAdjType(e.target.value as any)
-                          }
+                        <Select
+                          onValueChange={(val) => setQuickAdjType(val as any)}
                           value={quickAdjType}
                         >
-                          <option value="In">Stok Girişi (+)</option>
-                          <option value="Out">Stok Çıkışı (-)</option>
-                          <option value="Adjustment">Sayım Düzeltmesi</option>
-                        </select>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="In">Stok Girişi (+)</SelectItem>
+                            <SelectItem value="Out">Stok Çıkışı (-)</SelectItem>
+                            <SelectItem value="Adjustment">
+                              Sayım Düzeltmesi
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div>
-                        <input
-                          className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                          min="0.01"
-                          onChange={(e) =>
-                            setQuickAdjQty(
-                              Number.parseFloat(e.target.value) || 0
-                            )
-                          }
+                        <NumberInput
+                          min={0.01}
+                          onChange={(val) => setQuickAdjQty(val ?? 0)}
                           placeholder="Miktar"
                           required
-                          step="0.01"
-                          type="number"
+                          showStepper
+                          step={1}
                           value={quickAdjQty}
                         />
                       </div>
 
                       <div>
-                        <input
-                          className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                        <Input
                           onChange={(e) => setQuickAdjReason(e.target.value)}
                           placeholder="Neden / Açıklama (Opsiyonel)"
-                          type="text"
                           value={quickAdjReason}
                         />
                       </div>
@@ -961,72 +968,69 @@ function StockAdjustModal({
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Hareket Türü
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-              onChange={(e) =>
+            <Label className="mb-1">Hareket Türü</Label>
+            <Select
+              onValueChange={(val) =>
                 setFormData({
                   ...formData,
-                  movementType: e.target.value as any,
+                  movementType: val as any,
                 })
               }
               value={formData.movementType}
             >
-              <option value="In">Stok Girişi (Alış / Sevkiyat)</option>
-              <option value="Out">Stok Çıkışı (Hasar / Satış)</option>
-              <option value="Adjustment">Sayım Düzeltmesi (Hedef Stok)</option>
-              <option value="Return">Müşteri İadesi</option>
-            </select>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="In">
+                  Stok Girişi (Alış / Sevkiyat)
+                </SelectItem>
+                <SelectItem value="Out">Stok Çıkışı (Hasar / Satış)</SelectItem>
+                <SelectItem value="Adjustment">
+                  Sayım Düzeltmesi (Hedef Stok)
+                </SelectItem>
+                <SelectItem value="Return">Müşteri İadesi</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Miktar ({product.unit}) *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-              min="0.01"
-              onChange={(e) =>
+            <Label className="mb-1" required>
+              Miktar ({product.unit})
+            </Label>
+            <NumberInput
+              min={0.01}
+              onChange={(val) =>
                 setFormData({
                   ...formData,
-                  quantity: Number.parseFloat(e.target.value) || 0,
+                  quantity: val ?? 0,
                 })
               }
               required
-              step="0.01"
-              type="number"
+              showStepper
+              step={1}
               value={formData.quantity}
             />
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              İrsaliye / Fatura No
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+            <Label className="mb-1">İrsaliye / Fatura No</Label>
+            <Input
               onChange={(e) =>
                 setFormData({ ...formData, referenceNumber: e.target.value })
               }
               placeholder="IRS-2026-..."
-              type="text"
               value={formData.referenceNumber}
             />
           </div>
 
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Açıklama / Sebep
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+            <Label className="mb-1">Açıklama / Sebep</Label>
+            <Input
               onChange={(e) =>
                 setFormData({ ...formData, reason: e.target.value })
               }
               placeholder="Stok hareket sebebi..."
-              type="text"
               value={formData.reason}
             />
           </div>
@@ -1144,37 +1148,32 @@ function AddVariantModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Ek Fiyat (+₺)
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                min="0"
-                onChange={(e) =>
+              <Label className="mb-1">Ek Fiyat (+₺)</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
                   setFormData({
                     ...formData,
-                    additionalPrice: Number.parseFloat(e.target.value) || 0,
+                    additionalPrice: val ?? 0,
                   })
                 }
-                step="0.01"
-                type="number"
+                prefix="₺"
+                step={0.01}
                 value={formData.additionalPrice}
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Varyant Stoğu
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                min="0"
-                onChange={(e) =>
+              <Label className="mb-1">Varyant Stoğu</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
                   setFormData({
                     ...formData,
-                    stockQuantity: Number.parseFloat(e.target.value) || 0,
+                    stockQuantity: val ?? 0,
                   })
                 }
-                type="number"
+                showStepper
+                step={1}
                 value={formData.stockQuantity}
               />
             </div>
@@ -1346,78 +1345,83 @@ function EditProductModal({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Kategori
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, categoryId: e.target.value })
+              <Label className="mb-1">Kategori</Label>
+              <Select
+                onValueChange={(val) =>
+                  setFormData({
+                    ...formData,
+                    categoryId: val === "none" ? "" : val,
+                  })
                 }
-                value={formData.categoryId}
+                value={formData.categoryId || "none"}
               >
-                <option value="">Kategori Seçin</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Kategori Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Kategori Seçin</SelectItem>
+                  {categories.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Durum
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value })
+              <Label className="mb-1">Durum</Label>
+              <Select
+                onValueChange={(val) =>
+                  setFormData({ ...formData, status: val })
                 }
                 value={formData.status}
               >
-                <option value="Active">Aktif</option>
-                <option value="Draft">Taslak</option>
-                <option value="Inactive">Pasif</option>
-                <option value="Discontinued">Satıştan Kaldırıldı</option>
-              </select>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Active">Aktif</SelectItem>
+                  <SelectItem value="Draft">Taslak</SelectItem>
+                  <SelectItem value="Inactive">Pasif</SelectItem>
+                  <SelectItem value="Discontinued">
+                    Satıştan Kaldırıldı
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Alış / Maliyet (₺)
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                min="0"
-                onChange={(e) =>
+              <Label className="mb-1">Alış / Maliyet (₺)</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
                   setFormData({
                     ...formData,
-                    costPrice: Number.parseFloat(e.target.value) || 0,
+                    costPrice: val ?? 0,
                   })
                 }
-                step="0.01"
-                type="number"
+                prefix="₺"
+                step={0.01}
                 value={formData.costPrice}
               />
             </div>
             <div>
-              <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-                Satış Fiyatı (₺) *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
-                min="0"
-                onChange={(e) =>
+              <Label className="mb-1" required>
+                Satış Fiyatı (₺)
+              </Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
                   setFormData({
                     ...formData,
-                    sellingPrice: Number.parseFloat(e.target.value) || 0,
+                    sellingPrice: val ?? 0,
                   })
                 }
+                prefix="₺"
                 required
-                step="0.01"
-                type="number"
+                step={0.01}
                 value={formData.sellingPrice}
               />
             </div>
