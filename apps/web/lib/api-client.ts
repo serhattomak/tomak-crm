@@ -4834,6 +4834,258 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Email Module (Phase 1)
+  // ==========================================
+  static async getEmailAccounts(
+    tenantId?: string
+  ): Promise<ApiResponse<EmailAccountDto[]>> {
+    return await ApiClient.request<EmailAccountDto[]>(
+      "/api/email/accounts",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getEmailAccountById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<EmailAccountDetailDto>> {
+    return await ApiClient.request<EmailAccountDetailDto>(
+      `/api/email/accounts/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createEmailAccount(
+    data: {
+      email: string;
+      provider?: string;
+      imapHost?: string;
+      imapPort?: number;
+      smtpHost?: string;
+      smtpPort?: number;
+      password?: string;
+      description?: string;
+      isActive?: boolean;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<EmailAccountDto>> {
+    return await ApiClient.request<EmailAccountDto>(
+      "/api/email/accounts",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateEmailAccount(
+    id: string,
+    data: {
+      id: string;
+      email: string;
+      provider?: string;
+      imapHost?: string;
+      imapPort?: number;
+      smtpHost?: string;
+      smtpPort?: number;
+      password?: string;
+      description?: string;
+      isActive?: boolean;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<EmailAccountDto>> {
+    return await ApiClient.request<EmailAccountDto>(
+      `/api/email/accounts/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleEmailAccount(
+    id: string,
+    isActive?: boolean,
+    tenantId?: string
+  ): Promise<ApiResponse<EmailAccountDto>> {
+    return await ApiClient.request<EmailAccountDto>(
+      `/api/email/accounts/${id}/toggle`,
+      {
+        body: JSON.stringify({ id, isActive }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteEmailAccount(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/email/accounts/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async testEmailAccountConnection(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<TestEmailAccountConnectionResultDto>> {
+    return await ApiClient.request<TestEmailAccountConnectionResultDto>(
+      `/api/email/accounts/${id}/test-connection`,
+      { method: "POST" },
+      tenantId
+    );
+  }
+
+  static async getEmailMessages(
+    params: {
+      accountId?: string;
+      direction?: string;
+      status?: string;
+      customerId?: string;
+      isRead?: boolean;
+      search?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<EmailMessageDto>>> {
+    const q = new URLSearchParams();
+    if (params.accountId) q.set("accountId", params.accountId);
+    if (params.direction) q.set("direction", params.direction);
+    if (params.status) q.set("status", params.status);
+    if (params.customerId) q.set("customerId", params.customerId);
+    if (typeof params.isRead === "boolean") q.set("isRead", String(params.isRead));
+    if (params.search) q.set("search", params.search);
+    if (params.page) q.set("page", String(params.page));
+    if (params.pageSize) q.set("pageSize", String(params.pageSize));
+    const qs = q.toString();
+    return await ApiClient.request<PagedResult<EmailMessageDto>>(
+      `/api/email/messages${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getEmailThread(
+    threadId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<EmailThreadDto>> {
+    return await ApiClient.request<EmailThreadDto>(
+      `/api/email/threads/${threadId}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getEmailStats(
+    tenantId?: string
+  ): Promise<ApiResponse<EmailStatsDto>> {
+    return await ApiClient.request<EmailStatsDto>(
+      "/api/email/stats",
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async sendEmailMessage(
+    data: {
+      accountId: string;
+      to: string[];
+      cc?: string[];
+      subject: string;
+      htmlBody: string;
+      textBody?: string;
+      templateId?: string;
+      customerId?: string;
+      quoteId?: string;
+      ticketId?: string;
+      attachments?: Array<{
+        filename: string;
+        mimeType?: string;
+        sizeBytes: number;
+        storagePath: string;
+      }>;
+      isSimulation?: boolean;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<EmailMessageDto>> {
+    return await ApiClient.request<EmailMessageDto>(
+      "/api/email/messages/send",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async saveEmailDraft(
+    data: {
+      id?: string;
+      accountId: string;
+      to?: string[];
+      cc?: string[];
+      subject?: string;
+      htmlBody?: string;
+      textBody?: string;
+      customerId?: string;
+      quoteId?: string;
+      ticketId?: string;
+      attachments?: Array<{
+        filename: string;
+        mimeType?: string;
+        sizeBytes: number;
+        storagePath: string;
+      }>;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<EmailMessageDto>> {
+    return await ApiClient.request<EmailMessageDto>(
+      "/api/email/messages/draft",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async markEmailRead(
+    id: string,
+    isRead: boolean,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/email/messages/${id}/read`,
+      {
+        body: JSON.stringify({ isRead }),
+        headers: { "Content-Type": "application/json" },
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteEmailMessage(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/email/messages/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -8739,3 +8991,84 @@ export interface CreateVehicleDocumentPayload {
   tagsJson?: string;
   vehicleId?: string;
 }
+
+// ==========================================
+// Email Module Interfaces
+// ==========================================
+export interface EmailAccountDto {
+  id: string;
+  tenantId: string;
+  email: string;
+  provider: "generic_imap" | "resend" | string;
+  imapHost?: string;
+  imapPort: number;
+  smtpHost?: string;
+  smtpPort: number;
+  isActive: boolean;
+  description?: string;
+  secretMasked?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailAccountDetailDto extends EmailAccountDto {
+  totalMessagesCount: number;
+  unreadMessagesCount: number;
+}
+
+export interface TestEmailAccountConnectionResultDto {
+  success: boolean;
+  message?: string;
+  imapSuccess: boolean;
+  imapMessage?: string;
+  smtpSuccess: boolean;
+  smtpMessage?: string;
+}
+
+export interface EmailAttachmentDto {
+  id: string;
+  messageId: string;
+  filename: string;
+  mimeType?: string;
+  sizeBytes: number;
+  storagePath: string;
+  createdAt: string;
+}
+
+export interface EmailMessageDto {
+  id: string;
+  tenantId: string;
+  accountId: string;
+  threadId?: string;
+  direction: "Inbound" | "Outbound" | string;
+  status: "Received" | "Sent" | "Draft" | "Failed" | "Sending" | string;
+  fromAddress: string;
+  toAddresses: string[];
+  ccAddresses?: string[];
+  subject?: string;
+  htmlBody?: string;
+  textBody?: string;
+  externalId?: string;
+  customerId?: string;
+  quoteId?: string;
+  ticketId?: string;
+  isRead: boolean;
+  hasAttachments: boolean;
+  attachments: EmailAttachmentDto[];
+  createdAt: string;
+}
+
+export interface EmailThreadDto {
+  threadId: string;
+  subject?: string;
+  messages: EmailMessageDto[];
+}
+
+export interface EmailStatsDto {
+  inboxTotal: number;
+  unreadCount: number;
+  sentToday: number;
+}
+
+export type PagedEmailMessages = PagedResult<EmailMessageDto>;
+

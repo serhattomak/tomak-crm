@@ -19,6 +19,7 @@ using CRM.Modules.Recruitment;
 using CRM.Modules.Promotions;
 using CRM.Modules.Projects;
 using CRM.Modules.Vehicles;
+using CRM.Modules.Email;
 using CRM.Api.Jobs;
 using CRM.BuildingBlocks.Realtime;
 using Quartz;
@@ -57,9 +58,10 @@ var recruitmentAssembly = typeof(RecruitmentModuleExtensions).Assembly;
 var promotionsAssembly = typeof(PromotionsModuleExtensions).Assembly;
 var projectsAssembly = typeof(ProjectsModuleExtensions).Assembly;
 var vehiclesAssembly = typeof(VehiclesModuleExtensions).Assembly;
+var emailAssembly = typeof(EmailModuleExtensions).Assembly;
 var apiAssembly = typeof(Program).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, apiAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, emailAssembly, apiAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -77,6 +79,7 @@ builder.Services.AddRecruitmentModule(builder.Configuration);
 builder.Services.AddPromotionsModule(builder.Configuration);
 builder.Services.AddProjectsModule(builder.Configuration);
 builder.Services.AddVehiclesModule(builder.Configuration);
+builder.Services.AddEmailModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>
@@ -170,6 +173,7 @@ app.UseAuthorization();
 // 8. Map Slices Endpoints
 app.MapEndpoints();
 app.MapVehiclesModuleEndpoints();
+app.MapEmailEndpoints();
 app.MapHub<CrmHub>("/hubs/crm");
 
 // 9. Map HealthChecks
