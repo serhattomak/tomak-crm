@@ -4610,6 +4610,187 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // ==========================================
+  // Webhooks Module
+  // ==========================================
+  static async getWebhookEndpoints(
+    params: {
+      search?: string;
+      event?: string;
+      isActive?: boolean;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<WebhookEndpointDto>>> {
+    const q = new URLSearchParams();
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.event) {
+      q.set("event", params.event);
+    }
+    if (params.isActive !== undefined) {
+      q.set("isActive", String(params.isActive));
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<WebhookEndpointDto>>(
+      `/api/webhooks${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async getWebhookById(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookEndpointDetailDto>> {
+    return ApiClient.request<WebhookEndpointDetailDto>(
+      `/api/webhooks/${id}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createWebhookEndpoint(
+    data: CreateWebhookPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookEndpointDto>> {
+    return ApiClient.request<WebhookEndpointDto>(
+      "/api/webhooks",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async updateWebhookEndpoint(
+    id: string,
+    data: UpdateWebhookPayload,
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookEndpointDto>> {
+    return ApiClient.request<WebhookEndpointDto>(
+      `/api/webhooks/${id}`,
+      {
+        body: JSON.stringify({ id, ...data }),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async toggleWebhookEndpoint(
+    id: string,
+    isActive?: boolean,
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookEndpointDto>> {
+    return ApiClient.request<WebhookEndpointDto>(
+      `/api/webhooks/${id}/toggle`,
+      {
+        body: JSON.stringify({ isActive }),
+        method: "PATCH",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteWebhookEndpoint(
+    id: string,
+    tenantId?: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/webhooks/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  static async getWebhookDeliveries(
+    params: {
+      endpointId?: string;
+      eventType?: string;
+      status?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantId?: string
+  ): Promise<ApiResponse<PagedResult<WebhookDeliveryDto>>> {
+    const q = new URLSearchParams();
+    if (params.endpointId) {
+      q.set("endpointId", params.endpointId);
+    }
+    if (params.eventType) {
+      q.set("eventType", params.eventType);
+    }
+    if (params.status) {
+      q.set("status", params.status);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
+    const qs = q.toString();
+    return ApiClient.request<PagedResult<WebhookDeliveryDto>>(
+      `/api/webhooks/deliveries${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async testWebhookEndpoint(
+    id: string,
+    data?: {
+      mockEventType?: string;
+      mockPayload?: Record<string, unknown>;
+      payload?: unknown;
+      isSimulation?: boolean;
+    },
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookDeliveryDto>> {
+    const body: Record<string, unknown> = {
+      endpointId: id,
+      isSimulation: data?.isSimulation ?? true,
+    };
+    if (data?.mockEventType) {
+      body["mockEventType"] = data.mockEventType;
+    }
+    if (data?.mockPayload) {
+      body["mockPayload"] = data.mockPayload;
+    }
+    if (data?.payload !== undefined) {
+      body["payload"] = data.payload;
+    }
+    return ApiClient.request<WebhookDeliveryDto>(
+      `/api/webhooks/${id}/test-send`,
+      {
+        body: JSON.stringify(body),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async retryWebhookDelivery(
+    deliveryId: string,
+    tenantId?: string
+  ): Promise<ApiResponse<WebhookDeliveryDto>> {
+    return ApiClient.request<WebhookDeliveryDto>(
+      `/api/webhooks/deliveries/${deliveryId}/retry`,
+      { method: "POST" },
+      tenantId
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -7262,6 +7443,68 @@ export interface ExecutionItemDto {
   workflowId: string;
   workflowName: string;
 }
+
+// ==========================================
+// Webhooks Module DTOs
+// ==========================================
+export interface WebhookEndpointDto {
+  createdAt: string;
+  deliveriesCount?: number;
+  description: string | null;
+  events: string[];
+  id: string;
+  isActive: boolean;
+  name: string;
+  secret?: string;
+  secretMasked?: string;
+  tenantId: string;
+  updatedAt: string;
+  url: string;
+}
+
+export interface WebhookEndpointDetailDto extends WebhookEndpointDto {
+  deliveriesCount: number;
+}
+
+export interface WebhookDeliveryDto {
+  attemptCount: number;
+  createdAt: string;
+  durationMs: number | null;
+  endpointId: string;
+  endpointName?: string;
+  eventType: string;
+  headers: Record<string, string> | null;
+  hmacSignature: string | null;
+  id: string;
+  nextRetryAt: string | null;
+  payload: unknown;
+  payloadJson?: string;
+  responseBody: string | null;
+  responseCode: number | null;
+  status: "Success" | "Failed" | "Retrying" | string;
+  tenantId: string;
+}
+
+export interface CreateWebhookPayload {
+  description?: string;
+  events: string[];
+  isActive?: boolean;
+  name: string;
+  secret?: string;
+  url: string;
+}
+
+export interface UpdateWebhookPayload {
+  description?: string;
+  events?: string[];
+  isActive?: boolean;
+  name?: string;
+  url?: string;
+}
+
+export type PagedWebhooksResponse = PagedResult<WebhookEndpointDto>;
+
+export type PagedDeliveriesResponse = PagedResult<WebhookDeliveryDto>;
 
 // ==========================================
 // Compliance & Labor Law DTOs

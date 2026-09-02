@@ -1,6 +1,15 @@
 "use client";
 
-import { Building2, Check, Loader2, Settings } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Check,
+  Link2,
+  Loader2,
+  Settings,
+  Webhook,
+} from "lucide-react";
+import Link from "next/link";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
@@ -148,6 +157,50 @@ export default function WorkspaceSettingsPage() {
           </PermissionGate>
         </form>
       </div>
+
+      {/* Entegrasyonlar & Webhooklar — Workbench Bento link card */}
+      <PermissionGate permission="Webhooks.View">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                <Webhook className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                  Entegrasyonlar & Webhooklar
+                </h2>
+                <p className="mt-1 max-w-md text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                  Tenant bazlı webhook endpointlerini yönetin, olay seçimi
+                  yapın ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                    Order.Created
+                  </span>
+                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                    Quote.Accepted
+                  </span>
+                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                    Ticket.Created
+                  </span>
+                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                    Deal.StageChanged
+                  </span>
+                </div>
+              </div>
+            </div>
+            <Link
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-xs transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700/80"
+              href={`/${activeTenant?.slug || "workspace"}/webhooks`}
+            >
+              <Link2 className="h-3.5 w-3.5" />
+              <span>Webhookları Yönet</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+      </PermissionGate>
     </div>
   );
 }

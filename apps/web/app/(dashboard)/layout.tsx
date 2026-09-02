@@ -34,7 +34,9 @@ import {
   Truck,
   Users,
   Users2,
+  Webhook,
   X,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -150,7 +152,8 @@ function getActiveHubFromPathname(
     pathname.includes(`/${tenantSlug}/email`) ||
     pathname.includes(`/${tenantSlug}/automations`) ||
     pathname.includes(`/${tenantSlug}/analytics`) ||
-    pathname.includes(`/${tenantSlug}/integration`)
+    pathname.includes(`/${tenantSlug}/integration`) ||
+    pathname.includes(`/${tenantSlug}/webhooks`)
   ) {
     return "comm";
   }
@@ -980,6 +983,12 @@ function DashboardNavigation({
       name: "E-Posta",
     },
     {
+      href: `/${tenantSlug}/automations`,
+      icon: Zap,
+      name: "Otomasyonlar",
+      permission: "Automations.View",
+    },
+    {
       href: `/${tenantSlug}/analytics`,
       icon: BarChart3,
       name: "Raporlar & Analitik",
@@ -988,6 +997,12 @@ function DashboardNavigation({
       href: `/${tenantSlug}/integration`,
       icon: Boxes,
       name: "Entegrasyonlar",
+    },
+    {
+      href: `/${tenantSlug}/webhooks`,
+      icon: Webhook,
+      name: "Webhooklar",
+      permission: "Webhooks.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
