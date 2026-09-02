@@ -336,8 +336,8 @@ export default function WorkspaceOverviewPage() {
     return (
       <DraggableWidgetWrapper
         dropPosition={dragOverWidgetId === widgetId ? dropPosition : null}
-        isDragOver={dragOverWidgetId === widgetId}
         isDragging={draggedWidgetId === widgetId}
+        isDragOver={dragOverWidgetId === widgetId}
         isFirst={isFirst}
         isLast={isLast}
         key={widgetId}
@@ -546,7 +546,7 @@ export default function WorkspaceOverviewPage() {
 
           {/* Reset Layout */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 transition"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={handleResetDefaults}
             title="Pano yerleşimini varsayılan fabrika ayarlarına döndür"
             type="button"

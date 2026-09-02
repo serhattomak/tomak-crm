@@ -14,8 +14,8 @@ import { useState } from "react";
 interface DraggableWidgetWrapperProps {
   children: React.ReactNode;
   dropPosition: "before" | "after" | null;
-  isDragOver: boolean;
   isDragging: boolean;
+  isDragOver: boolean;
   isFirst: boolean;
   isLast: boolean;
   onDragEnd: (e: React.DragEvent) => void;
@@ -54,8 +54,8 @@ export function DraggableWidgetWrapper({
 
   return (
     <div
-      className={`${spanClass} relative group/widget transition-all duration-150 ${
-        isDragging ? "opacity-30 scale-[0.98]" : ""
+      className={`${spanClass} group/widget relative transition-all duration-150 ${
+        isDragging ? "scale-[0.98] opacity-30" : ""
       }`}
       onDragLeave={(e) => onDragLeave(e, widgetId)}
       onDragOver={(e) => {
@@ -71,23 +71,25 @@ export function DraggableWidgetWrapper({
     >
       {/* Drop Indicator (Before target) */}
       {isDragOver && dropPosition === "before" && !isDragging && (
-        <div className="mb-3 flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-violet-500 bg-violet-50/80 text-violet-700 text-xs font-bold shadow-xs animate-in fade-in zoom-in-95 duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
+        <div className="fade-in zoom-in-95 mb-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-2xl border-2 border-violet-500 border-dashed bg-violet-50/80 font-bold text-violet-700 text-xs shadow-xs duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
           <Sparkles className="h-4 w-4 animate-spin text-violet-600 dark:text-violet-400" />
-          <span>{widgetTitle ? `"${widgetTitle}" öncesine taşı` : "Buraya Bırak"}</span>
+          <span>
+            {widgetTitle ? `"${widgetTitle}" öncesine taşı` : "Buraya Bırak"}
+          </span>
         </div>
       )}
 
       {/* Widget Card Container */}
       <div
         className={`relative h-full transition-all duration-150 ${
-          isHandleHovered ? "ring-2 ring-violet-500/50 rounded-2xl" : ""
+          isHandleHovered ? "rounded-2xl ring-2 ring-violet-500/50" : ""
         }`}
       >
         {/* Centered Floating Micro-Toolbar (Never covers top-left title or top-right buttons) */}
-        <div className="absolute -top-3.5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-zinc-200 bg-white/95 px-2 py-0.5 shadow-md backdrop-blur-md opacity-0 transition-all duration-150 group-hover/widget:opacity-100 dark:border-zinc-700 dark:bg-zinc-800/95 pointer-events-auto">
+        <div className="pointer-events-auto absolute -top-3.5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-zinc-200 bg-white/95 px-2 py-0.5 opacity-0 shadow-md backdrop-blur-md transition-all duration-150 group-hover/widget:opacity-100 dark:border-zinc-700 dark:bg-zinc-800/95">
           {/* Drag Handle */}
           <div
-            className="flex cursor-grab items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold text-zinc-600 hover:text-violet-600 active:cursor-grabbing dark:text-zinc-300 dark:hover:text-violet-300 select-none"
+            className="flex cursor-grab select-none items-center gap-1 rounded-full px-2 py-0.5 font-semibold text-[11px] text-zinc-600 hover:text-violet-600 active:cursor-grabbing dark:text-zinc-300 dark:hover:text-violet-300"
             draggable={true}
             onDragEnd={onDragEnd}
             onDragStart={(e) => {
@@ -106,7 +108,7 @@ export function DraggableWidgetWrapper({
 
           {/* Move Up */}
           <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 disabled:pointer-events-none dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition"
+            className="rounded-full p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
             disabled={isFirst}
             onClick={(e) => {
               e.stopPropagation();
@@ -120,7 +122,7 @@ export function DraggableWidgetWrapper({
 
           {/* Move Down */}
           <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 disabled:pointer-events-none dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition"
+            className="rounded-full p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
             disabled={isLast}
             onClick={(e) => {
               e.stopPropagation();
@@ -136,7 +138,7 @@ export function DraggableWidgetWrapper({
 
           {/* Hide Widget */}
           <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50 dark:hover:text-rose-400 transition"
+            className="rounded-full p-1 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50 dark:hover:text-rose-400"
             onClick={(e) => {
               e.stopPropagation();
               onHide();
@@ -154,9 +156,11 @@ export function DraggableWidgetWrapper({
 
       {/* Drop Indicator (After target) */}
       {isDragOver && dropPosition === "after" && !isDragging && (
-        <div className="mt-3 flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-violet-500 bg-violet-50/80 text-violet-700 text-xs font-bold shadow-xs animate-in fade-in zoom-in-95 duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
+        <div className="fade-in zoom-in-95 mt-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-2xl border-2 border-violet-500 border-dashed bg-violet-50/80 font-bold text-violet-700 text-xs shadow-xs duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
           <Sparkles className="h-4 w-4 animate-spin text-violet-600 dark:text-violet-400" />
-          <span>{widgetTitle ? `"${widgetTitle}" sonrasına taşı` : "Buraya Bırak"}</span>
+          <span>
+            {widgetTitle ? `"${widgetTitle}" sonrasına taşı` : "Buraya Bırak"}
+          </span>
         </div>
       )}
     </div>

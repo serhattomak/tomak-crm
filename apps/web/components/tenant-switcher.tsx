@@ -112,13 +112,13 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
 
       {isOpen && (
         <div
-          className={`fade-in zoom-in-95 absolute z-50 animate-in rounded-2xl border border-zinc-200/90 bg-white py-1.5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 ${
+          className={`fade-in zoom-in-95 absolute z-[70] animate-in rounded-2xl border border-zinc-200/90 bg-white py-2 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 ${
             isCollapsed
-              ? "top-0 left-full ml-2 w-64"
+              ? "top-0 left-full ml-3.5 w-72"
               : "top-full left-0 mt-1.5 w-full min-w-[240px]"
           }`}
         >
-          <div className="flex items-center justify-between px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <div className="flex items-center justify-between px-3.5 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             <span>Çalışma Alanları</span>
             <span className="font-mono text-[9px] text-zinc-400">
               {tenants.length} Alan

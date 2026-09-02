@@ -2,22 +2,38 @@
 
 import {
   Banknote,
+  BarChart3,
+  Boxes,
+  Briefcase,
   Building2,
   Calendar,
+  Car,
   ChevronRight,
   Clock,
+  FileSpreadsheet,
   HelpCircle,
+  Kanban,
   LayoutDashboard,
+  LifeBuoy,
   Loader2,
+  Mail,
+  MessageSquare,
+  Network,
   Package,
   Plus,
+  Scale,
   Search,
   Settings,
   Shield,
   ShoppingCart,
+  Tag,
+  Truck,
   User,
+  UserCheck,
+  Users,
   Users2,
   X,
+  Zap,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
@@ -39,6 +55,7 @@ interface PaletteItem {
     | "customers"
     | "orders"
     | "products"
+    | "vehicles"
     | "employees";
   icon: React.ComponentType<{ className?: string }>;
   id: string;
@@ -64,10 +81,12 @@ export function CommandPalette({
     customers: any[];
     orders: any[];
     products: any[];
+    vehicles: any[];
   }>({
     customers: [],
     orders: [],
     products: [],
+    vehicles: [],
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -87,7 +106,12 @@ export function CommandPalette({
   // Live search query debounce
   useEffect(() => {
     if (!(isOpen && query.trim()) || query.length < 2 || !activeTenant?.id) {
-      setSearchResults({ customers: [], orders: [], products: [] });
+      setSearchResults({
+        customers: [],
+        orders: [],
+        products: [],
+        vehicles: [],
+      });
       setLiveLoading(false);
       return;
     }
@@ -95,7 +119,7 @@ export function CommandPalette({
     setLiveLoading(true);
     const timeout = setTimeout(async () => {
       try {
-        const [custRes, prodRes, orderRes] = await Promise.allSettled([
+        const [custRes, prodRes, orderRes, vehRes] = await Promise.allSettled([
           ApiClient.request<any>(
             `/api/customers?Search=${encodeURIComponent(query)}&PageSize=4`,
             {},
@@ -108,6 +132,11 @@ export function CommandPalette({
           ),
           ApiClient.request<any>(
             `/api/orders?Search=${encodeURIComponent(query)}&PageSize=4`,
+            {},
+            activeTenant.id
+          ),
+          ApiClient.request<any>(
+            `/api/vehicles?Search=${encodeURIComponent(query)}&PageSize=4`,
             {},
             activeTenant.id
           ),
@@ -134,9 +163,21 @@ export function CommandPalette({
               : orderRes.value.data.items || []
             : [];
 
-        setSearchResults({ customers, orders, products });
+        const vehicles =
+          vehRes.status === "fulfilled" && vehRes.value.data
+            ? Array.isArray(vehRes.value.data)
+              ? vehRes.value.data
+              : vehRes.value.data.items || []
+            : [];
+
+        setSearchResults({ customers, orders, products, vehicles });
       } catch {
-        setSearchResults({ customers: [], orders: [], products: [] });
+        setSearchResults({
+          customers: [],
+          orders: [],
+          products: [],
+          vehicles: [],
+        });
       } finally {
         setLiveLoading(false);
       }
@@ -145,9 +186,10 @@ export function CommandPalette({
     return () => clearTimeout(timeout);
   }, [query, isOpen, activeTenant?.id]);
 
-  // Navigation Items
+  // Navigation Items - Full CRM, OPS, HRM, CMS, SYS Hubs
   const navItems: PaletteItem[] = useMemo(
     () => [
+      // 1. CRM & Satış
       {
         badge: "G then D",
         category: "navigation",
@@ -157,11 +199,35 @@ export function CommandPalette({
           router.push(`/${tenantSlug}`);
           onClose();
         },
-        subtitle: "Şirket KPI'ları, grafikler ve özetler",
+        subtitle: "Şirket KPI'ları, gelir grafikleri ve performans",
         title: "Dashboard & Genel Bakış",
       },
       {
-        badge: "G then M",
+        badge: "G then P",
+        category: "navigation",
+        icon: Kanban,
+        id: "nav-pipelines",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/pipelines`);
+          onClose();
+        },
+        subtitle: "Satış fırsatları, anlaşma evreleri ve kanban panosu",
+        title: "Pipeline & Fırsatlar",
+      },
+      {
+        badge: "G then Q",
+        category: "navigation",
+        icon: FileSpreadsheet,
+        id: "nav-quotes",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/quotes`);
+          onClose();
+        },
+        subtitle: "Teklif hazırlama, revizyonlar ve PDF ihracı",
+        title: "Teklifler & Fiyatlandırma",
+      },
+      {
+        badge: "G then C",
         category: "navigation",
         icon: Users2,
         id: "nav-cust",
@@ -169,11 +235,11 @@ export function CommandPalette({
           router.push(`/${tenantSlug}/customers`);
           onClose();
         },
-        subtitle: "Müşteri listesi, iletişimler ve anlaşmalar",
-        title: "Müşteriler & CRM (360°)",
+        subtitle: "Müşteri listesi, iletişim geçmişi ve 360° görünüm",
+        title: "Müşteriler & Portföy (360°)",
       },
       {
-        badge: "G then S",
+        badge: "G then O",
         category: "navigation",
         icon: ShoppingCart,
         id: "nav-orders",
@@ -181,8 +247,44 @@ export function CommandPalette({
           router.push(`/${tenantSlug}/orders`);
           onClose();
         },
-        subtitle: "Sipariş yönetimi, tahsilat ve faturalar",
+        subtitle: "Sipariş takibi, ödemeler ve faturalandırma",
         title: "Siparişler & Satış",
+      },
+      {
+        category: "navigation",
+        icon: Tag,
+        id: "nav-promotions",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/promotions`);
+          onClose();
+        },
+        subtitle: "İndirim kodları, sezonluk kampanyalar ve kuponlar",
+        title: "Kampanyalar & Promosyonlar",
+      },
+
+      // 2. Operasyon & Araçlar (OPS)
+      {
+        badge: "G then V",
+        category: "navigation",
+        icon: Car,
+        id: "nav-vehicles",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/vehicles`);
+          onClose();
+        },
+        subtitle: "Araç filosu, EPC yedek parça kataloğu ve teknik dökümanlar",
+        title: "Otomotiv, Araçlar & EPC Kataloğu",
+      },
+      {
+        category: "navigation",
+        icon: Briefcase,
+        id: "nav-projects",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/projects`);
+          onClose();
+        },
+        subtitle: "Proje yönetimi, sprintler ve görev backlog'u",
+        title: "Projeler & Görevler",
       },
       {
         badge: "G then U",
@@ -193,23 +295,24 @@ export function CommandPalette({
           router.push(`/${tenantSlug}/products`);
           onClose();
         },
-        subtitle: "Stok hareketleri, varyantlar ve fiyatlar",
+        subtitle: "Ürün listesi, stok hareketleri, varyantlar ve fiyatlar",
         title: "Ürünler & Hizmet Kataloğu",
       },
       {
-        badge: "G then I",
         category: "navigation",
-        icon: Calendar,
-        id: "nav-leaves",
+        icon: Truck,
+        id: "nav-shipments",
         onSelect: () => {
-          router.push(`/${tenantSlug}/leaves`);
+          router.push(`/${tenantSlug}/shipments`);
           onClose();
         },
-        subtitle: "Çalışan izin talepleri ve onay süreçleri",
-        title: "İzinler & Şirket Takvimi",
+        subtitle: "Kargo gönderileri, kurye entegrasyonu ve teslimat takibi",
+        title: "Kargo & Sevkiyat Yönetimi",
       },
+
+      // 3. İnsan Kaynakları & Bordro (HRM)
       {
-        badge: "G then V",
+        badge: "G then A",
         category: "navigation",
         icon: Clock,
         id: "nav-attendance",
@@ -221,7 +324,18 @@ export function CommandPalette({
         title: "Vardiya & PDKS Takibi",
       },
       {
-        badge: "G then B",
+        badge: "G then L",
+        category: "navigation",
+        icon: Calendar,
+        id: "nav-leaves",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/leaves`);
+          onClose();
+        },
+        subtitle: "Çalışan izin talepleri, onay akışları ve takvim",
+        title: "İzinler & Şirket Takvimi",
+      },
+      {
         category: "navigation",
         icon: Banknote,
         id: "nav-payroll",
@@ -233,16 +347,140 @@ export function CommandPalette({
         title: "Bordro & Maaş Yönetimi",
       },
       {
-        badge: "G then O",
         category: "navigation",
-        icon: Building2,
-        id: "nav-org",
+        icon: UserCheck,
+        id: "nav-employees",
         onSelect: () => {
-          router.push(`/${tenantSlug}/organization`);
+          router.push(`/${tenantSlug}/organization?tab=employees`);
           onClose();
         },
-        subtitle: "Departmanlar, pozisyonlar ve çalışanlar",
-        title: "Organizasyon & Kadro",
+        subtitle: "Tüm şirket çalışanları, kadro ve iletişim rehberi",
+        title: "Çalışanlar & Personel Listesi",
+      },
+      {
+        category: "navigation",
+        icon: Building2,
+        id: "nav-departments",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/organization?tab=departments`);
+          onClose();
+        },
+        subtitle: "Departman hiyerarşisi ve bölüm yöneticileri",
+        title: "Departmanlar & Birimler",
+      },
+      {
+        category: "navigation",
+        icon: Network,
+        id: "nav-org-chart",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/organization?tab=chart`);
+          onClose();
+        },
+        subtitle: "Görsel şirket organizasyon şeması ve bağlılıklar",
+        title: "Organizasyon Şeması",
+      },
+      {
+        category: "navigation",
+        icon: Scale,
+        id: "nav-compliance",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/compliance`);
+          onClose();
+        },
+        subtitle: "İş kanunu, mevzuat ve şirket iç yönetmelikleri",
+        title: "Mevzuat & İş Hukuku",
+      },
+      {
+        category: "navigation",
+        icon: Briefcase,
+        id: "nav-recruitment",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/recruitment`);
+          onClose();
+        },
+        subtitle: "Açık pozisyonlar, aday havuzu ve mülakat süreçleri",
+        title: "İşe Alım & Aday Takibi",
+      },
+
+      // 4. CMS & İletişim
+      {
+        category: "navigation",
+        icon: LifeBuoy,
+        id: "nav-tickets",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/tickets`);
+          onClose();
+        },
+        subtitle: "Müşteri destek talepleri, SLA ve bilet takibi",
+        title: "Destek Masası & Talepler",
+      },
+      {
+        category: "navigation",
+        icon: MessageSquare,
+        id: "nav-messages",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/messages`);
+          onClose();
+        },
+        subtitle: "Dahili ekip mesajlaşması ve müşteri canlı sohbeti",
+        title: "Mesajlar & Dahili Sohbet",
+      },
+      {
+        category: "navigation",
+        icon: Mail,
+        id: "nav-email",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/email`);
+          onClose();
+        },
+        subtitle: "E-posta entegrasyonu, gelen kutusu ve şablonlar",
+        title: "E-Posta Kutusu",
+      },
+      {
+        category: "navigation",
+        icon: Zap,
+        id: "nav-automations",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/automations`);
+          onClose();
+        },
+        subtitle: "Otomatik e-posta, bildirim ve webhook tetikleyicileri",
+        title: "Otomasyon & İş Akışları",
+      },
+      {
+        category: "navigation",
+        icon: BarChart3,
+        id: "nav-analytics",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/analytics`);
+          onClose();
+        },
+        subtitle: "Detaylı satış, personel ve gelir raporları",
+        title: "Raporlar & Analitik",
+      },
+      {
+        category: "navigation",
+        icon: Boxes,
+        id: "nav-integration",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/integration`);
+          onClose();
+        },
+        subtitle: "Pazaryeri, kargo ve ERP üçüncü parti entegrasyonları",
+        title: "Entegrasyonlar & API",
+      },
+
+      // 5. Sistem & Yönetim (SYS)
+      {
+        category: "navigation",
+        icon: Users,
+        id: "nav-users",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/users`);
+          onClose();
+        },
+        subtitle: "Kullanıcı hesapları, davetler ve erişim yönetimi",
+        title: "Ekip & Kullanıcılar",
       },
       {
         category: "navigation",
@@ -252,11 +490,11 @@ export function CommandPalette({
           router.push(`/${tenantSlug}/roles`);
           onClose();
         },
-        subtitle: "Kullanıcı rolleri ve izin matrisleri",
+        subtitle: "Kullanıcı rolleri ve detaylı yetki matrisi",
         title: "Roller & Yetki Yönetimi",
       },
       {
-        badge: "G then A",
+        badge: "G then S",
         category: "navigation",
         icon: Settings,
         id: "nav-settings",
@@ -264,7 +502,7 @@ export function CommandPalette({
           router.push(`/${tenantSlug}/settings`);
           onClose();
         },
-        subtitle: "Hesap, bildirimler ve entegrasyonlar",
+        subtitle: "Şirket profili, güvenlik ve genel yapılandırma",
         title: "Şirket & Sistem Ayarları",
       },
     ],
@@ -275,7 +513,7 @@ export function CommandPalette({
   const actionItems: PaletteItem[] = useMemo(
     () => [
       {
-        badge: "N then M",
+        badge: "N then C",
         category: "actions",
         icon: Plus,
         id: "act-create-cust",
@@ -287,7 +525,41 @@ export function CommandPalette({
         title: "Yeni Müşteri Ekle",
       },
       {
-        badge: "N then S",
+        badge: "N then D",
+        category: "actions",
+        icon: Plus,
+        id: "act-create-deal",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/pipelines?create=true`);
+          onClose();
+        },
+        subtitle: "Satış boru hattına yeni anlaşma / fırsat ekle",
+        title: "Yeni Fırsat / Pipeline Oluştur",
+      },
+      {
+        badge: "N then Q",
+        category: "actions",
+        icon: Plus,
+        id: "act-create-quote",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/quotes?create=true`);
+          onClose();
+        },
+        subtitle: "Müşteriye özel yeni fiyat teklifi oluştur",
+        title: "Yeni Teklif Hazırla",
+      },
+      {
+        category: "actions",
+        icon: Plus,
+        id: "act-create-vehicle",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/vehicles?create=true`);
+          onClose();
+        },
+        subtitle: "Sisteme yeni araç modeli veya şasi kaydet",
+        title: "Yeni Araç / Vasıta Ekle",
+      },
+      {
         category: "actions",
         icon: Plus,
         id: "act-create-order",
@@ -321,6 +593,17 @@ export function CommandPalette({
         },
         subtitle: "Kataloğa yeni fiziksel veya dijital ürün ekle",
         title: "Yeni Ürün / Hizmet Tanımla",
+      },
+      {
+        category: "actions",
+        icon: Plus,
+        id: "act-create-ticket",
+        onSelect: () => {
+          router.push(`/${tenantSlug}/tickets?create=true`);
+          onClose();
+        },
+        subtitle: "Müşteri veya dahili destek bileti oluştur",
+        title: "Yeni Destek Talebi Aç",
       },
       {
         category: "actions",
@@ -420,6 +703,21 @@ export function CommandPalette({
       });
     });
 
+    // Vehicles
+    searchResults.vehicles?.forEach((v: any) => {
+      items.push({
+        category: "vehicles",
+        icon: Car,
+        id: `live-veh-${v.id}`,
+        onSelect: () => {
+          router.push(`/${tenantSlug}/vehicles`);
+          onClose();
+        },
+        subtitle: `Araç / EPC • ${v.brand || ""} ${v.model || ""} • ${v.plateNumber || v.vin || "Şasi / Plaka"}`,
+        title: `${v.brand || "Araç"} ${v.model || ""} ${v.year ? `(${v.year})` : ""}`,
+      });
+    });
+
     return items;
   }, [searchResults, router, tenantSlug, onClose]);
 
@@ -499,6 +797,7 @@ export function CommandPalette({
     navigation: allFilteredItems.filter((i) => i.category === "navigation"),
     orders: allFilteredItems.filter((i) => i.category === "orders"),
     products: allFilteredItems.filter((i) => i.category === "products"),
+    vehicles: allFilteredItems.filter((i) => i.category === "vehicles"),
   };
 
   let runningIndex = 0;
@@ -519,7 +818,7 @@ export function CommandPalette({
             className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Sayfa, eylem, müşteri, sipariş veya ürün ara..."
+            placeholder="Sayfa, eylem, müşteri, sipariş, ürün veya araç ara..."
             ref={inputRef}
             type="text"
             value={query}
@@ -559,6 +858,28 @@ export function CommandPalette({
             </div>
           ) : (
             <>
+              {/* Dynamic Vehicle Results */}
+              {categorized.vehicles.length > 0 && (
+                <div className="space-y-1">
+                  <div className="px-3 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                    Araçlar & Otomotiv
+                  </div>
+                  {categorized.vehicles.map((item) => {
+                    const idx = runningIndex++;
+                    const isSelected = idx === selectedIndex;
+                    return (
+                      <PaletteRow
+                        index={idx}
+                        isSelected={isSelected}
+                        item={item}
+                        key={item.id}
+                        onHover={() => setSelectedIndex(idx)}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+
               {/* Dynamic Customer Results */}
               {categorized.customers.length > 0 && (
                 <div className="space-y-1">
