@@ -4,7 +4,9 @@ using CRM.BuildingBlocks.Behaviors;
 using CRM.BuildingBlocks.Caching;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Realtime;
 using CRM.BuildingBlocks.Security;
+using CRM.BuildingBlocks.Storage;
 using CRM.BuildingBlocks.Tenancy;
 using FluentValidation;
 using MediatR;
@@ -65,6 +67,12 @@ public static class ServiceCollectionExtensions
 
         // 8. Supabase / JWT Authentication
         services.AddSupabaseAuthentication(configuration);
+
+        // 9. Supabase Storage
+        services.AddSupabaseStorage(configuration);
+
+        // 10. Realtime / SignalR
+        services.AddCrmRealtime(configuration);
 
         return services;
     }

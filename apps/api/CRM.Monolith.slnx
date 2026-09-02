@@ -19,6 +19,8 @@
     <Project Path="src/Modules/CRM.Modules.Automations/CRM.Modules.Automations.csproj" />
     <Project Path="src/Modules/CRM.Modules.Compliance/CRM.Modules.Compliance.csproj" />
     <Project Path="src/Modules/CRM.Modules.Recruitment/CRM.Modules.Recruitment.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Projects/CRM.Modules.Projects.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Vehicles/CRM.Modules.Vehicles.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CRM.Modules.Promotions.Tests/CRM.Modules.Promotions.Tests.csproj" />

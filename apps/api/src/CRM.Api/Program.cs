@@ -19,6 +19,9 @@ using CRM.Modules.Recruitment;
 using CRM.Modules.Promotions;
 using CRM.Modules.Projects;
 using CRM.Modules.Vehicles;
+using CRM.Api.Jobs;
+using CRM.BuildingBlocks.Realtime;
+using Quartz;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
@@ -54,8 +57,9 @@ var recruitmentAssembly = typeof(RecruitmentModuleExtensions).Assembly;
 var promotionsAssembly = typeof(PromotionsModuleExtensions).Assembly;
 var projectsAssembly = typeof(ProjectsModuleExtensions).Assembly;
 var vehiclesAssembly = typeof(VehiclesModuleExtensions).Assembly;
+var apiAssembly = typeof(Program).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, apiAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -79,6 +83,25 @@ builder.Services.AddMessaging(builder.Configuration, x =>
 {
     IdentityModuleExtensions.ConfigureIdentityConsumers(x);
 });
+
+// 4. Quartz.NET Background Job Scheduler
+builder.Services.AddQuartz(q =>
+{
+    var quoteJobKey = new JobKey("QuoteExpirationJob");
+    q.AddJob<QuoteExpirationJob>(opts => opts.WithIdentity(quoteJobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(quoteJobKey)
+        .WithIdentity("QuoteExpirationJob-trigger")
+        .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever()));
+
+    var slaJobKey = new JobKey("SlaCheckJob");
+    q.AddJob<SlaCheckJob>(opts => opts.WithIdentity(slaJobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(slaJobKey)
+        .WithIdentity("SlaCheckJob-trigger")
+        .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever()));
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 // 4. OpenAPI & Scalar
 builder.Services.AddOpenApi(options =>
@@ -147,6 +170,7 @@ app.UseAuthorization();
 // 8. Map Slices Endpoints
 app.MapEndpoints();
 app.MapVehiclesModuleEndpoints();
+app.MapHub<CrmHub>("/hubs/crm");
 
 // 9. Map HealthChecks
 app.MapHealthChecks("/health", new HealthCheckOptions
