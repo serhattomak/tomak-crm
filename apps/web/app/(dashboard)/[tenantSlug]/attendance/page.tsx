@@ -3,6 +3,8 @@
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
 import {
   Select,
   SelectContent,
@@ -2229,17 +2231,15 @@ export default function AttendancePage() {
               className="space-y-4 overflow-y-auto pr-1"
               onSubmit={handleAssignShifts}
             >
-              <div>
-                <label className="mb-1 block font-semibold text-foreground text-xs">
-                  Vardiya Şablonu *
-                </label>
+              <div className="space-y-1.5">
+                <Label required>Vardiya Şablonu</Label>
                 <Select
                   onValueChange={(val) =>
                     setAssignForm({ ...assignForm, shiftTemplateId: val })
                   }
                   value={assignForm.shiftTemplateId}
                 >
-                  <SelectTrigger className="bg-background">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Vardiya Şablonu Seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -2254,43 +2254,36 @@ export default function AttendancePage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Başlangıç Tarihi *
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                <div className="space-y-1.5">
+                  <Label required>Başlangıç Tarihi</Label>
+                  <DatePicker
+                    className="w-full"
+                    onChange={(val) =>
                       setAssignForm({
                         ...assignForm,
-                        startDate: e.target.value,
+                        startDate: val,
                       })
                     }
-                    required
-                    type="date"
+                    placeholder="Başlangıç tarihi"
                     value={assignForm.startDate}
                   />
                 </div>
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Bitiş Tarihi *
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setAssignForm({ ...assignForm, endDate: e.target.value })
+                <div className="space-y-1.5">
+                  <Label required>Bitiş Tarihi</Label>
+                  <DatePicker
+                    className="w-full"
+                    minDate={assignForm.startDate}
+                    onChange={(val) =>
+                      setAssignForm({ ...assignForm, endDate: val })
                     }
-                    required
-                    type="date"
+                    placeholder="Bitiş tarihi"
                     value={assignForm.endDate}
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="mb-1 block font-semibold text-foreground text-xs">
-                  Departman ile Toplu Ata (Opsiyonel)
-                </label>
+              <div className="space-y-1.5">
+                <Label>Departman ile Toplu Ata (Opsiyonel)</Label>
                 <Select
                   onValueChange={(val) =>
                     setAssignForm({
@@ -2301,7 +2294,7 @@ export default function AttendancePage() {
                   }
                   value={assignForm.departmentId}
                 >
-                  <SelectTrigger className="bg-background">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Tüm departman personeline uygula..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -2316,17 +2309,15 @@ export default function AttendancePage() {
               </div>
 
               {!assignForm.departmentId && (
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Personel Seçimi *
-                  </label>
+                <div className="space-y-1.5">
+                  <Label required>Personel Seçimi</Label>
                   <Select
                     onValueChange={(val) =>
                       setAssignForm({ ...assignForm, employeeIds: [val] })
                     }
                     value={assignForm.employeeIds[0] || ""}
                   >
-                    <SelectTrigger className="bg-background">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Personel Seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -2412,17 +2403,15 @@ export default function AttendancePage() {
               className="space-y-4 overflow-y-auto pr-1"
               onSubmit={handleSubmitCorrection}
             >
-              <div>
-                <label className="mb-1 block font-semibold text-foreground text-xs">
-                  Personel *
-                </label>
+              <div className="space-y-1.5">
+                <Label required>Personel</Label>
                 <Select
                   onValueChange={(val) =>
                     setCorrectionForm({ ...correctionForm, employeeId: val })
                   }
                   value={correctionForm.employeeId}
                 >
-                  <SelectTrigger className="bg-background">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Personel Seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -2435,31 +2424,25 @@ export default function AttendancePage() {
                 </Select>
               </div>
 
-              <div>
-                <label className="mb-1 block font-semibold text-foreground text-xs">
-                  Tarih *
-                </label>
-                <input
-                  className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              <div className="space-y-1.5">
+                <Label required>Tarih</Label>
+                <DatePicker
+                  className="w-full"
+                  onChange={(val) =>
                     setCorrectionForm({
                       ...correctionForm,
-                      date: e.target.value,
+                      date: val,
                     })
                   }
-                  required
-                  type="date"
+                  placeholder="Düzeltilecek tarih seçin"
                   value={correctionForm.date}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Giriş Saati
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                <div className="space-y-1.5">
+                  <Label>Giriş Saati</Label>
+                  <Input
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCorrectionForm({
                         ...correctionForm,
@@ -2470,12 +2453,9 @@ export default function AttendancePage() {
                     value={correctionForm.requestedClockInTime}
                   />
                 </div>
-                <div>
-                  <label className="mb-1 block font-semibold text-foreground text-xs">
-                    Çıkış Saati
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                <div className="space-y-1.5">
+                  <Label>Çıkış Saati</Label>
+                  <Input
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCorrectionForm({
                         ...correctionForm,
@@ -2488,12 +2468,10 @@ export default function AttendancePage() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-1 block font-semibold text-foreground text-xs">
-                  Mazeret / Açıklama *
-                </label>
+              <div className="space-y-1.5">
+                <Label required>Mazeret / Açıklama</Label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-hidden dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setCorrectionForm({
                       ...correctionForm,

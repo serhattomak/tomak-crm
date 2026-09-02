@@ -1429,11 +1429,7 @@ function CreateQuoteModal({
                             inputSize="sm"
                             min={0.01}
                             onChange={(val) =>
-                              handleItemChange(
-                                idx,
-                                "quantity",
-                                val ?? 0
-                              )
+                              handleItemChange(idx, "quantity", val ?? 0)
                             }
                             required
                             showStepper
@@ -1460,13 +1456,17 @@ function CreateQuoteModal({
                             inputSize="sm"
                             min={0}
                             onChange={(val) =>
-                              handleItemChange(
-                                idx,
-                                "unitPrice",
-                                val ?? 0
-                              )
+                              handleItemChange(idx, "unitPrice", val ?? 0)
                             }
-                            prefix={currency === "USD" ? "$" : currency === "EUR" ? "€" : currency === "GBP" ? "£" : "₺"}
+                            prefix={
+                              currency === "USD"
+                                ? "$"
+                                : currency === "EUR"
+                                  ? "€"
+                                  : currency === "GBP"
+                                    ? "£"
+                                    : "₺"
+                            }
                             required
                             step={0.01}
                             value={item.unitPrice}
@@ -1485,11 +1485,7 @@ function CreateQuoteModal({
                             max={100}
                             min={0}
                             onChange={(val) =>
-                              handleItemChange(
-                                idx,
-                                "discountRate",
-                                val ?? 0
-                              )
+                              handleItemChange(idx, "discountRate", val ?? 0)
                             }
                             suffix="%"
                             value={item.discountRate}
@@ -1596,7 +1592,15 @@ function CreateQuoteModal({
                       min={0}
                       onChange={(val) => setDiscountAmount(val ?? 0)}
                       placeholder="Tutar"
-                      prefix={currency === "USD" ? "$" : currency === "EUR" ? "€" : currency === "GBP" ? "£" : "₺"}
+                      prefix={
+                        currency === "USD"
+                          ? "$"
+                          : currency === "EUR"
+                            ? "€"
+                            : currency === "GBP"
+                              ? "£"
+                              : "₺"
+                      }
                       step={0.01}
                       value={discountAmount || undefined}
                     />
@@ -1684,7 +1688,9 @@ function CreateQuoteModal({
                 <Label className="mb-1">Vade (Gün)</Label>
                 <NumberInput
                   min={0}
-                  onChange={(val) => setPaymentDueDays(val !== undefined ? String(val) : "")}
+                  onChange={(val) =>
+                    setPaymentDueDays(val === undefined ? "" : String(val))
+                  }
                   placeholder="Örn: 30"
                   showStepper
                   step={1}
@@ -2816,7 +2822,15 @@ function QuoteDetailDrawer({
                           )
                         );
                       }}
-                      prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                      prefix={
+                        quote.currency === "USD"
+                          ? "$"
+                          : quote.currency === "EUR"
+                            ? "€"
+                            : quote.currency === "GBP"
+                              ? "£"
+                              : "₺"
+                      }
                       step={0.01}
                       value={ri.unitPrice}
                     />
@@ -2955,7 +2969,15 @@ function QuoteDetailDrawer({
                             )
                           )
                         }
-                        prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                        prefix={
+                          quote.currency === "USD"
+                            ? "$"
+                            : quote.currency === "EUR"
+                              ? "€"
+                              : quote.currency === "GBP"
+                                ? "£"
+                                : "₺"
+                        }
                         step={0.01}
                         value={ci.unitPrice}
                       />
@@ -2968,11 +2990,23 @@ function QuoteDetailDrawer({
                     <NumberInput
                       min={0}
                       onChange={(val) =>
-                        setConvertShippingFee(val !== undefined ? String(val) : "0")
+                        setConvertShippingFee(
+                          val === undefined ? "0" : String(val)
+                        )
                       }
-                      prefix={quote.currency === "USD" ? "$" : quote.currency === "EUR" ? "€" : quote.currency === "GBP" ? "£" : "₺"}
+                      prefix={
+                        quote.currency === "USD"
+                          ? "$"
+                          : quote.currency === "EUR"
+                            ? "€"
+                            : quote.currency === "GBP"
+                              ? "£"
+                              : "₺"
+                      }
                       step={0.01}
-                      value={convertShippingFee ? Number(convertShippingFee) : 0}
+                      value={
+                        convertShippingFee ? Number(convertShippingFee) : 0
+                      }
                     />
                   </div>
                   <div>

@@ -1,6 +1,17 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { DatePicker } from "@workspace/ui/components/date-picker";
+import { Input } from "@workspace/ui/components/input";
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -648,7 +659,7 @@ function RecruitmentPageContent() {
             <span>Yeni Aday</span>
           </button>
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-slate-800"
+            className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700"
             onClick={openReqModalForCreate}
             type="button"
           >
@@ -755,28 +766,40 @@ function RecruitmentPageContent() {
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <select
-                    aria-label="Durum filtresi"
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    onChange={(e) => setReqStatusFilter(e.target.value)}
+                  <Select
+                    onValueChange={(val) => setReqStatusFilter(val)}
                     value={reqStatusFilter}
                   >
-                    <option value="all">Tüm Durumlar</option>
-                    <option value="Draft">Taslak</option>
-                    <option value="Open">Yayında</option>
-                    <option value="Closed">Kapalı</option>
-                    <option value="Cancelled">İptal</option>
-                  </select>
-                  <select
-                    aria-label="Yayın filtresi"
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    onChange={(e) => setReqPublishedFilter(e.target.value)}
+                    <SelectTrigger
+                      aria-label="Durum filtresi"
+                      className="h-9 w-[150px] text-xs"
+                    >
+                      <SelectValue placeholder="Tüm Durumlar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tüm Durumlar</SelectItem>
+                      <SelectItem value="Draft">Taslak</SelectItem>
+                      <SelectItem value="Open">Yayında</SelectItem>
+                      <SelectItem value="Closed">Kapalı</SelectItem>
+                      <SelectItem value="Cancelled">İptal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    onValueChange={(val) => setReqPublishedFilter(val)}
                     value={reqPublishedFilter}
                   >
-                    <option value="all">Tümü</option>
-                    <option value="published">Yayında</option>
-                    <option value="draft">Taslak</option>
-                  </select>
+                    <SelectTrigger
+                      aria-label="Yayın filtresi"
+                      className="h-9 w-[130px] text-xs"
+                    >
+                      <SelectValue placeholder="Tümü" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tümü</SelectItem>
+                      <SelectItem value="published">Yayında</SelectItem>
+                      <SelectItem value="draft">Taslak</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
@@ -784,7 +807,7 @@ function RecruitmentPageContent() {
               <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                 {pagedRequisitions.length === 0 ? (
                   <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
-                    <Briefcase className="h-10 w-10 text-slate-300" />
+                    <Briefcase className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
                     <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                       İlan bulunamadı
                     </h3>
@@ -971,25 +994,31 @@ function RecruitmentPageContent() {
                     <Filter className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                     <span className="font-semibold">Kaynak:</span>
                   </div>
-                  <select
-                    aria-label="Kaynak filtresi"
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    onChange={(e) => setCandSourceFilter(e.target.value)}
+                  <Select
+                    onValueChange={(val) => setCandSourceFilter(val)}
                     value={candSourceFilter}
                   >
-                    <option value="all">Tüm Kaynaklar</option>
-                    <option value="Manual">Manuel</option>
-                    <option value="CsvImport">CSV İçe Aktarım</option>
-                    <option value="PublicForm">Public Form</option>
-                    <option value="Referral">Referans</option>
-                  </select>
+                    <SelectTrigger
+                      aria-label="Kaynak filtresi"
+                      className="h-9 w-[160px] text-xs"
+                    >
+                      <SelectValue placeholder="Tüm Kaynaklar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tüm Kaynaklar</SelectItem>
+                      <SelectItem value="Manual">Manuel</SelectItem>
+                      <SelectItem value="CsvImport">CSV İçe Aktarım</SelectItem>
+                      <SelectItem value="PublicForm">Public Form</SelectItem>
+                      <SelectItem value="Referral">Referans</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                 {pagedCandidates.length === 0 ? (
                   <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
-                    <Users className="h-10 w-10 text-slate-300" />
+                    <Users className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
                     <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                       Aday bulunamadı
                     </h3>
@@ -1157,19 +1186,25 @@ function RecruitmentPageContent() {
                       Kanban
                     </button>
                   </div>
-                  <select
-                    aria-label="Aşama filtresi"
-                    className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    onChange={(e) => setAppStageFilter(e.target.value)}
+                  <Select
+                    onValueChange={(val) => setAppStageFilter(val)}
                     value={appStageFilter}
                   >
-                    <option value="all">Tüm Aşamalar</option>
-                    {sortedStages.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger
+                      aria-label="Aşama filtresi"
+                      className="h-9 w-[160px] text-xs"
+                    >
+                      <SelectValue placeholder="Tüm Aşamalar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tüm Aşamalar</SelectItem>
+                      {sortedStages.map((s) => (
+                        <SelectItem key={s.id} value={s.id}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <button
                     className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-violet-700"
                     onClick={() => setShowAppModal(true)}
@@ -1244,7 +1279,7 @@ function RecruitmentPageContent() {
                                       <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                                         {app.candidateName}
                                       </div>
-                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-slate-300 group-hover:text-zinc-500 dark:hover:text-zinc-400" />
+                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-400" />
                                     </div>
                                     <div className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                                       {app.candidateEmail}
@@ -1263,27 +1298,36 @@ function RecruitmentPageContent() {
                                           </span>
                                         )}
                                     </div>
-                                    {/* keyboard fallback: stage select */}
-                                    <select
-                                      aria-label="Aşama değiştir"
-                                      className="mt-2 w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
-                                      onChange={(e) => {
-                                        e.stopPropagation();
-                                        const next = e.target.value;
-                                        if (next) {
-                                          handleMoveStage(app.id, next);
-                                        }
-                                      }}
+                                    <div
+                                      className="mt-2"
                                       onClick={(e) => e.stopPropagation()}
-                                      value={app.stageId || ""}
                                     >
-                                      <option value="">Aşama taşı...</option>
-                                      {activeStages.map((s) => (
-                                        <option key={s.id} value={s.id}>
-                                          {s.name}
-                                        </option>
-                                      ))}
-                                    </select>
+                                      <Select
+                                        onValueChange={(val) => {
+                                          if (val && val !== "NONE") {
+                                            handleMoveStage(app.id, val);
+                                          }
+                                        }}
+                                        value={app.stageId || "NONE"}
+                                      >
+                                        <SelectTrigger
+                                          aria-label="Aşama değiştir"
+                                          className="h-7 w-full text-[11px]"
+                                        >
+                                          <SelectValue placeholder="Aşama taşı..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="NONE">
+                                            Aşama taşı...
+                                          </SelectItem>
+                                          {activeStages.map((s) => (
+                                            <SelectItem key={s.id} value={s.id}>
+                                              {s.name}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
                                     {app.headcountWarning && (
                                       <p className="mt-1 text-[11px] text-amber-600">
                                         {app.headcountWarning}
@@ -1336,7 +1380,7 @@ function RecruitmentPageContent() {
                 <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
                   {pagedApplications.length === 0 ? (
                     <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
-                      <FileText className="h-10 w-10 text-slate-300" />
+                      <FileText className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
                       <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                         Başvuru bulunamadı
                       </h3>
@@ -1445,24 +1489,31 @@ function RecruitmentPageContent() {
                                     >
                                       Detay
                                     </button>
-                                    <select
-                                      aria-label="Aşama taşı"
-                                      className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
-                                      onChange={(e) => {
-                                        const next = e.target.value;
-                                        if (next) {
-                                          handleMoveStage(app.id, next);
+                                    <Select
+                                      onValueChange={(val) => {
+                                        if (val && val !== "NONE") {
+                                          handleMoveStage(app.id, val);
                                         }
                                       }}
-                                      value={app.stageId || ""}
+                                      value={app.stageId || "NONE"}
                                     >
-                                      <option value="">Aşama seç</option>
-                                      {activeStages.map((s) => (
-                                        <option key={s.id} value={s.id}>
-                                          {s.name}
-                                        </option>
-                                      ))}
-                                    </select>
+                                      <SelectTrigger
+                                        aria-label="Aşama taşı"
+                                        className="h-7 w-[120px] text-[11px]"
+                                      >
+                                        <SelectValue placeholder="Aşama seç" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="NONE">
+                                          Aşama seç
+                                        </SelectItem>
+                                        {activeStages.map((s) => (
+                                          <SelectItem key={s.id} value={s.id}>
+                                            {s.name}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
                                   </div>
                                 </td>
                               </tr>
@@ -1497,7 +1548,7 @@ function RecruitmentPageContent() {
                     </p>
                   </div>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 font-semibold text-white text-xs hover:bg-slate-800"
+                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-violet-700"
                     onClick={openStageModalForCreate}
                     type="button"
                   >
@@ -1508,7 +1559,7 @@ function RecruitmentPageContent() {
 
                 {sortedStages.length === 0 ? (
                   <div className="mt-6 flex min-h-[200px] flex-col items-center justify-center rounded-2xl border border-dashed bg-zinc-50 p-8 text-center dark:bg-zinc-800/50">
-                    <Layers className="h-8 w-8 text-slate-300" />
+                    <Layers className="h-8 w-8 text-zinc-300 dark:text-zinc-600" />
                     <p className="mt-2 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                       Henüz aşama yok
                     </p>
@@ -1596,7 +1647,7 @@ function RecruitmentPageContent() {
                                 aria-label={
                                   s.isActive ? "Pasif et" : "Aktif et"
                                 }
-                                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${s.isActive ? "bg-emerald-500" : "bg-slate-200"}`}
+                                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${s.isActive ? "bg-emerald-500" : "bg-zinc-200 dark:bg-zinc-700"}`}
                                 onClick={() => handleToggleStageActive(s)}
                                 type="button"
                               >
@@ -1915,12 +1966,9 @@ function RequisitionModal({
         </div>
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              İlan Başlığı *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          <div className="space-y-1.5">
+            <Label required>İlan Başlığı</Label>
+            <Input
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Örn: Senior Frontend Developer"
               required
@@ -1930,83 +1978,73 @@ function RequisitionModal({
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Kontenjan *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label required>Kontenjan</Label>
+              <NumberInput
                 min={1}
-                onChange={(e) => setHeadcount(e.target.value)}
-                required
-                type="number"
-                value={headcount}
+                onChange={(val) =>
+                  setHeadcount(val === undefined ? "1" : String(val))
+                }
+                showStepper
+                value={headcount === "" ? undefined : Number(headcount)}
               />
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Öncelik
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setPriority(e.target.value)}
-                value={priority}
-              >
-                <option value="Low">Düşük</option>
-                <option value="Medium">Orta</option>
-                <option value="High">Yüksek</option>
-                <option value="Urgent">Acil</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Öncelik</Label>
+              <Select onValueChange={setPriority} value={priority}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Öncelik Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Low">Düşük</SelectItem>
+                  <SelectItem value="Medium">Orta</SelectItem>
+                  <SelectItem value="High">Yüksek</SelectItem>
+                  <SelectItem value="Urgent">Acil</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Kapanış Tarihi
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setClosingDate(e.target.value)}
-                type="date"
+            <div className="space-y-1.5">
+              <Label>Kapanış Tarihi</Label>
+              <DatePicker
+                className="w-full"
+                onChange={setClosingDate}
+                placeholder="Kapanış tarihi seçin"
                 value={closingDate}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Çalışma Şekli
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setEmploymentType(e.target.value)}
-                value={employmentType}
-              >
-                <option value="FullTime">Tam Zamanlı</option>
-                <option value="PartTime">Yarı Zamanlı</option>
-                <option value="Contract">Sözleşmeli</option>
-                <option value="Intern">Stajyer</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Çalışma Şekli</Label>
+              <Select onValueChange={setEmploymentType} value={employmentType}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Çalışma Şekli" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="FullTime">Tam Zamanlı</SelectItem>
+                  <SelectItem value="PartTime">Yarı Zamanlı</SelectItem>
+                  <SelectItem value="Contract">Sözleşmeli</SelectItem>
+                  <SelectItem value="Intern">Stajyer</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Work Model
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setWorkModel(e.target.value)}
-                value={workModel}
-              >
-                <option value="OnSite">Ofiste</option>
-                <option value="Remote">Uzaktan</option>
-                <option value="Hybrid">Hibrit</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Çalışma Modeli</Label>
+              <Select onValueChange={setWorkModel} value={workModel}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Çalışma Modeli" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="OnSite">Ofiste</SelectItem>
+                  <SelectItem value="Remote">Uzaktan</SelectItem>
+                  <SelectItem value="Hybrid">Hibrit</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Lokasyon
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label>Lokasyon</Label>
+              <Input
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="İstanbul"
                 type="text"
@@ -2016,64 +2054,63 @@ function RequisitionModal({
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Min Maaş
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setMinSalary(e.target.value)}
+            <div className="space-y-1.5">
+              <Label>Min Maaş</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
+                  setMinSalary(val === undefined ? "" : String(val))
+                }
                 placeholder="50000"
-                type="number"
-                value={minSalary}
+                prefix={
+                  currency === "TRY" ? "₺" : currency === "USD" ? "$" : "€"
+                }
+                value={minSalary === "" ? undefined : Number(minSalary)}
               />
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Max Maaş
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setMaxSalary(e.target.value)}
+            <div className="space-y-1.5">
+              <Label>Max Maaş</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
+                  setMaxSalary(val === undefined ? "" : String(val))
+                }
                 placeholder="80000"
-                type="number"
-                value={maxSalary}
+                prefix={
+                  currency === "TRY" ? "₺" : currency === "USD" ? "$" : "€"
+                }
+                value={maxSalary === "" ? undefined : Number(maxSalary)}
               />
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Para Birimi
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setCurrency(e.target.value)}
-                value={currency}
-              >
-                <option value="TRY">TRY</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Para Birimi</Label>
+              <Select onValueChange={setCurrency} value={currency}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Para Birimi" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="TRY">TRY</SelectItem>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="EUR">EUR</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Açıklama
-            </label>
+          <div className="space-y-1.5">
+            <Label>Açıklama</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="İlan detayları..."
               rows={3}
               value={description}
             />
           </div>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Gereksinimler
-            </label>
+          <div className="space-y-1.5">
+            <Label>Gereksinimler</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setRequirements(e.target.value)}
               placeholder="Aranan nitelikler..."
               rows={2}
@@ -2247,24 +2284,18 @@ function CandidateModal({
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Ad *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label required>Ad</Label>
+              <Input
                 onChange={(e) => setFirstName(e.target.value)}
                 required
                 type="text"
                 value={firstName}
               />
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Soyad *
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label required>Soyad</Label>
+              <Input
                 onChange={(e) => setLastName(e.target.value)}
                 required
                 type="text"
@@ -2273,12 +2304,10 @@ function CandidateModal({
             </div>
           </div>
 
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              E-posta *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          <div className="space-y-1.5">
+            <Label required>E-posta</Label>
+            <Input
+              className="font-mono"
               onChange={(e) => {
                 setEmail(e.target.value);
                 setDuplicateWarning("");
@@ -2295,36 +2324,28 @@ function CandidateModal({
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Telefon
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label>Telefon</Label>
+              <Input
                 onChange={(e) => setPhone(e.target.value)}
                 type="text"
                 value={phone}
               />
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Doğum Tarihi
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                onChange={(e) => setBirthDate(e.target.value)}
-                type="date"
+            <div className="space-y-1.5">
+              <Label>Doğum Tarihi</Label>
+              <DatePicker
+                className="w-full"
+                onChange={setBirthDate}
+                placeholder="Doğum tarihi seçin"
                 value={birthDate}
               />
             </div>
           </div>
 
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Adres
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          <div className="space-y-1.5">
+            <Label>Adres</Label>
+            <Input
               onChange={(e) => setAddress(e.target.value)}
               type="text"
               value={address}
@@ -2332,27 +2353,23 @@ function CandidateModal({
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Kaynak
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setSource(e.target.value)}
-                value={source}
-              >
-                <option value="Manual">Manuel</option>
-                <option value="CsvImport">CSV İçe Aktarım</option>
-                <option value="PublicForm">Public Form</option>
-                <option value="Referral">Referans</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Kaynak</Label>
+              <Select onValueChange={setSource} value={source}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Kaynak Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Manual">Manuel</SelectItem>
+                  <SelectItem value="CsvImport">CSV İçe Aktarım</SelectItem>
+                  <SelectItem value="PublicForm">Public Form</SelectItem>
+                  <SelectItem value="Referral">Referans</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Etiketler (virgülle ayır)
-              </label>
-              <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            <div className="space-y-1.5">
+              <Label>Etiketler (virgülle ayır)</Label>
+              <Input
                 onChange={(e) => setTagsRaw(e.target.value)}
                 placeholder="react, senior, remote"
                 type="text"
@@ -2542,80 +2559,71 @@ function ApplicationModal({
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Aday *
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setCandidateId(e.target.value)}
-              required
-              value={candidateId}
-            >
-              <option value="">Aday seçin</option>
-              {candidates.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.fullName} — {c.email}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              İlan *
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setRequisitionId(e.target.value)}
-              required
-              value={requisitionId}
-            >
-              <option value="">İlan seçin</option>
-              {requisitions.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.title} ({r.status})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Aşama
-            </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setStageId(e.target.value)}
-              value={stageId}
-            >
-              <option value="">Varsayılan (Applied)</option>
-              {stages
-                .filter((s) => s.isActive)
-                .map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
+          <div className="space-y-1.5">
+            <Label required>Aday</Label>
+            <Select onValueChange={setCandidateId} value={candidateId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Aday seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {candidates.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.fullName} — {c.email}
+                  </SelectItem>
                 ))}
-            </select>
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Puan (0-100)
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          <div className="space-y-1.5">
+            <Label required>İlan</Label>
+            <Select onValueChange={setRequisitionId} value={requisitionId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="İlan seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {requisitions.map((r) => (
+                  <SelectItem key={r.id} value={r.id}>
+                    {r.title} ({r.status})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Aşama</Label>
+            <Select
+              onValueChange={(val) => setStageId(val === "DEFAULT" ? "" : val)}
+              value={stageId || "DEFAULT"}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Varsayılan (Applied)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="DEFAULT">Varsayılan (Applied)</SelectItem>
+                {stages
+                  .filter((s) => s.isActive)
+                  .map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Puan (0-100)</Label>
+            <NumberInput
               max={100}
               min={0}
-              onChange={(e) => setScore(e.target.value)}
-              type="number"
-              value={score}
+              onChange={(val) => setScore(val === undefined ? "" : String(val))}
+              showStepper
+              value={score === "" ? undefined : Number(score)}
             />
           </div>
-          <div>
-            <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-              Notlar
-            </label>
+          <div className="space-y-1.5">
+            <Label>Notlar</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               value={notes}
@@ -2751,20 +2759,19 @@ function StageModal({
                 />
               </div>
             </div>
-            <div>
-              <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
-                Tür
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setStageType(e.target.value)}
-                value={stageType}
-              >
-                <option value="Active">Aktif</option>
-                <option value="Success">Başarılı (Hired)</option>
-                <option value="Rejected">Reddedildi</option>
-                <option value="Withdrawn">Çekildi</option>
-              </select>
+            <div className="space-y-1.5">
+              <Label>Tür</Label>
+              <Select onValueChange={setStageType} value={stageType}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Tür Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Active">Aktif</SelectItem>
+                  <SelectItem value="Success">Başarılı (Hired)</SelectItem>
+                  <SelectItem value="Rejected">Reddedildi</SelectItem>
+                  <SelectItem value="Withdrawn">Çekildi</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <label className="flex items-center gap-2">
@@ -2788,7 +2795,7 @@ function StageModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-5 py-2 font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2828,7 +2835,7 @@ function CandidateDetailDrawer({
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
       <div className="relative z-10 flex h-full w-full max-w-md flex-col overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
@@ -2838,7 +2845,7 @@ function CandidateDetailDrawer({
           </span>
           <div className="flex items-center gap-1">
             <button
-              className="flex items-center gap-1 rounded-xl bg-zinc-100 px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-300"
+              className="flex items-center gap-1 rounded-xl bg-zinc-100 px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
               onClick={onEdit}
               type="button"
             >
@@ -2979,7 +2986,7 @@ function CandidateDetailDrawer({
 
         <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           <button
-            className="w-full rounded-xl bg-slate-900 py-2.5 font-semibold text-white text-xs hover:bg-slate-800"
+            className="w-full rounded-xl bg-violet-600 py-2.5 font-semibold text-white text-xs hover:bg-violet-700"
             onClick={onClose}
             type="button"
           >
@@ -3017,7 +3024,7 @@ function ApplicationDetailDrawer({
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
       <div className="relative z-10 flex h-full w-full max-w-md flex-col overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
@@ -3076,29 +3083,30 @@ function ApplicationDetailDrawer({
                 {application.headcountWarning}
               </p>
             )}
-            <div className="mt-3">
-              <label className="mb-1 block font-semibold text-xs text-zinc-700 dark:text-zinc-300">
-                Aşama Taşı (klavye erişimli)
-              </label>
-              <select
-                aria-label="Aşama değiştir"
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    onMoveStage(application.id, e.target.value);
+            <div className="mt-3 space-y-1.5">
+              <Label>Aşama Taşı (klavye erişimli)</Label>
+              <Select
+                onValueChange={(val) => {
+                  if (val && val !== "NONE") {
+                    onMoveStage(application.id, val);
                   }
                 }}
-                value={application.stageId || ""}
+                value={application.stageId || "NONE"}
               >
-                <option value="">Seçin</option>
-                {stages
-                  .filter((s) => s.isActive)
-                  .map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-              </select>
+                <SelectTrigger aria-label="Aşama değiştir" className="w-full">
+                  <SelectValue placeholder="Aşama seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="NONE">Seçin</SelectItem>
+                  {stages
+                    .filter((s) => s.isActive)
+                    .map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -3197,7 +3205,7 @@ function ApplicationDetailDrawer({
 
         <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           <button
-            className="w-full rounded-xl bg-slate-900 py-2.5 font-semibold text-white text-xs hover:bg-slate-800"
+            className="w-full rounded-xl bg-violet-600 py-2.5 font-semibold text-white text-xs hover:bg-violet-700"
             onClick={onClose}
             type="button"
           >

@@ -1,6 +1,15 @@
 /* Hallmark · component: automotive-vehicle-intelligence · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Label } from "@workspace/ui/components/label";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import {
   AlertCircle,
   AlertTriangle,
@@ -164,12 +173,14 @@ export default function VehiclesPage() {
   }, [loadData]);
 
   // Unique lists for filters
-  const brands = Array.from(new Set(vehicles.map((v) => v.brand)))
-    .filter(Boolean)
-    .sort();
-  const segments = Array.from(new Set(vehicles.map((v) => v.segment)))
-    .filter(Boolean)
-    .sort();
+  const brands = Array.from(
+    new Set(vehicles.map((v) => v.brand).filter((b): b is string => Boolean(b)))
+  ).sort();
+  const segments = Array.from(
+    new Set(
+      vehicles.map((v) => v.segment).filter((s): s is string => Boolean(s))
+    )
+  ).sort();
 
   // Filtered Vehicles
   const filteredVehicles = vehicles.filter((v) => {
@@ -709,47 +720,62 @@ export default function VehiclesPage() {
               </div>
 
               {/* Brand Filter */}
-              <select
-                aria-label="Marka Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                onChange={(e) => setSelectedBrand(e.target.value)}
-                value={selectedBrand}
+              <Select
+                onValueChange={(val) =>
+                  setSelectedBrand(val === "ALL" ? "" : val)
+                }
+                value={selectedBrand || "ALL"}
               >
-                <option value="">Tüm Markalar</option>
-                {brands.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="h-9 w-[150px] text-xs">
+                  <SelectValue placeholder="Tüm Markalar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Tüm Markalar</SelectItem>
+                  {brands.map((b) => (
+                    <SelectItem key={b} value={b}>
+                      {b}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Segment Filter */}
-              <select
-                aria-label="Segment Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                onChange={(e) => setSelectedSegment(e.target.value)}
-                value={selectedSegment}
+              <Select
+                onValueChange={(val) =>
+                  setSelectedSegment(val === "ALL" ? "" : val)
+                }
+                value={selectedSegment || "ALL"}
               >
-                <option value="">Tüm Segmentler</option>
-                {segments.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="h-9 w-[150px] text-xs">
+                  <SelectValue placeholder="Tüm Segmentler" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Tüm Segmentler</SelectItem>
+                  {segments.map((s) => (
+                    <SelectItem key={s} value={s}>
+                      {s}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Status Filter */}
-              <select
-                aria-label="Durum Filtresi"
-                className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                value={selectedStatus}
+              <Select
+                onValueChange={(val) =>
+                  setSelectedStatus(val === "ALL" ? "" : val)
+                }
+                value={selectedStatus || "ALL"}
               >
-                <option value="">Tüm Durumlar</option>
-                <option value="Active">Aktif</option>
-                <option value="Development">Geliştirme</option>
-                <option value="Discontinued">Durduruldu</option>
-              </select>
+                <SelectTrigger className="h-9 w-[140px] text-xs">
+                  <SelectValue placeholder="Tüm Durumlar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Tüm Durumlar</SelectItem>
+                  <SelectItem value="Active">Aktif</SelectItem>
+                  <SelectItem value="Development">Geliştirme</SelectItem>
+                  <SelectItem value="Discontinued">Durduruldu</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center gap-1 self-end sm:self-auto">
@@ -1777,19 +1803,25 @@ export default function VehiclesPage() {
               </div>
 
               {/* Format Filter */}
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/80 px-3 py-1.5 text-xs text-zinc-700 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                onChange={(e) => setDocTypeFilter(e.target.value)}
-                value={docTypeFilter}
+              <Select
+                onValueChange={(val) =>
+                  setDocTypeFilter(val === "ALL" ? "" : val)
+                }
+                value={docTypeFilter || "ALL"}
               >
-                <option value="">Tüm Formatlar</option>
-                <option value="PDF">PDF Dokümanı</option>
-                <option value="CAD">CAD / 3D Model</option>
-                <option value="Excel">Excel / Tablo</option>
-                <option value="Word">Word</option>
-                <option value="Görsel">Görsel / Şema</option>
-                <option value="Arşiv">Arşiv (ZIP/RAR)</option>
-              </select>
+                <SelectTrigger className="h-9 w-[140px] text-xs">
+                  <SelectValue placeholder="Tüm Formatlar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Tüm Formatlar</SelectItem>
+                  <SelectItem value="PDF">PDF Dokümanı</SelectItem>
+                  <SelectItem value="CAD">CAD / 3D Model</SelectItem>
+                  <SelectItem value="Excel">Excel / Tablo</SelectItem>
+                  <SelectItem value="Word">Word</SelectItem>
+                  <SelectItem value="Görsel">Görsel / Şema</SelectItem>
+                  <SelectItem value="Arşiv">Arşiv (ZIP/RAR)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center gap-3 self-end lg:self-auto">
@@ -2830,19 +2862,15 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Model Yılı
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setModelYear(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setModelYear(val || "")}
                         placeholder="Örn. 2025"
-                        type="number"
-                        value={modelYear}
+                        value={
+                          typeof modelYear === "number" ? modelYear : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
@@ -2945,23 +2973,33 @@ function CreateEditVehicleModal({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Durum
-                      </label>
-                      <select
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => setStatus(e.target.value)}
+                      </Label>
+                      <Select
+                        onValueChange={(val) => setStatus(val)}
                         value={status}
                       >
-                        <option value="Active">Aktif (Satışta)</option>
-                        <option value="Development">Geliştirme / Ar-Ge</option>
-                        <option value="Discontinued">Üretim Durduruldu</option>
-                      </select>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Durum Seçin" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Active">
+                            Aktif (Satışta)
+                          </SelectItem>
+                          <SelectItem value="Development">
+                            Geliştirme / Ar-Ge
+                          </SelectItem>
+                          <SelectItem value="Discontinued">
+                            Üretim Durduruldu
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         İkon / Emoji
-                      </label>
+                      </Label>
                       <input
                         className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
                         onChange={(e) => setIcon(e.target.value)}
@@ -2971,38 +3009,35 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Fiyat (USD)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) => {
-                          const val =
-                            e.target.value === "" ? "" : Number(e.target.value);
-                          setPriceUsd(val);
-                          if (typeof val === "number" && !priceTry) {
-                            setPriceTry(val * 35);
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => {
+                          const num = val || "";
+                          setPriceUsd(num);
+                          if (typeof num === "number" && !priceTry) {
+                            setPriceTry(num * 35);
                           }
                         }}
                         placeholder="Örn. 32000"
-                        type="number"
-                        value={priceUsd}
+                        prefix="$"
+                        value={
+                          typeof priceUsd === "number" ? priceUsd : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Fiyat (TRY)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setPriceTry(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setPriceTry(val || "")}
                         placeholder="Örn. 1120000"
-                        type="number"
-                        value={priceTry}
+                        prefix="₺"
+                        value={
+                          typeof priceTry === "number" ? priceTry : undefined
+                        }
                       />
                     </div>
                   </div>
@@ -3132,35 +3167,23 @@ function CreateEditVehicleModal({
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Kapı / Koltuk
-                      </label>
+                      </Label>
                       <div className="grid grid-cols-2 gap-2">
-                        <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) =>
-                            setDoors(
-                              e.target.value === ""
-                                ? ""
-                                : Number(e.target.value)
-                            )
-                          }
+                        <NumberInput
+                          min={1}
+                          onChange={(val) => setDoors(val || "")}
                           placeholder="Kapı (5)"
-                          type="number"
-                          value={doors}
+                          showStepper
+                          value={typeof doors === "number" ? doors : undefined}
                         />
-                        <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) =>
-                            setSeats(
-                              e.target.value === ""
-                                ? ""
-                                : Number(e.target.value)
-                            )
-                          }
+                        <NumberInput
+                          min={1}
+                          onChange={(val) => setSeats(val || "")}
                           placeholder="Koltuk (5)"
-                          type="number"
-                          value={seats}
+                          showStepper
+                          value={typeof seats === "number" ? seats : undefined}
                         />
                       </div>
                     </div>
@@ -3244,116 +3267,93 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-4 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Uzunluk (mm)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setLength(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setLength(val || "")}
                         placeholder="Örn. 4520"
-                        type="number"
-                        value={length}
+                        suffix="mm"
+                        value={typeof length === "number" ? length : undefined}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Genişlik (mm)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setWidth(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setWidth(val || "")}
                         placeholder="Örn. 1840"
-                        type="number"
-                        value={width}
+                        suffix="mm"
+                        value={typeof width === "number" ? width : undefined}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Yükseklik (mm)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setHeight(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setHeight(val || "")}
                         placeholder="Örn. 1650"
-                        type="number"
-                        value={height}
+                        suffix="mm"
+                        value={typeof height === "number" ? height : undefined}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Dingil Mesafesi (mm)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setWheelbase(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setWheelbase(val || "")}
                         placeholder="Örn. 2680"
-                        type="number"
-                        value={wheelbase}
+                        suffix="mm"
+                        value={
+                          typeof wheelbase === "number" ? wheelbase : undefined
+                        }
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Yerden Yükseklik (mm)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setGroundClearance(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setGroundClearance(val || "")}
                         placeholder="Örn. 185"
-                        type="number"
-                        value={groundClearance}
+                        suffix="mm"
+                        value={
+                          typeof groundClearance === "number"
+                            ? groundClearance
+                            : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Bagaj Hacmi (L)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setCargoVolume(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setCargoVolume(val || "")}
                         placeholder="Örn. 480"
-                        type="number"
-                        value={cargoVolume}
+                        suffix="L"
+                        value={
+                          typeof cargoVolume === "number"
+                            ? cargoVolume
+                            : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Depo Hacmi (L)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setFuelTank(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setFuelTank(val || "")}
                         placeholder="Örn. 55"
-                        type="number"
-                        value={fuelTank}
+                        suffix="L"
+                        value={
+                          typeof fuelTank === "number" ? fuelTank : undefined
+                        }
                       />
                     </div>
                   </div>
@@ -3365,51 +3365,42 @@ function CreateEditVehicleModal({
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Boş Ağırlık (kg)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setCurbWeight(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setCurbWeight(val || "")}
                         placeholder="Örn. 1480"
-                        type="number"
-                        value={curbWeight}
+                        suffix="kg"
+                        value={
+                          typeof curbWeight === "number"
+                            ? curbWeight
+                            : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         Azami Yüklü (GVW kg)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setGvw(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setGvw(val || "")}
                         placeholder="Örn. 1980"
-                        type="number"
-                        value={gvw}
+                        suffix="kg"
+                        value={typeof gvw === "number" ? gvw : undefined}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                      <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                         İstiap Haddi / Taşıma (kg)
-                      </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                        onChange={(e) =>
-                          setPayload(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                          )
-                        }
+                      </Label>
+                      <NumberInput
+                        onChange={(val) => setPayload(val || "")}
                         placeholder="Örn. 500"
-                        type="number"
-                        value={payload}
+                        suffix="kg"
+                        value={
+                          typeof payload === "number" ? payload : undefined
+                        }
                       />
                     </div>
 
@@ -3490,21 +3481,17 @@ function CreateEditVehicleModal({
                         4.1 Güvenlik & ADAS Sistemleri
                       </h4>
                       <div className="space-y-1">
-                        <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                        <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                           Hava Yastığı Adedi
-                        </label>
-                        <input
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                          onChange={(e) =>
-                            setAirbags(
-                              e.target.value === ""
-                                ? ""
-                                : Number(e.target.value)
-                            )
-                          }
+                        </Label>
+                        <NumberInput
+                          min={0}
+                          onChange={(val) => setAirbags(val || "")}
                           placeholder="Örn. 7"
-                          type="number"
-                          value={airbags}
+                          showStepper
+                          value={
+                            typeof airbags === "number" ? airbags : undefined
+                          }
                         />
                       </div>
 
@@ -3949,44 +3936,50 @@ function CreateEditPartModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Ana Sistem
-                  </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => {
-                      setSystemId(e.target.value);
-                      const s = systems.find(
-                        (sys) => sys.id === e.target.value
-                      );
+                  </Label>
+                  <Select
+                    onValueChange={(val) => {
+                      setSystemId(val);
+                      const s = systems.find((sys) => sys.id === val);
                       if (s && s.subsystems.length > 0 && s.subsystems[0]) {
                         setSubsystemId(s.subsystems[0].id);
                       }
                     }}
                     value={systemId}
                   >
-                    {systems.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.icon} {s.name}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Sistem Seçin" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {systems.map((s) => (
+                        <SelectItem key={s.id} value={s.id}>
+                          {s.icon} {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Alt Sistem
-                  </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setSubsystemId(e.target.value)}
+                  </Label>
+                  <Select
+                    onValueChange={(val) => setSubsystemId(val)}
                     value={subsystemId}
                   >
-                    {selectedSys?.subsystems.map((sub) => (
-                      <option key={sub.id} value={sub.id}>
-                        {sub.name}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Alt Sistem Seçin" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {selectedSys?.subsystems.map((sub) => (
+                        <SelectItem key={sub.id} value={sub.id}>
+                          {sub.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -3998,83 +3991,83 @@ function CreateEditPartModal({
               </h4>
               <div className="grid grid-cols-5 gap-3">
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Montaj Miktarı
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setQtyPerAssembly(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    }
+                  </Label>
+                  <NumberInput
+                    min={1}
+                    onChange={(val) => setQtyPerAssembly(val || "")}
                     placeholder="1"
-                    type="number"
-                    value={qtyPerAssembly}
+                    showStepper
+                    value={
+                      typeof qtyPerAssembly === "number"
+                        ? qtyPerAssembly
+                        : undefined
+                    }
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Stok Adedi
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setStockQuantity(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    }
+                  </Label>
+                  <NumberInput
+                    min={0}
+                    onChange={(val) => setStockQuantity(val || "")}
                     placeholder="0"
-                    type="number"
-                    value={stockQuantity}
+                    showStepper
+                    value={
+                      typeof stockQuantity === "number"
+                        ? stockQuantity
+                        : undefined
+                    }
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Birim Fiyat ($)
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setUnitPrice(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    }
+                  </Label>
+                  <NumberInput
+                    min={0}
+                    onChange={(val) => setUnitPrice(val || "")}
                     placeholder="0"
-                    type="number"
-                    value={unitPrice}
+                    prefix="$"
+                    value={
+                      typeof unitPrice === "number" ? unitPrice : undefined
+                    }
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Şema %X
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setHotspotCoordX(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    }
+                  </Label>
+                  <NumberInput
+                    max={100}
+                    min={0}
+                    onChange={(val) => setHotspotCoordX(val || "")}
                     placeholder="% 0-100"
-                    type="number"
-                    value={hotspotCoordX}
+                    suffix="%"
+                    value={
+                      typeof hotspotCoordX === "number"
+                        ? hotspotCoordX
+                        : undefined
+                    }
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Şema %Y
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setHotspotCoordY(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    }
+                  </Label>
+                  <NumberInput
+                    max={100}
+                    min={0}
+                    onChange={(val) => setHotspotCoordY(val || "")}
                     placeholder="% 0-100"
-                    type="number"
-                    value={hotspotCoordY}
+                    suffix="%"
+                    value={
+                      typeof hotspotCoordY === "number"
+                        ? hotspotCoordY
+                        : undefined
+                    }
                   />
                 </div>
               </div>
@@ -4490,77 +4483,112 @@ function CreateDocumentModal({
             {/* Type & Category */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                   Doküman Formatı
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setDocumentType(e.target.value)}
+                </Label>
+                <Select
+                  onValueChange={(val) => setDocumentType(val)}
                   value={documentType}
                 >
-                  <option value="PDF">PDF Dokümanı</option>
-                  <option value="CAD">CAD / 3D Model (STEP/DWG)</option>
-                  <option value="Excel">Excel / Tablo (XLSX/CSV)</option>
-                  <option value="Word">Word Dokümanı (DOCX)</option>
-                  <option value="Görsel">Teknik Çizim / Görsel</option>
-                  <option value="Arşiv">Arşiv Paketi (ZIP/RAR)</option>
-                  <option value="Video">Eğitim Videosu (MP4)</option>
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Format Seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PDF">PDF Dokümanı</SelectItem>
+                    <SelectItem value="CAD">
+                      CAD / 3D Model (STEP/DWG)
+                    </SelectItem>
+                    <SelectItem value="Excel">
+                      Excel / Tablo (XLSX/CSV)
+                    </SelectItem>
+                    <SelectItem value="Word">Word Dokümanı (DOCX)</SelectItem>
+                    <SelectItem value="Görsel">
+                      Teknik Çizim / Görsel
+                    </SelectItem>
+                    <SelectItem value="Arşiv">
+                      Arşiv Paketi (ZIP/RAR)
+                    </SelectItem>
+                    <SelectItem value="Video">Eğitim Videosu (MP4)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                   Kategori
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setCategory(e.target.value)}
+                </Label>
+                <Select
+                  onValueChange={(val) => setCategory(val)}
                   value={category}
                 >
-                  <option value="Kullanım Kılavuzu">Kullanım Kılavuzu</option>
-                  <option value="TSB">Servis Bülteni (TSB)</option>
-                  <option value="Homologasyon">Homologasyon (WVTA)</option>
-                  <option value="EPC">EPC Parça Listesi</option>
-                  <option value="CAD">CAD / Mühendislik</option>
-                  <option value="Garanti">Garanti & Politika</option>
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Kategori Seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Kullanım Kılavuzu">
+                      Kullanım Kılavuzu
+                    </SelectItem>
+                    <SelectItem value="TSB">Servis Bülteni (TSB)</SelectItem>
+                    <SelectItem value="Homologasyon">
+                      Homologasyon (WVTA)
+                    </SelectItem>
+                    <SelectItem value="EPC">EPC Parça Listesi</SelectItem>
+                    <SelectItem value="CAD">CAD / Mühendislik</SelectItem>
+                    <SelectItem value="Garanti">Garanti & Politika</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             {/* Associations: Vehicle & Part */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                   İlişkili Araç Modeli
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setVehicleId(e.target.value)}
-                  value={vehicleId}
+                </Label>
+                <Select
+                  onValueChange={(val) =>
+                    setVehicleId(val === "NONE" ? "" : val)
+                  }
+                  value={vehicleId || "NONE"}
                 >
-                  <option value="">— Genel (Tüm Araçlar) —</option>
-                  {vehicles.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.icon} {v.brand} {v.model} {v.trim ? `(${v.trim})` : ""}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="— Genel (Tüm Araçlar) —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="NONE">
+                      — Genel (Tüm Araçlar) —
+                    </SelectItem>
+                    {vehicles.map((v) => (
+                      <SelectItem key={v.id} value={v.id}>
+                        {v.icon} {v.brand} {v.model}{" "}
+                        {v.trim ? `(${v.trim})` : ""}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-1">
-                <label className="font-medium text-zinc-700 dark:text-zinc-300">
+                <Label className="font-medium text-zinc-700 dark:text-zinc-300">
                   İlişkili EPC Parçası
-                </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                  onChange={(e) => setPartId(e.target.value)}
-                  value={partId}
+                </Label>
+                <Select
+                  onValueChange={(val) => setPartId(val === "NONE" ? "" : val)}
+                  value={partId || "NONE"}
                 >
-                  <option value="">— Parça Bağlantısı Yok —</option>
-                  {parts.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.partNumber} - {p.nameTr}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="— Parça Bağlantısı Yok —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="NONE">
+                      — Parça Bağlantısı Yok —
+                    </SelectItem>
+                    {parts.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.partNumber} - {p.nameTr}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

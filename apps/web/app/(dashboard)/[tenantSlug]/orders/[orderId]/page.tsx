@@ -761,6 +761,7 @@ function ChangeStatusModal({
   const [newStatus, setNewStatus] = useState(currentStatus);
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) {
     return null;
@@ -769,6 +770,7 @@ function ChangeStatusModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     try {
       const res = await ApiClient.changeOrderStatus(
         orderId,
@@ -780,8 +782,21 @@ function ChangeStatusModal({
       );
 
       if (res.success) {
+        toast.success("Sipariş durumu güncellendi.");
         onSuccess();
+      } else {
+        const errMsg =
+          res.message || "Sipariş durumu güncellenirken bir hata oluştu.";
+        setError(errMsg);
+        toast.error(errMsg);
       }
+    } catch (err: unknown) {
+      const errMsg =
+        err instanceof Error
+          ? err.message
+          : "Sunucuyla iletişim kurulurken bir hata oluştu.";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -802,6 +817,12 @@ function ChangeStatusModal({
             <X className="h-5 w-5" />
           </button>
         </div>
+
+        {error && (
+          <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 p-3 text-rose-700 text-xs dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-300">
+            {error}
+          </div>
+        )}
 
         <form className="space-y-3" onSubmit={handleSubmit}>
           <div>

@@ -208,7 +208,7 @@ public class ChangeOrderStatusEndpoint : IEndpoint
             return Results.Ok(ApiResponse<bool>.Ok(result.Value));
         })
         .RequireAuthorization()
-        .RequirePermission("Orders.StatusChange")
+        .RequirePermission("Orders.Update")
         .WithName("ChangeOrderStatus")
         .WithTags("Orders");
     }
