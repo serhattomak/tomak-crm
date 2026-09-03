@@ -22,6 +22,8 @@ public static class ProductsModuleExtensions
             });
         });
 
+        services.AddScoped<CRM.Modules.Products.Services.IInventoryService, CRM.Modules.Products.Services.InventoryService>();
+
         return services;
     }
 }

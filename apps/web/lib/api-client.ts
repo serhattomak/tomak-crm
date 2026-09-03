@@ -5505,6 +5505,195 @@ export class ApiClient {
       tenantSlug
     );
   }
+
+  // --- Inventory & Warehouses ---
+  static async getWarehouses(tenantSlug?: string): Promise<ApiResponse<WarehouseDto[]>> {
+    return await ApiClient.request<WarehouseDto[]>(
+      "/api/inventory/warehouses",
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getWarehouseStocks(
+    warehouseId: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<WarehouseStockDto[]>> {
+    return await ApiClient.request<WarehouseStockDto[]>(
+      `/api/inventory/warehouses/${warehouseId}/stocks`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createWarehouse(
+    data: CreateWarehousePayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/inventory/warehouses",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async updateStockLocation(
+    stockId: string,
+    binLocation: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/warehouses/stocks/${stockId}/location`,
+      {
+        body: JSON.stringify({ binLocation }),
+        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+      },
+      tenantSlug
+    );
+  }
+
+  // --- Stock Transfers ---
+  static async getStockTransfers(
+    status?: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<StockTransferListDto[]>> {
+    const q = status && status !== "All" ? `?status=${status}` : "";
+    return await ApiClient.request<StockTransferListDto[]>(
+      `/api/inventory/transfers${q}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getStockTransferDetail(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<StockTransferDetailDto>> {
+    return await ApiClient.request<StockTransferDetailDto>(
+      `/api/inventory/transfers/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createStockTransfer(
+    data: CreateStockTransferPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/inventory/transfers",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async dispatchStockTransfer(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/transfers/${id}/dispatch`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async receiveStockTransfer(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/transfers/${id}/receive`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async cancelStockTransfer(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/transfers/${id}/cancel`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  // --- Stock Counts ---
+  static async getStockCounts(
+    status?: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<StockCountListDto[]>> {
+    const q = status && status !== "All" ? `?status=${status}` : "";
+    return await ApiClient.request<StockCountListDto[]>(
+      `/api/inventory/counts${q}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getStockCountDetail(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<StockCountDetailDto>> {
+    return await ApiClient.request<StockCountDetailDto>(
+      `/api/inventory/counts/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createStockCount(
+    data: CreateStockCountPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/inventory/counts",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async updateStockCountItems(
+    id: string,
+    items: { itemId: string; countedQuantity: number; notes?: string }[],
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/counts/${id}/items`,
+      {
+        body: JSON.stringify({ items }),
+        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+      },
+      tenantSlug
+    );
+  }
+
+  static async reconcileStockCount(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/inventory/counts/${id}/reconcile`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -9785,4 +9974,147 @@ export interface TransferBetweenAccountsPayload {
   sourceAccountId: string;
   targetAccountId: string;
   transactionDate: string;
+}
+
+export interface WarehouseDto {
+  address?: string;
+  city?: string;
+  code: string;
+  createdAt: string;
+  id: string;
+  isActive: boolean;
+  isDefault: boolean;
+  managerName?: string;
+  name: string;
+  phone?: string;
+  totalDistinctProducts: number;
+  totalStockQuantity: number;
+  type: string;
+}
+
+export interface WarehouseStockDto {
+  availableQuantity: number;
+  binLocation?: string;
+  currency: string;
+  id: string;
+  productBarcode?: string;
+  productId: string;
+  productName: string;
+  productSKU?: string;
+  quantity: number;
+  reservedQuantity: number;
+  sellingPrice: number;
+  variantId?: string;
+  variantName?: string;
+  warehouseId: string;
+}
+
+export interface CreateWarehousePayload {
+  address?: string;
+  city?: string;
+  code: string;
+  isDefault: boolean;
+  managerName?: string;
+  name: string;
+  phone?: string;
+  type: string;
+}
+
+export interface StockTransferItemDto {
+  id: string;
+  notes?: string;
+  productId: string;
+  productName: string;
+  productSKU?: string;
+  quantity: number;
+  variantId?: string;
+  variantName?: string;
+}
+
+export interface StockTransferListDto {
+  dispatchDate?: string;
+  id: string;
+  notes?: string;
+  receivedDate?: string;
+  sourceWarehouseId: string;
+  sourceWarehouseName: string;
+  status: string;
+  targetWarehouseId: string;
+  targetWarehouseName: string;
+  totalItemCount: number;
+  totalQuantity: number;
+  transferDate: string;
+  transferNumber: string;
+}
+
+export interface StockTransferDetailDto {
+  dispatchDate?: string;
+  id: string;
+  items: StockTransferItemDto[];
+  notes?: string;
+  receivedDate?: string;
+  sourceWarehouseId: string;
+  sourceWarehouseName: string;
+  status: string;
+  targetWarehouseId: string;
+  targetWarehouseName: string;
+  transferDate: string;
+  transferNumber: string;
+}
+
+export interface CreateStockTransferPayload {
+  items: {
+    notes?: string;
+    productId: string;
+    quantity: number;
+    variantId?: string;
+  }[];
+  notes?: string;
+  sourceWarehouseId: string;
+  targetWarehouseId: string;
+}
+
+export interface StockCountItemDto {
+  countedQuantity: number;
+  difference: number;
+  id: string;
+  isReconciled: boolean;
+  notes?: string;
+  productBarcode?: string;
+  productId: string;
+  productName: string;
+  productSKU?: string;
+  systemQuantity: number;
+  variantId?: string;
+  variantName?: string;
+}
+
+export interface StockCountListDto {
+  completedDate?: string;
+  countDate: string;
+  countNumber: string;
+  id: string;
+  notes?: string;
+  status: string;
+  totalDiscrepancy: number;
+  totalItemsCount: number;
+  warehouseId: string;
+  warehouseName: string;
+}
+
+export interface StockCountDetailDto {
+  completedDate?: string;
+  countDate: string;
+  countNumber: string;
+  id: string;
+  items: StockCountItemDto[];
+  notes?: string;
+  status: string;
+  warehouseId: string;
+  warehouseName: string;
+}
+
+export interface CreateStockCountPayload {
+  notes?: string;
+  warehouseId: string;
 }

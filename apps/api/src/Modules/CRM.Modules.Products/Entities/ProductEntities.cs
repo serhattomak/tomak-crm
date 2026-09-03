@@ -102,3 +102,121 @@ public class ProductStockMovement : ITenantScopedEntity
     public Product? Product { get; set; }
     public ProductVariant? Variant { get; set; }
 }
+
+[Table("warehouses", Schema = "public")]
+public class Warehouse : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string Code { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Type { get; set; } = "Central"; // "Central", "Branch", "Transit", "Defective", "Consignment"
+    public string? Address { get; set; }
+    public string? City { get; set; }
+    public string? ManagerName { get; set; }
+    public string? Phone { get; set; }
+    public bool IsDefault { get; set; } = false;
+    public bool IsActive { get; set; } = true;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<WarehouseStock> Stocks { get; set; } = [];
+}
+
+[Table("warehouse_stocks", Schema = "public")]
+public class WarehouseStock : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid WarehouseId { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid? VariantId { get; set; }
+    public decimal Quantity { get; set; } = 0.0000m;
+    public decimal ReservedQuantity { get; set; } = 0.0000m;
+    public string? BinLocation { get; set; } // Raf / Göz
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public Warehouse? Warehouse { get; set; }
+    public Product? Product { get; set; }
+    public ProductVariant? Variant { get; set; }
+
+    public decimal AvailableQuantity => Quantity - ReservedQuantity;
+}
+
+[Table("stock_transfers", Schema = "public")]
+public class StockTransfer : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string TransferNumber { get; set; } = string.Empty;
+    public Guid SourceWarehouseId { get; set; }
+    public Guid TargetWarehouseId { get; set; }
+    public string Status { get; set; } = "Draft"; // "Draft", "Dispatched", "Received", "Cancelled"
+    public DateTime TransferDate { get; set; } = DateTime.UtcNow;
+    public DateTime? DispatchDate { get; set; }
+    public DateTime? ReceivedDate { get; set; }
+    public string? Notes { get; set; }
+    public Guid? CreatedByUserId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public Warehouse? SourceWarehouse { get; set; }
+    public Warehouse? TargetWarehouse { get; set; }
+    public ICollection<StockTransferItem> Items { get; set; } = [];
+}
+
+[Table("stock_transfer_items", Schema = "public")]
+public class StockTransferItem : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid TransferId { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid? VariantId { get; set; }
+    public decimal Quantity { get; set; } = 0.0000m;
+    public string? Notes { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public StockTransfer? Transfer { get; set; }
+    public Product? Product { get; set; }
+    public ProductVariant? Variant { get; set; }
+}
+
+[Table("stock_counts", Schema = "public")]
+public class StockCount : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string CountNumber { get; set; } = string.Empty;
+    public Guid WarehouseId { get; set; }
+    public string Status { get; set; } = "Draft"; // "Draft", "InProgress", "Completed", "Cancelled"
+    public DateTime CountDate { get; set; } = DateTime.UtcNow;
+    public DateTime? CompletedDate { get; set; }
+    public string? Notes { get; set; }
+    public Guid? CountedByUserId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public Warehouse? Warehouse { get; set; }
+    public ICollection<StockCountItem> Items { get; set; } = [];
+}
+
+[Table("stock_count_items", Schema = "public")]
+public class StockCountItem : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid CountId { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid? VariantId { get; set; }
+    public decimal SystemQuantity { get; set; } = 0.0000m;
+    public decimal CountedQuantity { get; set; } = 0.0000m;
+    public decimal Difference { get; set; } = 0.0000m;
+    public bool IsReconciled { get; set; } = false;
+    public string? Notes { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public StockCount? Count { get; set; }
+    public Product? Product { get; set; }
+    public ProductVariant? Variant { get; set; }
+}

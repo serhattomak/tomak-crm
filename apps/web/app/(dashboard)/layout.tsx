@@ -36,6 +36,7 @@ import {
   Truck,
   Users,
   Users2,
+  Warehouse,
   Webhook,
   X,
   Zap,
@@ -874,6 +875,20 @@ function DashboardNavigation({
       icon: ShoppingCart,
       moduleKey: "orders",
       name: getModuleDisplayName("orders", "Siparişler"),
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/products`,
+      icon: Package,
+      moduleKey: "products",
+      name: getModuleDisplayName("products", "Ürünler & Katalog"),
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/inventory`,
+      icon: Warehouse,
+      moduleKey: "inventory",
+      name: getModuleDisplayName("inventory", "Depolar & Stok"),
     },
     {
       badge: null,
