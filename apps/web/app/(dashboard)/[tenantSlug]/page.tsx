@@ -70,8 +70,9 @@ export default function WorkspaceOverviewPage() {
   );
 
   // Widget layouts stored per tab and tenant
-  const [widgetsByTab, setWidgetsByTab] =
-    useState<Record<string, string[]>>(DEFAULT_WIDGET_IDS_BY_TAB);
+  const [widgetsByTab, setWidgetsByTab] = useState<Record<string, string[]>>(
+    DEFAULT_WIDGET_IDS_BY_TAB
+  );
 
   useEffect(() => {
     try {

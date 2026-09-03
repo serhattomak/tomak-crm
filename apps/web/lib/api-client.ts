@@ -5869,6 +5869,120 @@ export class ApiClient {
       tenantSlug
     );
   }
+
+  // ==========================================
+  // Activities & Calendar Hub
+  // ==========================================
+  static async getActivities(
+    params: {
+      startDate?: string;
+      endDate?: string;
+      type?: string;
+      status?: string;
+      customerId?: string;
+      assignedUserId?: string;
+      search?: string;
+    } = {},
+    tenantSlug?: string
+  ): Promise<ApiResponse<ActivityDto[]>> {
+    const q = new URLSearchParams();
+    if (params.startDate) {
+      q.set("startDate", params.startDate);
+    }
+    if (params.endDate) {
+      q.set("endDate", params.endDate);
+    }
+    if (params.type && params.type !== "All") {
+      q.set("type", params.type);
+    }
+    if (params.status && params.status !== "All") {
+      q.set("status", params.status);
+    }
+    if (params.customerId) {
+      q.set("customerId", params.customerId);
+    }
+    if (params.assignedUserId) {
+      q.set("assignedUserId", params.assignedUserId);
+    }
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    const qs = q.toString();
+    return await ApiClient.request<ActivityDto[]>(
+      `/api/activities${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getActivityById(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<ActivityDto>> {
+    return await ApiClient.request<ActivityDto>(
+      `/api/activities/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createActivity(
+    data: CreateActivityPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/activities",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async updateActivity(
+    id: string,
+    data: UpdateActivityPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/activities/${id}`,
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+      },
+      tenantSlug
+    );
+  }
+
+  static async completeActivity(
+    id: string,
+    data: CompleteActivityPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string | null>> {
+    return await ApiClient.request<string | null>(
+      `/api/activities/${id}/complete`,
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async deleteActivity(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/activities/${id}`,
+      { method: "DELETE" },
+      tenantSlug
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -10416,4 +10530,75 @@ export interface StockCountDetailDto {
 export interface CreateStockCountPayload {
   notes?: string;
   warehouseId: string;
+}
+
+// ==========================================
+// Activity & Calendar Hub DTOs
+// ==========================================
+export interface ActivityDto {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  attendeesJson?: string;
+  callDirection?: "Incoming" | "Outgoing" | string;
+  callDurationMinutes?: number;
+  callOutcome?: string;
+  completedAt?: string;
+  createdAt: string;
+  createdByUserId?: string;
+  createdByUserName?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  dealTitle?: string;
+  description?: string;
+  dueDate?: string;
+  endTime?: string;
+  id: string;
+  isAllDay: boolean;
+  location?: string;
+  meetingLink?: string;
+  outcomeNotes?: string;
+  priority: "Low" | "Medium" | "High" | "Urgent" | string;
+  reminderMinutesBefore?: number;
+  startTime?: string;
+  status: "Scheduled" | "Completed" | "Cancelled" | "Missed" | string;
+  tenantId: string;
+  title: string;
+  type: "Meeting" | "Call" | "Task" | "Visit" | string;
+  updatedAt: string;
+}
+
+export interface CreateActivityPayload {
+  assignedUserId?: string;
+  assignedUserName?: string;
+  attendeesJson?: string;
+  callDirection?: string;
+  callDurationMinutes?: number;
+  callOutcome?: string;
+  customerId?: string;
+  customerName?: string;
+  dealId?: string;
+  dealTitle?: string;
+  description?: string;
+  dueDate?: string;
+  endTime?: string;
+  isAllDay?: boolean;
+  location?: string;
+  meetingLink?: string;
+  outcomeNotes?: string;
+  priority?: string;
+  reminderMinutesBefore?: number;
+  startTime?: string;
+  status?: string;
+  title: string;
+  type?: string;
+}
+
+export interface UpdateActivityPayload extends CreateActivityPayload {}
+
+export interface CompleteActivityPayload {
+  callDurationMinutes?: number;
+  callOutcome?: string;
+  followUpActivity?: CreateActivityPayload;
+  outcomeNotes?: string;
 }

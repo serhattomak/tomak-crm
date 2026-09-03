@@ -4,6 +4,7 @@ import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
+import { TimePicker } from "@workspace/ui/components/time-picker";
 import {
   Select,
   SelectContent,
@@ -1855,12 +1856,10 @@ function AddActivityModal({
               <Label className="mb-1" required>
                 Saat
               </Label>
-              <Input
-                onChange={(e) =>
-                  setFormData({ ...formData, activityTime: e.target.value })
+              <TimePicker
+                onChange={(val) =>
+                  setFormData({ ...formData, activityTime: val })
                 }
-                required
-                type="time"
                 value={formData.activityTime}
               />
             </div>

@@ -12,6 +12,7 @@ import { NumberInput } from "@workspace/ui/components/number-input";
 import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
+import { TimePicker } from "@workspace/ui/components/time-picker";
 import {
   AlertCircle,
   Calendar as CalendarIcon,
@@ -1903,16 +1904,13 @@ export default function AttendancePage() {
                   <label className="mb-1 block font-semibold text-foreground text-xs">
                     Başlangıç Saati *
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  <TimePicker
+                    onChange={(val) =>
                       setTemplateForm({
                         ...templateForm,
-                        startTime: `${e.target.value}:00`,
+                        startTime: `${val}:00`,
                       })
                     }
-                    required
-                    type="time"
                     value={templateForm.startTime.slice(0, 5)}
                   />
                 </div>
@@ -1920,16 +1918,13 @@ export default function AttendancePage() {
                   <label className="mb-1 block font-semibold text-foreground text-xs">
                     Bitiş Saati *
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  <TimePicker
+                    onChange={(val) =>
                       setTemplateForm({
                         ...templateForm,
-                        endTime: `${e.target.value}:00`,
+                        endTime: `${val}:00`,
                       })
                     }
-                    required
-                    type="time"
                     value={templateForm.endTime.slice(0, 5)}
                   />
                 </div>
@@ -2409,27 +2404,25 @@ export default function AttendancePage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <Label>Giriş Saati</Label>
-                  <Input
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  <TimePicker
+                    onChange={(val) =>
                       setCorrectionForm({
                         ...correctionForm,
-                        requestedClockInTime: e.target.value,
+                        requestedClockInTime: val,
                       })
                     }
-                    type="time"
                     value={correctionForm.requestedClockInTime}
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label>Çıkış Saati</Label>
-                  <Input
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  <TimePicker
+                    onChange={(val) =>
                       setCorrectionForm({
                         ...correctionForm,
-                        requestedClockOutTime: e.target.value,
+                        requestedClockOutTime: val,
                       })
                     }
-                    type="time"
                     value={correctionForm.requestedClockOutTime}
                   />
                 </div>

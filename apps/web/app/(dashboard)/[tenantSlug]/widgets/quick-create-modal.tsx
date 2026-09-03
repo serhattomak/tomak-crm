@@ -130,6 +130,15 @@ export function QuickCreateModal({
             router.push(`/${activeTenant.slug || "workspace"}/pipelines`);
           }
         }
+      } else if (type === "meeting") {
+        onSuccess(
+          "Randevu ve toplantı planlama ekranına yönlendiriliyorsunuz..."
+        );
+        onClose();
+        router.push(
+          `/${activeTenant?.slug || "workspace"}/calendar?new=meeting`
+        );
+        return;
       } else if (type === "proposal") {
         onSuccess("Teklif oluşturma ekranına yönlendiriliyorsunuz...");
         onClose();

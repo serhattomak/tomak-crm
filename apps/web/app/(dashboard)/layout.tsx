@@ -8,6 +8,7 @@ import {
   Boxes,
   Briefcase,
   Calendar,
+  CalendarDays,
   Car,
   ChevronLeft,
   ChevronRight,
@@ -51,7 +52,13 @@ import {
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import type React from "react";
-import { Suspense, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { CommandPalette } from "@/components/command-palette";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NotificationCenter } from "@/components/notification-center";
@@ -82,7 +89,9 @@ function getNavigationHubs(tHubs?: (key: string) => string): HubDefinition[] {
   return [
     {
       defaultHref: (slug) => `/${slug}`,
-      description: tHubs ? tHubs("crmDesc") : "Pipeline, Teklifler ve Müşteriler",
+      description: tHubs
+        ? tHubs("crmDesc")
+        : "Pipeline, Teklifler ve Müşteriler",
       icon: LayoutDashboard,
       id: "crm",
       label: "CRM",
@@ -424,13 +433,21 @@ function DashboardLayoutInner({
       icon: LayoutDashboard,
       label: tNav("dashboard"),
     },
-    { href: `/${tenantSlug}/pipelines`, icon: Kanban, label: tNav("pipelines") },
+    {
+      href: `/${tenantSlug}/pipelines`,
+      icon: Kanban,
+      label: tNav("pipelines"),
+    },
     {
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
       label: tNav("quotes"),
     },
-    { href: `/${tenantSlug}/customers`, icon: Users2, label: tNav("customers") },
+    {
+      href: `/${tenantSlug}/customers`,
+      icon: Users2,
+      label: tNav("customers"),
+    },
   ];
 
   return (
@@ -651,7 +668,9 @@ function DashboardLayoutInner({
                 }
                 suppressHydrationWarning
                 title={
-                  mounted && resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"
+                  mounted && resolvedTheme === "dark"
+                    ? "Açık Tema"
+                    : "Koyu Tema"
                 }
                 type="button"
               >
@@ -867,6 +886,12 @@ function DashboardNavigation({
       moduleKey: "pipelines",
       name: getModuleDisplayName("pipelines", tNav("pipelines")),
       permission: "Pipelines.View",
+    },
+    {
+      badge: null,
+      href: `/${tenantSlug}/calendar`,
+      icon: CalendarDays,
+      name: "Takvim & Görüşmeler",
     },
     {
       badge: null,
