@@ -14,6 +14,8 @@ import {
   ArrowRight,
   Calendar,
   Check,
+  ChevronDown,
+  ChevronRight,
   Clock,
   Copy,
   ExternalLink,
@@ -21,6 +23,7 @@ import {
   Headphones,
   Info,
   LifeBuoy,
+  Loader2,
   Lock,
   MessageSquare,
   MessageSquarePlus,
@@ -32,7 +35,7 @@ import {
   Send,
   ShoppingCart,
   Trash2,
-  User,
+  UserPlus,
   Users,
   Users2,
   X,
@@ -51,6 +54,7 @@ import {
   type CustomerListDto,
   type OrderListDto,
   type ProductListDto,
+  type TenantUserDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
@@ -58,11 +62,18 @@ export default function MessagesPage() {
   const params = useParams();
   const router = useRouter();
   const tenantSlug = (params?.tenantSlug as string) || "";
-  const { activeTenant } = usePermissions();
+  const { activeTenant, profile } = usePermissions();
   const activeTenantId = activeTenant?.id;
 
   // State
   const [activeTab, setActiveTab] = useState<"team" | "support">("team");
+  const [isNewDmModalOpen, setIsNewDmModalOpen] = useState(false);
+  const [isChannelsCollapsed, setIsChannelsCollapsed] = useState(false);
+  const [isDmsCollapsed, setIsDmsCollapsed] = useState(false);
+  const [teamUsers, setTeamUsers] = useState<TenantUserDto[]>([]);
+  const [loadingTeamUsers, setLoadingTeamUsers] = useState(false);
+  const [dmSearchQuery, setDmSearchQuery] = useState("");
+  const [startingDmUserId, setStartingDmUserId] = useState<string | null>(null);
   const [channels, setChannels] = useState<ChatChannelDto[]>([]);
   const [selectedChannel, setSelectedChannel] = useState<ChatChannelDto | null>(
     null
@@ -189,6 +200,149 @@ export default function MessagesPage() {
     [activeTenantId]
   );
 
+  // Fetch Team Users for DM
+  const fetchTeamUsers = useCallback(async () => {
+    if (!activeTenantId) {
+      return;
+    }
+    try {
+      setLoadingTeamUsers(true);
+      const res = await ApiClient.getTenantUsers(activeTenantId);
+      if (res.success && res.data) {
+        setTeamUsers(res.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoadingTeamUsers(false);
+    }
+  }, [activeTenantId]);
+
+  useEffect(() => {
+    if (isNewDmModalOpen) {
+      fetchTeamUsers();
+    }
+  }, [isNewDmModalOpen, fetchTeamUsers]);
+
+  // Filtered team users excluding current user
+  const filteredTeamUsers = useMemo(() => {
+    const currentId = profile?.id;
+    return teamUsers
+      .filter((u) => u.id !== currentId)
+      .filter((u) => {
+        if (!dmSearchQuery.trim()) {
+          return true;
+        }
+        const q = dmSearchQuery.toLowerCase();
+        return (
+          u.fullName?.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q) ||
+          u.roles?.some((r) => r.name.toLowerCase().includes(q))
+        );
+      });
+  }, [teamUsers, profile?.id, dmSearchQuery]);
+
+  // Helper to resolve channel display metadata (Handles DMs dynamically)
+  const getChannelDisplayInfo = useCallback(
+    (channel: ChatChannelDto) => {
+      if (channel.type === "Direct") {
+        const otherParticipant = channel.participants?.find(
+          (p) => p.userId !== profile?.id
+        );
+        if (otherParticipant) {
+          const initials = (otherParticipant.userName || "CA")
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase();
+          return {
+            avatarUrl: otherParticipant.userAvatarUrl,
+            initials,
+            isDirect: true,
+            isOnline: true,
+            role:
+              otherParticipant.role === "Owner" ||
+              otherParticipant.role === "Admin"
+                ? "Yönetici"
+                : "Ekip Üyesi",
+            subtitle: otherParticipant.userEmail || "Çalışma Arkadaşı",
+            title: otherParticipant.userName || "Çalışma Arkadaşı",
+          };
+        }
+      }
+
+      if (channel.type === "CustomerSupport") {
+        return {
+          avatarUrl: null,
+          initials: (channel.customerName || "MS").slice(0, 2).toUpperCase(),
+          isDirect: false,
+          isOnline: false,
+          role: "Müşteri",
+          subtitle: channel.departmentName || "Müşteri Destek",
+          title: channel.customerName || channel.title,
+        };
+      }
+
+      return {
+        avatarUrl: null,
+        initials: "#",
+        isDirect: false,
+        isOnline: false,
+        role: "Kanal",
+        subtitle: channel.description || "Genel Kanal",
+        title: channel.title.startsWith("#")
+          ? channel.title
+          : `# ${channel.title}`,
+      };
+    },
+    [profile?.id]
+  );
+
+  // Start or open direct message with colleague
+  const handleStartDirectMessage = async (targetUser: TenantUserDto) => {
+    if (!(activeTenantId && profile)) {
+      return;
+    }
+
+    try {
+      setStartingDmUserId(targetUser.id);
+      const res = await ApiClient.getOrCreateDirectChat(
+        {
+          currentUserAvatarUrl: profile.avatarUrl,
+          currentUserEmail: profile.email,
+          currentUserId: profile.id,
+          currentUserName: profile.fullName || profile.email || "Kullanıcı",
+          targetUserAvatarUrl: targetUser.avatarUrl,
+          targetUserEmail: targetUser.email,
+          targetUserId: targetUser.id,
+          targetUserName: targetUser.fullName || targetUser.email,
+        },
+        activeTenantId
+      );
+
+      if (res.success && res.data) {
+        const directChan = res.data;
+        setChannels((prev) => {
+          const exists = prev.some((c) => c.id === directChan.id);
+          return exists ? prev : [directChan, ...prev];
+        });
+        setSelectedChannel(directChan);
+        setIsNewDmModalOpen(false);
+        setDmSearchQuery("");
+        toast.success(
+          `${targetUser.fullName || targetUser.email} ile sohbet açıldı.`
+        );
+      } else {
+        toast.error(res.message || "Direkt mesaj başlatılamadı.");
+      }
+    } catch {
+      toast.error("Direkt mesaj başlatılırken bir hata oluştu.");
+    } finally {
+      setStartingDmUserId(null);
+    }
+  };
+
   // Global Escape key handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -197,6 +351,7 @@ export default function MessagesPage() {
         setIsCannedResponsesOpen(false);
         setIsCreateChannelOpen(false);
         setIsNewSupportModalOpen(false);
+        setIsNewDmModalOpen(false);
         setShowCustomer360(false);
       }
     };
@@ -270,8 +425,10 @@ export default function MessagesPage() {
           : embedData
             ? "EntityEmbed"
             : "Text",
-        senderName: "Siz (Temsilci)",
+        senderAvatarUrl: profile?.avatarUrl,
+        senderName: profile?.fullName || profile?.email || "Siz",
         senderType: "User",
+        senderUserId: profile?.id,
       };
 
       const res = await ApiClient.sendChatMessage(payload, activeTenant?.id);
@@ -610,6 +767,142 @@ export default function MessagesPage() {
     });
   }, [channels, activeTab, searchQuery, supportFilter]);
 
+  const groupChannels = useMemo(
+    () =>
+      filteredChannels.filter(
+        (c) => c.type !== "CustomerSupport" && c.type !== "Direct"
+      ),
+    [filteredChannels]
+  );
+
+  const directChannels = useMemo(
+    () => filteredChannels.filter((c) => c.type === "Direct"),
+    [filteredChannels]
+  );
+
+  const renderChannelItem = (channel: ChatChannelDto) => {
+    const isSelected = selectedChannel?.id === channel.id;
+    const isSupport = channel.type === "CustomerSupport";
+    const isDirect = channel.type === "Direct";
+    const status = channel.supportSession?.status || "Open";
+    const priority = channel.supportSession?.priority || "Medium";
+    const displayInfo = getChannelDisplayInfo(channel);
+
+    let activeClasses =
+      "text-zinc-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-muted/40";
+    if (isSelected) {
+      activeClasses = isDirect
+        ? "border border-violet-200 bg-violet-50/90 text-violet-950 shadow-2xs dark:border-violet-900/60 dark:bg-violet-950/50 dark:text-violet-100"
+        : "border border-blue-100 bg-blue-50/80 text-blue-950 shadow-2xs dark:border-blue-900/50 dark:bg-blue-950/50 dark:text-blue-100";
+    }
+
+    return (
+      <div
+        className={`group flex cursor-pointer select-none items-start gap-2.5 rounded-xl p-2 transition-all ${activeClasses}`}
+        key={channel.id}
+        onClick={() => setSelectedChannel(channel)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setSelectedChannel(channel);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        {/* Icon / Avatar */}
+        <div className="relative shrink-0">
+          {isSupport ? (
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs dark:bg-blue-900/60 dark:text-blue-300">
+              {displayInfo.initials}
+            </div>
+          ) : isDirect && displayInfo.avatarUrl ? (
+            <img
+              alt={displayInfo.title}
+              className="h-9 w-9 rounded-xl object-cover ring-1 ring-zinc-200 dark:ring-zinc-800"
+              height={36}
+              src={displayInfo.avatarUrl}
+              width={36}
+            />
+          ) : isDirect ? (
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs shadow-2xs dark:bg-violet-950/60 dark:text-violet-300">
+              {displayInfo.initials}
+            </div>
+          ) : (
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              <Hash className="h-4 w-4" />
+            </div>
+          )}
+
+          {/* Online status indicator for DMs & Support */}
+          {(isDirect || isSupport) && (
+            <span className="absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900" />
+          )}
+        </div>
+
+        {/* Channel / DM Info */}
+        <div className="min-w-0 flex-1 text-left">
+          <div className="flex items-center justify-between gap-1">
+            <span className="truncate font-bold text-xs">
+              {displayInfo.title}
+            </span>
+            {channel.lastMessageAt && (
+              <span className="shrink-0 text-[10px] text-zinc-400 dark:text-zinc-500">
+                {new Date(channel.lastMessageAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            )}
+          </div>
+
+          <p className="mt-0.5 truncate text-[11px] text-zinc-500 dark:text-zinc-400">
+            {channel.lastMessagePreview ||
+              (isDirect ? displayInfo.subtitle : channel.description) ||
+              "Henüz mesaj yok."}
+          </p>
+
+          {/* Badges for Support */}
+          {isSupport && (
+            <div className="mt-1.5 flex items-center gap-1.5">
+              <span
+                className={`rounded-md px-1.5 py-0.2 font-bold text-[9px] ${
+                  status === "Open"
+                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
+                    : status === "Pending"
+                      ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                      : "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
+                }`}
+              >
+                {status === "Open"
+                  ? "Açık"
+                  : status === "Pending"
+                    ? "Beklemede"
+                    : "Çözüldü"}
+              </span>
+
+              <span
+                className={`rounded-md px-1.5 py-0.2 font-semibold text-[9px] ${
+                  priority === "Urgent"
+                    ? "bg-red-100 font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
+                    : priority === "High"
+                      ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
+                      : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                }`}
+              >
+                {priority === "Urgent"
+                  ? "Acil"
+                  : priority === "High"
+                    ? "Yüksek"
+                    : "Normal"}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-slate-50 dark:bg-background">
       {/* Top Header Bar (Hidden on mobile if a chat is active) */}
@@ -690,14 +983,25 @@ export default function MessagesPage() {
         {/* Header Actions */}
         <div className="flex shrink-0 items-center gap-2">
           {activeTab === "team" ? (
-            <Button
-              className="h-8 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 sm:h-9"
-              onClick={() => setIsCreateChannelOpen(true)}
-              size="sm"
-            >
-              <Plus className="mr-1 h-3.5 w-3.5" />
-              <span>Yeni Kanal</span>
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                className="h-8 border border-zinc-200 bg-white font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                onClick={() => setIsCreateChannelOpen(true)}
+                size="sm"
+                variant="outline"
+              >
+                <Hash className="mr-1 h-3.5 w-3.5 text-zinc-500" />
+                <span>Yeni Kanal</span>
+              </Button>
+              <Button
+                className="h-8 bg-violet-600 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 sm:h-9"
+                onClick={() => setIsNewDmModalOpen(true)}
+                size="sm"
+              >
+                <UserPlus className="mr-1 h-3.5 w-3.5" />
+                <span>Yeni DM</span>
+              </Button>
+            </div>
           ) : (
             <Button
               className="h-8 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 sm:h-9"
@@ -787,124 +1091,124 @@ export default function MessagesPage() {
           </div>
 
           {/* List Stream */}
-          <div className="flex-1 space-y-1 overflow-y-auto p-2">
+          <div className="flex-1 space-y-3 overflow-y-auto p-2">
             {loadingChannels ? (
               <div className="p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                 Kanallar yükleniyor...
               </div>
-            ) : filteredChannels.length === 0 ? (
-              <div className="p-8 text-center">
-                <MessageSquare className="mx-auto h-8 w-8 text-slate-300 dark:text-zinc-400 dark:text-zinc-600" />
-                <p className="mt-2 font-semibold text-xs text-zinc-600 dark:text-slate-300 dark:text-zinc-400">
-                  {activeTab === "team"
-                    ? "Kanal bulunamadı"
-                    : "Destek talebi yok"}
-                </p>
-                <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
-                  {activeTab === "team"
-                    ? "Yeni bir kanal oluşturarak başlayın."
-                    : "Tüm destek kuyruğu temiz."}
-                </p>
-              </div>
+            ) : activeTab === "support" ? (
+              filteredChannels.length === 0 ? (
+                <div className="p-8 text-center">
+                  <Headphones className="mx-auto h-8 w-8 text-slate-300 dark:text-zinc-600" />
+                  <p className="mt-2 font-semibold text-xs text-zinc-600 dark:text-zinc-400">
+                    Destek talebi yok
+                  </p>
+                  <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+                    Tüm destek kuyruğu temiz.
+                  </p>
+                </div>
+              ) : (
+                filteredChannels.map((channel) => renderChannelItem(channel))
+              )
             ) : (
-              filteredChannels.map((channel) => {
-                const isSelected = selectedChannel?.id === channel.id;
-                const isSupport = channel.type === "CustomerSupport";
-                const status = channel.supportSession?.status || "Open";
-                const priority = channel.supportSession?.priority || "Medium";
+              /* activeTab === "team" -> Slack Dual Section */
+              <div className="space-y-4">
+                {/* 1. KANALLAR SECTION */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between px-2 py-1 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                    <button
+                      className="flex items-center gap-1 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200"
+                      onClick={() => setIsChannelsCollapsed((prev) => !prev)}
+                      type="button"
+                    >
+                      {isChannelsCollapsed ? (
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      ) : (
+                        <ChevronDown className="h-3.5 w-3.5" />
+                      )}
+                      <span>Kanallar</span>
+                      <span className="rounded-full bg-zinc-200/70 px-1.5 py-0.2 font-mono text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                        {groupChannels.length}
+                      </span>
+                    </button>
+                    <button
+                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                      onClick={() => setIsCreateChannelOpen(true)}
+                      title="Yeni Kanal Oluştur"
+                      type="button"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
 
-                return (
-                  <div
-                    className={`flex cursor-pointer select-none items-start gap-3 rounded-xl p-2.5 transition-all ${
-                      isSelected
-                        ? "border border-blue-100 bg-blue-50/80 text-blue-950 shadow-2xs dark:border-blue-900/50 dark:bg-blue-950/50 dark:text-blue-100"
-                        : "text-zinc-700 hover:bg-slate-50 dark:text-slate-300 dark:text-zinc-300 dark:hover:bg-muted/40"
-                    }`}
-                    key={channel.id}
-                    onClick={() => setSelectedChannel(channel)}
-                  >
-                    {/* Icon / Avatar */}
-                    <div className="relative shrink-0">
-                      {isSupport ? (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs dark:bg-blue-900/60 dark:text-blue-300">
-                          {channel.customerName?.slice(0, 2).toUpperCase() ||
-                            "MŞ"}
-                        </div>
-                      ) : channel.type === "Direct" ? (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs dark:bg-violet-900/60 dark:text-violet-300">
-                          <User className="h-5 w-5" />
+                  {!isChannelsCollapsed && (
+                    <div className="space-y-0.5">
+                      {groupChannels.length === 0 ? (
+                        <div className="px-3 py-2 text-[11px] text-zinc-400 italic">
+                          Kanal bulunamadı.
                         </div>
                       ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 dark:bg-muted dark:bg-zinc-800 dark:text-slate-300 dark:text-zinc-400">
-                          <Hash className="h-5 w-5" />
-                        </div>
-                      )}
-
-                      <span className="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-card" />
-                    </div>
-
-                    {/* Channel Info */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate font-bold text-xs">
-                          {isSupport ? channel.customerName : channel.title}
-                        </span>
-                        {channel.lastMessageAt && (
-                          <span className="shrink-0 text-[10px] text-zinc-400 dark:text-zinc-500">
-                            {new Date(channel.lastMessageAt).toLocaleTimeString(
-                              [],
-                              { hour: "2-digit", minute: "2-digit" }
-                            )}
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="mt-0.5 truncate text-[11px] text-slate-500 dark:text-muted-foreground">
-                        {channel.lastMessagePreview ||
-                          channel.description ||
-                          "Henüz mesaj yok."}
-                      </p>
-
-                      {/* Badges for Support */}
-                      {isSupport && (
-                        <div className="mt-1.5 flex items-center gap-1.5">
-                          <span
-                            className={`rounded-md px-1.5 py-0.2 font-bold text-[9px] ${
-                              status === "Open"
-                                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
-                                : status === "Pending"
-                                  ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                                  : "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
-                            }`}
-                          >
-                            {status === "Open"
-                              ? "Açık"
-                              : status === "Pending"
-                                ? "Beklemede"
-                                : "Çözüldü"}
-                          </span>
-
-                          <span
-                            className={`rounded-md px-1.5 py-0.2 font-semibold text-[9px] ${
-                              priority === "Urgent"
-                                ? "bg-red-100 font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
-                                : priority === "High"
-                                  ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                                  : "bg-zinc-100 text-slate-600 dark:bg-muted dark:bg-zinc-800 dark:text-zinc-400"
-                            }`}
-                          >
-                            {priority === "Urgent"
-                              ? "Acil"
-                              : priority === "High"
-                                ? "Yüksek"
-                                : "Normal"}
-                          </span>
-                        </div>
+                        groupChannels.map((channel) =>
+                          renderChannelItem(channel)
+                        )
                       )}
                     </div>
+                  )}
+                </div>
+
+                {/* 2. DİREKT MESAJLAR SECTION */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between px-2 py-1 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                    <button
+                      className="flex items-center gap-1 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200"
+                      onClick={() => setIsDmsCollapsed((prev) => !prev)}
+                      type="button"
+                    >
+                      {isDmsCollapsed ? (
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      ) : (
+                        <ChevronDown className="h-3.5 w-3.5" />
+                      )}
+                      <span>Direkt Mesajlar</span>
+                      <span className="rounded-full bg-violet-100 px-1.5 py-0.2 font-mono text-[9px] text-violet-700 dark:bg-violet-950/70 dark:text-violet-300">
+                        {directChannels.length}
+                      </span>
+                    </button>
+                    <button
+                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-zinc-800 dark:hover:text-violet-400"
+                      onClick={() => setIsNewDmModalOpen(true)}
+                      title="Yeni Direkt Mesaj Başlat"
+                      type="button"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
                   </div>
-                );
-              })
+
+                  {!isDmsCollapsed && (
+                    <div className="space-y-0.5">
+                      {directChannels.length === 0 ? (
+                        <div className="my-1 rounded-xl border border-zinc-200 border-dashed p-3 text-center dark:border-zinc-800">
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                            Henüz bir direkt mesaj yok.
+                          </p>
+                          <button
+                            className="mt-1.5 inline-flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:text-violet-400"
+                            onClick={() => setIsNewDmModalOpen(true)}
+                            type="button"
+                          >
+                            <UserPlus className="h-3 w-3" />
+                            <span>Kişi Seç & DM Başlat</span>
+                          </button>
+                        </div>
+                      ) : (
+                        directChannels.map((channel) =>
+                          renderChannelItem(channel)
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -925,32 +1229,65 @@ export default function MessagesPage() {
                   <ArrowLeft className="h-4.5 w-4.5" />
                 </button>
 
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-100 font-bold text-zinc-700 sm:h-10 sm:w-10 dark:bg-muted dark:bg-zinc-800 dark:text-foreground dark:text-zinc-300">
+                {/* Avatar / Icon with online dot */}
+                <div className="relative shrink-0">
                   {selectedChannel.type === "CustomerSupport" ? (
-                    <Headphones className="h-4.5 w-4.5 text-blue-600 sm:h-5 sm:w-5 dark:text-blue-400" />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs sm:h-10 sm:w-10 dark:bg-blue-900/60 dark:text-blue-300">
+                      <Headphones className="h-4.5 w-4.5" />
+                    </div>
                   ) : selectedChannel.type === "Direct" ? (
-                    <User className="h-4.5 w-4.5 text-violet-600 sm:h-5 sm:w-5 dark:text-violet-400" />
+                    (() => {
+                      const displayInfo =
+                        getChannelDisplayInfo(selectedChannel);
+                      return displayInfo.avatarUrl ? (
+                        <img
+                          alt={displayInfo.title}
+                          className="h-9 w-9 rounded-xl object-cover ring-1 ring-zinc-200 sm:h-10 sm:w-10 dark:ring-zinc-800"
+                          height={40}
+                          src={displayInfo.avatarUrl}
+                          width={40}
+                        />
+                      ) : (
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs sm:h-10 sm:w-10 dark:bg-violet-950/60 dark:text-violet-300">
+                          {displayInfo.initials}
+                        </div>
+                      );
+                    })()
                   ) : (
-                    <Hash className="h-4.5 w-4.5 text-zinc-600 sm:h-5 sm:w-5 dark:text-zinc-400" />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-100 font-bold text-zinc-700 sm:h-10 sm:w-10 dark:bg-zinc-800 dark:text-zinc-300">
+                      <Hash className="h-4.5 w-4.5" />
+                    </div>
+                  )}
+
+                  {selectedChannel.type === "Direct" && (
+                    <span className="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900" />
                   )}
                 </div>
 
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <h2 className="max-w-[130px] truncate font-bold text-xs text-zinc-900 sm:max-w-xs sm:text-sm dark:text-foreground dark:text-zinc-100">
-                      {selectedChannel.type === "CustomerSupport"
-                        ? selectedChannel.customerName
-                        : selectedChannel.title}
+                  <div className="flex items-center gap-2">
+                    <h2 className="max-w-[140px] truncate font-bold text-xs text-zinc-900 sm:max-w-xs sm:text-sm dark:text-foreground dark:text-zinc-100">
+                      {selectedChannel.type === "Direct"
+                        ? getChannelDisplayInfo(selectedChannel).title
+                        : selectedChannel.type === "CustomerSupport"
+                          ? selectedChannel.customerName
+                          : selectedChannel.title}
                     </h2>
-                    {selectedChannel.isPrivate && (
+                    {selectedChannel.type === "Direct" ? (
+                      <span className="rounded-md bg-violet-50 px-1.5 py-0.2 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                        {getChannelDisplayInfo(selectedChannel).role}
+                      </span>
+                    ) : selectedChannel.isPrivate ? (
                       <Lock className="h-3 w-3 shrink-0 text-zinc-400 dark:text-zinc-500" />
-                    )}
+                    ) : null}
                   </div>
-                  <p className="max-w-[130px] truncate text-[10px] text-zinc-500 sm:max-w-xs sm:text-xs dark:text-muted-foreground dark:text-zinc-400">
-                    {selectedChannel.type === "CustomerSupport"
-                      ? `${selectedChannel.description || "Destek"} • ${selectedChannel.supportSession?.assignedUserName || "Atanmadı"}`
-                      : selectedChannel.description ||
-                        `${selectedChannel.participants?.length || 1} Katılımcı`}
+                  <p className="max-w-[140px] truncate text-[10px] text-zinc-500 sm:max-w-xs sm:text-xs dark:text-zinc-400">
+                    {selectedChannel.type === "Direct"
+                      ? getChannelDisplayInfo(selectedChannel).subtitle
+                      : selectedChannel.type === "CustomerSupport"
+                        ? `${selectedChannel.description || "Destek"} • ${selectedChannel.supportSession?.assignedUserName || "Atanmadı"}`
+                        : selectedChannel.description ||
+                          `${selectedChannel.participants?.length || 1} Katılımcı`}
                   </p>
                 </div>
               </div>
@@ -1032,7 +1369,9 @@ export default function MessagesPage() {
               ) : (
                 messages.map((msg) => {
                   const isMe =
-                    msg.senderType === "User" && msg.senderName.includes("Siz");
+                    (profile?.id && msg.senderUserId === profile.id) ||
+                    msg.senderName.includes("Siz") ||
+                    (profile?.fullName && msg.senderName === profile.fullName);
                   const isSystem = msg.messageType === "SystemEvent";
                   const isInternal = msg.messageType === "InternalNote";
                   const isEditing = editingMessageId === msg.id;
@@ -1484,7 +1823,11 @@ export default function MessagesPage() {
                   placeholder={
                     isInternalNote
                       ? "Müşterinin görmeyeceği dahili not yazın..."
-                      : "Bir mesaj yazın..."
+                      : selectedChannel.type === "Direct"
+                        ? `${getChannelDisplayInfo(selectedChannel).title} kişisine mesaj yazın...`
+                        : selectedChannel.type === "CustomerSupport"
+                          ? `${selectedChannel.customerName} müşterisine yanıt yazın...`
+                          : `#${selectedChannel.title} kanalına mesaj yazın...`
                   }
                   rows={1}
                   value={messageInput}
@@ -2151,6 +2494,151 @@ export default function MessagesPage() {
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 4: New Direct Message Modal */}
+      {isNewDmModalOpen && (
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsNewDmModalOpen(false)}
+          />
+
+          <div className="relative z-10 my-auto flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+            {/* Header */}
+            <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
+              <div className="min-w-0 pr-2">
+                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
+                  Yeni Direkt Mesaj
+                </h3>
+                <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                  Çalışma arkadaşınızı seçerek doğrudan mesajlaşmaya başlayın.
+                </p>
+              </div>
+              <button
+                className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                onClick={() => setIsNewDmModalOpen(false)}
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Search Input */}
+            <div className="py-3">
+              <div className="relative">
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                <input
+                  autoFocus
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setDmSearchQuery(e.target.value)
+                  }
+                  placeholder="İsim, e-posta veya unvana göre ara..."
+                  value={dmSearchQuery}
+                />
+              </div>
+            </div>
+
+            {/* Teammates List */}
+            <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
+              {loadingTeamUsers ? (
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <Loader2 className="h-6 w-6 animate-spin text-violet-600" />
+                  <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+                    Ekip üyeleri yükleniyor...
+                  </p>
+                </div>
+              ) : filteredTeamUsers.length === 0 ? (
+                <div className="py-8 text-center">
+                  <Users className="mx-auto h-7 w-7 text-zinc-300 dark:text-zinc-600" />
+                  <p className="mt-2 font-semibold text-xs text-zinc-600 dark:text-zinc-400">
+                    Kullanıcı bulunamadı
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+                    Aramanızla eşleşen başka bir çalışma arkadaşı bulunmuyor.
+                  </p>
+                </div>
+              ) : (
+                filteredTeamUsers.map((u) => {
+                  const initials = (u.fullName || u.email || "CA")
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase();
+                  const roleName = u.roles?.[0]?.name || "Ekip Üyesi";
+                  const isStarting = startingDmUserId === u.id;
+
+                  return (
+                    <div
+                      className="group flex cursor-pointer items-center justify-between rounded-xl border border-transparent p-2.5 transition-all hover:border-violet-200 hover:bg-violet-50/60 dark:hover:border-violet-900/50 dark:hover:bg-violet-950/30"
+                      key={u.id}
+                      onClick={() => !isStarting && handleStartDirectMessage(u)}
+                    >
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <div className="relative shrink-0">
+                          {u.avatarUrl ? (
+                            <img
+                              alt={u.fullName || u.email}
+                              className="h-9 w-9 rounded-xl object-cover ring-1 ring-zinc-200 dark:ring-zinc-800"
+                              height={36}
+                              src={u.avatarUrl}
+                              width={36}
+                            />
+                          ) : (
+                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs shadow-2xs dark:bg-violet-950/60 dark:text-violet-300">
+                              {initials}
+                            </div>
+                          )}
+                          <span className="absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900" />
+                        </div>
+
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                              {u.fullName || u.email}
+                            </span>
+                            <span className="rounded-md bg-zinc-100 px-1.5 py-0.2 font-medium text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                              {roleName}
+                            </span>
+                          </div>
+                          <p className="truncate text-[11px] text-zinc-500 dark:text-zinc-400">
+                            {u.email}
+                          </p>
+                        </div>
+                      </div>
+
+                      <Button
+                        className="h-7 shrink-0 bg-violet-600 px-3 font-semibold text-white text-xs opacity-0 transition-opacity hover:bg-violet-700 group-hover:opacity-100 dark:bg-violet-600"
+                        disabled={isStarting}
+                        size="sm"
+                      >
+                        {isStarting ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          "Mesaj Yaz"
+                        )}
+                      </Button>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="mt-3 flex shrink-0 items-center justify-end border-zinc-100 border-t pt-3 dark:border-border dark:border-zinc-800">
+              <Button
+                onClick={() => setIsNewDmModalOpen(false)}
+                size="sm"
+                type="button"
+                variant="outline"
+              >
+                Kapat
+              </Button>
+            </div>
           </div>
         </div>
       )}

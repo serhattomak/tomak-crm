@@ -1,6 +1,7 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Chat.Data;
 using CRM.Modules.Chat.Entities;
@@ -67,7 +68,8 @@ public record GetChannelsQuery(string? Type = null, string? Search = null) : IQu
 
 public class GetChannelsHandler(
     ChatDbContext dbContext,
-    ICurrentTenant currentTenant) : IQueryHandler<GetChannelsQuery, List<ChatChannelDto>>
+    ICurrentTenant currentTenant,
+    ICurrentUser currentUser) : IQueryHandler<GetChannelsQuery, List<ChatChannelDto>>
 {
     public async Task<Result<List<ChatChannelDto>>> Handle(GetChannelsQuery request, CancellationToken cancellationToken)
     {
@@ -79,6 +81,12 @@ public class GetChannelsHandler(
             .Include(c => c.SupportSession)
             .AsNoTracking();
 
+        if (currentUser.Id.HasValue)
+        {
+            var uid = currentUser.Id.Value;
+            query = query.Where(c => c.Type != "Direct" || c.Participants.Any(p => p.UserId == uid));
+        }
+
         if (!string.IsNullOrWhiteSpace(request.Type))
         {
             query = query.Where(c => c.Type == request.Type);
@@ -89,57 +97,73 @@ public class GetChannelsHandler(
             var s = request.Search.Trim().ToLower();
             query = query.Where(c => c.Title.ToLower().Contains(s) ||
                                      (c.CustomerName != null && c.CustomerName.ToLower().Contains(s)) ||
-                                     (c.DepartmentName != null && c.DepartmentName.ToLower().Contains(s)));
+                                     (c.DepartmentName != null && c.DepartmentName.ToLower().Contains(s)) ||
+                                     c.Participants.Any(p => p.UserName.ToLower().Contains(s)));
         }
 
         var channels = await query
             .OrderByDescending(c => c.LastMessageAt ?? c.CreatedAt)
             .ToListAsync(cancellationToken);
 
-        var dtos = channels.Select(c => new ChatChannelDto(
-            c.Id,
-            c.Type,
-            c.Title,
-            c.Description,
-            c.DepartmentId,
-            c.DepartmentName,
-            c.CustomerId,
-            c.CustomerName,
-            c.IsPrivate,
-            c.LastMessageAt,
-            c.LastMessagePreview,
-            0,
-            c.Participants.Select(p => new ChatParticipantDto(
-                p.Id,
-                p.UserId,
-                p.UserName,
-                p.UserEmail,
-                p.UserAvatarUrl,
-                p.Role,
-                p.JoinedAt,
-                p.LastReadAt,
-                p.IsMuted
-            )).ToList(),
-            c.SupportSession != null ? new CustomerSupportSessionDto(
-                c.SupportSession.Id,
-                c.SupportSession.ChannelId,
-                c.SupportSession.CustomerId,
-                c.SupportSession.CustomerName,
-                c.SupportSession.CustomerEmail,
-                c.SupportSession.CustomerPhone,
-                c.SupportSession.AssignedUserId,
-                c.SupportSession.AssignedUserName,
-                c.SupportSession.DepartmentId,
-                c.SupportSession.DepartmentName,
-                c.SupportSession.Status,
-                c.SupportSession.Priority,
-                c.SupportSession.Subject,
-                c.SupportSession.ResolutionNotes,
-                c.SupportSession.ClosedAt,
-                c.SupportSession.CreatedAt
-            ) : null,
-            c.CreatedAt
-        )).ToList();
+        var currentUserId = currentUser.Id;
+
+        var dtos = channels.Select(c =>
+        {
+            string resolvedTitle = c.Title;
+            if (c.Type == "Direct" && currentUserId.HasValue)
+            {
+                var other = c.Participants.FirstOrDefault(p => p.UserId != currentUserId.Value);
+                if (other != null)
+                {
+                    resolvedTitle = other.UserName;
+                }
+            }
+
+            return new ChatChannelDto(
+                c.Id,
+                c.Type,
+                resolvedTitle,
+                c.Description,
+                c.DepartmentId,
+                c.DepartmentName,
+                c.CustomerId,
+                c.CustomerName,
+                c.IsPrivate,
+                c.LastMessageAt,
+                c.LastMessagePreview,
+                0,
+                c.Participants.Select(p => new ChatParticipantDto(
+                    p.Id,
+                    p.UserId,
+                    p.UserName,
+                    p.UserEmail,
+                    p.UserAvatarUrl,
+                    p.Role,
+                    p.JoinedAt,
+                    p.LastReadAt,
+                    p.IsMuted
+                )).ToList(),
+                c.SupportSession != null ? new CustomerSupportSessionDto(
+                    c.SupportSession.Id,
+                    c.SupportSession.ChannelId,
+                    c.SupportSession.CustomerId,
+                    c.SupportSession.CustomerName,
+                    c.SupportSession.CustomerEmail,
+                    c.SupportSession.CustomerPhone,
+                    c.SupportSession.AssignedUserId,
+                    c.SupportSession.AssignedUserName,
+                    c.SupportSession.DepartmentId,
+                    c.SupportSession.DepartmentName,
+                    c.SupportSession.Status,
+                    c.SupportSession.Priority,
+                    c.SupportSession.Subject,
+                    c.SupportSession.ResolutionNotes,
+                    c.SupportSession.ClosedAt,
+                    c.SupportSession.CreatedAt
+                ) : null,
+                c.CreatedAt
+            );
+        }).ToList();
 
         return Result<List<ChatChannelDto>>.Success(dtos);
     }
