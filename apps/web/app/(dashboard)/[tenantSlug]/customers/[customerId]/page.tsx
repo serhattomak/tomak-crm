@@ -3,6 +3,7 @@
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { PhoneInput } from "@workspace/ui/components/phone-input";
 import {
   Select,
   SelectContent,
@@ -38,7 +39,6 @@ import { useParams, useRouter } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { SalesRepPicker } from "@/components/entity-picker-modal";
-import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
 import {
   type AddCustomerActivityRequest,

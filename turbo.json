@@ -13,6 +13,9 @@
     "format": {
       "dependsOn": ["^format"]
     },
+    "guard:crm-ui": {
+      "cache": false
+    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },

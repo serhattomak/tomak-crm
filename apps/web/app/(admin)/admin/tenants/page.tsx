@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Building2,
@@ -202,10 +203,10 @@ function AdminTenantsContent() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">
+          <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             Kayıtlı Firmalar
           </h1>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             Sistemdeki kiracı firmaları, modül izinlerini ve terminolojiyi
             yönetin.
           </p>
@@ -222,9 +223,9 @@ function AdminTenantsContent() {
 
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute top-3 left-3.5 h-4 w-4 text-slate-400" />
+        <Search className="absolute top-3 left-3.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
         <input
-          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-slate-800 text-xs placeholder-slate-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Firma adı veya slug ile ara..."
           type="text"
@@ -233,10 +234,10 @@ function AdminTenantsContent() {
       </div>
 
       {/* Tenants Table */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="border-slate-200/80 border-b bg-slate-50/70 font-semibold text-[11px] text-slate-500 uppercase tracking-wider">
+            <thead className="border-zinc-200/80 border-b bg-zinc-50/70 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400">
               <tr>
                 <th className="px-5 py-3.5">Firma / Çalışma Alanı</th>
                 <th className="px-5 py-3.5">Sektör Şablonu</th>
@@ -246,24 +247,30 @@ function AdminTenantsContent() {
                 <th className="px-5 py-3.5 text-right">İşlemler</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-zinc-100 text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
               {loading ? (
                 <tr>
-                  <td className="py-12 text-center text-slate-400" colSpan={6}>
+                  <td
+                    className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                    colSpan={6}
+                  >
                     <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
                     Firmalar yükleniyor...
                   </td>
                 </tr>
               ) : filteredTenants.length === 0 ? (
                 <tr>
-                  <td className="py-12 text-center text-slate-400" colSpan={6}>
+                  <td
+                    className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                    colSpan={6}
+                  >
                     Kayıtlı firma bulunamadı.
                   </td>
                 </tr>
               ) : (
                 filteredTenants.map((tenant) => (
                   <tr
-                    className="transition hover:bg-slate-50/60"
+                    className="transition hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40"
                     key={tenant.id}
                   >
                     {/* Name & Slug */}
@@ -274,12 +281,12 @@ function AdminTenantsContent() {
                         </div>
                         <div>
                           <Link
-                            className="font-bold text-slate-900 text-sm hover:text-blue-600"
+                            className="font-bold text-sm text-zinc-900 hover:text-blue-600 dark:text-zinc-100 dark:hover:text-blue-400"
                             href={`/admin/tenants/${tenant.id}`}
                           >
                             {tenant.name}
                           </Link>
-                          <p className="text-[11px] text-slate-400">
+                          <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
                             /{tenant.slug}
                           </p>
                         </div>
@@ -288,7 +295,7 @@ function AdminTenantsContent() {
 
                     {/* Template */}
                     <td className="px-5 py-4">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/60 bg-amber-50 px-2.5 py-1 font-semibold text-amber-700 text-xs">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/60 bg-amber-50 px-2.5 py-1 font-semibold text-amber-700 text-xs dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
                         <Sparkles className="h-3 w-3 text-amber-500" />
                         {tenant.industryTemplateName ??
                           tenant.industry ??
@@ -298,7 +305,7 @@ function AdminTenantsContent() {
 
                     {/* Modules */}
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-1.5 font-medium text-slate-700">
+                      <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
                         <Layers className="h-3.5 w-3.5 text-blue-600" />
                         <span>
                           {tenant.enabledModuleCount} / {ALL_MODULES.length}{" "}
@@ -308,19 +315,19 @@ function AdminTenantsContent() {
                     </td>
 
                     {/* Members */}
-                    <td className="px-5 py-4 text-slate-500">
+                    <td className="px-5 py-4 text-zinc-500 dark:text-zinc-400">
                       {tenant.memberCount} kullanıcı
                     </td>
 
                     {/* Status */}
                     <td className="px-5 py-4">
                       {tenant.isActive ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200/60 bg-emerald-50 px-2.5 py-0.5 font-bold text-[11px] text-emerald-700">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200/60 bg-emerald-50 px-2.5 py-0.5 font-bold text-[11px] text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
                           <CheckCircle2 className="h-3 w-3" />
                           Aktif
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-rose-200/60 bg-rose-50 px-2.5 py-0.5 font-bold text-[11px] text-rose-700">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-rose-200/60 bg-rose-50 px-2.5 py-0.5 font-bold text-[11px] text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-400">
                           <XCircle className="h-3 w-3" />
                           Askıda
                         </span>
@@ -333,8 +340,8 @@ function AdminTenantsContent() {
                         <button
                           className={`rounded-xl p-2 transition ${
                             tenant.isActive
-                              ? "text-rose-600 hover:bg-rose-50"
-                              : "text-emerald-600 hover:bg-emerald-50"
+                              ? "text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                              : "text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
                           }`}
                           onClick={() =>
                             handleToggleStatus(tenant.id, tenant.isActive)
@@ -348,14 +355,14 @@ function AdminTenantsContent() {
                           <Power className="h-4 w-4" />
                         </button>
                         <Link
-                          className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
+                          className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/admin/tenants/${tenant.id}`}
                           title="Firma Modül & Etiket Ayarları"
                         >
                           <Sliders className="h-4 w-4" />
                         </Link>
                         <Link
-                          className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
+                          className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/${tenant.slug}`}
                           target="_blank"
                           title="Çalışma Alanına Git"
@@ -374,24 +381,24 @@ function AdminTenantsContent() {
 
       {/* CREATE TENANT MODAL */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
-          <div className="max-h-[90vh] w-full max-w-2xl space-y-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-slate-100 border-b pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-xs">
+          <div className="max-h-[90vh] w-full max-w-2xl space-y-6 overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
                   <Building2 className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-base text-slate-900">
+                  <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     Yeni Firma Tanımla
                   </h2>
-                  <p className="text-slate-500 text-xs">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Sektör şablonu ve modül paketini yapılandırın
                   </p>
                 </div>
               </div>
               <button
-                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                 onClick={() => setIsCreateModalOpen(false)}
               >
                 <X className="h-5 w-5" />
@@ -402,11 +409,11 @@ function AdminTenantsContent() {
               {/* Form Fields */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1 block font-bold text-slate-700">
+                  <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300">
                     Firma Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
@@ -418,11 +425,11 @@ function AdminTenantsContent() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block font-bold text-slate-700">
+                  <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300">
                     Özel URL / Slug (Opsiyonel)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, slug: e.target.value })
                     }
@@ -435,26 +442,27 @@ function AdminTenantsContent() {
 
               {/* Sektör Şablonu */}
               <div>
-                <label className="mb-1 block font-bold text-slate-700">
+                <label className="mb-1 block font-bold text-zinc-700 dark:text-zinc-300">
                   Sektör Şablonu
                 </label>
-                <select
-                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-medium text-slate-800 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  onChange={(e) => handleTemplateChange(e.target.value)}
+                <Combobox
+                  emptyMessage="Şablon bulunamadı."
+                  onChange={(val) => handleTemplateChange(val)}
+                  options={templates.map((tpl) => ({
+                    description: tpl.description || tpl.key,
+                    label: tpl.name,
+                    value: tpl.id,
+                  }))}
+                  placeholder="Sektör şablonu seçin"
+                  searchPlaceholder="Şablon ara..."
                   value={formData.templateId}
-                >
-                  {templates.map((tpl) => (
-                    <option key={tpl.id} value={tpl.id}>
-                      {tpl.name} ({tpl.description || tpl.key})
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
               {/* Modül Seçimi */}
-              <div className="border-slate-100 border-t pt-2">
+              <div className="border-zinc-100 border-t pt-2 dark:border-zinc-800">
                 <div className="mb-2 flex items-center justify-between">
-                  <label className="font-bold text-slate-700">
+                  <label className="font-bold text-zinc-700 dark:text-zinc-300">
                     Aktif Edilecek Modüller ({formData.enabledModules.length}{" "}
                     seçildi)
                   </label>
@@ -477,15 +485,15 @@ function AdminTenantsContent() {
                   </button>
                 </div>
 
-                <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50/50 p-1 sm:grid-cols-2">
+                <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/50 p-1 sm:grid-cols-2 dark:border-zinc-800 dark:bg-zinc-800/40">
                   {ALL_MODULES.map((mod) => {
                     const checked = formData.enabledModules.includes(mod.key);
                     return (
                       <label
                         className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 transition ${
                           checked
-                            ? "border-blue-200 bg-blue-50 font-medium text-blue-800"
-                            : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                            ? "border-blue-200 bg-blue-50 font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
+                            : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
                         }`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
@@ -493,7 +501,7 @@ function AdminTenantsContent() {
                         <span className="text-xs">{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-0"
+                          className="h-3.5 w-3.5 rounded border-zinc-300 text-blue-600 focus:ring-0 dark:border-zinc-700"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -504,9 +512,9 @@ function AdminTenantsContent() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2.5 border-slate-100 border-t pt-4">
+              <div className="flex items-center justify-end gap-2.5 border-zinc-100 border-t pt-4 dark:border-zinc-800">
                 <button
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 text-xs hover:bg-slate-50"
+                  className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateModalOpen(false)}
                   type="button"
                 >
@@ -533,7 +541,7 @@ export default function AdminTenantsPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-64 items-center justify-center text-slate-500">
+        <div className="flex h-64 items-center justify-center text-zinc-500 dark:text-zinc-400">
           <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600" />
           Yükleniyor...
         </div>

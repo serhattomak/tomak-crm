@@ -58,32 +58,32 @@ export default function RootPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f5f8] text-slate-600">
-        <Loader2 className="mb-3 h-8 w-8 animate-spin text-fuchsia-500" />
+      <div className="flex min-h-screen flex-col items-center justify-center bg-muted text-zinc-600 dark:bg-zinc-950 dark:text-zinc-400">
+        <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500 dark:text-blue-400" />
         <p className="font-semibold text-xs">Loading your workspaces...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f5f8] p-4">
-      <div className="w-full max-w-md space-y-6 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl">
-        <div className="flex items-center justify-between border-slate-100 border-b pb-5">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4 dark:bg-zinc-950">
+      <div className="w-full max-w-md space-y-6 rounded-3xl border border-zinc-200/80 bg-white p-8 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-5 dark:border-zinc-800">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-cyan-500 text-white shadow-fuchsia-500/25 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 text-white shadow-blue-500/25 shadow-md">
               <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-lg text-slate-900 tracking-tight">
+              <h1 className="font-bold text-lg text-zinc-900 tracking-tight dark:text-zinc-100">
                 Create a Workspace
               </h1>
-              <p className="text-slate-500 text-xs">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 You don&apos;t have any active workspace yet.
               </p>
             </div>
           </div>
           <button
-            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-xl p-2 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleLogout}
             title="Logout"
           >
@@ -92,7 +92,7 @@ export default function RootPage() {
         </div>
 
         {errorMessage && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-3.5 font-medium text-rose-700 text-xs">
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-3.5 font-medium text-rose-700 text-xs dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300">
             {errorMessage}
           </div>
         )}
@@ -103,12 +103,12 @@ export default function RootPage() {
           onSubmit={handleCreateTenant}
         >
           <div>
-            <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+            <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
               Workspace Name
             </label>
             <input
               autoFocus
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 text-xs transition-all placeholder:text-slate-400 focus:border-fuchsia-500 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
               onChange={(e) => setNewTenantName(e.target.value)}
               placeholder="e.g. Acme Corp"
               required
@@ -118,7 +118,7 @@ export default function RootPage() {
           </div>
 
           <button
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3 font-semibold text-white text-xs shadow-sm transition-all hover:bg-slate-800 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 py-3 font-semibold text-white text-xs shadow-sm transition-all hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             disabled={isCreating}
             type="submit"
           >

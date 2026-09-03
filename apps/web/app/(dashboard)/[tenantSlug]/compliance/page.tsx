@@ -1,5 +1,7 @@
 "use client";
 
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertOctagon,
   AlertTriangle,
@@ -26,6 +28,13 @@ import {
   type ComplianceValidationResultDto,
   type ComplianceViolationDto,
 } from "@/lib/api-client";
+
+const clampCount = (val: number, min: number, max: number): number => {
+  if (Number.isNaN(val)) {
+    return min;
+  }
+  return Math.min(max, Math.max(min, Math.round(val)));
+};
 
 export default function CompliancePage() {
   const params = useParams();
@@ -306,7 +315,7 @@ export default function CompliancePage() {
         );
       default:
         return (
-          <span className="flex items-center gap-1 rounded-md bg-slate-300 px-2 py-0.5 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+          <span className="flex items-center gap-1 rounded-md bg-zinc-300 px-2 py-0.5 font-semibold text-[11px] text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200">
             <Unlock className="h-3 w-3" /> Devre Dışı
           </span>
         );
@@ -389,7 +398,7 @@ export default function CompliancePage() {
           <div className="relative flex h-14 w-14 items-center justify-center">
             <svg className="h-14 w-14 -rotate-90 transform">
               <circle
-                className="text-slate-100"
+                className="text-zinc-200 dark:text-zinc-800"
                 cx="28"
                 cy="28"
                 fill="transparent"
@@ -517,27 +526,32 @@ export default function CompliancePage() {
 
         {activeTab === "rules" && (
           <div className="flex items-center gap-2.5">
-            <select
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setSelectedCategory(e.target.value)}
+            <SelectField
+              onChange={(value) => setSelectedCategory(value)}
+              options={[
+                { label: "Tüm Yasal Alanlar", value: "all" },
+                {
+                  label: "Çalışma Süreleri & Vardiya (4857 SK.)",
+                  value: "WorkingHours",
+                },
+                {
+                  label: "Yıllık & Mazeret İzinleri (4857 SK.)",
+                  value: "Leaves",
+                },
+                {
+                  label: "İş Sağlığı & Güvenliği (6331 SK.)",
+                  value: "HealthSafety",
+                },
+                { label: "Bordro & Tazminat (5510 / 1475)", value: "Payroll" },
+              ]}
+              placeholder="Tüm Yasal Alanlar"
+              triggerClassName="w-64"
               value={selectedCategory}
-            >
-              <option value="all">Tüm Yasal Alanlar</option>
-              <option value="WorkingHours">
-                Çalışma Süreleri & Vardiya (4857 SK.)
-              </option>
-              <option value="Leaves">
-                Yıllık & Mazeret İzinleri (4857 SK.)
-              </option>
-              <option value="HealthSafety">
-                İş Sağlığı & Güvenliği (6331 SK.)
-              </option>
-              <option value="Payroll">Bordro & Tazminat (5510 / 1475)</option>
-            </select>
+            />
 
             <div className="relative">
               <input
-                className="w-56 rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-8 text-xs focus:border-amber-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900"
+                className="w-56 rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-8 text-xs focus:border-amber-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Kanun maddesi veya kural ara..."
                 type="text"
@@ -550,15 +564,17 @@ export default function CompliancePage() {
 
         {activeTab === "violations" && (
           <div className="flex items-center gap-2.5">
-            <select
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setStatusFilter(e.target.value)}
+            <SelectField
+              onChange={(value) => setStatusFilter(value)}
+              options={[
+                { label: "Tüm Durumlar", value: "all" },
+                { label: "Sadece Aktif İhlaller", value: "Active" },
+                { label: "Yönetici Onaylı İstisnalar", value: "Overridden" },
+              ]}
+              placeholder="Tüm Durumlar"
+              triggerClassName="w-56"
               value={statusFilter}
-            >
-              <option value="all">Tüm Durumlar</option>
-              <option value="Active">Sadece Aktif İhlaller</option>
-              <option value="Overridden">Yönetici Onaylı İstisnalar</option>
-            </select>
+            />
           </div>
         )}
       </div>
@@ -842,12 +858,15 @@ export default function CompliancePage() {
                       <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                         Ara Dinlenme (Dk)
                       </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 dark:border-zinc-800 dark:bg-zinc-800/50"
-                        onChange={(e) =>
-                          setSimBreakMinutes(Number(e.target.value))
+                      <NumberInput
+                        max={480}
+                        min={0}
+                        onChange={(val) =>
+                          setSimBreakMinutes(clampCount(val, 0, 480))
                         }
-                        type="number"
+                        precision={0}
+                        showStepper
+                        step={5}
                         value={simBreakMinutes}
                       />
                     </div>
@@ -855,12 +874,14 @@ export default function CompliancePage() {
                       <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                         Haftalık Mevcut Süre (Saat)
                       </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 dark:border-zinc-800 dark:bg-zinc-800/50"
-                        onChange={(e) =>
-                          setSimCurrentWeeklyHours(Number(e.target.value))
+                      <NumberInput
+                        max={168}
+                        min={0}
+                        onChange={(val) =>
+                          setSimCurrentWeeklyHours(clampCount(val, 0, 168))
                         }
-                        type="number"
+                        precision={0}
+                        showStepper
                         value={simCurrentWeeklyHours}
                       />
                     </div>
@@ -888,21 +909,25 @@ export default function CompliancePage() {
                     <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                       İzin Tipi
                     </label>
-                    <select
-                      className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 dark:border-zinc-800 dark:bg-zinc-800/50"
-                      onChange={(e) => setSimLeaveType(e.target.value)}
+                    <SelectField
+                      onChange={(value) => setSimLeaveType(value)}
+                      options={[
+                        {
+                          label: "Yıllık Ücretli İzin (Md. 53)",
+                          value: "Annual",
+                        },
+                        {
+                          label: "Evlilik İzni (3 gün - Ek Md. 2)",
+                          value: "Evlilik",
+                        },
+                        {
+                          label: "Babalık İzni (5 gün - Ek Md. 2)",
+                          value: "Babalık",
+                        },
+                      ]}
+                      placeholder="İzin tipi seçiniz"
                       value={simLeaveType}
-                    >
-                      <option value="Annual">
-                        Yıllık Ücretli İzin (Md. 53)
-                      </option>
-                      <option value="Evlilik">
-                        Evlilik İzni (3 gün - Ek Md. 2)
-                      </option>
-                      <option value="Babalık">
-                        Babalık İzni (5 gün - Ek Md. 2)
-                      </option>
-                    </select>
+                    />
                   </div>
 
                   <div className="grid grid-cols-3 gap-2">
@@ -910,12 +935,14 @@ export default function CompliancePage() {
                       <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                         Talep Gün
                       </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 dark:border-zinc-800 dark:bg-zinc-800/50"
-                        onChange={(e) =>
-                          setSimLeaveDays(Number(e.target.value))
+                      <NumberInput
+                        max={365}
+                        min={1}
+                        onChange={(val) =>
+                          setSimLeaveDays(clampCount(val, 1, 365))
                         }
-                        type="number"
+                        precision={0}
+                        showStepper
                         value={simLeaveDays}
                       />
                     </div>
@@ -923,12 +950,14 @@ export default function CompliancePage() {
                       <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                         Kıdem (Yıl)
                       </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 dark:border-zinc-800 dark:bg-zinc-800/50"
-                        onChange={(e) =>
-                          setSimSeniorityYears(Number(e.target.value))
+                      <NumberInput
+                        max={60}
+                        min={0}
+                        onChange={(val) =>
+                          setSimSeniorityYears(clampCount(val, 0, 60))
                         }
-                        type="number"
+                        precision={0}
+                        showStepper
                         value={simSeniorityYears}
                       />
                     </div>
@@ -936,12 +965,14 @@ export default function CompliancePage() {
                       <label className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300">
                         Yaş
                       </label>
-                      <input
-                        className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 dark:border-zinc-800 dark:bg-zinc-800/50"
-                        onChange={(e) =>
-                          setSimEmployeeAge(Number(e.target.value))
+                      <NumberInput
+                        max={120}
+                        min={0}
+                        onChange={(val) =>
+                          setSimEmployeeAge(clampCount(val, 0, 120))
                         }
-                        type="number"
+                        precision={0}
+                        showStepper
                         value={simEmployeeAge}
                       />
                     </div>
@@ -1050,7 +1081,7 @@ export default function CompliancePage() {
                 )
               ) : (
                 <div className="space-y-2 py-16 text-center text-zinc-400 dark:text-zinc-500">
-                  <Scale className="mx-auto h-10 w-10 text-slate-300" />
+                  <Scale className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
                   <p className="font-semibold text-xs">
                     Doğrulama sonucunu görüntülemek için sol paneldeki
                     parametreleri belirleyip butona tıklayın.
@@ -1154,7 +1185,7 @@ export default function CompliancePage() {
                   <label
                     className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${
                       editEnforcement === "Disabled"
-                        ? "border-slate-400 bg-zinc-100 dark:bg-zinc-800"
+                        ? "border-zinc-400 bg-zinc-100 dark:bg-zinc-800"
                         : "border-zinc-200 hover:border-zinc-300 dark:border-zinc-700 dark:border-zinc-800"
                     }`}
                     onClick={() => setEditEnforcement("Disabled")}
@@ -1187,7 +1218,7 @@ export default function CompliancePage() {
                   </span>
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-slate-900 p-3 font-mono text-emerald-400 text-xs focus:border-amber-500 focus:outline-none dark:border-zinc-800"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-950 p-3 font-mono text-emerald-400 text-xs focus:border-amber-500 focus:outline-none dark:border-zinc-700"
                   onChange={(e) => setEditThresholdJson(e.target.value)}
                   rows={6}
                   value={editThresholdJson}
@@ -1255,7 +1286,7 @@ export default function CompliancePage() {
                 Onay Gerekçesi (Zorunlu)
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 focus:border-amber-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 focus:border-amber-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
                 onChange={(e) => setOverrideReason(e.target.value)}
                 placeholder="Örn: Acil operasyonel gereklilik nedeniyle çalışan rızası alınarak fazla mesaiye onay verilmiştir."
                 rows={3}
@@ -1269,7 +1300,7 @@ export default function CompliancePage() {
 
             <div className="flex justify-end gap-2 pt-2">
               <button
-                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-300"
+                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onClick={() => setOverridingViolation(null)}
               >
                 İptal

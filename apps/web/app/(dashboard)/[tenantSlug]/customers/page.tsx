@@ -4,6 +4,7 @@
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { PhoneInput } from "@workspace/ui/components/phone-input";
 import {
   Select,
   SelectContent,
@@ -39,7 +40,6 @@ import { useCallback, useEffect, useState } from "react";
 import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { SalesRepPicker } from "@/components/entity-picker-modal";
 import { PermissionGate } from "@/components/permission-gate";
-import { PhoneInput } from "@/components/phone-input";
 import { QuickAddSalesRepModal } from "@/components/quick-add-sales-rep-modal";
 import {
   ApiClient,

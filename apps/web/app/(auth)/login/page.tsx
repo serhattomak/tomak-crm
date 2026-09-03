@@ -57,7 +57,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070709] p-3 sm:p-6">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 p-3 sm:p-6">
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
@@ -70,7 +70,7 @@ export default function LoginPage() {
       </div>
 
       {/* Main Floating Card */}
-      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-white p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12">
+      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-white p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12 dark:bg-zinc-900">
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
@@ -107,10 +107,10 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Form Container */}
-        <div className="flex flex-col justify-between bg-white px-6 py-8 text-slate-900 sm:px-12 sm:py-10 lg:col-span-6">
+        <div className="flex flex-col justify-between bg-white px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6 dark:bg-zinc-900 dark:text-zinc-100">
           {/* Brand Logo Header */}
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-white shadow-sm dark:bg-zinc-100 dark:text-zinc-900">
               <svg
                 className="h-3.5 w-3.5"
                 fill="none"
@@ -122,7 +122,7 @@ export default function LoginPage() {
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="font-semibold text-base text-slate-900 tracking-tight">
+            <span className="font-semibold text-base text-zinc-900 tracking-tight dark:text-zinc-100">
               Cogie
             </span>
           </div>
@@ -130,27 +130,27 @@ export default function LoginPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-6">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-normal font-serif text-3xl text-slate-900 tracking-tight sm:text-4xl">
+              <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl dark:text-zinc-100">
                 Welcome Back
               </h1>
-              <p className="font-normal text-slate-500 text-xs">
+              <p className="font-normal text-xs text-zinc-500 dark:text-zinc-400">
                 Enter your email and password to access your account
               </p>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-red-600 text-xs">
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-center text-rose-600 text-xs dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300">
                 {error}
               </div>
             )}
 
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Email
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -160,12 +160,12 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     required
@@ -173,7 +173,7 @@ export default function LoginPage() {
                     value={password}
                   />
                   <button
-                    className="absolute top-3.5 right-3 text-slate-400 hover:text-slate-600"
+                    className="absolute top-3.5 right-3 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
                     onClick={() => setShowPassword(!showPassword)}
                     type="button"
                   >
@@ -187,17 +187,17 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between pt-1 text-xs">
-                <label className="flex cursor-pointer select-none items-center gap-2 text-slate-600">
+                <label className="flex cursor-pointer select-none items-center gap-2 text-zinc-600 dark:text-zinc-400">
                   <input
                     checked={rememberMe}
-                    className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+                    className="h-3.5 w-3.5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800"
                     onChange={(e) => setRememberMe(e.target.checked)}
                     type="checkbox"
                   />
                   Remember me
                 </label>
                 <a
-                  className="font-normal text-slate-700 hover:text-black"
+                  className="font-normal text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
                   href="#forgot"
                   onClick={(e) => {
                     e.preventDefault();
@@ -212,7 +212,7 @@ export default function LoginPage() {
 
               <div className="space-y-2.5 pt-2">
                 <button
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 font-medium text-white text-xs shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 py-3.5 font-medium text-white text-xs shadow-sm transition-all hover:bg-zinc-800 active:scale-[0.99] disabled:opacity-50 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                   disabled={isLoading}
                   type="submit"
                 >
@@ -221,7 +221,7 @@ export default function LoginPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 font-medium text-slate-700 text-xs shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white py-3 font-medium text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={handleGoogleLogin}
                   type="button"
                 >
@@ -250,10 +250,10 @@ export default function LoginPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-slate-500 text-xs">
+          <div className="mt-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
             Don&apos;t have an account?{" "}
             <Link
-              className="font-semibold text-slate-900 hover:underline"
+              className="font-semibold text-zinc-900 hover:underline dark:text-zinc-100"
               href="/register"
             >
               Sign Up

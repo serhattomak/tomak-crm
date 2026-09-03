@@ -1,5 +1,8 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertCircle,
   ArrowLeft,
@@ -456,7 +459,7 @@ export default function WorkflowBuilderPage() {
             </span>
             <div
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
-                isActive ? "bg-emerald-500" : "bg-slate-300"
+                isActive ? "bg-emerald-500" : "bg-zinc-300"
               }`}
               onClick={() => setIsActive(!isActive)}
             >
@@ -518,16 +521,17 @@ export default function WorkflowBuilderPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <select
-                className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-medium text-xs dark:border-zinc-800 dark:bg-zinc-800/50"
-                onChange={(e) => setCategory(e.target.value)}
+              <SelectField
+                onChange={(value) => setCategory(value)}
+                options={[
+                  { label: "Kategori: Müşteri", value: "Customer" },
+                  { label: "Kategori: Satış & Sipariş", value: "Sales" },
+                  { label: "Kategori: Destek", value: "Support" },
+                  { label: "Kategori: Operasyon", value: "Operations" },
+                ]}
+                placeholder="Kategori seçiniz..."
                 value={category}
-              >
-                <option value="Customer">Kategori: Müşteri</option>
-                <option value="Sales">Kategori: Satış & Sipariş</option>
-                <option value="Support">Kategori: Destek</option>
-                <option value="Operations">Kategori: Operasyon</option>
-              </select>
+              />
             </div>
           </div>
 
@@ -536,44 +540,55 @@ export default function WorkflowBuilderPage() {
               <label className="mb-1 block font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                 Tetikleyici CRM Olayı
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                onChange={(e) => setTriggerType(e.target.value)}
+              <Combobox
+                emptyMessage="Tetikleyici bulunamadı."
+                onChange={(value) => setTriggerType(value)}
+                options={[
+                  {
+                    description: "Müşteri Olayları",
+                    label: "👤 Yeni Müşteri Oluşturulduğunda",
+                    value: "Customer.Created",
+                  },
+                  {
+                    description: "Müşteri Olayları",
+                    label: "🔄 Müşteri Bilgileri Güncellendiğinde",
+                    value: "Customer.Updated",
+                  },
+                  {
+                    description: "Sipariş & Satış Olayları",
+                    label: "🛍️ Yeni Sipariş Alındığında",
+                    value: "Order.Created",
+                  },
+                  {
+                    description: "Sipariş & Satış Olayları",
+                    label: "📦 Sipariş Durumu Değiştiğinde",
+                    value: "Order.StatusChanged",
+                  },
+                  {
+                    description: "Sipariş & Satış Olayları",
+                    label: "📊 Satış Fırsatı Aşaması Değiştiğinde",
+                    value: "Deal.StageChanged",
+                  },
+                  {
+                    description: "Destek Masası Olayları",
+                    label: "🎫 Yeni Destek Bileti Açıldığında",
+                    value: "Ticket.Created",
+                  },
+                  {
+                    description: "Destek Masası Olayları",
+                    label: "⏱️ SLA Çözüm Süresi Aşıldığında",
+                    value: "Ticket.SlaBreached",
+                  },
+                  {
+                    description: "Entegrasyon",
+                    label: "🌐 Gelen Webhook İsteği",
+                    value: "Webhook.Inbound",
+                  },
+                ]}
+                placeholder="Tetikleyici olay seçiniz..."
+                searchPlaceholder="Olay ara..."
                 value={triggerType}
-              >
-                <optgroup label="Müşteri Olayları">
-                  <option value="Customer.Created">
-                    👤 Yeni Müşteri Oluşturulduğunda
-                  </option>
-                  <option value="Customer.Updated">
-                    🔄 Müşteri Bilgileri Güncellendiğinde
-                  </option>
-                </optgroup>
-                <optgroup label="Sipariş & Satış Olayları">
-                  <option value="Order.Created">
-                    🛍️ Yeni Sipariş Alındığında
-                  </option>
-                  <option value="Order.StatusChanged">
-                    📦 Sipariş Durumu Değiştiğinde
-                  </option>
-                  <option value="Deal.StageChanged">
-                    📊 Satış Fırsatı Aşaması Değiştiğinde
-                  </option>
-                </optgroup>
-                <optgroup label="Destek Masası Olayları">
-                  <option value="Ticket.Created">
-                    🎫 Yeni Destek Bileti Açıldığında
-                  </option>
-                  <option value="Ticket.SlaBreached">
-                    ⏱️ SLA Çözüm Süresi Aşıldığında
-                  </option>
-                </optgroup>
-                <optgroup label="Entegrasyon">
-                  <option value="Webhook.Inbound">
-                    🌐 Gelen Webhook İsteği
-                  </option>
-                </optgroup>
-              </select>
+              />
             </div>
 
             {/* Contextual Filters */}
@@ -582,21 +597,22 @@ export default function WorkflowBuilderPage() {
                 <label className="mb-1 block font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                   Hedeflenen Sipariş Durumu
                 </label>
-                <select
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
-                  onChange={(e) =>
+                <SelectField
+                  onChange={(value) =>
                     setTriggerConfig({
                       ...triggerConfig,
-                      targetStatus: e.target.value,
+                      targetStatus: value,
                     })
                   }
+                  options={[
+                    { label: "Tamamlandı (Completed)", value: "Completed" },
+                    { label: "Kargoya Verildi (Shipped)", value: "Shipped" },
+                    { label: "Hazırlanıyor (Processing)", value: "Processing" },
+                    { label: "İptal Edildi (Cancelled)", value: "Cancelled" },
+                  ]}
+                  placeholder="Durum seçiniz..."
                   value={triggerConfig.targetStatus || "Completed"}
-                >
-                  <option value="Completed">Tamamlandı (Completed)</option>
-                  <option value="Shipped">Kargoya Verildi (Shipped)</option>
-                  <option value="Processing">Hazırlanıyor (Processing)</option>
-                  <option value="Cancelled">İptal Edildi (Cancelled)</option>
-                </select>
+                />
               </div>
             )}
           </div>
@@ -604,7 +620,7 @@ export default function WorkflowBuilderPage() {
 
         {/* Connector Line 1 */}
         <div className="relative z-10 -my-2 flex justify-center">
-          <div className="h-8 w-0.5 bg-slate-300" />
+          <div className="h-8 w-0.5 bg-zinc-300 dark:bg-zinc-700" />
         </div>
 
         {/* ======================================================== */}
@@ -654,25 +670,27 @@ export default function WorkflowBuilderPage() {
                       <span className="font-bold text-xs text-zinc-700 dark:text-zinc-300">
                         Kural Grubu {gIdx + 1}:
                       </span>
-                      <select
-                        className="rounded-md border border-zinc-300 bg-white px-2 py-0.5 font-bold text-blue-600 text-xs dark:border-zinc-700 dark:bg-zinc-900"
-                        onChange={(e) => {
-                          const val = e.target.value;
+                      <SelectField
+                        onChange={(value) => {
                           setConditions((prev) =>
                             prev.map((g, i) =>
-                              i === gIdx ? { ...g, logicalOperator: val } : g
+                              i === gIdx ? { ...g, logicalOperator: value } : g
                             )
                           );
                         }}
+                        options={[
+                          {
+                            label: "TÜM kurallar sağlansın (VE / AND)",
+                            value: "AND",
+                          },
+                          {
+                            label: "HERHANGİ bir kural sağlansın (VEYA / OR)",
+                            value: "OR",
+                          },
+                        ]}
+                        placeholder="Mantık seçiniz..."
                         value={group.logicalOperator}
-                      >
-                        <option value="AND">
-                          TÜM kurallar sağlansın (VE / AND)
-                        </option>
-                        <option value="OR">
-                          HERHANGİ bir kural sağlansın (VEYA / OR)
-                        </option>
-                      </select>
+                      />
                     </div>
 
                     <button
@@ -706,29 +724,38 @@ export default function WorkflowBuilderPage() {
 
                         {/* Operator */}
                         <div className="w-full md:w-1/3">
-                          <select
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-semibold text-xs dark:border-zinc-800 dark:bg-zinc-900"
-                            onChange={(e) =>
-                              updateRule(gIdx, rIdx, "operator", e.target.value)
+                          <Combobox
+                            emptyMessage="Operatör bulunamadı."
+                            onChange={(value) =>
+                              updateRule(gIdx, rIdx, "operator", value)
                             }
+                            options={[
+                              { label: "Eşittir (Equals)", value: "equals" },
+                              {
+                                label: "Eşit Değildir (!=)",
+                                value: "notEquals",
+                              },
+                              { label: "Büyüktür (>)", value: "greaterThan" },
+                              {
+                                label: "Büyük ya da Eşit (>=)",
+                                value: "greaterThanOrEqual",
+                              },
+                              { label: "Küçüktür (<)", value: "lessThan" },
+                              {
+                                label: "Küçük ya da Eşit (<=)",
+                                value: "lessThanOrEqual",
+                              },
+                              { label: "İçerir (Contains)", value: "contains" },
+                              { label: "Listede Var (In)", value: "in" },
+                              {
+                                label: "Dolu / Boş Değil",
+                                value: "isNotEmpty",
+                              },
+                            ]}
+                            placeholder="Operatör seçiniz..."
+                            searchPlaceholder="Operatör ara..."
                             value={rule.operator}
-                          >
-                            <option value="equals">Eşittir (Equals)</option>
-                            <option value="notEquals">
-                              Eşit Değildir (!=)
-                            </option>
-                            <option value="greaterThan">Büyüktür (&gt;)</option>
-                            <option value="greaterThanOrEqual">
-                              Büyük ya da Eşit (&gt;=)
-                            </option>
-                            <option value="lessThan">Küçüktür (&lt;)</option>
-                            <option value="lessThanOrEqual">
-                              Küçük ya da Eşit (&lt;=)
-                            </option>
-                            <option value="contains">İçerir (Contains)</option>
-                            <option value="in">Listede Var (In)</option>
-                            <option value="isNotEmpty">Dolu / Boş Değil</option>
-                          </select>
+                          />
                         </div>
 
                         {/* Value */}
@@ -769,7 +796,7 @@ export default function WorkflowBuilderPage() {
 
         {/* Connector Line 2 */}
         <div className="relative z-10 -my-2 flex justify-center">
-          <div className="h-8 w-0.5 bg-slate-300" />
+          <div className="h-8 w-0.5 bg-zinc-300 dark:bg-zinc-700" />
         </div>
 
         {/* ======================================================== */}
@@ -888,23 +915,21 @@ export default function WorkflowBuilderPage() {
                           <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
                             Kanal
                           </label>
-                          <select
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-medium dark:border-zinc-800 dark:bg-zinc-900"
-                            onChange={(e) =>
-                              updateActionConfig(
-                                act.id,
-                                "channel",
-                                e.target.value
-                              )
+                          <SelectField
+                            onChange={(value) =>
+                              updateActionConfig(act.id, "channel", value)
                             }
+                            options={[
+                              {
+                                label: "Sistem İçi Bildirim (In-App)",
+                                value: "InApp",
+                              },
+                              { label: "E-Posta Şablonu", value: "Email" },
+                              { label: "SMS / WhatsApp", value: "SMS" },
+                            ]}
+                            placeholder="Kanal seçiniz..."
                             value={(act.config.channel as string) || "InApp"}
-                          >
-                            <option value="InApp">
-                              Sistem İçi Bildirim (In-App)
-                            </option>
-                            <option value="Email">E-Posta Şablonu</option>
-                            <option value="SMS">SMS / WhatsApp</option>
-                          </select>
+                          />
                         </div>
                         <div>
                           <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
@@ -1017,18 +1042,20 @@ export default function WorkflowBuilderPage() {
                       <label className="font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
                         Bekleme Süresi (Dakika):
                       </label>
-                      <input
-                        className="w-24 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-mono dark:border-zinc-800 dark:bg-zinc-900"
-                        onChange={(e) => {
-                          const val = Number.parseInt(e.target.value) || 0;
+                      <NumberInput
+                        inputSize="sm"
+                        min={0}
+                        onChange={(val) => {
                           setActions((prev) =>
                             prev.map((a) =>
                               a.id === act.id ? { ...a, delayMinutes: val } : a
                             )
                           );
                         }}
-                        type="number"
-                        value={act.delayMinutes || 15}
+                        precision={0}
+                        showStepper
+                        step={5}
+                        value={act.delayMinutes ?? 15}
                       />
                     </div>
                   )}
@@ -1104,15 +1131,18 @@ export default function WorkflowBuilderPage() {
                   <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
                     totalAmount
                   </label>
-                  <input
-                    className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
-                    onChange={(e) =>
+                  <NumberInput
+                    inputSize="sm"
+                    min={0}
+                    onChange={(val) =>
                       setMockContext({
                         ...mockContext,
-                        totalAmount: Number(e.target.value),
+                        totalAmount: val,
                       })
                     }
-                    type="number"
+                    precision={0}
+                    showStepper
+                    step={100}
                     value={(mockContext.totalAmount as number) ?? 0}
                   />
                 </div>
@@ -1199,7 +1229,7 @@ export default function WorkflowBuilderPage() {
 
             <div className="flex justify-end pt-2">
               <button
-                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-300"
+                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300"
                 onClick={() => setIsSimulationOpen(false)}
               >
                 Kapat

@@ -1,5 +1,7 @@
 "use client";
 
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertCircle,
   Eye,
@@ -31,9 +33,9 @@ interface GenericImapFieldsProps {
   imapHost: string;
   imapPort: number;
   onImapHostChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onImapPortChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onImapPortChange: (val: number) => void;
   onSmtpHostChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSmtpPortChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSmtpPortChange: (val: number) => void;
   smtpHost: string;
   smtpPort: number;
 }
@@ -79,11 +81,15 @@ function GenericImapFields({
           >
             IMAP Port
           </label>
-          <input
-            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+          <NumberInput
             id="account-imap-port"
+            inputSize="sm"
+            max={65_535}
+            min={1}
             onChange={onImapPortChange}
-            type="number"
+            precision={0}
+            showStepper
+            step={1}
             value={imapPort}
           />
         </div>
@@ -113,11 +119,15 @@ function GenericImapFields({
           >
             SMTP Port
           </label>
-          <input
-            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+          <NumberInput
             id="account-smtp-port"
+            inputSize="sm"
+            max={65_535}
+            min={1}
             onChange={onSmtpPortChange}
-            type="number"
+            precision={0}
+            showStepper
+            step={1}
             value={smtpPort}
           />
         </div>
@@ -263,12 +273,9 @@ export function EmailAccountModal({
     []
   );
 
-  const handleProviderChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setProvider(e.target.value as "generic_imap" | "resend");
-    },
-    []
-  );
+  const handleProviderChange = useCallback((value: string) => {
+    setProvider(value as "generic_imap" | "resend");
+  }, []);
 
   const handleImapHostChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,12 +284,9 @@ export function EmailAccountModal({
     []
   );
 
-  const handleImapPortChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setImapPort(Number(e.target.value));
-    },
-    []
-  );
+  const handleImapPortChange = useCallback((val: number) => {
+    setImapPort(Number.isNaN(val) ? 993 : val);
+  }, []);
 
   const handleSmtpHostChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -291,12 +295,9 @@ export function EmailAccountModal({
     []
   );
 
-  const handleSmtpPortChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSmtpPort(Number(e.target.value));
-    },
-    []
-  );
+  const handleSmtpPortChange = useCallback((val: number) => {
+    setSmtpPort(Number.isNaN(val) ? 587 : val);
+  }, []);
 
   const handlePasswordChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -509,21 +510,18 @@ export function EmailAccountModal({
               />
             </div>
             <div>
-              <label
-                className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300"
-                htmlFor="account-provider"
-              >
+              <span className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Sağlayıcı Türü
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                id="account-provider"
+              </span>
+              <SelectField
                 onChange={handleProviderChange}
+                options={[
+                  { label: "Generic IMAP / SMTP", value: "generic_imap" },
+                  { label: "Resend (API Fallback)", value: "resend" },
+                ]}
+                placeholder="Sağlayıcı seçin"
                 value={provider}
-              >
-                <option value="generic_imap">Generic IMAP / SMTP</option>
-                <option value="resend">Resend (API Fallback)</option>
-              </select>
+              />
             </div>
           </div>
 

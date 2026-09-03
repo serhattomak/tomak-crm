@@ -1,5 +1,6 @@
 "use client";
 
+import { SelectField } from "@workspace/ui/components/select";
 import {
   Activity,
   AlertCircle,
@@ -468,30 +469,36 @@ export default function AutomationsPage() {
         {activeTab === "workflows" && (
           <div className="flex items-center gap-2.5">
             {/* Category Dropdown */}
-            <select
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              value={selectedCategory}
-            >
-              <option value="all">Tüm Kategoriler</option>
-              <option value="Customer">Müşteri</option>
-              <option value="Sales">Satış & Sipariş</option>
-              <option value="Support">Destek Masası</option>
-              <option value="Operations">Operasyon</option>
-            </select>
+            <div className="w-[160px]">
+              <SelectField
+                onChange={(value) => setSelectedCategory(value)}
+                options={[
+                  { label: "Tüm Kategoriler", value: "all" },
+                  { label: "Müşteri", value: "Customer" },
+                  { label: "Satış & Sipariş", value: "Sales" },
+                  { label: "Destek Masası", value: "Support" },
+                  { label: "Operasyon", value: "Operations" },
+                ]}
+                placeholder="Tüm Kategoriler"
+                value={selectedCategory}
+              />
+            </div>
 
             {/* Status Filter */}
-            <select
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              onChange={(e) =>
-                setStatusFilter(e.target.value as "all" | "active" | "inactive")
-              }
-              value={statusFilter}
-            >
-              <option value="all">Tüm Durumlar</option>
-              <option value="active">Sadece Aktifler</option>
-              <option value="inactive">Sadece Pasifler</option>
-            </select>
+            <div className="w-[150px]">
+              <SelectField
+                onChange={(value) =>
+                  setStatusFilter(value as "all" | "active" | "inactive")
+                }
+                options={[
+                  { label: "Tüm Durumlar", value: "all" },
+                  { label: "Sadece Aktifler", value: "active" },
+                  { label: "Sadece Pasifler", value: "inactive" },
+                ]}
+                placeholder="Tüm Durumlar"
+                value={statusFilter}
+              />
+            </div>
 
             {/* Search Input */}
             <form className="relative" onSubmit={handleSearch}>
@@ -602,7 +609,9 @@ export default function AutomationsPage() {
                       {/* On/Off Switch */}
                       <div
                         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                          wf.isActive ? "bg-emerald-500" : "bg-slate-300"
+                          wf.isActive
+                            ? "bg-emerald-500"
+                            : "bg-zinc-300 dark:bg-zinc-700"
                         }`}
                         onClick={(e) => handleToggle(wf, e)}
                       >
@@ -857,7 +866,7 @@ export default function AutomationsPage() {
               </div>
 
               <button
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2 font-medium text-white text-xs shadow-xs transition-all hover:bg-blue-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-2 font-medium text-white text-xs shadow-xs transition-all hover:bg-blue-600 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                 onClick={() => handleUseTemplate(tmpl)}
               >
                 <span>Bu Şablonu Kullan</span>
@@ -1034,7 +1043,7 @@ export default function AutomationsPage() {
 
             <div className="flex justify-end pt-2">
               <button
-                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-300"
+                className="rounded-xl bg-zinc-100 px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onClick={() => setSimulatingWorkflow(null)}
               >
                 Kapat

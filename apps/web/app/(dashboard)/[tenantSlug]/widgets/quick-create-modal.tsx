@@ -3,6 +3,7 @@
 
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PhoneInput } from "@workspace/ui/components/phone-input";
 import {
   Select,
   SelectContent,
@@ -25,7 +26,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PhoneInput } from "@/components/phone-input";
 import { ApiClient } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 import type { QuickActionType } from "./quick-actions-widget";

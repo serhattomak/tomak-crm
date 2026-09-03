@@ -1,5 +1,7 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   CheckCircle2,
   ChevronLeft,
@@ -908,8 +910,8 @@ interface MessagesFilterBarProps {
   accounts: EmailAccountDto[];
   activeTab: EmailTab;
   isReadFilter: string;
-  onAccountFilterChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onReadFilterChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onAccountFilterChange: (value: string) => void;
+  onReadFilterChange: (value: string) => void;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   searchQuery: string;
   selectedAccountId: string;
@@ -945,29 +947,37 @@ function MessagesFilterBar({
           />
         </div>
 
-        <select
-          className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-          onChange={onAccountFilterChange}
-          value={selectedAccountId}
-        >
-          <option value="">Tüm Hesaplar</option>
-          {accounts.map((acc) => (
-            <option key={acc.id} value={acc.id}>
-              {acc.email}
-            </option>
-          ))}
-        </select>
+        <div className="w-full sm:w-[220px]">
+          <Combobox
+            emptyMessage="Hesap bulunamadı."
+            onChange={onAccountFilterChange}
+            options={[
+              { label: "Tüm Hesaplar", value: "" },
+              ...accounts.map((acc) => ({
+                description: acc.description || acc.provider,
+                label: acc.email,
+                value: acc.id,
+              })),
+            ]}
+            placeholder="Tüm Hesaplar"
+            searchPlaceholder="Hesap ara..."
+            value={selectedAccountId}
+          />
+        </div>
 
         {activeTab === "inbox" ? (
-          <select
-            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            onChange={onReadFilterChange}
-            value={isReadFilter}
-          >
-            <option value="all">Tüm Durumlar</option>
-            <option value="unread">Sadece Okunmamış</option>
-            <option value="read">Sadece Okunmuş</option>
-          </select>
+          <div className="w-full sm:w-[170px]">
+            <SelectField
+              onChange={onReadFilterChange}
+              options={[
+                { label: "Tüm Durumlar", value: "all" },
+                { label: "Sadece Okunmamış", value: "unread" },
+                { label: "Sadece Okunmuş", value: "read" },
+              ]}
+              placeholder="Tüm Durumlar"
+              value={isReadFilter}
+            />
+          </div>
         ) : null}
       </div>
 
@@ -1281,21 +1291,15 @@ export default function EmailWorkbenchPage() {
     []
   );
 
-  const handleAccountFilterChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedAccountId(e.target.value);
-      setPage(1);
-    },
-    []
-  );
+  const handleAccountFilterChange = useCallback((value: string) => {
+    setSelectedAccountId(value);
+    setPage(1);
+  }, []);
 
-  const handleReadFilterChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setIsReadFilter(e.target.value);
-      setPage(1);
-    },
-    []
-  );
+  const handleReadFilterChange = useCallback((value: string) => {
+    setIsReadFilter(value);
+    setPage(1);
+  }, []);
 
   const handleOpenCompose = useCallback(() => {
     setComposePrefill({});

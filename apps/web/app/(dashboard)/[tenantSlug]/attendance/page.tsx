@@ -2,17 +2,16 @@
 
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
-import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  DatePicker,
+  DateRangePicker,
+} from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
+import { Textarea } from "@workspace/ui/components/textarea";
 import {
   AlertCircle,
   Calendar as CalendarIcon,
@@ -55,6 +54,13 @@ import {
   type TodayStatusDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+
+const clampCount = (val: number, min: number, max: number): number => {
+  if (Number.isNaN(val)) {
+    return min;
+  }
+  return Math.min(max, Math.max(min, Math.round(val)));
+};
 
 export default function AttendancePage() {
   const params = useParams();
@@ -888,7 +894,7 @@ export default function AttendancePage() {
       {/* 1. Header & Live Clock Quick Bar */}
       <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
         <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/50 dark:bg-blue-950/60 dark:text-blue-400">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/60 dark:text-blue-400">
             <Clock className="h-6 w-6" />
           </div>
           <div>
@@ -1118,7 +1124,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Beklenen / Gelmeyen
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:bg-slate-800">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800">
                     <UserX className="h-4 w-4" />
                   </div>
                 </div>
@@ -1133,10 +1139,9 @@ export default function AttendancePage() {
 
             {/* Filter Bar */}
             <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-white p-4 shadow-xs sm:flex-row dark:bg-card">
-              <div className="relative w-full flex-1">
-                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  className="w-full rounded-xl border border-border bg-background py-2 pr-4 pl-9 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              <div className="w-full flex-1">
+                <Input
+                  leftIcon={<Search className="h-4 w-4" />}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearch(e.target.value)
                   }
@@ -1146,36 +1151,32 @@ export default function AttendancePage() {
                 />
               </div>
               <div className="w-full sm:w-[200px]">
-                <Select
-                  onValueChange={setDepartmentFilter}
+                <SelectField
+                  onChange={setDepartmentFilter}
+                  options={[
+                    { label: "Tüm Departmanlar", value: "all" },
+                    ...departments.map((d) => ({
+                      label: d.name,
+                      value: d.name,
+                    })),
+                  ]}
+                  placeholder="Tüm Departmanlar"
                   value={departmentFilter}
-                >
-                  <SelectTrigger className="bg-background">
-                    <SelectValue placeholder="Tüm Departmanlar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tüm Departmanlar</SelectItem>
-                    {departments.map((d) => (
-                      <SelectItem key={d.id} value={d.name}>
-                        {d.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </div>
               <div className="w-full sm:w-[180px]">
-                <Select onValueChange={setStatusFilter} value={statusFilter}>
-                  <SelectTrigger className="bg-background">
-                    <SelectValue placeholder="Tüm Durumlar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tüm Durumlar</SelectItem>
-                    <SelectItem value="Working">Çalışıyor</SelectItem>
-                    <SelectItem value="OnBreak">Molada</SelectItem>
-                    <SelectItem value="Late">Geç Kaldı</SelectItem>
-                    <SelectItem value="Absent">Gelmeyen</SelectItem>
-                  </SelectContent>
-                </Select>
+                <SelectField
+                  onChange={setStatusFilter}
+                  options={[
+                    { label: "Tüm Durumlar", value: "all" },
+                    { label: "Çalışıyor", value: "Working" },
+                    { label: "Molada", value: "OnBreak" },
+                    { label: "Geç Kaldı", value: "Late" },
+                    { label: "Gelmeyen", value: "Absent" },
+                  ]}
+                  placeholder="Tüm Durumlar"
+                  value={statusFilter}
+                />
               </div>
             </div>
 
@@ -1261,7 +1262,7 @@ export default function AttendancePage() {
                             </span>
                           )}
                           {emp.currentState === "Absent" && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-700 text-xs dark:bg-slate-800 dark:text-slate-300">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-2.5 py-1 font-semibold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                               <UserX className="h-3.5 w-3.5" />
                               Henüz Gelmedi
                             </span>
@@ -1452,46 +1453,37 @@ export default function AttendancePage() {
         {/* TAB 3: Devam & Giriş-Çıkış Kütüğü */}
         {activeTab === "records" && (
           <div className="mt-6 flex flex-col gap-6">
-            {/* Filter Bar */}
-            <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-white p-4 shadow-xs sm:grid-cols-2 md:grid-cols-4 dark:bg-card">
+            {/* Filter Bar — kayıt aralığı tek DateRangePicker ile seçilir */}
+            <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-white p-4 shadow-xs sm:grid-cols-2 md:grid-cols-3 dark:bg-card">
               <div>
                 <label className="mb-1 block font-semibold text-muted-foreground text-xs">
-                  Başlangıç Tarihi
+                  Tarih Aralığı
                 </label>
-                <DatePicker
-                  onChange={(val) => setRecordDateFrom(val)}
-                  value={recordDateFrom}
-                />
-              </div>
-              <div>
-                <label className="mb-1 block font-semibold text-muted-foreground text-xs">
-                  Bitiş Tarihi
-                </label>
-                <DatePicker
-                  onChange={(val) => setRecordDateTo(val)}
-                  value={recordDateTo}
+                <DateRangePicker
+                  endDate={recordDateTo}
+                  onChange={(range) => {
+                    setRecordDateFrom(range.startDate);
+                    setRecordDateTo(range.endDate);
+                  }}
+                  startDate={recordDateFrom}
                 />
               </div>
               <div>
                 <label className="mb-1 block font-semibold text-muted-foreground text-xs">
                   Departman
                 </label>
-                <Select
-                  onValueChange={setDepartmentFilter}
+                <SelectField
+                  onChange={setDepartmentFilter}
+                  options={[
+                    { label: "Tümü", value: "all" },
+                    ...departments.map((d) => ({
+                      label: d.name,
+                      value: d.id,
+                    })),
+                  ]}
+                  placeholder="Tümü"
                   value={departmentFilter}
-                >
-                  <SelectTrigger className="bg-background">
-                    <SelectValue placeholder="Tümü" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tümü</SelectItem>
-                    {departments.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>
-                        {d.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </div>
               <div className="flex items-end">
                 <Button
@@ -1560,7 +1552,7 @@ export default function AttendancePage() {
                               +{formatMinutes(r.overtimeMinutes)} (1.5x)
                             </span>
                           ) : r.holidayOvertimeMinutes > 0 ? (
-                            <span className="inline-flex rounded-md border border-purple-200 bg-purple-50 px-2 py-0.5 font-semibold text-purple-600 text-xs">
+                            <span className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-600 text-xs">
                               +{formatMinutes(r.holidayOvertimeMinutes)} (2.0x)
                             </span>
                           ) : (
@@ -1779,7 +1771,7 @@ export default function AttendancePage() {
               <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                       <Smartphone className="h-5 w-5" />
                     </div>
                     <div>
@@ -1851,7 +1843,7 @@ export default function AttendancePage() {
 
       {/* MODAL 1: Vardiya Şablonu Oluştur */}
       {isTemplateModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
           <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
@@ -1880,8 +1872,7 @@ export default function AttendancePage() {
                   <label className="mb-1 block font-semibold text-foreground text-xs">
                     Vardiya Adı *
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  <Input
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setTemplateForm({ ...templateForm, name: e.target.value })
                     }
@@ -1895,8 +1886,7 @@ export default function AttendancePage() {
                   <label className="mb-1 block font-semibold text-foreground text-xs">
                     Vardiya Kodu *
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  <Input
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setTemplateForm({ ...templateForm, code: e.target.value })
                     }
@@ -1976,8 +1966,7 @@ export default function AttendancePage() {
                           >
                             Mola {idx + 1} etiketi
                           </label>
-                          <input
-                            className="w-full rounded-lg border border-border bg-background px-2 py-1.5 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                          <Input
                             id={`break-label-${idx}`}
                             onChange={(
                               e: React.ChangeEvent<HTMLInputElement>
@@ -2114,11 +2103,10 @@ export default function AttendancePage() {
                     <label className="mb-1 block font-semibold text-foreground text-xs opacity-60">
                       Mola Süresi (dk) — deprecated
                     </label>
-                    <input
+                    <NumberInput
                       aria-label="Mola süresi deprecated fallback"
-                      className="w-full rounded-xl border border-border bg-muted/40 px-3 py-2 text-muted-foreground text-sm"
-                      readOnly
-                      type="number"
+                      disabled
+                      precision={0}
                       value={templateForm.breakDurationMinutes}
                     />
                   </div>
@@ -2126,15 +2114,18 @@ export default function AttendancePage() {
                     <label className="mb-1 block font-semibold text-foreground text-xs">
                       Giriş Toleransı (dk)
                     </label>
-                    <input
-                      className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    <NumberInput
+                      max={60}
+                      min={0}
+                      onChange={(val) =>
                         setTemplateForm({
                           ...templateForm,
-                          gracePeriodMinutes: Number(e.target.value),
+                          gracePeriodMinutes: clampCount(val, 0, 60),
                         })
                       }
-                      type="number"
+                      precision={0}
+                      showStepper
+                      step={1}
                       value={templateForm.gracePeriodMinutes}
                     />
                   </div>
@@ -2207,7 +2198,7 @@ export default function AttendancePage() {
 
       {/* MODAL 2: Vardiya Ata */}
       {isAssignModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
           <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
@@ -2233,24 +2224,17 @@ export default function AttendancePage() {
             >
               <div className="space-y-1.5">
                 <Label required>Vardiya Şablonu</Label>
-                <Select
-                  onValueChange={(val) =>
+                <SelectField
+                  onChange={(val) =>
                     setAssignForm({ ...assignForm, shiftTemplateId: val })
                   }
+                  options={templates.map((t) => ({
+                    label: `${t.name} (${t.startTime.slice(0, 5)} - ${t.endTime.slice(0, 5)})`,
+                    value: t.id,
+                  }))}
+                  placeholder="Vardiya Şablonu Seçin"
                   value={assignForm.shiftTemplateId}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Vardiya Şablonu Seçin" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {templates.map((t) => (
-                      <SelectItem key={t.id} value={t.id}>
-                        {t.name} ({t.startTime.slice(0, 5)} -{" "}
-                        {t.endTime.slice(0, 5)})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -2284,51 +2268,40 @@ export default function AttendancePage() {
 
               <div className="space-y-1.5">
                 <Label>Departman ile Toplu Ata (Opsiyonel)</Label>
-                <Select
-                  onValueChange={(val) =>
+                <SelectField
+                  onChange={(val) =>
                     setAssignForm({
                       ...assignForm,
-                      departmentId: val,
+                      departmentId: val === "all" ? "" : val,
                       employeeIds: [],
                     })
                   }
-                  value={assignForm.departmentId}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Tüm departman personeline uygula..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Bireysel Seçim Yap</SelectItem>
-                    {departments.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>
-                        {d.name} Departmanı
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { label: "Bireysel Seçim Yap", value: "all" },
+                    ...departments.map((d) => ({
+                      label: `${d.name} Departmanı`,
+                      value: d.id,
+                    })),
+                  ]}
+                  placeholder="Tüm departman personeline uygula..."
+                  value={assignForm.departmentId || "all"}
+                />
               </div>
 
               {!assignForm.departmentId && (
                 <div className="space-y-1.5">
                   <Label required>Personel Seçimi</Label>
-                  <Select
-                    onValueChange={(val) =>
+                  <SelectField
+                    onChange={(val) =>
                       setAssignForm({ ...assignForm, employeeIds: [val] })
                     }
+                    options={employees.map((emp) => ({
+                      label: `${emp.firstName} ${emp.lastName} (${emp.departmentName || "Genel"})`,
+                      value: emp.id,
+                    }))}
+                    placeholder="Personel Seçin"
                     value={assignForm.employeeIds[0] || ""}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Personel Seçin" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {employees.map((emp) => (
-                        <SelectItem key={emp.id} value={emp.id}>
-                          {emp.firstName} {emp.lastName} (
-                          {emp.departmentName || "Genel"})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  />
                 </div>
               )}
 
@@ -2379,7 +2352,7 @@ export default function AttendancePage() {
 
       {/* MODAL 3: Düzeltme Talebi */}
       {isCorrectionModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs">
+        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
           <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
@@ -2405,23 +2378,17 @@ export default function AttendancePage() {
             >
               <div className="space-y-1.5">
                 <Label required>Personel</Label>
-                <Select
-                  onValueChange={(val) =>
+                <SelectField
+                  onChange={(val) =>
                     setCorrectionForm({ ...correctionForm, employeeId: val })
                   }
+                  options={employees.map((emp) => ({
+                    label: `${emp.firstName} ${emp.lastName}`,
+                    value: emp.id,
+                  }))}
+                  placeholder="Personel Seçin"
                   value={correctionForm.employeeId}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Personel Seçin" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {employees.map((emp) => (
-                      <SelectItem key={emp.id} value={emp.id}>
-                        {emp.firstName} {emp.lastName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </div>
 
               <div className="space-y-1.5">
@@ -2470,8 +2437,7 @@ export default function AttendancePage() {
 
               <div className="space-y-1.5">
                 <Label required>Mazeret / Açıklama</Label>
-                <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-hidden dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                <Textarea
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setCorrectionForm({
                       ...correctionForm,

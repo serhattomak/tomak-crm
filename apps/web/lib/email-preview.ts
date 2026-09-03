@@ -1,24 +1,62 @@
 /**
  * Utility for rendering safe, styled HTML previews inside sandboxed iframes.
  * Ensures high contrast and readability across both light and dark themes.
+ *
+ * Colors are sourced from the CRM design tokens in
+ * `packages/ui/src/styles/globals.css` (`:root` / `.dark`) and referenced
+ * below only through `--email-*` custom properties. `isDark` selects which
+ * token value set is emitted — the branching is preserved, no raw palette
+ * is inlined at usage sites.
  */
+
+type EmailPreviewTokens = {
+  /** Surface background — `--background` token. */
+  bg: string;
+  /** Primary text — `--foreground` token. */
+  text: string;
+  /** Links — `--primary` token (CRM blue). */
+  link: string;
+  /** Borders, rules, table grid — `--border` token. */
+  border: string;
+  /** Table header fill — `--muted` token. */
+  tableHeaderBg: string;
+  /** Blockquote rail — `--border` token. */
+  blockquoteBorder: string;
+  /** Secondary text — `--muted-foreground` token. */
+  secondaryText: string;
+};
+
+const LIGHT_TOKENS: EmailPreviewTokens = {
+  bg: "oklch(0.99 0.002 240)",
+  blockquoteBorder: "oklch(0.91 0.005 240)",
+  border: "oklch(0.91 0.005 240)",
+  link: "oklch(0.55 0.22 260)",
+  secondaryText: "oklch(0.48 0.02 240)",
+  tableHeaderBg: "oklch(0.965 0.005 240)",
+  text: "oklch(0.15 0.02 240)",
+};
+
+const DARK_TOKENS: EmailPreviewTokens = {
+  bg: "oklch(0.14 0.02 260)",
+  blockquoteBorder: "oklch(0.28 0.02 260)",
+  border: "oklch(0.28 0.02 260)",
+  link: "oklch(0.65 0.18 260)",
+  secondaryText: "oklch(0.68 0.02 260)",
+  tableHeaderBg: "oklch(0.24 0.02 260)",
+  text: "oklch(0.96 0.005 260)",
+};
+
 export function renderEmailPreviewHtml(
   content: string,
   isDark: boolean
 ): string {
-  const bg = isDark ? "#09090b" : "#ffffff";
-  const text = isDark ? "#f4f4f5" : "#18181b";
-  const linkColor = isDark ? "#38bdf8" : "#0284c7";
-  const border = isDark ? "#27272a" : "#e4e4e7";
-  const tableHeaderBg = isDark ? "#18181b" : "#f4f4f5";
-  const blockquoteBorder = isDark ? "#3f3f46" : "#d4d4d8";
-  const blockquoteText = isDark ? "#a1a1aa" : "#71717a";
+  const tokens: EmailPreviewTokens = isDark ? DARK_TOKENS : LIGHT_TOKENS;
 
   const safeContent =
     content.trim() ||
-    `<div style="font-family: sans-serif; color: ${isDark ? "#a1a1aa" : "#71717a"}; padding: 24px; text-align: center;">
-      <p style="font-size: 14px; margin-bottom: 8px; color: ${isDark ? "#e4e4e7" : "#27272a"}; font-weight: 500;">İçerik bulunmuyor</p>
-      <p style="font-size: 12px; color: ${isDark ? "#71717a" : "#a1a1aa"};">Önizlenecek şablon veya e-posta gövdesi boş.</p>
+    `<div style="font-family: sans-serif; color: var(--email-secondary-text); padding: 24px; text-align: center;">
+      <p style="font-size: 14px; margin-bottom: 8px; color: var(--email-text); font-weight: 500;">İçerik bulunmuyor</p>
+      <p style="font-size: 12px; color: var(--email-secondary-text);">Önizlenecek şablon veya e-posta gövdesi boş.</p>
     </div>`;
 
   return `<!DOCTYPE html>
@@ -28,9 +66,18 @@ export function renderEmailPreviewHtml(
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_blank">
     <style>
+      :root {
+        --email-bg: ${tokens.bg};
+        --email-text: ${tokens.text};
+        --email-link: ${tokens.link};
+        --email-border: ${tokens.border};
+        --email-table-header-bg: ${tokens.tableHeaderBg};
+        --email-blockquote-border: ${tokens.blockquoteBorder};
+        --email-secondary-text: ${tokens.secondaryText};
+      }
       html, body {
-        background-color: ${bg} !important;
-        color: ${text} !important;
+        background-color: var(--email-bg) !important;
+        color: var(--email-text) !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 13px;
         line-height: 1.6;
@@ -42,7 +89,7 @@ export function renderEmailPreviewHtml(
         color: inherit;
       }
       a {
-        color: ${linkColor} !important;
+        color: var(--email-link) !important;
         text-decoration: underline;
       }
       table {
@@ -52,24 +99,24 @@ export function renderEmailPreviewHtml(
         margin: 8px 0;
       }
       th, td {
-        border: 1px solid ${border};
+        border: 1px solid var(--email-border);
         padding: 6px 10px;
         text-align: left;
       }
       th {
-        background-color: ${tableHeaderBg};
+        background-color: var(--email-table-header-bg);
         color: inherit;
       }
       hr {
         border: 0;
-        border-top: 1px solid ${border};
+        border-top: 1px solid var(--email-border);
         margin: 16px 0;
       }
       blockquote {
-        border-left: 3px solid ${blockquoteBorder};
+        border-left: 3px solid var(--email-blockquote-border);
         margin: 8px 0;
         padding-left: 12px;
-        color: ${blockquoteText};
+        color: var(--email-secondary-text);
       }
       img {
         max-width: 100%;

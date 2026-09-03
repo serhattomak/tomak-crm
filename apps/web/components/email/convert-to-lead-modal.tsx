@@ -1,15 +1,11 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { Combobox } from "@workspace/ui/components/combobox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -101,6 +97,172 @@ function buildDealPayload(
   };
 }
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  EUR: "€",
+  TRY: "₺",
+  USD: "$",
+};
+
+function getCurrencySymbol(code: string): string {
+  return CURRENCY_SYMBOLS[code] ?? "₺";
+}
+
+interface DealSuccessCardProps {
+  onClose: () => void;
+  tenantSlug: string;
+}
+
+function DealSuccessCard({
+  onClose,
+  tenantSlug,
+}: DealSuccessCardProps): React.ReactElement {
+  return (
+    <div className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-5 text-center dark:border-emerald-900 dark:bg-emerald-950/40">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/60 dark:text-emerald-400">
+        <CheckCircle2 className="h-6 w-6" />
+      </div>
+      <div>
+        <h3 className="font-semibold text-emerald-900 text-sm dark:text-emerald-200">
+          Fırsat Başarıyla Oluşturuldu!
+        </h3>
+        <p className="mt-1 text-emerald-700 text-xs dark:text-emerald-300">
+          E-posta içeriği satış boru hattınıza Lead olarak eklendi.
+        </p>
+      </div>
+      <div className="flex items-center justify-center gap-3 pt-2">
+        <Link
+          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-emerald-700"
+          href={`/${tenantSlug}/pipelines`}
+          onClick={onClose}
+        >
+          <span>Satış Hattına Git</span>
+          <ExternalLink className="h-3.5 w-3.5" />
+        </Link>
+        <Button onClick={onClose} size="sm" variant="outline">
+          Kapat
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+interface CustomerMatchSectionProps {
+  customerEmail: string;
+  customerMode: "new" | "existing";
+  customerName: string;
+  customerPhone: string;
+  existingCustomers: CustomerListDto[];
+  onCustomerEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCustomerNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCustomerPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectCustomer: (id: string) => void;
+  onSetModeExisting: () => void;
+  onSetModeNew: () => void;
+  selectedCustomerId: string;
+}
+
+function CustomerMatchSection({
+  customerEmail,
+  customerMode,
+  customerName,
+  customerPhone,
+  existingCustomers,
+  onCustomerEmailChange,
+  onCustomerNameChange,
+  onCustomerPhoneChange,
+  onSelectCustomer,
+  onSetModeExisting,
+  onSetModeNew,
+  selectedCustomerId,
+}: CustomerMatchSectionProps): React.ReactElement {
+  const showExistingPicker =
+    customerMode === "existing" && existingCustomers.length > 0;
+  return (
+    <div className="space-y-2 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-900/40">
+      <div className="flex items-center justify-between">
+        <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
+          Müşteri Eşleştirme
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            className={`rounded-lg px-2.5 py-1 font-medium text-xs transition ${
+              customerMode === "new"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            }`}
+            onClick={onSetModeNew}
+            type="button"
+          >
+            Yeni Müşteri
+          </button>
+          {existingCustomers.length > 0 ? (
+            <button
+              className={`rounded-lg px-2.5 py-1 font-medium text-xs transition ${
+                customerMode === "existing"
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              }`}
+              onClick={onSetModeExisting}
+              type="button"
+            >
+              Mevcut Müşteri ({existingCustomers.length})
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      {showExistingPicker ? (
+        <div className="space-y-1 pt-1">
+          <Label className="font-medium text-xs">Mevcut Müşteri Seçin</Label>
+          <Combobox
+            emptyMessage="Müşteri bulunamadı."
+            onChange={onSelectCustomer}
+            options={existingCustomers.map((cust) => ({
+              description: cust.email || "E-posta yok",
+              label: cust.name,
+              value: cust.id,
+            }))}
+            placeholder="Müşteri seçin"
+            searchPlaceholder="Müşteri ara..."
+            value={selectedCustomerId}
+          />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3">
+          <div>
+            <Label className="font-medium text-xs">Firma / Müşteri Adı *</Label>
+            <Input
+              className="h-8 text-xs"
+              onChange={onCustomerNameChange}
+              placeholder="Örn: ABC A.Ş."
+              value={customerName}
+            />
+          </div>
+          <div>
+            <Label className="font-medium text-xs">E-posta</Label>
+            <Input
+              className="h-8 text-xs"
+              onChange={onCustomerEmailChange}
+              placeholder="iletisim@firma.com"
+              type="email"
+              value={customerEmail}
+            />
+          </div>
+          <div>
+            <Label className="font-medium text-xs">Telefon</Label>
+            <Input
+              className="h-8 text-xs"
+              onChange={onCustomerPhoneChange}
+              placeholder="+90 (5XX) XXX XX XX"
+              value={customerPhone}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function ConvertToLeadModal({
   isOpen,
   message,
@@ -119,7 +281,7 @@ export function ConvertToLeadModal({
   const [customerPhone, setCustomerPhone] = useState<string>("");
 
   const [dealTitle, setDealTitle] = useState<string>("");
-  const [dealValue, setDealValue] = useState<string>("0");
+  const [dealValue, setDealValue] = useState<number>(0);
   const [dealCurrency, setDealCurrency] = useState<string>("TRY");
   const [dealPriority, setDealPriority] = useState<string>("Medium");
   const [dealNote, setDealNote] = useState<string>("");
@@ -162,12 +324,9 @@ export function ConvertToLeadModal({
     []
   );
 
-  const handleDealValueChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setDealValue(e.target.value);
-    },
-    []
-  );
+  const handleDealValueChange = useCallback((val: number) => {
+    setDealValue(Number.isNaN(val) ? 0 : val);
+  }, []);
 
   const handleDealNoteChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -232,7 +391,7 @@ export function ConvertToLeadModal({
     setCustomerEmail(parsed.email);
     setCustomerPhone("");
     setDealTitle(message.subject || `Yeni Fırsat - ${parsed.name}`);
-    setDealValue("0");
+    setDealValue(0);
     setDealCurrency("TRY");
     setDealPriority("Medium");
     setDealNote(message.textBody?.slice(0, 300) || "");
@@ -256,8 +415,8 @@ export function ConvertToLeadModal({
           userRes.success ? userRes.data : undefined
         );
       })
-      .catch((err) => {
-        console.error("Error loading conversion meta:", err);
+      .catch(() => {
+        // non-blocking: meta veriler yüklenemezse form yine açılır
       })
       .finally(() => {
         if (isMounted) {
@@ -346,7 +505,7 @@ export function ConvertToLeadModal({
         return;
       }
 
-      const parsedValue = Number.parseFloat(dealValue) || 0;
+      const parsedValue = dealValue || 0;
       const payload = buildDealPayload(message, finalCustomerId, {
         customerEmail,
         customerName,
@@ -446,124 +605,24 @@ export function ConvertToLeadModal({
           ) : null}
 
           {createdDealId ? (
-            <div className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-5 text-center dark:border-emerald-900 dark:bg-emerald-950/40">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/60 dark:text-emerald-400">
-                <CheckCircle2 className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-emerald-900 text-sm dark:text-emerald-200">
-                  Fırsat Başarıyla Oluşturuldu!
-                </h3>
-                <p className="mt-1 text-emerald-700 text-xs dark:text-emerald-300">
-                  E-posta içeriği satış boru hattınıza Lead olarak eklendi.
-                </p>
-              </div>
-              <div className="flex items-center justify-center gap-3 pt-2">
-                <Link
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-emerald-700"
-                  href={`/${tenantSlug}/pipelines`}
-                  onClick={onClose}
-                >
-                  <span>Satış Hattına Git</span>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </Link>
-                <Button onClick={onClose} size="sm" variant="outline">
-                  Kapat
-                </Button>
-              </div>
-            </div>
+            <DealSuccessCard onClose={onClose} tenantSlug={tenantSlug} />
           ) : (
             <>
               {/* Customer Mode Selection */}
-              <div className="space-y-2 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-900/40">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
-                    Müşteri Eşleştirme
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <button
-                      className={`rounded-lg px-2.5 py-1 font-medium text-xs transition ${
-                        customerMode === "new"
-                          ? "bg-blue-600 text-white shadow-xs"
-                          : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                      }`}
-                      onClick={handleSetModeNew}
-                      type="button"
-                    >
-                      Yeni Müşteri
-                    </button>
-                    {existingCustomers.length > 0 ? (
-                      <button
-                        className={`rounded-lg px-2.5 py-1 font-medium text-xs transition ${
-                          customerMode === "existing"
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                        }`}
-                        onClick={handleSetModeExisting}
-                        type="button"
-                      >
-                        Mevcut Müşteri ({existingCustomers.length})
-                      </button>
-                    ) : null}
-                  </div>
-                </div>
-
-                {customerMode === "existing" && existingCustomers.length > 0 ? (
-                  <div className="space-y-1 pt-1">
-                    <Label className="font-medium text-xs">
-                      Mevcut Müşteri Seçin
-                    </Label>
-                    <Select
-                      onValueChange={setSelectedCustomerId}
-                      value={selectedCustomerId}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue placeholder="Müşteri seçin" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {existingCustomers.map((cust) => (
-                          <SelectItem key={cust.id} value={cust.id}>
-                            {cust.name} ({cust.email || "E-posta yok"})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3">
-                    <div>
-                      <Label className="font-medium text-xs">
-                        Firma / Müşteri Adı *
-                      </Label>
-                      <Input
-                        className="h-8 text-xs"
-                        onChange={handleCustomerNameChange}
-                        placeholder="Örn: ABC A.Ş."
-                        value={customerName}
-                      />
-                    </div>
-                    <div>
-                      <Label className="font-medium text-xs">E-posta</Label>
-                      <Input
-                        className="h-8 text-xs"
-                        onChange={handleCustomerEmailChange}
-                        placeholder="iletisim@firma.com"
-                        type="email"
-                        value={customerEmail}
-                      />
-                    </div>
-                    <div>
-                      <Label className="font-medium text-xs">Telefon</Label>
-                      <Input
-                        className="h-8 text-xs"
-                        onChange={handleCustomerPhoneChange}
-                        placeholder="+90 (5XX) XXX XX XX"
-                        value={customerPhone}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CustomerMatchSection
+                customerEmail={customerEmail}
+                customerMode={customerMode}
+                customerName={customerName}
+                customerPhone={customerPhone}
+                existingCustomers={existingCustomers}
+                onCustomerEmailChange={handleCustomerEmailChange}
+                onCustomerNameChange={handleCustomerNameChange}
+                onCustomerPhoneChange={handleCustomerPhoneChange}
+                onSelectCustomer={setSelectedCustomerId}
+                onSetModeExisting={handleSetModeExisting}
+                onSetModeNew={handleSetModeNew}
+                selectedCustomerId={selectedCustomerId}
+              />
 
               {/* Deal Details */}
               <div className="space-y-3">
@@ -582,46 +641,42 @@ export function ConvertToLeadModal({
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <div className="space-y-1">
                     <Label className="font-medium text-xs">Tahmini Tutar</Label>
-                    <Input
-                      className="h-9 text-xs"
+                    <NumberInput
+                      min={0}
                       onChange={handleDealValueChange}
                       placeholder="0.00"
-                      type="number"
+                      precision={2}
+                      showStepper={false}
+                      suffix={<span>{getCurrencySymbol(dealCurrency)}</span>}
                       value={dealValue}
                     />
                   </div>
                   <div className="space-y-1">
                     <Label className="font-medium text-xs">Para Birimi</Label>
-                    <Select
-                      onValueChange={setDealCurrency}
+                    <SelectField
+                      onChange={setDealCurrency}
+                      options={[
+                        { label: "TRY (₺)", value: "TRY" },
+                        { label: "USD ($)", value: "USD" },
+                        { label: "EUR (€)", value: "EUR" },
+                      ]}
+                      placeholder="TRY"
                       value={dealCurrency}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue placeholder="TRY" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="TRY">TRY (₺)</SelectItem>
-                        <SelectItem value="USD">USD ($)</SelectItem>
-                        <SelectItem value="EUR">EUR (€)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                   <div className="space-y-1">
                     <Label className="font-medium text-xs">Öncelik</Label>
-                    <Select
-                      onValueChange={setDealPriority}
+                    <SelectField
+                      onChange={setDealPriority}
+                      options={[
+                        { label: "Düşük", value: "Low" },
+                        { label: "Orta", value: "Medium" },
+                        { label: "Yüksek", value: "High" },
+                        { label: "Acil", value: "Urgent" },
+                      ]}
+                      placeholder="Orta"
                       value={dealPriority}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue placeholder="Orta" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Low">Düşük</SelectItem>
-                        <SelectItem value="Medium">Orta</SelectItem>
-                        <SelectItem value="High">Yüksek</SelectItem>
-                        <SelectItem value="Urgent">Acil</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                 </div>
 
@@ -631,40 +686,32 @@ export function ConvertToLeadModal({
                     <Label className="font-medium text-xs">
                       Satış Hattı (Pipeline)
                     </Label>
-                    <Select
-                      onValueChange={handlePipelineChange}
+                    <Combobox
+                      emptyMessage="Satış hattı bulunamadı."
+                      onChange={handlePipelineChange}
+                      options={pipelines.map((p) => ({
+                        label: p.name,
+                        value: p.id,
+                      }))}
+                      placeholder="Satış Hattı Seçin"
+                      searchPlaceholder="Satış hattı ara..."
                       value={selectedPipelineId}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue placeholder="Satış Hattı Seçin" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {pipelines.map((p) => (
-                          <SelectItem key={p.id} value={p.id}>
-                            {p.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
 
                   <div className="space-y-1">
                     <Label className="font-medium text-xs">Aşama (Stage)</Label>
-                    <Select
-                      onValueChange={setSelectedStageId}
+                    <Combobox
+                      emptyMessage="Aşama bulunamadı."
+                      onChange={setSelectedStageId}
+                      options={(currentPipeline?.stages ?? []).map((s) => ({
+                        label: s.name,
+                        value: s.id,
+                      }))}
+                      placeholder="Aşama Seçin"
+                      searchPlaceholder="Aşama ara..."
                       value={selectedStageId}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue placeholder="Aşama Seçin" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {currentPipeline?.stages?.map((s) => (
-                          <SelectItem key={s.id} value={s.id}>
-                            {s.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                 </div>
 
@@ -673,22 +720,22 @@ export function ConvertToLeadModal({
                   <Label className="font-medium text-xs">
                     Sorumlu Temsilci
                   </Label>
-                  <Select
-                    onValueChange={setSelectedUserId}
+                  <Combobox
+                    clearable
+                    emptyMessage="Temsilci bulunamadı."
+                    onChange={setSelectedUserId}
+                    options={[
+                      { label: "Atanmamış", value: "unassigned" },
+                      ...users.map((u) => ({
+                        description: u.email ?? undefined,
+                        label: u.fullName || u.email || "İsimsiz",
+                        value: u.id,
+                      })),
+                    ]}
+                    placeholder="Temsilci ata (Opsiyonel)"
+                    searchPlaceholder="Temsilci ara..."
                     value={selectedUserId}
-                  >
-                    <SelectTrigger className="h-9">
-                      <SelectValue placeholder="Temsilci ata (Opsiyonel)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="unassigned">Atanmamış</SelectItem>
-                      {users.map((u) => (
-                        <SelectItem key={u.id} value={u.id}>
-                          {u.fullName || u.email}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  />
                 </div>
 
                 {/* Deal Note / Excerpt */}

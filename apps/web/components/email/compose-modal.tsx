@@ -1,9 +1,10 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { Eye, FileText, Loader2, Paperclip, Save, Send, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { PermissionGate } from "@/components/permission-gate";
 import { VariableChips } from "@/components/quotes/VariableChips";
@@ -170,12 +171,9 @@ export function ComposeModal({
     }
   }, [isOpen, prefill, accounts, tenantId]);
 
-  const handleAccountIdChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedAccountId(e.target.value);
-    },
-    []
-  );
+  const handleAccountIdChange = useCallback((value: string) => {
+    setSelectedAccountId(value);
+  }, []);
 
   const handleToChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -247,8 +245,7 @@ export function ComposeModal({
   }, []);
 
   const handleTemplateChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const templateId = e.target.value;
+    (templateId: string) => {
       setSelectedTemplateId(templateId);
       if (!templateId) {
         return;
@@ -307,6 +304,21 @@ export function ComposeModal({
     ) as HTMLInputElement | null;
     input?.click();
   }, []);
+
+  const accountOptions = useMemo(
+    () =>
+      accounts.map((acc) => ({
+        description: acc.provider,
+        label: acc.email,
+        value: acc.id,
+      })),
+    [accounts]
+  );
+
+  const templateOptions = useMemo(
+    () => templates.map((tpl) => ({ label: tpl.name, value: tpl.id })),
+    [templates]
+  );
 
   const handleSend = useCallback(async () => {
     const toAddresses = parseEmails(toInput);
@@ -478,50 +490,38 @@ export function ComposeModal({
           {/* Account Selector + Template Picker */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label
-                className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
-                htmlFor="compose-sender-account"
-              >
+              <span className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
                 Gönderici Hesap *
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                id="compose-sender-account"
+              </span>
+              <Combobox
+                disabled={accounts.length === 0}
+                emptyMessage="Bağlı hesap bulunamadı."
                 onChange={handleAccountIdChange}
+                options={accountOptions}
+                placeholder={
+                  accounts.length === 0
+                    ? "Bağlı hesap bulunamadı"
+                    : "Gönderici hesap seçin"
+                }
+                searchPlaceholder="Hesap ara..."
                 value={selectedAccountId}
-              >
-                {accounts.length === 0 ? (
-                  <option value="">Bağlı hesap bulunamadı</option>
-                ) : null}
-                {accounts.map((acc) => (
-                  <option key={acc.id} value={acc.id}>
-                    {acc.email} ({acc.provider})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <div>
-              <label
-                className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
-                htmlFor="compose-template-select"
-              >
+              <span className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
                 Şablon Seç (İsteğe Bağlı)
-              </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              </span>
+              <Combobox
+                clearable
                 disabled={isLoadingTemplates}
-                id="compose-template-select"
+                emptyMessage="Şablon bulunamadı."
                 onChange={handleTemplateChange}
+                options={templateOptions}
+                placeholder="Şablon seçilmedi (Manuel yazım)"
+                searchPlaceholder="Şablon ara..."
                 value={selectedTemplateId}
-              >
-                <option value="">Şablon seçilmedi (Manuel yazım)</option>
-                {templates.map((tpl) => (
-                  <option key={tpl.id} value={tpl.id}>
-                    {tpl.name}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
 

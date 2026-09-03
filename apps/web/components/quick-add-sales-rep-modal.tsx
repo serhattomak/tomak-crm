@@ -1,10 +1,10 @@
 /* Hallmark · component: quick-add-sales-rep-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { PhoneInput } from "@workspace/ui/components/phone-input";
 import { Check, Loader2, UserPlus, X } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { PhoneInput } from "@/components/phone-input";
 import { ApiClient, type EmployeeDto } from "@/lib/api-client";
 
 interface QuickAddSalesRepModalProps {

@@ -14,6 +14,8 @@
     "docker:down": "docker compose down",
     "docker:up": "docker compose up -d",
     "format": "turbo format",
+    "guard:crm-ui": "node scripts/crm-ui-guard.mjs",
+    "guard:crm-ui:full": "node scripts/crm-ui-guard.mjs --full",
     "lint": "turbo lint",
     "tunnel": "cloudflared tunnel --url http://localhost:3000",
     "typecheck": "turbo typecheck"
