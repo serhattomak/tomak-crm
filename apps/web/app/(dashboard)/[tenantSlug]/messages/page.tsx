@@ -1,17 +1,9 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowLeft,
-  ArrowRight,
   Calendar,
   Check,
   ChevronDown,
@@ -20,13 +12,9 @@ import {
   Copy,
   ExternalLink,
   Hash,
-  Headphones,
-  Info,
-  LifeBuoy,
   Loader2,
   Lock,
   MessageSquare,
-  MessageSquarePlus,
   MessagesSquare,
   Package,
   Pencil,
@@ -50,7 +38,6 @@ import {
   type CannedResponseDto,
   type ChatChannelDto,
   type ChatMessageDto,
-  type Customer360ChatContextDto,
   type CustomerListDto,
   type OrderListDto,
   type ProductListDto,
@@ -66,7 +53,6 @@ export default function MessagesPage() {
   const activeTenantId = activeTenant?.id;
 
   // State
-  const [activeTab, setActiveTab] = useState<"team" | "support">("team");
   const [isNewDmModalOpen, setIsNewDmModalOpen] = useState(false);
   const [isChannelsCollapsed, setIsChannelsCollapsed] = useState(false);
   const [isDmsCollapsed, setIsDmsCollapsed] = useState(false);
@@ -82,18 +68,11 @@ export default function MessagesPage() {
   const [loadingChannels, setLoadingChannels] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [supportFilter, setSupportFilter] = useState<
-    "all" | "open" | "pending" | "resolved"
-  >("all");
 
   // Input & Messaging state
   const [messageInput, setMessageInput] = useState("");
   const [isInternalNote, setIsInternalNote] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
-  const [showCustomer360, setShowCustomer360] = useState(false);
-  const [customerContext, setCustomerContext] =
-    useState<Customer360ChatContextDto | null>(null);
-  const [loadingCustomerContext, setLoadingCustomerContext] = useState(false);
 
   // Edit / Delete / Undo state
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
@@ -105,7 +84,6 @@ export default function MessagesPage() {
   const [isEntityPickerOpen, setIsEntityPickerOpen] = useState(false);
   const [isCannedResponsesOpen, setIsCannedResponsesOpen] = useState(false);
   const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false);
-  const [isNewSupportModalOpen, setIsNewSupportModalOpen] = useState(false);
 
   // Entity Picker data
   const [entityType, setEntityType] = useState<
@@ -127,13 +105,6 @@ export default function MessagesPage() {
   const [newChannelDesc, setNewChannelDesc] = useState("");
   const [newChannelIsPrivate, setNewChannelIsPrivate] = useState(false);
 
-  // Form states for new support session
-  const [newSupportCustomerName, setNewSupportCustomerName] = useState("");
-  const [newSupportEmail, setNewSupportEmail] = useState("");
-  const [newSupportSubject, setNewSupportSubject] = useState("");
-  const [newSupportPriority, setNewSupportPriority] = useState("Medium");
-  const [newSupportInitialMsg, setNewSupportInitialMsg] = useState("");
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -154,11 +125,8 @@ export default function MessagesPage() {
               return prev;
             }
             const defaultChannel =
-              activeTab === "team"
-                ? channelsData.find((c) => c.type !== "CustomerSupport") ||
-                  channelsData[0]
-                : channelsData.find((c) => c.type === "CustomerSupport") ||
-                  channelsData[0];
+              channelsData.find((c) => c.type !== "CustomerSupport") ||
+              channelsData[0];
             return defaultChannel || null;
           });
         }
@@ -168,7 +136,7 @@ export default function MessagesPage() {
     } finally {
       setLoadingChannels(false);
     }
-  }, [activeTenantId, activeTab]);
+  }, [activeTenantId]);
 
   const fetchCannedResponses = useCallback(async () => {
     try {
@@ -179,28 +147,7 @@ export default function MessagesPage() {
     } catch {
       // ignore
     }
-  }, [activeTenantId]);
-
-  const fetchCustomerContext = useCallback(
-    async (customerId: string) => {
-      try {
-        const res = await ApiClient.getCustomer360ChatContext(
-          customerId,
-          activeTenantId
-        );
-        if (res.success && res.data) {
-          setCustomerContext(res.data);
-        }
-      } catch {
-        // ignore
-      } finally {
-        setLoadingCustomerContext(false);
-      }
-    },
-    [activeTenantId]
-  );
-
-  // Fetch Team Users for DM
+  }, [activeTenantId]); // Fetch Team Users for DM
   const fetchTeamUsers = useCallback(async () => {
     if (!activeTenantId) {
       return;
@@ -272,18 +219,6 @@ export default function MessagesPage() {
         }
       }
 
-      if (channel.type === "CustomerSupport") {
-        return {
-          avatarUrl: null,
-          initials: (channel.customerName || "MS").slice(0, 2).toUpperCase(),
-          isDirect: false,
-          isOnline: false,
-          role: "Müşteri",
-          subtitle: channel.departmentName || "Müşteri Destek",
-          title: channel.customerName || channel.title,
-        };
-      }
-
       return {
         avatarUrl: null,
         initials: "#",
@@ -350,9 +285,7 @@ export default function MessagesPage() {
         setIsEntityPickerOpen(false);
         setIsCannedResponsesOpen(false);
         setIsCreateChannelOpen(false);
-        setIsNewSupportModalOpen(false);
         setIsNewDmModalOpen(false);
-        setShowCustomer360(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -389,15 +322,7 @@ export default function MessagesPage() {
     };
 
     fetchMessages();
-
-    // If support channel, fetch customer context
-    if (
-      selectedChannel.type === "CustomerSupport" &&
-      selectedChannel.customerId
-    ) {
-      fetchCustomerContext(selectedChannel.customerId);
-    }
-  }, [selectedChannel, activeTenantId, fetchCustomerContext]);
+  }, [selectedChannel, activeTenantId]);
 
   // Handle Send Message
   const handleSendMessage = async (embedData?: {
@@ -540,40 +465,6 @@ export default function MessagesPage() {
     setTimeout(() => setCopiedMessageId(null), 2000);
   };
 
-  // Handle Support Status Update
-  const handleUpdateStatus = async (
-    newStatus: "Open" | "Pending" | "Resolved" | "Closed"
-  ) => {
-    if (!selectedChannel || selectedChannel.type !== "CustomerSupport") {
-      return;
-    }
-
-    try {
-      const res = await ApiClient.updateSupportSessionStatus(
-        {
-          channelId: selectedChannel.id,
-          status: newStatus,
-        },
-        activeTenant?.id
-      );
-
-      if (res.success) {
-        toast.success(`Destek durumu '${newStatus}' olarak güncellendi.`);
-        const msgRes = await ApiClient.getChatMessages(
-          selectedChannel.id,
-          100,
-          activeTenant?.id
-        );
-        if (msgRes.success && msgRes.data) {
-          setMessages(msgRes.data);
-        }
-        fetchChannels();
-      }
-    } catch {
-      toast.error("Durum güncellenirken hata oluştu.");
-    }
-  };
-
   // Create Channel
   const handleCreateChannel = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -603,75 +494,6 @@ export default function MessagesPage() {
       }
     } catch {
       toast.error("Kanal oluşturulurken hata oluştu.");
-    }
-  };
-
-  // Create Support Session
-  const handleCreateSupportSession = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!(newSupportCustomerName.trim() && newSupportSubject.trim())) {
-      return;
-    }
-
-    try {
-      const res = await ApiClient.createCustomerSupportSession(
-        {
-          customerEmail: newSupportEmail.trim() || undefined,
-          customerId: "00000000-0000-0000-0000-000000000001",
-          customerName: newSupportCustomerName.trim(),
-          initialMessage:
-            newSupportInitialMsg.trim() || "Müşteri canlı destek başlattı.",
-          priority: newSupportPriority,
-          subject: newSupportSubject.trim(),
-        },
-        activeTenant?.id
-      );
-
-      if (res.success && res.data) {
-        toast.success("Müşteri destek talebi oluşturuldu.");
-        setIsNewSupportModalOpen(false);
-        setNewSupportCustomerName("");
-        setNewSupportEmail("");
-        setNewSupportSubject("");
-        setNewSupportInitialMsg("");
-        await fetchChannels();
-        setSelectedChannel(res.data);
-        setActiveTab("support");
-      }
-    } catch {
-      toast.error("Destek talebi oluşturulamadı.");
-    }
-  };
-
-  // Convert Chat to HelpDesk Ticket
-  const handleConvertToTicket = async () => {
-    if (!(activeTenant && selectedChannel)) {
-      return;
-    }
-    try {
-      const res = await ApiClient.convertChatToTicket(
-        selectedChannel.id,
-        {
-          category: "Teknik Destek",
-          priority: selectedChannel.supportSession?.priority || "Medium",
-          subject:
-            selectedChannel.title ||
-            `${selectedChannel.customerName} Canlı Destek Talebi`,
-        },
-        activeTenant.id
-      );
-
-      if (res.success && res.data) {
-        toast.success(
-          `Destek talebi #${res.data.ticketNumber} başarıyla oluşturuldu!`
-        );
-        router.push(`/${tenantSlug}/tickets/${res.data.id}`);
-      } else {
-        toast.error(res.message || "Bilete dönüştürülemedi.");
-      }
-    } catch (err) {
-      console.error("Error converting chat to ticket:", err);
-      toast.error("İşlem sırasında bir hata oluştu.");
     }
   };
 
@@ -718,14 +540,11 @@ export default function MessagesPage() {
     }
   }, [isEntityPickerOpen, loadEntities]);
 
-  // Filtered Channels
+  // Filtered Channels (Only Team Channels & Direct Messages)
   const filteredChannels = useMemo(() => {
     return channels.filter((c) => {
-      // Tab filter
-      if (activeTab === "team" && c.type === "CustomerSupport") {
-        return false;
-      }
-      if (activeTab === "support" && c.type !== "CustomerSupport") {
+      // Exclude customer support sessions
+      if (c.type === "CustomerSupport") {
         return false;
       }
 
@@ -733,39 +552,19 @@ export default function MessagesPage() {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchTitle = c.title.toLowerCase().includes(q);
-        const matchCustomer = c.customerName?.toLowerCase().includes(q);
-        if (!(matchTitle || matchCustomer)) {
-          return false;
-        }
-      }
-
-      // Support status filter
-      if (
-        activeTab === "support" &&
-        supportFilter !== "all" &&
-        c.supportSession
-      ) {
-        if (supportFilter === "open" && c.supportSession.status !== "Open") {
-          return false;
-        }
-        if (
-          supportFilter === "pending" &&
-          c.supportSession.status !== "Pending"
-        ) {
-          return false;
-        }
-        if (
-          supportFilter === "resolved" &&
-          c.supportSession.status !== "Resolved" &&
-          c.supportSession.status !== "Closed"
-        ) {
+        const matchParticipant = c.participants?.some(
+          (p) =>
+            p.userName?.toLowerCase().includes(q) ||
+            p.userEmail?.toLowerCase().includes(q)
+        );
+        if (!(matchTitle || matchParticipant)) {
           return false;
         }
       }
 
       return true;
     });
-  }, [channels, activeTab, searchQuery, supportFilter]);
+  }, [channels, searchQuery]);
 
   const groupChannels = useMemo(
     () =>
@@ -782,10 +581,7 @@ export default function MessagesPage() {
 
   const renderChannelItem = (channel: ChatChannelDto) => {
     const isSelected = selectedChannel?.id === channel.id;
-    const isSupport = channel.type === "CustomerSupport";
     const isDirect = channel.type === "Direct";
-    const status = channel.supportSession?.status || "Open";
-    const priority = channel.supportSession?.priority || "Medium";
     const displayInfo = getChannelDisplayInfo(channel);
 
     let activeClasses =
@@ -812,11 +608,7 @@ export default function MessagesPage() {
       >
         {/* Icon / Avatar */}
         <div className="relative shrink-0">
-          {isSupport ? (
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs dark:bg-blue-900/60 dark:text-blue-300">
-              {displayInfo.initials}
-            </div>
-          ) : isDirect && displayInfo.avatarUrl ? (
+          {isDirect && displayInfo.avatarUrl ? (
             <img
               alt={displayInfo.title}
               className="h-9 w-9 rounded-xl object-cover ring-1 ring-zinc-200 dark:ring-zinc-800"
@@ -834,8 +626,8 @@ export default function MessagesPage() {
             </div>
           )}
 
-          {/* Online status indicator for DMs & Support */}
-          {(isDirect || isSupport) && (
+          {/* Online status indicator for DMs */}
+          {isDirect && (
             <span className="absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900" />
           )}
         </div>
@@ -861,43 +653,6 @@ export default function MessagesPage() {
               (isDirect ? displayInfo.subtitle : channel.description) ||
               "Henüz mesaj yok."}
           </p>
-
-          {/* Badges for Support */}
-          {isSupport && (
-            <div className="mt-1.5 flex items-center gap-1.5">
-              <span
-                className={`rounded-md px-1.5 py-0.2 font-bold text-[9px] ${
-                  status === "Open"
-                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
-                    : status === "Pending"
-                      ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                      : "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
-                }`}
-              >
-                {status === "Open"
-                  ? "Açık"
-                  : status === "Pending"
-                    ? "Beklemede"
-                    : "Çözüldü"}
-              </span>
-
-              <span
-                className={`rounded-md px-1.5 py-0.2 font-semibold text-[9px] ${
-                  priority === "Urgent"
-                    ? "bg-red-100 font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
-                    : priority === "High"
-                      ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                      : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-                }`}
-              >
-                {priority === "Urgent"
-                  ? "Acil"
-                  : priority === "High"
-                    ? "Yüksek"
-                    : "Normal"}
-              </span>
-            </div>
-          )}
         </div>
       </div>
     );
@@ -916,102 +671,34 @@ export default function MessagesPage() {
             </div>
             <div className="min-w-0">
               <h1 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
-                Sohbet & Canlı Destek
+                Ekip İçi Sohbet
               </h1>
               <p className="hidden text-[11px] text-zinc-500 sm:block sm:text-xs dark:text-muted-foreground dark:text-zinc-400">
-                Ekip içi işbirliği ve müşteri canlı destek kanalları
+                Kanallar ve çalışma arkadaşlarınızla birebir direkt mesajlaşma
               </p>
             </div>
-          </div>
-
-          {/* Mode Switcher Tabs */}
-          <div className="flex items-center rounded-xl bg-zinc-100 p-1 dark:bg-muted dark:bg-zinc-800">
-            <button
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-semibold text-xs transition-all sm:px-3 ${
-                activeTab === "team"
-                  ? "bg-white text-blue-600 shadow-xs dark:bg-card dark:bg-zinc-900 dark:text-blue-400"
-                  : "text-zinc-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-foreground dark:hover:text-slate-400"
-              }`}
-              onClick={() => {
-                setActiveTab("team");
-                if (typeof window !== "undefined" && window.innerWidth >= 768) {
-                  const first = channels.find(
-                    (c) => c.type !== "CustomerSupport"
-                  );
-                  if (first) {
-                    setSelectedChannel(first);
-                  }
-                }
-              }}
-              type="button"
-            >
-              <Users className="h-3.5 w-3.5" />
-              <span>Ekip İçi</span>
-              <span className="rounded-full bg-slate-200 px-1.5 py-0.2 font-bold text-[10px] text-slate-700 dark:bg-muted dark:text-slate-300">
-                {channels.filter((c) => c.type !== "CustomerSupport").length}
-              </span>
-            </button>
-
-            <button
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-semibold text-xs transition-all sm:px-3 ${
-                activeTab === "support"
-                  ? "bg-white text-blue-600 shadow-xs dark:bg-card dark:bg-zinc-900 dark:text-blue-400"
-                  : "text-zinc-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-foreground dark:hover:text-slate-400"
-              }`}
-              onClick={() => {
-                setActiveTab("support");
-                if (typeof window !== "undefined" && window.innerWidth >= 768) {
-                  const first = channels.find(
-                    (c) => c.type === "CustomerSupport"
-                  );
-                  if (first) {
-                    setSelectedChannel(first);
-                  }
-                }
-              }}
-              type="button"
-            >
-              <Headphones className="h-3.5 w-3.5" />
-              <span>Canlı Destek</span>
-              <span className="rounded-full bg-blue-100 px-1.5 py-0.2 font-bold text-[10px] text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                {channels.filter((c) => c.type === "CustomerSupport").length}
-              </span>
-            </button>
           </div>
         </div>
 
         {/* Header Actions */}
         <div className="flex shrink-0 items-center gap-2">
-          {activeTab === "team" ? (
-            <div className="flex items-center gap-1.5">
-              <Button
-                className="h-8 border border-zinc-200 bg-white font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
-                onClick={() => setIsCreateChannelOpen(true)}
-                size="sm"
-                variant="outline"
-              >
-                <Hash className="mr-1 h-3.5 w-3.5 text-zinc-500" />
-                <span>Yeni Kanal</span>
-              </Button>
-              <Button
-                className="h-8 bg-violet-600 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 sm:h-9"
-                onClick={() => setIsNewDmModalOpen(true)}
-                size="sm"
-              >
-                <UserPlus className="mr-1 h-3.5 w-3.5" />
-                <span>Yeni DM</span>
-              </Button>
-            </div>
-          ) : (
-            <Button
-              className="h-8 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 sm:h-9"
-              onClick={() => setIsNewSupportModalOpen(true)}
-              size="sm"
-            >
-              <MessageSquarePlus className="mr-1 h-3.5 w-3.5" />
-              <span>Yeni Destek</span>
-            </Button>
-          )}
+          <Button
+            className="h-8 border border-zinc-200 bg-white font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+            onClick={() => setIsCreateChannelOpen(true)}
+            size="sm"
+            variant="outline"
+          >
+            <Hash className="mr-1 h-3.5 w-3.5 text-zinc-500" />
+            <span>Yeni Kanal</span>
+          </Button>
+          <Button
+            className="h-8 bg-violet-600 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 sm:h-9"
+            onClick={() => setIsNewDmModalOpen(true)}
+            size="sm"
+          >
+            <UserPlus className="mr-1 h-3.5 w-3.5" />
+            <span>Yeni DM</span>
+          </Button>
         </div>
       </div>
 
@@ -1030,64 +717,10 @@ export default function MessagesPage() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearchQuery(e.target.value)
                 }
-                placeholder={
-                  activeTab === "team"
-                    ? "Kanal veya kişi ara..."
-                    : "Müşteri veya konu ara..."
-                }
+                placeholder="Kanal veya çalışma arkadaşı ara..."
                 value={searchQuery}
               />
             </div>
-
-            {/* Support Filter Chips */}
-            {activeTab === "support" && (
-              <div className="mt-2.5 flex items-center gap-1 overflow-x-auto pb-1 text-[11px]">
-                <button
-                  className={`rounded-lg px-2 py-1 font-medium transition-colors ${
-                    supportFilter === "all"
-                      ? "bg-slate-900 text-white dark:bg-foreground dark:text-background"
-                      : "bg-zinc-100 text-zinc-600 hover:bg-slate-200 dark:bg-zinc-800 dark:text-muted-foreground dark:text-zinc-400 dark:hover:bg-muted"
-                  }`}
-                  onClick={() => setSupportFilter("all")}
-                  type="button"
-                >
-                  Tümü
-                </button>
-                <button
-                  className={`rounded-lg px-2 py-1 font-medium transition-colors ${
-                    supportFilter === "open"
-                      ? "bg-emerald-600 text-white"
-                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
-                  }`}
-                  onClick={() => setSupportFilter("open")}
-                  type="button"
-                >
-                  Açık
-                </button>
-                <button
-                  className={`rounded-lg px-2 py-1 font-medium transition-colors ${
-                    supportFilter === "pending"
-                      ? "bg-amber-600 text-white"
-                      : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/40"
-                  }`}
-                  onClick={() => setSupportFilter("pending")}
-                  type="button"
-                >
-                  Bekleyen
-                </button>
-                <button
-                  className={`rounded-lg px-2 py-1 font-medium transition-colors ${
-                    supportFilter === "resolved"
-                      ? "bg-blue-600 text-white"
-                      : "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/40"
-                  }`}
-                  onClick={() => setSupportFilter("resolved")}
-                  type="button"
-                >
-                  Çözüldü
-                </button>
-              </div>
-            )}
           </div>
 
           {/* List Stream */}
@@ -1096,22 +729,8 @@ export default function MessagesPage() {
               <div className="p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                 Kanallar yükleniyor...
               </div>
-            ) : activeTab === "support" ? (
-              filteredChannels.length === 0 ? (
-                <div className="p-8 text-center">
-                  <Headphones className="mx-auto h-8 w-8 text-slate-300 dark:text-zinc-600" />
-                  <p className="mt-2 font-semibold text-xs text-zinc-600 dark:text-zinc-400">
-                    Destek talebi yok
-                  </p>
-                  <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
-                    Tüm destek kuyruğu temiz.
-                  </p>
-                </div>
-              ) : (
-                filteredChannels.map((channel) => renderChannelItem(channel))
-              )
             ) : (
-              /* activeTab === "team" -> Slack Dual Section */
+              /* Slack Dual Section */
               <div className="space-y-4">
                 {/* 1. KANALLAR SECTION */}
                 <div className="space-y-1">
@@ -1231,11 +850,7 @@ export default function MessagesPage() {
 
                 {/* Avatar / Icon with online dot */}
                 <div className="relative shrink-0">
-                  {selectedChannel.type === "CustomerSupport" ? (
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs sm:h-10 sm:w-10 dark:bg-blue-900/60 dark:text-blue-300">
-                      <Headphones className="h-4.5 w-4.5" />
-                    </div>
-                  ) : selectedChannel.type === "Direct" ? (
+                  {selectedChannel.type === "Direct" ? (
                     (() => {
                       const displayInfo =
                         getChannelDisplayInfo(selectedChannel);
@@ -1269,9 +884,7 @@ export default function MessagesPage() {
                     <h2 className="max-w-[140px] truncate font-bold text-xs text-zinc-900 sm:max-w-xs sm:text-sm dark:text-foreground dark:text-zinc-100">
                       {selectedChannel.type === "Direct"
                         ? getChannelDisplayInfo(selectedChannel).title
-                        : selectedChannel.type === "CustomerSupport"
-                          ? selectedChannel.customerName
-                          : selectedChannel.title}
+                        : selectedChannel.title}
                     </h2>
                     {selectedChannel.type === "Direct" ? (
                       <span className="rounded-md bg-violet-50 px-1.5 py-0.2 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
@@ -1284,66 +897,10 @@ export default function MessagesPage() {
                   <p className="max-w-[140px] truncate text-[10px] text-zinc-500 sm:max-w-xs sm:text-xs dark:text-zinc-400">
                     {selectedChannel.type === "Direct"
                       ? getChannelDisplayInfo(selectedChannel).subtitle
-                      : selectedChannel.type === "CustomerSupport"
-                        ? `${selectedChannel.description || "Destek"} • ${selectedChannel.supportSession?.assignedUserName || "Atanmadı"}`
-                        : selectedChannel.description ||
-                          `${selectedChannel.participants?.length || 1} Katılımcı`}
+                      : selectedChannel.description ||
+                        `${selectedChannel.participants?.length || 1} Katılımcı`}
                   </p>
                 </div>
-              </div>
-
-              {/* Header Context Controls */}
-              <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-                {selectedChannel.type === "CustomerSupport" && (
-                  <>
-                    {/* Status Dropdown */}
-                    <Select
-                      onValueChange={(
-                        val: "Open" | "Pending" | "Resolved" | "Closed"
-                      ) => handleUpdateStatus(val)}
-                      value={selectedChannel.supportSession?.status || "Open"}
-                    >
-                      <SelectTrigger className="h-8 w-24 font-semibold text-[11px] sm:w-32 sm:text-xs">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Open">🟢 Açık</SelectItem>
-                        <SelectItem value="Pending">🟡 Beklemede</SelectItem>
-                        <SelectItem value="Resolved">🔵 Çözüldü</SelectItem>
-                        <SelectItem value="Closed">⚪ Kapatıldı</SelectItem>
-                      </SelectContent>
-                    </Select>
-
-                    {/* Müşteri 360 Toggle Button */}
-                    <Button
-                      className={`h-8 px-2 font-semibold text-xs sm:px-3 ${
-                        showCustomer360
-                          ? "bg-blue-600 text-white hover:bg-blue-700"
-                          : "border-zinc-200 hover:bg-slate-50 dark:border-border dark:border-zinc-800 dark:hover:bg-muted"
-                      }`}
-                      onClick={() => setShowCustomer360(!showCustomer360)}
-                      size="sm"
-                      title="Müşteri 360°"
-                      variant={showCustomer360 ? "default" : "outline"}
-                    >
-                      <Info className="h-3.5 w-3.5 sm:mr-1.5" />
-                      <span className="hidden sm:inline">Müşteri 360°</span>
-                    </Button>
-
-                    {/* Convert to HelpDesk Ticket Button */}
-                    <Button
-                      className="h-8 border border-indigo-200 bg-indigo-50 px-2 font-semibold text-indigo-700 text-xs hover:bg-indigo-100 sm:px-3 dark:text-indigo-300 dark:hover:bg-indigo-950/60"
-                      onClick={() => handleConvertToTicket()}
-                      size="sm"
-                      title="Destek Talebine Dönüştür"
-                    >
-                      <LifeBuoy className="h-3.5 w-3.5 text-indigo-600 sm:mr-1.5" />
-                      <span className="hidden sm:inline">
-                        Destek Talebi Yap
-                      </span>
-                    </Button>
-                  </>
-                )}
               </div>
             </div>
 
@@ -1806,11 +1363,7 @@ export default function MessagesPage() {
               {/* Text Input & Send */}
               <div className="flex items-end gap-2">
                 <textarea
-                  className={`max-h-32 min-h-[42px] w-full resize-none rounded-xl p-2.5 text-xs focus:outline-none sm:p-3 ${
-                    isInternalNote
-                      ? "border border-amber-300 bg-amber-50/40 text-zinc-900 focus:border-amber-400 dark:border-amber-900/60 dark:bg-amber-950/20 dark:text-foreground dark:text-zinc-100"
-                      : "border border-zinc-200 bg-zinc-50 text-zinc-900 focus:border-blue-500 dark:border-border dark:border-zinc-800 dark:bg-muted/40 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
-                  }`}
+                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:border-zinc-800 dark:bg-muted/40 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setMessageInput(e.target.value)
                   }
@@ -1821,13 +1374,9 @@ export default function MessagesPage() {
                     }
                   }}
                   placeholder={
-                    isInternalNote
-                      ? "Müşterinin görmeyeceği dahili not yazın..."
-                      : selectedChannel.type === "Direct"
-                        ? `${getChannelDisplayInfo(selectedChannel).title} kişisine mesaj yazın...`
-                        : selectedChannel.type === "CustomerSupport"
-                          ? `${selectedChannel.customerName} müşterisine yanıt yazın...`
-                          : `#${selectedChannel.title} kanalına mesaj yazın...`
+                    selectedChannel.type === "Direct"
+                      ? `${getChannelDisplayInfo(selectedChannel).title} kişisine mesaj yazın...`
+                      : `#${selectedChannel.title} kanalına mesaj yazın...`
                   }
                   rows={1}
                   value={messageInput}
@@ -1851,134 +1400,9 @@ export default function MessagesPage() {
                 Bir Sohbet Seçin
               </h3>
               <p className="mt-1 text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
-                Görüntülemek için sol listeden bir kanal veya destek talebi
+                Görüntülemek için sol listeden bir kanal veya direkt mesaj
                 seçin.
               </p>
-            </div>
-          </div>
-        )}
-
-        {/* Right Column: Customer 360 Context Drawer (Bottom Sheet on Mobile) */}
-        {showCustomer360 && selectedChannel?.type === "CustomerSupport" && (
-          <div className="fixed inset-0 z-50 flex items-end border-zinc-200 bg-transparent md:static md:w-80 md:shrink-0 md:border-l md:bg-white dark:border-border dark:border-zinc-800 dark:bg-card">
-            {/* Mobile Backdrop */}
-            <div
-              className="fade-in fixed inset-0 animate-in bg-black/60 backdrop-blur-sm transition-opacity md:hidden"
-              onClick={() => setShowCustomer360(false)}
-            />
-
-            <div className="slide-in-from-bottom-5 relative z-10 flex max-h-[85vh] w-full animate-in flex-col overflow-y-auto rounded-t-3xl bg-white p-5 shadow-2xl md:h-full md:max-h-none md:animate-none md:rounded-none md:shadow-none dark:bg-card dark:bg-zinc-900">
-              <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
-                <h3 className="font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
-                  Müşteri 360° Özeti
-                </h3>
-                <button
-                  className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
-                  onClick={() => setShowCustomer360(false)}
-                  type="button"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {loadingCustomerContext ? (
-                <div className="py-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
-                  Veriler yükleniyor...
-                </div>
-              ) : customerContext ? (
-                <div className="mt-4 space-y-5 pb-16 md:pb-0">
-                  {/* Profile Card */}
-                  <div className="rounded-xl border border-zinc-100 bg-zinc-50/80 p-3.5 dark:border-border dark:border-zinc-800 dark:bg-muted/40 dark:bg-zinc-800/50">
-                    <div className="font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
-                      {customerContext.customerName}
-                    </div>
-                    <div className="mt-1 text-[11px] text-slate-500 dark:text-muted-foreground">
-                      {customerContext.email || "E-posta yok"} •{" "}
-                      {customerContext.phone || "Telefon yok"}
-                    </div>
-                    <div className="mt-2 flex items-center gap-1.5">
-                      <span className="rounded-md bg-blue-100 px-2 py-0.5 font-bold text-[9px] text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                        {customerContext.customerType || "Kurumsal"}
-                      </span>
-                      <span className="rounded-md bg-amber-100 px-2 py-0.5 font-bold text-[9px] text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-                        VIP Tier
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Financial KPIs */}
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-xl border border-zinc-100 bg-white p-3 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
-                      <span className="font-semibold text-[10px] text-zinc-400 dark:text-zinc-500">
-                        Toplam Harcama
-                      </span>
-                      <div className="mt-1 font-bold text-sm text-zinc-900 dark:text-foreground dark:text-zinc-100">
-                        {customerContext.totalRevenue.toLocaleString("tr-TR")} ₺
-                      </div>
-                    </div>
-                    <div className="rounded-xl border border-zinc-100 bg-white p-3 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
-                      <span className="font-semibold text-[10px] text-zinc-400 dark:text-zinc-500">
-                        Bakiye
-                      </span>
-                      <div className="mt-1 font-bold text-emerald-600 text-sm">
-                        {customerContext.balance.toLocaleString("tr-TR")} ₺
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Recent Orders */}
-                  <div>
-                    <div className="mb-2 flex items-center justify-between font-bold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300">
-                      <span>
-                        Son Siparişler (
-                        {customerContext.recentOrders?.length || 0})
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      {customerContext.recentOrders?.map((ord) => (
-                        <div
-                          className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/50 p-2.5 text-xs dark:border-border dark:border-zinc-800 dark:bg-muted/30 dark:bg-zinc-800/30"
-                          key={ord.id}
-                        >
-                          <div>
-                            <div className="font-bold text-slate-800 dark:text-foreground">
-                              {ord.orderNumber}
-                            </div>
-                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                              {new Date(ord.orderDate).toLocaleDateString(
-                                "tr-TR"
-                              )}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold text-slate-900 dark:text-foreground">
-                              {ord.totalAmount.toLocaleString("tr-TR")} ₺
-                            </div>
-                            <span className="font-semibold text-[9px] text-emerald-600">
-                              {ord.status}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Direct Actions */}
-                  <div className="pt-2">
-                    <Button
-                      onClick={() =>
-                        router.push(
-                          `/${tenantSlug}/customers/${customerContext.customerId}`
-                        )
-                      }
-                      size="sm"
-                    >
-                      <span>Müşteri Profilini Aç</span>
-                      <ArrowRight className="ml-1.5 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ) : null}
             </div>
           </div>
         )}
@@ -2347,150 +1771,6 @@ export default function MessagesPage() {
                   type="submit"
                 >
                   Kanalı Oluştur
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal 4: New Support Session Modal */}
-      {isNewSupportModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsNewSupportModalOpen(false)}
-          />
-
-          <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
-            <form onSubmit={handleCreateSupportSession}>
-              <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
-                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
-                  Yeni Destek Talebi Oluştur
-                </h3>
-                <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
-                  onClick={() => setIsNewSupportModalOpen(false)}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="space-y-3.5 py-4">
-                <div className="space-y-1.5">
-                  <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
-                    htmlFor="cust-name"
-                  >
-                    Müşteri Adı *
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:border-zinc-800 dark:bg-muted/50 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
-                    id="cust-name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setNewSupportCustomerName(e.target.value)
-                    }
-                    placeholder="örn: Ahmet Yılmaz"
-                    required
-                    value={newSupportCustomerName}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
-                    htmlFor="cust-email"
-                  >
-                    E-posta
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:border-zinc-800 dark:bg-muted/50 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
-                    id="cust-email"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setNewSupportEmail(e.target.value)
-                    }
-                    placeholder="örn: ahmet@sirket.com"
-                    type="email"
-                    value={newSupportEmail}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
-                    htmlFor="cust-subject"
-                  >
-                    Talep Konusu *
-                  </label>
-                  <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:border-zinc-800 dark:bg-muted/50 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
-                    id="cust-subject"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setNewSupportSubject(e.target.value)
-                    }
-                    placeholder="örn: Sipariş kargo takip sorgusu"
-                    required
-                    value={newSupportSubject}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300">
-                    Öncelik Seviyesi
-                  </label>
-                  <Select
-                    onValueChange={setNewSupportPriority}
-                    value={newSupportPriority}
-                  >
-                    <SelectTrigger className="w-full text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Low">Düşük</SelectItem>
-                      <SelectItem value="Medium">Normal</SelectItem>
-                      <SelectItem value="High">Yüksek</SelectItem>
-                      <SelectItem value="Urgent">Acil</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
-                    htmlFor="cust-msg"
-                  >
-                    İlk Müşteri Mesajı
-                  </label>
-                  <textarea
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:border-zinc-800 dark:bg-muted/50 dark:bg-zinc-800/50 dark:text-foreground dark:text-zinc-100"
-                    id="cust-msg"
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                      setNewSupportInitialMsg(e.target.value)
-                    }
-                    placeholder="Müşterinin ilettiği ilk soru/sorun..."
-                    rows={2}
-                    value={newSupportInitialMsg}
-                  />
-                </div>
-              </div>
-
-              <div className="flex shrink-0 items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-border dark:border-zinc-800">
-                <Button
-                  onClick={() => setIsNewSupportModalOpen(false)}
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                >
-                  İptal
-                </Button>
-                <Button
-                  className="bg-blue-600 font-semibold text-white shadow-xs hover:bg-blue-700"
-                  size="sm"
-                  type="submit"
-                >
-                  Talebi Başlat
                 </Button>
               </div>
             </form>
