@@ -215,19 +215,18 @@ function DashboardLayoutInner({
   const [activeHub, setActiveHub] = useState<NavigationHub>(() =>
     getActiveHubFromPathname(pathname || "", tenantSlug)
   );
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("crm_sidebar_collapsed");
-        if (saved !== null) {
-          return saved === "true";
-        }
-      } catch {
-        // ignore
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("crm_sidebar_collapsed");
+      if (saved !== null) {
+        setIsSidebarCollapsed(saved === "true");
       }
+    } catch {
+      // ignore
     }
-    return false;
-  });
+  }, []);
 
   // Keep activeHub in sync when pathname changes
   useEffect(() => {
@@ -554,7 +553,7 @@ function DashboardLayoutInner({
               <TenantSwitcher isCollapsed={true} />
 
               {/* Prominent Expand Button when Collapsed */}
-              {isSidebarCollapsed && (
+              {mounted && isSidebarCollapsed && (
                 <button
                   className="fade-in zoom-in-90 flex h-8 w-8 animate-in items-center justify-center rounded-xl border border-violet-200/80 bg-violet-50 text-violet-700 shadow-2xs transition-all duration-150 hover:bg-violet-100 active:scale-95 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300"
                   onClick={() => setIsSidebarCollapsed(false)}

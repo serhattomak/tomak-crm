@@ -28,6 +28,8 @@ public class Product : ITenantScopedEntity
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid TenantId { get; set; }
     public Guid? CategoryId { get; set; }
+    public Guid? SupplierId { get; set; }
+    public Guid? BrandId { get; set; }
     public string Type { get; set; } = "Physical"; // "Physical", "Service", "Digital", "Subscription"
     public string Name { get; set; } = string.Empty;
     public string? SKU { get; set; }
@@ -48,12 +50,25 @@ public class Product : ITenantScopedEntity
     public string[]? Tags { get; set; }
     public string? Attributes { get; set; } // JSONB stored as string
     public string? Description { get; set; }
+    // F2-4 SEO & e-ticaret alanları (migration: 20260903000007_product_seo.sql)
+    public string? Slug { get; set; }
+    public string? SeoTitle { get; set; }
+    public string? SeoDescription { get; set; }
+    public string? RichDescription { get; set; }
+    public bool IsPublished { get; set; } = false;
+    public bool IsFeatured { get; set; } = false;
+    public int SortOrder { get; set; } = 0;
+    public decimal? WeightKg { get; set; }
+    public string? Dimensions { get; set; } // "LxWxH cm" serbest metin
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ProductCategory? Category { get; set; }
+    public Supplier? Supplier { get; set; }
+    public Brand? BrandRef { get; set; }
     public ICollection<ProductVariant> Variants { get; set; } = [];
     public ICollection<ProductStockMovement> StockMovements { get; set; } = [];
+    public ICollection<ProductPriceHistory> PriceHistory { get; set; } = [];
 
     // Helper calculated properties
     public decimal AvailableStock => CurrentStock - ReservedStock;
@@ -72,6 +87,7 @@ public class ProductVariant : ITenantScopedEntity
     public string? Barcode { get; set; }
     public decimal AdditionalPrice { get; set; } = 0.00m;
     public decimal StockQuantity { get; set; } = 0.00m;
+    public string[]? Images { get; set; }
     public string? Attributes { get; set; } // JSONB
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -101,6 +117,24 @@ public class ProductStockMovement : ITenantScopedEntity
 
     public Product? Product { get; set; }
     public ProductVariant? Variant { get; set; }
+}
+
+[Table("product_price_history", Schema = "public")]
+public class ProductPriceHistory : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public Guid ProductId { get; set; }
+    public decimal? OldCostPrice { get; set; }
+    public decimal? NewCostPrice { get; set; }
+    public decimal? OldSellingPrice { get; set; }
+    public decimal? NewSellingPrice { get; set; }
+    public string Currency { get; set; } = "TRY";
+    public string? ChangeReason { get; set; }
+    public Guid? ChangedByUserId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public Product? Product { get; set; }
 }
 
 [Table("warehouses", Schema = "public")]
@@ -219,4 +253,36 @@ public class StockCountItem : ITenantScopedEntity
     public StockCount? Count { get; set; }
     public Product? Product { get; set; }
     public ProductVariant? Variant { get; set; }
+}
+
+[Table("suppliers", Schema = "public")]
+public class Supplier : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? ContactName { get; set; }
+    public string? Email { get; set; }
+    public string? Phone { get; set; }
+    public string? Address { get; set; }
+    public bool IsActive { get; set; } = true;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Product> Products { get; set; } = [];
+}
+
+[Table("brands", Schema = "public")]
+public class Brand : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? LogoUrl { get; set; }
+    public string? Website { get; set; }
+    public bool IsActive { get; set; } = true;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Product> Products { get; set; } = [];
 }

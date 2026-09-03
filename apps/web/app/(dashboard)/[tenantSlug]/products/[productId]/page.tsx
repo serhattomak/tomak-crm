@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -14,30 +15,64 @@ import {
   ArrowDownRight,
   ArrowLeft,
   ArrowUpRight,
+  Barcode,
   CheckCircle2,
   Edit,
   History,
+  ImagePlus,
+  Loader2,
   Package,
   Plus,
+  RefreshCw,
   RotateCcw,
   Trash2,
+  TrendingDown,
+  TrendingUp,
   X,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PermissionGate } from "@/components/permission-gate";
+import {
+  type AttributeRow,
+  AttributesEditor,
+  conflictFriendlyMessage,
+  generateBarcode,
+  generateSku,
+  isConflictResponse,
+  ProductImagesField,
+  parseAttributes,
+  revokeStagedImages,
+  type StagedImage,
+  serializeAttributes,
+  TagsInput,
+  uploadStagedImages,
+} from "@/components/products/product-form-modal";
+import { ProductGallery } from "@/components/products/product-gallery";
+import {
+  ProductRichDescription,
+  ProductSeoFields,
+  type ProductSeoValues,
+  slugifyTr,
+} from "@/components/products/product-seo-fields";
 import {
   type AddProductVariantRequest,
   type AdjustProductStockRequest,
   ApiClient,
   type ProductCategoryDto,
   type ProductDetailDto,
+  type ProductVariantDetailDto,
   type UpdateProductRequest,
+  type UpdateProductVariantRequest,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+
+const MAX_PRODUCT_IMAGES = 10;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_MIMES = ["image/jpeg", "image/png", "image/webp"];
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -50,12 +85,14 @@ export default function ProductDetailPage() {
   const [categories, setCategories] = useState<ProductCategoryDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "overview" | "variants" | "movements" | "pricing"
+    "overview" | "variants" | "movements" | "pricing" | "priceHistory"
   >("overview");
 
   // Modals
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
+  const [editingVariant, setEditingVariant] =
+    useState<ProductVariantDetailDto | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -153,6 +190,173 @@ export default function ProductDetailPage() {
     }
   };
 
+  // --- Galeri: kapak yap / sil / sırala + yükleme (kapak her zaman images[0]) ---
+  const [galleryBusy, setGalleryBusy] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const galleryFileInputRef = useRef<HTMLInputElement>(null);
+
+  const persistImageOrder = useCallback(
+    async (nextImages: string[]) => {
+      if (!(activeTenant && product)) {
+        return;
+      }
+      const previousImages = product.images ?? [];
+      const coverChanged = nextImages[0] !== previousImages[0];
+      setGalleryBusy(true);
+      try {
+        const res = await ApiClient.updateProduct(
+          product.id,
+          {
+            barcode: product.barcode ?? undefined,
+            brand: product.brand ?? undefined,
+            categoryId: product.categoryId ?? undefined,
+            costPrice: product.costPrice,
+            currency: product.currency,
+            description: product.description ?? undefined,
+            discountRate: product.discountRate,
+            images: nextImages,
+            minStockLevel: product.minStockLevel,
+            name: product.name,
+            sellingPrice: product.sellingPrice,
+            sku: product.sku ?? undefined,
+            status: product.status,
+            taxRate: product.taxRate,
+            trackInventory: product.trackInventory,
+            type: product.type,
+            unit: product.unit,
+          },
+          activeTenant.id
+        );
+        if (res.success) {
+          setProduct({ ...product, images: nextImages });
+          showToast(
+            coverChanged ? "Kapak görsel güncellendi." : "Sıralama kaydedildi."
+          );
+        } else if (res.errorCode === "HTTP_409") {
+          showToast("Sıralama çakıştı, liste yenilendi.");
+          loadData();
+        } else {
+          showToast(res.message ?? "Sıralama kaydedilirken hata oluştu.");
+        }
+      } catch {
+        showToast("Sıralama kaydedilirken hata oluştu.");
+      } finally {
+        setGalleryBusy(false);
+      }
+    },
+    [activeTenant, product, loadData]
+  );
+
+  const handleGalleryChange = useCallback(
+    async (nextImages: string[]) => {
+      if (!(activeTenant && product) || galleryBusy) {
+        return;
+      }
+      const previousImages = product.images ?? [];
+      const removed = previousImages.find((url) => !nextImages.includes(url));
+      // Silme: fiziksel + DB tutarlılığı backend'de (DELETE /images?imageUrl=)
+      if (removed !== undefined && nextImages.length < previousImages.length) {
+        setGalleryBusy(true);
+        try {
+          const res = await ApiClient.deleteProductImage(
+            product.id,
+            removed,
+            activeTenant.id
+          );
+          if (res.success) {
+            setProduct({ ...product, images: nextImages });
+            showToast("Görsel silindi.");
+          } else if (res.errorCode === "HTTP_404") {
+            showToast("Görsel bulunamadı, liste yenilendi.");
+            loadData();
+          } else {
+            showToast(res.message ?? "Görsel silinirken hata oluştu.");
+          }
+        } catch {
+          showToast("Görsel silinirken hata oluştu.");
+        } finally {
+          setGalleryBusy(false);
+        }
+        return;
+      }
+      // Kapak yap / sırala: images[0] kapaktır, PUT ile persist edilir
+      await persistImageOrder(nextImages);
+    },
+    [activeTenant, product, galleryBusy, persistImageOrder, loadData]
+  );
+
+  const handleGalleryFiles = useCallback(
+    async (files: FileList | null) => {
+      if (!(activeTenant && product && files && files.length > 0)) {
+        return;
+      }
+      const currentImages = product.images ?? [];
+      const picked = Array.from(files);
+      const valid = picked.filter((file) => {
+        if (!ALLOWED_IMAGE_MIMES.includes(file.type)) {
+          showToast(`${file.name}: yalnızca JPG, PNG veya WebP yükleyin.`);
+          return false;
+        }
+        if (file.size > MAX_IMAGE_BYTES) {
+          showToast(`${file.name}: dosya 5MB sınırını aşıyor.`);
+          return false;
+        }
+        return true;
+      });
+      const room = MAX_PRODUCT_IMAGES - currentImages.length;
+      if (room <= 0) {
+        showToast("En fazla 10 görsel yükleyebilirsiniz.");
+        return;
+      }
+      const queue = valid.slice(0, room);
+      if (queue.length === 0) {
+        return;
+      }
+      setUploadingImages(true);
+      try {
+        const uploaded: string[] = [];
+        for (const file of queue) {
+          const res = await ApiClient.uploadProductImage(
+            product.id,
+            file,
+            activeTenant.id
+          );
+          if (res.success && res.data?.imageUrl) {
+            uploaded.push(res.data.imageUrl);
+          } else if (res.errorCode === "HTTP_404") {
+            showToast("Ürün bulunamadı.");
+            loadData();
+            return;
+          } else if (res.errorCode === "HTTP_409") {
+            showToast("Görsel limiti aşıldı (en fazla 10).");
+            break;
+          } else {
+            showToast(res.message ?? `${file.name} yüklenemedi.`);
+          }
+        }
+        if (uploaded.length > 0) {
+          setProduct({
+            ...product,
+            images: [...currentImages, ...uploaded],
+          });
+          showToast(
+            uploaded.length === 1
+              ? "Görsel yüklendi."
+              : `${uploaded.length} görsel yüklendi.`
+          );
+        }
+      } catch {
+        showToast("Görsel yüklenirken hata oluştu.");
+      } finally {
+        setUploadingImages(false);
+        if (galleryFileInputRef.current) {
+          galleryFileInputRef.current.value = "";
+        }
+      }
+    },
+    [activeTenant, product, loadData]
+  );
+
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
@@ -178,6 +382,10 @@ export default function ProductDetailPage() {
       label: `Stok Hareketleri (${product.stockMovements.length})`,
     },
     { id: "pricing", label: "Fiyat & Karlılık Analizi" },
+    {
+      id: "priceHistory",
+      label: `Fiyat Geçmişi (${product.priceHistory.length})`,
+    },
   ];
 
   const getTypeBadge = (type: string) => {
@@ -233,7 +441,7 @@ export default function ProductDetailPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -328,6 +536,60 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left Column: Summary Info & Cards (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
+          {/* Card: Ürün Görselleri — ana + thumb şeridi, kapak her zaman images[0] */}
+          <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                Ürün Görselleri
+              </h3>
+              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                {(product.images ?? []).length}/{MAX_PRODUCT_IMAGES}
+              </span>
+            </div>
+
+            <ProductGallery
+              editable
+              images={product.images ?? []}
+              onChange={handleGalleryChange}
+              productName={product.name}
+            />
+
+            <PermissionGate permission="Products.Update">
+              <input
+                accept="image/jpeg,image/png,image/webp"
+                aria-label="Ürün görseli yükle"
+                className="hidden"
+                disabled={uploadingImages || galleryBusy}
+                multiple
+                onChange={(e) => handleGalleryFiles(e.target.files)}
+                ref={galleryFileInputRef}
+                type="file"
+              />
+              <button
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                disabled={
+                  uploadingImages ||
+                  galleryBusy ||
+                  (product.images ?? []).length >= MAX_PRODUCT_IMAGES
+                }
+                onClick={() => galleryFileInputRef.current?.click()}
+                type="button"
+              >
+                {uploadingImages ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-600" />
+                    <span>Yükleniyor...</span>
+                  </>
+                ) : (
+                  <>
+                    <ImagePlus className="h-3.5 w-3.5 text-blue-600" />
+                    <span>Görsel Yükle (JPG/PNG/WebP, 5MB)</span>
+                  </>
+                )}
+              </button>
+            </PermissionGate>
+          </div>
+
           {/* Card: Pricing & Margins */}
           <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
             <div className="flex items-center justify-between">
@@ -517,6 +779,38 @@ export default function ProductDetailPage() {
           {/* TAB 1: OVERVIEW */}
           {activeTab === "overview" && (
             <div className="space-y-6">
+              {/* F2-4 — SEO & vitrin özeti: slug + meta + zengin açıklama */}
+              <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
+                    SEO & Vitrin
+                  </h4>
+                  <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold font-mono text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                    /{product.slug ?? slugifyTr(product.name)}
+                  </span>
+                </div>
+                {(product.seoTitle || product.seoDescription) && (
+                  <div className="space-y-1 rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                    {product.seoTitle && (
+                      <p className="font-bold text-blue-700 dark:text-blue-300">
+                        {product.seoTitle}
+                      </p>
+                    )}
+                    {product.seoDescription && (
+                      <p className="text-zinc-500 dark:text-zinc-400">
+                        {product.seoDescription}
+                      </p>
+                    )}
+                  </div>
+                )}
+                <ProductRichDescription text={product.richDescription} />
+                {!(product.richDescription || product.seoTitle) && (
+                  <p className="text-zinc-400 dark:text-zinc-500">
+                    SEO bilgisi girilmedi — Düzenle penceresinden slug ve
+                    açıklama ekleyin.
+                  </p>
+                )}
+              </div>
               {/* Quick Stock Movement Box */}
               {product.trackInventory && (
                 <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
@@ -666,6 +960,7 @@ export default function ProductDetailPage() {
                   <table className="w-full text-left text-xs">
                     <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                       <tr>
+                        <th className="w-12 px-3 py-3">Görsel</th>
                         <th className="px-4 py-3">Varyant Adı</th>
                         <th className="px-4 py-3">SKU / Barkod</th>
                         <th className="px-4 py-3 text-right">Ek Fiyat (+₺)</th>
@@ -674,38 +969,69 @@ export default function ProductDetailPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                      {product.variants.map((v) => (
-                        <tr
-                          className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
-                          key={v.id}
-                        >
-                          <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
-                            {v.name}
-                          </td>
-                          <td className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
-                            {v.sku || v.barcode || "—"}
-                          </td>
-                          <td className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
-                            +₺
-                            {v.additionalPrice.toLocaleString("tr-TR", {
-                              minimumFractionDigits: 2,
-                            })}
-                          </td>
-                          <td className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
-                            {v.stockQuantity} {product.unit}
-                          </td>
-                          <td className="py-3.5 pr-4 pl-2 text-right">
-                            <button
-                              className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
-                              onClick={() => handleDeleteVariant(v.id)}
-                              title="Varyantı Sil"
-                              type="button"
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {product.variants.map((v) => {
+                        const variantCover =
+                          v.images && v.images.length > 0
+                            ? v.images[0]
+                            : product.images && product.images.length > 0
+                              ? product.images[0]
+                              : null;
+                        return (
+                          <tr
+                            className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
+                            key={v.id}
+                          >
+                            <td className="w-12 px-3 py-3">
+                              {variantCover ? (
+                                <img
+                                  alt={v.name}
+                                  className="h-8 w-8 rounded-lg border border-zinc-200 object-cover dark:border-zinc-700"
+                                  src={variantCover}
+                                />
+                              ) : (
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+                                  <Package className="h-4 w-4" />
+                                </div>
+                              )}
+                            </td>
+                            <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
+                              {v.name}
+                            </td>
+                            <td className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                              {v.sku || v.barcode || "—"}
+                            </td>
+                            <td className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
+                              +₺
+                              {v.additionalPrice.toLocaleString("tr-TR", {
+                                minimumFractionDigits: 2,
+                              })}
+                            </td>
+                            <td className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                              {v.stockQuantity} {product.unit}
+                            </td>
+                            <td className="py-3.5 pr-4 pl-2 text-right">
+                              <div className="flex items-center justify-end gap-1">
+                                <button
+                                  className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                                  onClick={() => setEditingVariant(v)}
+                                  title="Varyantı Düzenle"
+                                  type="button"
+                                >
+                                  <Edit className="h-3.5 w-3.5" />
+                                </button>
+                                <button
+                                  className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/50"
+                                  onClick={() => handleDeleteVariant(v.id)}
+                                  title="Varyantı Sil"
+                                  type="button"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -841,6 +1167,167 @@ export default function ProductDetailPage() {
               </div>
             </div>
           )}
+
+          {/* TAB 5: PRICE HISTORY TIMELINE (F2-3) */}
+          {activeTab === "priceHistory" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                    Fiyat Değişiklik Geçmişi
+                  </h4>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    Ürünün alış ve satış fiyatlarında yapılan tüm güncellemeler
+                    otomatik kaydedilir.
+                  </p>
+                </div>
+              </div>
+
+              {!product.priceHistory || product.priceHistory.length === 0 ? (
+                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
+                  Henüz bir fiyat değişikliği kaydedilmemiştir.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {product.priceHistory.map((hist) => {
+                    const sellingChanged =
+                      hist.oldSellingPrice !== hist.newSellingPrice;
+                    const costChanged = hist.oldCostPrice !== hist.newCostPrice;
+                    const sellingDiff =
+                      (hist.newSellingPrice ?? 0) - (hist.oldSellingPrice ?? 0);
+                    const costDiff =
+                      (hist.newCostPrice ?? 0) - (hist.oldCostPrice ?? 0);
+
+                    return (
+                      <div
+                        className="rounded-2xl border border-zinc-200/80 bg-white p-4 text-xs shadow-xs transition-all dark:border-zinc-800/90 dark:bg-zinc-900"
+                        key={hist.id}
+                      >
+                        <div className="flex items-center justify-between border-zinc-100 border-b pb-2.5 dark:border-zinc-800">
+                          <div className="flex items-center gap-2">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+                              <History className="h-3.5 w-3.5" />
+                            </span>
+                            <span className="font-bold text-zinc-900 dark:text-zinc-100">
+                              {hist.changeReason || "Fiyat Güncellemesi"}
+                            </span>
+                          </div>
+                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                            {new Date(hist.createdAt).toLocaleString("tr-TR")}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          {/* Satış Fiyatı Değişimi */}
+                          <div
+                            className={`rounded-xl p-3 ${
+                              sellingChanged
+                                ? "bg-zinc-50 dark:bg-zinc-800/50"
+                                : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                              <span>Satış Fiyatı</span>
+                              {sellingChanged && (
+                                <span
+                                  className={`flex items-center font-bold text-[10px] ${
+                                    sellingDiff >= 0
+                                      ? "text-emerald-600"
+                                      : "text-rose-600"
+                                  }`}
+                                >
+                                  {sellingDiff >= 0 ? (
+                                    <TrendingUp className="mr-0.5 h-3 w-3" />
+                                  ) : (
+                                    <TrendingDown className="mr-0.5 h-3 w-3" />
+                                  )}
+                                  {sellingDiff >= 0
+                                    ? `+₺${sellingDiff.toFixed(2)}`
+                                    : `-₺${Math.abs(sellingDiff).toFixed(2)}`}
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-1 flex items-center gap-2 font-bold">
+                              {hist.oldSellingPrice == null ? null : (
+                                <>
+                                  <span className="text-zinc-400 line-through dark:text-zinc-500">
+                                    ₺
+                                    {hist.oldSellingPrice.toLocaleString(
+                                      "tr-TR",
+                                      { minimumFractionDigits: 2 }
+                                    )}
+                                  </span>
+                                  <span className="text-zinc-400">→</span>
+                                </>
+                              )}
+                              <span className="text-sm text-zinc-900 dark:text-zinc-100">
+                                ₺
+                                {(hist.newSellingPrice ?? 0).toLocaleString(
+                                  "tr-TR",
+                                  { minimumFractionDigits: 2 }
+                                )}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Alış / Maliyet Fiyatı Değişimi */}
+                          <div
+                            className={`rounded-xl p-3 ${
+                              costChanged
+                                ? "bg-zinc-50 dark:bg-zinc-800/50"
+                                : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                              <span>Maliyet (Alış)</span>
+                              {costChanged && (
+                                <span
+                                  className={`flex items-center font-bold text-[10px] ${
+                                    costDiff <= 0
+                                      ? "text-emerald-600"
+                                      : "text-amber-600"
+                                  }`}
+                                >
+                                  {costDiff <= 0 ? (
+                                    <TrendingDown className="mr-0.5 h-3 w-3" />
+                                  ) : (
+                                    <TrendingUp className="mr-0.5 h-3 w-3" />
+                                  )}
+                                  {costDiff >= 0
+                                    ? `+₺${costDiff.toFixed(2)}`
+                                    : `-₺${Math.abs(costDiff).toFixed(2)}`}
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-1 flex items-center gap-2 font-bold">
+                              {hist.oldCostPrice == null ? null : (
+                                <>
+                                  <span className="text-zinc-400 line-through dark:text-zinc-500">
+                                    ₺
+                                    {hist.oldCostPrice.toLocaleString("tr-TR", {
+                                      minimumFractionDigits: 2,
+                                    })}
+                                  </span>
+                                  <span className="text-zinc-400">→</span>
+                                </>
+                              )}
+                              <span className="text-sm text-zinc-900 dark:text-zinc-100">
+                                ₺
+                                {(hist.newCostPrice ?? 0).toLocaleString(
+                                  "tr-TR",
+                                  { minimumFractionDigits: 2 }
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -874,6 +1361,22 @@ export default function ProductDetailPage() {
         />
       )}
 
+      {/* Edit Variant Modal */}
+      {editingVariant && (
+        <EditVariantModal
+          isOpen={!!editingVariant}
+          onClose={() => setEditingVariant(null)}
+          onSuccess={() => {
+            showToast("Varyant güncellendi.");
+            setEditingVariant(null);
+            loadData();
+          }}
+          productId={product.id}
+          tenantId={activeTenant?.id || ""}
+          variant={editingVariant}
+        />
+      )}
+
       {/* Edit Product Modal */}
       {isEditModalOpen && (
         <EditProductModal
@@ -885,6 +1388,7 @@ export default function ProductDetailPage() {
             setIsEditModalOpen(false);
             loadData();
           }}
+          onToast={showToast}
           product={product}
           tenantId={activeTenant?.id || ""}
         />
@@ -1231,10 +1735,198 @@ function AddVariantModal({
   );
 }
 
+function EditVariantModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  tenantId,
+  productId,
+  variant,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+  tenantId: string;
+  productId: string;
+  variant: ProductVariantDetailDto;
+}) {
+  const [formData, setFormData] = useState<UpdateProductVariantRequest>({
+    additionalPrice: variant.additionalPrice,
+    barcode: variant.barcode || "",
+    images: variant.images ?? [],
+    isActive: variant.isActive,
+    name: variant.name,
+    sku: variant.sku || "",
+    stockQuantity: variant.stockQuantity,
+  });
+  const [imageUrl, setImageUrl] = useState(variant.images?.[0] || "");
+  const [submitting, setSubmitting] = useState(false);
+
+  if (!isOpen) {
+    return null;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name?.trim()) {
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await ApiClient.updateProductVariant(
+        productId,
+        variant.id,
+        {
+          ...formData,
+          additionalPrice: Number(formData.additionalPrice) || 0,
+          barcode: formData.barcode?.trim() || undefined,
+          images: imageUrl.trim() ? [imageUrl.trim()] : [],
+          name: formData.name.trim(),
+          sku: formData.sku?.trim() || undefined,
+          stockQuantity: Number(formData.stockQuantity) || 0,
+        },
+        tenantId
+      );
+
+      if (res.success) {
+        onSuccess();
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            Varyantı Düzenle
+          </h3>
+          <button
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+            onClick={onClose}
+            type="button"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <div>
+            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
+              Varyant Adı *
+            </label>
+            <input
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              placeholder="Örn: Kırmızı - XL"
+              required
+              type="text"
+              value={formData.name || ""}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <Label className="mb-1">Ek Fiyat (+₺)</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
+                  setFormData({
+                    ...formData,
+                    additionalPrice: val ?? 0,
+                  })
+                }
+                prefix="₺"
+                step={0.01}
+                value={formData.additionalPrice}
+              />
+            </div>
+            <div>
+              <Label className="mb-1">Varyant Stoğu</Label>
+              <NumberInput
+                min={0}
+                onChange={(val) =>
+                  setFormData({
+                    ...formData,
+                    stockQuantity: val ?? 0,
+                  })
+                }
+                step={1}
+                value={formData.stockQuantity}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <Label className="mb-1">SKU</Label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                onChange={(e) =>
+                  setFormData({ ...formData, sku: e.target.value })
+                }
+                placeholder="Varyant SKU"
+                type="text"
+                value={formData.sku || ""}
+              />
+            </div>
+            <div>
+              <Label className="mb-1">Barkod</Label>
+              <input
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                onChange={(e) =>
+                  setFormData({ ...formData, barcode: e.target.value })
+                }
+                placeholder="Varyant Barkod"
+                type="text"
+                value={formData.barcode || ""}
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label className="mb-1">Varyant Görsel URL'si (Opsiyonel)</Label>
+            <input
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://... (boşsa ana ürün görseli kullanılır)"
+              type="url"
+              value={imageUrl}
+            />
+          </div>
+
+          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+            <button
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              onClick={onClose}
+              type="button"
+            >
+              Vazgeç
+            </button>
+            <button
+              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              disabled={submitting}
+              type="submit"
+            >
+              {submitting ? "Kaydediliyor..." : "Kaydet"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function EditProductModal({
   isOpen,
   onClose,
   onSuccess,
+  onToast,
   tenantId,
   product,
   categories,
@@ -1242,6 +1934,7 @@ function EditProductModal({
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  onToast: (msg: string) => void;
   tenantId: string;
   product: ProductDetailDto;
   categories: ProductCategoryDto[];
@@ -1265,7 +1958,24 @@ function EditProductModal({
     unit: product.unit || "Adet",
   });
 
+  // F1-6 wiring — DTO alanları hazır, modal state burada tutulur
+  const initialImages = product.images ?? [];
+  const [images, setImages] = useState<string[]>(initialImages);
+  const [tags, setTags] = useState<string[]>(product.tags ?? []);
+  const [attrRows, setAttrRows] = useState<AttributeRow[]>(() =>
+    parseAttributes(product.attributes)
+  );
+  const [staged, setStaged] = useState<StagedImage[]>([]);
+  // F2-4 — SEO state (slug oto-üret + unique, toast çakışmada)
+  const [seo, setSeo] = useState<ProductSeoValues>(() => ({
+    richDescription: product.richDescription ?? "",
+    seoDescription: product.seoDescription ?? "",
+    seoTitle: product.seoTitle ?? "",
+    slug: product.slug ?? "",
+  }));
+
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!isOpen) {
     return null;
@@ -1274,8 +1984,10 @@ function EditProductModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const cleanData: UpdateProductRequest = {
+        attributes: serializeAttributes(attrRows),
         barcode: formData.barcode?.trim() || undefined,
         brand: formData.brand?.trim() || undefined,
         categoryId: formData.categoryId ? formData.categoryId : undefined,
@@ -1283,11 +1995,17 @@ function EditProductModal({
         currency: formData.currency || "TRY",
         description: formData.description?.trim() || undefined,
         discountRate: Number(formData.discountRate) || 0,
+        images: images.length > 0 ? images : undefined,
         minStockLevel: Number(formData.minStockLevel) || 5,
         name: formData.name.trim(),
+        richDescription: seo.richDescription?.trim() || undefined,
         sellingPrice: Number(formData.sellingPrice) || 0,
+        seoDescription: seo.seoDescription?.trim() || undefined,
+        seoTitle: seo.seoTitle?.trim() || undefined,
         sku: formData.sku?.trim() || undefined,
+        slug: seo.slug?.trim() ? slugifyTr(seo.slug) : undefined,
         status: formData.status || "Active",
+        tags: tags.length > 0 ? tags : undefined,
         taxRate: Number(formData.taxRate) ?? 20,
         trackInventory:
           formData.type === "Physical" ? formData.trackInventory : false,
@@ -1301,8 +2019,42 @@ function EditProductModal({
         tenantId
       );
       if (res.success) {
+        // Galeriden kaldırılanlar: fiziksel + DB silme (best-effort)
+        const removed = initialImages.filter((url) => !images.includes(url));
+        for (const url of removed) {
+          try {
+            const delRes = await ApiClient.deleteProductImage(
+              product.id,
+              url,
+              tenantId
+            );
+            if (!delRes.success) {
+              onToast(delRes.message ?? "Görsel silinirken hata oluştu.");
+            }
+          } catch {
+            onToast("Görsel silinirken hata oluştu.");
+          }
+        }
+        // Staged dosyalar güncelleme sonrası yüklenir (transactional)
+        if (staged.length > 0) {
+          await uploadStagedImages(product.id, staged, tenantId, onToast);
+          revokeStagedImages(staged);
+          setStaged([]);
+        }
         onSuccess();
+      } else if (isConflictResponse(res)) {
+        // 409 — SKU/Barkod çakışması: toast + form hatası
+        const friendly = conflictFriendlyMessage(
+          res,
+          "Güncelleme sırasında bir hata oluştu."
+        );
+        setSubmitError(friendly);
+        onToast(friendly);
+      } else {
+        setSubmitError(res.message || "Güncelleme sırasında bir hata oluştu.");
       }
+    } catch {
+      setSubmitError("Bağlantı hatası oluştu.");
     } finally {
       setSubmitting(false);
     }
@@ -1328,45 +2080,98 @@ function EditProductModal({
           className="flex-1 space-y-3 overflow-y-auto"
           onSubmit={handleSubmit}
         >
+          {submitError && (
+            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
+              {submitError}
+            </div>
+          )}
           <div>
-            <label className="mb-1 block font-medium text-zinc-700 dark:text-zinc-300">
-              Ürün / Hizmet Adı *
-            </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+            <Label className="mb-1" required>
+              Ürün / Hizmet Adı
+            </Label>
+            <Input
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
               required
-              type="text"
               value={formData.name}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
+              <Label className="mb-1">Stok Kodu (SKU)</Label>
+              <div className="flex items-center gap-1.5">
+                <div className="flex-1">
+                  <Input
+                    onChange={(e) =>
+                      setFormData({ ...formData, sku: e.target.value })
+                    }
+                    placeholder="Örn: PRD-001"
+                    value={formData.sku}
+                  />
+                </div>
+                <button
+                  aria-label="SKU oto-üret"
+                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  onClick={() =>
+                    setFormData({ ...formData, sku: generateSku() })
+                  }
+                  title="SKU oto-üret"
+                  type="button"
+                >
+                  <RefreshCw aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div>
+              <Label className="mb-1">Barkod (EAN/UPC)</Label>
+              <div className="flex items-center gap-1.5">
+                <div className="flex-1">
+                  <Input
+                    onChange={(e) =>
+                      setFormData({ ...formData, barcode: e.target.value })
+                    }
+                    placeholder="8690000000000"
+                    value={formData.barcode}
+                  />
+                </div>
+                <button
+                  aria-label="Barkod oto-üret"
+                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  onClick={() =>
+                    setFormData({ ...formData, barcode: generateBarcode() })
+                  }
+                  title="Barkod oto-üret (EAN-13)"
+                  type="button"
+                >
+                  <Barcode aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div>
               <Label className="mb-1">Kategori</Label>
-              <Select
-                onValueChange={(val) =>
-                  setFormData({
-                    ...formData,
-                    categoryId: val === "none" ? "" : val,
-                  })
+              <Combobox
+                clearable
+                onChange={(val) =>
+                  setFormData({ ...formData, categoryId: val })
                 }
-                value={formData.categoryId || "none"}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Kategori Seçin" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Kategori Seçin</SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                options={[
+                  { label: "Kategori Seçin", value: "" },
+                  ...categories.map((c) => ({
+                    label: `${
+                      c.parentId ? `↳ ${c.fullPath || c.name}` : c.name
+                    } (${c.productsCount})`,
+                    value: c.id,
+                  })),
+                ]}
+                placeholder="Kategori Seçin"
+                searchPlaceholder="Kategori ara…"
+                value={formData.categoryId || ""}
+              />
             </div>
             <div>
               <Label className="mb-1">Durum</Label>
@@ -1423,6 +2228,34 @@ function EditProductModal({
                 required
                 step={0.01}
                 value={formData.sellingPrice}
+              />
+            </div>
+          </div>
+
+          {/* Images / Tags / Attributes — F1-6 wiring */}
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/30">
+            <ProductImagesField
+              images={images}
+              onChange={setImages}
+              onStagedChange={setStaged}
+              onToast={onToast}
+              productName={formData.name.trim() || product.name}
+              staged={staged}
+            />
+            <div>
+              <Label className="mb-1">Etiketler</Label>
+              <TagsInput onChange={setTags} value={tags} />
+            </div>
+            <div>
+              <Label className="mb-1">Özellikler</Label>
+              <AttributesEditor onChange={setAttrRows} value={attrRows} />
+            </div>
+            {/* F2-4 SEO alanları */}
+            <div>
+              <ProductSeoFields
+                onChange={setSeo}
+                productName={formData.name.trim() || product.name}
+                values={seo}
               />
             </div>
           </div>

@@ -1,8 +1,10 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Products.Data;
+using CRM.Modules.Products.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +32,17 @@ public record UpdateProductRequest(
     string[]? Images,
     string[]? Tags,
     string? Attributes,
-    string? Description);
+    string? Description,
+    // F2-4 SEO
+    string? Slug,
+    string? SeoTitle,
+    string? SeoDescription,
+    string? RichDescription,
+    bool? IsPublished,
+    bool? IsFeatured,
+    int? SortOrder,
+    decimal? WeightKg,
+    string? Dimensions);
 
 public record UpdateProductCommand(Guid Id, UpdateProductRequest Request) : ICommand<bool>;
 
@@ -47,7 +59,8 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
 
 public class UpdateProductHandler(
     ProductsDbContext dbContext,
-    ICurrentTenant currentTenant) : ICommandHandler<UpdateProductCommand, bool>
+    ICurrentTenant currentTenant,
+    ICurrentUser currentUser) : ICommandHandler<UpdateProductCommand, bool>
 {
     public async Task<Result<bool>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
@@ -65,6 +78,11 @@ public class UpdateProductHandler(
         }
 
         var req = request.Request;
+
+        // F2-3: capture old prices before mutation for price-history ledger
+        var oldCostPrice = product.CostPrice;
+        var oldSellingPrice = product.SellingPrice;
+        var oldCurrency = product.Currency;
 
         product.CategoryId = req.CategoryId;
         product.Type = req.Type;
@@ -85,7 +103,34 @@ public class UpdateProductHandler(
         product.Tags = req.Tags;
         product.Attributes = req.Attributes;
         product.Description = req.Description?.Trim();
+        // F2-4 SEO - slug boşsa DB trigger otomatik üretir
+        if (req.Slug is not null) product.Slug = req.Slug.Trim().Length > 0 ? req.Slug.Trim() : null;
+        if (req.SeoTitle is not null) product.SeoTitle = req.SeoTitle.Trim().Length > 0 ? req.SeoTitle.Trim() : null;
+        if (req.SeoDescription is not null) product.SeoDescription = req.SeoDescription.Trim().Length > 0 ? req.SeoDescription.Trim() : null;
+        if (req.RichDescription is not null) product.RichDescription = req.RichDescription.Trim().Length > 0 ? req.RichDescription.Trim() : null;
+        if (req.IsPublished.HasValue) product.IsPublished = req.IsPublished.Value;
+        if (req.IsFeatured.HasValue) product.IsFeatured = req.IsFeatured.Value;
+        if (req.SortOrder.HasValue) product.SortOrder = req.SortOrder.Value;
+        if (req.WeightKg.HasValue) product.WeightKg = req.WeightKg.Value;
+        if (req.Dimensions is not null) product.Dimensions = req.Dimensions.Trim().Length > 0 ? req.Dimensions.Trim() : null;
         product.UpdatedAt = DateTime.UtcNow;
+
+        // F2-3: append price-history row only when a price actually changed
+        if (oldCostPrice != product.CostPrice || oldSellingPrice != product.SellingPrice)
+        {
+            dbContext.ProductPriceHistory.Add(new ProductPriceHistory
+            {
+                TenantId = product.TenantId,
+                ProductId = product.Id,
+                OldCostPrice = oldCostPrice,
+                NewCostPrice = product.CostPrice,
+                OldSellingPrice = oldSellingPrice,
+                NewSellingPrice = product.SellingPrice,
+                Currency = product.Currency ?? oldCurrency ?? "TRY",
+                ChangedByUserId = currentUser.Id,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

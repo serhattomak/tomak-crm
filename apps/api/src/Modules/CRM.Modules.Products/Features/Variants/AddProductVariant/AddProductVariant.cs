@@ -18,7 +18,8 @@ public record AddProductVariantRequest(
     string? Barcode,
     decimal? AdditionalPrice,
     decimal? StockQuantity,
-    string? Attributes);
+    string? Attributes,
+    string[]? Images);
 
 public record AddProductVariantCommand(Guid ProductId, AddProductVariantRequest Request) : ICommand<Guid>;
 
@@ -64,6 +65,7 @@ public class AddProductVariantHandler(
             Barcode = req.Barcode?.Trim(),
             AdditionalPrice = req.AdditionalPrice ?? 0.00m,
             StockQuantity = req.StockQuantity ?? 0.00m,
+            Images = req.Images ?? [],
             Attributes = req.Attributes,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,

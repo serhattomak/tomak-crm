@@ -38,8 +38,7 @@
 // Typed via JSDoc; plain node, zero dependencies. (Intentionally no ts-check
 // directive: scripts/ sits outside all workspace tsconfigs, so tsc never
 // covers it and it cannot break `turbo typecheck`.)
-import { existsSync, readFileSync } from "node:fs";
-import { readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -100,42 +99,50 @@ const RULES = [
   {
     hint: '<input type="number"> — use NumberInput from packages/ui (para: precision=2 suffix ₺; adet: precision=0 stepper)',
     id: "INPUT_NUMBER",
-    pattern: /<input\b[^>]*?\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/gs,
+    pattern:
+      /<input\b[^>]*?\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/gs,
   },
   {
     hint: '<input type="date"> — use DatePicker (clearable, YYYY-MM-DD, TR locale) or DateRangePicker from packages/ui',
     id: "INPUT_DATE",
-    pattern: /<input\b[^>]*?\btype\s*=\s*(?:"date"|'date'|\{\s*["']date["']\s*\})/gs,
+    pattern:
+      /<input\b[^>]*?\btype\s*=\s*(?:"date"|'date'|\{\s*["']date["']\s*\})/gs,
   },
   {
     hint: "arbitrary hex fill (bg-[#…]/text-[#…]/…) — use design tokens (bg-muted, text-zinc-*, …)",
     id: "ARBITRARY_HEX",
-    pattern: /(?:bg|text|border|ring|from|via|to|fill|stroke|outline|decoration|accent|caret|divide|placeholder)-\[#/g,
+    pattern:
+      /(?:bg|text|border|ring|from|via|to|fill|stroke|outline|decoration|accent|caret|divide|placeholder)-\[#/g,
   },
   {
     hint: 'inline-style hex (color/backgroundColor/borderColor: "#…") — use design tokens with dark: variants',
     id: "INLINE_HEX_STYLE",
-    pattern: /(?<![A-Za-z0-9_-])(?:backgroundColor|background|borderColor|color|fill|stroke)\s*:\s*["']#[0-9a-fA-F]{3,8}["']/g,
+    pattern:
+      /(?<![A-Za-z0-9_-])(?:backgroundColor|background|borderColor|color|fill|stroke)\s*:\s*["']#[0-9a-fA-F]{3,8}["']/g,
   },
   {
     hint: 'SVG paint hex (fill="#…"/stroke="#…") — use currentColor or design tokens',
     id: "SVG_PAINT_HEX",
-    pattern: /<(?:svg|path|circle|rect|line|polyline|polygon)\b[^>]*?\b(?:fill|stroke)\s*=\s*["']#[0-9a-fA-F]{3,8}["']/gs,
+    pattern:
+      /<(?:svg|path|circle|rect|line|polyline|polygon)\b[^>]*?\b(?:fill|stroke)\s*=\s*["']#[0-9a-fA-F]{3,8}["']/gs,
   },
   {
     hint: "slate-* — use zinc-* (dark-mode readable)",
     id: "SLATE",
-    pattern: /(?<![A-Za-z])slate-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
+    pattern:
+      /(?<![A-Za-z])slate-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
   },
   {
     hint: "violet-* — use blue-500 scale (CRM accent)",
     id: "VIOLET",
-    pattern: /(?<![A-Za-z])violet-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
+    pattern:
+      /(?<![A-Za-z])violet-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
   },
   {
     hint: "fuchsia-* — use blue-500 scale (CRM accent; brand gradients stay in store theme vars only)",
     id: "FUCHSIA",
-    pattern: /(?<![A-Za-z])fuchsia-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
+    pattern:
+      /(?<![A-Za-z])fuchsia-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
   },
 ];
 
@@ -146,13 +153,17 @@ const RULES = [
  */
 function loadAllowlist(allowlistPath) {
   const abs = resolve(REPO_ROOT, allowlistPath);
-  if (!existsSync(abs)) return [];
+  if (!existsSync(abs)) {
+    return [];
+  }
   /** @type {unknown} */
   const raw = readFileSync(abs, "utf8");
   /** @type {{ entries?: AllowEntry[] }} */
   const parsed = JSON.parse(String(raw));
   if (!Array.isArray(parsed.entries)) {
-    throw new Error(`allowlist ${allowlistPath} must contain an "entries" array`);
+    throw new Error(
+      `allowlist ${allowlistPath} must contain an "entries" array`
+    );
   }
   return parsed.entries;
 }
@@ -164,11 +175,14 @@ function loadAllowlist(allowlistPath) {
  */
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
-    if (SKIP_DIRS.has(name)) continue;
+    if (SKIP_DIRS.has(name)) {
+      continue;
+    }
     const abs = join(dir, name);
     const st = statSync(abs);
-    if (st.isDirectory()) walk(abs, out);
-    else if (/\.(tsx?|jsx)$/.test(name) && !/\.d\.(ts|tsx)$/.test(name)) {
+    if (st.isDirectory()) {
+      walk(abs, out);
+    } else if (/\.(tsx?|jsx)$/.test(name) && !/\.d\.(ts|tsx)$/.test(name)) {
       out.push(abs);
     }
   }
@@ -182,7 +196,11 @@ function walk(dir, out = []) {
  */
 function lineOf(index, content) {
   let line = 1;
-  for (let i = 0; i < index; i++) if (content[i] === "\n") line++;
+  for (let i = 0; i < index; i++) {
+    if (content[i] === "\n") {
+      line++;
+    }
+  }
   return line;
 }
 
@@ -193,7 +211,9 @@ function lineOf(index, content) {
  * @returns {AllowEntry | undefined}
  */
 function allowed(rel, ruleId, allowlist) {
-  return allowlist.find((e) => e.file === rel && (e.rule === ruleId || e.rule === "*"));
+  return allowlist.find(
+    (e) => e.file === rel && (e.rule === ruleId || e.rule === "*")
+  );
 }
 
 /**
@@ -229,7 +249,9 @@ function scanFile(abs, allowlist) {
         rule: rule.id,
       });
       // Guard against zero-width loops on `s`-flag patterns.
-      if (rule.pattern.lastIndex === m.index) rule.pattern.lastIndex++;
+      if (rule.pattern.lastIndex === m.index) {
+        rule.pattern.lastIndex++;
+      }
     }
   }
   return { suppressed, violations };
@@ -263,14 +285,18 @@ function main(argv) {
   }
   const full = argv.includes("--full");
   const ai = argv.indexOf("--allowlist");
-  const allowlistPath = ai !== -1 ? (argv[ai + 1] ?? "") : DEFAULT_ALLOWLIST;
+  const allowlistPath = ai === -1 ? DEFAULT_ALLOWLIST : (argv[ai + 1] ?? "");
   if (ai !== -1 && !argv[ai + 1]) {
     console.error("error: --allowlist requires a file argument");
     return 2;
   }
   const positionals = argv.filter((a, i) => {
-    if (a.startsWith("--")) return false;
-    if (ai !== -1 && (i === ai + 1)) return false;
+    if (a.startsWith("--")) {
+      return false;
+    }
+    if (ai !== -1 && i === ai + 1) {
+      return false;
+    }
     return true;
   });
 
@@ -278,7 +304,7 @@ function main(argv) {
   try {
     allowlist = loadAllowlist(allowlistPath);
   } catch (/** @type {unknown} */ err) {
-    console.error(`error: ${(err instanceof Error ? err.message : String(err))}`);
+    console.error(`error: ${err instanceof Error ? err.message : String(err)}`);
     return 2;
   }
 
@@ -291,11 +317,16 @@ function main(argv) {
         console.error(`error: path not found: ${p}`);
         return 2;
       }
-      if (statSync(abs).isDirectory()) walk(abs, files);
-      else files.push(abs);
+      if (statSync(abs).isDirectory()) {
+        walk(abs, files);
+      } else {
+        files.push(abs);
+      }
     }
   } else if (full) {
-    for (const root of FULL_ROOTS) files = walk(resolve(REPO_ROOT, root), files);
+    for (const root of FULL_ROOTS) {
+      files = walk(resolve(REPO_ROOT, root), files);
+    }
   } else {
     for (const rel of SCOPE) {
       const abs = resolve(REPO_ROOT, rel);
@@ -311,7 +342,9 @@ function main(argv) {
   const all = [];
   let suppressed = 0;
   if (files.length === 0) {
-    console.error("error: no files scanned (empty scope or directory fully skipped)");
+    console.error(
+      "error: no files scanned (empty scope or directory fully skipped)"
+    );
     return 2;
   }
   for (const f of files) {
@@ -319,17 +352,23 @@ function main(argv) {
     suppressed += s;
     all.push(...violations);
   }
-  all.sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : a.line - b.line));
+  all.sort((a, b) =>
+    a.file < b.file ? -1 : a.file > b.file ? 1 : a.line - b.line
+  );
 
   if (all.length > 0) {
     for (const v of all) {
-      console.log(`${v.file}:${v.line}: [${v.rule}] ${v.hint}\n    → ${v.excerpt}`);
+      console.log(
+        `${v.file}:${v.line}: [${v.rule}] ${v.hint}\n    → ${v.excerpt}`
+      );
     }
   }
   console.log(
     `\ncrm-ui-guard: ${all.length} violation(s) in ${files.length} file(s)` +
       (suppressed > 0 ? ` (${suppressed} suppressed by allowlist)` : "") +
-      (all.length > 0 ? " — FAIL (no auto-fix; fix by hand per ADR-0002)" : " — PASS"),
+      (all.length > 0
+        ? " — FAIL (no auto-fix; fix by hand per ADR-0002)"
+        : " — PASS")
   );
   return all.length > 0 ? 1 : 0;
 }

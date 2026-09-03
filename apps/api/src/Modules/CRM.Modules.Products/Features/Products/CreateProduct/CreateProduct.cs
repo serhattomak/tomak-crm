@@ -32,7 +32,17 @@ public record CreateProductRequest(
     string[]? Images,
     string[]? Tags,
     string? Attributes,
-    string? Description);
+    string? Description,
+    // F2-4 SEO
+    string? Slug,
+    string? SeoTitle,
+    string? SeoDescription,
+    string? RichDescription,
+    bool? IsPublished,
+    bool? IsFeatured,
+    int? SortOrder,
+    decimal? WeightKg,
+    string? Dimensions);
 
 public record CreateProductCommand(CreateProductRequest Request) : ICommand<Guid>;
 
@@ -90,6 +100,16 @@ public class CreateProductHandler(
             Tags = req.Tags,
             Attributes = req.Attributes,
             Description = req.Description?.Trim(),
+            // F2-4 SEO (slug boşsa DB trigger otomatik üretir)
+            Slug = req.Slug?.Trim().Length > 0 ? req.Slug.Trim() : null,
+            SeoTitle = req.SeoTitle?.Trim().Length > 0 ? req.SeoTitle.Trim() : null,
+            SeoDescription = req.SeoDescription?.Trim().Length > 0 ? req.SeoDescription.Trim() : null,
+            RichDescription = req.RichDescription?.Trim().Length > 0 ? req.RichDescription.Trim() : null,
+            IsPublished = req.IsPublished ?? false,
+            IsFeatured = req.IsFeatured ?? false,
+            SortOrder = req.SortOrder ?? 0,
+            WeightKg = req.WeightKg,
+            Dimensions = req.Dimensions?.Trim().Length > 0 ? req.Dimensions.Trim() : null,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };

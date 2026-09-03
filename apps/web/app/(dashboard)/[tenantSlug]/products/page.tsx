@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@workspace/ui/components/checkbox";
+import { Combobox } from "@workspace/ui/components/combobox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -13,6 +14,7 @@ import {
 } from "@workspace/ui/components/select";
 import {
   AlertTriangle,
+  Barcode,
   Box,
   CheckCircle2,
   ChevronRight,
@@ -23,22 +25,42 @@ import {
   LayoutGrid,
   Package,
   Plus,
+  RefreshCw,
   RotateCcw,
   Search,
   Table as TableIcon,
+  Tag,
   Trash2,
   X,
   Zap,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
 import { PermissionGate } from "@/components/permission-gate";
+import { BulkAssignModal } from "@/components/products/bulk-assign-modal";
+import {
+  type AttributeRow,
+  AttributesEditor,
+  conflictFriendlyMessage,
+  generateBarcode,
+  generateSku,
+  isConflictResponse,
+  ProductImagesField,
+  revokeStagedImages,
+  type StagedImage,
+  serializeAttributes,
+  TagsInput,
+  uploadStagedImages,
+} from "@/components/products/product-form-modal";
+import { ProductGallery } from "@/components/products/product-gallery";
 import {
   type AdjustProductStockRequest,
   ApiClient,
+  type BrandDto,
   type CreateProductRequest,
   type ProductCategoryDto,
   type ProductListDto,
@@ -56,6 +78,7 @@ export default function ProductsPage() {
 
   const [products, setProducts] = useState<ProductListDto[]>([]);
   const [categories, setCategories] = useState<ProductCategoryDto[]>([]);
+  const [brands, setBrands] = useState<BrandDto[]>([]);
   const [stats, setStats] = useState<ProductStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
@@ -67,12 +90,16 @@ export default function ProductsPage() {
   const [categoryFilter, setCategoryFilter] = useState(() =>
     getParam("category", "")
   );
+  const [brandFilter, setBrandFilter] = useState(() => getParam("brand", ""));
   const [statusFilter, setStatusFilter] = useState(() =>
     getParam("status", "")
   );
   const [stockStatusFilter, setStockStatusFilter] = useState(() =>
     getParam("stockStatus", "")
   );
+  // Etiket filtresi — istemci tarafı: backend araması etiketleri kapsamaz
+  // (sayfalama sunucuda), bu yüzden yüklenen sayfa üzerinde filtrelenir.
+  const [tagFilter, setTagFilter] = useState(() => getParam("tag", ""));
   const [page, setPage] = useState(() => getIntParam("page", 1));
   const [viewMode, setViewMode] = useState<"table" | "grid">(() =>
     getParam("view", "table") === "grid" ? "grid" : "table"
@@ -85,9 +112,13 @@ export default function ProductsPage() {
   // Modals & Actions
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isBulkAssignModalOpen, setIsBulkAssignModalOpen] = useState(false);
   const [stockAdjustProduct, setStockAdjustProduct] =
     useState<ProductListDto | null>(null);
   const [deletingProduct, setDeletingProduct] = useState<ProductListDto | null>(
+    null
+  );
+  const [lightboxProduct, setLightboxProduct] = useState<ProductListDto | null>(
     null
   );
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -97,6 +128,22 @@ export default function ProductsPage() {
       setIsCreateModalOpen(true);
     }
   }, [searchParams]);
+
+  // Lightbox açıkken Esc ile kapat.
+  useEffect(() => {
+    if (!lightboxProduct) {
+      return;
+    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setLightboxProduct(null);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightboxProduct]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -109,7 +156,7 @@ export default function ProductsPage() {
     }
     setLoading(true);
     try {
-      const [prodRes, catRes, statsRes] = await Promise.all([
+      const [prodRes, catRes, statsRes, brandsRes] = await Promise.all([
         ApiClient.getProducts(
           {
             categoryId: categoryFilter || undefined,
@@ -124,6 +171,7 @@ export default function ProductsPage() {
         ),
         ApiClient.getProductCategories(activeTenant.id),
         ApiClient.getProductStats(activeTenant.id),
+        ApiClient.getBrands(activeTenant.id, true),
       ]);
 
       if (prodRes.success && prodRes.data) {
@@ -135,6 +183,9 @@ export default function ProductsPage() {
       }
       if (statsRes.success && statsRes.data) {
         setStats(statsRes.data);
+      }
+      if (brandsRes.success && brandsRes.data) {
+        setBrands(brandsRes.data);
       }
     } catch {
       showToast("Ürün verileri yüklenirken bir hata oluştu.");
@@ -178,7 +229,23 @@ export default function ProductsPage() {
   };
 
   // ── Bulk operations ─────────────────────────────────────────────────────────
-  const allPageIds = products.map((p) => p.id);
+  // Etiket ve marka filtresi yüklenen sayfa üzerinde uygulanır —
+  // seçim ve sayaçlar filtrelenmiş listeyi baz alır.
+  const displayedProducts = products.filter((p) => {
+    if (
+      tagFilter.trim() !== "" &&
+      !p.tags?.some((t) =>
+        t.toLowerCase().includes(tagFilter.trim().toLowerCase())
+      )
+    ) {
+      return false;
+    }
+    if (brandFilter.trim() !== "" && p.brand !== brandFilter) {
+      return false;
+    }
+    return true;
+  });
+  const allPageIds = displayedProducts.map((p) => p.id);
   const allSelected =
     allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
   const someSelected =
@@ -258,19 +325,34 @@ export default function ProductsPage() {
     setPage(1);
     setParams({ page: undefined, stockStatus: v || undefined });
   };
+  const handleTagFilter = (val: string) => {
+    setTagFilter(val);
+    setPage(1);
+    setParams({ page: undefined, tag: val.trim() || undefined });
+  };
+  const handleBrandFilter = (val: string) => {
+    const v = val === "all" ? "" : val;
+    setBrandFilter(v);
+    setPage(1);
+    setParams({ brand: v || undefined, page: undefined });
+  };
   const handleResetFilters = () => {
     setSearch("");
     setTypeFilter("");
     setCategoryFilter("");
+    setBrandFilter("");
     setStatusFilter("");
     setStockStatusFilter("");
+    setTagFilter("");
     setPage(1);
     setParams({
+      brand: undefined,
       category: undefined,
       page: undefined,
       search: undefined,
       status: undefined,
       stockStatus: undefined,
+      tag: undefined,
       type: undefined,
     });
   };
@@ -328,7 +410,7 @@ export default function ProductsPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -493,6 +575,16 @@ export default function ProductsPage() {
 
         {/* Filter Dropdowns */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Tag Filter — chip-input ile girilen etiketlerle eşleşir */}
+          <div className="w-44">
+            <Input
+              leftIcon={<Tag />}
+              onChange={(e) => handleTagFilter(e.target.value)}
+              placeholder="Etiket filtresi…"
+              value={tagFilter}
+            />
+          </div>
+
           {/* Type Filter */}
           <div className="w-36">
             <Select
@@ -570,11 +662,35 @@ export default function ProductsPage() {
             </Select>
           </div>
 
+          {/* Brand Filter (F2-2) */}
+          {brands.length > 0 && (
+            <div className="w-40">
+              <Select
+                onValueChange={handleBrandFilter}
+                value={brandFilter || "all"}
+              >
+                <SelectTrigger className="h-9">
+                  <SelectValue placeholder="Tüm Markalar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Markalar</SelectItem>
+                  {brands.map((b) => (
+                    <SelectItem key={b.id} value={b.name}>
+                      {b.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           {/* Reset Filters */}
           {(search ||
             typeFilter ||
             categoryFilter ||
+            brandFilter ||
             statusFilter ||
+            tagFilter ||
             stockStatusFilter) && (
             <button
               className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
@@ -626,7 +742,7 @@ export default function ProductsPage() {
             </span>
           </div>
         </div>
-      ) : products.length === 0 ? (
+      ) : displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 border-dashed bg-white p-12 text-center shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
             <Package className="h-6 w-6" />
@@ -675,7 +791,7 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                {products.map((p) => (
+                {displayedProducts.map((p) => (
                   <tr
                     className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
                       selectedIds.has(p.id)
@@ -693,29 +809,18 @@ export default function ProductsPage() {
                       />
                     </td>
                     <td className="py-4 pr-4 pl-2">
-                      <Link
-                        className="flex items-center gap-3"
-                        href={`/${tenantSlug}/products/${p.id}`}
-                      >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800 dark:text-zinc-400">
-                          {p.images && p.images.length > 0 ? (
-                            <img
-                              alt={p.name}
-                              className="h-full w-full rounded-xl object-cover"
-                              src={p.images[0]}
-                            />
-                          ) : p.type === "Physical" ? (
-                            <Package className="h-5 w-5 text-blue-600" />
-                          ) : p.type === "Service" ? (
-                            <Zap className="h-5 w-5 text-purple-600" />
-                          ) : (
-                            <Box className="h-5 w-5 text-emerald-600" />
-                          )}
-                        </div>
+                      <div className="flex items-center gap-3">
+                        <ProductTableThumb
+                          onPreview={() => setLightboxProduct(p)}
+                          product={p}
+                        />
                         <div>
-                          <div className="font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100">
+                          <Link
+                            className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
+                            href={`/${tenantSlug}/products/${p.id}`}
+                          >
                             {p.name}
-                          </div>
+                          </Link>
                           <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                             {p.sku && <span>SKU: {p.sku}</span>}
                             {p.barcode && (
@@ -727,14 +832,14 @@ export default function ProductsPage() {
                             {p.variantsCount > 0 && (
                               <>
                                 <span>•</span>
-                                <span className="text-violet-600">
+                                <span className="text-blue-600">
                                   {p.variantsCount} Varyant
                                 </span>
                               </>
                             )}
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </td>
 
                     <td className="px-4 py-4">
@@ -877,43 +982,32 @@ export default function ProductsPage() {
       ) : (
         /* Grid Card View */
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
+          {displayedProducts.map((p) => (
             <div
               className="group flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-700 dark:border-zinc-800/90 dark:bg-zinc-900"
               key={p.id}
             >
               <div>
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-sm shadow-2xs dark:bg-zinc-800">
-                      {p.images && p.images.length > 0 ? (
-                        <img
-                          alt={p.name}
-                          className="h-full w-full rounded-2xl object-cover"
-                          src={p.images[0]}
-                        />
-                      ) : p.type === "Physical" ? (
-                        <Package className="h-6 w-6 text-blue-600" />
-                      ) : (
-                        <Zap className="h-6 w-6 text-purple-600" />
-                      )}
-                    </div>
-                    <div>
-                      <Link
-                        className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
-                        href={`/${tenantSlug}/products/${p.id}`}
-                      >
-                        {p.name}
-                      </Link>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                        {p.categoryName || "Kategorisiz"}{" "}
-                        {p.brand && `• ${p.brand}`}
-                      </div>
+                <ProductGridCover
+                  onPreview={() => setLightboxProduct(p)}
+                  product={p}
+                />
+                <div className="mt-3 flex items-start justify-between gap-2">
+                  <div>
+                    <Link
+                      className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
+                      href={`/${tenantSlug}/products/${p.id}`}
+                    >
+                      {p.name}
+                    </Link>
+                    <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      {p.categoryName || "Kategorisiz"}{" "}
+                      {p.brand && `• ${p.brand}`}
                     </div>
                   </div>
 
                   <span
-                    className={`rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getTypeBadge(
+                    className={`shrink-0 rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getTypeBadge(
                       p.type
                     )}`}
                   >
@@ -983,6 +1077,7 @@ export default function ProductsPage() {
       {/* Create Product Modal */}
       {isCreateModalOpen && (
         <CreateProductModal
+          brands={brands}
           categories={categories}
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
@@ -991,6 +1086,7 @@ export default function ProductsPage() {
             setIsCreateModalOpen(false);
             loadData();
           }}
+          onToast={showToast}
           tenantId={activeTenant?.id || ""}
         />
       )}
@@ -1058,9 +1154,50 @@ export default function ProductsPage() {
         </div>
       )}
 
+      {/* Görsel Lightbox — salt-okunur ProductGallery reuse */}
+      {lightboxProduct && (lightboxProduct.images?.length ?? 0) > 0 && (
+        <div
+          aria-label={`${lightboxProduct.name} görselleri`}
+          aria-modal="true"
+          className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-sm"
+          onClick={() => setLightboxProduct(null)}
+          role="dialog"
+        >
+          <div
+            className="w-full max-w-2xl rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                {lightboxProduct.name}
+              </h3>
+              <button
+                aria-label="Önizlemeyi kapat"
+                className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                onClick={() => setLightboxProduct(null)}
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <ProductGallery
+              images={lightboxProduct.images ?? []}
+              productName={lightboxProduct.name}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Bulk Action Bar */}
       <BulkActionBar
         actions={[
+          {
+            disabled: isBulkDeleting,
+            icon: <Tag className="h-3.5 w-3.5" />,
+            label: "Toplu Ata / Düzenle",
+            onClick: () => setIsBulkAssignModalOpen(true),
+            variant: "default",
+          },
           {
             disabled: isBulkDeleting,
             icon: <BulkDeleteIcon />,
@@ -1072,7 +1209,139 @@ export default function ProductsPage() {
         onClear={() => setSelectedIds(new Set())}
         selectedCount={selectedIds.size}
       />
+
+      {/* Bulk Assign Modal */}
+      {isBulkAssignModalOpen && (
+        <BulkAssignModal
+          brands={brands}
+          categories={categories}
+          isOpen={isBulkAssignModalOpen}
+          onClose={() => setIsBulkAssignModalOpen(false)}
+          onSuccess={() => {
+            loadData();
+            setSelectedIds(new Set());
+          }}
+          onToast={showToast}
+          selectedIds={Array.from(selectedIds)}
+          tenantId={activeTenant?.id || ""}
+        />
+      )}
     </div>
+  );
+}
+
+const GRID_COVER_SIZES =
+  "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
+/** Tablo satırı 40px kapak thumb — görsel varsa next/image, yoksa tip ikonu. */
+function ProductTableThumb({
+  product,
+  onPreview,
+}: {
+  product: ProductListDto;
+  onPreview: () => void;
+}) {
+  const cover = product.images?.[0];
+  if (!cover) {
+    return (
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800 dark:text-zinc-400">
+        {product.type === "Physical" ? (
+          <Package className="h-5 w-5 text-blue-600" />
+        ) : product.type === "Service" ? (
+          <Zap className="h-5 w-5 text-blue-600" />
+        ) : (
+          <Box className="h-5 w-5 text-emerald-600" />
+        )}
+      </span>
+    );
+  }
+  return (
+    <button
+      aria-label={`${product.name} görsellerini büyüt`}
+      className="relative h-10 w-10 shrink-0 cursor-zoom-in overflow-hidden rounded-xl bg-zinc-100 shadow-2xs focus-visible:outline-2 focus-visible:outline-blue-600 dark:bg-zinc-800"
+      onClick={onPreview}
+      title="Görselleri büyüt"
+      type="button"
+    >
+      <Image
+        alt={`${product.name} ürün görseli`}
+        className="object-cover"
+        fill
+        sizes="40px"
+        src={cover}
+        unoptimized
+      />
+    </button>
+  );
+}
+
+/**
+ * Grid kart kapak — aspect-[4/3], kapak = images[0].
+ * Hover'da 2. görsel (varsa) yumuşak geçişle öne gelir.
+ * Görselsiz üründe badge'li placeholder.
+ */
+function ProductGridCover({
+  product,
+  onPreview,
+}: {
+  product: ProductListDto;
+  onPreview: () => void;
+}) {
+  const images = product.images ?? [];
+  const cover = images[0];
+  const second = images[1];
+  if (!cover) {
+    return (
+      <div
+        aria-label={`${product.name} için görsel yok`}
+        className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 border-dashed bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/50"
+        role="img"
+      >
+        <Package
+          aria-hidden="true"
+          className="h-8 w-8 text-zinc-300 dark:text-zinc-600"
+        />
+        <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+          Görsel yok
+        </span>
+      </div>
+    );
+  }
+  return (
+    <button
+      aria-label={`${product.name} görsellerini büyüt`}
+      className="group/cover relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-zinc-200/80 bg-zinc-100 focus-visible:outline-2 focus-visible:outline-blue-600 dark:border-zinc-800 dark:bg-zinc-800"
+      onClick={onPreview}
+      title="Görselleri büyüt"
+      type="button"
+    >
+      <Image
+        alt={`${product.name} ürün görseli`}
+        className={`object-cover transition-opacity duration-300 ${
+          second ? "group-hover/cover:opacity-0" : ""
+        }`}
+        fill
+        sizes={GRID_COVER_SIZES}
+        src={cover}
+        unoptimized
+      />
+      {second && (
+        <Image
+          alt=""
+          aria-hidden="true"
+          className="object-cover opacity-0 transition-opacity duration-300 group-hover/cover:opacity-100"
+          fill
+          sizes={GRID_COVER_SIZES}
+          src={second}
+          unoptimized
+        />
+      )}
+      {images.length > 1 && (
+        <span className="absolute right-2 bottom-2 rounded-lg bg-zinc-950/70 px-2 py-0.5 font-bold text-[10px] text-white">
+          +{images.length - 1} görsel
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -1080,14 +1349,18 @@ function CreateProductModal({
   isOpen,
   onClose,
   onSuccess,
+  onToast,
   tenantId,
   categories,
+  brands = [],
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  onToast: (msg: string) => void;
   tenantId: string;
   categories: ProductCategoryDto[];
+  brands?: BrandDto[];
 }) {
   const [formData, setFormData] = useState<CreateProductRequest>({
     barcode: "",
@@ -1109,6 +1382,12 @@ function CreateProductModal({
     unit: "Adet",
   });
 
+  // F1-6 wiring — DTO alanları hazır, modal state burada tutulur
+  const [images, setImages] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [attrRows, setAttrRows] = useState<AttributeRow[]>([]);
+  const [staged, setStaged] = useState<StagedImage[]>([]);
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -1126,6 +1405,7 @@ function CreateProductModal({
     setError(null);
     try {
       const cleanData: CreateProductRequest = {
+        attributes: serializeAttributes(attrRows),
         barcode: formData.barcode?.trim() || undefined,
         brand: formData.brand?.trim() || undefined,
         categoryId: formData.categoryId ? formData.categoryId : undefined,
@@ -1133,6 +1413,7 @@ function CreateProductModal({
         currency: formData.currency || "TRY",
         description: formData.description?.trim() || undefined,
         discountRate: Number(formData.discountRate) || 0,
+        images: images.length > 0 ? images : undefined,
         initialStock:
           formData.type === "Physical" && formData.trackInventory
             ? Number(formData.initialStock) || 0
@@ -1142,6 +1423,7 @@ function CreateProductModal({
         sellingPrice: Number(formData.sellingPrice) || 0,
         sku: formData.sku?.trim() || undefined,
         status: formData.status || "Active",
+        tags: tags.length > 0 ? tags : undefined,
         taxRate: Number(formData.taxRate) ?? 20,
         trackInventory:
           formData.type === "Physical" ? formData.trackInventory : false,
@@ -1150,8 +1432,22 @@ function CreateProductModal({
       };
 
       const res = await ApiClient.createProduct(cleanData, tenantId);
-      if (res.success) {
+      if (res.success && res.data) {
+        // Staged dosyalar ürün oluştuktan sonra yüklenir (transactional)
+        if (staged.length > 0) {
+          await uploadStagedImages(res.data, staged, tenantId, onToast);
+          revokeStagedImages(staged);
+          setStaged([]);
+        }
         onSuccess();
+      } else if (isConflictResponse(res)) {
+        // 409 — SKU/Barkod çakışması: toast + form hatası
+        const friendly = conflictFriendlyMessage(
+          res,
+          "Ürün eklenirken bir hata oluştu."
+        );
+        setError(friendly);
+        onToast(friendly);
       } else {
         setError(res.message || "Ürün eklenirken bir hata oluştu.");
       }
@@ -1294,62 +1590,123 @@ function CreateProductModal({
 
             <div>
               <Label className="mb-1">Kategori</Label>
-              <Select
-                onValueChange={(val) =>
-                  setFormData({
-                    ...formData,
-                    categoryId: val === "none" ? "" : val,
-                  })
+              <Combobox
+                clearable
+                onChange={(val) =>
+                  setFormData({ ...formData, categoryId: val })
                 }
-                value={formData.categoryId || "none"}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Kategori Seçin (Opsiyonel)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">
-                    Kategori Seçin (Opsiyonel)
-                  </SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.parentId ? `↳ ${c.fullPath || c.name}` : c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                options={[
+                  { label: "Kategori Seçin (Opsiyonel)", value: "" },
+                  ...categories.map((c) => ({
+                    label: `${
+                      c.parentId ? `↳ ${c.fullPath || c.name}` : c.name
+                    } (${c.productsCount})`,
+                    value: c.id,
+                  })),
+                ]}
+                placeholder="Kategori Seçin (Opsiyonel)"
+                searchPlaceholder="Kategori ara…"
+                value={formData.categoryId || ""}
+              />
             </div>
 
             <div>
               <Label className="mb-1">Marka</Label>
-              <Input
-                onChange={(e) =>
-                  setFormData({ ...formData, brand: e.target.value })
-                }
-                placeholder="Örn: Logitech, Apple, Acme"
-                value={formData.brand}
-              />
+              {brands.length > 7 ? (
+                <Combobox
+                  clearable
+                  onChange={(val) => setFormData({ ...formData, brand: val })}
+                  options={[
+                    { label: "Marka Seçin", value: "" },
+                    ...brands.map((b) => ({ label: b.name, value: b.name })),
+                  ]}
+                  placeholder="Marka Seçin (veya arayın)"
+                  searchPlaceholder="Marka ara…"
+                  value={formData.brand || ""}
+                />
+              ) : brands.length > 0 ? (
+                <Select
+                  onValueChange={(val) =>
+                    setFormData({
+                      ...formData,
+                      brand: val === "none" ? "" : val,
+                    })
+                  }
+                  value={formData.brand || "none"}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Marka Seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Markasız</SelectItem>
+                    {brands.map((b) => (
+                      <SelectItem key={b.id} value={b.name}>
+                        {b.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  onChange={(e) =>
+                    setFormData({ ...formData, brand: e.target.value })
+                  }
+                  placeholder="Örn: Logitech, Apple, Acme"
+                  value={formData.brand}
+                />
+              )}
             </div>
 
             <div>
               <Label className="mb-1">Stok Kodu (SKU)</Label>
-              <Input
-                onChange={(e) =>
-                  setFormData({ ...formData, sku: e.target.value })
-                }
-                placeholder="Örn: PRD-001"
-                value={formData.sku}
-              />
+              <div className="flex items-center gap-1.5">
+                <div className="flex-1">
+                  <Input
+                    onChange={(e) =>
+                      setFormData({ ...formData, sku: e.target.value })
+                    }
+                    placeholder="Örn: PRD-001"
+                    value={formData.sku}
+                  />
+                </div>
+                <button
+                  aria-label="SKU oto-üret"
+                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  onClick={() =>
+                    setFormData({ ...formData, sku: generateSku() })
+                  }
+                  title="SKU oto-üret"
+                  type="button"
+                >
+                  <RefreshCw aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             <div>
               <Label className="mb-1">Barkod (EAN/UPC)</Label>
-              <Input
-                onChange={(e) =>
-                  setFormData({ ...formData, barcode: e.target.value })
-                }
-                placeholder="8690000000000"
-                value={formData.barcode}
-              />
+              <div className="flex items-center gap-1.5">
+                <div className="flex-1">
+                  <Input
+                    onChange={(e) =>
+                      setFormData({ ...formData, barcode: e.target.value })
+                    }
+                    placeholder="8690000000000"
+                    value={formData.barcode}
+                  />
+                </div>
+                <button
+                  aria-label="Barkod oto-üret"
+                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  onClick={() =>
+                    setFormData({ ...formData, barcode: generateBarcode() })
+                  }
+                  title="Barkod oto-üret (EAN-13)"
+                  type="button"
+                >
+                  <Barcode aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1365,7 +1722,7 @@ function CreateProductModal({
                     ? "bg-emerald-100 text-emerald-800"
                     : calculatedMargin > 0
                       ? "bg-blue-100 text-blue-800"
-                      : "bg-slate-200 text-zinc-700 dark:text-zinc-300"
+                      : "bg-zinc-200 text-zinc-700 dark:text-zinc-300"
                 }`}
               >
                 Tahmini Kar Marjı: %{calculatedMargin}
@@ -1511,6 +1868,26 @@ function CreateProductModal({
               )}
             </div>
           )}
+
+          {/* Images / Tags / Attributes — F1-6 wiring */}
+          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/30">
+            <ProductImagesField
+              images={images}
+              onChange={setImages}
+              onStagedChange={setStaged}
+              onToast={onToast}
+              productName={formData.name.trim() || "Yeni ürün"}
+              staged={staged}
+            />
+            <div>
+              <Label className="mb-1">Etiketler</Label>
+              <TagsInput onChange={setTags} value={tags} />
+            </div>
+            <div>
+              <Label className="mb-1">Özellikler</Label>
+              <AttributesEditor onChange={setAttrRows} value={attrRows} />
+            </div>
+          </div>
 
           {/* Description */}
           <div>
@@ -1908,7 +2285,7 @@ function CategoryManagerModal({
                       <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {root.name}
                       </span>
-                      <span className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
+                      <span className="rounded-md bg-zinc-200/70 px-1.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
                         {root.productsCount} Ürün
                       </span>
                     </div>

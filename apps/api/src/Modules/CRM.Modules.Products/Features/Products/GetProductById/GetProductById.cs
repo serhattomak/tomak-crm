@@ -19,6 +19,7 @@ public record ProductVariantDetailDto(
     string? Barcode,
     decimal AdditionalPrice,
     decimal StockQuantity,
+    string[]? Images,
     string? Attributes,
     bool IsActive,
     DateTime CreatedAt);
@@ -37,6 +38,18 @@ public record ProductStockMovementDto(
     string? Reason,
     string? Notes,
     Guid? PerformedByUserId,
+    DateTime CreatedAt);
+
+public record ProductPriceHistoryDto(
+    Guid Id,
+    Guid ProductId,
+    decimal? OldCostPrice,
+    decimal? NewCostPrice,
+    decimal? OldSellingPrice,
+    decimal? NewSellingPrice,
+    string Currency,
+    string? ChangeReason,
+    Guid? ChangedByUserId,
     DateTime CreatedAt);
 
 public record ProductDetailDto(
@@ -67,8 +80,20 @@ public record ProductDetailDto(
     string[]? Tags,
     string? Attributes,
     string? Description,
+    // F2-4 SEO
+    string? Slug,
+    string? SeoTitle,
+    string? SeoDescription,
+    string? RichDescription,
+    bool IsPublished,
+    bool IsFeatured,
+    int SortOrder,
+    decimal? WeightKg,
+    string? Dimensions,
     List<ProductVariantDetailDto> Variants,
     List<ProductStockMovementDto> StockMovements,
+    // F2-3 Fiyat geçmişi
+    List<ProductPriceHistoryDto> PriceHistory,
     DateTime CreatedAt,
     DateTime UpdatedAt);
 
@@ -92,6 +117,7 @@ public class GetProductByIdHandler(
             .Include(p => p.Variants)
             .Include(p => p.StockMovements)
                 .ThenInclude(s => s.Variant)
+            .Include(p => p.PriceHistory)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (product == null)
@@ -109,6 +135,7 @@ public class GetProductByIdHandler(
                 v.Barcode,
                 v.AdditionalPrice,
                 v.StockQuantity,
+                v.Images,
                 v.Attributes,
                 v.IsActive,
                 v.CreatedAt))
@@ -131,6 +158,21 @@ public class GetProductByIdHandler(
                 s.Notes,
                 s.PerformedByUserId,
                 s.CreatedAt))
+            .ToList();
+
+        var priceHistoryDto = product.PriceHistory
+            .OrderByDescending(h => h.CreatedAt)
+            .Select(h => new ProductPriceHistoryDto(
+                h.Id,
+                h.ProductId,
+                h.OldCostPrice,
+                h.NewCostPrice,
+                h.OldSellingPrice,
+                h.NewSellingPrice,
+                h.Currency,
+                h.ChangeReason,
+                h.ChangedByUserId,
+                h.CreatedAt))
             .ToList();
 
         var categoryName = product.Category != null
@@ -165,8 +207,18 @@ public class GetProductByIdHandler(
             product.Tags,
             product.Attributes,
             product.Description,
+            product.Slug,
+            product.SeoTitle,
+            product.SeoDescription,
+            product.RichDescription,
+            product.IsPublished,
+            product.IsFeatured,
+            product.SortOrder,
+            product.WeightKg,
+            product.Dimensions,
             variantsDto,
             stockMovementsDto,
+            priceHistoryDto,
             product.CreatedAt,
             product.UpdatedAt);
 

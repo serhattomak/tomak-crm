@@ -12,12 +12,15 @@ public class ProductsDbContext(
     public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
     public DbSet<ProductVariant> ProductVariants => Set<ProductVariant>();
     public DbSet<ProductStockMovement> ProductStockMovements => Set<ProductStockMovement>();
+    public DbSet<ProductPriceHistory> ProductPriceHistory => Set<ProductPriceHistory>();
     public DbSet<Warehouse> Warehouses => Set<Warehouse>();
     public DbSet<WarehouseStock> WarehouseStocks => Set<WarehouseStock>();
     public DbSet<StockTransfer> StockTransfers => Set<StockTransfer>();
     public DbSet<StockTransferItem> StockTransferItems => Set<StockTransferItem>();
     public DbSet<StockCount> StockCounts => Set<StockCount>();
     public DbSet<StockCountItem> StockCountItems => Set<StockCountItem>();
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
+    public DbSet<Brand> Brands => Set<Brand>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +56,8 @@ public class ProductsDbContext(
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.SupplierId).HasColumnName("supplier_id");
+            entity.Property(e => e.BrandId).HasColumnName("brand_id");
             entity.Property(e => e.Type).HasColumnName("type").HasMaxLength(50).IsRequired();
             entity.Property(e => e.Name).HasColumnName("name").HasMaxLength(255).IsRequired();
             entity.Property(e => e.SKU).HasColumnName("sku").HasMaxLength(100);
@@ -73,12 +78,32 @@ public class ProductsDbContext(
             entity.Property(e => e.Tags).HasColumnName("tags");
             entity.Property(e => e.Attributes).HasColumnName("attributes").HasColumnType("jsonb");
             entity.Property(e => e.Description).HasColumnName("description");
+            // F2-4 SEO
+            entity.Property(e => e.Slug).HasColumnName("slug").HasMaxLength(200);
+            entity.Property(e => e.SeoTitle).HasColumnName("seo_title").HasMaxLength(200);
+            entity.Property(e => e.SeoDescription).HasColumnName("seo_description").HasMaxLength(300);
+            entity.Property(e => e.RichDescription).HasColumnName("rich_description");
+            entity.Property(e => e.IsPublished).HasColumnName("is_published");
+            entity.Property(e => e.IsFeatured).HasColumnName("is_featured");
+            entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+            entity.Property(e => e.WeightKg).HasColumnName("weight_kg").HasPrecision(10, 3);
+            entity.Property(e => e.Dimensions).HasColumnName("dimensions").HasMaxLength(100);
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
             entity.HasOne(e => e.Category)
                   .WithMany(c => c.Products)
                   .HasForeignKey(e => e.CategoryId)
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(e => e.Supplier)
+                  .WithMany(s => s.Products)
+                  .HasForeignKey(e => e.SupplierId)
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(e => e.BrandRef)
+                  .WithMany(b => b.Products)
+                  .HasForeignKey(e => e.BrandId)
                   .OnDelete(DeleteBehavior.SetNull);
 
             entity.HasMany(e => e.Variants)
@@ -107,6 +132,7 @@ public class ProductsDbContext(
             entity.Property(e => e.AdditionalPrice).HasColumnName("additional_price").HasPrecision(18, 2);
             entity.Property(e => e.StockQuantity).HasColumnName("stock_quantity").HasPrecision(18, 2);
             entity.Property(e => e.Attributes).HasColumnName("attributes").HasColumnType("jsonb");
+            entity.Property(e => e.Images).HasColumnName("images");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
@@ -137,6 +163,30 @@ public class ProductsDbContext(
                   .WithMany(v => v.StockMovements)
                   .HasForeignKey(e => e.VariantId)
                   .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 4b. ProductPriceHistory
+        modelBuilder.Entity<ProductPriceHistory>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.ProductId).HasColumnName("product_id").IsRequired();
+            entity.Property(e => e.OldCostPrice).HasColumnName("old_cost_price").HasPrecision(18, 2);
+            entity.Property(e => e.NewCostPrice).HasColumnName("new_cost_price").HasPrecision(18, 2);
+            entity.Property(e => e.OldSellingPrice).HasColumnName("old_selling_price").HasPrecision(18, 2);
+            entity.Property(e => e.NewSellingPrice).HasColumnName("new_selling_price").HasPrecision(18, 2);
+            entity.Property(e => e.Currency).HasColumnName("currency").HasMaxLength(10).IsRequired();
+            entity.Property(e => e.ChangeReason).HasColumnName("change_reason").HasMaxLength(255);
+            entity.Property(e => e.ChangedByUserId).HasColumnName("changed_by_user_id");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+
+            entity.HasOne(e => e.Product)
+                  .WithMany(p => p.PriceHistory)
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });
@@ -301,6 +351,38 @@ public class ProductsDbContext(
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Restrict);
 
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 11. Supplier
+        modelBuilder.Entity<Supplier>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.Name).HasColumnName("name").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.ContactName).HasColumnName("contact_name").HasMaxLength(150);
+            entity.Property(e => e.Email).HasColumnName("email").HasMaxLength(255);
+            entity.Property(e => e.Phone).HasColumnName("phone").HasMaxLength(50);
+            entity.Property(e => e.Address).HasColumnName("address");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 12. Brand
+        modelBuilder.Entity<Brand>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.Name).HasColumnName("name").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.LogoUrl).HasColumnName("logo_url").HasMaxLength(500);
+            entity.Property(e => e.Website).HasColumnName("website").HasMaxLength(500);
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });
     }

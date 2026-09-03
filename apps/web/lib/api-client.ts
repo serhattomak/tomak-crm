@@ -975,6 +975,20 @@ export class ApiClient {
     return { deletedCount, failedCount: ids.length - deletedCount };
   }
 
+  static async bulkAssignProducts(
+    data: BulkAssignRequest,
+    tenantId: string
+  ): Promise<ApiResponse<BulkAssignResponse>> {
+    return ApiClient.request<BulkAssignResponse>(
+      "/api/products/bulk-assign",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
   static async adjustProductStock(
     productId: string,
     data: AdjustProductStockRequest,
@@ -1052,6 +1066,165 @@ export class ApiClient {
       {
         method: "DELETE",
       },
+      tenantId
+    );
+  }
+
+  static async updateProductVariant(
+    productId: string,
+    variantId: string,
+    data: UpdateProductVariantRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/products/${productId}/variants/${variantId}`,
+      {
+        body: JSON.stringify(data),
+        method: "PUT",
+      },
+      tenantId
+    );
+  }
+
+  static async uploadProductImage(
+    productId: string,
+    file: File,
+    tenantId: string
+  ): Promise<ApiResponse<UploadProductImageDto>> {
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    return ApiClient.request<UploadProductImageDto>(
+      `/api/products/${productId}/images/upload`,
+      {
+        body: formData,
+        method: "POST",
+      },
+      tenantId
+    );
+  }
+
+  static async deleteProductImage(
+    productId: string,
+    imageUrl: string,
+    tenantId: string
+  ): Promise<ApiResponse<DeleteProductImageDto>> {
+    return ApiClient.request<DeleteProductImageDto>(
+      `/api/products/${productId}/images?imageUrl=${encodeURIComponent(imageUrl)}`,
+      {
+        method: "DELETE",
+      },
+      tenantId
+    );
+  }
+
+  // ==========================================
+  // Products — Fiyat Geçmişi (F2-3)
+  // ==========================================
+  static async getProductPriceHistory(
+    productId: string,
+    tenantId: string
+  ): Promise<ApiResponse<ProductPriceHistoryDto[]>> {
+    return ApiClient.request<ProductPriceHistoryDto[]>(
+      `/api/products/${productId}/price-history`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  // ==========================================
+  // Suppliers Module (F2-2)
+  // ==========================================
+  static async getSuppliers(
+    tenantId: string,
+    activeOnly?: boolean
+  ): Promise<ApiResponse<SupplierDto[]>> {
+    const qs = activeOnly == null ? "" : `?activeOnly=${activeOnly}`;
+    return ApiClient.request<SupplierDto[]>(
+      `/api/suppliers${qs}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createSupplier(
+    data: CreateSupplierRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/suppliers",
+      { body: JSON.stringify(data), method: "POST" },
+      tenantId
+    );
+  }
+
+  static async updateSupplier(
+    id: string,
+    data: UpdateSupplierRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/suppliers/${id}`,
+      { body: JSON.stringify(data), method: "PUT" },
+      tenantId
+    );
+  }
+
+  static async deleteSupplier(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/suppliers/${id}`,
+      { method: "DELETE" },
+      tenantId
+    );
+  }
+
+  // ==========================================
+  // Brands Module (F2-2)
+  // ==========================================
+  static async getBrands(
+    tenantId: string,
+    activeOnly?: boolean
+  ): Promise<ApiResponse<BrandDto[]>> {
+    const qs = activeOnly == null ? "" : `?activeOnly=${activeOnly}`;
+    return ApiClient.request<BrandDto[]>(
+      `/api/brands${qs}`,
+      { method: "GET" },
+      tenantId
+    );
+  }
+
+  static async createBrand(
+    data: CreateBrandRequest,
+    tenantId: string
+  ): Promise<ApiResponse<string>> {
+    return ApiClient.request<string>(
+      "/api/brands",
+      { body: JSON.stringify(data), method: "POST" },
+      tenantId
+    );
+  }
+
+  static async updateBrand(
+    id: string,
+    data: UpdateBrandRequest,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/brands/${id}`,
+      { body: JSON.stringify(data), method: "PUT" },
+      tenantId
+    );
+  }
+
+  static async deleteBrand(
+    id: string,
+    tenantId: string
+  ): Promise<ApiResponse<boolean>> {
+    return ApiClient.request<boolean>(
+      `/api/brands/${id}`,
+      { method: "DELETE" },
       tenantId
     );
   }
@@ -5954,6 +6127,7 @@ export interface ProductVariantDetailDto {
   barcode?: string;
   createdAt: string;
   id: string;
+  images: string[];
   isActive: boolean;
   name: string;
   productId: string;
@@ -5990,16 +6164,26 @@ export interface ProductDetailDto {
   currency: string;
   currentStock: number;
   description?: string;
+  dimensions?: string;
   discountRate: number;
   id: string;
   images?: string[];
+  isFeatured: boolean;
   isLowStock: boolean;
+  isPublished: boolean;
   minStockLevel: number;
   name: string;
+  // F2-3 fiyat geçmişi
+  priceHistory: ProductPriceHistoryDto[];
   profitMargin: number;
   reservedStock: number;
+  richDescription?: string;
   sellingPrice: number;
+  seoDescription?: string;
+  seoTitle?: string;
   sku?: string;
+  slug?: string;
+  sortOrder: number;
   status: "Active" | "Inactive" | "Draft" | "Discontinued" | string;
   stockMovements: ProductStockMovementDto[];
   tags?: string[];
@@ -6010,6 +6194,20 @@ export interface ProductDetailDto {
   unit: string;
   updatedAt: string;
   variants: ProductVariantDetailDto[];
+  weightKg?: number;
+}
+
+export interface ProductPriceHistoryDto {
+  changedByUserId?: string;
+  changeReason?: string;
+  createdAt: string;
+  currency: string;
+  id: string;
+  newCostPrice?: number;
+  newSellingPrice?: number;
+  oldCostPrice?: number;
+  oldSellingPrice?: number;
+  productId: string;
 }
 
 export interface ProductStatsDto {
@@ -6038,8 +6236,12 @@ export interface CreateProductRequest {
   initialStock?: number;
   minStockLevel?: number;
   name: string;
+  richDescription?: string;
   sellingPrice: number;
+  seoDescription?: string;
+  seoTitle?: string;
   sku?: string;
+  slug?: string;
   status?: string;
   tags?: string[];
   taxRate?: number;
@@ -6060,8 +6262,12 @@ export interface UpdateProductRequest {
   images?: string[];
   minStockLevel?: number;
   name: string;
+  richDescription?: string;
   sellingPrice: number;
+  seoDescription?: string;
+  seoTitle?: string;
   sku?: string;
+  slug?: string;
   status?: string;
   tags?: string[];
   taxRate?: number;
@@ -6075,6 +6281,21 @@ export interface CreateProductCategoryRequest {
   icon?: string;
   name: string;
   parentId?: string;
+}
+
+export interface UploadProductImageDto {
+  fileName: string;
+  imageUrl: string;
+  productId: string;
+  sizeBytes: number;
+  storagePath: string;
+  totalImages: number;
+}
+
+export interface DeleteProductImageDto {
+  productId: string;
+  removedImageUrl: string;
+  totalImages: number;
 }
 
 export interface AdjustProductStockRequest {
@@ -6091,9 +6312,85 @@ export interface AddProductVariantRequest {
   additionalPrice?: number;
   attributes?: string;
   barcode?: string;
+  images?: string[];
   name: string;
   sku?: string;
   stockQuantity?: number;
+}
+
+export interface UpdateProductVariantRequest {
+  additionalPrice?: number;
+  attributes?: string;
+  barcode?: string;
+  images?: string[];
+  isActive?: boolean;
+  name?: string;
+  sku?: string;
+  stockQuantity?: number;
+}
+
+export interface SupplierDto {
+  address?: string;
+  contactName?: string;
+  createdAt: string;
+  email?: string;
+  id: string;
+  isActive: boolean;
+  name: string;
+  phone?: string;
+}
+
+export interface CreateSupplierRequest {
+  address?: string;
+  contactName?: string;
+  email?: string;
+  isActive?: boolean;
+  name: string;
+  phone?: string;
+}
+
+export interface UpdateSupplierRequest extends CreateSupplierRequest {}
+
+export interface BrandDto {
+  createdAt: string;
+  id: string;
+  isActive: boolean;
+  logoUrl?: string;
+  name: string;
+  website?: string;
+}
+
+export interface CreateBrandRequest {
+  isActive?: boolean;
+  logoUrl?: string;
+  name: string;
+  website?: string;
+}
+
+export interface UpdateBrandRequest extends CreateBrandRequest {}
+
+export interface BulkAssignFailureDto {
+  productId: string;
+  reason: string;
+}
+
+export interface BulkAssignResponse {
+  failedCount: number;
+  failures: BulkAssignFailureDto[];
+  succeededIds: string[];
+  updatedCount: number;
+}
+
+export interface BulkAssignRequest {
+  appendImages?: boolean;
+  appendTags?: boolean;
+  brand?: string;
+  categoryId?: string;
+  clearCategory?: boolean;
+  images?: string[];
+  productIds: string[];
+  status?: string;
+  tags?: string[];
 }
 
 // ==========================================

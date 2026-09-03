@@ -22,6 +22,32 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "127.0.0.1",
+        pathname: "/**",
+        port: "54321",
+        protocol: "http",
+      },
+      {
+        hostname: "localhost",
+        pathname: "/**",
+        port: "54321",
+        protocol: "http",
+      },
+      {
+        hostname: "*.supabase.co",
+        pathname: "/**",
+        protocol: "https",
+      },
+      {
+        hostname: "*.supabase.in",
+        pathname: "/**",
+        protocol: "https",
+      },
+    ],
+  },
   async rewrites() {
     return [
       {

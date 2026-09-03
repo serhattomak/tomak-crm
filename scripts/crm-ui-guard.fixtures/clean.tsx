@@ -37,10 +37,7 @@ export function CleanFixture() {
         showStepper
         value={seats ?? 0}
       />
-      <DatePicker
-        onChange={setStart}
-        value={start}
-      />
+      <DatePicker onChange={setStart} value={start} />
       <span className="translate-x-5 bg-blue-500 text-white">{shift.name}</span>
       <span style={{ borderColor: "var(--border)" }}>{shift.colorHex}</span>
     </div>

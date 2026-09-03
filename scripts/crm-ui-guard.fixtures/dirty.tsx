@@ -26,26 +26,15 @@ export function DirtyFixture() {
         value={count}
       />
       {/* INPUT_DATE */}
-      <input
-        aria-label="dirty fixture date"
-        type="date"
-      />
+      <input aria-label="dirty fixture date" type="date" />
       {/* ARBITRARY_HEX */}
       <div className="bg-[#f4f5f8] text-[#111827]" />
       {/* INLINE_HEX_STYLE */}
       <div style={{ backgroundColor: "#ffffff", color: "#111827" }} />
       {/* SVG_PAINT_HEX */}
-      <svg
-        role="img"
-        viewBox="0 0 10 10"
-      >
+      <svg role="img" viewBox="0 0 10 10">
         <title>dirty fixture</title>
-        <circle
-          cx={5}
-          cy={5}
-          fill="#3B82F6"
-          r={4}
-        />
+        <circle cx={5} cy={5} fill="#3B82F6" r={4} />
       </svg>
       {/* VIOLET */}
       <span className="bg-violet-600 text-white">accent</span>
