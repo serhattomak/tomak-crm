@@ -5231,6 +5231,280 @@ export class ApiClient {
       tenantId
     );
   }
+
+  // --- Invoicing & Cari & Finance API ---
+  static async getCariAccounts(
+    tenantSlug?: string,
+    params: {
+      search?: string;
+      type?: string;
+      page?: number;
+      pageSize?: number;
+    } = {}
+  ): Promise<ApiResponse<PagedCariResponse>> {
+    const q = new URLSearchParams();
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.type) {
+      q.set("type", params.type);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
+    const qs = q.toString();
+    return await ApiClient.request<PagedCariResponse>(
+      `/api/invoicing/cari${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getCariAccountDetail(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<CariAccountDto>> {
+    return await ApiClient.request<CariAccountDto>(
+      `/api/invoicing/cari/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getCariStatement(
+    id: string,
+    tenantSlug?: string,
+    params: { startDate?: string; endDate?: string } = {}
+  ): Promise<ApiResponse<CariTransactionDto[]>> {
+    const q = new URLSearchParams();
+    if (params.startDate) {
+      q.set("startDate", params.startDate);
+    }
+    if (params.endDate) {
+      q.set("endDate", params.endDate);
+    }
+    const qs = q.toString();
+    return await ApiClient.request<CariTransactionDto[]>(
+      `/api/invoicing/cari/${id}/statement${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createCariAccount(
+    data: CreateCariPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/invoicing/cari",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async createCariFromCustomer(
+    customerId: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      `/api/invoicing/cari/from-customer/${customerId}`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async getInvoices(
+    tenantSlug?: string,
+    params: {
+      type?: string;
+      status?: string;
+      cariAccountId?: string;
+      search?: string;
+      page?: number;
+      pageSize?: number;
+    } = {}
+  ): Promise<ApiResponse<PagedInvoicesResponse>> {
+    const q = new URLSearchParams();
+    if (params.type) {
+      q.set("type", params.type);
+    }
+    if (params.status) {
+      q.set("status", params.status);
+    }
+    if (params.cariAccountId) {
+      q.set("cariAccountId", params.cariAccountId);
+    }
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
+    const qs = q.toString();
+    return await ApiClient.request<PagedInvoicesResponse>(
+      `/api/invoicing/invoices${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getInvoiceDetail(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<InvoiceDetailDto>> {
+    return await ApiClient.request<InvoiceDetailDto>(
+      `/api/invoicing/invoices/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createInvoice(
+    data: CreateInvoicePayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/invoicing/invoices",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async createInvoiceFromOrder(
+    orderId: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      `/api/invoicing/invoices/from-order/${orderId}`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async issueInvoice(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/invoicing/invoices/${id}/issue`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async cancelInvoice(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/invoicing/invoices/${id}/cancel`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  static async getFinancialAccounts(
+    tenantSlug?: string
+  ): Promise<ApiResponse<FinancialAccountDto[]>> {
+    return await ApiClient.request<FinancialAccountDto[]>(
+      "/api/invoicing/finance/accounts",
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createFinancialAccount(
+    data: CreateFinancialAccountPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/invoicing/finance/accounts",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async getFinancialTransactions(
+    tenantSlug?: string,
+    params: {
+      accountId?: string;
+      cariAccountId?: string;
+      type?: string;
+      page?: number;
+      pageSize?: number;
+    } = {}
+  ): Promise<ApiResponse<PagedFinancialTransactionsResponse>> {
+    const q = new URLSearchParams();
+    if (params.accountId) {
+      q.set("accountId", params.accountId);
+    }
+    if (params.cariAccountId) {
+      q.set("cariAccountId", params.cariAccountId);
+    }
+    if (params.type) {
+      q.set("type", params.type);
+    }
+    if (params.page) {
+      q.set("page", String(params.page));
+    }
+    if (params.pageSize) {
+      q.set("pageSize", String(params.pageSize));
+    }
+    const qs = q.toString();
+    return await ApiClient.request<PagedFinancialTransactionsResponse>(
+      `/api/invoicing/finance/transactions${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createFinancialTransaction(
+    data: CreateFinancialTransactionPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<string>> {
+    return await ApiClient.request<string>(
+      "/api/invoicing/finance/transactions",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async transferBetweenAccounts(
+    data: TransferBetweenAccountsPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      "/api/invoicing/finance/transfer",
+      {
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
 }
 
 export interface CustomerListDto {
@@ -9243,4 +9517,272 @@ export interface PagedNotificationsResponse {
   items: NotificationDto[];
   totalCount: number;
   unreadCount: number;
+}
+
+export interface CariAccountDto {
+  address?: string;
+  balance: number;
+  city?: string;
+  code: string;
+  country: string;
+  createdAt: string;
+  creditLimit: number;
+  currency: string;
+  customerId?: string;
+  district?: string;
+  email?: string;
+  id: string;
+  isActive: boolean;
+  paymentTermDays: number;
+  phone?: string;
+  postalCode?: string;
+  taxNumber?: string;
+  taxOffice?: string;
+  title: string;
+  totalCredit: number;
+  totalDebit: number;
+  type: "Customer" | "Supplier" | "Both" | "Personnel" | string;
+  updatedAt: string;
+}
+
+export interface CariTransactionDto {
+  balanceAfter: number;
+  cariAccountId: string;
+  createdAt: string;
+  credit: number;
+  currency: string;
+  debit: number;
+  description: string;
+  documentNumber?: string;
+  dueDate?: string;
+  id: string;
+  sourceId?: string;
+  sourceType?: string;
+  transactionDate: string;
+  type: string;
+}
+
+export interface PagedCariResponse {
+  items: CariAccountDto[];
+  overallBalance: number;
+  overallCredit: number;
+  overallDebit: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export interface CreateCariPayload {
+  address?: string;
+  city?: string;
+  code: string;
+  country?: string;
+  creditLimit?: number;
+  currency?: string;
+  customerId?: string;
+  district?: string;
+  email?: string;
+  paymentTermDays?: number;
+  phone?: string;
+  postalCode?: string;
+  taxNumber?: string;
+  taxOffice?: string;
+  title: string;
+  type: string;
+}
+
+export interface InvoiceItemDto {
+  discountAmount: number;
+  discountRate: number;
+  id: string;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  sku?: string;
+  taxAmount: number;
+  taxRate: number;
+  totalPrice: number;
+  unit: string;
+  unitPrice: number;
+  withholdingAmount: number;
+  withholdingRate?: string;
+}
+
+export interface InvoiceListDto {
+  cariAccountId: string;
+  cariTaxNumber?: string;
+  cariTitle: string;
+  createdAt: string;
+  currency: string;
+  discountTotal: number;
+  dueDate?: string;
+  grandTotal: number;
+  id: string;
+  invoiceNumber: string;
+  issueDate: string;
+  itemsCount: number;
+  orderId?: string;
+  paidAmount: number;
+  profile: string;
+  remainingAmount: number;
+  series: string;
+  status:
+    | "Draft"
+    | "Issued"
+    | "Sent"
+    | "Approved"
+    | "Cancelled"
+    | "Paid"
+    | "PartiallyPaid"
+    | string;
+  subtotal: number;
+  taxTotal: number;
+  type: "Sales" | "Purchase" | "SalesReturn" | "PurchaseReturn" | string;
+  withholdingTotal: number;
+}
+
+export interface InvoiceDetailDto {
+  cariAccountId: string;
+  cariAddress?: string;
+  cariCity?: string;
+  cariCountry: string;
+  cariDistrict?: string;
+  cariTaxNumber?: string;
+  cariTaxOffice?: string;
+  cariTitle: string;
+  createdAt: string;
+  currency: string;
+  discountTotal: number;
+  dueDate?: string;
+  eInvoiceStatus?: string;
+  eInvoiceUuid?: string;
+  exchangeRate: number;
+  grandTotal: number;
+  id: string;
+  invoiceNumber: string;
+  issueDate: string;
+  items: InvoiceItemDto[];
+  notes?: string;
+  orderId?: string;
+  paidAmount: number;
+  paymentTerms?: string;
+  profile: string;
+  remainingAmount: number;
+  series: string;
+  status: string;
+  subtotal: number;
+  taxTotal: number;
+  type: string;
+  withholdingTotal: number;
+}
+
+export interface PagedInvoicesResponse {
+  items: InvoiceListDto[];
+  page: number;
+  pageSize: number;
+  pendingBalance: number;
+  totalCount: number;
+  totalPurchase: number;
+  totalSales: number;
+  totalTax: number;
+}
+
+export interface CreateInvoiceItemPayload {
+  discountRate: number;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  sku?: string;
+  taxRate: number;
+  unit: string;
+  unitPrice: number;
+  withholdingRate?: string;
+}
+
+export interface CreateInvoicePayload {
+  cariAccountId: string;
+  currency: string;
+  dueDate?: string;
+  exchangeRate: number;
+  issueDate: string;
+  items: CreateInvoiceItemPayload[];
+  notes?: string;
+  orderId?: string;
+  paymentTerms?: string;
+  profile: string;
+  series: string;
+  type: string;
+}
+
+export interface FinancialAccountDto {
+  accountNumber?: string;
+  balance: number;
+  bankName?: string;
+  branchName?: string;
+  createdAt: string;
+  currency: string;
+  iban?: string;
+  id: string;
+  isActive: boolean;
+  name: string;
+  type: "Cash" | "Bank" | "Pos" | string;
+  updatedAt: string;
+}
+
+export interface FinancialTransactionDto {
+  amount: number;
+  cariAccountId?: string;
+  cariTitle?: string;
+  createdAt: string;
+  currency: string;
+  description: string;
+  documentNumber?: string;
+  exchangeRate: number;
+  financialAccountId: string;
+  financialAccountName: string;
+  id: string;
+  invoiceId?: string;
+  transactionDate: string;
+  type: "Collection" | "Payment" | "Transfer" | "Expense" | string;
+}
+
+export interface PagedFinancialTransactionsResponse {
+  items: FinancialTransactionDto[];
+  page: number;
+  pageSize: number;
+  totalCollection: number;
+  totalCount: number;
+  totalPayment: number;
+}
+
+export interface CreateFinancialAccountPayload {
+  accountNumber?: string;
+  bankName?: string;
+  branchName?: string;
+  currency: string;
+  iban?: string;
+  initialBalance: number;
+  name: string;
+  type: string;
+}
+
+export interface CreateFinancialTransactionPayload {
+  amount: number;
+  cariAccountId?: string;
+  currency: string;
+  description: string;
+  documentNumber?: string;
+  exchangeRate: number;
+  financialAccountId: string;
+  invoiceId?: string;
+  transactionDate: string;
+  type: string;
+}
+
+export interface TransferBetweenAccountsPayload {
+  amount: number;
+  description: string;
+  sourceAccountId: string;
+  targetAccountId: string;
+  transactionDate: string;
 }

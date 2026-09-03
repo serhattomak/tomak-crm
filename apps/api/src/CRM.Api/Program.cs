@@ -20,6 +20,7 @@ using CRM.Modules.Promotions;
 using CRM.Modules.Projects;
 using CRM.Modules.Vehicles;
 using CRM.Modules.Email;
+using CRM.Modules.Invoicing;
 using CRM.Api.Jobs;
 using CRM.BuildingBlocks.Realtime;
 using Quartz;
@@ -59,9 +60,10 @@ var promotionsAssembly = typeof(PromotionsModuleExtensions).Assembly;
 var projectsAssembly = typeof(ProjectsModuleExtensions).Assembly;
 var vehiclesAssembly = typeof(VehiclesModuleExtensions).Assembly;
 var emailAssembly = typeof(EmailModuleExtensions).Assembly;
+var invoicingAssembly = typeof(InvoicingModuleExtensions).Assembly;
 var apiAssembly = typeof(Program).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, emailAssembly, apiAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, emailAssembly, invoicingAssembly, apiAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -80,6 +82,7 @@ builder.Services.AddPromotionsModule(builder.Configuration);
 builder.Services.AddProjectsModule(builder.Configuration);
 builder.Services.AddVehiclesModule(builder.Configuration);
 builder.Services.AddEmailModule(builder.Configuration);
+builder.Services.AddInvoicingModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>

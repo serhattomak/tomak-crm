@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Modules\CRM.Modules.Projects\CRM.Modules.Projects.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Vehicles\CRM.Modules.Vehicles.csproj" />
     <ProjectReference Include="..\Modules\CRM.Modules.Email\CRM.Modules.Email.csproj" />
+    <ProjectReference Include="..\Modules\CRM.Modules.Invoicing\CRM.Modules.Invoicing.csproj" />
   </ItemGroup>
 
   <ItemGroup>

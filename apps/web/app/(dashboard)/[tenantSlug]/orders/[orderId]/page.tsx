@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   Plus,
   Printer,
+  ReceiptText,
   RotateCcw,
   ShoppingCart,
   Truck,
@@ -82,6 +83,24 @@ export default function OrderDetailPage() {
   const handlePrint = () => {
     router.push(`/${tenantSlug}/orders/${orderId}/print?type=proforma`);
   };
+
+  const [isCreatingInvoice, setIsCreatingInvoice] = useState(false);
+  const handleCreateInvoice = useCallback(async () => {
+    setIsCreatingInvoice(true);
+    try {
+      const res = await ApiClient.createInvoiceFromOrder(orderId, tenantSlug);
+      if (res.success && res.data) {
+        toast.success("Sipariş başarıyla faturalaştırıldı!");
+        router.push(`/${tenantSlug}/invoices`);
+      } else {
+        toast.error(res.message || "Fatura oluşturulamadı.");
+      }
+    } catch {
+      toast.error("Fatura oluşturulurken bir hata oluştu.");
+    } finally {
+      setIsCreatingInvoice(false);
+    }
+  }, [orderId, tenantSlug, router]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -268,6 +287,20 @@ export default function OrderDetailPage() {
           >
             <Printer className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>Yazdır / Proforma</span>
+          </button>
+
+          <button
+            className="flex items-center gap-1.5 rounded-xl border border-violet-200 bg-violet-50 px-3.5 py-2 font-semibold text-violet-800 text-xs shadow-2xs transition-colors hover:bg-violet-100 disabled:opacity-50 dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300"
+            disabled={isCreatingInvoice}
+            onClick={handleCreateInvoice}
+            type="button"
+          >
+            <ReceiptText className="h-3.5 w-3.5" />
+            <span>
+              {isCreatingInvoice
+                ? "Faturalaştırılıyor..."
+                : "Faturaya Dönüştür"}
+            </span>
           </button>
 
           <PermissionGate permission="Orders.PaymentRecord">
