@@ -5507,7 +5507,9 @@ export class ApiClient {
   }
 
   // --- Inventory & Warehouses ---
-  static async getWarehouses(tenantSlug?: string): Promise<ApiResponse<WarehouseDto[]>> {
+  static async getWarehouses(
+    tenantSlug?: string
+  ): Promise<ApiResponse<WarehouseDto[]>> {
     return await ApiClient.request<WarehouseDto[]>(
       "/api/inventory/warehouses",
       { method: "GET" },

@@ -65,7 +65,9 @@ export default function OrdersPage() {
 
   // Filters — initialized from URL
   const [search, setSearch] = useState(() => getParam("search", ""));
-  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
+  const [statusFilter, setStatusFilter] = useState(() =>
+    getParam("status", "")
+  );
   const [paymentStatusFilter, setPaymentStatusFilter] = useState(() =>
     getParam("paymentStatus", "")
   );
@@ -163,25 +165,35 @@ export default function OrdersPage() {
 
   // ── Bulk operations ────────────────────────────────────────────────────────
   const allPageIds = orders.map((o) => o.id);
-  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
-  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+  const allSelected =
+    allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected =
+    allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
 
   const toggleSelectAll = () => {
-    if (allSelected) setSelectedIds(new Set());
-    else setSelectedIds(new Set(allPageIds));
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(allPageIds));
+    }
   };
 
   const toggleSelectOne = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
 
   const handleBulkDelete = async () => {
-    if (!(activeTenant && selectedIds.size > 0)) return;
+    if (!(activeTenant && selectedIds.size > 0)) {
+      return;
+    }
     setIsBulkDeleting(true);
     try {
       const { deletedCount, failedCount } = await ApiClient.bulkDeleteOrders(
@@ -191,7 +203,9 @@ export default function OrdersPage() {
       setSelectedIds(new Set());
       loadData();
       if (failedCount > 0) {
-        showToast(`${deletedCount} sipariş silindi, ${failedCount} silinemedi.`);
+        showToast(
+          `${deletedCount} sipariş silindi, ${failedCount} silinemedi.`
+        );
       } else {
         showToast(`${deletedCount} sipariş başarıyla silindi.`);
       }
@@ -619,12 +633,12 @@ export default function OrdersPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pl-4 pr-2 w-10">
+                  <th className="w-10 py-3.5 pr-2 pl-4">
                     <Checkbox
-                      checked={allSelected}
-                      onCheckedChange={toggleSelectAll}
                       aria-label="Tümünü seç"
+                      checked={allSelected}
                       data-indeterminate={someSelected}
+                      onCheckedChange={toggleSelectAll}
                     />
                   </th>
                   <th className="py-3.5 pr-4 pl-2">Sipariş No &amp; Tarih</th>
@@ -641,15 +655,17 @@ export default function OrdersPage() {
                 {orders.map((o) => (
                   <tr
                     className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
-                      selectedIds.has(o.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                      selectedIds.has(o.id)
+                        ? "bg-blue-50/60 dark:bg-blue-950/20"
+                        : ""
                     }`}
                     key={o.id}
                   >
-                    <td className="py-4 pl-4 pr-2 w-10">
+                    <td className="w-10 py-4 pr-2 pl-4">
                       <Checkbox
+                        aria-label={`${o.orderNumber} seç`}
                         checked={selectedIds.has(o.id)}
                         onCheckedChange={() => toggleSelectOne(o.id)}
-                        aria-label={`${o.orderNumber} seç`}
                         onClick={(e) => e.stopPropagation()}
                       />
                     </td>
@@ -894,8 +910,6 @@ export default function OrdersPage() {
 
       {/* Bulk Action Bar */}
       <BulkActionBar
-        selectedCount={selectedIds.size}
-        onClear={() => setSelectedIds(new Set())}
         actions={[
           {
             disabled: isBulkDeleting,
@@ -905,6 +919,8 @@ export default function OrdersPage() {
             variant: "danger",
           },
         ]}
+        onClear={() => setSelectedIds(new Set())}
+        selectedCount={selectedIds.size}
       />
     </div>
   );

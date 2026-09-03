@@ -12,14 +12,12 @@ import {
 } from "@workspace/ui/components/select";
 import {
   ArrowLeft,
-  Calendar,
   Check,
   CheckCircle2,
   Clock,
   Edit2,
   ExternalLink,
   FileText,
-  Filter,
   Globe,
   Mail,
   MapPin,
@@ -962,7 +960,7 @@ export default function CustomerDetailPage() {
                     <PhoneCall className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="block font-bold text-xs text-emerald-900 dark:text-emerald-200">
+                    <span className="block font-bold text-emerald-900 text-xs dark:text-emerald-200">
                       Telefon Görüşmesi
                     </span>
                     <span className="text-[10px] text-emerald-700/80 dark:text-emerald-400">
@@ -983,7 +981,7 @@ export default function CustomerDetailPage() {
                     <Video className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="block font-bold text-xs text-violet-900 dark:text-violet-200">
+                    <span className="block font-bold text-violet-900 text-xs dark:text-violet-200">
                       Toplantı / Ziyaret
                     </span>
                     <span className="text-[10px] text-violet-700/80 dark:text-violet-400">
@@ -1004,7 +1002,7 @@ export default function CustomerDetailPage() {
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="block font-bold text-xs text-blue-900 dark:text-blue-200">
+                    <span className="block font-bold text-blue-900 text-xs dark:text-blue-200">
                       E-Posta İletişimi
                     </span>
                     <span className="text-[10px] text-blue-700/80 dark:text-blue-400">
@@ -1025,7 +1023,7 @@ export default function CustomerDetailPage() {
                     <FileText className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="block font-bold text-xs text-amber-900 dark:text-amber-200">
+                    <span className="block font-bold text-amber-900 text-xs dark:text-amber-200">
                       Önemli Not
                     </span>
                     <span className="text-[10px] text-amber-700/80 dark:text-amber-400">
@@ -1050,30 +1048,40 @@ export default function CustomerDetailPage() {
                 {/* Filter Pills */}
                 <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
                   {[
-                    { key: "All", label: "Tümü", count: customer.activities.length },
                     {
+                      count: customer.activities.length,
+                      key: "All",
+                      label: "Tümü",
+                    },
+                    {
+                      count: customer.activities.filter(
+                        (a) => a.activityType === "Call"
+                      ).length,
                       key: "Call",
                       label: "Aramalar",
-                      count: customer.activities.filter((a) => a.activityType === "Call").length,
                     },
                     {
+                      count: customer.activities.filter(
+                        (a) => a.activityType === "Meeting"
+                      ).length,
                       key: "Meeting",
                       label: "Toplantılar",
-                      count: customer.activities.filter((a) => a.activityType === "Meeting").length,
                     },
                     {
+                      count: customer.activities.filter(
+                        (a) => a.activityType === "Email"
+                      ).length,
                       key: "Email",
                       label: "E-Postalar",
-                      count: customer.activities.filter((a) => a.activityType === "Email").length,
                     },
                     {
+                      count: customer.activities.filter(
+                        (a) => a.activityType === "Note"
+                      ).length,
                       key: "Note",
                       label: "Notlar",
-                      count: customer.activities.filter((a) => a.activityType === "Note").length,
                     },
                     {
-                      key: "System",
-                      label: "Sistem",
                       count: customer.activities.filter(
                         (a) =>
                           a.activityType !== "Call" &&
@@ -1081,6 +1089,8 @@ export default function CustomerDetailPage() {
                           a.activityType !== "Email" &&
                           a.activityType !== "Note"
                       ).length,
+                      key: "System",
+                      label: "Sistem",
                     },
                   ].map((tab) => {
                     const isSelected = activityTypeFilter === tab.key;
@@ -1131,8 +1141,12 @@ export default function CustomerDetailPage() {
                   if (activitySearch.trim()) {
                     const q = activitySearch.toLowerCase();
                     const matchTitle = act.title.toLowerCase().includes(q);
-                    const matchDesc = act.description?.toLowerCase().includes(q);
-                    if (!matchTitle && !matchDesc) return false;
+                    const matchDesc = act.description
+                      ?.toLowerCase()
+                      .includes(q);
+                    if (!(matchTitle || matchDesc)) {
+                      return false;
+                    }
                   }
                   return true;
                 });
@@ -1178,42 +1192,45 @@ export default function CustomerDetailPage() {
                         const nodeBg = isCall
                           ? "bg-emerald-500 text-white shadow-emerald-500/20"
                           : isMeeting
-                          ? "bg-violet-500 text-white shadow-violet-500/20"
-                          : isEmail
-                          ? "bg-blue-500 text-white shadow-blue-500/20"
-                          : isNote
-                          ? "bg-amber-500 text-white shadow-amber-500/20"
-                          : "bg-zinc-500 text-white shadow-zinc-500/20";
+                            ? "bg-violet-500 text-white shadow-violet-500/20"
+                            : isEmail
+                              ? "bg-blue-500 text-white shadow-blue-500/20"
+                              : isNote
+                                ? "bg-amber-500 text-white shadow-amber-500/20"
+                                : "bg-zinc-500 text-white shadow-zinc-500/20";
 
                         const badgeColor = isCall
                           ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800"
                           : isMeeting
-                          ? "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/60 dark:text-violet-300 dark:border-violet-800"
-                          : isEmail
-                          ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800"
-                          : isNote
-                          ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800"
-                          : "bg-zinc-50 text-zinc-700 border-zinc-200 dark:bg-zinc-800/60 dark:text-zinc-300 dark:border-zinc-700";
+                            ? "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/60 dark:text-violet-300 dark:border-violet-800"
+                            : isEmail
+                              ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800"
+                              : isNote
+                                ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800"
+                                : "bg-zinc-50 text-zinc-700 border-zinc-200 dark:bg-zinc-800/60 dark:text-zinc-300 dark:border-zinc-700";
 
                         const badgeLabel = isCall
                           ? "Telefon Araması"
                           : isMeeting
-                          ? "Toplantı"
-                          : isEmail
-                          ? "E-Posta"
-                          : isNote
-                          ? "Not"
-                          : activity.activityType || "Sistem";
+                            ? "Toplantı"
+                            : isEmail
+                              ? "E-Posta"
+                              : isNote
+                                ? "Not"
+                                : activity.activityType || "Sistem";
 
                         const dateObj = new Date(activity.performedAt);
                         const isToday =
                           new Date().toDateString() === dateObj.toDateString();
 
                         return (
-                          <div className="relative flex items-start gap-4" key={activity.id}>
+                          <div
+                            className="relative flex items-start gap-4"
+                            key={activity.id}
+                          >
                             {/* Timeline Node Icon */}
                             <div
-                              className={`-left-6 relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full shadow-md ring-4 ring-white dark:ring-zinc-950 ${nodeBg}`}
+                              className={`relative -left-6 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full shadow-md ring-4 ring-white dark:ring-zinc-950 ${nodeBg}`}
                             >
                               {isCall ? (
                                 <PhoneCall className="h-3.5 w-3.5" />
@@ -1246,16 +1263,19 @@ export default function CustomerDetailPage() {
                                   <Clock className="h-3 w-3" />
                                   <span>
                                     {isToday
-                                      ? `Bugün ${dateObj.toLocaleTimeString("tr-TR", {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}`
+                                      ? `Bugün ${dateObj.toLocaleTimeString(
+                                          "tr-TR",
+                                          {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                          }
+                                        )}`
                                       : dateObj.toLocaleString("tr-TR", {
                                           day: "2-digit",
-                                          month: "short",
-                                          year: "numeric",
                                           hour: "2-digit",
                                           minute: "2-digit",
+                                          month: "short",
+                                          year: "numeric",
                                         })}
                                   </span>
                                 </div>

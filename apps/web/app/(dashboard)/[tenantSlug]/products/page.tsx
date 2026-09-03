@@ -31,7 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { BulkActionBar, BulkDeleteIcon } from "@/components/bulk-action-bar";
@@ -64,9 +64,15 @@ export default function ProductsPage() {
   // Filters — initialized from URL
   const [search, setSearch] = useState(() => getParam("search", ""));
   const [typeFilter, setTypeFilter] = useState(() => getParam("type", ""));
-  const [categoryFilter, setCategoryFilter] = useState(() => getParam("category", ""));
-  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
-  const [stockStatusFilter, setStockStatusFilter] = useState(() => getParam("stockStatus", ""));
+  const [categoryFilter, setCategoryFilter] = useState(() =>
+    getParam("category", "")
+  );
+  const [statusFilter, setStatusFilter] = useState(() =>
+    getParam("status", "")
+  );
+  const [stockStatusFilter, setStockStatusFilter] = useState(() =>
+    getParam("stockStatus", "")
+  );
   const [page, setPage] = useState(() => getIntParam("page", 1));
   const [viewMode, setViewMode] = useState<"table" | "grid">(() =>
     getParam("view", "table") === "grid" ? "grid" : "table"
@@ -173,8 +179,10 @@ export default function ProductsPage() {
 
   // ── Bulk operations ─────────────────────────────────────────────────────────
   const allPageIds = products.map((p) => p.id);
-  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
-  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+  const allSelected =
+    allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected =
+    allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
 
   const toggleSelectAll = () => {
     if (allSelected) {
@@ -187,14 +195,19 @@ export default function ProductsPage() {
   const toggleSelectOne = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
 
   const handleBulkDelete = async () => {
-    if (!(activeTenant && selectedIds.size > 0)) return;
+    if (!(activeTenant && selectedIds.size > 0)) {
+      return;
+    }
     setIsBulkDeleting(true);
     try {
       const { deletedCount, failedCount } = await ApiClient.bulkDeleteProducts(
@@ -643,12 +656,12 @@ export default function ProductsPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pl-4 pr-2 w-10">
+                  <th className="w-10 py-3.5 pr-2 pl-4">
                     <Checkbox
-                      checked={allSelected}
-                      onCheckedChange={toggleSelectAll}
                       aria-label="Tümünü seç"
+                      checked={allSelected}
                       data-indeterminate={someSelected}
+                      onCheckedChange={toggleSelectAll}
                     />
                   </th>
                   <th className="py-3.5 pr-4 pl-2">Ürün / Hizmet</th>
@@ -665,15 +678,17 @@ export default function ProductsPage() {
                 {products.map((p) => (
                   <tr
                     className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
-                      selectedIds.has(p.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                      selectedIds.has(p.id)
+                        ? "bg-blue-50/60 dark:bg-blue-950/20"
+                        : ""
                     }`}
                     key={p.id}
                   >
-                    <td className="py-4 pl-4 pr-2 w-10">
+                    <td className="w-10 py-4 pr-2 pl-4">
                       <Checkbox
+                        aria-label={`${p.name} seç`}
                         checked={selectedIds.has(p.id)}
                         onCheckedChange={() => toggleSelectOne(p.id)}
-                        aria-label={`${p.name} seç`}
                         onClick={(e) => e.stopPropagation()}
                       />
                     </td>
@@ -1045,8 +1060,6 @@ export default function ProductsPage() {
 
       {/* Bulk Action Bar */}
       <BulkActionBar
-        selectedCount={selectedIds.size}
-        onClear={() => setSelectedIds(new Set())}
         actions={[
           {
             disabled: isBulkDeleting,
@@ -1056,6 +1069,8 @@ export default function ProductsPage() {
             variant: "danger",
           },
         ]}
+        onClear={() => setSelectedIds(new Set())}
+        selectedCount={selectedIds.size}
       />
     </div>
   );

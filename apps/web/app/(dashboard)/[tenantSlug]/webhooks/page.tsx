@@ -23,8 +23,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   ApiClient,
@@ -193,9 +193,7 @@ export default function WebhooksPage() {
         {
           event: eventFilter || undefined,
           isActive:
-            isActiveFilter === "all"
-              ? undefined
-              : isActiveFilter === "active",
+            isActiveFilter === "all" ? undefined : isActiveFilter === "active",
           page: endpointPage,
           pageSize: PAGE_SIZE,
           search: debouncedSearch || undefined,
@@ -321,9 +319,7 @@ export default function WebhooksPage() {
       );
       if (res.success) {
         toast.success(
-          newStatus
-            ? "Endpoint aktifleştirildi."
-            : "Endpoint pasife alındı."
+          newStatus ? "Endpoint aktifleştirildi." : "Endpoint pasife alındı."
         );
         // refresh KPI active count
         await loadKpiActive();
@@ -429,10 +425,7 @@ export default function WebhooksPage() {
   const handleRetry = async (delivery: WebhookDeliveryDto): Promise<void> => {
     setRetryingId(delivery.id);
     try {
-      const res = await ApiClient.retryWebhookDelivery(
-        delivery.id,
-        tenantSlug
-      );
+      const res = await ApiClient.retryWebhookDelivery(delivery.id, tenantSlug);
       if (res.success && res.data) {
         toast.success("Yeniden deneme tetiklendi.");
         setDeliveries((prev) =>
@@ -509,7 +502,7 @@ export default function WebhooksPage() {
       {/* KPI Cards - Bento Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-zinc-200/80 bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 tracking-wide uppercase dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Aktif Endpoint</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-400">
               <ShieldCheck className="h-4 w-4" />
@@ -530,7 +523,7 @@ export default function WebhooksPage() {
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 tracking-wide uppercase dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Toplam Teslimat</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
               <Link2 className="h-4 w-4" />
@@ -555,7 +548,7 @@ export default function WebhooksPage() {
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 tracking-wide uppercase dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Başarı Oranı</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
@@ -694,9 +687,7 @@ export default function WebhooksPage() {
                 <button
                   className="rounded-lg border border-zinc-200 px-3 py-1.5 font-medium text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   disabled={endpointPage <= 1 || isLoadingEndpoints}
-                  onClick={() =>
-                    setEndpointPage((p) => Math.max(1, p - 1))
-                  }
+                  onClick={() => setEndpointPage((p) => Math.max(1, p - 1))}
                   type="button"
                 >
                   Önceki
@@ -707,9 +698,7 @@ export default function WebhooksPage() {
                     endpointPage >= endpointsTotalPages || isLoadingEndpoints
                   }
                   onClick={() =>
-                    setEndpointPage((p) =>
-                      Math.min(endpointsTotalPages, p + 1)
-                    )
+                    setEndpointPage((p) => Math.min(endpointsTotalPages, p + 1))
                   }
                   type="button"
                 >
@@ -731,14 +720,14 @@ export default function WebhooksPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
                   <AlertCircle className="h-5 w-5" />
                 </div>
-                <p className="mt-3 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <p className="mt-3 font-medium text-sm text-zinc-900 dark:text-zinc-100">
                   Yükleme hatası
                 </p>
                 <p className="mt-1 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
                   {endpointsError}
                 </p>
                 <button
-                  className="mt-4 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                  className="mt-4 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
                   onClick={loadEndpoints}
                   type="button"
                 >
@@ -758,7 +747,7 @@ export default function WebhooksPage() {
                   girin, HMAC imzasıyla güvenli teslimatlar alın.
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-sm text-white shadow-sm transition-all duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
                   href={`/${tenantSlug}/webhooks/new`}
                 >
                   <Link2 className="h-4 w-4" />
@@ -772,7 +761,7 @@ export default function WebhooksPage() {
                     Webhook endpoint listesi — isim, URL, olaylar, durum ve
                     aksiyonlar
                   </caption>
-                  <thead className="border-zinc-200 border-b bg-zinc-50/70 text-xs font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <thead className="border-zinc-200 border-b bg-zinc-50/70 font-medium text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                     <tr>
                       <th className="px-4 py-3 font-semibold">İsim</th>
                       <th className="px-4 py-3 font-semibold">URL</th>
@@ -854,9 +843,9 @@ export default function WebhooksPage() {
                                 ? "bg-emerald-500"
                                 : "bg-zinc-300 dark:bg-zinc-700"
                             }`}
-                            onClick={(
-                              e: React.MouseEvent<HTMLButtonElement>
-                            ) => handleToggle(ep, e)}
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                              handleToggle(ep, e)
+                            }
                             type="button"
                           >
                             <span
@@ -869,7 +858,7 @@ export default function WebhooksPage() {
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
-                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-xs text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                               disabled={testingId === ep.id}
                               onClick={() => handleTestSend(ep)}
                               title="Test gönder"
@@ -911,7 +900,7 @@ export default function WebhooksPage() {
 
           {/* Pagination footer copy for mobile */}
           {!isLoadingEndpoints && endpoints.length > 0 && (
-            <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 md:hidden">
+            <div className="flex items-center justify-between text-xs text-zinc-500 md:hidden dark:text-zinc-400">
               <span>
                 Toplam {endpointsTotal} • Sayfa {endpointPage} /{" "}
                 {endpointsTotalPages}
@@ -977,9 +966,7 @@ export default function WebhooksPage() {
                 <button
                   className="rounded-lg border border-zinc-200 px-3 py-1.5 font-medium text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   disabled={deliveriesPage <= 1 || isLoadingDeliveries}
-                  onClick={() =>
-                    setDeliveriesPage((p) => Math.max(1, p - 1))
-                  }
+                  onClick={() => setDeliveriesPage((p) => Math.max(1, p - 1))}
                   type="button"
                 >
                   Önceki
@@ -1024,7 +1011,7 @@ export default function WebhooksPage() {
                   temizleyin.
                 </p>
                 <button
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-medium text-sm text-zinc-700 shadow-sm hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
                   onClick={() => {
                     setDeliveryEndpointFilter("");
                     setDeliveryStatusFilter("");
@@ -1043,7 +1030,7 @@ export default function WebhooksPage() {
                     Webhook teslimat günlüğü — endpoint, olay, durum, deneme
                     sayısı ve yanıt
                   </caption>
-                  <thead className="border-zinc-200 border-b bg-zinc-50/70 text-xs font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <thead className="border-zinc-200 border-b bg-zinc-50/70 font-medium text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                     <tr>
                       <th className="px-3 py-3 font-semibold">Endpoint</th>
                       <th className="px-3 py-3 font-semibold">Olay</th>
@@ -1059,7 +1046,9 @@ export default function WebhooksPage() {
                         Süre
                       </th>
                       <th className="px-3 py-3 font-semibold">Tarih</th>
-                      <th className="px-3 py-3 font-semibold">Sonraki Deneme</th>
+                      <th className="px-3 py-3 font-semibold">
+                        Sonraki Deneme
+                      </th>
                       <th className="px-3 py-3 text-right font-semibold">
                         Aksiyon
                       </th>
@@ -1130,7 +1119,7 @@ export default function WebhooksPage() {
                           {(d.status === "Failed" ||
                             d.status === "Retrying") && (
                             <button
-                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-xs text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                               disabled={retryingId === d.id}
                               onClick={() => handleRetry(d)}
                               type="button"
@@ -1256,7 +1245,7 @@ export default function WebhooksPage() {
 
             <div className="mt-5 flex justify-end">
               <button
-                className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
+                className="rounded-xl bg-zinc-900 px-4 py-2 font-medium text-sm text-white transition-colors duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
                 onClick={() => setTestResult(null)}
                 type="button"
               >

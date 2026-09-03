@@ -170,9 +170,9 @@ export default function WorkspaceSettingsPage() {
                 <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Entegrasyonlar & Webhooklar
                 </h2>
-                <p className="mt-1 max-w-md text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-                  Tenant bazlı webhook endpointlerini yönetin, olay seçimi
-                  yapın ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
+                <p className="mt-1 max-w-md text-xs text-zinc-500 leading-relaxed dark:text-zinc-400">
+                  Tenant bazlı webhook endpointlerini yönetin, olay seçimi yapın
+                  ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">

@@ -1,5 +1,8 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertCircle,
   CheckCircle2,
@@ -189,7 +192,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
         <div className="flex items-center justify-end gap-1">
           {invoice.status === "Draft" ? (
             <button
-              className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 text-xs shadow-2xs hover:bg-emerald-100 active:scale-95 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300"
+              className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 text-xs shadow-2xs hover:bg-emerald-100 active:scale-95 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900"
               onClick={handleIssue}
               title="Resmileştir ve Cari Bakiyeye İşle"
               type="button"
@@ -199,7 +202,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           ) : null}
           {invoice.status === "Cancelled" ? null : (
             <button
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800 dark:hover:text-rose-400"
               onClick={handleCancel}
               title="Faturayı İptal Et"
               type="button"
@@ -238,15 +241,15 @@ function FilterBar({
   );
 
   const handleTypeSelect = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onTypeFilterChange(e.target.value);
+    (val: string) => {
+      onTypeFilterChange(val);
     },
     [onTypeFilterChange]
   );
 
   const handleStatusSelect = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onStatusFilterChange(e.target.value);
+    (val: string) => {
+      onStatusFilterChange(val);
     },
     [onStatusFilterChange]
   );
@@ -256,7 +259,7 @@ function FilterBar({
       <div className="relative flex-1">
         <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
         <input
-          className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
+          className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200 dark:focus:bg-zinc-800"
           onChange={handleSearchInput}
           placeholder="Fatura No veya Müşteri Ara..."
           type="text"
@@ -265,29 +268,31 @@ function FilterBar({
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <select
-          className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-sm text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
+        <SelectField
           onChange={handleTypeSelect}
+          options={[
+            { label: "Tüm Türler", value: "All" },
+            { label: "Satış Faturaları", value: "Sales" },
+            { label: "Alış Faturaları", value: "Purchase" },
+            { label: "Satış İadeleri", value: "SalesReturn" },
+            { label: "Alış İadeleri", value: "PurchaseReturn" },
+          ]}
+          placeholder="Tüm Türler"
           value={typeFilter}
-        >
-          <option value="All">Tüm Türler</option>
-          <option value="Sales">Satış Faturaları</option>
-          <option value="Purchase">Alış Faturaları</option>
-          <option value="SalesReturn">Satış İadeleri</option>
-          <option value="PurchaseReturn">Alış İadeleri</option>
-        </select>
+        />
 
-        <select
-          className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-sm text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
+        <SelectField
           onChange={handleStatusSelect}
+          options={[
+            { label: "Tüm Durumlar", value: "All" },
+            { label: "Taslaklar", value: "Draft" },
+            { label: "Resmileşenler", value: "Issued" },
+            { label: "Ödenenler", value: "Paid" },
+            { label: "İptal Edilenler", value: "Cancelled" },
+          ]}
+          placeholder="Tüm Durumlar"
           value={statusFilter}
-        >
-          <option value="All">Tüm Durumlar</option>
-          <option value="Draft">Taslaklar</option>
-          <option value="Issued">Resmileşenler</option>
-          <option value="Paid">Ödenenler</option>
-          <option value="Cancelled">İptal Edilenler</option>
-        </select>
+        />
       </div>
     </div>
   );
@@ -375,14 +380,14 @@ function InvoiceDetailDrawer({
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
               onClick={onPrint}
               type="button"
             >
               <Printer className="h-3.5 w-3.5" /> Yazdır
             </button>
             <button
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               onClick={onClose}
               type="button"
             >
@@ -523,7 +528,7 @@ function InvoiceDetailDrawer({
 
               <div className="flex justify-end border-zinc-200 border-t pt-4 dark:border-zinc-800">
                 <div className="w-64 space-y-1.5 text-right text-xs">
-                  <div className="flex justify-between text-zinc-500">
+                  <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                     <span>Ara Toplam:</span>
                     <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                       {invoice.subtotal.toLocaleString("tr-TR", {
@@ -533,9 +538,9 @@ function InvoiceDetailDrawer({
                     </span>
                   </div>
                   {invoice.discountTotal > 0 ? (
-                    <div className="flex justify-between text-zinc-500">
+                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                       <span>İndirim:</span>
-                      <span className="font-medium font-mono text-rose-600">
+                      <span className="font-medium font-mono text-rose-600 dark:text-rose-400">
                         -
                         {invoice.discountTotal.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -544,7 +549,7 @@ function InvoiceDetailDrawer({
                       </span>
                     </div>
                   ) : null}
-                  <div className="flex justify-between text-zinc-500">
+                  <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                     <span>Hesaplanan KDV:</span>
                     <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                       {invoice.taxTotal.toLocaleString("tr-TR", {
@@ -554,9 +559,9 @@ function InvoiceDetailDrawer({
                     </span>
                   </div>
                   {invoice.withholdingTotal > 0 ? (
-                    <div className="flex justify-between text-zinc-500">
+                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                       <span>KDV Tevkifatı:</span>
-                      <span className="font-medium font-mono text-amber-600">
+                      <span className="font-medium font-mono text-amber-600 dark:text-amber-400">
                         -
                         {invoice.withholdingTotal.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -762,7 +767,7 @@ export default function InvoicesPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 font-semibold text-sm text-white shadow-xs transition-all hover:bg-violet-700 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 font-semibold text-sm text-white shadow-xs transition-all hover:bg-violet-700 active:scale-95 dark:hover:bg-violet-500"
             onClick={handleOpenCreateModal}
             type="button"
           >
@@ -891,22 +896,22 @@ function InvoiceItemRow({
   );
 
   const handleQty = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(item.rowId, "quantity", Number(e.target.value));
+    (val: number) => {
+      onChange(item.rowId, "quantity", val);
     },
     [item.rowId, onChange]
   );
 
   const handlePrice = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(item.rowId, "unitPrice", Number(e.target.value));
+    (val: number) => {
+      onChange(item.rowId, "unitPrice", val);
     },
     [item.rowId, onChange]
   );
 
   const handleTax = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onChange(item.rowId, "taxRate", Number(e.target.value));
+    (val: string) => {
+      onChange(item.rowId, "taxRate", Number(val));
     },
     [item.rowId, onChange]
   );
@@ -918,42 +923,41 @@ function InvoiceItemRow({
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200 p-2.5 dark:border-zinc-800">
       <input
-        className="flex-2 rounded-lg border border-zinc-200 bg-white p-1.5 text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+        className="flex-2 rounded-lg border border-zinc-200 bg-white p-1.5 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
         onChange={handleName}
         placeholder="Ürün / Hizmet Açıklaması *"
         type="text"
         value={item.productName}
       />
-      <input
-        className="w-16 rounded-lg border border-zinc-200 bg-white p-1.5 text-right font-mono text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+      <NumberInput
+        className="w-24"
         min={1}
         onChange={handleQty}
-        placeholder="Miktar"
-        type="number"
+        showStepper
         value={item.quantity}
       />
-      <input
-        className="w-24 rounded-lg border border-zinc-200 bg-white p-1.5 text-right font-mono text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+      <NumberInput
+        className="w-32"
         min={0}
         onChange={handlePrice}
-        placeholder="Birim Fiyat"
-        step="0.01"
-        type="number"
+        precision={2}
+        prefix="₺"
         value={item.unitPrice}
       />
-      <select
-        className="w-20 rounded-lg border border-zinc-200 bg-white p-1.5 text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+      <SelectField
+        className="w-24"
         onChange={handleTax}
-        value={item.taxRate}
-      >
-        <option value={20}>%20</option>
-        <option value={10}>%10</option>
-        <option value={1}>%1</option>
-        <option value={0}>%0</option>
-      </select>
+        options={[
+          { label: "%20", value: "20" },
+          { label: "%10", value: "10" },
+          { label: "%1", value: "1" },
+          { label: "%0", value: "0" },
+        ]}
+        value={String(item.taxRate)}
+      />
       {canRemove ? (
         <button
-          className="p-1.5 text-zinc-400 hover:text-rose-600"
+          className="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
           onClick={handleRemove}
           type="button"
         >
@@ -994,26 +998,17 @@ function CreateInvoiceModal({
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCariChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setCariAccountId(e.target.value);
-    },
-    []
-  );
+  const handleCariChange = useCallback((val: string) => {
+    setCariAccountId(val);
+  }, []);
 
-  const handleTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setType(e.target.value);
-    },
-    []
-  );
+  const handleTypeChange = useCallback((val: string) => {
+    setType(val);
+  }, []);
 
-  const handleProfileChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setProfile(e.target.value);
-    },
-    []
-  );
+  const handleProfileChange = useCallback((val: string) => {
+    setProfile(val);
+  }, []);
 
   const handleNotesChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -1125,18 +1120,17 @@ function CreateInvoiceModal({
               >
                 Cari Hesap *
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="inv-cari-select"
+              <Combobox
+                emptyMessage="Cari bulunamadı."
                 onChange={handleCariChange}
+                options={cariList.map((c) => ({
+                  description: c.code,
+                  label: c.title,
+                  value: c.id,
+                }))}
+                searchPlaceholder="Cari ara..."
                 value={cariAccountId}
-              >
-                {cariList.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.title} ({c.code})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <div>
@@ -1146,15 +1140,14 @@ function CreateInvoiceModal({
               >
                 Fatura Türü
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="inv-type-select"
+              <SelectField
                 onChange={handleTypeChange}
+                options={[
+                  { label: "Satış Faturası", value: "Sales" },
+                  { label: "Alış Faturası", value: "Purchase" },
+                ]}
                 value={type}
-              >
-                <option value="Sales">Satış Faturası</option>
-                <option value="Purchase">Alış Faturası</option>
-              </select>
+              />
             </div>
 
             <div>
@@ -1164,16 +1157,15 @@ function CreateInvoiceModal({
               >
                 Fatura Profili
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="inv-profile-select"
+              <SelectField
                 onChange={handleProfileChange}
+                options={[
+                  { label: "Ticari Fatura", value: "TICARIFATURA" },
+                  { label: "Temel Fatura", value: "TEMELFATURA" },
+                  { label: "e-Arşiv Fatura", value: "EARSIVFATURA" },
+                ]}
                 value={profile}
-              >
-                <option value="TICARIFATURA">Ticari Fatura</option>
-                <option value="TEMELFATURA">Temel Fatura</option>
-                <option value="EARSIVFATURA">e-Arşiv Fatura</option>
-              </select>
+              />
             </div>
           </div>
 
@@ -1184,7 +1176,7 @@ function CreateInvoiceModal({
                 Fatura Kalemleri
               </span>
               <button
-                className="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50 px-2.5 py-1 font-semibold text-violet-700 text-xs hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300"
+                className="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50 px-2.5 py-1 font-semibold text-violet-700 text-xs hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300 dark:hover:bg-violet-900"
                 onClick={handleAddItem}
                 type="button"
               >
@@ -1225,14 +1217,14 @@ function CreateInvoiceModal({
 
         <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
+            className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50 dark:hover:bg-violet-500"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"

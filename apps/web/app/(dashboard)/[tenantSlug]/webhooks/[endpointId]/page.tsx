@@ -18,10 +18,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import {
-  ApiClient,
-  type WebhookDeliveryDto,
-} from "@/lib/api-client";
+import { ApiClient, type WebhookDeliveryDto } from "@/lib/api-client";
 
 const WEBHOOK_EVENTS: readonly string[] = [
   "Order.Created",
@@ -117,12 +114,22 @@ export default function WebhookBuilderPage() {
   const [hasAttemptedSave, setHasAttemptedSave] = useState<boolean>(false);
 
   const urlIsValid = useMemo(() => isHttpsUrl(url), [url]);
-  const nameIsValid = useMemo(() => name.trim().length > 0 && name.trim().length <= 255, [name]);
+  const nameIsValid = useMemo(
+    () => name.trim().length > 0 && name.trim().length <= 255,
+    [name]
+  );
   const eventsIsValid = useMemo(() => events.length > 0, [events]);
-  const descriptionIsValid = useMemo(() => description.length <= 1000, [description]);
-  const isFormValid = nameIsValid && urlIsValid && eventsIsValid && descriptionIsValid;
+  const descriptionIsValid = useMemo(
+    () => description.length <= 1000,
+    [description]
+  );
+  const isFormValid =
+    nameIsValid && urlIsValid && eventsIsValid && descriptionIsValid;
 
-  const hmacExampleTimestamp = useMemo(() => String(Math.floor(Date.now() / 1000)), []);
+  const hmacExampleTimestamp = useMemo(
+    () => String(Math.floor(Date.now() / 1000)),
+    []
+  );
   const hmacExamplePayload = useMemo(() => {
     const sample: Record<string, unknown> = {
       event: events[0] ?? "Order.Created",
@@ -132,7 +139,8 @@ export default function WebhookBuilderPage() {
     return JSON.stringify(sample, null, 2);
   }, [events]);
 
-  const hmacExampleSignature = "sha256=9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+  const hmacExampleSignature =
+    "sha256=9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
 
   const loadDeliveries = useCallback(async (): Promise<void> => {
     if (isNew || !endpointId) {
@@ -181,7 +189,10 @@ export default function WebhookBuilderPage() {
           setDescription(data.description ?? "");
           setEvents(data.events ?? []);
           setIsActive(data.isActive ?? true);
-          setSecretMasked(data.secretMasked ?? (data.secret ? `****${data.secret.slice(-4)}` : null));
+          setSecretMasked(
+            data.secretMasked ??
+              (data.secret ? `****${data.secret.slice(-4)}` : null)
+          );
           // secret is never returned on details except masked; secretOnce stays null
           setTestPayloadText(
             JSON.stringify(
@@ -274,7 +285,8 @@ export default function WebhookBuilderPage() {
           tenantSlug
         );
         if (res.success && res.data) {
-          const createdSecret: string | null = (res.data.secret as string | undefined) ?? null;
+          const createdSecret: string | null =
+            (res.data.secret as string | undefined) ?? null;
           if (createdSecret) {
             setSecretOnce(createdSecret);
             setSecretMasked(null);
@@ -285,21 +297,27 @@ export default function WebhookBuilderPage() {
           // navigate to detail id while preserving secretOnce in state via replace is not possible without losing state,
           // so we stay on current page and offer navigation to detail
           // optionally push to new id after a short delay if secret was not returned
-          if (!createdSecret) {
-            router.push(`/${tenantSlug}/webhooks/${res.data.id}`);
-          } else {
+          if (createdSecret) {
             // store id for test-send reference if user continues
             // we keep endpointId as "new" but show a banner with link
             // to keep test-send working we could push with secret in history state - but simplest: replace and keep secret via sessionStorage
             try {
-              window.sessionStorage.setItem(`webhook-secret-${res.data.id}`, createdSecret);
+              window.sessionStorage.setItem(
+                `webhook-secret-${res.data.id}`,
+                createdSecret
+              );
             } catch {
               // ignore storage errors
             }
             // give user time to copy, then suggest navigation
-            toast.info("Teslimatlar için listeden oluşturulan webhook'a geçebilirsiniz.", {
-              duration: 4000,
-            });
+            toast.info(
+              "Teslimatlar için listeden oluşturulan webhook'a geçebilirsiniz.",
+              {
+                duration: 4000,
+              }
+            );
+          } else {
+            router.push(`/${tenantSlug}/webhooks/${res.data.id}`);
           }
         } else {
           toast.error(res.message || "Webhook oluşturulamadı.");
@@ -329,7 +347,8 @@ export default function WebhookBuilderPage() {
         }
       }
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Bir hata meydana geldi.";
+      const message =
+        error instanceof Error ? error.message : "Bir hata meydana geldi.";
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -394,7 +413,9 @@ export default function WebhookBuilderPage() {
   useEffect(() => {
     if (!isNew && endpointId) {
       try {
-        const stored = window.sessionStorage.getItem(`webhook-secret-${endpointId}`);
+        const stored = window.sessionStorage.getItem(
+          `webhook-secret-${endpointId}`
+        );
         if (stored) {
           setSecretOnce(stored);
           setShowSecret(true);
@@ -411,7 +432,9 @@ export default function WebhookBuilderPage() {
       <div className="flex min-h-[60vh] flex-1 items-center justify-center">
         <div className="space-y-3 text-center">
           <RefreshCw className="mx-auto h-8 w-8 animate-spin text-zinc-900 dark:text-zinc-100" />
-          <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">Webhook hazırlanıyor...</p>
+          <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
+            Webhook hazırlanıyor...
+          </p>
         </div>
       </div>
     );
@@ -468,7 +491,9 @@ export default function WebhookBuilderPage() {
             <button
               aria-label="isActive toggle"
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-150 ease-out ${
-                isActive ? "bg-zinc-900 dark:bg-zinc-100" : "bg-zinc-300 dark:bg-zinc-700"
+                isActive
+                  ? "bg-zinc-900 dark:bg-zinc-100"
+                  : "bg-zinc-300 dark:bg-zinc-700"
               }`}
               onClick={() => setIsActive((prev: boolean) => !prev)}
               type="button"
@@ -500,7 +525,11 @@ export default function WebhookBuilderPage() {
             }}
             type="button"
           >
-            {isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? (
+              <RefreshCw className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
             <span>{isNew ? "Webhook'u Oluştur" : "Değişiklikleri Kaydet"}</span>
           </button>
         </div>
@@ -511,9 +540,12 @@ export default function WebhookBuilderPage() {
           <div className="flex items-start gap-2.5">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
             <div className="flex-1">
-              <p className="font-semibold text-amber-900 text-xs dark:text-amber-200">Gizli anahtar bir kez gösterilir, kaydedin</p>
+              <p className="font-semibold text-amber-900 text-xs dark:text-amber-200">
+                Gizli anahtar bir kez gösterilir, kaydedin
+              </p>
               <p className="mt-1 text-[11px] text-amber-800 dark:text-amber-300">
-                Bu secret sadece oluşturma anında gösterilir. Güvenli bir yerde saklayın. Sayfadan ayrılırsanız tekrar görüntülenemez.
+                Bu secret sadece oluşturma anında gösterilir. Güvenli bir yerde
+                saklayın. Sayfadan ayrılırsanız tekrar görüntülenemez.
               </p>
             </div>
           </div>
@@ -531,14 +563,21 @@ export default function WebhookBuilderPage() {
                 <Globe className="h-4 w-4" />
               </div>
               <div>
-                <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Uç Nokta Bilgileri</h2>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Temel bağlantı ve tanımlayıcı ayarlar</p>
+                <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                  Uç Nokta Bilgileri
+                </h2>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  Temel bağlantı ve tanımlayıcı ayarlar
+                </p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300" htmlFor="webhook-name">
+                <label
+                  className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
+                  htmlFor="webhook-name"
+                >
                   İsim <span className="text-red-600">*</span>
                 </label>
                 <input
@@ -558,16 +597,23 @@ export default function WebhookBuilderPage() {
                   <div>
                     {hasAttemptedSave && !nameIsValid && (
                       <p className="text-[11px] text-red-600 dark:text-red-400">
-                        {name.trim().length === 0 ? "İsim zorunludur." : "En fazla 255 karakter."}
+                        {name.trim().length === 0
+                          ? "İsim zorunludur."
+                          : "En fazla 255 karakter."}
                       </p>
                     )}
                   </div>
-                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">{name.length}/255</span>
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                    {name.length}/255
+                  </span>
                 </div>
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300" htmlFor="webhook-url">
+                <label
+                  className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
+                  htmlFor="webhook-url"
+                >
                   Hedef URL <span className="text-red-600">*</span>
                 </label>
                 <input
@@ -582,14 +628,21 @@ export default function WebhookBuilderPage() {
                   type="url"
                   value={url}
                 />
-                <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">Sadece https:// şeması kabul edilir.</p>
+                <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                  Sadece https:// şeması kabul edilir.
+                </p>
                 {hasAttemptedSave && !urlIsValid && (
-                  <p className="mt-1 text-[11px] text-red-600 dark:text-red-400">URL https:// ile başlamalıdır.</p>
+                  <p className="mt-1 text-[11px] text-red-600 dark:text-red-400">
+                    URL https:// ile başlamalıdır.
+                  </p>
                 )}
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300" htmlFor="webhook-description">
+                <label
+                  className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
+                  htmlFor="webhook-description"
+                >
                   Açıklama
                 </label>
                 <textarea
@@ -608,10 +661,14 @@ export default function WebhookBuilderPage() {
                 <div className="mt-1 flex items-center justify-between">
                   <div>
                     {hasAttemptedSave && !descriptionIsValid && (
-                      <p className="text-[11px] text-red-600 dark:text-red-400">En fazla 1000 karakter.</p>
+                      <p className="text-[11px] text-red-600 dark:text-red-400">
+                        En fazla 1000 karakter.
+                      </p>
                     )}
                   </div>
-                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">{description.length}/1000</span>
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                    {description.length}/1000
+                  </span>
                 </div>
               </div>
             </div>
@@ -628,7 +685,9 @@ export default function WebhookBuilderPage() {
                   <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                     Olaylar <span className="text-red-600">*</span>
                   </h2>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">En az bir olay seçin</p>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    En az bir olay seçin
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-1.5">
@@ -667,16 +726,21 @@ export default function WebhookBuilderPage() {
                       onChange={() => toggleEvent(ev)}
                       type="checkbox"
                     />
-                    <span className="font-mono font-medium text-xs text-zinc-800 dark:text-zinc-200">{ev}</span>
+                    <span className="font-medium font-mono text-xs text-zinc-800 dark:text-zinc-200">
+                      {ev}
+                    </span>
                   </label>
                 );
               })}
             </div>
             {hasAttemptedSave && !eventsIsValid && (
-              <p className="mt-2 text-[11px] text-red-600 dark:text-red-400">En az bir olay seçmelisiniz.</p>
+              <p className="mt-2 text-[11px] text-red-600 dark:text-red-400">
+                En az bir olay seçmelisiniz.
+              </p>
             )}
             <p className="mt-3 text-[11px] text-zinc-500 dark:text-zinc-400">
-              Seçili: {events.length} / {WEBHOOK_EVENTS.length} — Webhook sadece seçili olaylarda tetiklenir.
+              Seçili: {events.length} / {WEBHOOK_EVENTS.length} — Webhook sadece
+              seçili olaylarda tetiklenir.
             </p>
           </div>
         </div>
@@ -685,27 +749,38 @@ export default function WebhookBuilderPage() {
         <div className="space-y-6">
           {/* Secret Section */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Gizli Anahtar</h3>
+            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+              Gizli Anahtar
+            </h3>
             <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-              HMAC imzalama için kullanılır. Sadece oluşturma anında tam değeri gösterilir.
+              HMAC imzalama için kullanılır. Sadece oluşturma anında tam değeri
+              gösterilir.
             </p>
 
             <div className="mt-4">
               {secretOnce ? (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Secret (bir kez gösterilir)</span>
+                    <span className="font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                      Secret (bir kez gösterilir)
+                    </span>
                     <button
                       className="rounded-lg border border-zinc-200 p-1 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400"
                       onClick={() => setShowSecret((prev: boolean) => !prev)}
                       type="button"
                     >
-                      {showSecret ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      {showSecret ? (
+                        <EyeOff className="h-3.5 w-3.5" />
+                      ) : (
+                        <Eye className="h-3.5 w-3.5" />
+                      )}
                     </button>
                   </div>
                   <div className="relative rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-800/50 dark:bg-amber-950/30">
                     <code className="block break-all font-mono text-xs text-zinc-900 dark:text-zinc-100">
-                      {showSecret ? secretOnce : "••••••••••••••••••••••••••••••••"}
+                      {showSecret
+                        ? secretOnce
+                        : "••••••••••••••••••••••••••••••••"}
                     </code>
                     <div className="mt-2 flex items-center gap-1.5">
                       <button
@@ -720,20 +795,28 @@ export default function WebhookBuilderPage() {
                       </button>
                       <button
                         className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
-                        onClick={() => toast.info("Yeniden oluşturma yakında eklenecek.")}
+                        onClick={() =>
+                          toast.info("Yeniden oluşturma yakında eklenecek.")
+                        }
                         type="button"
                       >
                         Yeniden Oluştur
                       </button>
                     </div>
                   </div>
-                  <p className="text-[11px] font-medium text-amber-700 dark:text-amber-300">Bir kez gösterilir, kaydedin</p>
+                  <p className="font-medium text-[11px] text-amber-700 dark:text-amber-300">
+                    Bir kez gösterilir, kaydedin
+                  </p>
                 </div>
               ) : secretMasked ? (
                 <div className="space-y-2">
-                  <span className="font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">Secret (maskelenmiş)</span>
+                  <span className="font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                    Secret (maskelenmiş)
+                  </span>
                   <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-800/50">
-                    <code className="flex-1 break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">{secretMasked}</code>
+                    <code className="flex-1 break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                      {secretMasked}
+                    </code>
                     <button
                       className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
                       onClick={() => {
@@ -746,24 +829,31 @@ export default function WebhookBuilderPage() {
                   </div>
                   <button
                     className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    onClick={() => toast.info("Secret yenileme yakında eklenecek.")}
+                    onClick={() =>
+                      toast.info("Secret yenileme yakında eklenecek.")
+                    }
                     type="button"
                   >
                     Yeniden Oluştur
                   </button>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Güvenlik gereği tam secret tekrar gösterilmez. Yeniden oluşturursanız eski secret geçersiz olur.
+                    Güvenlik gereği tam secret tekrar gösterilmez. Yeniden
+                    oluşturursanız eski secret geçersiz olur.
                   </p>
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/30">
+                <div className="rounded-xl border border-zinc-200 border-dashed bg-zinc-50 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/30">
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {isNew ? "Oluşturduğunuzda secret burada görünecek." : "Bu uç nokta için secret ayarlı değil veya maskelenmiş."}
+                    {isNew
+                      ? "Oluşturduğunuzda secret burada görünecek."
+                      : "Bu uç nokta için secret ayarlı değil veya maskelenmiş."}
                   </p>
                   {!isNew && (
                     <button
                       className="mt-2 rounded-lg border border-zinc-200 bg-white px-3 py-1 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
-                      onClick={() => toast.info("Secret yenileme yakında eklenecek.")}
+                      onClick={() =>
+                        toast.info("Secret yenileme yakında eklenecek.")
+                      }
                       type="button"
                     >
                       Yeni Secret Oluştur
@@ -776,44 +866,58 @@ export default function WebhookBuilderPage() {
 
           {/* HMAC Preview */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">HMAC İmzası Önizleme</h3>
+            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+              HMAC İmzası Önizleme
+            </h3>
             <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-              Her istekte bu başlıklar gönderilir. Payload = timestamp + &quot;.&quot; + JSON.
+              Her istekte bu başlıklar gönderilir. Payload = timestamp +
+              &quot;.&quot; + JSON.
             </p>
             <div className="mt-3 space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
               <div>
-                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">X-Webhook-Signature</span>
+                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                  X-Webhook-Signature
+                </span>
                 <code className="mt-1 block break-all rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
                   {hmacExampleSignature}
                 </code>
               </div>
               <div>
-                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">X-Webhook-Timestamp</span>
+                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                  X-Webhook-Timestamp
+                </span>
                 <code className="mt-1 block rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
                   {hmacExampleTimestamp}
                 </code>
               </div>
               <div>
-                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">X-Tenant-Id</span>
+                <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                  X-Tenant-Id
+                </span>
                 <code className="mt-1 block rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
                   {tenantSlug || "tenant-id"}
                 </code>
               </div>
               <div>
-                <span className="font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">Örnek Payload</span>
+                <span className="font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                  Örnek Payload
+                </span>
                 <pre className="mt-1 max-h-32 overflow-auto rounded-lg bg-white px-2.5 py-2 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
                   {hmacExamplePayload}
                 </pre>
               </div>
             </div>
             <p className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
-              İmzayı doğrulamak için: HMAC-SHA256(secret, timestamp + &quot;.&quot; + body)
+              İmzayı doğrulamak için: HMAC-SHA256(secret, timestamp +
+              &quot;.&quot; + body)
             </p>
           </div>
 
           {/* Test Send Card */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Test Gönderimi</h3>
+            <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+              Test Gönderimi
+            </h3>
             <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
               Dry-run modunda gerçek teslimat oluşturmadan simüle eder.
             </p>
@@ -826,7 +930,11 @@ export default function WebhookBuilderPage() {
               <Send className="h-3.5 w-3.5" />
               Test Gönder
             </button>
-            {isNew && <p className="mt-2 text-center text-[11px] text-zinc-400 dark:text-zinc-500">Önce kaydedin</p>}
+            {isNew && (
+              <p className="mt-2 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
+                Önce kaydedin
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -836,8 +944,12 @@ export default function WebhookBuilderPage() {
         <div className="rounded-2xl border border-zinc-200 bg-white shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex items-center justify-between border-zinc-100 border-b p-4 dark:border-zinc-800">
             <div>
-              <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Teslimat Geçmişi</h3>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Son 10 teslimat — durum, deneme sayısı ve yanıt kodu</p>
+              <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                Teslimat Geçmişi
+              </h3>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Son 10 teslimat — durum, deneme sayısı ve yanıt kodu
+              </p>
             </div>
             <button
               className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400"
@@ -846,23 +958,30 @@ export default function WebhookBuilderPage() {
               }}
               type="button"
             >
-              <RefreshCw className={`h-4 w-4 ${isLoadingDeliveries ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${isLoadingDeliveries ? "animate-spin" : ""}`}
+              />
             </button>
           </div>
 
           {isLoadingDeliveries ? (
             <div className="flex items-center justify-center p-8">
               <RefreshCw className="h-5 w-5 animate-spin text-zinc-400" />
-              <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">Teslimatlar yükleniyor...</span>
+              <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">
+                Teslimatlar yükleniyor...
+              </span>
             </div>
           ) : deliveries.length === 0 ? (
             <div className="p-8 text-center">
               <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                 <Send className="h-5 w-5 text-zinc-400" />
               </div>
-              <p className="font-medium text-sm text-zinc-700 dark:text-zinc-300">Henüz teslimat yok</p>
+              <p className="font-medium text-sm text-zinc-700 dark:text-zinc-300">
+                Henüz teslimat yok
+              </p>
               <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Bu uç nokta için henüz bir webhook tetiklenmedi. Test gönderimiyle ilk teslimatı oluşturabilirsiniz.
+                Bu uç nokta için henüz bir webhook tetiklenmedi. Test
+                gönderimiyle ilk teslimatı oluşturabilirsiniz.
               </p>
             </div>
           ) : (
@@ -879,15 +998,24 @@ export default function WebhookBuilderPage() {
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {deliveries.map((d) => (
-                    <tr className="hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30" key={d.id}>
-                      <td className="px-4 py-3 font-mono font-medium text-zinc-800 dark:text-zinc-200">{d.eventType}</td>
+                    <tr
+                      className="hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30"
+                      key={d.id}
+                    >
+                      <td className="px-4 py-3 font-medium font-mono text-zinc-800 dark:text-zinc-200">
+                        {d.eventType}
+                      </td>
                       <td className="px-4 py-3">{getStatusBadge(d.status)}</td>
-                      <td className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">{d.attemptCount}</td>
-                      <td className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">{formatDate(d.createdAt)}</td>
+                      <td className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
+                        {d.attemptCount}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                        {formatDate(d.createdAt)}
+                      </td>
                       <td className="px-4 py-3">
                         {d.responseCode ? (
                           <span
-                            className={`rounded-md px-2 py-0.5 font-mono text-[11px] font-semibold ${
+                            className={`rounded-md px-2 py-0.5 font-mono font-semibold text-[11px] ${
                               d.status === "Success"
                                 ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300"
                                 : "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300"
@@ -896,7 +1024,9 @@ export default function WebhookBuilderPage() {
                             {d.responseCode}
                           </span>
                         ) : (
-                          <span className="text-zinc-400 dark:text-zinc-500">—</span>
+                          <span className="text-zinc-400 dark:text-zinc-500">
+                            —
+                          </span>
                         )}
                       </td>
                     </tr>
@@ -918,8 +1048,12 @@ export default function WebhookBuilderPage() {
                   <Send className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">Test Gönder (Dry-Run)</h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Gerçek Failed teslimatı oluşturmaz, sadece simüle eder</p>
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    Test Gönder (Dry-Run)
+                  </h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Gerçek Failed teslimatı oluşturmaz, sadece simüle eder
+                  </p>
                 </div>
               </div>
               <button
@@ -932,7 +1066,10 @@ export default function WebhookBuilderPage() {
             </div>
 
             <div>
-              <label className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300" htmlFor="test-payload">
+              <label
+                className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
+                htmlFor="test-payload"
+              >
                 JSON Payload
               </label>
               <textarea
@@ -943,34 +1080,49 @@ export default function WebhookBuilderPage() {
                 value={testPayloadText}
               />
               <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-                Varsayılan: {`{ event: selected, test: true }`} — dilediğiniz JSON ile test edebilirsiniz.
+                Varsayılan: {"{ event: selected, test: true }"} — dilediğiniz
+                JSON ile test edebilirsiniz.
               </p>
             </div>
 
             {testResult && (
               <div className="space-y-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">Sonuç</span>
+                  <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
+                    Sonuç
+                  </span>
                   {getStatusBadge(testResult.status)}
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">Süre</span>
-                    <span className="font-mono text-zinc-800 dark:text-zinc-200">{testResult.durationMs ?? "—"} ms</span>
+                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                      Süre
+                    </span>
+                    <span className="font-mono text-zinc-800 dark:text-zinc-200">
+                      {testResult.durationMs ?? "—"} ms
+                    </span>
                   </div>
                   <div>
-                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">Yanıt Kodu</span>
-                    <span className="font-mono text-zinc-800 dark:text-zinc-200">{testResult.responseCode ?? "—"}</span>
+                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                      Yanıt Kodu
+                    </span>
+                    <span className="font-mono text-zinc-800 dark:text-zinc-200">
+                      {testResult.responseCode ?? "—"}
+                    </span>
                   </div>
                   <div className="col-span-2">
-                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">HMAC</span>
+                    <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                      HMAC
+                    </span>
                     <code className="mt-1 block break-all rounded-lg bg-white px-2 py-1 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
                       {testResult.hmacSignature ?? "—"}
                     </code>
                   </div>
                   {testResult.responseBody && (
                     <div className="col-span-2">
-                      <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">Response Body</span>
+                      <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+                        Response Body
+                      </span>
                       <pre className="mt-1 max-h-24 overflow-auto rounded-lg bg-white px-2 py-1.5 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
                         {testResult.responseBody}
                       </pre>
@@ -996,7 +1148,11 @@ export default function WebhookBuilderPage() {
                 }}
                 type="button"
               >
-                {isTesting ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                {isTesting ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
                 {isTesting ? "Gönderiliyor..." : "Gönder"}
               </button>
             </div>
@@ -1014,7 +1170,11 @@ export default function WebhookBuilderPage() {
           }}
           type="button"
         >
-          {isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {isSaving ? (
+            <RefreshCw className="h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="h-4 w-4" />
+          )}
           {isNew ? "Oluştur" : "Kaydet"}
         </button>
       </div>

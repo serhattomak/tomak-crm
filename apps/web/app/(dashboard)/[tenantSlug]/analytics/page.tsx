@@ -656,7 +656,9 @@ export default function AnalyticsPage() {
                         </span>
                         <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           {order.orderNumber} •{" "}
-                          {new Date(order.orderDate).toLocaleDateString("tr-TR")}
+                          {new Date(order.orderDate).toLocaleDateString(
+                            "tr-TR"
+                          )}
                         </div>
                       </div>
                       <div className="text-right">

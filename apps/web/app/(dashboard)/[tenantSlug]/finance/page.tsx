@@ -1,5 +1,8 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -61,7 +64,7 @@ function getBalanceColor(isDebtor: boolean, isCreditor: boolean): string {
   if (isCreditor) {
     return "text-rose-600 dark:text-rose-400";
   }
-  return "text-zinc-500";
+  return "text-zinc-500 dark:text-zinc-400";
 }
 
 function getBalanceSuffix(isDebtor: boolean, isCreditor: boolean): string {
@@ -394,7 +397,7 @@ function StatementTableBody({
     <>
       {statementTx.map((tx) => (
         <tr key={tx.id}>
-          <td className="py-2 font-mono text-zinc-500">
+          <td className="py-2 font-mono text-zinc-500 dark:text-zinc-400">
             {new Date(tx.transactionDate).toLocaleDateString("tr-TR")}
           </td>
           <td className="py-2">
@@ -600,12 +603,9 @@ export default function FinancePage() {
     []
   );
 
-  const handleCariTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setCariTypeFilter(e.target.value);
-    },
-    []
-  );
+  const handleCariTypeChange = useCallback((val: string) => {
+    setCariTypeFilter(val);
+  }, []);
 
   const handleOpenTx = useCallback(() => {
     setSelectedCariForTx(null);
@@ -775,16 +775,17 @@ export default function FinancePage() {
               />
             </div>
 
-            <select
-              className="rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-sm text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
+            <SelectField
+              className="w-48"
               onChange={handleCariTypeChange}
+              options={[
+                { label: "Tüm Cari Tipleri", value: "All" },
+                { label: "Müşteriler", value: "Customer" },
+                { label: "Tedarikçiler", value: "Supplier" },
+                { label: "Personel", value: "Personnel" },
+              ]}
               value={cariTypeFilter}
-            >
-              <option value="All">Tüm Cari Tipleri</option>
-              <option value="Customer">Müşteriler</option>
-              <option value="Supplier">Tedarikçiler</option>
-              <option value="Personnel">Personel</option>
-            </select>
+            />
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
@@ -1071,10 +1072,7 @@ function CreateCariModal({
     (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value),
     []
   );
-  const handleTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value),
-    []
-  );
+  const handleTypeChange = useCallback((val: string) => setType(val), []);
   const handleCityChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setCity(e.target.value),
     []
@@ -1195,16 +1193,15 @@ function CreateCariModal({
               >
                 Cari Türü
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="cari-type-select"
+              <SelectField
                 onChange={handleTypeChange}
+                options={[
+                  { label: "Müşteri", value: "Customer" },
+                  { label: "Tedarikçi", value: "Supplier" },
+                  { label: "Personel", value: "Personnel" },
+                ]}
                 value={type}
-              >
-                <option value="Customer">Müşteri</option>
-                <option value="Supplier">Tedarikçi</option>
-                <option value="Personnel">Personel</option>
-              </select>
+              />
             </div>
 
             <div>
@@ -1343,12 +1340,9 @@ function CreateAccountModal({
     (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value),
     []
   );
-  const handleTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value),
-    []
-  );
+  const handleTypeChange = useCallback((val: string) => setType(val), []);
   const handleCurrencyChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => setCurrency(e.target.value),
+    (val: string) => setCurrency(val),
     []
   );
   const handleBankNameChange = useCallback(
@@ -1360,8 +1354,7 @@ function CreateAccountModal({
     []
   );
   const handleBalanceChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setInitialBalance(Number(e.target.value)),
+    (val: number) => setInitialBalance(val),
     []
   );
 
@@ -1443,16 +1436,15 @@ function CreateAccountModal({
               >
                 Hesap Türü
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="acc-type-select"
+              <SelectField
                 onChange={handleTypeChange}
+                options={[
+                  { label: "Banka Hesabı", value: "Bank" },
+                  { label: "Nakit Kasa", value: "Cash" },
+                  { label: "Sanal / Fiziki POS", value: "Pos" },
+                ]}
                 value={type}
-              >
-                <option value="Bank">Banka Hesabı</option>
-                <option value="Cash">Nakit Kasa</option>
-                <option value="Pos">Sanal / Fiziki POS</option>
-              </select>
+              />
             </div>
 
             <div>
@@ -1462,16 +1454,15 @@ function CreateAccountModal({
               >
                 Para Birimi
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                id="acc-currency-select"
+              <SelectField
                 onChange={handleCurrencyChange}
+                options={[
+                  { label: "TRY (₺)", value: "TRY" },
+                  { label: "USD ($)", value: "USD" },
+                  { label: "EUR (€)", value: "EUR" },
+                ]}
                 value={currency}
-              >
-                <option value="TRY">TRY (₺)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-              </select>
+              />
             </div>
           </div>
 
@@ -1518,12 +1509,12 @@ function CreateAccountModal({
             >
               Açılış Bakiyesi
             </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+            <NumberInput
               id="acc-balance-input"
+              min={0}
               onChange={handleBalanceChange}
-              step="0.01"
-              type="number"
+              precision={2}
+              prefix="₺"
               value={initialBalance}
             />
           </div>
@@ -1583,20 +1574,14 @@ function CreateTransactionModal({
   const handleSelectCollection = useCallback(() => setType("Collection"), []);
   const handleSelectPayment = useCallback(() => setType("Payment"), []);
   const handleAccountChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) =>
-      setFinancialAccountId(e.target.value),
+    (val: string) => setFinancialAccountId(val),
     []
   );
   const handleCariChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) =>
-      setCariAccountId(e.target.value),
+    (val: string) => setCariAccountId(val),
     []
   );
-  const handleAmountChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setAmount(Number(e.target.value)),
-    []
-  );
+  const handleAmountChange = useCallback((val: number) => setAmount(val), []);
   const handleDocNoChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setDocumentNumber(e.target.value),
@@ -1713,18 +1698,17 @@ function CreateTransactionModal({
             >
               Kasa / Banka Hesabı *
             </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-              id="tx-acc-select"
+            <Combobox
+              emptyMessage="Hesap bulunamadı."
               onChange={handleAccountChange}
+              options={accounts.map((a) => ({
+                description: `${a.balance.toLocaleString("tr-TR")} ${a.currency}`,
+                label: a.name,
+                value: a.id,
+              }))}
+              searchPlaceholder="Hesap ara..."
               value={financialAccountId}
-            >
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name} ({a.balance.toLocaleString("tr-TR")} {a.currency})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
@@ -1734,20 +1718,21 @@ function CreateTransactionModal({
             >
               İlgili Cari Hesap (İsteğe Bağlı)
             </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-              id="tx-cari-select"
+            <Combobox
+              clearable
+              emptyMessage="Cari bulunamadı."
               onChange={handleCariChange}
+              options={[
+                { label: "Cari Yok (Genel Masraf / Gelir)", value: "" },
+                ...cariList.map((c) => ({
+                  description: `Bakiye: ${c.balance.toLocaleString("tr-TR")} ${c.currency}`,
+                  label: c.title,
+                  value: c.id,
+                })),
+              ]}
+              searchPlaceholder="Cari ara..."
               value={cariAccountId}
-            >
-              <option value="">— Cari Yok (Genel Masraf / Gelir) —</option>
-              {cariList.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.title} (Bakiye: {c.balance.toLocaleString("tr-TR")}{" "}
-                  {c.currency})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
@@ -1757,14 +1742,12 @@ function CreateTransactionModal({
             >
               Tutar (TL) *
             </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 font-bold font-mono text-sm text-zinc-900 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-100"
+            <NumberInput
               id="tx-amount-input"
               min={0}
               onChange={handleAmountChange}
-              placeholder="0.00"
-              step="0.01"
-              type="number"
+              precision={2}
+              prefix="₺"
               value={amount}
             />
           </div>
@@ -1859,20 +1842,14 @@ function TransferModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSourceChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) =>
-      setSourceAccountId(e.target.value),
+    (val: string) => setSourceAccountId(val),
     []
   );
   const handleTargetChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) =>
-      setTargetAccountId(e.target.value),
+    (val: string) => setTargetAccountId(val),
     []
   );
-  const handleAmountChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setAmount(Number(e.target.value)),
-    []
-  );
+  const handleAmountChange = useCallback((val: number) => setAmount(val), []);
   const handleDescChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value),
     []
@@ -1942,18 +1919,17 @@ function TransferModal({
             >
               Kaynak Hesap (Para Çıkacak) *
             </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-              id="transfer-source-select"
+            <Combobox
+              emptyMessage="Hesap bulunamadı."
               onChange={handleSourceChange}
+              options={accounts.map((a) => ({
+                description: `${a.balance.toLocaleString("tr-TR")} ${a.currency}`,
+                label: a.name,
+                value: a.id,
+              }))}
+              searchPlaceholder="Hesap ara..."
               value={sourceAccountId}
-            >
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name} ({a.balance.toLocaleString("tr-TR")} {a.currency})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
@@ -1963,18 +1939,17 @@ function TransferModal({
             >
               Hedef Hesap (Para Girecek) *
             </label>
-            <select
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-              id="transfer-target-select"
+            <Combobox
+              emptyMessage="Hesap bulunamadı."
               onChange={handleTargetChange}
+              options={accounts.map((a) => ({
+                description: `${a.balance.toLocaleString("tr-TR")} ${a.currency}`,
+                label: a.name,
+                value: a.id,
+              }))}
+              searchPlaceholder="Hesap ara..."
               value={targetAccountId}
-            >
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name} ({a.balance.toLocaleString("tr-TR")} {a.currency})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
@@ -1984,14 +1959,12 @@ function TransferModal({
             >
               Transfer Tutarı *
             </label>
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 font-bold font-mono text-sm text-zinc-900 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-100"
+            <NumberInput
               id="transfer-amount-input"
               min={0}
               onChange={handleAmountChange}
-              placeholder="0.00"
-              step="0.01"
-              type="number"
+              precision={2}
+              prefix="₺"
               value={amount}
             />
           </div>

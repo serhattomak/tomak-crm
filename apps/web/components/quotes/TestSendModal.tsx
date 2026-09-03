@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
-import { Mail, Send, X, Eye } from "lucide-react";
+import { Eye, Mail, Send, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient, type QuoteSummaryDto } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
@@ -105,7 +105,7 @@ export function TestSendModal({
         },
         activeTenant.id
       );
-      if (!res.success || !res.data) {
+      if (!(res.success && res.data)) {
         toast.error(res.message || "Test gönderimi başarısız");
         return;
       }
@@ -116,7 +116,9 @@ export function TestSendModal({
       ).subject;
       setResultHtml(previewHtml);
       setResultSubject(subjectFromRes ?? null);
-      toast.success(`Test e-postası gönderildi (önizleme) — ${toEmail.trim()} için hazırlandı (preview)`);
+      toast.success(
+        `Test e-postası gönderildi (önizleme) — ${toEmail.trim()} için hazırlandı (preview)`
+      );
       if (onSent) {
         onSent();
       }
@@ -125,7 +127,14 @@ export function TestSendModal({
     } finally {
       setIsSending(false);
     }
-  }, [activeTenant?.id, onSent, selectedQuoteId, templateId, toEmail, validateEmail]);
+  }, [
+    activeTenant?.id,
+    onSent,
+    selectedQuoteId,
+    templateId,
+    toEmail,
+    validateEmail,
+  ]);
 
   if (!isOpen) {
     return null;
@@ -151,7 +160,8 @@ export function TestSendModal({
                 Test Gönder
               </h3>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                {templateName ? `${templateName} — ` : ""}önizleme modunda e-posta hazırla
+                {templateName ? `${templateName} — ` : ""}önizleme modunda
+                e-posta hazırla
               </p>
             </div>
           </div>
@@ -166,12 +176,12 @@ export function TestSendModal({
 
         {/* Body */}
         <div className="custom-scrollbar space-y-4 overflow-y-auto p-4 sm:p-5">
-          {!templateId ? (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-200">
+          {templateId ? null : (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-800 text-xs dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-200">
               Test göndermek için önce şablonu kaydedin. Kaydedilmemiş şablonlar
               için önizleme yalnızca yerel fallback ile gösterilir.
             </div>
-          ) : null}
+          )}
 
           <div className="space-y-1.5">
             <Label className="text-xs" required>
@@ -227,9 +237,10 @@ export function TestSendModal({
                 Önizleme özeti
               </p>
               <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-                Gönderim sonrası dönen <span className="font-mono">previewHtml</span>{" "}
-                aşağıda iframe içinde gösterilir. SMTP bu fazda yalnızca log + bildirim
-                — gerçek e-posta iletimi yok.
+                Gönderim sonrası dönen{" "}
+                <span className="font-mono">previewHtml</span> aşağıda iframe
+                içinde gösterilir. SMTP bu fazda yalnızca log + bildirim —
+                gerçek e-posta iletimi yok.
               </p>
             </div>
           ) : null}
@@ -256,7 +267,7 @@ export function TestSendModal({
                 </summary>
                 <div className="border-zinc-200 border-t p-2 dark:border-zinc-800">
                   <iframe
-                    className="w-full h-[400px] rounded-lg border bg-white"
+                    className="h-[400px] w-full rounded-lg border bg-white"
                     sandbox="allow-same-origin"
                     srcDoc={resultHtml}
                     title="Test E-posta Önizleme"

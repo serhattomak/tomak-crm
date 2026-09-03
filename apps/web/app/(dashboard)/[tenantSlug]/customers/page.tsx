@@ -67,7 +67,9 @@ export default function CustomersPage() {
 
   // Filters — initialized from URL
   const [search, setSearch] = useState(() => getParam("search", ""));
-  const [statusFilter, setStatusFilter] = useState(() => getParam("status", ""));
+  const [statusFilter, setStatusFilter] = useState(() =>
+    getParam("status", "")
+  );
   const [typeFilter, setTypeFilter] = useState(() => getParam("type", ""));
   const [tierFilter, setTierFilter] = useState(() => getParam("tier", ""));
   const [page] = useState(() => getIntParam("page", 1));
@@ -215,25 +217,35 @@ export default function CustomersPage() {
 
   // ── Bulk operations ────────────────────────────────────────────────────────
   const allPageIds = customers.map((c) => c.id);
-  const allSelected = allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
-  const someSelected = allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
+  const allSelected =
+    allPageIds.length > 0 && allPageIds.every((id) => selectedIds.has(id));
+  const someSelected =
+    allPageIds.some((id) => selectedIds.has(id)) && !allSelected;
 
   const toggleSelectAll = () => {
-    if (allSelected) setSelectedIds(new Set());
-    else setSelectedIds(new Set(allPageIds));
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(allPageIds));
+    }
   };
 
   const toggleSelectOne = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
 
   const handleBulkDelete = async () => {
-    if (!(activeTenant && selectedIds.size > 0)) return;
+    if (!(activeTenant && selectedIds.size > 0)) {
+      return;
+    }
     setIsBulkDeleting(true);
     try {
       const { deletedCount, failedCount } = await ApiClient.bulkDeleteCustomers(
@@ -243,7 +255,9 @@ export default function CustomersPage() {
       setSelectedIds(new Set());
       loadData();
       if (failedCount > 0) {
-        showToast(`${deletedCount} müşteri silindi, ${failedCount} silinemedi.`);
+        showToast(
+          `${deletedCount} müşteri silindi, ${failedCount} silinemedi.`
+        );
       } else {
         showToast(`${deletedCount} müşteri başarıyla silindi.`);
       }
@@ -279,7 +293,12 @@ export default function CustomersPage() {
     setStatusFilter("");
     setTypeFilter("");
     setTierFilter("");
-    setParams({ search: undefined, status: undefined, tier: undefined, type: undefined });
+    setParams({
+      search: undefined,
+      status: undefined,
+      tier: undefined,
+      type: undefined,
+    });
   };
   const handleViewMode = (mode: "table" | "grid") => {
     setViewMode(mode);
@@ -629,12 +648,12 @@ export default function CustomersPage() {
             <table className="w-full text-left text-xs">
               <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
                 <tr>
-                  <th className="py-3.5 pl-4 pr-2 w-10">
+                  <th className="w-10 py-3.5 pr-2 pl-4">
                     <Checkbox
-                      checked={allSelected}
-                      onCheckedChange={toggleSelectAll}
                       aria-label="Tümünü seç"
+                      checked={allSelected}
                       data-indeterminate={someSelected}
+                      onCheckedChange={toggleSelectAll}
                     />
                   </th>
                   <th className="py-3.5 pr-4 pl-2">Müşteri / Şirket</th>
@@ -650,15 +669,17 @@ export default function CustomersPage() {
                 {customers.map((c) => (
                   <tr
                     className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 ${
-                      selectedIds.has(c.id) ? "bg-blue-50/60 dark:bg-blue-950/20" : ""
+                      selectedIds.has(c.id)
+                        ? "bg-blue-50/60 dark:bg-blue-950/20"
+                        : ""
                     }`}
                     key={c.id}
                   >
-                    <td className="py-4 pl-4 pr-2 w-10">
+                    <td className="w-10 py-4 pr-2 pl-4">
                       <Checkbox
+                        aria-label={`${c.name} seç`}
                         checked={selectedIds.has(c.id)}
                         onCheckedChange={() => toggleSelectOne(c.id)}
-                        aria-label={`${c.name} seç`}
                         onClick={(e) => e.stopPropagation()}
                       />
                     </td>
@@ -946,8 +967,6 @@ export default function CustomersPage() {
 
       {/* Bulk Action Bar */}
       <BulkActionBar
-        selectedCount={selectedIds.size}
-        onClear={() => setSelectedIds(new Set())}
         actions={[
           {
             disabled: isBulkDeleting,
@@ -957,6 +976,8 @@ export default function CustomersPage() {
             variant: "danger",
           },
         ]}
+        onClear={() => setSelectedIds(new Set())}
+        selectedCount={selectedIds.size}
       />
     </div>
   );

@@ -3,12 +3,20 @@
 import { cn } from "@workspace/ui/lib/utils";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import { Popover as PopoverPrimitive } from "radix-ui";
-import * as React from "react";
+import {
+  type ChangeEvent,
+  type JSX,
+  type MouseEvent,
+  type ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 
 export interface ComboboxOption {
   badge?: string;
   description?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   label: string;
   value: string;
 }
@@ -26,6 +34,73 @@ export interface ComboboxProps {
   value?: string;
 }
 
+interface OptionRowProps {
+  isSelected: boolean;
+  onSelect: (value: string) => void;
+  option: ComboboxOption;
+}
+
+function OptionRow({
+  isSelected,
+  onSelect,
+  option,
+}: OptionRowProps): JSX.Element {
+  const handleClick = useCallback((): void => {
+    onSelect(option.value);
+  }, [onSelect, option.value]);
+
+  return (
+    <button
+      aria-pressed={isSelected}
+      className={cn(
+        "flex w-full cursor-pointer select-none items-center justify-between rounded-xl bg-transparent px-2.5 py-2 text-left font-semibold text-xs transition-colors",
+        isSelected
+          ? "bg-blue-50 font-bold text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
+          : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+      )}
+      onClick={handleClick}
+      type="button"
+    >
+      <span className="flex items-center gap-2 truncate">
+        {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
+        <span className="block min-w-0">
+          <span className="block truncate">{option.label}</span>
+          {option.description ? (
+            <span
+              className={cn(
+                "block font-normal text-[10px]",
+                isSelected
+                  ? "text-blue-600/80 dark:text-blue-300/80"
+                  : "text-zinc-400 dark:text-zinc-500"
+              )}
+            >
+              {option.description}
+            </span>
+          ) : null}
+        </span>
+      </span>
+
+      <span className="flex shrink-0 items-center gap-1.5">
+        {option.badge ? (
+          <span
+            className={cn(
+              "rounded-md px-1.5 py-0.5 font-bold text-[10px]",
+              isSelected
+                ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+            )}
+          >
+            {option.badge}
+          </span>
+        ) : null}
+        {isSelected ? (
+          <Check className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+        ) : null}
+      </span>
+    </button>
+  );
+}
+
 export function Combobox({
   options,
   value,
@@ -37,16 +112,19 @@ export function Combobox({
   className,
   triggerClassName,
   clearable = false,
-}: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
+}: ComboboxProps): JSX.Element {
+  const [open, setOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
 
-  const selectedOption = React.useMemo(
+  const selectedOption: ComboboxOption | undefined = useMemo(
     () => options.find((opt) => opt.value === value),
     [options, value]
   );
 
-  const filteredOptions = React.useMemo(() => {
+  const displayLabel: string =
+    selectedOption === undefined ? placeholder : selectedOption.label;
+
+  const filteredOptions = useMemo((): ComboboxOption[] => {
     if (!search.trim()) {
       return options;
     }
@@ -54,21 +132,42 @@ export function Combobox({
     return options.filter(
       (opt) =>
         opt.label.toLowerCase().includes(query) ||
-        (opt.description && opt.description.toLowerCase().includes(query))
+        (opt.description?.toLowerCase().includes(query) ?? false)
     );
   }, [options, search]);
 
-  const handleSelect = (val: string) => {
-    onChange?.(val);
-    setOpen(false);
-    setSearch("");
-  };
+  const handleSelect = useCallback(
+    (val: string): void => {
+      onChange?.(val);
+      setOpen(false);
+      setSearch("");
+    },
+    [onChange]
+  );
 
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const clearSelection = useCallback((): void => {
     onChange?.("");
     setSearch("");
-  };
+  }, [onChange]);
+
+  const handleClear = useCallback(
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      clearSelection();
+    },
+    [clearSelection]
+  );
+
+  const handleSearchChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setSearch(event.target.value);
+    },
+    []
+  );
+
+  const handleResetSearch = useCallback((): void => {
+    setSearch("");
+  }, []);
 
   return (
     <PopoverPrimitive.Root onOpenChange={setOpen} open={open}>
@@ -76,37 +175,41 @@ export function Combobox({
         <button
           aria-expanded={open}
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-800 text-xs shadow-2xs outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             triggerClassName
           )}
           role="combobox"
           type="button"
         >
-          <div className="flex items-center gap-2 truncate">
-            {selectedOption?.icon && (
+          <span className="flex items-center gap-2 truncate">
+            {selectedOption?.icon ? (
               <span className="shrink-0">{selectedOption.icon}</span>
-            )}
+            ) : null}
             <span
               className={cn(
                 "truncate",
-                !selectedOption && "font-normal text-slate-400"
+                selectedOption
+                  ? null
+                  : "font-normal text-zinc-400 dark:text-zinc-500"
               )}
             >
-              {selectedOption ? selectedOption.label : placeholder}
+              {displayLabel}
             </span>
-          </div>
+          </span>
 
-          <div className="flex shrink-0 items-center gap-1">
-            {clearable && value && (
-              <span
-                className="rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+          <span className="flex shrink-0 items-center gap-1">
+            {clearable === true && value !== undefined && value !== "" ? (
+              <button
+                aria-label="Temizle"
+                className="rounded-full bg-transparent p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={handleClear}
+                type="button"
               >
                 <X className="h-3.5 w-3.5" />
-              </span>
-            )}
-            <ChevronDown className="h-4 w-4 text-slate-400 opacity-80" />
-          </div>
+              </button>
+            ) : null}
+            <ChevronDown className="h-4 w-4 text-zinc-400 opacity-80 dark:text-zinc-500" />
+          </span>
         </button>
       </PopoverPrimitive.Trigger>
 
@@ -114,92 +217,48 @@ export function Combobox({
         <PopoverPrimitive.Content
           align="start"
           className={cn(
-            "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-1.5 text-slate-900 shadow-lg backdrop-blur-md data-[state=closed]:animate-out",
+            "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] animate-in overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-1.5 text-zinc-900 shadow-lg backdrop-blur-md data-[state=closed]:animate-out dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
             className
           )}
           sideOffset={4}
         >
           {/* Search Box */}
-          <div className="relative mb-1 flex items-center border-slate-100 border-b px-2 pb-1.5">
-            <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+          <div className="relative mb-1 flex items-center border-zinc-100 border-b px-2 pb-1.5 dark:border-zinc-800">
+            <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400 dark:text-zinc-500" />
             <input
               autoFocus
-              className="w-full bg-transparent px-2 font-medium text-slate-900 text-xs outline-none placeholder:text-slate-400"
-              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-transparent px-2 font-medium text-xs text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              onChange={handleSearchChange}
               placeholder={searchPlaceholder}
               type="text"
               value={search}
             />
-            {search && (
+            {search.length > 0 ? (
               <button
-                className="text-slate-400 hover:text-slate-600"
-                onClick={() => setSearch("")}
+                className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                onClick={handleResetSearch}
                 type="button"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
-            )}
+            ) : null}
           </div>
 
           {/* List */}
           <div className="max-h-60 space-y-0.5 overflow-y-auto">
             {filteredOptions.length === 0 ? (
-              <div className="py-6 text-center text-slate-400 text-xs">
+              <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
                 {emptyMessage}
               </div>
             ) : (
-              filteredOptions.map((option) => {
-                const isSelected = option.value === value;
-                return (
-                  <div
-                    className={cn(
-                      "flex cursor-pointer select-none items-center justify-between rounded-xl px-2.5 py-2 font-semibold text-xs transition-colors",
-                      isSelected
-                        ? "bg-blue-50 font-bold text-blue-700"
-                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
-                    )}
-                    key={option.value}
-                    onClick={() => handleSelect(option.value)}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      {option.icon && (
-                        <span className="shrink-0">{option.icon}</span>
-                      )}
-                      <div>
-                        <div className="truncate">{option.label}</div>
-                        {option.description && (
-                          <div
-                            className={cn(
-                              "font-normal text-[10px]",
-                              isSelected ? "text-blue-600/80" : "text-slate-400"
-                            )}
-                          >
-                            {option.description}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex shrink-0 items-center gap-1.5">
-                      {option.badge && (
-                        <span
-                          className={cn(
-                            "rounded-md px-1.5 py-0.5 font-bold text-[10px]",
-                            isSelected
-                              ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                              : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                          )}
-                        >
-                          {option.badge}
-                        </span>
-                      )}
-                      {isSelected && (
-                        <Check className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
-                      )}
-                    </div>
-                  </div>
-                );
-              })
+              filteredOptions.map((option) => (
+                <OptionRow
+                  isSelected={option.value === value}
+                  key={option.value}
+                  onSelect={handleSelect}
+                  option={option}
+                />
+              ))
             )}
           </div>
         </PopoverPrimitive.Content>

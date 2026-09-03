@@ -126,10 +126,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
     setIsSendingFeedback(true);
     try {
-      const res = await ApiClient.publicRequestRevision(
-        token,
-        feedback.trim()
-      );
+      const res = await ApiClient.publicRequestRevision(token, feedback.trim());
       if (res.success) {
         toast.success("Talebiniz temsilcimize iletildi.");
         setIsRevisionModalOpen(false);

@@ -1,5 +1,8 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
+import { NumberInput } from "@workspace/ui/components/number-input";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertTriangle,
   ArrowRight,
@@ -42,6 +45,16 @@ import {
 } from "@/lib/api-client";
 
 type InventoryTab = "warehouses" | "transfers" | "counts";
+
+function resolveInitialWarehouseId(
+  warehouses: WarehouseDto[],
+  selectedWarehouseId: string
+): string | null {
+  if (selectedWarehouseId !== "") {
+    return null;
+  }
+  return warehouses.at(0)?.id ?? null;
+}
 
 export default function InventoryPage() {
   const params = useParams();
@@ -88,9 +101,12 @@ export default function InventoryPage() {
 
       if (whRes.success && whRes.data) {
         setWarehouses(whRes.data);
-        if (whRes.data.length > 0 && !selectedWarehouseId) {
-          const firstId = whRes.data[0]?.id;
-          if (firstId) setSelectedWarehouseId(firstId);
+        const firstId = resolveInitialWarehouseId(
+          whRes.data,
+          selectedWarehouseId
+        );
+        if (firstId !== null) {
+          setSelectedWarehouseId(firstId);
         }
       }
       if (trRes.success && trRes.data) {
@@ -365,7 +381,7 @@ export default function InventoryPage() {
   return (
     <div className="mx-auto max-w-[1600px] flex-1 space-y-6 p-4 pt-6 md:p-8">
       {/* Header */}
-      <div className="flex flex-col items-start justify-between gap-4 border-border/40 border-b pb-5 md:flex-row md:items-center">
+      <div className="flex flex-col items-start justify-between gap-4 border-zinc-200 border-b pb-5 md:flex-row md:items-center dark:border-zinc-800">
         <div>
           <h1 className="flex items-center gap-3 bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text font-bold text-2xl text-transparent tracking-tight md:text-3xl">
             <WarehouseIcon className="h-8 w-8 text-primary" />
@@ -380,7 +396,7 @@ export default function InventoryPage() {
         {/* Action Buttons based on Active Tab */}
         <div className="flex flex-wrap items-center gap-2.5">
           <button
-            className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-background/50 px-3.5 py-2 font-medium text-sm backdrop-blur transition hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-lg border border-zinc-200 bg-white px-3.5 py-2 font-medium text-sm text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
             disabled={loading}
             onClick={loadData}
             type="button"
@@ -510,7 +526,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-4 border-border/60 border-b">
+      <div className="flex items-center gap-4 border-zinc-200 border-b dark:border-zinc-800">
         <button
           className={`flex items-center gap-2 border-b-2 pb-3 font-semibold text-sm transition ${
             activeTab === "warehouses"
@@ -692,10 +708,10 @@ function WarehouseTabContent({
         ))}
       </div>
 
-      <div className="space-y-4 rounded-xl border border-border/60 bg-card/60 p-5 backdrop-blur lg:col-span-3">
+      <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 lg:col-span-3 dark:border-zinc-800/80 dark:bg-zinc-900">
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
-            <h2 className="flex items-center gap-2 font-semibold text-lg">
+            <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
               <Package className="h-5 w-5 text-primary" />
               Depo Raf Stokları
             </h2>
@@ -707,7 +723,7 @@ function WarehouseTabContent({
           <div className="relative w-full sm:w-64">
             <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
             <input
-              className="w-full rounded-lg border border-border/60 bg-background/60 py-1.5 pr-3 pl-9 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-1.5 pr-3 pl-9 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
               onChange={onSearchChange}
               placeholder="Ürün, SKU veya Raf ara..."
               type="text"
@@ -715,9 +731,9 @@ function WarehouseTabContent({
             />
           </div>
         </div>
-        <div className="overflow-x-auto rounded-lg border border-border/40">
+        <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
           <table className="w-full text-left text-xs">
-            <thead className="border-border/40 border-b bg-muted/50 font-semibold text-muted-foreground">
+            <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
               <tr>
                 <th className="p-3">Ürün / Varyant</th>
                 <th className="p-3">SKU / Barkod</th>
@@ -728,7 +744,7 @@ function WarehouseTabContent({
                 <th className="p-3 text-center">Durum</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/40">
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
               {filteredStocks.length === 0 ? (
                 <tr>
                   <td
@@ -776,9 +792,9 @@ function TransferTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-xl border border-border/60 bg-card/60 p-5 backdrop-blur">
+    <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 dark:border-zinc-800/80 dark:bg-zinc-900">
       <div>
-        <h2 className="flex items-center gap-2 font-semibold text-lg">
+        <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <ArrowRightLeft className="h-5 w-5 text-primary" />
           Depolar Arası Sevk &amp; Transferler
         </h2>
@@ -786,9 +802,9 @@ function TransferTabContent({
           Kaynak depodan hedef depoya sevk edilen stok fişleri ve durumları.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-border/40">
+      <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
         <table className="w-full text-left text-xs">
-          <thead className="border-border/40 border-b bg-muted/50 font-semibold text-muted-foreground">
+          <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
             <tr>
               <th className="p-3">Transfer No</th>
               <th className="p-3">Güzergah (Kaynak → Hedef)</th>
@@ -798,7 +814,7 @@ function TransferTabContent({
               <th className="p-3 text-right">Aksiyon</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/40">
+          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
             {transfers.length === 0 ? (
               <tr>
                 <td
@@ -836,9 +852,9 @@ function CountTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-xl border border-border/60 bg-card/60 p-5 backdrop-blur">
+    <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 dark:border-zinc-800/80 dark:bg-zinc-900">
       <div>
-        <h2 className="flex items-center gap-2 font-semibold text-lg">
+        <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <FileCheck2 className="h-5 w-5 text-primary" />
           Periyodik Stok Sayım &amp; Mutabakat
         </h2>
@@ -847,9 +863,9 @@ function CountTabContent({
           otomatik mutabakat.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-border/40">
+      <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
         <table className="w-full text-left text-xs">
-          <thead className="border-border/40 border-b bg-muted/50 font-semibold text-muted-foreground">
+          <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
             <tr>
               <th className="p-3">Sayım Fişi</th>
               <th className="p-3">Depo</th>
@@ -860,7 +876,7 @@ function CountTabContent({
               <th className="p-3 text-right">Aksiyon</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/40">
+          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
             {counts.length === 0 ? (
               <tr>
                 <td
@@ -900,7 +916,7 @@ function WarehouseItemCard({
       className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${
         isSelected
           ? "border-primary/60 bg-primary/5 shadow-sm"
-          : "border-border/60 bg-card/60 hover:bg-card/90"
+          : "border-zinc-200/80 bg-white hover:bg-zinc-50/80 dark:border-zinc-800/80 dark:bg-zinc-900 dark:hover:bg-zinc-800/40"
       }`}
       onClick={handleClick}
       type="button"
@@ -914,7 +930,7 @@ function WarehouseItemCard({
             </span>
           ) : null}
         </span>
-        <span className="rounded bg-muted px-2 py-0.5 font-mono text-muted-foreground text-xs">
+        <span className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
           {warehouse.code}
         </span>
       </div>
@@ -926,7 +942,7 @@ function WarehouseItemCard({
         <span>{warehouse.type}</span>
       </div>
 
-      <div className="flex items-center justify-between border-border/40 border-t pt-2 text-muted-foreground text-xs">
+      <div className="flex items-center justify-between border-zinc-100 border-t pt-2 text-muted-foreground text-xs dark:border-zinc-800">
         <span>{warehouse.totalDistinctProducts} Ürün Çeşidi</span>
         <span className="font-semibold text-foreground">
           {Number(warehouse.totalStockQuantity).toLocaleString("tr-TR")} Adet
@@ -971,7 +987,7 @@ function WarehouseStockRow({
   }, [onEdit, stock]);
 
   return (
-    <tr className="transition hover:bg-muted/30">
+    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
       <td className="p-3 font-medium text-foreground">
         {stock.productName}
         {stock.variantName ? (
@@ -988,7 +1004,7 @@ function WarehouseStockRow({
         {isEditing ? (
           <div className="flex items-center gap-1.5">
             <input
-              className="w-28 rounded border bg-background px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-28 rounded-xl border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-primary dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               onChange={handleLocationInputChange}
               placeholder="Örn: Raf A-12"
               type="text"
@@ -1002,7 +1018,7 @@ function WarehouseStockRow({
               Kaydet
             </button>
             <button
-              className="rounded p-1 hover:bg-muted"
+              className="rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onCancelEdit}
               type="button"
             >
@@ -1011,7 +1027,7 @@ function WarehouseStockRow({
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="rounded bg-muted/60 px-2 py-0.5 font-mono text-[11px]">
+            <span className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               {stock.binLocation || "Raf Tanımsız"}
             </span>
             <button
@@ -1087,7 +1103,7 @@ function StockTransferRow({
   }, [onCancel, transfer.id]);
 
   return (
-    <tr className="transition hover:bg-muted/30">
+    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
       <td className="p-3 font-bold font-mono text-foreground">
         <button
           className="text-left text-primary hover:underline"
@@ -1120,7 +1136,7 @@ function StockTransferRow({
       </td>
       <td className="space-x-1.5 p-3 text-right">
         <button
-          className="rounded border px-2.5 py-1 font-medium text-xs transition hover:bg-muted"
+          className="rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-xs text-zinc-600 transition hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           onClick={handleOpenClick}
           type="button"
         >
@@ -1148,7 +1164,7 @@ function StockTransferRow({
         ) : null}
         {transfer.status === "Draft" || transfer.status === "Dispatched" ? (
           <button
-            className="rounded px-2 py-1 text-rose-600 text-xs transition hover:bg-rose-50"
+            className="rounded px-2 py-1 text-rose-600 text-xs transition hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40"
             disabled={actionLoading}
             onClick={handleCancelClick}
             type="button"
@@ -1175,7 +1191,7 @@ function StockCountRow({
   }, [onOpenDetail, count.id]);
 
   return (
-    <tr className="transition hover:bg-muted/30">
+    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
       <td className="p-3 font-bold font-mono text-foreground">
         <button
           className="text-left text-primary hover:underline"
@@ -1244,7 +1260,7 @@ function TransferStatusBadge({ status }: { status: string }) {
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 font-semibold text-[10px] text-muted-foreground">
+    <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
       <Clock className="h-3 w-3" /> Taslak
     </span>
   );
@@ -1290,8 +1306,8 @@ function NewWarehouseModal({
     setCode(e.target.value.toUpperCase());
   }, []);
 
-  const handleTypeChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    setType(e.target.value);
+  const handleTypeChange = useCallback((val: string) => {
+    setType(val);
   }, []);
 
   const handleNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -1375,14 +1391,14 @@ function NewWarehouseModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-2xl border border-border/80 bg-card p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base">
+      <div className="w-full max-w-md space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-primary" />
             Yeni Depo Lokasyonu Tanımla
           </h2>
           <button
-            className="rounded-full p-1 hover:bg-muted"
+            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1391,7 +1407,7 @@ function NewWarehouseModal({
         </div>
 
         {error ? (
-          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs">
+          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs dark:text-rose-400">
             {error}
           </div>
         ) : null}
@@ -1399,11 +1415,14 @@ function NewWarehouseModal({
         <form className="space-y-3 text-xs" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="wh-code">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="wh-code"
+              >
                 Depo Kodu *
               </label>
               <input
-                className="w-full rounded-lg border bg-background px-3 py-2 font-mono"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                 id="wh-code"
                 onChange={handleCodeChange}
                 placeholder="Örn: DEP-01"
@@ -1413,30 +1432,35 @@ function NewWarehouseModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="wh-type">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="wh-type"
+              >
                 Depo Türü
               </label>
-              <select
-                className="w-full rounded-lg border bg-background px-3 py-2"
-                id="wh-type"
+              <SelectField
                 onChange={handleTypeChange}
+                options={[
+                  { label: "Merkez Depo", value: "Central" },
+                  { label: "Şube Depo", value: "Branch" },
+                  { label: "Aktarma / Transit", value: "Transit" },
+                  { label: "Kusurlu / İade Depo", value: "Defective" },
+                  { label: "Konsinye Depo", value: "Consignment" },
+                ]}
                 value={type}
-              >
-                <option value="Central">Merkez Depo</option>
-                <option value="Branch">Şube Depo</option>
-                <option value="Transit">Aktarma / Transit</option>
-                <option value="Defective">Kusurlu / İade Depo</option>
-                <option value="Consignment">Konsinye Depo</option>
-              </select>
+              />
             </div>
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold" htmlFor="wh-name">
+            <label
+              className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+              htmlFor="wh-name"
+            >
               Depo Adı *
             </label>
             <input
-              className="w-full rounded-lg border bg-background px-3 py-2"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="wh-name"
               onChange={handleNameChange}
               placeholder="Örn: Kadıköy Ana Dağıtım Deposu"
@@ -1448,11 +1472,14 @@ function NewWarehouseModal({
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="wh-city">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="wh-city"
+              >
                 Şehir
               </label>
               <input
-                className="w-full rounded-lg border bg-background px-3 py-2"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                 id="wh-city"
                 onChange={handleCityChange}
                 type="text"
@@ -1460,11 +1487,14 @@ function NewWarehouseModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="wh-manager">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="wh-manager"
+              >
                 Depo Sorumlusu
               </label>
               <input
-                className="w-full rounded-lg border bg-background px-3 py-2"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                 id="wh-manager"
                 onChange={handleManagerChange}
                 placeholder="Ad Soyad"
@@ -1473,11 +1503,14 @@ function NewWarehouseModal({
               />
             </div>
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="wh-phone">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="wh-phone"
+              >
                 Telefon
               </label>
               <input
-                className="w-full rounded-lg border bg-background px-3 py-2"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                 id="wh-phone"
                 onChange={handlePhoneChange}
                 placeholder="0212 ..."
@@ -1488,11 +1521,14 @@ function NewWarehouseModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold" htmlFor="wh-address">
+            <label
+              className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+              htmlFor="wh-address"
+            >
               Adres
             </label>
             <textarea
-              className="w-full rounded-lg border bg-background px-3 py-2"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="wh-address"
               onChange={handleAddressChange}
               rows={2}
@@ -1513,9 +1549,9 @@ function NewWarehouseModal({
             </label>
           </div>
 
-          <div className="flex justify-end gap-2 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
-              className="rounded-lg border px-4 py-2 font-medium hover:bg-muted"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1564,19 +1600,13 @@ function NewTransferModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSourceChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setSourceWarehouseId(e.target.value);
-    },
-    []
-  );
+  const handleSourceChange = useCallback((val: string) => {
+    setSourceWarehouseId(val);
+  }, []);
 
-  const handleTargetChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setTargetWarehouseId(e.target.value);
-    },
-    []
-  );
+  const handleTargetChange = useCallback((val: string) => {
+    setTargetWarehouseId(val);
+  }, []);
 
   const handleNotesChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -1654,14 +1684,14 @@ function NewTransferModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="max-h-[90vh] w-full max-w-xl space-y-4 overflow-y-auto rounded-2xl border border-border/80 bg-card p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base">
+      <div className="max-h-[90vh] w-full max-w-xl space-y-4 overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <ArrowRightLeft className="h-5 w-5 text-primary" />
             Yeni Depolar Arası Sevk Fişi
           </h2>
           <button
-            className="rounded-full p-1 hover:bg-muted"
+            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1670,7 +1700,7 @@ function NewTransferModal({
         </div>
 
         {error ? (
-          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs">
+          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs dark:text-rose-400">
             {error}
           </div>
         ) : null}
@@ -1678,40 +1708,40 @@ function NewTransferModal({
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="tr-source">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="tr-source"
+              >
                 Kaynak Depo (Çıkış) *
               </label>
-              <select
-                className="w-full rounded-lg border bg-background px-3 py-2"
-                id="tr-source"
+              <Combobox
+                emptyMessage="Depo bulunamadı."
                 onChange={handleSourceChange}
-                required
+                options={warehouses.map((w) => ({
+                  label: `${w.name} (${w.code})`,
+                  value: w.id,
+                }))}
+                searchPlaceholder="Depo ara..."
                 value={sourceWarehouseId}
-              >
-                {warehouses.map((w) => (
-                  <option key={w.id} value={w.id}>
-                    {w.name} ({w.code})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
             <div>
-              <label className="mb-1 block font-semibold" htmlFor="tr-target">
+              <label
+                className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+                htmlFor="tr-target"
+              >
                 Hedef Depo (Varış) *
               </label>
-              <select
-                className="w-full rounded-lg border bg-background px-3 py-2"
-                id="tr-target"
+              <Combobox
+                emptyMessage="Depo bulunamadı."
                 onChange={handleTargetChange}
-                required
+                options={warehouses.map((w) => ({
+                  label: `${w.name} (${w.code})`,
+                  value: w.id,
+                }))}
+                searchPlaceholder="Depo ara..."
                 value={targetWarehouseId}
-              >
-                {warehouses.map((w) => (
-                  <option key={w.id} value={w.id}>
-                    {w.name} ({w.code})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
 
@@ -1744,11 +1774,14 @@ function NewTransferModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold" htmlFor="tr-notes">
+            <label
+              className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+              htmlFor="tr-notes"
+            >
               Sevk Açıklaması / Notlar
             </label>
             <textarea
-              className="w-full rounded-lg border bg-background px-3 py-2"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="tr-notes"
               onChange={handleNotesChange}
               placeholder="Örn: 2026 Sezon ürünleri şube dağıtımı"
@@ -1757,9 +1790,9 @@ function NewTransferModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
-              className="rounded-lg border px-4 py-2 font-medium hover:bg-muted"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1798,15 +1831,15 @@ function TransferItemFormRow({
   onRemove: (index: number) => void;
 }) {
   const handleProductSelect = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      onProductChange(index, e.target.value);
+    (val: string) => {
+      onProductChange(index, val);
     },
     [onProductChange, index]
   );
 
   const handleQuantityInput = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      onQuantityChange(index, Number(e.target.value) || 1);
+    (val: number) => {
+      onQuantityChange(index, val);
     },
     [onQuantityChange, index]
   );
@@ -1816,31 +1849,31 @@ function TransferItemFormRow({
   }, [onRemove, index]);
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border bg-muted/20 p-2.5">
-      <select
-        className="flex-1 rounded border bg-background px-2.5 py-1.5 text-xs"
+    <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 dark:border-zinc-800 dark:bg-zinc-800/30">
+      <Combobox
+        className="flex-1"
+        emptyMessage="Sonuç bulunamadı."
         onChange={handleProductSelect}
+        options={products.map((p) => ({
+          description: `Stok: ${p.currentStock}`,
+          label: p.name,
+          value: p.id,
+        }))}
+        searchPlaceholder="Ara..."
         value={item.productId}
-      >
-        {products.map((p) => (
-          <option key={p.id} value={p.id}>
-            {p.name} (Stok: {p.currentStock})
-          </option>
-        ))}
-      </select>
+      />
 
-      <input
-        className="w-20 rounded border bg-background px-2.5 py-1.5 text-right font-semibold text-xs"
-        min="1"
+      <NumberInput
+        className="w-28"
+        min={1}
         onChange={handleQuantityInput}
-        placeholder="Adet"
-        type="number"
+        showStepper
         value={item.quantity}
       />
 
       {showRemove ? (
         <button
-          className="rounded p-1.5 text-muted-foreground hover:text-rose-600"
+          className="rounded p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
           onClick={handleRemove}
           type="button"
         >
@@ -1868,12 +1901,9 @@ function NewCountModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleWarehouseChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setWarehouseId(e.target.value);
-    },
-    []
-  );
+  const handleWarehouseChange = useCallback((val: string) => {
+    setWarehouseId(val);
+  }, []);
 
   const handleNotesChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setNotes(e.target.value);
@@ -1910,14 +1940,14 @@ function NewCountModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-2xl border border-border/80 bg-card p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-b pb-3">
-          <h2 className="flex items-center gap-2 font-bold text-base">
+      <div className="w-full max-w-md space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <FileCheck2 className="h-5 w-5 text-primary" />
             Yeni Periyodik Stok Sayımı Başlat
           </h2>
           <button
-            className="rounded-full p-1 hover:bg-muted"
+            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >
@@ -1926,29 +1956,29 @@ function NewCountModal({
         </div>
 
         {error ? (
-          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs">
+          <div className="rounded-lg bg-rose-500/10 p-3 text-rose-600 text-xs dark:text-rose-400">
             {error}
           </div>
         ) : null}
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block font-semibold" htmlFor="cnt-wh">
+            <label
+              className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+              htmlFor="cnt-wh"
+            >
               Sayılacak Depo Lokasyonu *
             </label>
-            <select
-              className="w-full rounded-lg border bg-background px-3 py-2"
-              id="cnt-wh"
+            <Combobox
+              emptyMessage="Depo bulunamadı."
               onChange={handleWarehouseChange}
-              required
+              options={warehouses.map((w) => ({
+                label: `${w.name} (${w.code})`,
+                value: w.id,
+              }))}
+              searchPlaceholder="Depo ara..."
               value={warehouseId}
-            >
-              {warehouses.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {w.name} ({w.code})
-                </option>
-              ))}
-            </select>
+            />
             <p className="mt-1 text-[11px] text-muted-foreground">
               Sayım başlatıldığında, bu depoda tanımlı tüm fiziksel ürünler
               sistemdeki mevcut stoklarıyla birlikte listelenecektir.
@@ -1956,11 +1986,14 @@ function NewCountModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold" htmlFor="cnt-notes">
+            <label
+              className="mb-1 block font-semibold text-zinc-700 dark:text-zinc-300"
+              htmlFor="cnt-notes"
+            >
               Sayım Notu / Dönem
             </label>
             <input
-              className="w-full rounded-lg border bg-background px-3 py-2"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="cnt-notes"
               onChange={handleNotesChange}
               placeholder="Örn: 2026 Q3 Sonu Genel Depo Sayımı"
@@ -1969,9 +2002,9 @@ function NewCountModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-t pt-3">
+          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
             <button
-              className="rounded-lg border px-4 py-2 font-medium hover:bg-muted"
+              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2021,17 +2054,19 @@ function TransferDetailDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-      <div className="flex h-full w-full max-w-xl flex-col justify-between space-y-6 overflow-y-auto border-border/80 border-l bg-card p-6 shadow-2xl">
+      <div className="flex h-full w-full max-w-xl flex-col justify-between space-y-6 overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b pb-4">
+          <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {transfer.transferNumber}
               </span>
-              <h2 className="font-bold text-lg">Depo Sevk Fişi</h2>
+              <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                Depo Sevk Fişi
+              </h2>
             </div>
             <button
-              className="rounded-full p-1 hover:bg-muted"
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2039,7 +2074,7 @@ function TransferDetailDrawer({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 rounded-xl border bg-muted/20 p-4 text-xs">
+          <div className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
             <div>
               <span className="mb-0.5 block text-muted-foreground">
                 Kaynak Depo (Çıkış)
@@ -2074,18 +2109,21 @@ function TransferDetailDrawer({
             <h3 className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Transfer Kalemleri ({transfer.items.length})
             </h3>
-            <div className="overflow-hidden rounded-lg border text-xs">
+            <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
               <table className="w-full text-left">
-                <thead className="border-b bg-muted/50 font-medium text-muted-foreground">
+                <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <tr>
                     <th className="p-2.5">Ürün</th>
                     <th className="p-2.5">SKU</th>
                     <th className="p-2.5 text-right">Sevk Adedi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                   {transfer.items.map((item) => (
-                    <tr className="hover:bg-muted/20" key={item.id}>
+                    <tr
+                      className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
+                      key={item.id}
+                    >
                       <td className="p-2.5 font-medium text-foreground">
                         {item.productName}
                       </td>
@@ -2103,7 +2141,7 @@ function TransferDetailDrawer({
           </div>
 
           {transfer.notes ? (
-            <div className="rounded-lg border bg-muted/20 p-3 text-muted-foreground text-xs">
+            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
               <span className="mb-0.5 block font-semibold text-foreground">
                 Not:
               </span>
@@ -2112,7 +2150,7 @@ function TransferDetailDrawer({
           ) : null}
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-t pt-4">
+        <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           {transfer.status === "Draft" ? (
             <button
               className="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white text-xs hover:bg-amber-700"
@@ -2137,7 +2175,7 @@ function TransferDetailDrawer({
 
           {transfer.status === "Draft" || transfer.status === "Dispatched" ? (
             <button
-              className="rounded-lg border border-rose-200 px-4 py-2 font-semibold text-rose-600 text-xs hover:bg-rose-50"
+              className="rounded-lg border border-rose-200 px-4 py-2 font-semibold text-rose-600 text-xs hover:bg-rose-50 dark:border-rose-900 dark:text-rose-400 dark:hover:bg-rose-950/40"
               disabled={actionLoading}
               onClick={handleCancel}
               type="button"
@@ -2262,14 +2300,14 @@ function StockCountAuditDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-      <div className="flex h-full w-full max-w-2xl flex-col justify-between space-y-4 overflow-y-auto border-border/80 border-l bg-card p-6 shadow-2xl">
+      <div className="flex h-full w-full max-w-2xl flex-col justify-between space-y-4 overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b pb-4">
+          <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {count.countNumber}
               </span>
-              <h2 className="font-bold text-lg">
+              <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                 Stok Sayım & Mutabakat Cetveli
               </h2>
               <p className="text-muted-foreground text-xs">
@@ -2277,7 +2315,7 @@ function StockCountAuditDrawer({
               </p>
             </div>
             <button
-              className="rounded-full p-1 hover:bg-muted"
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2286,11 +2324,11 @@ function StockCountAuditDrawer({
           </div>
 
           {isCompleted ? null : (
-            <div className="flex items-center gap-3 rounded-xl border bg-muted/40 p-3">
+            <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
               <div className="relative flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-lg border bg-background py-1.5 pr-3 pl-9 font-mono text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-3 pl-9 font-mono text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-primary dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                   onChange={handleBarcodeChange}
                   onKeyDown={handleBarcodeScan}
                   placeholder="Barkod veya SKU okutun (Enter ile +1 sayar)..."
@@ -2309,9 +2347,9 @@ function StockCountAuditDrawer({
             </div>
           )}
 
-          <div className="overflow-hidden rounded-xl border text-xs">
+          <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
             <table className="w-full text-left">
-              <thead className="border-b bg-muted/50 font-medium text-muted-foreground">
+              <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <tr>
                   <th className="p-2.5">Ürün Adı</th>
                   <th className="p-2.5 text-right">Sistem Stoğu</th>
@@ -2319,7 +2357,7 @@ function StockCountAuditDrawer({
                   <th className="p-2.5 text-right">Fark (Sapma)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                 {items.map((it, idx) => (
                   <CountAuditRow
                     index={idx}
@@ -2332,7 +2370,7 @@ function StockCountAuditDrawer({
               </tbody>
             </table>
           </div>
-          <div className="flex items-center justify-between rounded-xl border bg-muted/20 p-3 text-xs">
+          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
             <span className="text-muted-foreground">Toplam Sayım Sapması:</span>
             <span
               className={`font-bold text-sm ${getDifferenceColor(totalDifference)}`}
@@ -2345,9 +2383,9 @@ function StockCountAuditDrawer({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-t pt-4">
+        <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           {isCompleted ? (
-            <div className="flex items-center gap-1.5 font-medium text-emerald-600 text-xs">
+            <div className="flex items-center gap-1.5 font-medium text-emerald-600 text-xs dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
               Bu sayımın mutabakatı yapılmış ve stoklara işlenmiştir.
             </div>
@@ -2388,14 +2426,14 @@ function CountAuditRow({
   const diff = item.countedQty - item.systemQty;
 
   const handleInputChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      onCountChange(index, Number(e.target.value) || 0);
+    (val: number) => {
+      onCountChange(index, val);
     },
     [onCountChange, index]
   );
 
   return (
-    <tr className="hover:bg-muted/20">
+    <tr className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
       <td className="p-2.5 font-medium text-foreground">
         {item.productName}
         {item.sku ? (
@@ -2411,10 +2449,11 @@ function CountAuditRow({
         {isCompleted ? (
           <span className="font-bold">{item.countedQty}</span>
         ) : (
-          <input
-            className="w-20 rounded border bg-background px-2 py-1 text-right font-bold text-xs"
+          <NumberInput
+            className="w-24"
+            min={0}
             onChange={handleInputChange}
-            type="number"
+            showStepper
             value={item.countedQty}
           />
         )}
@@ -2433,9 +2472,9 @@ function getDifferenceColor(diff: number): string {
     return "text-muted-foreground";
   }
   if (diff > 0) {
-    return "text-emerald-600";
+    return "text-emerald-600 dark:text-emerald-400";
   }
-  return "text-rose-600";
+  return "text-rose-600 dark:text-rose-400";
 }
 
 function getRowDifferenceColor(diff: number): string {

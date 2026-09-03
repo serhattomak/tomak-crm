@@ -85,7 +85,9 @@ export function TemplatePreview({
                 <SelectTrigger className="h-7 text-[11px]">
                   <SelectValue
                     placeholder={
-                      isQuotesLoading ? "Yükleniyor..." : "Mock veri (varsayılan)"
+                      isQuotesLoading
+                        ? "Yükleniyor..."
+                        : "Mock veri (varsayılan)"
                     }
                   />
                 </SelectTrigger>
@@ -163,7 +165,7 @@ export function TemplatePreview({
           <div className="flex flex-1 flex-col overflow-hidden p-2">
             <div className="flex-1 overflow-auto rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-white">
               <iframe
-                className="w-full h-[600px] border-0"
+                className="h-[600px] w-full border-0"
                 sandbox="allow-same-origin"
                 srcDoc={displayHtml}
                 style={
