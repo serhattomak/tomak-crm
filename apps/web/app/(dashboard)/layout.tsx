@@ -48,9 +48,10 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import type React from "react";
-import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
+import { Suspense, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { CommandPalette } from "@/components/command-palette";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NotificationCenter } from "@/components/notification-center";
@@ -77,49 +78,53 @@ interface HubDefinition {
   name: string;
 }
 
-const NAVIGATION_HUBS: HubDefinition[] = [
-  {
-    defaultHref: (slug) => `/${slug}`,
-    description: "Pipeline, Teklifler ve Müşteriler",
-    icon: LayoutDashboard,
-    id: "crm",
-    label: "CRM",
-    name: "CRM & Satış",
-  },
-  {
-    defaultHref: (slug) => `/${slug}/vehicles`,
-    description: "Araçlar, Projeler ve Kargo",
-    icon: Car,
-    id: "ops",
-    label: "OPS",
-    name: "Operasyon & Araçlar",
-  },
-  {
-    defaultHref: (slug) => `/${slug}/attendance`,
-    description: "PDKS, İzinler ve Bordro",
-    icon: Users2,
-    id: "hrm",
-    label: "HRM",
-    name: "İnsan Kaynakları",
-  },
-  {
-    badge: "33",
-    defaultHref: (slug) => `/${slug}/tickets`,
-    description: "Destek Masası ve Mesajlar",
-    icon: MessageSquare,
-    id: "comm",
-    label: "CMS",
-    name: "Destek & İletişim",
-  },
-  {
-    defaultHref: (slug) => `/${slug}/users`,
-    description: "Kullanıcılar, Roller ve Ayarlar",
-    icon: Shield,
-    id: "sys",
-    label: "SYS",
-    name: "Sistem & Yönetim",
-  },
-];
+function getNavigationHubs(tHubs?: (key: string) => string): HubDefinition[] {
+  return [
+    {
+      defaultHref: (slug) => `/${slug}`,
+      description: tHubs ? tHubs("crmDesc") : "Pipeline, Teklifler ve Müşteriler",
+      icon: LayoutDashboard,
+      id: "crm",
+      label: "CRM",
+      name: tHubs ? tHubs("crm") : "CRM & Satış",
+    },
+    {
+      defaultHref: (slug) => `/${slug}/vehicles`,
+      description: tHubs ? tHubs("opsDesc") : "Araçlar, Projeler ve Kargo",
+      icon: Car,
+      id: "ops",
+      label: "OPS",
+      name: tHubs ? tHubs("ops") : "Operasyon & Araçlar",
+    },
+    {
+      defaultHref: (slug) => `/${slug}/attendance`,
+      description: tHubs ? tHubs("hrmDesc") : "PDKS, İzinler ve Bordro",
+      icon: Users2,
+      id: "hrm",
+      label: "HRM",
+      name: tHubs ? tHubs("hrm") : "İnsan Kaynakları",
+    },
+    {
+      badge: "33",
+      defaultHref: (slug) => `/${slug}/tickets`,
+      description: tHubs ? tHubs("commDesc") : "Destek Masası ve Mesajlar",
+      icon: MessageSquare,
+      id: "comm",
+      label: "CMS",
+      name: tHubs ? tHubs("comm") : "Destek & İletişim",
+    },
+    {
+      defaultHref: (slug) => `/${slug}/users`,
+      description: tHubs ? tHubs("sysDesc") : "Kullanıcılar, Roller ve Ayarlar",
+      icon: Shield,
+      id: "sys",
+      label: "SYS",
+      name: tHubs ? tHubs("sys") : "Sistem & Yönetim",
+    },
+  ];
+}
+
+const STATIC_NAVIGATION_HUBS = getNavigationHubs();
 
 function getActiveHubFromPathname(
   pathname: string,
@@ -143,7 +148,6 @@ function getActiveHubFromPathname(
   if (
     pathname.includes(`/${tenantSlug}/vehicles`) ||
     pathname.includes(`/${tenantSlug}/projects`) ||
-    pathname.includes(`/${tenantSlug}/products`) ||
     pathname.includes(`/${tenantSlug}/shipments`)
   ) {
     return "ops";
@@ -228,23 +232,25 @@ function DashboardLayoutInner({
     }
   }, []);
 
+  const setSidebarCollapsedState = (collapsed: boolean) => {
+    setIsSidebarCollapsed(collapsed);
+    try {
+      localStorage.setItem("crm_sidebar_collapsed", String(collapsed));
+      document.cookie = `crm_sidebar_collapsed=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
+    } catch {
+      // ignore
+    }
+  };
+
+  const toggleSidebarCollapse = () => {
+    setSidebarCollapsedState(!isSidebarCollapsed);
+  };
+
   // Keep activeHub in sync when pathname changes
   useEffect(() => {
     const detected = getActiveHubFromPathname(pathname || "", tenantSlug);
     setActiveHub(detected);
   }, [pathname, tenantSlug]);
-
-  const toggleSidebarCollapse = () => {
-    setIsSidebarCollapsed((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem("crm_sidebar_collapsed", String(next));
-      } catch {
-        // ignore
-      }
-      return next;
-    });
-  };
 
   // Global Keyboard Navigation & Shortcuts Listener
   useEffect(() => {
@@ -403,8 +409,12 @@ function DashboardLayoutInner({
         .toUpperCase()
     : "SD";
 
+  const tHubs = useTranslations("hubs");
+  const tNav = useTranslations("navigation");
+  const navigationHubs = useMemo(() => getNavigationHubs(tHubs), [tHubs]);
+
   const currentHubMeta =
-    NAVIGATION_HUBS.find((h) => h.id === activeHub) || NAVIGATION_HUBS[0]!;
+    navigationHubs.find((h) => h.id === activeHub) || navigationHubs[0]!;
 
   // Bottom navigation items on mobile
   const mobileBottomNav = [
@@ -412,15 +422,15 @@ function DashboardLayoutInner({
       exact: true,
       href: `/${tenantSlug}`,
       icon: LayoutDashboard,
-      label: "Anasayfa",
+      label: tNav("dashboard"),
     },
-    { href: `/${tenantSlug}/pipelines`, icon: Kanban, label: "Fırsatlar" },
+    { href: `/${tenantSlug}/pipelines`, icon: Kanban, label: tNav("pipelines") },
     {
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
-      label: "Teklifler",
+      label: tNav("quotes"),
     },
-    { href: `/${tenantSlug}/customers`, icon: Users2, label: "Müşteriler" },
+    { href: `/${tenantSlug}/customers`, icon: Users2, label: tNav("customers") },
   ];
 
   return (
@@ -450,6 +460,7 @@ function DashboardLayoutInner({
               onClick={() =>
                 setTheme(resolvedTheme === "dark" ? "light" : "dark")
               }
+              suppressHydrationWarning
               title={
                 mounted && resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"
               }
@@ -497,7 +508,7 @@ function DashboardLayoutInner({
 
                 {/* Hub Selection Pills for Mobile */}
                 <div className="grid grid-cols-5 gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
-                  {NAVIGATION_HUBS.map((hub) => (
+                  {navigationHubs.map((hub) => (
                     <button
                       className={`flex flex-col items-center justify-center rounded-lg py-1.5 font-bold text-[10px] transition-all ${
                         activeHub === hub.id
@@ -556,8 +567,8 @@ function DashboardLayoutInner({
               {mounted && isSidebarCollapsed && (
                 <button
                   className="fade-in zoom-in-90 flex h-8 w-8 animate-in items-center justify-center rounded-xl border border-violet-200/80 bg-violet-50 text-violet-700 shadow-2xs transition-all duration-150 hover:bg-violet-100 active:scale-95 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300"
-                  onClick={() => setIsSidebarCollapsed(false)}
-                  title="Menüyü Genişlet"
+                  onClick={() => setSidebarCollapsedState(false)}
+                  title={tHubs("expandMenu")}
                   type="button"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -568,7 +579,7 @@ function DashboardLayoutInner({
 
               {/* 5 Hub Launcher Buttons with Design System Floating Tooltips */}
               <div className="flex flex-col items-center gap-2">
-                {NAVIGATION_HUBS.map((hub) => {
+                {navigationHubs.map((hub) => {
                   const isHubActive = activeHub === hub.id;
                   const HubIcon = hub.icon;
 
@@ -583,7 +594,7 @@ function DashboardLayoutInner({
                         onClick={() => {
                           setActiveHub(hub.id);
                           if (isSidebarCollapsed) {
-                            setIsSidebarCollapsed(false);
+                            setSidebarCollapsedState(false);
                           }
                         }}
                         type="button"
@@ -638,7 +649,10 @@ function DashboardLayoutInner({
                 onClick={() =>
                   setTheme(resolvedTheme === "dark" ? "light" : "dark")
                 }
-                title={resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"}
+                suppressHydrationWarning
+                title={
+                  mounted && resolvedTheme === "dark" ? "Açık Tema" : "Koyu Tema"
+                }
                 type="button"
               >
                 {mounted && resolvedTheme === "dark" ? (
@@ -682,7 +696,7 @@ function DashboardLayoutInner({
                 <button
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                   onClick={toggleSidebarCollapse}
-                  title="Menüyü Daralt"
+                  title={tHubs("collapseMenu")}
                   type="button"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -699,7 +713,7 @@ function DashboardLayoutInner({
                   <div className="flex min-w-0 items-center gap-2">
                     <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400" />
                     <span className="truncate text-[11px] text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300">
-                      Hızlı Arama...
+                      {tHubs("quickSearch")}
                     </span>
                   </div>
                   <div className="flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-white px-1.5 py-0.5 font-bold text-[9px] text-zinc-400 shadow-2xs dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-300">
@@ -836,6 +850,7 @@ function DashboardNavigation({
   const currentTab = searchParams.get("tab") || "chart";
 
   const { getModuleDisplayName, isModuleEnabled } = useLabels();
+  const tNav = useTranslations("navigation");
 
   // 1. CRM / Satış Hub'ı
   const salesMenu: NavItem[] = [
@@ -843,14 +858,14 @@ function DashboardNavigation({
       exact: true,
       href: `/${tenantSlug}`,
       icon: LayoutDashboard,
-      name: "Dashboard",
+      name: tNav("dashboard"),
     },
     {
       badge: null,
       href: `/${tenantSlug}/pipelines`,
       icon: Kanban,
       moduleKey: "pipelines",
-      name: getModuleDisplayName("pipelines", "Pipeline & Akış"),
+      name: getModuleDisplayName("pipelines", tNav("pipelines")),
       permission: "Pipelines.View",
     },
     {
@@ -858,7 +873,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/quotes`,
       icon: FileSpreadsheet,
       moduleKey: "quotes",
-      name: getModuleDisplayName("quotes", "Teklifler"),
+      name: getModuleDisplayName("quotes", tNav("quotes")),
       permission: "Quotes.View",
     },
     {
@@ -866,82 +881,75 @@ function DashboardNavigation({
       href: `/${tenantSlug}/customers`,
       icon: Users2,
       moduleKey: "customers",
-      name: getModuleDisplayName("customers", "Müşteriler"),
+      name: getModuleDisplayName("customers", tNav("customers")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/orders`,
       icon: ShoppingCart,
       moduleKey: "orders",
-      name: getModuleDisplayName("orders", "Siparişler"),
+      name: getModuleDisplayName("orders", tNav("orders")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/products`,
       icon: Package,
       moduleKey: "products",
-      name: getModuleDisplayName("products", "Ürünler & Katalog"),
+      name: getModuleDisplayName("products", tNav("products")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/inventory`,
       icon: Warehouse,
       moduleKey: "inventory",
-      name: getModuleDisplayName("inventory", "Depolar & Stok"),
+      name: getModuleDisplayName("inventory", tNav("inventory")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/invoices`,
       icon: ReceiptText,
       moduleKey: "invoices",
-      name: getModuleDisplayName("invoices", "Faturalar"),
+      name: getModuleDisplayName("invoices", tNav("invoices")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/finance`,
       icon: Landmark,
       moduleKey: "finance",
-      name: getModuleDisplayName("finance", "Cari & Finans"),
+      name: getModuleDisplayName("finance", tNav("finance")),
     },
     {
       badge: null,
       href: `/${tenantSlug}/promotions`,
       icon: Tag,
       moduleKey: "promotions",
-      name: getModuleDisplayName("promotions", "Kampanya & Kuponlar"),
+      name: getModuleDisplayName("promotions", tNav("promotions")),
       permission: "Promotions.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
 
-  // 2. Operasyon & Araçlar Hub'ı
+  // 2. Operasyon & Araçlar Hub'ı (Ürünler kaldırıldı, tek merkez CRM'de)
   const opsMenu: NavItem[] = [
     {
       badge: null,
       href: `/${tenantSlug}/vehicles`,
       icon: Car,
-      name: "Otomotiv & Araçlar",
+      name: tNav("vehicles"),
       permission: "Vehicles.View",
     },
     {
       badge: null,
       href: `/${tenantSlug}/projects`,
       icon: Briefcase,
-      name: "Projeler & Backlog",
+      name: tNav("projects"),
       permission: "Projects.View",
-    },
-    {
-      badge: null,
-      href: `/${tenantSlug}/products`,
-      icon: Package,
-      moduleKey: "products",
-      name: getModuleDisplayName("products", "Ürün & Hizmetler"),
     },
     {
       badge: null,
       href: `/${tenantSlug}/shipments`,
       icon: Truck,
       moduleKey: "shipping",
-      name: getModuleDisplayName("shipping", "Kargo & Sevkiyat"),
+      name: getModuleDisplayName("shipping", tNav("shipments")),
       permission: "Shipment.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
@@ -953,7 +961,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/attendance`,
       icon: Clock,
       moduleKey: "attendance",
-      name: getModuleDisplayName("attendance", "Vardiya & PDKS"),
+      name: getModuleDisplayName("attendance", tNav("attendance")),
       permission: "Attendance.View",
     },
     {
@@ -961,7 +969,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/leaves`,
       icon: Calendar,
       moduleKey: "leaves",
-      name: getModuleDisplayName("leaves", "İzinler & Takvim"),
+      name: getModuleDisplayName("leaves", tNav("leaves")),
       permission: "Leaves.View",
     },
     {
@@ -969,7 +977,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/payroll`,
       icon: Banknote,
       moduleKey: "payroll",
-      name: getModuleDisplayName("payroll", "Bordro & Maaşlar"),
+      name: getModuleDisplayName("payroll", tNav("payroll")),
       permission: "Payroll.View",
     },
     {
@@ -977,7 +985,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/organization?tab=chart`,
       icon: Network,
       moduleKey: "organization",
-      name: "Organizasyon",
+      name: tNav("organization"),
       permission: "Organization.ViewChart",
       tab: "chart",
     },
@@ -985,7 +993,7 @@ function DashboardNavigation({
       badge: null,
       href: `/${tenantSlug}/recruitment`,
       icon: Briefcase,
-      name: "İşe Alım",
+      name: tNav("recruitment"),
       permission: "Recruitment.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
@@ -997,7 +1005,7 @@ function DashboardNavigation({
       href: `/${tenantSlug}/tickets`,
       icon: LifeBuoy,
       moduleKey: "tickets",
-      name: getModuleDisplayName("tickets", "Destek Masası"),
+      name: getModuleDisplayName("tickets", tNav("tickets")),
       permission: "Tickets.View",
     },
     {
@@ -1005,23 +1013,23 @@ function DashboardNavigation({
       href: `/${tenantSlug}/messages`,
       icon: MessageSquare,
       moduleKey: "chat",
-      name: getModuleDisplayName("chat", "Mesajlar & Sohbet"),
+      name: getModuleDisplayName("chat", tNav("messages")),
     },
     {
       href: `/${tenantSlug}/email`,
       icon: Mail,
-      name: "E-Posta",
+      name: tNav("email"),
     },
     {
       href: `/${tenantSlug}/automations`,
       icon: Zap,
-      name: "Otomasyonlar",
+      name: tNav("automations"),
       permission: "Automations.View",
     },
     {
       href: `/${tenantSlug}/analytics`,
       icon: BarChart3,
-      name: "Raporlar & Analitik",
+      name: tNav("analytics"),
     },
     {
       href: `/${tenantSlug}/integration`,
@@ -1031,7 +1039,7 @@ function DashboardNavigation({
     {
       href: `/${tenantSlug}/webhooks`,
       icon: Webhook,
-      name: "Webhooklar",
+      name: tNav("webhooks"),
       permission: "Webhooks.View",
     },
   ].filter((item) => !item.moduleKey || isModuleEnabled(item.moduleKey));
@@ -1042,21 +1050,21 @@ function DashboardNavigation({
       badge: "6",
       href: `/${tenantSlug}/users`,
       icon: Users,
-      name: "Ekip & Üyeler",
+      name: tNav("users"),
       permission: "Users.View",
     },
     {
       badge: "4",
       href: `/${tenantSlug}/roles`,
       icon: Shield,
-      name: "Roller & Yetkiler",
+      name: tNav("roles"),
       permission: "Roles.View",
     },
     {
       badge: null,
       href: `/${tenantSlug}/settings`,
       icon: Settings,
-      name: "Şirket Ayarları",
+      name: tNav("settings"),
       permission: "Tenants.Update",
     },
   ];

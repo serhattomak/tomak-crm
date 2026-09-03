@@ -16,19 +16,7 @@ import type { MeetingItem } from "./dashboard-types";
 export function UpcomingMeetingsWidget() {
   const params = useParams();
   const tenantSlug = (params?.tenantSlug as string) || "workspace";
-  const [meetings, setMeetings] = useState<MeetingItem[]>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem(`crm_meetings_${tenantSlug}`);
-        if (saved) {
-          return JSON.parse(saved);
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return [];
-  });
+  const [meetings, setMeetings] = useState<MeetingItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -37,8 +25,16 @@ export function UpcomingMeetingsWidget() {
   const [newDate, setNewDate] = useState("Bugün");
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`crm_meetings_${tenantSlug}`);
+      if (saved) {
+        setMeetings(JSON.parse(saved));
+      }
+    } catch {
+      // ignore
+    }
     setIsLoaded(true);
-  }, []);
+  }, [tenantSlug]);
 
   const saveMeetings = (items: MeetingItem[]) => {
     setMeetings(items);
