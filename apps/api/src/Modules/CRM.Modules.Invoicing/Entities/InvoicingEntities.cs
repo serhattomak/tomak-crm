@@ -64,6 +64,18 @@ public class Invoice : ITenantScopedEntity
     public decimal RemainingAmount { get; set; } = 0.00m;
     public string? EInvoiceUuid { get; set; }
     public string? EInvoiceStatus { get; set; }
+    
+    // GİB e-Arşiv UBL-TR 2.1
+    public Guid? Ettn { get; set; } = Guid.NewGuid();
+    public string? UblXml { get; set; }
+    public bool IsEArchive { get; set; } = true;
+    public string EArchiveType { get; set; } = "NORMAL"; // NORMAL, INTERNET, IHRACAT
+    public string EArchiveReportStatus { get; set; } = "Draft"; // Draft, Generated, ExportedToGib, Reported
+    public string? InternetSalesUrl { get; set; }
+    public string? InternetPaymentType { get; set; }
+    public string? CarrierName { get; set; }
+    public string? CarrierTaxNumber { get; set; }
+
     public string? Notes { get; set; }
     public string? PaymentTerms { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

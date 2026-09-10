@@ -22,6 +22,9 @@ using CRM.Modules.Vehicles;
 using CRM.Modules.Email;
 using CRM.Modules.Invoicing;
 using CRM.Modules.Activities;
+using CRM.Modules.Contracts;
+using CRM.Modules.FieldService;
+using CRM.Modules.FieldService.Features;
 using CRM.Api.Jobs;
 using CRM.BuildingBlocks.Realtime;
 using Quartz;
@@ -63,9 +66,11 @@ var vehiclesAssembly = typeof(VehiclesModuleExtensions).Assembly;
 var emailAssembly = typeof(EmailModuleExtensions).Assembly;
 var invoicingAssembly = typeof(InvoicingModuleExtensions).Assembly;
 var activitiesAssembly = typeof(ActivitiesModuleExtensions).Assembly;
+var contractsAssembly = typeof(ContractsModuleExtensions).Assembly;
+var fieldServiceAssembly = typeof(FieldServiceModuleExtensions).Assembly;
 var apiAssembly = typeof(Program).Assembly;
 
-builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, emailAssembly, invoicingAssembly, activitiesAssembly, apiAssembly);
+builder.Services.AddBuildingBlocks(builder.Configuration, tenantAssembly, identityAssembly, organizationAssembly, customersAssembly, productsAssembly, ordersAssembly, leavesAssembly, payrollAssembly, attendanceAssembly, chatAssembly, shippingAssembly, automationsAssembly, complianceAssembly, recruitmentAssembly, promotionsAssembly, projectsAssembly, vehiclesAssembly, emailAssembly, invoicingAssembly, activitiesAssembly, contractsAssembly, fieldServiceAssembly, apiAssembly);
 builder.Services.AddTenantsModule(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddOrganizationModule(builder.Configuration);
@@ -86,6 +91,8 @@ builder.Services.AddVehiclesModule(builder.Configuration);
 builder.Services.AddEmailModule(builder.Configuration);
 builder.Services.AddInvoicingModule(builder.Configuration);
 builder.Services.AddActivitiesModule(builder.Configuration);
+builder.Services.AddContractsModule(builder.Configuration);
+builder.Services.AddFieldServiceModule(builder.Configuration);
 
 // 3. MassTransit & RabbitMQ
 builder.Services.AddMessaging(builder.Configuration, x =>
@@ -180,6 +187,7 @@ app.UseAuthorization();
 app.MapEndpoints();
 app.MapVehiclesModuleEndpoints();
 app.MapEmailEndpoints();
+app.MapFieldServiceEndpoints();
 app.MapHub<CrmHub>("/hubs/crm");
 
 // 9. Map HealthChecks

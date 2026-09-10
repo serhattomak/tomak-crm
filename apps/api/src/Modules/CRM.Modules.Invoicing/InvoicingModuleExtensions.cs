@@ -27,6 +27,7 @@ public static class InvoicingModuleExtensions
         });
 
         services.AddScoped<ICariLedgerService, CariLedgerService>();
+        services.AddScoped<IUblTrXmlService, UblTrXmlService>();
 
         return services;
     }

@@ -17,6 +17,8 @@ public class ChatDbContext(
     public DbSet<CustomerSupportSession> SupportSessions => Set<CustomerSupportSession>();
     public DbSet<HelpdeskTicket> Tickets => Set<HelpdeskTicket>();
     public DbSet<HelpdeskTicketActivity> TicketActivities => Set<HelpdeskTicketActivity>();
+    public DbSet<WhatsAppSettings> WhatsAppSettings => Set<WhatsAppSettings>();
+    public DbSet<WhatsAppMessage> WhatsAppMessages => Set<WhatsAppMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -262,6 +264,50 @@ public class ChatDbContext(
             entity.Property(e => e.OldValue).HasColumnName("old_value").HasMaxLength(255);
             entity.Property(e => e.NewValue).HasColumnName("new_value").HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 10. WhatsAppSettings
+        modelBuilder.Entity<WhatsAppSettings>(entity =>
+        {
+            entity.ToTable("whatsapp_settings");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.PhoneNumberId).HasColumnName("phone_number_id").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.WabaId).HasColumnName("waba_id").HasMaxLength(100);
+            entity.Property(e => e.AccessToken).HasColumnName("access_token").IsRequired();
+            entity.Property(e => e.WebhookVerifyToken).HasColumnName("webhook_verify_token").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.BusinessPhoneNumber).HasColumnName("business_phone_number").HasMaxLength(50);
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
+        });
+
+        // 11. WhatsAppMessage
+        modelBuilder.Entity<WhatsAppMessage>(entity =>
+        {
+            entity.ToTable("whatsapp_messages");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TenantId).HasColumnName("tenant_id").IsRequired();
+            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+            entity.Property(e => e.CustomerName).HasColumnName("customer_name").HasMaxLength(255);
+            entity.Property(e => e.PhoneNumber).HasColumnName("phone_number").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Direction).HasColumnName("direction").HasMaxLength(20).IsRequired();
+            entity.Property(e => e.MessageText).HasColumnName("message_text").IsRequired();
+            entity.Property(e => e.MediaUrl).HasColumnName("media_url");
+            entity.Property(e => e.MediaType).HasColumnName("media_type").HasMaxLength(50);
+            entity.Property(e => e.MetaMessageId).HasColumnName("meta_message_id").HasMaxLength(150);
+            entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(50).IsRequired();
+            entity.Property(e => e.ErrorMessage).HasColumnName("error_message");
+            entity.Property(e => e.SenderUserId).HasColumnName("sender_user_id");
+            entity.Property(e => e.SenderUserName).HasColumnName("sender_user_name").HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
             entity.HasQueryFilter(e => !currentTenant.Id.HasValue || e.TenantId == currentTenant.Id.Value);
         });

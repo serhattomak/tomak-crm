@@ -334,3 +334,66 @@ public class HelpdeskTicketActivity : ITenantScopedEntity
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
+
+[Table("whatsapp_settings", Schema = "public")]
+public class WhatsAppSettings : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+
+    [MaxLength(100)]
+    public string PhoneNumberId { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string? WabaId { get; set; }
+
+    public string AccessToken { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string WebhookVerifyToken { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string? BusinessPhoneNumber { get; set; }
+
+    public bool IsActive { get; set; } = true;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}
+
+[Table("whatsapp_messages", Schema = "public")]
+public class WhatsAppMessage : ITenantScopedEntity
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+
+    public Guid? CustomerId { get; set; }
+    [MaxLength(255)]
+    public string? CustomerName { get; set; }
+
+    [MaxLength(50)]
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    [MaxLength(20)]
+    public string Direction { get; set; } = "Inbound"; // Inbound, Outbound
+
+    public string MessageText { get; set; } = string.Empty;
+    public string? MediaUrl { get; set; }
+    [MaxLength(50)]
+    public string? MediaType { get; set; }
+
+    [MaxLength(150)]
+    public string? MetaMessageId { get; set; }
+
+    [MaxLength(50)]
+    public string Status { get; set; } = "Sent"; // Sent, Delivered, Read, Failed, Received
+
+    public string? ErrorMessage { get; set; }
+
+    public Guid? SenderUserId { get; set; }
+    [MaxLength(255)]
+    public string? SenderUserName { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}

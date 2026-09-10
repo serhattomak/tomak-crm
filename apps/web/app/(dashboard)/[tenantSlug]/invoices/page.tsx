@@ -190,6 +190,15 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
       </td>
       <td className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1">
+          <a
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 font-mono text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300"
+            download
+            href={`/api/invoicing/invoices/${invoice.id}/download-ubl`}
+            onClick={(e) => e.stopPropagation()}
+            title="GİB UBL-TR 2.1 XML İndir"
+          >
+            XML
+          </a>
           {invoice.status === "Draft" ? (
             <button
               className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 text-xs shadow-2xs hover:bg-emerald-100 active:scale-95 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900"

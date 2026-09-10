@@ -581,5 +581,80 @@ public class InvoiceEndpoints : IEndpoint
             await dbContext.SaveChangesAsync(ct);
             return Results.Ok(ApiResponse<bool>.Ok(true));
         });
+
+        // 7. POST /api/invoicing/invoices/{id}/generate-ubl (GİB e-Arşiv UBL-TR 2.1 XML Üret)
+        group.MapPost("/{id:guid}/generate-ubl", async (
+            Guid id,
+            InvoicingDbContext dbContext,
+            IUblTrXmlService ublService,
+            CancellationToken ct) =>
+        {
+            var invoice = await dbContext.Invoices
+                .Include(i => i.CariAccount)
+                .Include(i => i.Items)
+                .FirstOrDefaultAsync(i => i.Id == id, ct)
+                ?? throw new NotFoundException($"Fatura bulunamadı (ID: {id})");
+
+            invoice.Ettn ??= Guid.NewGuid();
+            var supplierTitle = "CRM FİRMA ÜNVANI";
+            var supplierTaxNumber = "1234567890";
+            var supplierTaxOffice = "Büyük Mükellefler VD";
+            var supplierAddress = "Merkez Mah. Teknoloji Cad. No:1 İstanbul";
+
+            var xml = ublService.GenerateUblTr21Xml(
+                invoice,
+                supplierTitle,
+                supplierTaxNumber,
+                supplierTaxOffice,
+                supplierAddress);
+
+            invoice.UblXml = xml;
+            invoice.EArchiveReportStatus = "Generated";
+            invoice.UpdatedAt = DateTime.UtcNow;
+
+            await dbContext.SaveChangesAsync(ct);
+
+            return Results.Ok(ApiResponse<object>.Ok(new
+            {
+                ettn = invoice.Ettn,
+                status = invoice.EArchiveReportStatus,
+                xmlLength = xml.Length
+            }));
+        });
+
+        // 8. GET /api/invoicing/invoices/{id}/download-ubl (UBL-TR XML İndir)
+        group.MapGet("/{id:guid}/download-ubl", async (
+            Guid id,
+            InvoicingDbContext dbContext,
+            IUblTrXmlService ublService,
+            CancellationToken ct) =>
+        {
+            var invoice = await dbContext.Invoices
+                .Include(i => i.CariAccount)
+                .Include(i => i.Items)
+                .FirstOrDefaultAsync(i => i.Id == id, ct)
+                ?? throw new NotFoundException($"Fatura bulunamadı (ID: {id})");
+
+            var xml = invoice.UblXml;
+            if (string.IsNullOrWhiteSpace(xml))
+            {
+                invoice.Ettn ??= Guid.NewGuid();
+                xml = ublService.GenerateUblTr21Xml(
+                    invoice,
+                    "CRM FİRMA ÜNVANI",
+                    "1234567890",
+                    "Büyük Mükellefler VD",
+                    "Merkez Mah. Teknoloji Cad. No:1 İstanbul");
+
+                invoice.UblXml = xml;
+                invoice.EArchiveReportStatus = "Generated";
+                await dbContext.SaveChangesAsync(ct);
+            }
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(xml);
+            var filename = $"{invoice.InvoiceNumber}_{invoice.Ettn}.xml";
+
+            return Results.File(bytes, "application/xml", filename);
+        });
     }
 }

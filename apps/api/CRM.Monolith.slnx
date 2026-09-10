@@ -22,6 +22,9 @@
     <Project Path="src/Modules/CRM.Modules.Projects/CRM.Modules.Projects.csproj" />
     <Project Path="src/Modules/CRM.Modules.Vehicles/CRM.Modules.Vehicles.csproj" />
     <Project Path="src/Modules/CRM.Modules.Email/CRM.Modules.Email.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Invoicing/CRM.Modules.Invoicing.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Activities/CRM.Modules.Activities.csproj" />
+    <Project Path="src/Modules/CRM.Modules.Contracts/CRM.Modules.Contracts.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CRM.Modules.Promotions.Tests/CRM.Modules.Promotions.Tests.csproj" />

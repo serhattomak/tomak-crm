@@ -5983,6 +5983,392 @@ export class ApiClient {
       tenantSlug
     );
   }
+
+  // Contracts
+  static async getContracts(
+    params: {
+      search?: string;
+      status?: string;
+      customerId?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
+    tenantSlug?: string
+  ): Promise<ApiResponse<PagedResult<ContractListDto>>> {
+    const q = new URLSearchParams();
+    if (params.search) {
+      q.set("search", params.search);
+    }
+    if (params.status) {
+      q.set("status", params.status);
+    }
+    if (params.customerId) {
+      q.set("customerId", params.customerId);
+    }
+    if (params.page) {
+      q.set("page", params.page.toString());
+    }
+    if (params.pageSize) {
+      q.set("pageSize", params.pageSize.toString());
+    }
+
+    return await ApiClient.request<PagedResult<ContractListDto>>(
+      `/api/v1/contracts?${q.toString()}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getContractById(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<ContractDetailDto>> {
+    return await ApiClient.request<ContractDetailDto>(
+      `/api/v1/contracts/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createContract(
+    payload: CreateContractPayload,
+    tenantSlug?: string
+  ): Promise<
+    ApiResponse<{ id: string; contractNumber: string; publicToken: string }>
+  > {
+    return await ApiClient.request<{
+      id: string;
+      contractNumber: string;
+      publicToken: string;
+    }>(
+      "/api/v1/contracts",
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async updateContract(
+    id: string,
+    payload: UpdateContractPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<{ message: string }>> {
+    return await ApiClient.request<{ message: string }>(
+      `/api/v1/contracts/${id}`,
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "PUT",
+      },
+      tenantSlug
+    );
+  }
+
+  static async deleteContract(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<void>> {
+    return await ApiClient.request<void>(
+      `/api/v1/contracts/${id}`,
+      { method: "DELETE" },
+      tenantSlug
+    );
+  }
+
+  // Public Contract View & E-Sign
+  static async getPublicContract(
+    token: string
+  ): Promise<ApiResponse<PublicContractDto>> {
+    return await ApiClient.request<PublicContractDto>(
+      `/api/public/contracts/${token}`,
+      { method: "GET" }
+    );
+  }
+
+  static async signPublicContract(
+    token: string,
+    payload: {
+      signedByName: string;
+      signedByEmail: string;
+      signatureImageUrl: string;
+    }
+  ): Promise<
+    ApiResponse<{ message: string; signedAt: string; auditHash: string }>
+  > {
+    return await ApiClient.request<{
+      message: string;
+      signedAt: string;
+      auditHash: string;
+    }>(`/api/public/contracts/${token}/sign`, {
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+    });
+  }
+
+  // e-Arşiv UBL-TR 2.1
+  static async generateInvoiceUbl(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<{ ettn: string; status: string; xmlLength: number }>> {
+    return await ApiClient.request<{ ettn: string; status: string; xmlLength: number }>(
+      `/api/invoicing/invoices/${id}/generate-ubl`,
+      { method: "POST" },
+      tenantSlug
+    );
+  }
+
+  // WhatsApp Cloud API
+  static async getWhatsAppMessages(
+    params: { phoneNumber?: string; customerId?: string; page?: number; pageSize?: number } = {},
+    tenantSlug?: string
+  ): Promise<ApiResponse<PagedResult<WhatsAppMessageDto>>> {
+    const q = new URLSearchParams();
+    if (params.phoneNumber) q.set("phoneNumber", params.phoneNumber);
+    if (params.customerId) q.set("customerId", params.customerId);
+    if (params.page) q.set("page", params.page.toString());
+    if (params.pageSize) q.set("pageSize", params.pageSize.toString());
+
+    return await ApiClient.request<PagedResult<WhatsAppMessageDto>>(
+      `/api/v1/whatsapp/messages?${q.toString()}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async sendWhatsAppMessage(
+    payload: { customerId?: string; phoneNumber: string; messageText: string },
+    tenantSlug?: string
+  ): Promise<ApiResponse<WhatsAppMessageDto>> {
+    return await ApiClient.request<WhatsAppMessageDto>(
+      "/api/v1/whatsapp/send",
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  // Field Service & Mobile Technician
+  static async getFieldJobs(
+    params: {
+      status?: string;
+      search?: string;
+      technicianId?: string;
+      date?: string;
+    } = {},
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobDto[]>> {
+    const q = new URLSearchParams();
+    if (params.status) q.set("status", params.status);
+    if (params.search) q.set("search", params.search);
+    if (params.technicianId) q.set("technicianId", params.technicianId);
+    if (params.date) q.set("date", params.date);
+
+    const qs = q.toString();
+    return await ApiClient.request<FieldJobDto[]>(
+      `/api/v1/field-service/jobs${qs ? `?${qs}` : ""}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async getFieldJobById(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobDto>> {
+    return await ApiClient.request<FieldJobDto>(
+      `/api/v1/field-service/jobs/${id}`,
+      { method: "GET" },
+      tenantSlug
+    );
+  }
+
+  static async createFieldJob(
+    payload: CreateFieldJobPayload,
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobDto>> {
+    return await ApiClient.request<FieldJobDto>(
+      "/api/v1/field-service/jobs",
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async updateFieldJobStatus(
+    id: string,
+    status: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobDto>> {
+    return await ApiClient.request<FieldJobDto>(
+      `/api/v1/field-service/jobs/${id}/status`,
+      {
+        body: JSON.stringify({ status }),
+        headers: { "Content-Type": "application/json" },
+        method: "PATCH",
+      },
+      tenantSlug
+    );
+  }
+
+  static async checkinFieldJob(
+    id: string,
+    payload: { technicianId: string; checkinType: "Arrival" | "Departure"; latitude?: number; longitude?: number; deviceInfo?: string },
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobCheckinDto>> {
+    return await ApiClient.request<FieldJobCheckinDto>(
+      `/api/v1/field-service/jobs/${id}/checkin`,
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async completeFieldJob(
+    id: string,
+    payload: {
+      resolutionNotes?: string;
+      customerSignatureData?: string;
+      customerSignedName?: string;
+      parts?: { productId?: string; productName: string; unitPrice: number; quantity: number }[];
+    },
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobDto>> {
+    return await ApiClient.request<FieldJobDto>(
+      `/api/v1/field-service/jobs/${id}/complete`,
+      {
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      },
+      tenantSlug
+    );
+  }
+
+  static async toggleFieldJobTask(
+    jobId: string,
+    taskId: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<FieldJobTaskDto>> {
+    return await ApiClient.request<FieldJobTaskDto>(
+      `/api/v1/field-service/jobs/${jobId}/tasks/${taskId}/toggle`,
+      {
+        headers: { "Content-Type": "application/json" },
+        method: "PATCH",
+      },
+      tenantSlug
+    );
+  }
+
+  static async deleteFieldJob(
+    id: string,
+    tenantSlug?: string
+  ): Promise<ApiResponse<boolean>> {
+    return await ApiClient.request<boolean>(
+      `/api/v1/field-service/jobs/${id}`,
+      { method: "DELETE" },
+      tenantSlug
+    );
+  }
+}
+
+export interface WhatsAppMessageDto {
+  createdAt: string;
+  customerId?: string;
+  customerName?: string;
+  direction: "Inbound" | "Outbound";
+  errorMessage?: string;
+  id: string;
+  mediaType?: string;
+  mediaUrl?: string;
+  messageText: string;
+  metaMessageId?: string;
+  phoneNumber: string;
+  senderUserId?: string;
+  senderUserName?: string;
+  status: string;
+}
+
+export interface ContractListDto {
+  contractNumber: string;
+  createdAt: string;
+  currency: string;
+  customerId: string;
+  customerName?: string;
+  id: string;
+  publicToken?: string;
+  quoteId?: string;
+  signedAt?: string;
+  signedByName?: string;
+  status: string;
+  title: string;
+  totalAmount: number;
+  validFrom?: string;
+  validUntil?: string;
+}
+
+export interface ContractDetailDto extends ContractListDto {
+  auditHash?: string;
+  autoRenew: boolean;
+  contentHtml: string;
+  ipAddress?: string;
+  notes?: string;
+  signatureImageUrl?: string;
+  signedByEmail?: string;
+  templateId?: string;
+}
+
+export interface CreateContractPayload {
+  autoRenew?: boolean;
+  contentHtml: string;
+  currency?: string;
+  customerId: string;
+  notes?: string;
+  quoteId?: string;
+  templateId?: string;
+  title: string;
+  totalAmount: number;
+  validFrom?: string;
+  validUntil?: string;
+}
+
+export interface UpdateContractPayload {
+  autoRenew?: boolean;
+  contentHtml: string;
+  currency?: string;
+  notes?: string;
+  status: string;
+  title: string;
+  totalAmount: number;
+  validFrom?: string;
+  validUntil?: string;
+}
+
+export interface PublicContractDto {
+  contentHtml: string;
+  contractNumber: string;
+  currency: string;
+  customerName?: string;
+  id: string;
+  signedAt?: string;
+  signedByName?: string;
+  status: string;
+  title: string;
+  totalAmount: number;
+  validFrom?: string;
+  validUntil?: string;
 }
 
 export interface CustomerListDto {
@@ -10602,3 +10988,99 @@ export interface CompleteActivityPayload {
   followUpActivity?: CreateActivityPayload;
   outcomeNotes?: string;
 }
+
+export interface FieldJobDto {
+  id: string;
+  tenantId: string;
+  jobNumber: string;
+  title: string;
+  description?: string;
+  serviceType: "Installation" | "Maintenance" | "Repair" | "Survey" | "Inspection" | "Emergency" | string;
+  status: "Draft" | "Scheduled" | "Dispatched" | "InProgress" | "Completed" | "Cancelled" | string;
+  priority: "Low" | "Normal" | "High" | "Urgent" | string;
+  customerId?: string;
+  customerName?: string;
+  contactPerson?: string;
+  contactPhone?: string;
+  serviceAddress: string;
+  city?: string;
+  district?: string;
+  latitude?: number;
+  longitude?: number;
+  assignedTechnicianId?: string;
+  assignedTechnicianName?: string;
+  scheduledDate?: string;
+  scheduledStartTime?: string;
+  scheduledEndTime?: string;
+  actualStartTime?: string;
+  actualEndTime?: string;
+  resolutionNotes?: string;
+  customerSignatureData?: string;
+  customerSignedName?: string;
+  signedAt?: string;
+  totalCost: number;
+  createdAt: string;
+  updatedAt: string;
+  tasks: FieldJobTaskDto[];
+  parts: FieldJobPartDto[];
+  checkins?: FieldJobCheckinDto[];
+}
+
+export interface FieldJobTaskDto {
+  id: string;
+  tenantId: string;
+  jobId: string;
+  title: string;
+  description?: string;
+  isCompleted: boolean;
+  completedAt?: string;
+  displayOrder: number;
+  createdAt: string;
+}
+
+export interface FieldJobPartDto {
+  id: string;
+  tenantId: string;
+  jobId: string;
+  productId?: string;
+  productName: string;
+  unitPrice: number;
+  quantity: number;
+  totalPrice: number;
+  createdAt: string;
+}
+
+export interface FieldJobCheckinDto {
+  id: string;
+  tenantId: string;
+  jobId: string;
+  technicianId: string;
+  checkinType: "Arrival" | "Departure";
+  latitude?: number;
+  longitude?: number;
+  deviceInfo?: string;
+  timestamp: string;
+}
+
+export interface CreateFieldJobPayload {
+  title: string;
+  description?: string;
+  serviceType?: string;
+  priority?: string;
+  customerId?: string;
+  customerName?: string;
+  contactPerson?: string;
+  contactPhone?: string;
+  serviceAddress: string;
+  city?: string;
+  district?: string;
+  latitude?: number;
+  longitude?: number;
+  assignedTechnicianId?: string;
+  assignedTechnicianName?: string;
+  scheduledDate?: string;
+  scheduledStartTime?: string;
+  scheduledEndTime?: string;
+  tasks?: { title: string; description?: string }[];
+}
+

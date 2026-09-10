@@ -6,6 +6,7 @@ import {
   Check,
   CheckCircle2,
   Clock,
+  FileSignature,
   FileSpreadsheet,
   MessageSquare,
   Printer,
@@ -16,7 +17,12 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { ApiClient, type PublicQuoteViewDto } from "@/lib/api-client";
+import { ContractSignModal } from "@/components/portal/contract-sign-modal";
+import {
+  ApiClient,
+  type PublicContractDto,
+  type PublicQuoteViewDto,
+} from "@/lib/api-client";
 
 const formatCurrency = (amount: number, currency = "TRY"): string =>
   new Intl.NumberFormat("tr-TR", {
@@ -50,6 +56,10 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
   const [feedback, setFeedback] = useState("");
   const [isSendingFeedback, setIsSendingFeedback] = useState(false);
 
+  // Contract State
+  const [contract, setContract] = useState<PublicContractDto | null>(null);
+  const [isContractModalOpen, setIsContractModalOpen] = useState(false);
+
   useEffect(() => {
     if (!token) {
       return;
@@ -58,7 +68,14 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
       setIsLoading(true);
       setErrorMsg(null);
       try {
-        // Prefer portal endpoint, fallback to public quote for backward compatibility
+        // 1. Check if token is a contract
+        const contractRes = await ApiClient.getPublicContract(token);
+        if (contractRes.success && contractRes.data) {
+          setContract(contractRes.data);
+          return;
+        }
+
+        // 2. Prefer portal endpoint, fallback to public quote for backward compatibility
         const portalRes = await ApiClient.getPortalView(token);
         if (portalRes.success && portalRes.data) {
           setQuote(portalRes.data);
@@ -74,10 +91,10 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
         setErrorMsg(
           portalRes.message ||
             fallback.message ||
-            "Teklif bulunamadı veya bağlantı geçersiz."
+            "Belge veya teklif bulunamadı ya da bağlantı geçersiz."
         );
       } catch {
-        setErrorMsg("Teklif yüklenirken bir hata meydana geldi.");
+        setErrorMsg("Belge yüklenirken bir hata meydana geldi.");
       } finally {
         setIsLoading(false);
       }
@@ -146,6 +163,124 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
       <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 text-slate-500">
         <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600" />
         <span className="font-semibold text-xs">Teklif hazırlanıyor...</span>
+      </div>
+    );
+  }
+
+  // Contract View Rendering
+  if (contract) {
+    const isSigned =
+      contract.status === "Signed" || contract.status === "Active";
+
+    return (
+      <div className="min-h-screen bg-slate-50 p-4 font-sans text-slate-800 md:p-8">
+        <div className="mx-auto max-w-4xl space-y-6">
+          {/* Top banner / actions */}
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-violet-100 px-3 py-0.5 font-bold text-[11px] text-violet-700">
+                  Resmi Sözleşme
+                </span>
+                <span className="font-mono text-slate-500 text-xs">
+                  {contract.contractNumber}
+                </span>
+              </div>
+              <h1 className="mt-1 font-bold text-slate-900 text-xl md:text-2xl">
+                {contract.title}
+              </h1>
+              <p className="text-slate-500 text-xs">
+                Muhatap:{" "}
+                <strong>{contract.customerName || "Sayın Müşterimiz"}</strong>
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <button
+                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 font-medium text-slate-700 text-xs shadow-xs hover:bg-slate-50 active:scale-95"
+                onClick={() => window.print()}
+                type="button"
+              >
+                <Printer className="h-4 w-4 text-slate-500" />
+                Yazdır / İndir
+              </button>
+
+              {isSigned ? (
+                <div className="flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 font-semibold text-emerald-700 text-xs">
+                  <CheckCircle2 className="h-4 w-4" />
+                  İmzalandı
+                </div>
+              ) : (
+                <button
+                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-md shadow-violet-500/20 hover:bg-violet-700 active:scale-95"
+                  onClick={() => setIsContractModalOpen(true)}
+                  type="button"
+                >
+                  <FileSignature className="h-4 w-4" />
+                  Sözleşmeyi İmzala
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Audit Trail Badge */}
+          {isSigned && (
+            <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-emerald-900 text-xs">
+              <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+              <div>
+                <strong>Dijital Olarak Onaylandı & İmzalandı</strong>
+                <p className="mt-0.5 text-[11px] text-emerald-800">
+                  İmzalayan: {contract.signedByName} • Tarih:{" "}
+                  {contract.signedAt
+                    ? new Date(contract.signedAt).toLocaleString("tr-TR")
+                    : "Kayıtlı"}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Contract Content Page / Paper */}
+          <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-md md:p-12">
+            <div
+              className="prose prose-slate max-w-none text-sm leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: contract.contentHtml }}
+            />
+
+            <div className="mt-12 flex items-center justify-between border-slate-200 border-t pt-8 text-slate-500 text-xs">
+              <div>
+                <p className="font-semibold text-slate-700">Hizmet Sağlayıcı</p>
+                <p className="mt-1">Dijital Olarak İmzalanmıştır</p>
+              </div>
+              <div className="text-right">
+                <p className="font-semibold text-slate-700">Müşteri / Alıcı</p>
+                <p className="mt-1">
+                  {isSigned
+                    ? `${contract.signedByName} (İmzalandı)`
+                    : "İmza Bekleniyor"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* E-Signature Modal */}
+        <ContractSignModal
+          contract={contract}
+          isOpen={isContractModalOpen}
+          onClose={() => setIsContractModalOpen(false)}
+          onSigned={(signedAt) => {
+            setContract((prev: PublicContractDto | null) =>
+              prev
+                ? {
+                    ...prev,
+                    signedAt,
+                    status: "Signed",
+                  }
+                : null
+            );
+          }}
+          token={token}
+        />
       </div>
     );
   }

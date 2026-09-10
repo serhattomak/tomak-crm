@@ -14,6 +14,7 @@ import {
   Hash,
   Loader2,
   Lock,
+  MessageCircle,
   MessageSquare,
   MessagesSquare,
   Package,
@@ -44,6 +45,7 @@ import {
   type TenantUserDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
+import { WhatsAppChatDrawer } from "@/components/chat/whatsapp-chat-drawer";
 
 export default function MessagesPage() {
   const params = useParams();
@@ -53,6 +55,7 @@ export default function MessagesPage() {
   const activeTenantId = activeTenant?.id;
 
   // State
+  const [isWhatsAppDrawerOpen, setIsWhatsAppDrawerOpen] = useState(false);
   const [isNewDmModalOpen, setIsNewDmModalOpen] = useState(false);
   const [isChannelsCollapsed, setIsChannelsCollapsed] = useState(false);
   const [isDmsCollapsed, setIsDmsCollapsed] = useState(false);
@@ -682,6 +685,15 @@ export default function MessagesPage() {
 
         {/* Header Actions */}
         <div className="flex shrink-0 items-center gap-2">
+          <Button
+            className="h-8 border border-emerald-200 bg-emerald-50 font-semibold text-emerald-800 text-xs shadow-2xs hover:bg-emerald-100 sm:h-9 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-300 dark:hover:bg-emerald-900/80"
+            onClick={() => setIsWhatsAppDrawerOpen(true)}
+            size="sm"
+            variant="outline"
+          >
+            <MessageCircle className="mr-1 h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>WhatsApp Sohbet</span>
+          </Button>
           <Button
             className="h-8 border border-zinc-200 bg-white font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
             onClick={() => setIsCreateChannelOpen(true)}
@@ -1922,6 +1934,15 @@ export default function MessagesPage() {
           </div>
         </div>
       )}
+
+      {/* WhatsApp Cloud Chat Drawer */}
+      <WhatsAppChatDrawer
+        isOpen={isWhatsAppDrawerOpen}
+        onClose={() => setIsWhatsAppDrawerOpen(false)}
+        tenantSlug={tenantSlug}
+        activeTenantId={activeTenantId}
+      />
     </div>
   );
 }
+

@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Clock,
   Command,
+  FileSignature,
   FileSpreadsheet,
   Kanban,
   Keyboard,
@@ -39,6 +40,7 @@ import {
   Users2,
   Warehouse,
   Webhook,
+  Wrench,
   X,
   Zap,
 } from "lucide-react";
@@ -157,7 +159,8 @@ function getActiveHubFromPathname(
   if (
     pathname.includes(`/${tenantSlug}/vehicles`) ||
     pathname.includes(`/${tenantSlug}/projects`) ||
-    pathname.includes(`/${tenantSlug}/shipments`)
+    pathname.includes(`/${tenantSlug}/shipments`) ||
+    pathname.includes(`/${tenantSlug}/field-service`)
   ) {
     return "ops";
   }
@@ -903,6 +906,14 @@ function DashboardNavigation({
     },
     {
       badge: null,
+      href: `/${tenantSlug}/contracts`,
+      icon: FileSignature,
+      moduleKey: "contracts",
+      name: "Sözleşmeler & E-İmza",
+      permission: "Contracts.View",
+    },
+    {
+      badge: null,
       href: `/${tenantSlug}/customers`,
       icon: Users2,
       moduleKey: "customers",
@@ -955,6 +966,13 @@ function DashboardNavigation({
 
   // 2. Operasyon & Araçlar Hub'ı (Ürünler kaldırıldı, tek merkez CRM'de)
   const opsMenu: NavItem[] = [
+    {
+      badge: null,
+      href: `/${tenantSlug}/field-service`,
+      icon: Wrench,
+      name: "Saha Servis & Mobil",
+      permission: "FieldService.View",
+    },
     {
       badge: null,
       href: `/${tenantSlug}/vehicles`,
