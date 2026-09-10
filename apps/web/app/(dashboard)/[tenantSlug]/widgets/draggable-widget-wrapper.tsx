@@ -71,8 +71,8 @@ export function DraggableWidgetWrapper({
     >
       {/* Drop Indicator (Before target) */}
       {isDragOver && dropPosition === "before" && !isDragging && (
-        <div className="fade-in zoom-in-95 mb-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-2xl border-2 border-violet-500 border-dashed bg-violet-50/80 font-bold text-violet-700 text-xs shadow-xs duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
-          <Sparkles className="h-4 w-4 animate-spin text-violet-600 dark:text-violet-400" />
+        <div className="fade-in zoom-in-95 mb-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-lg border-2 border-primary border-dashed bg-primary/10 font-bold text-primary text-xs shadow-xs duration-150">
+          <Sparkles className="h-4 w-4 animate-spin text-primary" />
           <span>
             {widgetTitle ? `"${widgetTitle}" öncesine taşı` : "Buraya Bırak"}
           </span>
@@ -82,14 +82,14 @@ export function DraggableWidgetWrapper({
       {/* Widget Card Container */}
       <div
         className={`relative h-full transition-all duration-150 ${
-          isHandleHovered ? "rounded-2xl ring-2 ring-violet-500/50" : ""
+          isHandleHovered ? "rounded-lg ring-2 ring-primary/40" : ""
         }`}
       >
         {/* Centered Floating Micro-Toolbar (Never covers top-left title or top-right buttons) */}
-        <div className="pointer-events-auto absolute -top-3.5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-zinc-200 bg-white/95 px-2 py-0.5 opacity-0 shadow-md backdrop-blur-md transition-all duration-150 group-hover/widget:opacity-100 dark:border-zinc-700 dark:bg-zinc-800/95">
+        <div className="pointer-events-auto absolute -top-3 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/80 bg-background/95 px-2 py-0.5 opacity-0 shadow-md backdrop-blur-md transition-all duration-150 group-hover/widget:opacity-100">
           {/* Drag Handle */}
           <div
-            className="flex cursor-grab select-none items-center gap-1 rounded-full px-2 py-0.5 font-semibold text-[11px] text-zinc-600 hover:text-violet-600 active:cursor-grabbing dark:text-zinc-300 dark:hover:text-violet-300"
+            className="flex cursor-grab select-none items-center gap-1 rounded-full px-2 py-0.5 font-semibold text-[11px] text-muted-foreground hover:text-foreground active:cursor-grabbing"
             draggable={true}
             onDragEnd={onDragEnd}
             onDragStart={(e) => {
@@ -100,15 +100,15 @@ export function DraggableWidgetWrapper({
             onMouseLeave={() => setIsHandleHovered(false)}
             title="Tut ve Sürükle"
           >
-            <GripVertical className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <GripVertical className="h-3.5 w-3.5 text-muted-foreground/70" />
             <span>Taşı</span>
           </div>
 
-          <div className="h-3 w-px bg-zinc-200 dark:bg-zinc-700" />
+          <div className="h-3 w-px bg-border" />
 
           {/* Move Up */}
           <button
-            className="rounded-full p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+            className="rounded-full p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             disabled={isFirst}
             onClick={(e) => {
               e.stopPropagation();
@@ -122,7 +122,7 @@ export function DraggableWidgetWrapper({
 
           {/* Move Down */}
           <button
-            className="rounded-full p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 disabled:pointer-events-none disabled:opacity-30 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+            className="rounded-full p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             disabled={isLast}
             onClick={(e) => {
               e.stopPropagation();
@@ -134,11 +134,11 @@ export function DraggableWidgetWrapper({
             <ChevronDown className="h-3.5 w-3.5" />
           </button>
 
-          <div className="h-3 w-px bg-zinc-200 dark:bg-zinc-700" />
+          <div className="h-3 w-px bg-border" />
 
           {/* Hide Widget */}
           <button
-            className="rounded-full p-1 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50 dark:hover:text-rose-400"
+            className="rounded-full p-1 text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive"
             onClick={(e) => {
               e.stopPropagation();
               onHide();
@@ -156,8 +156,8 @@ export function DraggableWidgetWrapper({
 
       {/* Drop Indicator (After target) */}
       {isDragOver && dropPosition === "after" && !isDragging && (
-        <div className="fade-in zoom-in-95 mt-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-2xl border-2 border-violet-500 border-dashed bg-violet-50/80 font-bold text-violet-700 text-xs shadow-xs duration-150 dark:border-violet-400 dark:bg-violet-950/50 dark:text-violet-200">
-          <Sparkles className="h-4 w-4 animate-spin text-violet-600 dark:text-violet-400" />
+        <div className="fade-in zoom-in-95 mt-3 flex h-14 w-full animate-in items-center justify-center gap-2 rounded-lg border-2 border-primary border-dashed bg-primary/10 font-bold text-primary text-xs shadow-xs duration-150">
+          <Sparkles className="h-4 w-4 animate-spin text-primary" />
           <span>
             {widgetTitle ? `"${widgetTitle}" sonrasına taşı` : "Buraya Bırak"}
           </span>

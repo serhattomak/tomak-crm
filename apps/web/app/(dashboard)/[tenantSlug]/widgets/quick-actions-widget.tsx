@@ -1,6 +1,9 @@
 /* Hallmark · component: quick-actions · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import { Card } from "@workspace/ui/components/card";
 import {
   Briefcase,
   Calendar,
@@ -195,23 +198,26 @@ export function QuickActionsWidget({
   );
 
   return (
-    <div className="relative rounded-2xl border border-zinc-200/80 bg-white p-4 text-zinc-900 shadow-2xs transition-all dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:text-zinc-100">
+    <Card className="relative p-4">
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Zap className="h-4 w-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+              <h3 className="font-semibold text-foreground text-xs">
                 Hızlı İşlemler & Kısayollar
               </h3>
-              <span className="rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-0.2 font-mono text-[9px] text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
+              <Badge
+                className="px-1.5 py-0 font-mono text-[9px]"
+                variant="neutral"
+              >
                 {visibleActions.length} Eylem
-              </span>
+              </Badge>
             </div>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-[10px] text-muted-foreground">
               Sık kullanılan CRM eylemlerini tek tıkla başlatın
             </p>
           </div>
@@ -219,27 +225,31 @@ export function QuickActionsWidget({
 
         {/* Action Controls */}
         <div className="flex items-center gap-1">
-          <button
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400 dark:hover:bg-zinc-700"
+          <Button
+            className="h-7 w-7 text-muted-foreground"
             onClick={() => setIsCustomizeOpen(true)}
+            size="icon"
             title="Hızlı İşlemleri Özelleştir"
             type="button"
+            variant="ghost"
           >
             <Settings2 className="h-3.5 w-3.5" />
-          </button>
+          </Button>
 
-          <button
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200/80 bg-zinc-50/80 text-zinc-500 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400 dark:hover:bg-zinc-700"
+          <Button
+            className="h-7 w-7 text-muted-foreground"
             onClick={toggleCollapse}
+            size="icon"
             title={isCollapsed ? "Genişlet" : "Daralt"}
             type="button"
+            variant="ghost"
           >
             {isCollapsed ? (
               <ChevronDown className="h-3.5 w-3.5" />
             ) : (
               <ChevronUp className="h-3.5 w-3.5" />
             )}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -248,41 +258,42 @@ export function QuickActionsWidget({
         <div className="fade-in slide-in-from-top-1 mt-3.5 grid animate-in grid-cols-1 gap-2.5 duration-200 sm:grid-cols-2 lg:grid-cols-4">
           {visibleActions.length === 0 ? (
             <div className="col-span-full py-4 text-center">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-muted-foreground text-xs">
                 Görüntülenecek hızlı işlem seçilmedi.
               </p>
-              <button
-                className="mt-1.5 font-bold text-violet-600 text-xs hover:underline dark:text-violet-400"
+              <Button
+                className="mt-1.5 h-6 p-0 text-primary text-xs"
                 onClick={() => setIsCustomizeOpen(true)}
                 type="button"
+                variant="link"
               >
                 Hızlı İşlem Ekle
-              </button>
+              </Button>
             </div>
           ) : (
             visibleActions.map((act) => {
               const Icon = act.icon;
               return (
                 <button
-                  className="group flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 text-left transition-all duration-150 hover:border-zinc-300 hover:bg-zinc-100/80 hover:shadow-2xs active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
+                  className="group flex items-center gap-3 rounded-lg border border-border/80 bg-card p-3 text-left transition-all duration-150 hover:border-border hover:bg-muted/40 active:scale-[0.98]"
                   key={act.id}
                   onClick={() => onOpenQuickCreate(act.actionType)}
                   type="button"
                 >
                   <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} shadow-2xs`}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} text-white shadow-2xs`}
                   >
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-xs text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
+                    <div className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
                       {act.title}
                     </div>
-                    <div className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <div className="truncate text-[10px] text-muted-foreground">
                       {act.description}
                     </div>
                   </div>
-                  <Plus className="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-700 dark:group-hover:text-zinc-200 dark:hover:text-zinc-500" />
+                  <Plus className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-foreground" />
                 </button>
               );
             })
@@ -293,28 +304,30 @@ export function QuickActionsWidget({
       {/* In-Place Customize Modal */}
       {isCustomizeOpen && (
         <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+          <div className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xl">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Settings2 className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <h4 className="font-semibold text-foreground text-sm">
                     Hızlı İşlemleri Özelleştir
                   </h4>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <p className="text-[11px] text-muted-foreground">
                     Dashboard üzerinde görünecek butonları seçin
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              <Button
+                className="h-7 w-7 text-muted-foreground"
                 onClick={() => setIsCustomizeOpen(false)}
+                size="icon"
                 type="button"
+                variant="ghost"
               >
                 <X className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
 
             <div className="my-3 max-h-72 space-y-2 overflow-y-auto pr-1">
@@ -323,10 +336,10 @@ export function QuickActionsWidget({
                 const Icon = act.icon;
                 return (
                   <button
-                    className={`flex w-full items-center justify-between rounded-xl border p-2.5 text-left transition-all ${
+                    className={`flex w-full items-center justify-between rounded-lg border p-2.5 text-left transition-all ${
                       isSelected
-                        ? "border-violet-200 bg-violet-50/50 shadow-2xs dark:border-violet-800/80 dark:bg-violet-950/40"
-                        : "border-zinc-200/80 bg-zinc-50/40 opacity-70 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800/40"
+                        ? "border-primary/50 bg-primary/10"
+                        : "border-border/80 bg-muted/30 opacity-70 hover:border-border"
                     }`}
                     key={act.id}
                     onClick={() => handleToggleAction(act.id)}
@@ -339,10 +352,10 @@ export function QuickActionsWidget({
                         <Icon className="h-3.5 w-3.5" />
                       </div>
                       <div>
-                        <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
+                        <div className="font-semibold text-foreground text-xs">
                           {act.title}
                         </div>
-                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                        <div className="text-[10px] text-muted-foreground">
                           {act.description}
                         </div>
                       </div>
@@ -351,8 +364,8 @@ export function QuickActionsWidget({
                     <div
                       className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${
                         isSelected
-                          ? "border-violet-600 bg-violet-600 text-white"
-                          : "border-zinc-300 bg-white dark:border-zinc-600 dark:bg-zinc-800"
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-background"
                       }`}
                     >
                       {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
@@ -362,27 +375,29 @@ export function QuickActionsWidget({
               })}
             </div>
 
-            <div className="flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
-              <button
-                className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+            <div className="flex items-center justify-between border-border border-t pt-3">
+              <Button
+                className="h-7 gap-1 text-[11px] text-muted-foreground"
                 onClick={handleResetDefaults}
                 type="button"
+                variant="ghost"
               >
                 <RotateCcw className="h-3 w-3" />
                 <span>Varsayılanlara Dön</span>
-              </button>
+              </Button>
 
-              <button
-                className="rounded-xl bg-violet-600 px-4 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+              <Button
+                className="h-8 px-4 text-xs"
                 onClick={() => setIsCustomizeOpen(false)}
+                size="sm"
                 type="button"
               >
                 Tamamla
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 }

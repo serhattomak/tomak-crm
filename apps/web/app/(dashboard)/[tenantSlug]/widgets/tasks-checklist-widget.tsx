@@ -1,6 +1,17 @@
 /* Hallmark · component: tasks-checklist · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { EmptyState } from "@workspace/ui/components/empty-state";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import { Check, CheckSquare, Clock, Plus, Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -127,16 +138,16 @@ export function TasksChecklistWidget() {
     return true;
   });
 
-  const getPriorityBadge = (priority: string) => {
+  const getPriorityVariant = (priority: string) => {
     switch (priority.toLowerCase()) {
       case "urgent":
-        return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
+        return "destructive" as const;
       case "high":
-        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
+        return "warning" as const;
       case "medium":
-        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
+        return "accent" as const;
       default:
-        return "bg-zinc-50 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700";
+        return "neutral" as const;
     }
   };
 
@@ -154,232 +165,225 @@ export function TasksChecklistWidget() {
   };
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
+    <Card className="flex h-full flex-col justify-between">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <CheckSquare className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="font-semibold text-sm tracking-tight">
                 Görevler & Checklist
-              </span>
-              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              </CardTitle>
+              <p className="text-[11px] text-muted-foreground">
                 {tasks.length > 0
                   ? `${tasks.length} görevden ${completedCount} tanesi tamamlandı (%${progressPct})`
                   : "Kişisel ve ekip içi yapılacak işler"}
-              </div>
+              </p>
             </div>
           </div>
 
           {tasks.length > 0 && (
-            <div className="h-2 w-20 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+            <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-300 dark:bg-emerald-400"
+                className="h-full rounded-full bg-emerald-500 transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
           )}
-        </div>
+        </CardHeader>
 
-        {/* Quick Add Task Input with Priority Selector */}
-        <form
-          className="mb-3 flex flex-col gap-2 sm:flex-row"
-          onSubmit={handleAddTask}
-        >
-          <div className="relative flex flex-1 items-center">
-            <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-800 dark:placeholder:text-zinc-500"
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              placeholder="Yeni görev başlığı yazın..."
-              type="text"
-              value={newTaskTitle}
-            />
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <select
-              className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-2 py-1.5 font-medium text-[11px] text-zinc-700 focus:border-emerald-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-              onChange={(e) =>
-                setNewTaskPriority(
-                  e.target.value as "low" | "medium" | "high" | "urgent"
-                )
-              }
-              value={newTaskPriority}
-            >
-              <option value="medium">Normal</option>
-              <option value="high">Yüksek</option>
-              <option value="urgent">Acil</option>
-              <option value="low">Düşük</option>
-            </select>
-
-            <button
-              className="flex items-center gap-1 rounded-xl bg-emerald-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition-colors hover:bg-emerald-700 active:scale-95 disabled:opacity-50"
-              disabled={!newTaskTitle.trim() || submitting}
-              type="submit"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>{submitting ? "..." : "Ekle"}</span>
-            </button>
-          </div>
-        </form>
-
-        {/* Filter Pills */}
-        <div className="mb-2.5 flex items-center gap-1">
-          <button
-            className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition ${
-              activeFilter === "all"
-                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            }`}
-            onClick={() => setActiveFilter("all")}
-            type="button"
+        <CardContent className="pt-0">
+          {/* Quick Add Task Input with Priority Selector */}
+          <form
+            className="mb-3 flex flex-col gap-2 sm:flex-row"
+            onSubmit={handleAddTask}
           >
-            Tümü ({tasks.length})
-          </button>
-          <button
-            className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition ${
-              activeFilter === "pending"
-                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            }`}
-            onClick={() => setActiveFilter("pending")}
-            type="button"
-          >
-            Bekleyen ({tasks.length - completedCount})
-          </button>
-          <button
-            className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition ${
-              activeFilter === "completed"
-                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            }`}
-            onClick={() => setActiveFilter("completed")}
-            type="button"
-          >
-            Tamamlanan ({completedCount})
-          </button>
-        </div>
-
-        {/* Task Items List */}
-        {isLoaded ? (
-          filteredTasks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-7 text-center">
-              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
-                <CheckSquare className="h-5 w-5" />
-              </div>
-              <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-                {activeFilter === "completed"
-                  ? "Tamamlanan görev bulunmuyor"
-                  : activeFilter === "pending"
-                    ? "Bekleyen tüm görevler tamamlandı! 🎉"
-                    : "Henüz planlanan görev bulunmuyor"}
-              </h4>
-              <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
-                Yukarıdaki alana bir görev yazarak listenizi oluşturabilirsiniz.
-              </p>
+            <div className="relative flex flex-1 items-center">
+              <input
+                className="w-full rounded-lg border border-border/80 bg-background px-3 py-1.5 text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                onChange={(e) => setNewTaskTitle(e.target.value)}
+                placeholder="Yeni görev başlığı yazın..."
+                type="text"
+                value={newTaskTitle}
+              />
             </div>
-          ) : (
-            <div className="max-h-60 space-y-1.5 overflow-y-auto pr-1">
-              {filteredTasks.map((task) => (
-                <div
-                  className={`group flex items-center justify-between gap-3 rounded-xl border p-2.5 transition-all ${
-                    task.isCompleted
-                      ? "border-zinc-100 bg-zinc-50/60 opacity-60 dark:border-zinc-800/60 dark:bg-zinc-800/30"
-                      : "border-zinc-200/80 bg-white shadow-2xs hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700"
-                  }`}
-                  key={task.id}
-                >
-                  <div className="flex items-center gap-2.5 truncate">
-                    <button
-                      className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${
-                        task.isCompleted
-                          ? "border-emerald-500 bg-emerald-500 text-white"
-                          : "border-zinc-300 bg-white hover:border-emerald-500 dark:border-zinc-600 dark:bg-zinc-700"
-                      }`}
-                      onClick={() => toggleTask(task.id, task.isCompleted)}
-                      type="button"
-                    >
-                      {task.isCompleted && (
-                        <Check className="h-3 w-3 stroke-[3]" />
-                      )}
-                    </button>
 
-                    <div className="space-y-0.5 truncate">
-                      <p
-                        className={`truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200 ${
+            <div className="flex items-center gap-1.5">
+              <select
+                className="rounded-lg border border-border/80 bg-background px-2 py-1.5 font-medium text-[11px] text-foreground focus:border-primary focus:outline-none"
+                onChange={(e) =>
+                  setNewTaskPriority(
+                    e.target.value as "low" | "medium" | "high" | "urgent"
+                  )
+                }
+                value={newTaskPriority}
+              >
+                <option value="medium">Normal</option>
+                <option value="high">Yüksek</option>
+                <option value="urgent">Acil</option>
+                <option value="low">Düşük</option>
+              </select>
+
+              <Button
+                className="h-8 gap-1 px-3 text-xs"
+                disabled={!newTaskTitle.trim() || submitting}
+                size="sm"
+                type="submit"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span>{submitting ? "..." : "Ekle"}</span>
+              </Button>
+            </div>
+          </form>
+
+          {/* Filter Pills */}
+          <div className="mb-2.5 flex items-center gap-1">
+            <Button
+              className="h-6 px-2 font-semibold text-[10px]"
+              onClick={() => setActiveFilter("all")}
+              size="sm"
+              type="button"
+              variant={activeFilter === "all" ? "default" : "outline"}
+            >
+              Tümü ({tasks.length})
+            </Button>
+            <Button
+              className="h-6 px-2 font-semibold text-[10px]"
+              onClick={() => setActiveFilter("pending")}
+              size="sm"
+              type="button"
+              variant={activeFilter === "pending" ? "default" : "outline"}
+            >
+              Bekleyen ({tasks.length - completedCount})
+            </Button>
+            <Button
+              className="h-6 px-2 font-semibold text-[10px]"
+              onClick={() => setActiveFilter("completed")}
+              size="sm"
+              type="button"
+              variant={activeFilter === "completed" ? "default" : "outline"}
+            >
+              Tamamlanan ({completedCount})
+            </Button>
+          </div>
+
+          {/* Task Items List */}
+          {isLoaded ? (
+            filteredTasks.length === 0 ? (
+              <EmptyState
+                description="Yukarıdaki alana bir görev yazarak listenizi oluşturabilirsiniz."
+                icon={CheckSquare}
+                title={
+                  activeFilter === "completed"
+                    ? "Tamamlanan görev bulunmuyor"
+                    : activeFilter === "pending"
+                      ? "Bekleyen tüm görevler tamamlandı! 🎉"
+                      : "Henüz planlanan görev bulunmuyor"
+                }
+              />
+            ) : (
+              <div className="max-h-60 space-y-1.5 overflow-y-auto pr-1">
+                {filteredTasks.map((task) => (
+                  <div
+                    className={`group flex items-center justify-between gap-3 rounded-lg border p-2.5 transition-all ${
+                      task.isCompleted
+                        ? "border-border/50 bg-muted/30 opacity-60"
+                        : "border-border/80 bg-card hover:border-border hover:bg-muted/40"
+                    }`}
+                    key={task.id}
+                  >
+                    <div className="flex items-center gap-2.5 truncate">
+                      <button
+                        className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${
                           task.isCompleted
-                            ? "text-zinc-400 line-through dark:text-zinc-500"
-                            : ""
+                            ? "border-emerald-500 bg-emerald-500 text-white"
+                            : "border-border bg-background hover:border-emerald-500"
                         }`}
+                        onClick={() => toggleTask(task.id, task.isCompleted)}
+                        type="button"
                       >
-                        {task.title}
-                      </p>
-                      <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
-                        {task.dueDate ? (
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {new Date(task.dueDate).toLocaleDateString("tr-TR")}
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            Bugün
-                          </span>
+                        {task.isCompleted && (
+                          <Check className="h-3 w-3 stroke-[3]" />
                         )}
-                        {task.customerName && (
-                          <span className="truncate text-violet-600 dark:text-violet-400">
-                            • {task.customerName}
-                          </span>
-                        )}
-                        {task.category && (
-                          <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-[9px] text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
-                            {task.category}
-                          </span>
-                        )}
+                      </button>
+
+                      <div className="space-y-0.5 truncate">
+                        <p
+                          className={`truncate font-semibold text-foreground text-xs ${
+                            task.isCompleted
+                              ? "text-muted-foreground line-through"
+                              : ""
+                          }`}
+                        >
+                          {task.title}
+                        </p>
+                        <div className="flex items-center gap-2 font-medium text-[10px] text-muted-foreground">
+                          {task.dueDate ? (
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {new Date(task.dueDate).toLocaleDateString(
+                                "tr-TR"
+                              )}
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              Bugün
+                            </span>
+                          )}
+                          {task.customerName && (
+                            <span className="truncate text-primary">
+                              • {task.customerName}
+                            </span>
+                          )}
+                          {task.category && (
+                            <Badge
+                              className="px-1 py-0 text-[9px]"
+                              variant="neutral"
+                            >
+                              {task.category}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex flex-none items-center gap-1.5">
-                    <span
-                      className={`shrink-0 rounded-md border px-1.5 py-0.5 font-bold text-[9px] ${getPriorityBadge(
-                        task.priority
-                      )}`}
-                    >
-                      {getPriorityLabel(task.priority)}
-                    </span>
-                    <button
-                      className="p-1 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
-                      onClick={() => deleteTask(task.id)}
-                      title="Sil"
-                      type="button"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    <div className="flex flex-none items-center gap-1.5">
+                      <Badge
+                        className="px-1.5 py-0 text-[9px]"
+                        variant={getPriorityVariant(task.priority)}
+                      >
+                        {getPriorityLabel(task.priority)}
+                      </Badge>
+                      <button
+                        className="p-1 text-muted-foreground opacity-0 transition hover:text-destructive group-hover:opacity-100"
+                        onClick={() => deleteTask(task.id)}
+                        title="Sil"
+                        type="button"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            )
+          ) : (
+            <div className="space-y-2 py-2">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
             </div>
-          )
-        ) : (
-          <div className="space-y-2 py-3">
-            {[1, 2].map((i) => (
-              <div
-                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
-                key={i}
-              />
-            ))}
-          </div>
-        )}
+          )}
+        </CardContent>
       </div>
 
       {tasks.length > 0 && (
-        <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 font-medium text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
+        <CardFooter className="flex items-center justify-between border-border/80 border-t pt-2 pb-3 text-muted-foreground text-xs">
           <span>
             Kalan acil:{" "}
-            <strong className="text-zinc-800 dark:text-zinc-200">
+            <strong className="text-foreground">
               {
                 tasks.filter(
                   (t) => !t.isCompleted && t.priority.toLowerCase() === "urgent"
@@ -387,8 +391,8 @@ export function TasksChecklistWidget() {
               }
             </strong>
           </span>
-          <button
-            className="font-bold text-emerald-600 transition hover:text-emerald-700 dark:hover:text-emerald-400"
+          <Button
+            className="h-6 p-0 text-emerald-600 text-xs hover:text-emerald-700 dark:text-emerald-400"
             onClick={async () => {
               const completedTasks = tasks.filter((t) => t.isCompleted);
               for (const t of completedTasks) {
@@ -396,11 +400,12 @@ export function TasksChecklistWidget() {
               }
             }}
             type="button"
+            variant="ghost"
           >
             Tamamlananları Temizle
-          </button>
-        </div>
+          </Button>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 }

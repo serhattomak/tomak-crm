@@ -1,6 +1,18 @@
 /* Hallmark · component: upcoming-meetings · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { EmptyState } from "@workspace/ui/components/empty-state";
+import { Input } from "@workspace/ui/components/input";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import {
   Calendar,
   ExternalLink,
@@ -72,193 +84,184 @@ export function UpcomingMeetingsWidget() {
   const getTypeIcon = (type: MeetingItem["type"]) => {
     switch (type) {
       case "video":
-        return (
-          <Video className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-        );
+        return <Video className="h-3 w-3 text-blue-500" />;
       case "phone":
-        return (
-          <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-        );
+        return <Phone className="h-3 w-3 text-emerald-500" />;
       case "in-person":
-        return (
-          <MapPin className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-        );
+        return <MapPin className="h-3 w-3 text-amber-500" />;
     }
   };
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
+    <Card className="flex h-full flex-col justify-between">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Calendar className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="font-semibold text-sm tracking-tight">
                 Görüşmeler & Randevular
-              </span>
-              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              </CardTitle>
+              <p className="text-[11px] text-muted-foreground">
                 Planlanan veya geçmiş müşteri görüşmeleri
-              </div>
+              </p>
             </div>
           </div>
 
-          <button
-            className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:text-violet-300 dark:hover:bg-violet-900 dark:hover:bg-violet-950/60"
+          <Button
+            className="h-7 gap-1 px-2.5 text-[11px]"
             onClick={() => setShowAddForm(!showAddForm)}
-            type="button"
+            size="sm"
+            variant="outline"
           >
             <Plus className="h-3 w-3" />
             <span>Görüşme Ekle</span>
-          </button>
-        </div>
+          </Button>
+        </CardHeader>
 
-        {/* Quick Add Meeting Form */}
-        {showAddForm && (
-          <form
-            className="mb-3 space-y-2 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/50"
-            onSubmit={handleAddMeeting}
-          >
-            <input
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Görüşme konusu (Örn: Fiyat Teklifi Görüşmesi)..."
-              required
-              value={newTitle}
-            />
-
-            {/* Date selection pills */}
-            <div className="flex items-center gap-1.5">
-              {["Bugün", "Dün", "Yarın", "Geçen Hafta"].map((d) => (
-                <button
-                  className={`rounded-lg px-2 py-0.5 font-semibold text-[10px] transition-colors ${
-                    newDate === d
-                      ? "bg-violet-600 text-white"
-                      : "bg-white text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:bg-zinc-700"
-                  }`}
-                  key={d}
-                  onClick={() => setNewDate(d)}
-                  type="button"
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setNewCustomer(e.target.value)}
-                placeholder="Müşteri / Kurum..."
-                value={newCustomer}
+        <CardContent className="pt-0">
+          {/* Quick Add Meeting Form */}
+          {showAddForm && (
+            <form
+              className="mb-3 space-y-2 rounded-lg border border-border/80 bg-muted/40 p-3"
+              onSubmit={handleAddMeeting}
+            >
+              <Input
+                className="h-8 bg-background text-xs"
+                onChange={(e) => setNewTitle(e.target.value)}
+                placeholder="Görüşme konusu (Örn: Fiyat Teklifi Görüşmesi)..."
+                required
+                value={newTitle}
               />
-              <input
-                className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                onChange={(e) => setNewTime(e.target.value)}
-                placeholder="Saat (Örn: 14:30)..."
-                value={newTime}
-              />
-            </div>
-            <div className="flex justify-end gap-2 pt-1">
-              <button
-                className="rounded-lg px-2.5 py-1 font-semibold text-xs text-zinc-500 hover:bg-zinc-200 dark:text-zinc-400 dark:hover:bg-zinc-700"
-                onClick={() => setShowAddForm(false)}
-                type="button"
-              >
-                İptal
-              </button>
-              <button
-                className="rounded-lg bg-violet-600 px-3 py-1 font-bold text-white text-xs shadow-xs hover:bg-violet-700"
-                type="submit"
-              >
-                Kaydet
-              </button>
-            </div>
-          </form>
-        )}
 
-        {/* Meetings List */}
-        {isLoaded ? (
-          meetings.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-7 text-center">
-              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
-                <Calendar className="h-5 w-5" />
+              {/* Date selection pills */}
+              <div className="flex items-center gap-1.5">
+                {["Bugün", "Dün", "Yarın", "Geçen Hafta"].map((d) => (
+                  <Button
+                    className="h-6 px-2 text-[10px]"
+                    key={d}
+                    onClick={() => setNewDate(d)}
+                    type="button"
+                    variant={newDate === d ? "default" : "outline"}
+                  >
+                    {d}
+                  </Button>
+                ))}
               </div>
-              <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-                Henüz kayıtlı görüşme yok
-              </h4>
-              <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
-                Müşterilerinizle yapacağınız veya dün/önceki gün yaptığınız
-                görüşmeleri buradan takip edebilirsiniz.
-              </p>
-              <button
-                className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
-                onClick={() => setShowAddForm(true)}
-                type="button"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>İlk Görüşmeyi Kaydet</span>
-              </button>
-            </div>
-          ) : (
-            <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
-              {meetings.map((meeting) => (
-                <div
-                  className="group rounded-xl border border-zinc-100 bg-zinc-50/50 p-3 transition-all hover:border-zinc-300 hover:bg-white hover:shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/80"
-                  key={meeting.id}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="flex items-center gap-1 rounded-md border border-zinc-200/60 bg-white px-1.5 py-0.5 font-bold text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                          {getTypeIcon(meeting.type)}
-                          {meeting.date} {meeting.time}
-                        </span>
-                      </div>
-                      <h4 className="font-bold text-xs text-zinc-900 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 dark:hover:text-zinc-100">
-                        {meeting.title}
-                      </h4>
-                      <p className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
-                        {meeting.customer}
-                      </p>
-                    </div>
 
-                    {meeting.link && (
-                      <a
-                        className="flex shrink-0 items-center gap-1 rounded-lg bg-violet-600 px-2.5 py-1 font-bold text-[11px] text-white shadow-2xs transition-colors hover:bg-violet-700"
-                        href={meeting.link}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        <span>Katıl</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )
-        ) : (
-          <div className="space-y-2 py-3">
-            {[1, 2].map((i) => (
-              <div
-                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
-                key={i}
+              <div className="grid grid-cols-2 gap-2">
+                <Input
+                  className="h-8 bg-background text-xs"
+                  onChange={(e) => setNewCustomer(e.target.value)}
+                  placeholder="Müşteri / Kurum..."
+                  value={newCustomer}
+                />
+                <Input
+                  className="h-8 bg-background text-xs"
+                  onChange={(e) => setNewTime(e.target.value)}
+                  placeholder="Saat (Örn: 14:30)..."
+                  value={newTime}
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  className="h-7 text-xs"
+                  onClick={() => setShowAddForm(false)}
+                  type="button"
+                  variant="ghost"
+                >
+                  İptal
+                </Button>
+                <Button className="h-7 text-xs" size="sm" type="submit">
+                  Kaydet
+                </Button>
+              </div>
+            </form>
+          )}
+
+          {/* Meetings List */}
+          {isLoaded ? (
+            meetings.length === 0 ? (
+              <EmptyState
+                action={
+                  <Button
+                    onClick={() => setShowAddForm(true)}
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                  >
+                    İlk Görüşmeyi Kaydet
+                  </Button>
+                }
+                description="Müşterilerinizle yapacağınız görüşmeleri buradan takip edebilirsiniz."
+                icon={Calendar}
+                title="Henüz kayıtlı görüşme yok"
               />
-            ))}
-          </div>
-        )}
+            ) : (
+              <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
+                {meetings.map((meeting) => (
+                  <div
+                    className="group rounded-lg border border-border/70 bg-card p-3 transition-all hover:border-border hover:bg-muted/40"
+                    key={meeting.id}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <Badge
+                            className="gap-1 px-1.5 py-0 font-medium text-[10px]"
+                            variant="neutral"
+                          >
+                            {getTypeIcon(meeting.type)}
+                            {meeting.date} {meeting.time}
+                          </Badge>
+                        </div>
+                        <h4 className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
+                          {meeting.title}
+                        </h4>
+                        <p className="text-[11px] text-muted-foreground">
+                          {meeting.customer}
+                        </p>
+                      </div>
+
+                      {meeting.link && (
+                        <Button
+                          asChild
+                          className="h-6 shrink-0 gap-1 px-2 text-[10px]"
+                          size="sm"
+                        >
+                          <a
+                            href={meeting.link}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            <span>Katıl</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : (
+            <div className="space-y-2 py-2">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          )}
+        </CardContent>
       </div>
 
       {meetings.length > 0 && (
-        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
-          <span className="cursor-pointer font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400">
+        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+          <span className="cursor-pointer font-semibold text-primary text-xs hover:underline">
             {meetings.length} Görüşme Kayıtlı
           </span>
-        </div>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 }

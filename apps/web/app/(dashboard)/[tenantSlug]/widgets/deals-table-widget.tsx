@@ -160,9 +160,6 @@ export function DealsTableWidget() {
             </div>
           ) : deals.length === 0 ? (
             <EmptyState
-              icon={FileSpreadsheet}
-              title="Henüz fırsat veya teklif bulunmuyor"
-              description="Satış hunisinden yeni anlaşmalar ekleyebilirsiniz."
               action={
                 <Button asChild size="sm">
                   <Link
@@ -173,6 +170,9 @@ export function DealsTableWidget() {
                   </Link>
                 </Button>
               }
+              description="Satış hunisinden yeni anlaşmalar ekleyebilirsiniz."
+              icon={FileSpreadsheet}
+              title="Henüz fırsat veya teklif bulunmuyor"
             />
           ) : (
             <Table>

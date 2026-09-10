@@ -1,7 +1,18 @@
 /* Hallmark · component: pipeline-funnel · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
-import { ArrowRight, Filter, Layers, Plus } from "lucide-react";
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { EmptyState } from "@workspace/ui/components/empty-state";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import { ArrowRight, Filter, Layers } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ApiClient } from "@/lib/api-client";
@@ -97,115 +108,110 @@ export function PipelineFunnelWidget({
   const hasData = totalCount > 0 || totalValue > 0;
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
+    <Card className="flex h-full flex-col justify-between">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Filter className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="font-semibold text-sm tracking-tight">
                 Satış Hunisi (Pipeline Aşamaları)
-              </span>
-              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              </CardTitle>
+              <p className="text-[11px] text-muted-foreground">
                 {hasData
                   ? `Toplam Hacim: ₺${totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`
                   : "Aşamalardaki aktif satış fırsatları"}
-              </div>
+              </p>
             </div>
           </div>
 
           {hasData && (
-            <span className="rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-bold text-[11px] text-zinc-700 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+            <Badge className="text-[11px]" variant="accent">
               {totalCount} Aktif Fırsat
-            </span>
+            </Badge>
           )}
-        </div>
+        </CardHeader>
 
         {/* Funnel Visualizer */}
-        {isLoading ? (
-          <div className="space-y-2.5 py-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
-                key={i}
-              />
-            ))}
-          </div>
-        ) : hasData ? (
-          <div className="space-y-2 pt-1">
-            {stages.map((stage) => (
-              <div
-                className="group rounded-xl p-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                key={stage.id}
-              >
-                <div className="mb-1 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`h-2.5 w-2.5 rounded-full ${stage.color} flex-none`}
-                    />
-                    <span className="font-bold text-zinc-800 dark:text-zinc-200">
-                      {stage.name}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 font-semibold">
-                    <span className="font-medium text-[11px] text-zinc-400 dark:text-zinc-500">
-                      {stage.count} Fırsat
-                    </span>
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                      ₺
-                      {stage.value.toLocaleString("tr-TR", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Progress bar representing funnel width */}
-                <div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                  <div
-                    className={`h-full rounded-full ${stage.color} transition-all duration-500`}
-                    style={{ width: stage.conversion }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-7 text-center">
-            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
-              <Layers className="h-5 w-5" />
+        <CardContent className="pt-0">
+          {isLoading ? (
+            <div className="space-y-2.5 py-2">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
             </div>
-            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-              Henüz satış fırsatı bulunmuyor
-            </h4>
-            <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
-              Pipeline aşamalarınıza yeni fırsatlar ekleyerek dönüşüm
-              oranlarınızı ve satış huninizi takip edin.
-            </p>
-            <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
-              href={`/${activeTenant?.slug || "workspace"}/pipelines`}
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Satış Fırsatı Ekle</span>
-            </Link>
-          </div>
-        )}
+          ) : hasData ? (
+            <div className="space-y-2 pt-1">
+              {stages.map((stage) => (
+                <div
+                  className="group rounded-lg p-2 transition-colors hover:bg-muted/40"
+                  key={stage.id}
+                >
+                  <div className="mb-1 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`h-2.5 w-2.5 rounded-full ${stage.color} flex-none`}
+                      />
+                      <span className="font-semibold text-foreground">
+                        {stage.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 font-semibold">
+                      <span className="font-medium text-[11px] text-muted-foreground">
+                        {stage.count} Fırsat
+                      </span>
+                      <span className="font-semibold text-foreground">
+                        ₺
+                        {stage.value.toLocaleString("tr-TR", {
+                          minimumFractionDigits: 2,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Progress bar representing funnel width */}
+                  <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={`h-full rounded-full ${stage.color} transition-all duration-500`}
+                      style={{ width: stage.conversion }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              action={
+                <Button asChild size="sm" variant="outline">
+                  <Link
+                    href={`/${activeTenant?.slug || "workspace"}/pipelines`}
+                  >
+                    Satış Fırsatı Ekle
+                  </Link>
+                </Button>
+              }
+              description="Pipeline aşamalarınıza yeni fırsatlar ekleyerek dönüşüm oranlarınızı ve satış huninizi takip edin."
+              icon={Layers}
+              title="Henüz satış fırsatı bulunmuyor"
+            />
+          )}
+        </CardContent>
       </div>
 
       {hasData && (
-        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
+        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
           <Link
-            className="flex items-center justify-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
+            className="flex items-center justify-center gap-1 font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             <span>Pipeline Kanban Görünümünü Aç</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
-        </div>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 }

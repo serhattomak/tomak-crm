@@ -1,12 +1,22 @@
 /* Hallmark · component: activity-timeline · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
+import { Button } from "@workspace/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { EmptyState } from "@workspace/ui/components/empty-state";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import {
   Clock,
   DollarSign,
   FileSpreadsheet,
   PhoneCall,
-  Plus,
   RefreshCw,
   UserPlus,
 } from "lucide-react";
@@ -211,112 +221,107 @@ export function ActivityTimelineWidget() {
           <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />
         );
       default:
-        return <Clock className="h-3 w-3 text-zinc-600 dark:text-zinc-400" />;
+        return <Clock className="h-3 w-3 text-muted-foreground" />;
     }
   };
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
+    <Card className="flex h-full flex-col justify-between">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="font-semibold text-sm tracking-tight">
                 Canlı Aktivite Akışı
-              </span>
-              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              </CardTitle>
+              <p className="text-[11px] text-muted-foreground">
                 Teklif, müşteri, fırsat ve sipariş hareketleri
-              </div>
+              </p>
             </div>
           </div>
 
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+          <Button
+            className="h-7 w-7 text-muted-foreground"
             onClick={() => fetchLiveActivities()}
+            size="icon"
             title="Yenile"
-            type="button"
+            variant="ghost"
           >
             <RefreshCw className="h-3.5 w-3.5" />
-          </button>
-        </div>
+          </Button>
+        </CardHeader>
 
         {/* Timeline List */}
-        {isLoading ? (
-          <div className="space-y-2.5 py-3">
-            {[1, 2, 3].map((i) => (
-              <div
-                className="h-10 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
-                key={i}
-              />
-            ))}
-          </div>
-        ) : activities.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-7 text-center">
-            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
-              <Clock className="h-5 w-5" />
+        <CardContent className="pt-0">
+          {isLoading ? (
+            <div className="space-y-2.5 py-2">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
             </div>
-            <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
-              Henüz işlem kaydı bulunmuyor
-            </h4>
-            <p className="mt-0.5 max-w-xs text-[11px] text-zinc-400 dark:text-zinc-500">
-              Oluşturulan teklifler, fırsatlar ve müşteri etkileşimleri otomatik
-              olarak bu canlı akışta toplanır.
-            </p>
-            <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
-              href={`/${activeTenant?.slug || "workspace"}/quotes`}
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Teklif Oluştur</span>
-            </Link>
-          </div>
-        ) : (
-          <div className="relative max-h-72 space-y-2.5 overflow-y-auto pr-1 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-zinc-100 dark:before:bg-zinc-800">
-            {activities.map((act) => (
-              <div
-                className="relative flex items-start gap-2.5 text-xs"
-                key={act.id}
-              >
-                <div className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white bg-zinc-900 font-bold text-[9px] text-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-100 dark:text-zinc-900">
-                  {act.user.initials}
-                </div>
+          ) : activities.length === 0 ? (
+            <EmptyState
+              action={
+                <Button asChild size="sm" variant="outline">
+                  <Link href={`/${activeTenant?.slug || "workspace"}/quotes`}>
+                    Teklif Oluştur
+                  </Link>
+                </Button>
+              }
+              description="Oluşturulan teklifler, fırsatlar ve müşteri etkileşimleri otomatik olarak bu canlı akışta toplanır."
+              icon={Clock}
+              title="Henüz işlem kaydı bulunmuyor"
+            />
+          ) : (
+            <div className="relative max-h-72 space-y-2.5 overflow-y-auto pr-1 before:absolute before:top-2 before:bottom-2 before:left-3.5 before:w-0.5 before:bg-muted">
+              {activities.map((act) => (
+                <div
+                  className="relative flex items-start gap-2.5 text-xs"
+                  key={act.id}
+                >
+                  <Avatar className="relative z-10 h-6 w-6 font-bold text-[9px]">
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      {act.user.initials}
+                    </AvatarFallback>
+                  </Avatar>
 
-                <div className="flex-1 rounded-xl bg-zinc-50/70 p-2.5 transition-colors hover:bg-zinc-100/80 dark:hover:bg-zinc-800/50 dark:hover:bg-zinc-800/80">
-                  <div className="flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100">
-                      {getActionIcon(act.type)}
-                      <span>{act.user.name}</span>
+                  <div className="flex-1 rounded-lg border border-border/70 bg-card p-2.5 transition-colors hover:bg-muted/40">
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                        {getActionIcon(act.type)}
+                        <span>{act.user.name}</span>
+                      </div>
+                      <span className="font-medium text-[10px] text-muted-foreground">
+                        {act.timestamp}
+                      </span>
                     </div>
-                    <span className="font-semibold text-[10px] text-zinc-400 dark:text-zinc-500">
-                      {act.timestamp}
-                    </span>
+                    <p className="mt-0.5 font-normal text-[11px] text-muted-foreground">
+                      {act.action}:{" "}
+                      <strong className="font-semibold text-foreground">
+                        {act.target}
+                      </strong>
+                    </p>
                   </div>
-                  <p className="mt-0.5 font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
-                    {act.action}:{" "}
-                    <strong className="font-bold text-zinc-800 dark:text-zinc-200">
-                      {act.target}
-                    </strong>
-                  </p>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </CardContent>
       </div>
 
       {activities.length > 0 && (
-        <div className="mt-3 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800/80">
+        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
           <Link
-            className="font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-400"
+            className="font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}
           >
             Tüm Satış ve Fırsatları İncele →
           </Link>
-        </div>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 }
