@@ -1,6 +1,8 @@
 /* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md · designed-as-app */
 "use client";
 
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
 import {
   CheckCircle2,
   ChevronDown,
@@ -425,17 +427,17 @@ export default function WorkspaceOverviewPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center print:hidden">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+            <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
               Dashboard
             </h1>
-            <span className="inline-flex items-center gap-1 rounded-full border border-violet-200/70 bg-violet-50 px-2.5 py-0.5 font-bold text-[11px] text-violet-700 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300">
-              <Sparkles className="h-3 w-3 text-violet-500" />
+            <Badge className="gap-1 px-2 py-0.5 text-[11px]" variant="accent">
+              <Sparkles className="h-3 w-3 text-primary" />
               {activeTenant?.name || "Ana Çalışma Alanı"}
-            </span>
+            </Badge>
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-muted-foreground text-xs">
             Hoş geldiniz,{" "}
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+            <span className="font-semibold text-foreground">
               {profile?.fullName || "Serhat Dev"}
             </span>
             . Bugünün CRM özet ve performans durumu.
@@ -454,37 +456,40 @@ export default function WorkspaceOverviewPage() {
           <TeamMembersStack onOpenInvite={() => setIsInviteModalOpen(true)} />
 
           {/* Quick Invite Button */}
-          <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 shadow-2xs transition-all hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 active:scale-95 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          <Button
             onClick={() => setIsInviteModalOpen(true)}
+            size="icon-sm"
             title="Ekip Arkadaşı Davet Et"
             type="button"
+            variant="outline"
           >
             <UserPlus className="h-3.5 w-3.5" />
-          </button>
+          </Button>
 
           {/* Customize Widgets Button */}
-          <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-violet-300"
+          <Button
+            className="gap-1.5"
             onClick={() => setIsCustomizeModalOpen(true)}
+            size="sm"
             type="button"
+            variant="outline"
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
             <span>Widgetları Düzenle</span>
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* 2. Subheader Tabs & Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 border-zinc-200/70 border-b pb-3.5 sm:flex-row sm:items-center dark:border-zinc-800 print:hidden">
+      <div className="flex flex-col justify-between gap-3 border-border/70 border-b pb-3 sm:flex-row sm:items-center print:hidden">
         {/* Pill Tabs */}
-        <div className="flex w-fit items-center gap-1 rounded-xl bg-zinc-100/80 p-1 dark:bg-zinc-800/60">
+        <div className="flex w-fit items-center gap-1 rounded-lg bg-muted/60 p-1">
           {tabs.map((tab) => (
             <button
-              className={`rounded-lg px-3.5 py-1.5 font-semibold text-xs transition-all ${
+              className={`rounded-md px-3 py-1 font-medium text-xs transition-all ${
                 activeTab === tab.id
-                  ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+                  ? "bg-card font-semibold text-foreground shadow-2xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -494,7 +499,7 @@ export default function WorkspaceOverviewPage() {
             </button>
           ))}
           <button
-            className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-semibold text-xs text-zinc-500 transition-colors hover:bg-white/50 hover:text-zinc-900 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+            className="flex items-center gap-1 rounded-md px-2.5 py-1 font-medium text-muted-foreground text-xs transition-colors hover:text-foreground"
             onClick={() => setIsCustomizeModalOpen(true)}
             type="button"
           >
@@ -507,24 +512,26 @@ export default function WorkspaceOverviewPage() {
         <div className="flex items-center gap-2">
           {/* Dynamic Date Range Dropdown */}
           <div className="relative">
-            <button
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            <Button
+              className="gap-1.5 font-medium"
               onClick={() => setShowDateDropdown(!showDateDropdown)}
+              size="sm"
               type="button"
+              variant="outline"
             >
-              <Filter className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+              <Filter className="h-3.5 w-3.5 text-muted-foreground" />
               <span>{dateRangeLabels[dateRange]}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
-            </button>
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+            </Button>
 
             {showDateDropdown && (
-              <div className="fade-in absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-xl border border-zinc-200/80 bg-white p-1.5 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="fade-in absolute right-0 z-30 mt-1.5 w-44 animate-in rounded-lg border border-border bg-popover p-1 shadow-lg">
                 {(Object.keys(dateRangeLabels) as DateRange[]).map((range) => (
                   <button
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left font-medium text-xs transition-colors ${
+                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left font-medium text-xs transition-colors ${
                       dateRange === range
-                        ? "bg-violet-50 font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
-                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+                        ? "bg-primary/10 font-semibold text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                     key={range}
                     onClick={() => {
@@ -535,7 +542,7 @@ export default function WorkspaceOverviewPage() {
                   >
                     <span>{dateRangeLabels[range]}</span>
                     {dateRange === range && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-violet-600 dark:bg-violet-400" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                     )}
                   </button>
                 ))}
@@ -544,25 +551,29 @@ export default function WorkspaceOverviewPage() {
           </div>
 
           {/* Reset Layout */}
-          <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          <Button
+            className="gap-1.5 font-medium"
             onClick={handleResetDefaults}
+            size="sm"
             title="Pano yerleşimini varsayılan fabrika ayarlarına döndür"
             type="button"
+            variant="outline"
           >
-            <RotateCcw className="h-3.5 w-3.5 text-zinc-400" />
+            <RotateCcw className="h-3.5 w-3.5 text-muted-foreground" />
             <span className="hidden sm:inline">Düzeni Sıfırla</span>
-          </button>
+          </Button>
 
           {/* Quick PDF / Print Export */}
-          <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          <Button
+            className="gap-1.5 font-medium"
             onClick={() => window.print()}
+            size="sm"
             type="button"
+            variant="outline"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Rapor Al</span>
-          </button>
+          </Button>
         </div>
       </div>
 

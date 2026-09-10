@@ -31,11 +31,11 @@ export function Input({
     <input
       aria-invalid={hasError ? "true" : undefined}
       className={cn(
-        "w-full rounded-xl border bg-white font-medium text-xs text-zinc-900 shadow-2xs transition-all placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500",
+        "w-full rounded-lg border bg-background font-medium text-xs text-foreground shadow-2xs transition-all placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         sizeClasses,
         hasError
-          ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 dark:border-red-500/80"
-          : "border-zinc-200 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700",
+          ? "border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/20"
+          : "border-input hover:border-zinc-400/60 focus:border-ring focus:ring-2 focus:ring-ring/20 dark:hover:border-zinc-600",
         Boolean(leftIcon) && "pl-9",
         Boolean(rightIcon) && "pr-9",
         className

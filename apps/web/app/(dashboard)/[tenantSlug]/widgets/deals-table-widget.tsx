@@ -1,6 +1,25 @@
-/* Hallmark · component: deals-table · genre: modern-minimal · theme: Adaptive Zinc/Violet */
+/* Hallmark · component: deals-table · genre: modern-minimal · theme: Adaptive Zinc/Violet · design-system: design.md */
 "use client";
 
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { EmptyState } from "@workspace/ui/components/empty-state";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { ArrowRight, Building2, FileSpreadsheet, Plus } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -30,7 +49,6 @@ export function DealsTableWidget() {
     }
     setIsLoading(true);
     try {
-      // 1. Fetch real deals
       const dealsRes = await ApiClient.getDeals(
         { pageSize: 5 },
         activeTenant.id
@@ -54,38 +72,43 @@ export function DealsTableWidget() {
           }))
         );
       } else {
-        // Fallback: Fetch recent quotes if deals empty
         const quotesRes = await ApiClient.getQuotes(
           { pageSize: 5 },
           activeTenant.id
         );
-        if (quotesRes.success && quotesRes.data?.items) {
+        if (
+          quotesRes.success &&
+          quotesRes.data?.items &&
+          quotesRes.data.items.length > 0
+        ) {
           setDeals(
-            quotesRes.data.items.map((q) => ({
+            quotesRes.data.items.map((q: any) => ({
               assignedUserName: q.assignedUserName,
               currency: q.currency || "TRY",
-              customerName: q.customerName,
+              customerName: q.customerName || "Müşteri",
               id: q.id,
               probability:
-                q.status === "Accepted" ? 100 : q.status === "Sent" ? 75 : 40,
+                q.status === "Approved" || q.status === "Accepted"
+                  ? 90
+                  : q.status === "Draft"
+                    ? 30
+                    : 60,
               stageName:
-                q.status === "Draft"
-                  ? "Taslak"
-                  : q.status === "PendingApproval"
-                    ? "Onay Bekliyor"
-                    : q.status === "Sent"
-                      ? "Müşteride"
-                      : q.status === "Accepted"
-                        ? "Kabul Edildi"
-                        : q.status,
-              title: `${q.quoteNumber} (R${q.revisionNumber}) - ${q.title}`,
+                q.status === "Approved" || q.status === "Accepted"
+                  ? "Kazanıldı"
+                  : q.status === "Draft"
+                    ? "Taslak"
+                    : "Teklif Verildi",
+              title: q.title || `Teklif #${q.quoteNumber || q.id.slice(0, 6)}`,
               value: q.totalAmount || 0,
             }))
           );
+        } else {
+          setDeals([]);
         }
       }
     } catch {
-      // ignore
+      setDeals([]);
     } finally {
       setIsLoading(false);
     }
@@ -95,123 +118,121 @@ export function DealsTableWidget() {
     fetchLiveDeals();
   }, [fetchLiveDeals]);
 
-  const totalValue = deals.reduce((acc, d) => acc + d.value, 0);
+  const totalValue = deals.reduce((acc, d) => acc + (d.value || 0), 0);
 
   return (
-    <div className="flex h-full flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-zinc-700">
+    <Card className="flex h-full flex-col justify-between">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 shadow-2xs dark:bg-violet-950/60 dark:text-violet-400">
-              <Building2 className="h-4 w-4" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-border/80 bg-muted/60 text-primary shadow-2xs">
+              <Building2 className="h-3.5 w-3.5" />
             </div>
             <div>
-              <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="text-sm">
                 Sıcak Fırsatlar & Teklifler
-              </span>
-              <div className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+              </CardTitle>
+              <CardDescription className="text-[11px]">
                 En yüksek potansiyelli anlaşmalar ve teklifler
-              </div>
+              </CardDescription>
             </div>
           </div>
 
-          <Link
-            className="flex items-center gap-1 font-bold text-violet-600 text-xs transition hover:text-violet-700 dark:hover:text-violet-300 dark:hover:text-violet-400"
-            href={`/${activeTenant?.slug || "workspace"}/pipelines`}
+          <Button
+            asChild
+            className="h-7 gap-1 text-primary text-xs hover:text-primary"
+            size="sm"
+            variant="ghost"
           >
-            <span>Tümünü Gör</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-
-        {/* Deals Table */}
-        {isLoading ? (
-          <div className="space-y-2.5 py-3">
-            {[1, 2, 3].map((i) => (
-              <div
-                className="h-11 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800"
-                key={i}
-              />
-            ))}
-          </div>
-        ) : deals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-7 text-center">
-            <FileSpreadsheet className="mb-2 h-7 w-7 text-zinc-300 dark:text-zinc-600" />
-            <p className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
-              Henüz fırsat veya teklif bulunmuyor
-            </p>
-            <p className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
-              Satış hunisinden yeni anlaşmalar ekleyebilirsiniz.
-            </p>
-            <Link
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
-              href={`/${activeTenant?.slug || "workspace"}/pipelines`}
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Fırsat Ekle</span>
+            <Link href={`/${activeTenant?.slug || "workspace"}/pipelines`}>
+              <span>Tümünü Gör</span>
+              <ArrowRight className="h-3 w-3" />
             </Link>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-zinc-100 border-b font-semibold text-[10px] text-zinc-400 uppercase tracking-wider dark:border-zinc-800">
-                  <th className="pb-2">Anlaşma & Müşteri</th>
-                  <th className="pb-2">Tutar</th>
-                  <th className="pb-2">Aşama</th>
-                  <th className="pb-2">Olasılık</th>
-                  <th className="pb-2 text-right">Temsilci</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
-                {deals.map((deal) => (
-                  <tr
-                    className="group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
-                    key={deal.id}
+          </Button>
+        </CardHeader>
+
+        <CardContent className="pt-0">
+          {isLoading ? (
+            <div className="space-y-2 py-2">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton className="h-10 w-full" key={i} />
+              ))}
+            </div>
+          ) : deals.length === 0 ? (
+            <EmptyState
+              icon={FileSpreadsheet}
+              title="Henüz fırsat veya teklif bulunmuyor"
+              description="Satış hunisinden yeni anlaşmalar ekleyebilirsiniz."
+              action={
+                <Button asChild size="sm">
+                  <Link
+                    href={`/${activeTenant?.slug || "workspace"}/pipelines`}
                   >
-                    <td className="py-2.5 pr-3">
-                      <div className="max-w-[160px] truncate font-bold text-zinc-900 sm:max-w-xs dark:text-zinc-100">
+                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                    <span>Fırsat Ekle</span>
+                  </Link>
+                </Button>
+              }
+            />
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="h-8 text-[10px]">
+                    Anlaşma & Müşteri
+                  </TableHead>
+                  <TableHead className="h-8 text-[10px]">Tutar</TableHead>
+                  <TableHead className="h-8 text-[10px]">Aşama</TableHead>
+                  <TableHead className="h-8 text-[10px]">Olasılık</TableHead>
+                  <TableHead className="h-8 text-right text-[10px]">
+                    Temsilci
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {deals.map((deal) => (
+                  <TableRow key={deal.id}>
+                    <TableCell className="py-2">
+                      <div className="max-w-[150px] truncate font-semibold text-foreground sm:max-w-xs">
                         {deal.title}
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
-                        <Building2 className="h-3 w-3 flex-none text-zinc-400 dark:text-zinc-500" />
+                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+                        <Building2 className="h-3 w-3 flex-none text-muted-foreground/70" />
                         <span className="truncate">{deal.customerName}</span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="whitespace-nowrap py-2.5 pr-3">
-                      <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                        ₺
-                        {deal.value.toLocaleString("tr-TR", {
-                          minimumFractionDigits: 2,
-                        })}
-                      </span>
-                    </td>
+                    <TableCell className="whitespace-nowrap py-2 font-semibold text-foreground">
+                      ₺
+                      {deal.value.toLocaleString("tr-TR", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </TableCell>
 
-                    <td className="whitespace-nowrap py-2.5 pr-3">
-                      <span className="inline-flex items-center rounded-md border border-violet-200/70 bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300">
+                    <TableCell className="whitespace-nowrap py-2">
+                      <Badge size="sm" variant="accent">
                         {deal.stageName}
-                      </span>
-                    </td>
+                      </Badge>
+                    </TableCell>
 
-                    <td className="whitespace-nowrap py-2.5 pr-3">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-12 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                    <TableCell className="whitespace-nowrap py-2">
+                      <div className="flex items-center gap-1.5">
+                        <div className="h-1.5 w-10 overflow-hidden rounded-full bg-muted">
                           <div
-                            className="h-full rounded-full bg-violet-500 dark:bg-violet-400"
+                            className="h-full rounded-full bg-primary"
                             style={{ width: `${deal.probability}%` }}
                           />
                         </div>
-                        <span className="font-bold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        <span className="font-medium text-[11px] text-muted-foreground">
                           %{deal.probability}
                         </span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="whitespace-nowrap py-2.5 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
+                    <TableCell className="whitespace-nowrap py-2 text-right">
+                      <div className="flex items-center justify-end">
                         <div
-                          className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 font-bold text-[10px] text-white shadow-2xs dark:bg-zinc-100 dark:text-zinc-900"
+                          className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-primary/20 font-bold text-[10px] text-primary shadow-2xs"
                           title={deal.assignedUserName || "Temsilci"}
                         >
                           {(deal.assignedUserName || "T")
@@ -219,21 +240,21 @@ export function DealsTableWidget() {
                             .toUpperCase()}
                         </div>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-zinc-400 dark:border-zinc-800/80 dark:text-zinc-500">
+      <div className="flex items-center justify-between border-border/70 border-t px-4 py-2.5 font-medium text-[11px] text-muted-foreground">
         <span>{deals.length} anlaşmanın potansiyeli:</span>
-        <strong className="font-bold text-zinc-800 dark:text-zinc-200">
+        <strong className="font-semibold text-foreground">
           ₺{totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
         </strong>
       </div>
-    </div>
+    </Card>
   );
 }

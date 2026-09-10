@@ -1,9 +1,8 @@
 "use client";
 
 import { AlertCircle, Check, Phone } from "lucide-react";
-import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
-import { Input } from "./input";
+import { useEffect, useState, type ChangeEvent } from "react";
+import { Input } from "@workspace/ui/components/input";
 
 export interface PhoneInputProps {
   autoFocus?: boolean;
