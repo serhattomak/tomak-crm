@@ -182,11 +182,11 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (59/75)**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (62/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
 >
-> **3.2 — sayfa-içi modallar.** **21 dosya tamam**, kalan **13 sayfa**:
+> **3.2 — sayfa-içi modallar.** **24 dosya tamam**, kalan **10 sayfa**:
 > - `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
 > - `automations/[workflowId]` (`d9bbc3b`), `automations` — **2 overlay: drawer→`Sheet` + modal→`Dialog`** (`4e7a387`)
 > - `invoices` — modal→`Dialog` (`172fe2a`) + drawer→`Sheet` (`e5dfe86`)
@@ -200,6 +200,9 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > - `projects` — **1 modal** (`71335b8`; Hallmark silindi) · `projects/[projectId]` — **4 overlay: 1 drawer→`Sheet` + 3 modal→`Dialog`** (`1c601be`); drawer'ın **görünür başlığı yok** → sr-only `SheetTitle`
 > - `products/[productId]` — **4 modal**, her biri kendi component'inde (`d2b187d`); `EditProductModal`'da **padding dağıtımı** gerekti (panel `p-6` + içerik kaydırıcı → `DialogContent` `p-0`, padding başlık+forma)
 > - `calendar` — **4 overlay** (`2d4e61e`); ilk 2'si **sarmalayıcı kaydıran** desen (`my-8` düştü); Hallmark silindi
+> - `finance` — **1 drawer + 4 modal** (`fd5f715`); drawer **3. print yüzeyi** (`window.print` + `print:` sınıfları)
+> - `inventory` — **3 modal + 2 drawer** (`9313be1`); ⚠️ X ikon boyutları **dosya içinde tutarsız** (modal `h-4`, drawer `h-5`) → varsayma, oku
+> - `products` — **5 overlay** (`5d3f8e8`): silme modalı + **2. lightbox** (`role="dialog"` + `stopPropagation`, focus trap yok) + 3 form modalı
 > - **Print altyapısı:** `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`)
 >
 > **🆕 Yeni muafiyet sınıfı:** **elle yazılmış toast'lar** — `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]` (**4 dosyada 5 örnek**). `fixed` + `shadow-2xl` taşıdıkları için overlay **imzasına** sahipler ama overlay değiller (backdrop/kapatma/engelleme yok, zamanlayıcıyla kapanırlar). `projects` dosyası bunu kendisi `{/* Toast */}` diye adlandırıyor. Konuları **toaster spec'i**. §2.3'teki muafiyet listesine eklendi. **Fazın en sık yanlış pozitifi** — yani "`fixed` + `shadow-2xl` var" hâlâ overlay kanıtı değil, **okuyup bakmak gerekiyor**.
@@ -210,7 +213,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 3. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent`/`SheetContent` **`overflow-y-auto`** alır. Ama içeride kaydıran blok varsa (ör. `flex-1 overflow-y-auto`) içerik `overflow-hidden` kalır. **Dosya başına doğrulanır** — kopyala-yapıştır yanlış sonuç verir.
 > 4. **`space-y-*` varsa `gap-0` şart**; panelde `max-h`/`overflow` **yoksa eklenir** (body scroll kilidi yüzünden).
 >
-> **Kalan 13 sayfa (en küçükten):** `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11).
+> **Kalan 10 sayfa (en küçükten):** `vehicles` (6), `organization` (7), `shipments` (7), `attendance` (3), `recruitment` (8), `messages` (8), `quotes` (11).
 >
 > **Kalan 4 dosya overlay değil ve muaf** (tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header` (mobil alt bar da aynı sınıfta). Gerekçeler §2.3'te.
 >
@@ -248,11 +251,11 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
 - [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
 - [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
-- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **21 dosya tamam, 13 kaldı**
+- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **24 dosya tamam, 10 kaldı**
   - [x] `(admin)/admin/templates` (`ee167e5`) · `(admin)/admin/tenants` (`8f3b524`) · `roles` (`07d476d`) · `users` (`757799b`) · `tickets` (`fbf5591`)
-  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`) · `orders` (`79b21c7`) · `orders/[orderId]` (`b04982a`) · `tickets/[ticketId]` (`1cda709`) · `email` (`62ed950`) · `projects` (`71335b8`) · `projects/[projectId]` (`1c601be`) · `products/[productId]` (`d2b187d`) · `calendar` (`2d4e61e`)
+  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`) · `orders` (`79b21c7`) · `orders/[orderId]` (`b04982a`) · `tickets/[ticketId]` (`1cda709`) · `email` (`62ed950`) · `projects` (`71335b8`) · `projects/[projectId]` (`1c601be`) · `products/[productId]` (`d2b187d`) · `calendar` (`2d4e61e`) · `finance` (`fd5f715`) · `inventory` (`9313be1`) · `products` (`5d3f8e8`)
   - [x] **Print altyapısı** — `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`), derlenen CSS'te doğrulandı
-  - [ ] Kalan 13 — en küçükten: `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11)
+  - [ ] Kalan 10 — en küçükten: `vehicles` (6), `organization` (7), `shipments` (7), `attendance` (3), `recruitment` (8), `messages` (8), `quotes` (11)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -612,3 +615,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3.2 | 🧹 Kapanış sayımı bu turda **her dosyada toplu** yapıldı (4/4 ve 4/4) — tuzak 3 kez çıktığı için refleks değiştirildi. `tsc` iki dosyada da ilk denemede geçti |
 | 2026-09-16 | Faz 3.2 | 🆕 Toast muafiyeti **6 dosyada 7 örnek** oldu (`calendar` 7.'si). §2.3'e "her yeni sayfada bu imzayı görünce önce 'toast mı?' diye sor" notu eklendi |
 | 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **21/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `finance` **1 drawer + 4 modal** → `Sheet` + `Dialog` → **60/75** (`fd5f715`). Drawer **3. print yüzeyi** (`handlePrintStatement` → `window.print()`, `print:` sınıfları, `print:hidden` başlık) → global kural yine karşıladı. Son 4'ü karekteristik olarak `max-h-[90vh]` vardı ama **overflow yoktu** → eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `inventory` **3 modal + 2 drawer** → **61/75** (`9313be1`). ⚠️ **Araç dersi:** bu dosyada X ikon boyutu **tutarsız** (modal `h-4 w-4`, drawer `h-5 w-5`); `h-5` varsayınca `edit` aracı oldString'i **reddetti** (araç doğru çalıştı). → **satırları oku, boyut varsayma** |
+| 2026-09-16 | Faz 3.2 | 🛠️ **Araç eklendi (temp):** `dump.cjs` (satır + girinti + JSON içerik) ve `tail.cjs` (kapanış bloğunu **deterministik** değiştirir). Elle boşluk saymak 2 kez hatalı düzenleme üretti; script üretmedi. **Tempo ~2× arttı** |
+| 2026-09-16 | Faz 3.2 | ✅ `products` **5 overlay** → **62/75** (`5d3f8e8`): silme modalı (X'i yok → `DialogClose` 4/4) + **2. lightbox** (elle `role="dialog"` + `stopPropagation`, focus trap yok) + 3 form modalı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **24/34 dosya** · bu turda **3 dosya / 16 overlay** (önceki turlarda 2-3 dosya) |
