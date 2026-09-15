@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import {
@@ -1426,31 +1432,37 @@ export default function MessagesPage() {
 
       {/* Modal 1: CRM Entity Picker Modal */}
       {isEntityPickerOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsEntityPickerOpen(false)}
-          />
-
-          <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsEntityPickerOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-xl sm:p-6"
+            showCloseButton={false}
+          >
             <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
               <div className="min-w-0 pr-2">
-                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
+                <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
                   Sohbete CRM Kartı Ekle
-                </h3>
+                </DialogTitle>
                 <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                   Paylaşmak istediğiniz varlığı seçin ve konuşmaya interaktif
                   canlı kart olarak ekleyin.
                 </p>
               </div>
-              <button
-                className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
-                onClick={() => setIsEntityPickerOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             {/* Type Selector Tabs */}
@@ -1616,36 +1628,42 @@ export default function MessagesPage() {
                 ))
               )}
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Modal 2: Canned Responses Modal */}
       {isCannedResponsesOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsCannedResponsesOpen(false)}
-          />
-
-          <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCannedResponsesOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-lg sm:p-6"
+            showCloseButton={false}
+          >
             <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
               <div className="min-w-0 pr-2">
-                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
+                <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
                   Hazır Yanıt Şablonları
-                </h3>
+                </DialogTitle>
                 <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                   Sık kullanılan yanıtı seçin, mesaj kutunuza otomatik eklensin.
                 </p>
               </div>
-              <button
-                className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
-                onClick={() => setIsCannedResponsesOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="custom-scrollbar mt-4 max-h-72 space-y-2 overflow-y-auto">
@@ -1682,32 +1700,38 @@ export default function MessagesPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Modal 3: Create Channel Modal */}
       {isCreateChannelOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsCreateChannelOpen(false)}
-          />
-
-          <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateChannelOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-md sm:p-6"
+            showCloseButton={false}
+          >
             <form onSubmit={handleCreateChannel}>
               <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
-                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
+                <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
                   Yeni Sohbet Kanalı Oluştur
-                </h3>
-                <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
-                  onClick={() => setIsCreateChannelOpen(false)}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                </DialogTitle>
+                <DialogClose asChild>
+                  <button
+                    className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </DialogClose>
               </div>
 
               <div className="space-y-4 py-4">
@@ -1790,36 +1814,43 @@ export default function MessagesPage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Modal 4: New Direct Message Modal */}
       {isNewDmModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsNewDmModalOpen(false)}
-          />
-
-          <div className="relative z-10 my-auto flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl sm:p-6 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsNewDmModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-md sm:p-6"
+            showCloseButton={false}
+          >
             {/* Header */}
             <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border dark:border-zinc-800">
               <div className="min-w-0 pr-2">
-                <h3 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
+                <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground dark:text-zinc-100">
                   Yeni Direkt Mesaj
-                </h3>
+                </DialogTitle>
                 <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                   Çalışma arkadaşınızı seçerek doğrudan mesajlaşmaya başlayın.
                 </p>
               </div>
-              <button
-                className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
-                onClick={() => setIsNewDmModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             {/* Search Input */}
@@ -1935,8 +1966,8 @@ export default function MessagesPage() {
                 Kapat
               </Button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* WhatsApp Cloud Chat Drawer */}
