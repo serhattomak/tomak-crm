@@ -14,10 +14,12 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 
 **176 dosya · 1458 error · 1334 advisory warning**
 
-> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1446 error · 189 dosya.**
+> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1443 error · 189 dosya.**
 > Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
-> Düşüşün kaynağı: Faz 3.4 `confirm-dialog` (`-4`), Faz 3'ün overlay göçleri (`-4`, modallar primitife geçerken kendi `slate-*` sınıflarını bıraktı: `team-members-stack` `bg-slate-950/60` + `border-slate-200`, `dashboard-share-popover` `border-slate-200/90`) ve `PortalClient`'ın iki modalı (`-4`: `border-slate-200` ×2 + `bg-slate-950/50` ×2) + `team-members-stack` popover'ı (`-1`).
-> `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**.
+> Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
+> `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → **`1443`**.
+>
+> `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**: panel gidince panelin renk sınıfları da gidiyor.
 
 | Metrik | Taban | Hedef |
 | --- | --- | --- |
@@ -180,37 +182,39 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · sırada 3.2**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (42/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
-> **3.1 bitti.** Tüm isimli gruplar göç etti — `components/email` (6/6), `components/` kök (9/9: 8 dosya + `team-members-stack` popover'ı), `components/chat` (1/1), `widgets` (3/3), `pipelines/_components` (2/2), `promotions/components` (2/2), `components/quotes` (2/2), `components/products` (2/2), `components/portal` (1/1), `components/layout` (1/1), `PortalClient` (2 modal tek dosyada). Toplam **37 birim**.
 >
-> **▶ Sıradaki: 3.2 — sayfa-içi modallar.** Ölçüm (2026-09-16):
-> - **34 adet `page.tsx`** el yapımı overlay taşıyor; toplam **108 × `fixed inset-0`**.
-> - En ağırlar: `quotes` (11), `messages` (8), `recruitment` (8), `organization` (7), `shipments` (7), `vehicles` (6), `finance` (5), `inventory` (5), `products` (5), `calendar` (4), `projects/[projectId]` (4), `products/[productId]` (4).
-> - **Kalan 5 dosya overlay değil ve muaf** (hepsi tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header`, `layout/mobile-nav` alt bar. Gerekçeler §2.3'te.
-> - Başlanacak yer: **en küçükten büyüğe** — `(admin)/admin/templates`, `(admin)/admin/tenants`, `roles`, `tickets`, `users` (hepsi 1 modal) → sonra `automations`, `leaves`, `payroll`, `invoices`, `contracts`, `compliance` (2) → `attendance`, `orders`… → en son `quotes`/`messages`/`recruitment`.
+> **3.2 — sayfa-içi modallar.** İlk **5 sayfa tamam**: `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`). Kalan **29 sayfa**.
 >
-> **Tarif:** standart **§2.3** (Dialog + Sheet: 7 adım, iki backdrop biçimi, boyut aktarımı, varyant önekli ezme, dış-tıklama politikası) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+> **✅ 3.2'nin deseni (3.1'den iki fark):**
+> 1. **Backdrop elemanı yok** — sarmalayıcının kendisi backdrop (`fixed inset-0 bg-…`) ve `onClick` taşımıyor. Yani eskiden dışına tıklayınca kapanmıyordu; §2.3'ün dış-tıklama politikası uygulanır (form taslağı → varsayılan açık).
+> 2. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent` `overflow-y-auto` alır, `overflow-hidden` değil. Bu, widgets/pipelines'ın **tersi**. Dosya başına doğrulanır.
+> 3. Panelde `space-y-*` varsa `gap-0` **şart** (yoksa `space-y` + primitifin `gap-6`'sı üst üste biner).
+> 4. Panelde `max-h`/`overflow` **yoksa** ekle: `DialogContent` body scroll'unu kilitler, aksi halde uzun içerik erişilemez olur (`roles`, `users` bu yüzden eklendi — kısa içerikte görünmez).
 >
-> **⚠️ Bu fazda altı tuzak ölçülerek doğrulandı — standarta yazıldı:**
-> 1. **Taban `max-width`'i koşulsuz ezmeyin** (`w-full max-w-2xl` ❌) → `w-full sm:max-w-2xl`. → §2.3
+> **Kalan sayfalar (en küçükten):** 2 modallılar — `automations`, `automations/[workflowId]`, `invoices`, `leaves`, `contracts`, `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`; sonra 4+ — `calendar`, `projects/[projectId]`, `products/[productId]`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`; en son `recruitment` (8), `messages` (8), `quotes` (11).
+>
+> **Kalan 5 dosya overlay değil ve muaf** (tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header`, `layout/mobile-nav` alt bar. Gerekçeler §2.3'te.
+>
+> **Tarif:** standart **§2.3** (Dialog + Sheet) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+>
+> **⚠️ Bu fazda yedi tuzak ölçülerek doğrulandı — standarta/notes'a yazıldı:**
+> 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
-> 3. **`Popover` çapaya göre konumlanır** — mobil "başlık altı tam genişlik" deseni yaklaşımla üretilir. → §2.4
-> 4. **Dış-tıklama:** varsayılan açık; yalnızca **geri alınamaz çıktı** varsa `onInteractOutside` ile engellenir (form taslağı sayılmaz). → §2.3
-> 5. **Açılış/kapanış SAYILIR** — sezgisel kapanış eşleştirmesi `TS17002` üretir (Faz 2'de de aynısı olmuştu). → §2.3
-> 6. **Kaydırma sahibi dosya başına belirlenir** — içeride kaydıran bir blok varsa `DialogContent` `overflow-hidden` alır; sarmalayıcı kaydırıyorsa `overflow-y-auto` ona taşınır. Kopyala-yapıştır yanlış sonuç verir.
+> 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
+> 4. **Dış-tıklama:** varsayılan açık; yalnızca **geri alınamaz çıktı** varsa engellenir. → §2.3
+> 5. **Açılış/kapanış SAYILIR** — sezgisel eşleştirme `TS17002` üretir. → §2.3
+> 6. **Kaydırma sahibi dosya başına belirlenir** — kopyala-yapıştır yanlış sonuç verir.
+> 7. **Ölçüm araçları sessizce yanlış sonuç verir** — `Select-String -Path` (`[tenantSlug]` joker) ve `git show <sha>^` (cmd.exe `^`'i yiyor). → bulgu 9
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor, ama `apps/web` noktalı virgüllü yazılmış; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor. Tek dosyada 55 satırlık değişikliği **431 satıra** çıkarır. Biçim, çevre dosyanın stiline elle uyarlanır. Ayrıntı: Gelecek Adımlar #18.
 >
-> **⚠️ `apps/web` yollarında `-Path` ile ölçüm YAPMAYIN.** Klasör adları `(dashboard)` ve `[tenantSlug]` içeriyor; PowerShell `Select-String -Path` / `Get-ChildItem -Include` bunları **joker** sanar ve o alt ağacın tamamını **sessizce atlar**. `-LiteralPath` kullanın ya da Node ile yürüyün. Ayrıntı: bulgu 9.
->
-> **⚠️ Kapsam disiplini hatırlatması:** overlay **olmayan** yüzen yüzeylerin tam listesi ve gerekçeleri §2.3'te. Ölçülerek ayırt edildiler — "`fixed`/`shadow` içeriyor" tek başına overlay kanıtı değil.
->
 > **⚠️ Elle duman testi bekleyen noktalar (typecheck bunları kanıtlayamaz):**
-> 1. `tenant-switcher` mobil navigasyon drawer'ının **içinde** ve popover artık `z-[70]` yerine primitifin `z-50`'siyle body'ye portallanıyor. Eşit z-index'in DOM sırasıyla çözülmesi bekleniyor (portal drawer'dan sonra ekleniyor) — gözle doğrulanmalı.
-> 2. İki panelin mobil genişliği artık çapaya bağlı; tetikleyici başlıkta olduğu sürece eski konuma düşer.
-> 3. `product-gallery` lightbox'ı artık `h-screen w-screen` bir `DialogContent`; görselin ortalanması ve köşe kontrollerinin konumu gözle doğrulanmalı.
+> 1. `tenant-switcher` mobil navigasyon drawer'ının **içinde** ve popover artık `z-[70]` yerine primitifin `z-50`'siyle body'ye portallanıyor — gözle doğrulanmalı.
+> 2. İki panelin mobil genişliği artık çapaya bağlı.
+> 3. `product-gallery` lightbox'ı artık `h-screen w-screen` bir `DialogContent`; görselin ortalanması ve köşe kontrolleri gözle doğrulanmalı.
 
 **3.2 sayfa modalları için ölçülmüş kapsam:** 34 sayfa · 108 `fixed inset-0`. Yol haritasının başındaki "75 modal component'i" tahmini **isim sayımından** geliyordu (`*Modal`/`*Drawer`); sayfa-içi modallar bu sayıma tam girmemişti. Gerçek ilerleme birimi olarak **3.1 tamamlandı** kabul edilir ve 3.2 kendi başına, yukarıdaki 108 sayaçla izlenir.
 
@@ -225,7 +229,9 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
 - [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
 - [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
-- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16). En küçükten: `(admin)/admin/templates`, `(admin)/admin/tenants`, `roles`, `tickets`, `users` → sonra 2'li sayfalar (`automations`, `leaves`, `payroll`, `invoices`, `contracts`, `compliance`) → en son `quotes` (11), `messages` (8), `recruitment` (8), `organization` (7), `shipments` (7)
+- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16)
+  - [x] İlk 5: `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
+  - [ ] Kalan 29 — en küçükten: 2 modallılar (`automations`, `automations/[workflowId]`, `invoices`, `leaves`, `contracts`, `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`) → 4+ (`calendar`, `projects/[projectId]`, `products/[productId]`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`) → en son `recruitment` (8), `messages` (8), `quotes` (11)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -319,6 +325,10 @@ Radius borcu ölçümü **iki kez yanlış** rapor edildi ve yanlış hâliyle y
 **Kural:** `apps/web` yollarında ölçüm **Node ile yürüyerek** (veya `-LiteralPath` ile) yapılır. `-Path` + `-Include` kullanılmaz. Aynı tuzak `slate-` sayımında da bir kez yaşandı (kendi kendine: `translate-` içindeki `slate-` eşleşmesi → hayalet regresyon, `1 → 2`).
 
 **Neden önemli:** yol haritası "tahmin değil ölçüm" üzerine kurulu. Yanlış ölçüm, yanlış plan demek — 146 kayıt 6 diye yazılınca radius işi "küçük" görünüyordu.
+
+**🔁 Aynı sınıfın ikinci vakası (2026-09-16, 3.2 sırasında):** Guard düşüşünü (`1446 → 1443`) dosyalara dağıtmak için `git show <sha>^:yol` kullanıldı. **`^` bir kaçış karakteri olduğu için `cmd.exe` onu yiyor** → "ebeveyn" sessizce commit'in **kendisine** çözülüyor ve her dosya **tam olarak 0** değişim raporluyor. Doğrusu `~1`. Ölçüm `~1` ile tekrarlandığında gerçek dağılım çıktı: `templates` **−2** (`bg-slate-900/40` + `border-slate-200`), `tickets` **−1** (`bg-slate-900/60`), `tenants`/`roles`/`users` **0**.
+
+**Ortak ders:** bu ortamda ölçüm araçları **sessizce** yanlış sonuç veriyor — hata fırlatmıyorlar. Bu yüzden bir ölçüm "mantıklı" görünse bile **ikinci bir yolla** doğrulanmalı (ör. hem `git show` hem çalışma kopyası, hem PowerShell hem Node).
 
 ### 📌 Faz 3 bulgusu 10 — dış-tıklama politikası karara bağlandı
 
@@ -520,3 +530,11 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3 | 📏 **3.2 kapsamı ölçüldü:** **34 `page.tsx` · 108 `fixed inset-0`**. Kalan 5 dosya overlay değil (muaf, tek `backdrop-blur`/`shadow-2xl`). `settings/page` kartındaki dekoratif blur bu listede |
 | 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** scoped **PASS** · `--full` **1446** · typecheck 2/2 · build 2/2 |
 | 2026-09-16 | Faz 3 | ⚠️ **Ortam uyarısı (kod değil):** `build` sırasında "diskte yeterli yer yok" (os error 112). **D: sürücüsünde 0.4 GB boş.** Ölçüm: `crm-monorepo/.turbo/cache` **477 dosyada ~40.6 GB**, `apps/web/.next` ~4 GB. Turbo cache yeniden üretilebilir; temizlik için onay bekliyor |
+| 2026-09-16 | Faz 3 | ✅ **Turbo cache temizlendi** (onaylı): `crm-monorepo/.turbo/cache` silindi → **D: 0.4 GB → 41 GB boş** |
+| 2026-09-16 | Faz 3.2 | ✅ `(admin)/admin/templates` modalı → `Dialog` → **38/75** (`ee167e5`). **Sayfa deseni netleşti:** backdrop elemanı yok (sarmalayıcı backdrop), **panel kendi kaydırıcısı** → `DialogContent` `overflow-y-auto` alır (3.1'in tersi), `space-y-6` + `gap-0` |
+| 2026-09-16 | Faz 3.2 | ✅ `(admin)/admin/tenants` modalı → `Dialog` → **39/75** (`8f3b524`) |
+| 2026-09-16 | Faz 3.2 | ✅ `roles` create-role modalı → `Dialog` → **40/75** (`07d476d`). Panelde `max-h`/`overflow` yoktu → eklendi: primitif body scroll'unu kilitlediği için uzun içerik erişilemez kalırdı. Kısa içerikte **görünmez**, dosyayı kardeşleriyle tutarlı yapar |
+| 2026-09-16 | Faz 3.2 | ✅ `users` invite modalı → `Dialog` → **41/75** (`757799b`). Aynı eksik `max-h`/`overflow` → aynı gerekçeyle eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `tickets` create-ticket modalı → `Dialog` → **42/75** (`fbf5591`). Bu panelde `max-h` + `overflow-y-auto` zaten vardı → ekleme gerekmedi |
+| 2026-09-16 | Faz 3.2 | 🔁 **Bulgu 9'un ikinci vakası:** guard düşüşünü dağıtmak için `git show <sha>^:yol` kullanıldı; **`cmd.exe` `^`'i yiyor** → "ebeveyn" commit'in kendisine çözüldü, her dosya **tam 0** değişim raporladı. `~1` ile tekrarlandı: `templates −2` + `tickets −1` = doğru dağılım. **Ders: ölçüm ikinci bir yolla doğrulanmalı** |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** (1458'den; zincir her adımda ölçüldü) · typecheck 2/2 · 3.2'de 5/34 sayfa |
