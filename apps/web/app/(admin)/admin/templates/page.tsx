@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import { Edit, Loader2, Plus, Sparkles, X } from "lucide-react";
@@ -293,30 +299,43 @@ export default function AdminTemplatesPage() {
 
       {/* EDIT / CREATE TEMPLATE MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
-          <div className="max-h-[90vh] w-full max-w-2xl space-y-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-6 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-slate-100 border-b pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-base text-slate-900">
+                  <DialogTitle className="font-bold text-base text-slate-900">
                     {editTemplate.id
                       ? "Sektör Şablonunu Düzenle"
                       : "Yeni Sektör Şablonu Oluştur"}
-                  </h2>
+                  </DialogTitle>
                   <p className="text-slate-500 text-xs">
                     Modülleri ve alan terminolojisini tanımlayın
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="space-y-4 text-xs" onSubmit={handleSaveTemplate}>
@@ -453,8 +472,8 @@ export default function AdminTemplatesPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
