@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
+import {
   AlertCircle,
   ArrowLeft,
   ChevronDown,
@@ -497,122 +503,124 @@ export function EmailThreadDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-black/40 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-        type="button"
-      />
-
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-        <div className="flex w-screen max-w-2xl flex-col border-zinc-200 border-l bg-white shadow-2xl transition-transform dark:border-zinc-800 dark:bg-zinc-950">
-          {/* Header */}
-          <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-4 dark:border-zinc-800">
-            <div className="flex items-center gap-3">
-              <button
-                aria-label="Geri"
-                className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                onClick={onClose}
-                type="button"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </button>
-              <div>
-                <h2 className="line-clamp-1 font-semibold text-base text-zinc-900 dark:text-zinc-100">
-                  {thread?.subject || "E-posta Dizisi"}
-                </h2>
-                <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                  <span>{thread?.messages.length || 0} ileti</span>
-                  {thread?.messages && thread.messages.length > 0 ? (
-                    <>
-                      <span>•</span>
-                      <span>
-                        Son aktivite:{" "}
-                        {formatDateTr(thread.messages.at(-1)?.createdAt)}
-                      </span>
-                    </>
-                  ) : null}
-                </div>
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-2xl data-[side=right]:sm:max-w-2xl"
+        showCloseButton={false}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-4 dark:border-zinc-800">
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Geri"
+              className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              onClick={onClose}
+              type="button"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <div>
+              <SheetTitle className="line-clamp-1 font-semibold text-base text-zinc-900 dark:text-zinc-100">
+                {thread?.subject || "E-posta Dizisi"}
+              </SheetTitle>
+              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                <span>{thread?.messages.length || 0} ileti</span>
+                {thread?.messages && thread.messages.length > 0 ? (
+                  <>
+                    <span>•</span>
+                    <span>
+                      Son aktivite:{" "}
+                      {formatDateTr(thread.messages.at(-1)?.createdAt)}
+                    </span>
+                  </>
+                ) : null}
               </div>
             </div>
+          </div>
 
-            <div className="flex items-center gap-1.5">
-              <button
-                className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 font-medium text-blue-700 text-xs hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
-                onClick={handleHeaderConvertToLead}
-                title="E-postadan Müşteri ve Satış Fırsatı Oluştur"
-                type="button"
-              >
-                <UserPlus className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Fırsata Dönüştür</span>
-              </button>
-              <button
-                className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1.5 font-medium text-purple-700 text-xs hover:bg-purple-100 dark:border-purple-900/60 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-900/60"
-                onClick={handleHeaderConvertToTicket}
-                title="E-postadan Destek Talebi Aç"
-                type="button"
-              >
-                <LifeBuoy className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Destek Talebi Aç</span>
-              </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 font-medium text-blue-700 text-xs hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
+              onClick={handleHeaderConvertToLead}
+              title="E-postadan Müşteri ve Satış Fırsatı Oluştur"
+              type="button"
+            >
+              <UserPlus className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Fırsata Dönüştür</span>
+            </button>
+            <button
+              className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1.5 font-medium text-purple-700 text-xs hover:bg-purple-100 dark:border-purple-900/60 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-900/60"
+              onClick={handleHeaderConvertToTicket}
+              title="E-postadan Destek Talebi Aç"
+              type="button"
+            >
+              <LifeBuoy className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Destek Talebi Aç</span>
+            </button>
+            <SheetClose asChild>
               <button
                 aria-label="Kapat"
                 className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-                onClick={onClose}
                 type="button"
               >
                 <X className="h-5 w-5" />
               </button>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 space-y-4 overflow-y-auto p-6">
-            {isLoading ? (
-              <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
-                <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
-                <span className="text-sm">İletiler yükleniyor...</span>
-              </div>
-            ) : null}
-
-            {error ? (
-              <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-300">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <p className="font-medium text-sm">{error}</p>
-                </div>
-              </div>
-            ) : null}
-
-            {!(isLoading || error) &&
-            thread?.messages &&
-            thread.messages.length === 0 ? (
-              <div className="flex h-64 flex-col items-center justify-center text-zinc-500">
-                <Mail className="mb-2 h-8 w-8 text-zinc-300" />
-                <p className="text-sm">Bu dizide henüz ileti bulunmuyor.</p>
-              </div>
-            ) : null}
-
-            {!(isLoading || error) && thread?.messages
-              ? thread.messages.map((message, index) => (
-                  <MessageCard
-                    index={index}
-                    isExpanded={expandedMessageIds.has(message.id)}
-                    key={message.id}
-                    message={message}
-                    onConvertToLead={handleOpenLeadModal}
-                    onConvertToTicket={handleOpenTicketModal}
-                    onReply={onReply}
-                    onToggleExpand={toggleExpand}
-                    onToggleRead={handleToggleRead}
-                  />
-                ))
-              : null}
+            </SheetClose>
           </div>
         </div>
-      </div>
+
+        {/* Content */}
+        <div className="flex-1 space-y-4 overflow-y-auto p-6">
+          {isLoading ? (
+            <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
+              <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+              <span className="text-sm">İletiler yükleniyor...</span>
+            </div>
+          ) : null}
+
+          {error ? (
+            <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-300">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <p className="font-medium text-sm">{error}</p>
+              </div>
+            </div>
+          ) : null}
+
+          {!(isLoading || error) &&
+          thread?.messages &&
+          thread.messages.length === 0 ? (
+            <div className="flex h-64 flex-col items-center justify-center text-zinc-500">
+              <Mail className="mb-2 h-8 w-8 text-zinc-300" />
+              <p className="text-sm">Bu dizide henüz ileti bulunmuyor.</p>
+            </div>
+          ) : null}
+
+          {!(isLoading || error) && thread?.messages
+            ? thread.messages.map((message, index) => (
+                <MessageCard
+                  index={index}
+                  isExpanded={expandedMessageIds.has(message.id)}
+                  key={message.id}
+                  message={message}
+                  onConvertToLead={handleOpenLeadModal}
+                  onConvertToTicket={handleOpenTicketModal}
+                  onReply={onReply}
+                  onToggleExpand={toggleExpand}
+                  onToggleRead={handleToggleRead}
+                />
+              ))
+            : null}
+        </div>
+      </SheetContent>
 
       <ConvertToLeadModal
         isOpen={Boolean(leadModalMessage)}
@@ -626,6 +634,6 @@ export function EmailThreadDrawer({
         onClose={handleCloseTicketModal}
         tenantSlug={tenantId}
       />
-    </div>
+    </Sheet>
   );
 }
