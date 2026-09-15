@@ -1,6 +1,12 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
@@ -1106,19 +1112,31 @@ function CreateInvoiceModal({
   }, [cariAccountId, type, profile, notes, items, tenantSlug, onSuccess]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-2xl bg-white shadow-2xl dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full gap-0 overflow-hidden p-0 sm:max-w-3xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Fatura Düzenle
-          </h3>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <div className="flex-1 space-y-4 overflow-y-auto p-4 text-xs">
@@ -1242,7 +1260,7 @@ function CreateInvoiceModal({
             {isSubmitting ? "Kaydediliyor..." : "Faturayı Oluştur"}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
