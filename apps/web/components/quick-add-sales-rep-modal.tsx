@@ -1,6 +1,11 @@
-/* Hallmark · component: quick-add-sales-rep-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
 import { Check, Loader2, UserPlus, X } from "lucide-react";
 import type React from "react";
@@ -70,29 +75,41 @@ export function QuickAddSalesRepModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="relative flex w-full max-w-md flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex w-full flex-col gap-0 overflow-hidden p-5 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               <UserPlus className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Hızlı Satış Temsilcisi Ekle
-              </h3>
+              </DialogTitle>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 Ekibe yeni bir temsilci kaydedin ve anında atayın
               </p>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {error && (
@@ -192,7 +209,7 @@ export function QuickAddSalesRepModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
