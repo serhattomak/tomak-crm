@@ -2,6 +2,7 @@
 
 import { Combobox } from "@workspace/ui/components/combobox";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertCircle,
@@ -756,7 +757,7 @@ export default function InvoicesPage() {
   }, [loadInvoices]);
 
   return (
-    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+    <PageContainer className="space-y-6">
       {/* 1. Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -870,7 +871,7 @@ export default function InvoicesPage() {
           tenantSlug={tenantSlug}
         />
       ) : null}
-    </div>
+    </PageContainer>
   );
 }
 
