@@ -185,13 +185,44 @@ Elle yazılmış bir modal/overlay'i primitife çevirme adımları — Faz 3.0 p
 
 **Kazanç:** backdrop, z-index katmanı, giriş/çıkış animasyonu, focus tuzağı, `Esc`, `aria-modal` ve dışına tıklayınca kapanma **tek yerden** gelir.
 
+**Boyut aktarımı — taban `max-width` primitife aittir.** Panelin kendi genişliği `className`'e geçer, ama **taban (base) `max-width` yazılmaz.** `DialogContent` varsayılanı `w-full max-w-[calc(100%-2rem)]`'dir ve silinen `p-4` sarmalayıcısının **mobil kenar payını** üreten tam da budur. Koşulsuz `max-w-2xl` bu payı siler:
+
+| | 375px | 500px | 900px |
+| --- | --- | --- | --- |
+| El yapımı (`p-4` sarmalayıcı + `max-w-2xl`) | 343 | 468 | 672 |
+| `w-full max-w-2xl` ❌ | **375** | **500** | 672 |
+| `w-full sm:max-w-2xl` ✅ | 343 | 468 | 672 |
+
+**Kural:** genişlik `sm:` ve üstü için yazılır (`sm:max-w-2xl`), taban için yazılmaz. `w-full` zaten varsayılandır; yazmak zararsız ama gereksiz.
+
 **`Sheet` (drawer) için ek notlar** — adımlar aynı, üç fark var:
 
 1. **Yön:** `side="right"` (varsayılan) · `"left"` · `"top"` · `"bottom"`. Mobil navigasyon drawer'ı `side="left"`.
-2. **Genişlik varsayılanı dar:** `SheetContent` sağ/sol için `w-3/4 sm:max-w-sm` gelir. Geniş panel gerekiyorsa `className` ile ez: `w-full max-w-4xl sm:max-w-4xl`.
+2. **Genişlik varsayılanı dar:** `SheetContent` sağ/sol için `w-3/4 sm:max-w-sm` gelir — ama bunlar **varyant önekli** (`data-[side=right]:`). Geniş panel gerekiyorsa ezme de **aynı öneki taşımalıdır** (bkz. aşağıdaki kural): `data-[side=right]:w-full data-[side=right]:sm:max-w-4xl`.
 3. **`SheetContent` varsayılan olarak `flex flex-col`:** yan yana iki sütunlu bir drawer (ör. liste + sohbet) `flex-row` ister.
 
-> **Neden `className` ezmesi güvenli:** `cn()` **tailwind-merge** kullanır — çakışan utility'lerde **sonuncuyu** tutar. Yani `flex-col` + `flex-row` → `flex-row`; `w-3/4` + `w-full` → `w-full`. CSS'te hangi sınıfın sonra geldiğine bağlı kalınmaz.
+> **`className` ezmesi nerede güvenli, nerede sessizce başarısız:** `cn()` **tailwind-merge** kullanır, ama yalnızca **aynı modifier listesine** sahip utility'lerde sonuncuyu tutar.
+>
+> | Ezme | Sonuç |
+> | --- | --- |
+> | `flex-col` + `flex-row` | ✅ `flex-row` (ikisi de modifiersız) |
+> | `w-3/4` + `w-full` | ✅ `w-full` (ikisi de modifiersız) |
+> | `data-[side=right]:w-3/4` + `w-full` | ❌ **ikisi de kalır** — modifier listeleri (`[data-[side=right]]` ≠ `[]`) eşleşmez |
+>
+> Üçüncü durumda `cn()` çıktısında iki utility birlikte bulunur ve kararı **CSS özgüllüğü** verir: `data-[side=*]` önekli kural `(0,2,0)`, düz olan `(0,1,0)` → **primitif kazanır.** Hata vermez; sadece istediğiniz genişlik uygulanmaz. Kanıt derlenmiş stylesheet'ten:
+>
+> ```css
+> .data-\[side\=right\]\:w-3\/4[data-side=right]{width:75%}              /* (0,2,0) */
+> .w-full{width:100%}                                                     /* (0,1,0) */
+> .data-\[side\=right\]\:sm\:max-w-sm[data-side=right]{max-width:…sm}     /* (0,2,0) */
+> .sm\:max-w-4xl{max-width:…4xl}                                          /* (0,1,0) */
+> ```
+>
+> **Kural:** varyant önekli bir varsayılanı ezmek için **aynı öneki kullanın.**
+> ```tsx
+> className="data-[side=right]:w-full max-w-4xl data-[side=right]:sm:max-w-4xl flex-row"
+> ```
+> Bu tuzağı taşıyan varsayılanlar: `sheet.tsx` (`data-[side=*]:w-3/4`, `:sm:max-w-sm`) ve `alert-dialog.tsx` (`data-[size=*]:max-w-xs`, `:sm:max-w-md`). Yeni bir primitif eklerken genişlik varsayılanını **öneksiz** yazmayı tercih edin.
 
 **Kazanç (Sheet):** kenardan kayma animasyonu, `Esc`, dışına tıklama, focus tuzağı ve katman yönetimi primitiften gelir.
 

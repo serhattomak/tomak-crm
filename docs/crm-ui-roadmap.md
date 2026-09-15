@@ -175,15 +175,20 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (10/75)**
+## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (14/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
-> 1. ✅ `Sheet` deseni kuruldu — `whatsapp-chat-drawer` (`491cb07`). Notlar §2.3'te.
-> 2. `components/email` kalan **3 modal**: `convert-to-lead-modal` (792 satır), `template-modal` (740), `email-account-modal` (679). Desen `compose-modal` (`26bdf0b`) ve `convert-to-ticket-modal` (`1508fdc`) ile kurulu.
-> 3. `components/email/email-thread-drawer.tsx` (527) → **`Sheet`** (artık desen var).
-> 4. Sonra `components/` kök (6), `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
+> 1. ✅ `Sheet` deseni kuruldu — `whatsapp-chat-drawer` (`491cb07`). Notlar §2.3'te. **⚠️ Bu commit'in genişlik ezmesi hatalıydı → `7f639f0` ile düzeltildi** (bkz. bulgu 5).
+> 2. ✅ `components/email` **tamamlandı** (6 dosya): `compose-modal` (`26bdf0b`), `convert-to-ticket-modal` (`1508fdc`), `convert-to-lead-modal` (`42e05f5`), `template-modal` (`4700991`), `email-account-modal` (`06af922`), `email-thread-drawer` → `Sheet` (`c226549`).
+> 3. Sıradaki grup — `components/` kök (6): `entity-picker-modal` (25808 B), `quick-add-sales-rep-modal` (7639), `shortcuts-help-modal` (5848), `notification-center` (18864), `command-palette` (35318), `dashboard-share-popover` (12394). Sonra `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
 >
-> **Tarif:** standart **§2.3** (Dialog + Sheet notları, 7 adım, iki backdrop biçimi). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+> **Tarif:** standart **§2.3** (Dialog + Sheet notları, 7 adım, iki backdrop biçimi, boyut aktarımı). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+>
+> **⚠️ Bu fazda iki tuzak ölçülerek doğrulandı — §2.3'e yazıldı:**
+> 1. **Taban `max-width`'i koşulsuz ezmeyin** (`w-full max-w-2xl` ❌) — primitifin `max-w-[calc(100%-2rem)]` değeri silinen `p-4`'ün mobil kenar payını üretiyordu. Doğru: `w-full sm:max-w-2xl`.
+> 2. **Varyant önekli varsayılanı öneksiz ezmeyin** — `data-[side=right]:w-3/4` + `w-full` → ikisi de çıktıda kalır, CSS özgüllüğü primitifi kazandırır. Doğru: `data-[side=right]:w-full`.
+>
+> **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor, ama `apps/web` noktalı virgüllü yazılmış; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor. Tek dosyada 55 satırlık değişikliği **431 satıra** çıkarır. Biçim, çevre dosyanın stiline elle uyarlanır. Ayrıntı: Gelecek Adımlar #18.
 
 **Gerçek iş birimi 75 modal component'i** (`fixed inset-0` sayısı 156 ama şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
 
@@ -193,7 +198,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
 - [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
 - [x] **`customers` grubu tamam** (5 dosya) — `create-customer-modal`, `edit-customer-modal`, `add-contact-modal`, `add-activity-modal` → `Dialog`; `delete-customer-dialog` → `ConfirmDialog` (`dafdeb5`)
-- [ ] **3.1 kalan:** `customers/[customerId]/_components` (0 — tamam) · `components/email` (6) · `components/` kök (6) · `widgets` (3) · `promotions/components` (2) · `pipelines/_components` (2) · `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/chat` (1) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
+- [ ] **3.1 kalan:** `customers/[customerId]/_components` (0 — tamam) · `components/email` (0 — **tamam**, 6/6) · `components/` kök (6) · `widgets` (3) · `promotions/components` (2) · `pipelines/_components` (2) · `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/chat` (1 ✅) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
 - [ ] **3.2** Sayfa-içi modallar (en küçükten büyüğe)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
@@ -209,6 +214,49 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 `delete-customer-dialog.tsx`: **50 satır → 28 satır**. `fixed inset-0`, backdrop, `z-50`, `shadow-2xl`, `Button` importu — hepsi gitti. Bu, ADR-0004'ün işaret ettiği vakanın ta kendisiydi: `ConfirmDialog` zaten varken sayfanın modalı sıfırdan yazması.
 
 **Her batch'te geçerli kabul kriterleri:** el yapımı `fixed inset-0` / backdrop / `z-50` / panel `shadow`'u **sıfıra iner** · a11y primitiflerden gelir (focus trap, `Esc`, `aria-modal`) · panel radius'unun 4 varyantı tek standarda iner.
+
+### 🔴 Faz 3 bulgusu 3 — `apps/web` hiçbir biçimlendiricinin kapsamında değil
+
+Bir dosyada girintiyi normalleştirmek için `npx prettier --write` çalıştırıldı; **431 satır** değişti (220 ekleme / 211 silme) — oysa önceki 10 commit'te bir modal ~46 satır değişiyordu. Ölçüm:
+
+| Ölçüm | Sonuç |
+| --- | --- |
+| `prettier --check` → **dokunulmamış** `compose-modal`, `convert-to-ticket-modal`, `permission-gate`, `nav-config` | **4/4 FAIL** |
+| `apps/web` noktalı virgüllü satır (`compose-modal` / `convert-to-ticket-modal`) | 166 / 110 |
+| Kök `.prettierrc` | `"semi": false` — koda uymuyor |
+
+Kök `.prettierrc` `apps/web`'in fiilî stiliyle **çelişiyor**; yani `apps/web` prettier-temiz değil ve `prettier --write` orada her zaman toplu gürültü üretir. Ayrıca kökteki `biome.jsonc` (Ultracite) **dış** depoda yaşıyor ve dış `.gitignore` `crm-monorepo/`'yi dışlıyor → **AGENTS.md'deki `npm exec -- ultracite fix` komutu `apps/web`'e erişmiyor.** Faz 3'ün kabul kriterindeki "ultracite" adımı fiilen kapsamsız.
+
+**Sonuç:** değişiklik `git checkout` ile geri alındı, düzenlemeler elle yeniden uygulandı (55 satır). **Kural: `apps/web`'te biçim, çevre dosyanın stiline elle uyarlanır.** Altyapı borcu Gelecek Adımlar #18.
+
+### ⚠️ Faz 3 bulgusu 4 — primitifin taban `max-width`'i ezilince mobil kenar payı ölüyor
+
+`DialogContent` varsayılanı `w-full max-w-[calc(100%-2rem)]` — silinen `p-4` sarmalayıcısının mobil kenar payını üreten tam da bu. İlk iki Dialog migrasyonu `max-w-*`'i **koşulsuz** yazdı (`w-full max-w-lg gap-0 …`), bu da payı sildi:
+
+| | 375px | 500px | 900px |
+| --- | --- | --- | --- |
+| El yapımı (`p-4` + `max-w-lg`) | 343 | 468 | 512 |
+| `max-w-lg` koşulsuz ❌ | **375** | **500** | 512 |
+| `sm:max-w-lg` ✅ | 343 | 468 | 512 |
+
+**Kural:** genişlik `sm:` ve üstü için yazılır, taban için yazılmaz → `w-full sm:max-w-lg`. Önceki 2 dosya `ed5efff` ile geri getirildi. `whatsapp-chat-drawer` **etkilenmedi**: orijinal paneli de `w-full max-w-4xl`'di, pay yoktu.
+
+### 🔴 Faz 3 bulgusu 5 — `Sheet`'in `data-[side=*]` varsayılanları öneksiz ezmeyi yiyor
+
+`whatsapp-chat-drawer` (`491cb07`, "✅ Sheet deseni kuruldu") `className="w-full max-w-4xl flex-row sm:max-w-4xl"` taşıyordu. Bu **çalışmıyordu**. `cn()` çıktısı gerçek `tailwind-merge` ile ölçüldü:
+
+```
+önce : fixed z-50 flex  data-[side=right]:w-3/4 data-[side=right]:sm:max-w-sm  w-full max-w-4xl flex-row sm:max-w-4xl
+sonra: fixed z-50 flex  data-[side=right]:w-full max-w-4xl data-[side=right]:sm:max-w-4xl  flex-row
+```
+
+tailwind-merge yalnızca **aynı modifier listesine** sahip utility'leri birleştirir; `[data-[side=right]] ≠ []` olduğu için primitifin sınıfları **çıktıda kalır**. Kararı derlenmiş CSS'te **özgüllük** verir: `data-[side=right]:w-3/4` = (0,2,0), `w-full` = (0,1,0) → drawer **%75 genişlik + 384px tavan** ile render ediliyordu (istenen: `w-full max-w-4xl`). Migrasyonun soktuğu görünür bir regresyon; `7f639f0` ile düzeltildi, §2.3'ün "`cn()` sonuncuyu tutar" gerekçesi gerçek davranışa göre yeniden yazıldı.
+
+**Kural:** varyant önekli varsayılanı **aynı öneki taşıyan** sınıfla ez. Aynı tuzak `alert-dialog.tsx` (`data-[size=*]:max-w-xs`, `:sm:max-w-md`) için de geçerli — bugün tüketicisi olmadığı için kayda geçti, değiştirilmedi.
+
+### 📌 Faz 3 bulgusu 6 — `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor
+
+`packages/ui/src/components/confirm-dialog.tsx`, Faz 1'de eklenen `alert-dialog.tsx`'i değil, `radix-ui`'yi **doğrudan** kullanıp kendi overlay'ini kuruyor: `fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs` + panelde `shadow-2xl backdrop-blur-md`. Faz 3.4'te yalnızca `rounded-3xl`/`violet-600`/token ihlalleri temizlendi; overlay katmanı kaldı. Gelecek Adımlar'a alındı (#19).
 
 - [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
 - [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
@@ -291,6 +339,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 15. **`lucide-react ^1.32.0` sürüm pininin doğrulanması** — alışılmadık bir pin
 16. **391 dosyadaki Hallmark imzasının temizliği** — `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlıkları. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik temizlik. Referans verdikleri doküman artık stub olduğu için sessizce yanıltıcılar
 17. **`packages/ui` biçim normalizasyonu** — eski 21 primitif `.prettierrc`'ye uymuyor (`semi: false` diyor, dosyalar noktalı virgüllü). `npm run format` 21 dosyayı toplu değiştirir; ayrı bir geçiş olarak, kendi incelemesiyle yapılmalı (tailwind eklentisi sınıf sıralarını da yeniden düzenler)
+18. **`apps/web` biçim altyapısı** — bugün **hiçbir biçimlendiricinin kapsamında değil** (Faz 3 bulgusu 3): kök `.prettierrc` `semi: false` diyor ama `apps/web` noktalı virgüllü, `prettier --check` dokunulmamış dosyalarda da FAIL veriyor; Ultracite (`biome.jsonc`) ise dış depoda ve `crm-monorepo/` gitignore'da olduğu için görünmüyor. Seçenekler: (a) `.prettierrc`'yi koda uydur (`semi: true`) ve `apps/web`'i kapsama al, (b) `crm-monorepo/`'yi Ultracite kapsamına sok, (c) `apps/web` için ayrı config. **Her seçenek tek seferlik büyük bir diff üretir** → kendi commit'i + incelemesi gerekir, Faz 3'e karıştırılmaz
+19. **`ConfirmDialog`'un paylaşılan `alert-dialog` primitifine taşınması** — primitif, Faz 1'de eklenen `alert-dialog.tsx`'i değil `radix-ui`'yi doğrudan kullanıp kendi overlay'ini (`fixed inset-0` + `backdrop-blur-xs` + `shadow-2xl`) kuruyor; Faz 3.4 yalnızca renk/token ihlallerini temizledi (Faz 3 bulgusu 6)
 
 ---
 
@@ -332,3 +382,12 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 3 | ✅ `delete-customer-dialog` → `ConfirmDialog`: **50 → 28 satır**. El yapımı overlay sıfır |
 | 2026-09-15 | Faz 3 | 🔍 Bulgu: paylaşılan primitifin kendisi standardı ihlal ediyordu → **önce primitif düzeltilir, sonra ona taşınılır** kuralı kaydedildi |
 | 2026-09-15 | Faz 3 | ✅ **`customers` grubu tamam** (5 dosya) → **7/75**. 4 modal → `Dialog`, 1 → `ConfirmDialog`. El yapımı iz sıfır |
+| 2026-09-15 | Faz 3 | ✅ `convert-to-lead-modal` → `Dialog` → **11/75** (`42e05f5`). Diff 32/23 — desen korundu |
+| 2026-09-15 | Faz 3 | 🔴 **Hata (kendi):** girinti için `prettier --write` çalıştırıldı → **431 satır** churn (55 satırlık değişiklik). Geri alındı, elle yeniden uygulandı. **Bulgu 3** kaydedildi: `apps/web` hiçbir biçimlendiricinin kapsamında değil |
+| 2026-09-15 | Faz 3 | ✅ `template-modal` → `Dialog` → **12/75** (`4700991`). `flex flex-col`, primitifin `grid`'ini tailwind-merge ile yendi |
+| 2026-09-15 | Faz 3 | ⚠️ **Bulgu 4:** koşulsuz `max-w-*`, primitifin mobil kenar payını siliyordu (375px'te 343 → 375). Önceki 2 dosya `ed5efff` ile düzeltildi; §2.3'e boyut aktarımı kuralı yazıldı |
+| 2026-09-15 | Faz 3 | ✅ `email-account-modal` → `Dialog` → **13/75** (`06af922`). Formun ham `<input>`'ları kapsam dışı bırakıldı (Faz 5) |
+| 2026-09-15 | Faz 3 | 🔴 **Bulgu 5:** `Sheet`'in `data-[side=*]` varsayılanları, öneksiz `w-full`/`sm:max-w-*` ezmelerini **yiyor** (tailwind-merge modifier listeleri eşleşmiyor, ardından CSS özgüllüğü). `whatsapp-chat-drawer` %75 / 384px render ediyordu → `7f639f0` ile düzeltildi; §2.3'ün `cn()` gerekçesi yeniden yazıldı |
+| 2026-09-15 | Faz 3 | ✅ `email-thread-drawer` → `Sheet` → **14/75** (`c226549`, 2. Sheet). `TS2657`: kök div silinince 3 kardeş kaldı → iç içe modallar `Sheet` içine alındı (konumları değişmedi). Gerçek diff (`-w`) 25/17 |
+| 2026-09-15 | Faz 3 | 📌 **Bulgu 6:** `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor, kendi overlay'ini kuruyor → Gelecek Adımlar #19 |
+| 2026-09-15 | Faz 3 | 📊 **Ara ölçüm:** `guard:crm-ui` scoped **PASS** (0 error/18 dosya) · `--full` **1454** (taban sabit, regresyon yok) · typecheck 2/2 · `email` grubu **6/6 tamam** |
