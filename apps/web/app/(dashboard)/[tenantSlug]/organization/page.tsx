@@ -3,6 +3,12 @@
 import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -14,6 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -1537,20 +1549,32 @@ function DepartmentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -1672,8 +1696,8 @@ function DepartmentModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1739,20 +1763,32 @@ function PositionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Briefcase className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -1874,8 +1910,8 @@ function PositionModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2003,22 +2039,34 @@ function EmployeeModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 p-4 backdrop-blur-sm">
-      <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {employee?.id
               ? "Çalışan Kartını Düzenle"
               : "Yeni Çalışan / Personel Kartı Aç"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
@@ -2323,8 +2371,8 @@ function EmployeeModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2355,15 +2403,25 @@ function EmployeeDetailDrawer({
 
   if (!employeeDetail && isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex justify-end">
-        <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-xs"
-          onClick={onClose}
-        />
-        <div className="relative z-10 flex h-full w-full max-w-md items-center justify-center bg-white p-8 dark:bg-zinc-900">
+      <Sheet
+        onOpenChange={(open) => {
+          if (!open) {
+            onClose();
+          }
+        }}
+        open
+      >
+        <SheetContent
+          aria-describedby={undefined}
+          className="data-[side=right]:w-full max-w-md items-center justify-center p-8 data-[side=right]:sm:max-w-md"
+          side="right"
+        >
+          <SheetTitle className="sr-only">
+            Personel detayı yükleniyor
+          </SheetTitle>
           <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        </div>
-      </div>
+        </SheetContent>
+      </Sheet>
     );
   }
 
@@ -2372,14 +2430,19 @@ function EmployeeDetailDrawer({
   }
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end duration-200">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="slide-in-from-right relative z-10 flex h-full w-full max-w-md animate-in flex-col justify-between overflow-y-auto bg-white p-4 pb-28 shadow-2xl duration-300 sm:p-6 sm:pb-8 dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-md justify-between overflow-y-auto p-4 pb-28 sm:p-6 sm:pb-8 data-[side=right]:sm:max-w-md"
+        side="right"
+      >
         <div>
           {/* Top Close & Edit actions */}
           <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
@@ -2395,13 +2458,14 @@ function EmployeeDetailDrawer({
                 <Edit2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Düzenle</span>
               </button>
-              <button
-                className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                onClick={onClose}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <SheetClose asChild>
+                <button
+                  className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </SheetClose>
             </div>
           </div>
 
@@ -2419,9 +2483,9 @@ function EmployeeDetailDrawer({
               </div>
             )}
 
-            <h3 className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+            <SheetTitle className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
               {employeeDetail.fullName}
-            </h3>
+            </SheetTitle>
             <p className="font-semibold text-blue-600 text-xs dark:text-blue-400">
               {employeeDetail.title || "Ünvan Tanımlanmadı"}
             </p>
@@ -2556,7 +2620,7 @@ function EmployeeDetailDrawer({
             Kapat
           </button>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
