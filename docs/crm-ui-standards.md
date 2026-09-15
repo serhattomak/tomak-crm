@@ -137,7 +137,9 @@ npx shadcn add <bilesen> --cwd packages\ui -y             # 2) sonra yaz
 >
 > **⚠️ Tuzak 2 — CLI yanlış npm bağımlılığı kurar.** Üretilen dosyalarda `import { cn } from "cn"` yazar ve `packages/ui/package.json`'a **`cn` npm paketini ekler**. Bu projede `cn` `@workspace/ui/lib/utils`'ten gelir; ikinci bir sınıf-birleştirme kütüphanesi kabul edilmez. Her yeni dosyada import `@workspace/ui/lib/utils` olarak düzeltilmeli ve `cn` bağımlılığı `package.json`'dan kaldırılmalıdır (`npm install` ile lock senkronlanır).
 
-**Uyarlama kontrol listesi (her yeni primitif):** import yolu · `rounded-4xl` yok (→ `rounded-xl`/`rounded-lg`) · `ring-2` (`ring-3` değil) · semantic token (hex/slate/violet yok) · dekoratif gradient/blur yok · `prefers-reduced-motion` desteği.
+**Uyarlama kontrol listesi (her yeni primitif):** import yolu · `rounded-4xl` yok (→ `rounded-xl`/`rounded-lg`) · `ring-2` (`ring-3` değil) · semantic token (hex/slate/violet yok) · dekoratif gradient/blur yok · `prefers-reduced-motion` desteği · **`npx prettier --check` temiz** (`.prettierrc`: `semi: false` — noktalı virgül **yok**).
+
+> **⚠️ Uyarı:** `packages/ui/src/components/` altındaki eski 21 primitif `.prettierrc`'ye **uymuyor** (noktalı virgüllü; config `semi: false` diyor). Yeni dosyalar uyumlu. `npm run format` bir gün çalıştırılırsa 21 dosya toplu değişir — bu bilinçli bir temizlik geçişi olarak yol haritasında kayıtlıdır.
 
 ### 2.2 Kanonik Sayfa Kabuğu
 
