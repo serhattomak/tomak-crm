@@ -1,6 +1,12 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import {
@@ -2287,19 +2293,31 @@ export default function PayrollPage() {
 
       {/* MODAL 1: CREATE PAYROLL RUN */}
       {showCreateRunModal && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setShowCreateRunModal(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Yeni Aylık Bordro Dönemi Başlat
-              </h3>
-              <button
-                className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                onClick={() => setShowCreateRunModal(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="space-y-4 text-xs" onSubmit={handleCreateRun}>
@@ -2393,30 +2411,42 @@ export default function PayrollPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* MODAL 2: EDIT EMPLOYEE PUANTAJ */}
       {showEditPuantajModal && editingPuantaj && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-3xl border border-zinc-200/80 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setShowEditPuantajModal(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 text-xs sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div>
-                <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Puantaj & Ek Kazanç Düzenle
-                </h3>
+                </DialogTitle>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   {editingPuantaj.employeeName}
                 </p>
               </div>
-              <button
-                className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                onClick={() => setShowEditPuantajModal(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="space-y-4 text-xs" onSubmit={handleSavePuantaj}>
@@ -2708,8 +2738,8 @@ export default function PayrollPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* GLOBAL CONFIRM DIALOG */}
