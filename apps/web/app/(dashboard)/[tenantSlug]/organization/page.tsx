@@ -5,6 +5,7 @@ import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -240,7 +241,7 @@ function OrganizationPageContent() {
   );
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* 1. Header & Navigation */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -615,7 +616,7 @@ function OrganizationPageContent() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }
 

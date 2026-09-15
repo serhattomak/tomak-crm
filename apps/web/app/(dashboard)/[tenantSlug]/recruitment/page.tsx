@@ -5,6 +5,7 @@ import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -632,7 +633,7 @@ function RecruitmentPageContent() {
   };
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -1817,7 +1818,7 @@ function RecruitmentPageContent() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }
 

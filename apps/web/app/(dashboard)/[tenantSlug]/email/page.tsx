@@ -1,6 +1,7 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
   CheckCircle2,
@@ -1541,7 +1542,7 @@ export default function EmailWorkbenchPage() {
   }, [fetchTemplates]);
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Top Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -1768,6 +1769,6 @@ export default function EmailWorkbenchPage() {
         template={selectedTemplateForEdit}
         tenantId={tenantId}
       />
-    </div>
+    </PageContainer>
   );
 }

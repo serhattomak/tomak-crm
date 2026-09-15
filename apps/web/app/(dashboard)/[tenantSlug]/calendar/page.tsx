@@ -6,6 +6,7 @@ import { Checkbox } from "@workspace/ui/components/checkbox";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { TimePicker } from "@workspace/ui/components/time-picker";
 import {
   Select,
@@ -730,7 +731,10 @@ export default function CalendarHubPage() {
   );
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col gap-6 bg-zinc-50/50 p-4 md:p-6 dark:bg-zinc-950/50">
+    <PageContainer
+      bleed
+      className="flex min-h-[calc(100vh-4rem)] flex-col gap-6 bg-zinc-50/50 p-4 md:p-6 dark:bg-zinc-950/50"
+    >
       {/* Toast */}
       {toastMessage && (
         <div className="fade-in slide-in-from-bottom-5 fixed right-6 bottom-6 z-50 flex animate-in items-center gap-2 rounded-xl bg-zinc-900 px-4 py-3 text-white shadow-2xl dark:bg-white dark:text-zinc-900">
@@ -2147,6 +2151,6 @@ export default function CalendarHubPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

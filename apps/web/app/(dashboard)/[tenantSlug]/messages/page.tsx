@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowLeft,
@@ -662,7 +663,10 @@ export default function MessagesPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-slate-50 dark:bg-background">
+    <PageContainer
+      bleed
+      className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-slate-50 dark:bg-background"
+    >
       {/* Top Header Bar (Hidden on mobile if a chat is active) */}
       <div
         className={`shrink-0 flex-wrap items-center justify-between gap-2.5 border-zinc-200 border-b bg-white p-3 sm:flex-nowrap sm:px-6 sm:py-3 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 ${selectedChannel ? "hidden md:flex" : "flex"}`}
@@ -1942,7 +1946,7 @@ export default function MessagesPage() {
         tenantSlug={tenantSlug}
         activeTenantId={activeTenantId}
       />
-    </div>
+    </PageContainer>
   );
 }
 
