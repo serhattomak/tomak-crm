@@ -2,6 +2,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowDownLeft,
@@ -131,8 +137,20 @@ export function WhatsAppChatDrawer({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs">
-      <div className="flex h-full w-full max-w-4xl bg-white shadow-2xl dark:bg-zinc-950">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="w-full max-w-4xl flex-row sm:max-w-4xl"
+        showCloseButton={false}
+        side="right"
+      >
         {/* Left Column: WhatsApp Conversations */}
         <div className="flex w-80 flex-col border-zinc-200 border-r dark:border-zinc-800">
           <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
@@ -140,9 +158,9 @@ export function WhatsAppChatDrawer({
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-xs">
                 <MessageCircle className="h-4 w-4" />
               </div>
-              <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+              <SheetTitle className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 WhatsApp Business
-              </h3>
+              </SheetTitle>
             </div>
             <button
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -230,13 +248,14 @@ export function WhatsAppChatDrawer({
                 </p>
               )}
             </div>
-            <button
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              onClick={onClose}
-              type="button"
-            >
-              ✕
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                type="button"
+              >
+                ✕
+              </button>
+            </SheetClose>
           </div>
 
           {/* Messages Area */}
@@ -312,7 +331,7 @@ export function WhatsAppChatDrawer({
             </form>
           )}
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
