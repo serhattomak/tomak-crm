@@ -1,6 +1,12 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Eye, FileText, Loader2, Paperclip, Save, Send, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import type React from "react";
@@ -450,15 +456,19 @@ export function ComposeModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-black/40 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-        type="button"
-      />
-
-      <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full max-w-3xl flex-col gap-0 overflow-hidden sm:max-w-3xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
@@ -466,23 +476,24 @@ export function ComposeModal({
               <Send className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
             </div>
             <div>
-              <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni E-posta İletisi
-              </h2>
+              </DialogTitle>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Bağlı posta kutunuz üzerinden kurumsal e-posta gönderin veya
                 taslak saklayın.
               </p>
             </div>
           </div>
-          <button
-            aria-label="Kapat"
-            className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              aria-label="Kapat"
+              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Scrollable Form Area */}
@@ -737,7 +748,7 @@ export function ComposeModal({
             </PermissionGate>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
