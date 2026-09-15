@@ -1,9 +1,21 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   AlertTriangle,
   ArrowRight,
@@ -1391,20 +1403,32 @@ function NewWarehouseModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-primary" />
             Yeni Depo Lokasyonu Tanımla
-          </h2>
-          <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {error ? (
@@ -1567,8 +1591,8 @@ function NewWarehouseModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1684,20 +1708,32 @@ function NewTransferModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="max-h-[90vh] w-full max-w-xl space-y-4 overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <ArrowRightLeft className="h-5 w-5 text-primary" />
             Yeni Depolar Arası Sevk Fişi
-          </h2>
-          <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {error ? (
@@ -1808,8 +1844,8 @@ function NewTransferModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1940,20 +1976,32 @@ function NewCountModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <FileCheck2 className="h-5 w-5 text-primary" />
             Yeni Periyodik Stok Sayımı Başlat
-          </h2>
-          <button
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {error ? (
@@ -2020,8 +2068,8 @@ function NewCountModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2054,25 +2102,37 @@ function TransferDetailDrawer({
   }, [onCancel, transfer.id]);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-      <div className="flex h-full w-full max-w-xl flex-col justify-between space-y-6 overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-xl justify-between space-y-6 overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-xl"
+        side="right"
+      >
         <div className="space-y-4">
           <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {transfer.transferNumber}
               </span>
-              <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+              <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                 Depo Sevk Fişi
-              </h2>
+              </SheetTitle>
             </div>
-            <button
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </SheetClose>
           </div>
 
           <div className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
@@ -2185,8 +2245,8 @@ function TransferDetailDrawer({
             </button>
           ) : null}
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -2300,28 +2360,40 @@ function StockCountAuditDrawer({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-      <div className="flex h-full w-full max-w-2xl flex-col justify-between space-y-4 overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-2xl justify-between space-y-4 overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-2xl"
+        side="right"
+      >
         <div className="space-y-4">
           <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {count.countNumber}
               </span>
-              <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+              <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                 Stok Sayım & Mutabakat Cetveli
-              </h2>
+              </SheetTitle>
               <p className="text-muted-foreground text-xs">
                 {count.warehouseName}
               </p>
             </div>
-            <button
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </SheetClose>
           </div>
 
           {isCompleted ? null : (
@@ -2401,8 +2473,8 @@ function StockCountAuditDrawer({
             </button>
           )}
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
