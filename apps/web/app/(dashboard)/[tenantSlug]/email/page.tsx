@@ -1,6 +1,12 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
@@ -1030,19 +1036,24 @@ function TemplatePreviewModal({
   const displayHtml = renderEmailPreviewHtml(template.htmlBody || "", isDark);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-black/40 backdrop-blur-xs"
-        onClick={onClose}
-        type="button"
-      />
-      <div className="relative flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[85vh] w-full flex-col gap-0 p-6 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-3">
-            <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
               {template.name} Önizleme
-            </h3>
+            </DialogTitle>
 
             <button
               className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-0.5 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
@@ -1059,14 +1070,15 @@ function TemplatePreviewModal({
             </button>
           </div>
 
-          <button
-            aria-label="Kapat"
-            className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600"
-            onClick={onClose}
-            type="button"
-          >
-            <XCircle className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              aria-label="Kapat"
+              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600"
+              type="button"
+            >
+              <XCircle className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <div
@@ -1084,8 +1096,8 @@ function TemplatePreviewModal({
             />
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
