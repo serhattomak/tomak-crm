@@ -2,6 +2,12 @@
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
@@ -1104,11 +1110,22 @@ export default function LeavesPage() {
 
       {/* 9. REJECT MODAL */}
       {rejectingLeave && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setRejectingLeave(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
+            showCloseButton={false}
+          >
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               İzin Talebini Reddet
-            </h3>
+            </DialogTitle>
             <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
               <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {rejectingLeave.employeeName}
@@ -1147,8 +1164,8 @@ export default function LeavesPage() {
                 {actionLoading ? "İşleniyor..." : "Talebi Reddet"}
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* CONFIRM DIALOG */}
@@ -1354,24 +1371,36 @@ function CreateLeaveModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl border border-zinc-200/80 bg-white text-xs shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 text-xs sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b p-5 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni İzin Talebi Oluştur
-            </h2>
+            </DialogTitle>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               İzin türünü, gün aralığını ve gerekçenizi girin
             </p>
           </div>
-          <button
-            className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form
@@ -1585,7 +1614,7 @@ function CreateLeaveModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
