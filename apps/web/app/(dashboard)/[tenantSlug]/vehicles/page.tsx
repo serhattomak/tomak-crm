@@ -1,6 +1,11 @@
-/* Hallmark · component: automotive-vehicle-intelligence · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -11,6 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   AlertCircle,
   AlertTriangle,
@@ -1974,16 +1985,27 @@ export default function VehiclesPage() {
       {/* VEHICLE DETAIL DRAWER (SLIDE OVER) */}
       {/* ========================================================= */}
       {selectedVehicle && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-          <div className="h-full w-full max-w-2xl overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedVehicle(null);
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-2xl overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-2xl"
+            side="right"
+          >
             {/* Drawer Header */}
             <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{selectedVehicle.icon}</span>
                 <div>
-                  <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                  <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                     {selectedVehicle.brand} {selectedVehicle.model}
-                  </h2>
+                  </SheetTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {[
                       selectedVehicle.trim,
@@ -2008,13 +2030,14 @@ export default function VehiclesPage() {
                   <Pencil className="h-3.5 w-3.5" />
                   <span>Düzenle</span>
                 </button>
-                <button
-                  className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  onClick={() => setSelectedVehicle(null)}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
             </div>
 
@@ -2296,8 +2319,8 @@ export default function VehiclesPage() {
                 <span>Spesifikasyonları Düzenle</span>
               </button>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {/* ========================================================= */}
@@ -2720,18 +2743,29 @@ function CreateEditVehicleModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
+        showCloseButton={false}
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl">{icon || "🚗"}</span>
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 {initialVehicle
                   ? "Araç Modelini Düzenle"
                   : "Yeni Araç Modeli Ekle"}
-              </h3>
+              </DialogTitle>
               {initialVehicle && (
                 <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                   {initialVehicle.brand} {initialVehicle.model}
@@ -2743,13 +2777,14 @@ function CreateEditVehicleModal({
               {stepsConfig[step - 1]?.desc}
             </p>
           </div>
-          <button
-            className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Stepper Progress Header */}
@@ -3720,8 +3755,8 @@ function CreateEditVehicleModal({
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -3832,26 +3867,38 @@ function CreateEditPartModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               {initialPart
                 ? "EPC Parça Kartını Düzenle"
                 : "Yeni EPC Parçası Ekle"}
-            </h3>
+            </DialogTitle>
             <p className="text-xs text-zinc-400">
               Çok dilli isimlendirme (TR / EN / CN), OEM no, stok ve şema konumu
             </p>
           </div>
-          <button
-            className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form
@@ -4156,8 +4203,8 @@ function CreateEditPartModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -4300,26 +4347,38 @@ function CreateDocumentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="fade-in zoom-in-95 flex max-h-[92vh] w-full max-w-xl animate-in flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-xl"
+        showCloseButton={false}
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Teknik Doküman & Arşiv
-            </h3>
+            </DialogTitle>
             <p className="text-xs text-zinc-400">
               Kılavuz, Servis Bülteni (TSB), Homologasyon veya CAD dosyası
               yükleyin
             </p>
           </div>
-          <button
-            className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Mode Switcher */}
@@ -4687,8 +4746,8 @@ function CreateDocumentModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -4719,8 +4778,19 @@ function DocumentPreviewModal({
   })();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-xs">
-      <div className="fade-in zoom-in-95 flex max-h-[92vh] w-full max-w-4xl animate-in flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-3">
@@ -4729,12 +4799,12 @@ function DocumentPreviewModal({
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h3
+                <DialogTitle
                   className="truncate font-bold text-sm text-zinc-900 dark:text-zinc-100"
                   title={document.name}
                 >
                   {document.name}
-                </h3>
+                </DialogTitle>
                 <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   {document.documentType}
                 </span>
@@ -4785,13 +4855,14 @@ function DocumentPreviewModal({
             >
               <Trash2 className="h-4 w-4" />
             </button>
-            <button
-              className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <DialogClose asChild>
+              <button
+                className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </DialogClose>
           </div>
         </div>
 
@@ -4897,8 +4968,8 @@ function DocumentPreviewModal({
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -4931,8 +5002,19 @@ function DeleteConfirmationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="fade-in zoom-in-95 flex w-full max-w-md animate-in flex-col rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl duration-150 dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 ring-8 ring-rose-50 dark:bg-rose-950/60 dark:text-rose-400 dark:ring-rose-950/30">
             <Trash2 className="h-6 w-6" />
@@ -4941,9 +5023,9 @@ function DeleteConfirmationModal({
             <span className="font-bold text-[11px] text-rose-600 uppercase tracking-wider dark:text-rose-400">
               Kalıcı Silme Onayı
             </span>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               {typeLabels[type] || "Öğe"} Silinsin mi?
-            </h3>
+            </DialogTitle>
           </div>
         </div>
 
@@ -4993,7 +5075,7 @@ function DeleteConfirmationModal({
             )}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
