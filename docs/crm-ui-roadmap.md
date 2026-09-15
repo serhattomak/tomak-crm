@@ -175,16 +175,34 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [ ] Faz 3 — Modal & overlay göçü (~60 modal, 156 overlay)
+## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (3/75)**
 
-- [ ] Elle yazılmış modallar → `Dialog` / `Sheet` / `ConfirmDialog`
-- [ ] Panel stilinin 4 varyantı (`rounded-lg` / `rounded-xl` / `rounded-2xl` / `rounded-3xl`) tek standarda iner
-- [ ] A11y kazanımı: focus trap, `Esc`, `aria-modal` (primitiflerden gelir)
-- [ ] Motion: tek kanonik giriş/çıkış, `prefers-reduced-motion`
-- [ ] `delete-customer-dialog` gibi `ConfirmDialog`'ı yok sayan yeniden yazımlar temizlenir
-- [ ] **`confirm-dialog.tsx`'in `AlertDialog` temeline taşınması** + panelinin `rounded-3xl` → `rounded-xl` normalize edilmesi (Faz 1'den taşındı — §1.1 ihlali)
+**Gerçek iş birimi 75 modal component'i** (`fixed inset-0` sayısı 156 ama şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
+
+**Migrasyon tarifi:** `crm-ui-standards.md` **§2.3** (Faz 3.0 pilotunda doğrulandı).
+
+- [x] **3.0 Pilot** — `pipeline-settings-modal.tsx` → `Dialog` (`caf8432`)
+- [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
+- [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
+- [ ] **3.1** Kalan ayrıştırılmış dosyalar: `customers/_components` (4), `customers/[customerId]/_components` (3), `pipelines/_components` (2), `promotions/components` (2), `widgets` (3), `components/email` (6), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/chat` (1), `components/` kök (6), `components/layout/mobile-nav` (1), `portal/PortalClient` (1) — **31 dosya / 46 overlay**
+- [ ] **3.2** Sayfa-içi modallar (en küçükten büyüğe)
+- [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
+- [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
+
+### ⚠️ Faz 3 bulgusu 1 — paylaşılan primitifin kendisi standardı ihlal ediyordu
+
+`ConfirmDialog` — diğer kodun **uygulaması gereken** primitif — şunları taşıyordu: `rounded-3xl` panel, sabit `zinc`/`white` (token yerine), `rounded-xl` butonlar (§1.1 `rounded-lg` diyor) ve **`bg-violet-600`** (ADR-0002'nin açıkça yasakladığı `violet-*`).
+
+**Sonuç:** sıra tersine çevrildi — önce primitif düzeltildi (3.4), sonra ona taşınıldı (3.1). Aksi halde ihlaller çağrı yerlerine yayılırdı. Ölçüm: `guard --full` hata sayısı **1458 → 1454**.
+
+### ✅ Faz 3 bulgusu 2 — ölçülebilir kazanç
+
+`delete-customer-dialog.tsx`: **50 satır → 28 satır**. `fixed inset-0`, backdrop, `z-50`, `shadow-2xl`, `Button` importu — hepsi gitti. Bu, ADR-0004'ün işaret ettiği vakanın ta kendisiydi: `ConfirmDialog` zaten varken sayfanın modalı sıfırdan yazması.
+
+**Her batch'te geçerli kabul kriterleri:** el yapımı `fixed inset-0` / backdrop / `z-50` / panel `shadow`'u **sıfıra iner** · a11y primitiflerden gelir (focus trap, `Esc`, `aria-modal`) · panel radius'unun 4 varyantı tek standarda iner.
+
 - [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
-- [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003 kuralı)
+- [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
 
 ## [ ] Faz 4 — Renk disiplini (yüzey yüzey)
 
@@ -300,3 +318,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 2 | ✅ **Grup F tamamlandı** (12 sayfa) → 41 sarıldı. `--full` artık 189 dosya tarıyor (Faz 1'in 11 yeni primitifi + Faz 2'nin 2'si) |
 | 2026-09-15 | Faz 2 | ✅ **Son 3 sayfa** (`orders/[orderId]`, `projects/[projectId]`, `admin/tenants/[tenantId]`) → **44 sarıldı** |
 | 2026-09-15 | Faz 2 | 🎉 **FAZ 2 KAPANDI** — 44 sarıldı + 8 belgelenmiş muafiyet = 52. typecheck 2/2, build 2/2, guard scoped PASS. Muafiyetler standart §2.2'ye yazıldı |
+| 2026-09-15 | Faz 3 | ✅ **3.0 pilot** — `pipeline-settings-modal` → `Dialog`; §2.3 migrasyon tarifi yazıldı |
+| 2026-09-15 | Faz 3 | ✅ **3.4 sıra değişikliğiyle öne alındı** — `ConfirmDialog` `rounded-3xl` + **`violet-600`** + token ihlallerinden temizlendi → guard hatası **1458 → 1454** |
+| 2026-09-15 | Faz 3 | ✅ `delete-customer-dialog` → `ConfirmDialog`: **50 → 28 satır**. El yapımı overlay sıfır |
+| 2026-09-15 | Faz 3 | 🔍 Bulgu: paylaşılan primitifin kendisi standardı ihlal ediyordu → **önce primitif düzeltilir, sonra ona taşınılır** kuralı kaydedildi |
