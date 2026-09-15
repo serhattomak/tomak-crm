@@ -4,6 +4,7 @@
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import {
@@ -214,7 +215,7 @@ export default function ContractsPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <PageContainer className="flex flex-col gap-6">
       {/* 1. Header & Action Path */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-zinc-200/80 border-b pb-4 dark:border-zinc-800/80">
         <div>
@@ -718,6 +719,6 @@ export default function ContractsPage() {
         loading={isDeletingContract}
         onConfirm={handleConfirmDelete}
       />
-    </div>
+    </PageContainer>
   );
 }

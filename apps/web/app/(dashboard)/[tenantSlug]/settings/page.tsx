@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   ArrowRight,
   Building2,
@@ -65,7 +66,7 @@ export default function WorkspaceSettingsPage() {
   };
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <PageContainer className="max-w-3xl space-y-6">
       <div>
         <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
           <Settings className="h-6 w-6 text-fuchsia-500" />
@@ -201,6 +202,6 @@ export default function WorkspaceSettingsPage() {
           </div>
         </div>
       </PermissionGate>
-    </div>
+    </PageContainer>
   );
 }
