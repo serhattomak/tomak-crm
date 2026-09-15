@@ -14,6 +14,10 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 
 **176 dosya · 1458 error · 1334 advisory warning**
 
+> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1451 error · 189 dosya.**
+> Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
+> Düşüşün kaynağı: Faz 3.4 `confirm-dialog` (`-4`) ve Faz 3'ün overlay göçleri — son 3'ü ölçülerek doğrulandı: modallar primitife geçerken kendi `slate-*` sınıflarını bıraktı (`team-members-stack` `bg-slate-950/60` + `border-slate-200`, `dashboard-share-popover` `border-slate-200/90`). `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4.
+
 | Metrik | Taban | Hedef |
 | --- | --- | --- |
 | `VIOLET` (error) | **924** | 0 |
@@ -436,5 +440,6 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3 | ⚠️ **Bulgu 8:** mobil "başlık altı tam genişlik" paneli `Popover`'ın çapa modeliyle birebir üretilemez → `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` + `sideOffset={10}` ile yaklaşıldı. Tetikleyiciler başlıkta olduğu için aynı yere düşüyor. **`DropdownMenu` hiç kullanılmadı** (üçü de menü değil) |
 | 2026-09-16 | Faz 3 | ✅ `notification-center` → `Popover` → **22/75** (`b9ec6fa`). İki `useId`, elle `role="dialog"`, `aria-expanded`/`aria-haspopup` silindi; `setShowTestMenu(false)` `onOpenChange`'e taşındı → artık `Esc` ve dışa tıklama dâhil **her** kapanışta çalışıyor. Gerçek diff 23/47 |
 | 2026-09-16 | Faz 3 | ✅ **§2.4 yazıldı** — Popover/DropdownMenu alt-deseni: 7 adım, konumlandırma→prop tablosu, mobil yaklaşım uyarısı, `DropdownMenu` seçim kuralı, `bulk-action-bar` kapsam-dışı gerekçesi, "4 overlay primitifi tek radius" notu |
-| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1454** (taban sabit, 8 dosya boyunca hiç regresyon yok) · typecheck 2/2 · `build` 2/2 · `components/email` (6/6) + `components/` kök (8/8) tamam |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1451** · typecheck 2/2 · `build` 2/2 · `components/email` (6/6) + `components/` kök (8/8) tamam |
+| 2026-09-16 | Faz 3 | 🔽 **1454 → 1451:** 3 `SLATE` hatası kendiliğinden düştü, ölçülerek doğrulandı. Paneller primitife geçerken kendi renk sınıflarını bıraktılar: `team-members-stack` backdrop `bg-slate-950/60` + panel `border-slate-200` (−2), `dashboard-share-popover` panel `border-slate-200/90` (−1). `violet-*` (104) ve `fuchsia-*` (11) **değişmedi** — kapsam disiplini tuttu, renk işi Faz 4'te |
 | 2026-09-16 | Faz 3 | ⏳ **Elle duman testi bekliyor:** `tenant-switcher` mobil drawer içinde artık `z-[70]` yerine primitifin `z-50`'siyle portallanıyor (DOM sırası çözmeli, gözle doğrulanmalı); iki panelin mobil genişliği çapaya bağlı |
