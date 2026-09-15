@@ -228,6 +228,48 @@ Elle yazılmış bir modal/overlay'i primitife çevirme adımları — Faz 3.0 p
 
 **Kapsam disiplini:** bu geçişte dosyadaki ADR-0002 ihlalleri (native `<select>`, `type="number|date"`) **düzeltilmez** — onlar Faz 5'in işi. Bir geçişte tek değişken değiştirilir; aksi halde bir hata çıktığında hangi değişikliğin yol açtığı ayırt edilemez.
 
+### 2.4 Popover & DropdownMenu Göçü (Faz 3 alt-deseni)
+
+Elle konumlanan **tetikleyici + panel** çiftleri (bildirim merkezi, paylaş menüsü, çalışma alanı seçici) için adımlar §2.3 ile aynıdır; fark, **konumlandırmanın sahibinin** değişmesidir.
+
+1. **Kök sarmalayıcının `relative`'ini ve `useRef`'ini kaldır:** ikisi de yalnızca "tıklama içeride mi" testi ve `absolute` konumlama içindi. İkisi de primitifin işi.
+   > `className` prop'u alan bir bileşense tek bir `<div className="inline-block …">` kalabilir — ama `relative` **kalmaz**, içerik portal üzerinden gider.
+2. **Elle yazılmış dinleyicileri sil:** `mousedown` click-outside + `keydown` Escape `useEffect`'leri gider. `Popover` dışına tıklamayı, `Esc`'i ve odağın tetikleyiciye dönmesini kendisi yönetir.
+3. **`useId()` ile kurulan `aria-controls` bağlantısını sil:** `PopoverTrigger` kendi id'sini üretip bağlar; `aria-expanded` ve `aria-haspopup="dialog"` da ondan gelir. **Elle yazılmış `role="dialog"` da gider** (`PopoverContent` zaten taşır). Tetikleyicinin kendi `aria-label`'ı **kalır** — primitifin bilemeyeceği bilgi (ör. okunmamış sayısı).
+4. **Tetikleyiciyi `PopoverTrigger asChild` yap, elle `onClick` toggle'ını sil:** kontrollü `open` + `onOpenChange` ile toggle primitiften gelir. İkisi birlikte kalsa aynı değeri hesapladıkları için çalışır, ama toggle mantığı ikiye bölünür.
+5. **Kapanışta sıfırlanan yerel state'i `onOpenChange`'e taşı:** eski click-outside dinleyicisi `setX(false)` de yapıyordu. Artık:
+   `onOpenChange={(o) => { setOpen(o); if (!o) setX(false); }}` — üstelik `Esc` ve dışa tıklama dâhil **her** kapanışta çalışır.
+6. **Konumlandırma prop'lara çevrilir:**
+
+| Elle yazılmış | Primitif |
+| --- | --- |
+| `absolute top-full left-0 mt-1.5` | `side="bottom" align="start" sideOffset={6}` |
+| `absolute top-0 left-full ml-3.5` | `side="right" align="start" sideOffset={14}` |
+| `sm:right-0` | `align="end"` |
+| `w-full` (tetikleyici genişliği kadar) | `w-(--radix-popover-trigger-width)` |
+
+7. **Yüzey `PopoverContent`'e geçer:** varsayılanları ez (`gap-0 p-0`, `w-72`), `rounded-*`/`border`/`bg-*`/`shadow-lg`/`animate-*`/`z-50` yazma.
+
+**Mobil "başlık altı tam genişlik" deseni.** Bazı paneller mobilde `fixed inset-x-3 top-14` ile başlığın altına yapışıyordu. `Popover` yalnızca **çapaya** göre konumlandığı için bu birebir üretilemez. Tetikleyici başlığın içindeyse sonuç aynı yere düşer:
+
+```tsx
+<PopoverContent
+  align="end"
+  className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-96"
+  collisionPadding={12}   /* inset-x-3'ün 12px payını korur */
+  side="bottom"
+  sideOffset={10}
+/>
+```
+
+Bu **yaklaşımdır, kanıt değil**: tetikleyici başlıktan uzaklaşırsa panel de onunla gider. Takas bilinçlidir — sabit `top-14` yerine konumlandırma ve çarpışma yönetimi primitife geçer.
+
+**`DropdownMenu` ne zaman?** İçerik **menü öğelerinden** oluşuyorsa (`DropdownMenuItem`, roving focus, `CheckboxItem`/`RadioItem` semantiği). Panelin içinde arama alanı, serbest form ya da özel içerik varsa **`Popover`** doğru seçimdir — menü semantiği bunlara uymaz.
+
+**Kapsam dışı — overlay olmayan yüzen yüzeyler.** `bulk-action-bar`: backdrop'u yok, kapatma/focus yönetimi yok, arkadaki sayfayı **engellemiyor**; seçim bitene kadar duran bir araç çubuğu. §2.3/§2.4 kapsamına **girmez**. (Yüzeyi `rounded-2xl` olduğu için §1.1 ihlali olarak radius sweep'ine aittir — overlay işi değil.)
+
+> **Üç overlay primitifi tek standartta:** `DialogContent`, `SheetContent`, `PopoverContent`, `AlertDialogContent` → hepsi `rounded-xl`. Bir primitif `rounded-3xl` ile yazılırsa (§1.1 dışı) **önce primitif düzeltilir, sonra tüketiciler ona taşınır** — aksi halde ihlal çağrı yerlerine yayılır (bkz. §2.3 bulgu 1 ve `db8cf6e`).
+
 ---
 
 ## 3. Sayfa ve Bileşen Ayrıştırma Mimarisi (Architecture & Decomposition)

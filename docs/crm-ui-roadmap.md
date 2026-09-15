@@ -175,30 +175,39 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (14/75)**
+## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (22/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
 > 1. ✅ `Sheet` deseni kuruldu — `whatsapp-chat-drawer` (`491cb07`). Notlar §2.3'te. **⚠️ Bu commit'in genişlik ezmesi hatalıydı → `7f639f0` ile düzeltildi** (bkz. bulgu 5).
 > 2. ✅ `components/email` **tamamlandı** (6 dosya): `compose-modal` (`26bdf0b`), `convert-to-ticket-modal` (`1508fdc`), `convert-to-lead-modal` (`42e05f5`), `template-modal` (`4700991`), `email-account-modal` (`06af922`), `email-thread-drawer` → `Sheet` (`c226549`).
-> 3. Sıradaki grup — `components/` kök (6): `entity-picker-modal` (25808 B), `quick-add-sales-rep-modal` (7639), `shortcuts-help-modal` (5848), `notification-center` (18864), `command-palette` (35318), `dashboard-share-popover` (12394). Sonra `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
+> 3. ✅ `components/` kök **tamamlandı** (8 dosya): `shortcuts-help-modal` (`b2d2b84`), `quick-add-sales-rep-modal` (`a7b9d02`), `entity-picker-modal` (`7f55787`), `team-members-stack` invite modalı (`65b1feb`), `command-palette` (`ce72250`) → `Dialog`; `tenant-switcher` (`8797590`), `dashboard-share-popover` (`90316df`), `notification-center` (`b9ec6fa`) → **`Popover`**. Öncesinde primitif düzeltmesi `db8cf6e`.
+> 4. Sıradaki grup — `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
 >
-> **Tarif:** standart **§2.3** (Dialog + Sheet notları, 7 adım, iki backdrop biçimi, boyut aktarımı). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+> **Tarif:** standart **§2.3** (Dialog + Sheet: 7 adım, iki backdrop biçimi, boyut aktarımı, varyant önekli ezme) **+ §2.4** (Popover/DropdownMenu alt-deseni). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
-> **⚠️ Bu fazda iki tuzak ölçülerek doğrulandı — §2.3'e yazıldı:**
-> 1. **Taban `max-width`'i koşulsuz ezmeyin** (`w-full max-w-2xl` ❌) — primitifin `max-w-[calc(100%-2rem)]` değeri silinen `p-4`'ün mobil kenar payını üretiyordu. Doğru: `w-full sm:max-w-2xl`.
-> 2. **Varyant önekli varsayılanı öneksiz ezmeyin** — `data-[side=right]:w-3/4` + `w-full` → ikisi de çıktıda kalır, CSS özgüllüğü primitifi kazandırır. Doğru: `data-[side=right]:w-full`.
+> **⚠️ Bu fazda üç tuzak ölçülerek doğrulandı — standarta yazıldı:**
+> 1. **Taban `max-width`'i koşulsuz ezmeyin** (`w-full max-w-2xl` ❌) — primitifin `max-w-[calc(100%-2rem)]` değeri silinen `p-4`'ün mobil kenar payını üretiyordu. Doğru: `w-full sm:max-w-2xl`. → §2.3
+> 2. **Varyant önekli varsayılanı öneksiz ezmeyin** — `data-[side=right]:w-3/4` + `w-full` → ikisi de çıktıda kalır, CSS özgüllüğü primitifi kazandırır. Doğru: `data-[side=right]:w-full`. → §2.3
+> 3. **`Popover` çapaya göre konumlanır** — mobildeki `fixed inset-x-3 top-14` "başlık altı tam genişlik" deseni birebir üretilemez; `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` ile yaklaşılır. → §2.4
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor, ama `apps/web` noktalı virgüllü yazılmış; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor. Tek dosyada 55 satırlık değişikliği **431 satıra** çıkarır. Biçim, çevre dosyanın stiline elle uyarlanır. Ayrıntı: Gelecek Adımlar #18.
+>
+> **⚠️ Kapsam disiplini hatırlatması:** `bulk-action-bar` overlay **değil** (backdrop/kapatma/focus yok, sayfayı engellemiyor) → §2.3/§2.4 dışı. Gerekçe §2.4'te.
+>
+> **⚠️ Elle duman testi bekleyen iki nokta (typecheck bunları kanıtlayamaz):**
+> 1. `tenant-switcher` mobil navigasyon drawer'ının **içinde** ve popover artık `z-[70]` yerine primitifin `z-50`'siyle body'ye portallanıyor. Eşit z-index'in DOM sırasıyla çözülmesi bekleniyor (portal drawer'dan sonra ekleniyor) — gözle doğrulanmalı.
+> 2. İki panelin mobil genişliği artık çapaya bağlı; tetikleyici başlıkta olduğu sürece eski konuma düşer.
 
 **Gerçek iş birimi 75 modal component'i** (`fixed inset-0` sayısı 156 ama şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
 
-**Migrasyon tarifi:** `crm-ui-standards.md` **§2.3** (Faz 3.0 pilotunda doğrulandı).
+**Migrasyon tarifi:** `crm-ui-standards.md` **§2.3** (Dialog/Sheet — Faz 3.0 pilotunda doğrulandı) + **§2.4** (Popover/DropdownMenu — `tenant-switcher` ile doğrulandı).
 
 - [x] **3.0 Pilot** — `pipeline-settings-modal.tsx` → `Dialog` (`caf8432`)
 - [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
 - [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
 - [x] **`customers` grubu tamam** (5 dosya) — `create-customer-modal`, `edit-customer-modal`, `add-contact-modal`, `add-activity-modal` → `Dialog`; `delete-customer-dialog` → `ConfirmDialog` (`dafdeb5`)
-- [ ] **3.1 kalan:** `customers/[customerId]/_components` (0 — tamam) · `components/email` (0 — **tamam**, 6/6) · `components/` kök (6) · `widgets` (3) · `promotions/components` (2) · `pipelines/_components` (2) · `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/chat` (1 ✅) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
+- [x] **`components/email` tamam** (6/6) · **`components/` kök tamam** (8/8) · `components/chat` tamam (1/1)
+- [ ] **3.1 kalan:** `widgets` (3) · `promotions/components` (2) · `pipelines/_components` (2) · `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
 - [ ] **3.2** Sayfa-içi modallar (en küçükten büyüğe)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
@@ -257,6 +266,26 @@ tailwind-merge yalnızca **aynı modifier listesine** sahip utility'leri birleş
 ### 📌 Faz 3 bulgusu 6 — `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor
 
 `packages/ui/src/components/confirm-dialog.tsx`, Faz 1'de eklenen `alert-dialog.tsx`'i değil, `radix-ui`'yi **doğrudan** kullanıp kendi overlay'ini kuruyor: `fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs` + panelde `shadow-2xl backdrop-blur-md`. Faz 3.4'te yalnızca `rounded-3xl`/`violet-600`/token ihlalleri temizlendi; overlay katmanı kaldı. Gelecek Adımlar'a alındı (#19).
+
+### 🔴 Faz 3 bulgusu 7 — Faz 1'in popover/dropdown primitifleri §1.1'i ihlal ediyordu
+
+`popover.tsx` (`PopoverContent`), `dropdown-menu.tsx` (`Content`, `SubContent`) — üçü de **`rounded-3xl`** ile yazılmıştı. §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor.
+
+Bu **bulgu 1'in birebir tekrarı** (o zaman `ConfirmDialog`'un kendisi ihlal ediyordu). Aynı sıra uygulandı: **önce primitif düzeltildi** (`db8cf6e`), sonra üç tüketici ona taşındı. Düzeltilmeseydi ihlal üç çağrı yerine yayılırdı.
+
+`dropdown-menu.tsx`'in **hiç tüketicisi yoktu** ve yine de düzeltildi: amaç, ilk menü tüketicisinin yanlış radius'u miras almaması. Öğe radius'ları (`rounded-2xl`, 4 yerde) **bırakıldı** — konteyner değiller ve mevcut 14 primitifte de geçiyorlar; ayrı bir radius-sweep kararı.
+
+Sonuç: `DialogContent`, `SheetContent`, `PopoverContent`, `AlertDialogContent` → dördü de `rounded-xl`. `packages/ui`'de `rounded-3xl` **0**.
+
+### ⚠️ Faz 3 bulgusu 8 — mobil "başlık altı tam genişlik" paneli `Popover` ile birebir üretilemez
+
+`dashboard-share-popover` ve `notification-center` panelleri iki farklı konumlanma modeli taşıyordu: mobilde `fixed inset-x-3 top-14` (başlığın altına yapışan tam genişlik panel), 640px üstünde `absolute sm:right-0 sm:w-96` (çapalı dropdown). `Popover` **yalnızca çapa** bilir; sabit `top-14` üretilemez.
+
+**Neden yine de aynı yere düşüyor:** üçünün de tetikleyicisi başlığın içinde (`components/layout/dashboard-header.tsx`, `dashboard-header.tsx`, `hub-rail.tsx` doğrulandı). Bu yüzden `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` + `sideOffset={10}` eski geometriyi yaklaşık olarak yeniden üretiyor.
+
+**Takas bilinçli:** sabit `top-14` yerine konumlandırma + çarpışma yönetimi primitife geçiyor. Bedeli: tetikleyici başlıktan uzaklaşırsa panel de onunla gider. §2.4'e "yaklaşımdır, kanıt değil" notuyla yazıldı.
+
+**`DropdownMenu` hiç kullanılmadı:** üçü de menü değil (liste, paylaşım eylemleri, çalışma alanı listesi + **oluşturma formu**). Menü semantiği (roving focus, item rolleri) bunlara uymaz — §2.4'e karar kuralı olarak eklendi.
 
 - [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
 - [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
@@ -341,6 +370,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 17. **`packages/ui` biçim normalizasyonu** — eski 21 primitif `.prettierrc`'ye uymuyor (`semi: false` diyor, dosyalar noktalı virgüllü). `npm run format` 21 dosyayı toplu değiştirir; ayrı bir geçiş olarak, kendi incelemesiyle yapılmalı (tailwind eklentisi sınıf sıralarını da yeniden düzenler)
 18. **`apps/web` biçim altyapısı** — bugün **hiçbir biçimlendiricinin kapsamında değil** (Faz 3 bulgusu 3): kök `.prettierrc` `semi: false` diyor ama `apps/web` noktalı virgüllü, `prettier --check` dokunulmamış dosyalarda da FAIL veriyor; Ultracite (`biome.jsonc`) ise dış depoda ve `crm-monorepo/` gitignore'da olduğu için görünmüyor. Seçenekler: (a) `.prettierrc`'yi koda uydur (`semi: true`) ve `apps/web`'i kapsama al, (b) `crm-monorepo/`'yi Ultracite kapsamına sok, (c) `apps/web` için ayrı config. **Her seçenek tek seferlik büyük bir diff üretir** → kendi commit'i + incelemesi gerekir, Faz 3'e karıştırılmaz
 19. **`ConfirmDialog`'un paylaşılan `alert-dialog` primitifine taşınması** — primitif, Faz 1'de eklenen `alert-dialog.tsx`'i değil `radix-ui`'yi doğrudan kullanıp kendi overlay'ini (`fixed inset-0` + `backdrop-blur-xs` + `shadow-2xl`) kuruyor; Faz 3.4 yalnızca renk/token ihlallerini temizledi (Faz 3 bulgusu 6)
+20. **Konteyner radius sweep'i (§1.1)** — ölçüm: `apps/web`'te **6 × `rounded-3xl`** + **33 × `rounded-2xl`**, `packages/ui`'de **14 × `rounded-2xl`** (`rounded-4xl` **0** — yasaklı olan yok). §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor; ama bu sayıların bir kısmı küçük çip/rozet olabilir ve konteyner değildir. **Önce triyaj, sonra tek geçiş.** Faz 3 overlay işi değil: `bulk-action-bar` (`rounded-2xl` yüzen çubuk) bu borcun bir örneği ve §2.4'te overlay kapsamı dışı ilan edildi
 
 ---
 
@@ -391,3 +421,18 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 3 | ✅ `email-thread-drawer` → `Sheet` → **14/75** (`c226549`, 2. Sheet). `TS2657`: kök div silinince 3 kardeş kaldı → iç içe modallar `Sheet` içine alındı (konumları değişmedi). Gerçek diff (`-w`) 25/17 |
 | 2026-09-15 | Faz 3 | 📌 **Bulgu 6:** `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor, kendi overlay'ini kuruyor → Gelecek Adımlar #19 |
 | 2026-09-15 | Faz 3 | 📊 **Ara ölçüm:** `guard:crm-ui` scoped **PASS** (0 error/18 dosya) · `--full` **1454** (taban sabit, regresyon yok) · typecheck 2/2 · `email` grubu **6/6 tamam** |
+| 2026-09-16 | Faz 3 | 📏 **Kapsam ölçümü:** yol haritası "kök (6)" diyordu; fiilî durum **8 overlay dosyası** (5 modal + 3 popover/dropdown) + `bulk-action-bar` muafiyeti. Sıra: önce Dialog'lar, sonra popover grubu |
+| 2026-09-16 | Faz 3 | ✅ **Karar:** dokunulan dosyadaki yanıltıcı Hallmark satırı **silinir** — #16 ile §2.3 "tek değişken" kuralı çelişiyordu; kullanıcı #16'yı seçti. Ölçüm: `apps/web` 139 `.tsx`'in **43**'ünde iz (37 `app/**`, 6 `components/` kök) |
+| 2026-09-16 | Faz 3 | ✅ `shortcuts-help-modal` → `Dialog` → **15/75** (`b2d2b84`) |
+| 2026-09-16 | Faz 3 | ✅ `quick-add-sales-rep-modal` → `Dialog` → **16/75** (`a7b9d02`) |
+| 2026-09-16 | Faz 3 | ✅ `entity-picker-modal` → `Dialog` → **17/75** (`7f55787`). Elle backdrop `onClick` + panel `stopPropagation` silindi; **Enter-ile-seç** davranışı `onKeyDown`'ı `DialogContent`'e taşıyarak korundu (overlay göçünde davranış kaybı yok) |
+| 2026-09-16 | Faz 3 | ✅ `team-members-stack` invite modalı → `Dialog` → **18/75** (`65b1feb`). Sarmalayıcının `overflow-y-auto` rolü `DialogContent`'e devredildi; panel `rounded-3xl` → primitiften `rounded-xl`. Dosyadaki popover sonraki adıma bırakıldı (tek değişken) |
+| 2026-09-16 | Faz 3 | ✅ `command-palette` → `Dialog` → **19/75** (`ce72250`). Faz 3'ün **tek üstten hizalı** dialogu: `top-16 translate-y-0 sm:top-24`. 8/8 ezme gerçek `tailwind-merge` ile doğrulandı; `max-w-[calc(100%-2rem)]` **bilinçli korundu** (eski `p-4` ile piksel eşit). Görünür başlık yok → `sr-only` `DialogTitle` |
+| 2026-09-16 | Faz 3 | 🔴 **Bulgu 7:** `popover.tsx` + `dropdown-menu.tsx` (`Content`/`SubContent`) `rounded-3xl` ile yazılmıştı — bulgu 1'in tekrarı. **Önce primitif** (`db8cf6e`), sonra 3 tüketici. `packages/ui`'de `rounded-3xl` artık **0**; 4 overlay primitifi `rounded-xl`'de birleşti |
+| 2026-09-16 | Faz 3 | ✅ `tenant-switcher` → **`Popover`** → **20/75** (`8797590`) — repo'nun **ilk Popover tüketicisi**. `useEffect` click-outside + Escape, `useRef`, `useId`, elle `aria-expanded`/`aria-haspopup`, `z-[70]` silindi. Gerçek diff (`-w`) **21/27 = net küçülme** |
+| 2026-09-16 | Faz 3 | ✅ `dashboard-share-popover` → `Popover` → **21/75** (`90316df`) |
+| 2026-09-16 | Faz 3 | ⚠️ **Bulgu 8:** mobil "başlık altı tam genişlik" paneli `Popover`'ın çapa modeliyle birebir üretilemez → `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` + `sideOffset={10}` ile yaklaşıldı. Tetikleyiciler başlıkta olduğu için aynı yere düşüyor. **`DropdownMenu` hiç kullanılmadı** (üçü de menü değil) |
+| 2026-09-16 | Faz 3 | ✅ `notification-center` → `Popover` → **22/75** (`b9ec6fa`). İki `useId`, elle `role="dialog"`, `aria-expanded`/`aria-haspopup` silindi; `setShowTestMenu(false)` `onOpenChange`'e taşındı → artık `Esc` ve dışa tıklama dâhil **her** kapanışta çalışıyor. Gerçek diff 23/47 |
+| 2026-09-16 | Faz 3 | ✅ **§2.4 yazıldı** — Popover/DropdownMenu alt-deseni: 7 adım, konumlandırma→prop tablosu, mobil yaklaşım uyarısı, `DropdownMenu` seçim kuralı, `bulk-action-bar` kapsam-dışı gerekçesi, "4 overlay primitifi tek radius" notu |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1454** (taban sabit, 8 dosya boyunca hiç regresyon yok) · typecheck 2/2 · `build` 2/2 · `components/email` (6/6) + `components/` kök (8/8) tamam |
+| 2026-09-16 | Faz 3 | ⏳ **Elle duman testi bekliyor:** `tenant-switcher` mobil drawer içinde artık `z-[70]` yerine primitifin `z-50`'siyle portallanıyor (DOM sırası çözmeli, gözle doğrulanmalı); iki panelin mobil genişliği çapaya bağlı |
