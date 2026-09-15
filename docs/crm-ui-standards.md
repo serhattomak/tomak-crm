@@ -154,7 +154,20 @@ Tüm sayfalar (**52 ekran** — dashboard + admin + auth + portal) aynı kabuğu
 
 **İstisna — form ekranları `max-width` kullanabilir.** "Tam genişlik, max-width yok" kuralı veri yoğun liste/tablo ekranları içindir. Tek sütunlu form sayfaları okunabilirlik için `max-w-3xl`/`max-w-4xl` gibi bir üst sınır taşıyabilir; bu, `PageContainer`'ın `className`'i olarak verilir. `max-width` **liste/tablo** ekranlarında yasaktır (ör. `max-w-[1600px]` kaldırıldı).
 
-> **Durum:** `PageContainer` + `PageHeader` **Faz 2'de eklendi ve uygulanıyor**. Yeni sayfa açarken bu kabuğu kullanın; **kendi boşluk varyantınızı icat etmeyin**.
+**Muafiyetler — kabuk kullanmayan yüzeyler (8 dosya):**
+
+| Yüzey | Neden muaf |
+| --- | --- |
+| `orders/[orderId]/print` | `@media print` padding'i sıfırlıyor; içerik kendi boşluğunun sahibi |
+| `(auth)/login`, `(auth)/register` | Layout'u yok; `min-h-screen` ile tam ekran merkezleme kuruyor |
+| `portal/[token]`, `quotes/view/[token]` | Bağımsız genel yüzeyler — dashboard layout'u kullanmıyorlar |
+| `/pipelines`, `/quotes`, `/` (kök) | Layout'suz genel / loading sayfaları |
+
+Muaf yüzeylerde ortaklık **token, primitif ve tipografi** düzeyinde sağlanır. Zorla kabuk giydirmek tam ekran merkezlemeyi bozar — login ekranı login gibi görünmez.
+
+**Kural:** yeni bir ekran açarken ya `PageContainer` kullanın ya da muafiyet gerekçesini bu tabloya yazın. **Sessiz muafiyet yoktur.**
+
+> **Durum:** ✅ `PageContainer` + `PageHeader` **Faz 2'de eklendi ve 44 sayfaya uygulandı** (8 belgelenmiş muafiyet). Yeni sayfa açarken bu kabuğu kullanın; **kendi boşluk varyantınızı icat etmeyin**.
 
 ---
 
