@@ -72,19 +72,19 @@ export function ConfirmDialog({
     <AlertDialogPrimitive.Root onOpenChange={onOpenChange} open={open}>
       <AlertDialogPrimitive.Portal>
         <AlertDialogPrimitive.Overlay className="fade-in-0 data-[state=closed]:fade-out-0 fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs data-[state=closed]:animate-out" />
-        <AlertDialogPrimitive.Content className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-2xl backdrop-blur-md data-[state=closed]:animate-out dark:border-zinc-800 dark:bg-zinc-900">
+        <AlertDialogPrimitive.Content className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-in overflow-hidden rounded-xl border border-border bg-card p-6 shadow-2xl backdrop-blur-md data-[state=closed]:animate-out">
           <div className="flex items-start gap-4">
             {icon}
             <div className="flex-1">
-              <AlertDialogPrimitive.Title className="font-bold text-base text-zinc-900 dark:text-zinc-50">
+              <AlertDialogPrimitive.Title className="font-bold text-base text-foreground">
                 {title}
               </AlertDialogPrimitive.Title>
-              <AlertDialogPrimitive.Description className="mt-2 text-xs text-zinc-600 leading-relaxed dark:text-zinc-400">
+              <AlertDialogPrimitive.Description className="mt-2 text-muted-foreground text-xs leading-relaxed">
                 {description}
               </AlertDialogPrimitive.Description>
             </div>
             <button
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={handleCancel}
               type="button"
             >
@@ -95,7 +95,7 @@ export function ConfirmDialog({
           <div className="mt-6 flex items-center justify-end gap-2.5">
             <AlertDialogPrimitive.Cancel asChild>
               <button
-                className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                className="rounded-lg border border-border bg-card px-4 py-2 font-semibold text-foreground text-xs transition-colors hover:bg-muted disabled:opacity-50"
                 disabled={loading}
                 onClick={handleCancel}
                 type="button"
@@ -107,13 +107,12 @@ export function ConfirmDialog({
             <AlertDialogPrimitive.Action asChild>
               <button
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all active:scale-[0.98] disabled:opacity-50",
+                  "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all active:scale-[0.98] disabled:opacity-50",
                   variant === "destructive" &&
-                    "bg-rose-600 hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-500",
+                    "bg-rose-600 hover:bg-rose-700 dark:hover:bg-rose-500",
                   variant === "warning" &&
-                    "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500",
-                  variant === "default" &&
-                    "bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-500"
+                    "bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500",
+                  variant === "default" && "bg-primary hover:bg-primary/90"
                 )}
                 disabled={loading}
                 onClick={handleConfirm}
