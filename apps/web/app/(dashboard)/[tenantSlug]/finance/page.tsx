@@ -1,9 +1,21 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -922,14 +934,25 @@ export default function FinancePage() {
 
       {/* 5. Cari Statement Drawer */}
       {selectedCariForStatement ? (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-          <div className="flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl dark:bg-zinc-900 print:max-w-none print:shadow-none">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              handleCloseStatement();
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-2xl overflow-hidden print:max-w-none print:shadow-none data-[side=right]:sm:max-w-2xl"
+            side="right"
+          >
             <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800 print:hidden">
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-violet-600 dark:text-violet-400" />
-                <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Cari Hesap Ekstresi
-                </h2>
+                </SheetTitle>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -939,13 +962,14 @@ export default function FinancePage() {
                 >
                   <Printer className="h-3.5 w-3.5" /> Yazdır
                 </button>
-                <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
-                  onClick={handleCloseStatement}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
             </div>
 
@@ -995,8 +1019,8 @@ export default function FinancePage() {
                 </table>
               </div>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       ) : null}
 
       {/* 6. Modals */}
@@ -1137,19 +1161,31 @@ function CreateCariModal({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Cari Kart Aç
-          </h3>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <div className="space-y-3 p-4 text-xs">
@@ -1311,8 +1347,8 @@ function CreateCariModal({
             {isSubmitting ? "Kaydediliyor..." : "Kartı Aç"}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1396,19 +1432,31 @@ function CreateAccountModal({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl bg-white shadow-2xl dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Kasa / Banka Hesabı
-          </h3>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <div className="space-y-3 p-4 text-xs">
@@ -1538,8 +1586,8 @@ function CreateAccountModal({
             {isSubmitting ? "Kaydediliyor..." : "Hesabı Aç"}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1646,19 +1694,31 @@ function CreateTransactionModal({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl bg-white shadow-2xl dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Tahsilat & Ödeme Fişi
-          </h3>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <div className="space-y-3 p-4 text-xs">
@@ -1809,8 +1869,8 @@ function CreateTransactionModal({
             {isSubmitting ? "İşleniyor..." : "Fişi Kaydet"}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1897,19 +1957,31 @@ function TransferModal({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-md flex-col rounded-2xl bg-white shadow-2xl dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Hesaplar Arası Virman
-          </h3>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <div className="space-y-3 p-4 text-xs">
@@ -2005,7 +2077,7 @@ function TransferModal({
             {isSubmitting ? "Aktarılıyor..." : "Virmanı Tamamla"}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
