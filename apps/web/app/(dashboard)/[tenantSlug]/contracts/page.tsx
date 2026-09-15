@@ -1,11 +1,22 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md · designed-as-app */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   CheckCircle2,
@@ -473,19 +484,31 @@ export default function ContractsPage() {
 
       {/* 5. Create Contract Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-4 dark:border-zinc-800">
-              <h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                 Yeni Sözleşme Oluştur
-              </h2>
-              <button
-                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                onClick={() => setIsCreateModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -581,19 +604,30 @@ export default function ContractsPage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* 6. Contract Detail & Preview Drawer */}
       {selectedContract && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs">
-          <div className="flex h-full w-full max-w-xl flex-col bg-white shadow-2xl dark:bg-zinc-950">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedContract(null);
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-xl data-[side=right]:sm:max-w-xl"
+            side="right"
+          >
             <div className="flex items-center justify-between border-zinc-200 border-b p-5 dark:border-zinc-800">
               <div>
-                <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+                <SheetTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                   {selectedContract.title}
-                </h3>
+                </SheetTitle>
                 <p className="font-mono text-xs text-zinc-500">
                   {selectedContract.contractNumber}
                 </p>
@@ -613,13 +647,14 @@ export default function ContractsPage() {
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
-                <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  onClick={() => setSelectedContract(null)}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
             </div>
 
@@ -703,8 +738,8 @@ export default function ContractsPage() {
                 Kapat
               </Button>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {/* 7. Modal: Sözleşme Silme Onay Penceresi */}
