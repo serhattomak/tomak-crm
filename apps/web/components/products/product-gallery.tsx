@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { ChevronLeft, ChevronRight, Package, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
@@ -139,29 +145,6 @@ export function ProductGallery({
     },
     [images.length]
   );
-
-  // Lightbox açıkken: Esc kapatır, ok tuşları gezinir. Scroll kilitlenir.
-  useEffect(() => {
-    if (lightboxIndex === null) {
-      return;
-    }
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeLightbox();
-      } else if (event.key === "ArrowRight") {
-        stepLightbox(1);
-      } else if (event.key === "ArrowLeft") {
-        stepLightbox(-1);
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [lightboxIndex, closeLightbox, stepLightbox]);
 
   if (displayImages.length === 0) {
     return (
@@ -352,70 +335,79 @@ export function ProductGallery({
 
       {/* Lightbox */}
       {lightboxSrc !== null && lightboxIndex !== null && (
-        <div
-          aria-label={`${productName} görsel önizleme`}
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-sm"
-          onClick={closeLightbox}
-          role="dialog"
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              closeLightbox();
+            }
+          }}
+          open
         >
-          <button
-            aria-label="Önizlemeyi kapat"
-            className="absolute top-4 right-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
-            onClick={closeLightbox}
-            type="button"
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex h-screen w-screen max-w-none items-center justify-center gap-0 rounded-none bg-transparent p-4 shadow-none ring-0"
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight") {
+                stepLightbox(1);
+              } else if (event.key === "ArrowLeft") {
+                stepLightbox(-1);
+              }
+            }}
+            showCloseButton={false}
           >
-            <X aria-hidden="true" className="h-5 w-5" />
-          </button>
-
-          {displayImages.length > 1 && (
-            <>
+            <DialogTitle className="sr-only">
+              {productName} görsel önizleme
+            </DialogTitle>
+            <DialogClose asChild>
               <button
-                aria-label="Önceki görsel"
-                className="absolute left-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  stepLightbox(-1);
-                }}
+                aria-label="Önizlemeyi kapat"
+                className="absolute top-4 right-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
                 type="button"
               >
-                <ChevronLeft aria-hidden="true" className="h-5 w-5" />
+                <X aria-hidden="true" className="h-5 w-5" />
               </button>
-              <button
-                aria-label="Sonraki görsel"
-                className="absolute right-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  stepLightbox(1);
-                }}
-                type="button"
-              >
-                <ChevronRight aria-hidden="true" className="h-5 w-5" />
-              </button>
-            </>
-          )}
+            </DialogClose>
 
-          <figure
-            className="relative aspect-[4/3] w-full max-w-4xl overflow-hidden rounded-3xl bg-zinc-900"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Image
-              alt={imageAlt(productName, lightboxIndex)}
-              fill
-              sizes="100vw"
-              src={lightboxSrc}
-              unoptimized
-            />
-            <figcaption className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-lg bg-zinc-950/70 px-3 py-1 font-medium text-[11px] text-white">
-              {lightboxIndex + 1} / {displayImages.length}
-              {lightboxIndex === 0
-                ? isExternalVariantCover
-                  ? " · Varyant"
-                  : " · Kapak"
-                : ""}
-            </figcaption>
-          </figure>
-        </div>
+            {displayImages.length > 1 && (
+              <>
+                <button
+                  aria-label="Önceki görsel"
+                  className="absolute left-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
+                  onClick={() => stepLightbox(-1)}
+                  type="button"
+                >
+                  <ChevronLeft aria-hidden="true" className="h-5 w-5" />
+                </button>
+                <button
+                  aria-label="Sonraki görsel"
+                  className="absolute right-4 rounded-xl border border-zinc-700 bg-zinc-900 p-2 text-white transition-colors hover:bg-zinc-800"
+                  onClick={() => stepLightbox(1)}
+                  type="button"
+                >
+                  <ChevronRight aria-hidden="true" className="h-5 w-5" />
+                </button>
+              </>
+            )}
+
+            <figure className="relative aspect-[4/3] w-full max-w-4xl overflow-hidden rounded-3xl bg-zinc-900">
+              <Image
+                alt={imageAlt(productName, lightboxIndex)}
+                fill
+                sizes="100vw"
+                src={lightboxSrc}
+                unoptimized
+              />
+              <figcaption className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-lg bg-zinc-950/70 px-3 py-1 font-medium text-[11px] text-white">
+                {lightboxIndex + 1} / {displayImages.length}
+                {lightboxIndex === 0
+                  ? isExternalVariantCover
+                    ? " · Varyant"
+                    : " · Kapak"
+                  : ""}
+              </figcaption>
+            </figure>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
