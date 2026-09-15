@@ -103,7 +103,7 @@ Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-m
 
 **Not:** Tüm yeni primitifler `--radius` tabanlı yuvarlaklık, semantic token ve motion tokenlı giriş/çıkış kullanır. `accordion` ve `calendar` **eklenmedi** (gerçek tüketici yok — Gelecek Adımlar'da).
 
-## [~] Faz 2 — Kanonik sayfa kabuğu (52 ekran) — **DEVAM EDİYOR (10/52)**
+## [~] Faz 2 — Kanonik sayfa kabuğu (52 ekran) — **DEVAM EDİYOR (17/52)**
 
 - [x] **`page-container.tsx`** — `px-4 py-5` / `md:px-6 md:py-6`, tam genişlik, `bleed` varyantı (full-bleed yüzeyler için)
 - [x] **`page-header.tsx`** — `title` / `description` / `badge` / `actions` slotları
@@ -132,11 +132,17 @@ Sezgisel bir dönüşüm "dosyadaki son `</div>` + `);` + `}`"i ararsa **ikinci 
 
 **Kural:** kapanış etiketi **yapısal** olarak bulunur — sayfa component'inin `return (` bloğunun gerçek sonu, yani bir sonraki `function <Ad>(` satırından hemen önceki `);` + `}` bloğu. **Her batch'ten sonra `tsc` zorunludur**; hata bu sayede commit'ten önce yakalandı.
 
-### Faz 2 sayfa haritası (kalan 42)
+### ⚠️ Teknik not 2 — kök eleman yüzeyde göründüğü gibi değil
+
+Kategori A'nın "en mekanik" sayfası bile varsayımı kırdı: `customers/[customerId]/page.tsx`'te **ilk `<div className="space-y-6">` sayfanın kökü değil**, `if (loading)` dalının skeleton sarmalayıcısı. Gerçek kök 249. satırda. Bu sayfa **iki dönüş noktası** taşıyor ve **ikisi de** sarmalandı — aksi halde yükleme durumu farklı boşlukta görünürdü.
+
+Ders: kök eleman, component'in `return (` bloğuna *yapısal olarak* bağlıdır ve sayfa başına doğrulanmalıdır. Bu yüzden toplu script bu iş için emekliye ayrıldı; sayfalar kanıtlanmış satır numaralarıyla elle sarmalanıyor.
+
+### Faz 2 sayfa haritası (kalan 35)
 
 | Kategori | Sayfalar | Not |
 | --- | --- | --- |
-| **A. Basit `space-y-*` kökü** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Çok component'li olabilir → yapısal kapanış |
+| ✅ **A. `space-y-*` kökü — TAMAMLANDI** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Beklenenden zor: kök eleman sayfa başına doğrulanmalı (Teknik not 2) |
 | **B. Legacy çift-padding / max-width** | `inventory` (`max-w-[1600px]` + `p-4 pt-6 md:p-8`), `contracts` (`p-6`), `settings` (`max-w-3xl`), `promotions/new` (`max-w-4xl`) | Sayfa kendi padding'ini **bırakır** |
 | **C. Sayfa-seviyesi kart sarmalayıcı** | `finance`, `invoices` (kök `rounded-2xl border bg-white p-4`) | `Card`'a dönüşmeli |
 | **D. Full-bleed adayları** | `messages`, `calendar`, `orders/[orderId]/print`, `(auth)/login`, `(auth)/register`, `portal/[token]`, `quotes/view/[token]`, `/pipelines`, `/quotes`, `/` | `bleed` varyantı veya kabuk kullanmama |
@@ -263,3 +269,5 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 2 | ✅ `text-2xs` üretilen CSS'te doğrulandı → tipografi token'ı işlevsel |
 | 2026-09-15 | Faz 2 | ⚠️ **Hata:** sezgisel kapanış-etiketi dönüşümü 2 dosyayı kırdı (`TS17002`); typecheck commit öncesi yakaladı. Yapısal eşleştirmeyle elle düzeltildi. Teknik not kaydedildi |
 | 2026-09-15 | Faz 2 | Kalan 42 sayfa kategori haritasıyla kayıt altına alındı |
+| 2026-09-15 | Faz 2 | ✅ **Kategori A tamamlandı** (7 sayfa) → **17/52**. typecheck 2/2, build 2/2 |
+| 2026-09-15 | Faz 2 | ⚠️ Teknik not 2: `customers/[customerId]`'nin kök adayı loading dalıydı → iki dönüş noktası da sarmalandı. "Mekanik" kategori bile sayfa başına doğrulama gerektiriyor |
