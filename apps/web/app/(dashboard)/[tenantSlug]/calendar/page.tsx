@@ -1,9 +1,14 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md · designed-as-app */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -1333,22 +1338,34 @@ export default function CalendarHubPage() {
 
       {/* MODAL 1: NEW / EDIT ACTIVITY */}
       {isNewModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-xs">
-          <div className="fade-in zoom-in-95 my-8 w-full max-w-lg animate-in rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl md:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsNewModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-5 md:p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
-              <h3 className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
                 <CalendarDays className="h-5 w-5 text-violet-600" />
                 {activityForm.id
                   ? "Randevuyu Düzenle"
                   : "Yeni Randevu & Toplantı"}
-              </h3>
-              <button
-                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                onClick={() => setIsNewModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="flex flex-col gap-4" onSubmit={handleSaveActivity}>
@@ -1618,26 +1635,38 @@ export default function CalendarHubPage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* MODAL 2: CALL LOGGER */}
       {isCallLoggerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-xs">
-          <div className="fade-in zoom-in-95 my-8 w-full max-w-lg animate-in rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl md:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCallLoggerOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-5 md:p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
-              <h3 className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
                 <PhoneCall className="h-5 w-5 text-emerald-600" />
                 Hızlı Satış Çağrı / Görüşme Kaydedici
-              </h3>
-              <button
-                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                onClick={() => setIsCallLoggerOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="flex flex-col gap-4" onSubmit={handleSaveCallLog}>
@@ -1829,14 +1858,25 @@ export default function CalendarHubPage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* DRAWER / MODAL 3: ACTIVITY DETAILS */}
       {selectedActivity && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="fade-in zoom-in-95 w-full max-w-lg animate-in rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl md:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedActivity(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-5 md:p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 {(() => {
@@ -1851,21 +1891,22 @@ export default function CalendarHubPage() {
                   );
                 })()}
                 <div>
-                  <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedActivity.title}
-                  </h3>
+                  </DialogTitle>
                   <span className="text-xs text-zinc-500">
                     {selectedActivity.type} • {selectedActivity.status}
                   </span>
                 </div>
               </div>
-              <button
-                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                onClick={() => setSelectedActivity(null)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="flex flex-col gap-4 text-xs">
@@ -2058,26 +2099,38 @@ export default function CalendarHubPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* MODAL 4: CALENDAR SYNC HUB */}
       {isSyncModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="fade-in zoom-in-95 w-full max-w-md animate-in rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl md:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsSyncModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-5 md:p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
-              <h3 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <LinkIcon className="h-5 w-5 text-violet-600" />
                 Dış Takvim Canlı Senkronizasyonu
-              </h3>
-              <button
-                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                onClick={() => setIsSyncModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="flex flex-col gap-4 text-xs">
@@ -2148,8 +2201,8 @@ export default function CalendarHubPage() {
                 </Button>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
