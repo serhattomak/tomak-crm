@@ -182,6 +182,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 2. ✅ `components/email` **tamamlandı** (6 dosya): `compose-modal` (`26bdf0b`), `convert-to-ticket-modal` (`1508fdc`), `convert-to-lead-modal` (`42e05f5`), `template-modal` (`4700991`), `email-account-modal` (`06af922`), `email-thread-drawer` → `Sheet` (`c226549`).
 > 3. ✅ `components/` kök **tamamlandı** (8 dosya): `shortcuts-help-modal` (`b2d2b84`), `quick-add-sales-rep-modal` (`a7b9d02`), `entity-picker-modal` (`7f55787`), `team-members-stack` invite modalı (`65b1feb`), `command-palette` (`ce72250`) → `Dialog`; `tenant-switcher` (`8797590`), `dashboard-share-popover` (`90316df`), `notification-center` (`b9ec6fa`) → **`Popover`**. Öncesinde primitif düzeltmesi `db8cf6e`.
 > 4. Sıradaki grup — `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
+>    **+ `team-members-stack.tsx`'in ertelemeli popover'ı (satır 263, `fixed inset-x-3 top-14 … sm:absolute sm:right-0 sm:w-96`)** — dosyanın modal yarısı `65b1feb`'de yapıldı, popover yarısı §2.4'e göre ayrı geçiş bekliyor. Ölçüm: `components/` kökünde kalan tek gerçek overlay izi bu.
 >
 > **Tarif:** standart **§2.3** (Dialog + Sheet: 7 adım, iki backdrop biçimi, boyut aktarımı, varyant önekli ezme) **+ §2.4** (Popover/DropdownMenu alt-deseni). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
@@ -206,7 +207,8 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
 - [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
 - [x] **`customers` grubu tamam** (5 dosya) — `create-customer-modal`, `edit-customer-modal`, `add-contact-modal`, `add-activity-modal` → `Dialog`; `delete-customer-dialog` → `ConfirmDialog` (`dafdeb5`)
-- [x] **`components/email` tamam** (6/6) · **`components/` kök tamam** (8/8) · `components/chat` tamam (1/1)
+- [x] **`components/email` tamam** (6/6) · `components/` kök tamam (8/8) · `components/chat` tamam (1/1)
+- [ ] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı (satır 263) — §2.4 ile taşınacak
 - [ ] **3.1 kalan:** `widgets` (3) · `promotions/components` (2) · `pipelines/_components` (2) · `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
 - [ ] **3.2** Sayfa-içi modallar (en küçükten büyüğe)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
