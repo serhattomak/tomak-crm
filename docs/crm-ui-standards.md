@@ -84,24 +84,61 @@ Dekoratif animasyon **yoktur**. Motion, işlevi açıklamak için vardır (bir �
 
 Tüm CRM arayüzlerinde native HTML etiketleri (`<table/>`, `<div>` kart taklitleri) yerine `@workspace/ui` altındaki paylaşılan primitifler kullanılır:
 
-> **Genişleyen liste (ADR-0004 §4):** Aşağıdaki primitifler **Faz 1**'de pakete eklenir ve bu tabloya işlenir: `Dialog`, `AlertDialog`, `Sheet` (drawer), `DropdownMenu`, `Popover`, `Switch`, `RadioGroup`, `Progress`, `Separator`, `ScrollArea`, `Alert`, `PageContainer`, `PageHeader`. Elle yazılmış modal/overlay kullanımı bu primitifler eklendikçe yasaklanır — hedef ~60 elle yazılmış modal ve 156 `fixed inset-0` bloğunun tasfiyesi. Ekleyen: `shadcn` CLI (stil `radix-luma`) → ardından house stiline uyarlama. **Radix tek foundation'dır**; Base UI tabanlı bileşen alınmaz.
->
-> Bu tabloda **olmayan** bir şeyi dışarıdan getirmeyin: bir bileşen `packages/ui`'de zaten varsa (ör. `Badge`, `PhoneInput`, `NumberInput`) ikinci bir kopya oluşturulmaz. `packages/ui` her zaman kazanır.
+> **Radix tek foundation'dır**; Base UI tabanlı bileşen alınmaz. Bu tabloda **olmayan** bir şeyi dışarıdan getirmeyin: bir bileşen `packages/ui`'de zaten varsa (ör. `Badge`, `PhoneInput`, `NumberInput`) ikinci bir kopya oluşturulmaz. `packages/ui` her zaman kazanır.
 
 | Primitif | Dosya | Kullanım Amacı |
 |---|---|---|
 | `Card` | `card.tsx` | Veri blokları, özet panelleri (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`) |
 | `Badge` | `badge.tsx` | Durum, segment ve tip etiketleri (8 varyant: `default`, `secondary`, `outline`, `destructive`, `success`, `warning`, `accent`, `neutral`) |
-| `Button` | `button.tsx` | Aksiyonlar (`variant`: `default`, `outline`, `secondary`, `ghost`, `destructive`, `link`; `size`: `sm`, `default`, `lg`, `icon`) |
+| `Button` | `button.tsx` | Aksiyonlar (`variant`: `default`, `outline`, `secondary`, `ghost`, `destructive`, `link`; `size`: `xs`, `sm`, `default`, `lg`, `icon`, `icon-xs`, `icon-sm`, `icon-lg`) |
 | `Table` | `table.tsx` | Yüksek veri yoğunluklu listeler (`TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`) |
-| `Tabs` | `tabs.tsx` | Sekmeli görünümler (Radix UI tabanlı `TabsList`, `TabsTrigger`, `TabsContent`) |
+| `Tabs` | `tabs.tsx` | Sekmeli görünümler (`TabsList`, `TabsTrigger`, `TabsContent`) |
 | `Avatar` | `avatar.tsx` | Kullanıcı/müşteri görselleri ve harf fallback'leri (`AvatarImage`, `AvatarFallback`) |
 | `Skeleton` | `skeleton.tsx` | Sayfa ve widget veri yüklenme durumları |
 | `EmptyState` | `empty-state.tsx` | Veri bulunamadı veya ilk kayıt ekleme durumu (`icon`, `title`, `description`, `action`) |
 | `Input` & `Label` | `input.tsx`, `label.tsx` | Form giriş alanları ve etiketleri |
-| `Checkbox` | `checkbox.tsx` | Çoklu seçim ve onay kutuları (Radix UI Checkbox) |
+| `Checkbox` | `checkbox.tsx` | Çoklu seçim ve onay kutuları |
+| `SelectField` / `Select` | `select.tsx` | ≤7 sabit seçenek (`SelectField`) veya düşük seviye `Select` |
+| `Combobox` | `combobox.tsx` | >7 seçenek / arama gerektiren seçim |
+| `NumberInput` | `number-input.tsx` | Para (`precision=2`, `suffix=" ₺"`) ve adet (`precision=0`, stepper) |
+| `PhoneInput` | `phone-input.tsx` | Telefon (+ `formatPhoneNumber`, `validatePhoneNumber`) |
+| `DatePicker` / `DateRangePicker` | `date-picker.tsx` | Tarih ve aralık (`YYYY-MM-DD`, TR locale) |
+| `TimePicker` | `time-picker.tsx` | Saat seçimi (`HH:mm`) |
+| `ConfirmDialog` | `confirm-dialog.tsx` | Silme/onay akışları (`variant: destructive \| warning \| default`) |
+| `Tooltip` | `tooltip.tsx` | Kısa açıklamalar (`TooltipProvider` gerekir) |
+| `Toaster` / `toast` | `sonner.tsx` | Bildirimler |
+| `Textarea` | `textarea.tsx` | Çok satırlı metin |
+| **`Dialog`** | `dialog.tsx` | **Faz 1** — modal pencereler (`DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `DialogClose`) |
+| **`AlertDialog`** | `alert-dialog.tsx` | **Faz 1** — yıkıcı/önemli onaylar (`AlertDialogContent`, `AlertDialogAction`, `AlertDialogCancel`, `AlertDialogMedia`) |
+| **`Sheet`** | `sheet.tsx` | **Faz 1** — yan panel / drawer (`SheetContent`, `SheetHeader`, `SheetFooter`, `SheetSide`) |
+| **`DropdownMenu`** | `dropdown-menu.tsx` | **Faz 1** — açılır menüler (`DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator`, `DropdownMenuSub`) |
+| **`Popover`** | `popover.tsx` | **Faz 1** — bağlamsal katmanlar (`PopoverContent`, `PopoverTrigger`, `PopoverAnchor`) |
+| **`Switch`** | `switch.tsx` | **Faz 1** — boolean ayarlar |
+| **`RadioGroup`** | `radio-group.tsx` | **Faz 1** — seçenek grupları (`RadioGroupItem`) |
+| **`Progress`** | `progress.tsx` | **Faz 1** — ilerleme/yükleme göstergeleri |
+| **`Separator`** | `separator.tsx` | **Faz 1** — ayraçlar (`orientation`, `decorative`) |
+| **`ScrollArea`** | `scroll-area.tsx` | **Faz 1** — özel kaydırma alanı (`ScrollBar`) |
+| **`Alert`** | `alert.tsx` | **Faz 1** — satır içi uyarı/bilgi kutuları (`AlertTitle`, `AlertDescription`, `AlertAction`) |
 
-### 2.1 Kanonik Sayfa Kabuğu
+**Hedef (Faz 3):** Elle yazılmış ~60 modal ve 156 `fixed inset-0` overlay'inin bu primitiflerle tasfiyesi.
+
+### 2.1 Primitif Ekleme Prosedürü (`shadcn` CLI)
+
+Yeni primitif **yalnızca** `shadcn` CLI ile eklenir (stil `radix-luma`), ardından house stiline uyarlanır. CLI iki tuzağı vardır — Faz 1'de birebir karşılaşılmıştır:
+
+```sh
+# DOĞRU kullanım (repo kökü: crm-monorepo/)
+npx shadcn add <bilesen> --cwd packages\ui --dry-run      # 1) önce önizle
+npx shadcn add <bilesen> --cwd packages\ui -y             # 2) sonra yaz
+```
+
+> **⚠️ Tuzak 1 — CLI mevcut dosyaları ezmek ister.** `dialog`, `alert-dialog` ve `sheet` bağımlılık olarak `button` çeker ve CLI `button.tsx`'i registry sürümüyle **ezmeyi teklif eder**. Registry sürümü `rounded-lg` yerine **`rounded-4xl`** kullanır — yani §1.1'in açıkça yasakladığı hap form. Onaylanırsa 52 ekrandaki tüm butonlar bozulur. **Kabul etmeyin.** Gerekirse dosyayı geçici olarak kenara alıp CLI'ı çalıştırın, sonra `git checkout -- packages/ui/src/components/button.tsx` ile geri alın ve `git diff` ile içeriğin değişmediğini kanıtlayın.
+>
+> **⚠️ Tuzak 2 — CLI yanlış npm bağımlılığı kurar.** Üretilen dosyalarda `import { cn } from "cn"` yazar ve `packages/ui/package.json`'a **`cn` npm paketini ekler**. Bu projede `cn` `@workspace/ui/lib/utils`'ten gelir; ikinci bir sınıf-birleştirme kütüphanesi kabul edilmez. Her yeni dosyada import `@workspace/ui/lib/utils` olarak düzeltilmeli ve `cn` bağımlılığı `package.json`'dan kaldırılmalıdır (`npm install` ile lock senkronlanır).
+
+**Uyarlama kontrol listesi (her yeni primitif):** import yolu · `rounded-4xl` yok (→ `rounded-xl`/`rounded-lg`) · `ring-2` (`ring-3` değil) · semantic token (hex/slate/violet yok) · dekoratif gradient/blur yok · `prefers-reduced-motion` desteği.
+
+### 2.2 Kanonik Sayfa Kabuğu
 
 Tüm sayfalar (**52 ekran** — dashboard + admin + auth + portal) aynı kabuğu kullanır. **Navigasyon yüzeye özeldir**; kabuk, boşluk, tipografi ve renk dili ortaktır. Login ekranı ile müşteri listesi aynı navigasyona sahip olmak zorunda değil, ama aynı dilde konuşmak zorundadır.
 

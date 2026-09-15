@@ -53,6 +53,14 @@ Bu ADR'den sonra eklenen her primitif — nereden gelirse gelsin — `--radius: 
 - **`packages/ui` her zaman kazanır:** bir bileşen `packages/ui`'de zaten varsa (ör. `badge`, `phone-input`, `number-input`) dışarıdan ikinci bir kopya alınmaz. `apps/web/components/phone-input.tsx` shim'i bu programda kaldırılır.
 - `accordion` ve `calendar` bağımsız primitif olarak **eklenmez** — gerçek tüketicileri yok (`date-picker` kendi takvimini kuruyor ve çalışıyor). İhtiyaç doğduğunda yol haritasından çıkarılır.
 
+> **⚠️ CLI'ın iki tuzağı (Faz 1'de birebir doğrulandı — prosedür `crm-ui-standards.md` §2.1'de):**
+>
+> **1) Mevcut dosyaları ezmek ister.** `dialog` / `alert-dialog` / `sheet`, bağımlılık olarak `button` çeker ve CLI `button.tsx`'i registry sürümüyle değiştirmeyi teklif eder. Registry sürümü `rounded-lg` yerine **`rounded-4xl`** kullanır — §1.1'in açıkça yasakladığı hap form. Kabul edilirse **52 ekrandaki tüm butonlar** bozulur ve Faz 1'in "hiçbir ekran değişmez" kabul kriteri sessizce ihlal edilir. Çözüm: teklifi reddet; zincir tıkanırsa dosyayı geçici kenara alıp CLI'ı çalıştır, sonra `git checkout -- packages/ui/src/components/button.tsx` ile geri al ve `git diff` ile içeriğin değişmediğini kanıtla.
+>
+> **2) Yanlış npm bağımlılığı kurar.** Üretilen her dosyada `import { cn } from "cn"` yazar ve `packages/ui/package.json`'a **`cn` npm paketini ekler** (`cn@^0.3.0` — clsx+tailwind-merge alternatifi). Bu projede `cn` `@workspace/ui/lib/utils`'ten gelir; ikinci bir sınıf-birleştirme kütüphanesi kabul edilmez (ADR-0002: tek kaynak `packages/ui`). Düzeltilmezse 8 bileşen bir kütüphaneyi, 21 bileşen başkasını kullanır — yani aranan tutarlılığın tam tersi.
+
+> **ℹ️ Bulgu — `confirm-dialog.tsx` standart dışı:** mevcut paneli `rounded-3xl` kullanıyor; §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor. Yeni `Dialog`/`AlertDialog` panelleri **`rounded-xl`** ile eklendi (standart, legacy kod değil, otoritedir — §3). `ConfirmDialog`'un yeni `AlertDialog` temeline taşınması ve `rounded-xl`'e normalize edilmesi **Faz 3** işidir.
+
 ### 5. Token eklemeleri (tipografi, motion)
 `packages/ui/src/styles/globals.css` içine eklenir; `crm-ui-standards.md` §1.3 buna göre güncellenir.
 

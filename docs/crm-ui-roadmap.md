@@ -71,25 +71,37 @@ Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-m
 > **✅ Çözülen sapma 3 — kök dizin sürüm kontrolüne alındı.** `D:\serhatdev\crm` bir git deposu **değildi**; yani bu yol haritası, ADR-0004 ve kanonik standart sürüm kontrolsüzdü (geri alma/geçmiş yok). Faz 0'da kökte `git init` yapıldı, `crm-monorepo/` `.gitignore`'a alındı. Ayrıntı: ADR-0004 §11.
 
 
-## [ ] Faz 1 — Eksik primitif katmanı
+## [x] Faz 1 — Eksik primitif katmanı — **TAMAMLANDI**
 
-`packages/ui/src/components/` altına eklenir. Yol: `shadcn` CLI (stil `radix-luma`) → house stiline uyarlama. Registry karşılığı yoksa Radix üzerine elle.
+`shadcn` CLI (stil `radix-luma`) ile eklendi, ardından house stiline uyarlandı. **21 → 32 primitif.**
 
-- [ ] `dialog` — ~60 modalın ve 156 overlay'in yerini alır
-- [ ] `alert-dialog` + `confirm-dialog`'ın bu temele taşınması
-- [ ] `sheet` (drawer) — `email-thread-drawer`, `whatsapp-chat-drawer`, mobil paneller
-- [ ] `dropdown-menu`
-- [ ] `popover` — `date-picker` / `time-picker` doğrudan Radix yerine bunu kullanır
-- [ ] `switch`
-- [ ] `radio-group`
-- [ ] `progress`
-- [ ] `separator`
-- [ ] `scroll-area`
-- [ ] `alert` — **kendi yazımız** (registry'den değil; CVA tabanlı, ~40 satır)
-- [ ] `tooltip` tüketicileri standarda bağlanır
-- [ ] Tüm yeni primitifler: `--radius` tabanlı yuvarlaklık, semantic token, motion tokenlı giriş/çıkış, `prefers-reduced-motion`
+- [x] `dialog` (155 satır) — ~60 modalın ve 156 overlay'in yerini alacak
+- [x] `alert-dialog` (184 satır) — yıkıcı/önemli onaylar
+- [x] `sheet` (134 satır) — drawer / yan panel
+- [x] `dropdown-menu` (251 satır)
+- [x] `popover` (79 satır)
+- [x] `switch` (29 satır)
+- [x] `radio-group` (39 satır)
+- [x] `progress` (27 satır)
+- [x] `separator` (24 satır)
+- [x] `scroll-area` (50 satır)
+- [x] `alert` (69 satır) — CLI'dan alındı (CVA-only, Base UI yok); elle yazmaya gerek kalmadı
+- [ ] `confirm-dialog`'ın `AlertDialog` temeline taşınması + `rounded-3xl` → `rounded-xl` normalizasyonu → **Faz 3'e taşındı**
+- [ ] `tooltip` tüketicileri standarda bağlanır → **Faz 3'e taşındı** (tüketici işi)
 
-**Kabul:** primitifler build/tip geçer, henüz `apps/web` tüketicisi yok. `accordion` ve `calendar` **eklenmez** (gerçek tüketici yok).
+**Kabul kriteri — hepsi geçti:** typecheck 2/2 · build 2/2 (52 rota) · `guard:crm-ui` 0 error → PASS · `apps/web`'de 11 yeni primitifin **tüketicisi 0** · primitif sayısı 32 · `rounded-4xl` 0 · `from "cn"` 0.
+
+> **⚠️ Faz 1 bulgusu 1 — CLI `button.tsx`'i ezmek istedi.** `dialog`/`alert-dialog`/`sheet` bağımlılık olarak `button` çekiyor ve CLI onu registry sürümüyle değiştirmeyi teklif etti. Registry sürümü `rounded-lg` yerine **`rounded-4xl`** kullanıyor — §1.1'in yasakladığı hap form. Onaylansaydı **52 ekrandaki tüm butonlar** bozulurdu. Teklif reddedildi; zincir tıkanınca dosya geçici kenara alınıp CLI çalıştırıldı, sonra `git checkout` ile geri alındı. **`git diff` boş → `button.tsx` içerik olarak değişmedi** (hash farkı yalnızca CRLF).
+>
+> **⚠️ Faz 1 bulgusu 2 — CLI yanlış npm bağımlılığı kurdu.** Üretilen 11 dosyada `import { cn } from "cn"` yazdı ve `packages/ui/package.json`'a **`cn@^0.3.0`** ekledi. 8 dosyada import `@workspace/ui/lib/utils`'e düzeltildi; bağımlılık kaldırıldı, `npm install` ile lock senkronlandı → `package.json` ve `package-lock.json` **HEAD ile birebir aynı**. Aksi halde 8 bileşen bir, 21 bileşen başka kütüphane kullanacaktı.
+>
+> **ℹ️ Faz 1 bulgusu 3 — `confirm-dialog.tsx` standart dışı:** paneli `rounded-3xl`. §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor. Yeni paneller **standarta göre** `rounded-xl` yapıldı (legacy kod değil, standart otorite — ADR-0004 §3). `ConfirmDialog` normalizasyonu Faz 3'e taşındı.
+>
+> **✅ Temiz çıkanlar:** dekoratif gradient/blur/hex/keyfi shadow **yok**; `blur` kullanımları yalnızca `supports-backdrop-filter:backdrop-blur-sm` (fonksiyonel backdrop, yasaklı dekoratif küre değil). Radius'lar house dağılımı içinde (`rounded-2xl` 9×, `rounded-3xl` 1× zaten mevcut).
+>
+> **📌 Prosedür kalıcılaştırıldı:** `crm-ui-standards.md` **§2.1 Primitif Ekleme Prosedürü** — doğru CLI komutu + iki tuzak + her yeni primitif için uyarlama kontrol listesi.
+
+**Not:** Tüm yeni primitifler `--radius` tabanlı yuvarlaklık, semantic token ve motion tokenlı giriş/çıkış kullanır. `accordion` ve `calendar` **eklenmedi** (gerçek tüketici yok — Gelecek Adımlar'da).
 
 ## [ ] Faz 2 — Kanonik sayfa kabuğu (52 ekran)
 
@@ -106,6 +118,8 @@ Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-m
 - [ ] A11y kazanımı: focus trap, `Esc`, `aria-modal` (primitiflerden gelir)
 - [ ] Motion: tek kanonik giriş/çıkış, `prefers-reduced-motion`
 - [ ] `delete-customer-dialog` gibi `ConfirmDialog`'ı yok sayan yeniden yazımlar temizlenir
+- [ ] **`confirm-dialog.tsx`'in `AlertDialog` temeline taşınması** + panelinin `rounded-3xl` → `rounded-xl` normalize edilmesi (Faz 1'den taşındı — §1.1 ihlali)
+- [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
 - [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003 kuralı)
 
 ## [ ] Faz 4 — Renk disiplini (yüzey yüzey)
@@ -200,3 +214,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 0 | Motion çözüldü: `--ease-crm` + `--ease-crm-in-out` token'landı, duration'lar §1.5'te değer olarak sabitlendi |
 | 2026-09-15 | Faz 0 | Kök dizin **sürüm kontrolüne alındı** (`git init` + `crm-monorepo/` gitignore). Yönetişim dokümanları artık tarihçeli |
 | 2026-09-15 | Faz 0 | **FAZ 0 KAPANDI** — typecheck 2/2, build 2/2 (52 rota), scoped kapı PASS, hata sayısı 1458'de sabit |
+| 2026-09-15 | Faz 1 | 11 primitif CLI ile eklendi → **21 → 32**. `button.tsx` ezilmedi (git diff boş) |
+| 2026-09-15 | Faz 1 | CLI'ın `cn@^0.3.0` npm bağımlılığı kaldırıldı; 11 dosyada import `@workspace/ui/lib/utils`'e çekildi. `package.json` + lock HEAD ile aynı |
+| 2026-09-15 | Faz 1 | `rounded-4xl` → `rounded-xl` (2 panel, §1.1 yasağı); `ring-3` → `ring-2` (2 dosya) |
+| 2026-09-15 | Faz 1 | **FAZ 1 KAPANDI** — typecheck 2/2, build 2/2, guard PASS, `apps/web` tüketicisi 0 |
+| 2026-09-15 | Faz 1 | Prosedür kalıcılaştırıldı: `crm-ui-standards.md` §2.1 (CLI komutu + 2 tuzak + kontrol listesi) |
