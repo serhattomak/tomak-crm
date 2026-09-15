@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   Activity,
   AlertCircle,
@@ -880,8 +892,18 @@ export default function AutomationsPage() {
 
       {/* 7. Recipe Hub Sliding Drawer Modal */}
       {isRecipeDrawerOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-end bg-black/60 backdrop-blur-xs">
-          <div className="slide-in-from-right flex h-full w-full max-w-xl animate-in flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsRecipeDrawerOpen(false);
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-xl justify-between overflow-y-auto p-6 data-[side=right]:sm:max-w-xl"
+          >
             <div className="space-y-5">
               <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
                 <div className="flex items-center gap-2.5">
@@ -889,20 +911,22 @@ export default function AutomationsPage() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                    <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                       Tarif Kütüphanesi
-                    </h2>
+                    </SheetTitle>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
                       Önceden optimize edilmiş hazır otomasyon tarifleri
                     </p>
                   </div>
                 </div>
-                <button
-                  className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
-                  onClick={() => setIsRecipeDrawerOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
 
               <div className="space-y-3">
@@ -948,34 +972,47 @@ export default function AutomationsPage() {
                 Kapat
               </button>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {/* 8. Quick Simulation / Dry-run Modal */}
       {simulatingWorkflow && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="zoom-in-95 w-full max-w-lg animate-in space-y-4 rounded-3xl bg-white p-6 shadow-2xl dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setSimulatingWorkflow(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Play className="h-4 w-4 fill-current" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Akış Simülasyonu (Dry-Run)
-                  </h3>
+                  </DialogTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {simulatingWorkflow.name}
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
-                onClick={() => setSimulatingWorkflow(null)}
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             {isSimulating ? (
@@ -1050,8 +1087,8 @@ export default function AutomationsPage() {
                 Kapat
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
