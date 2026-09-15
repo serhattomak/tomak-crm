@@ -1,6 +1,12 @@
 "use client";
 
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import {
   AlertCircle,
@@ -377,8 +383,19 @@ export function CampaignModal({
   ];
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs duration-200">
-      <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex items-center gap-3">
@@ -386,9 +403,9 @@ export function CampaignModal({
               <Tag className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 {isEditMode ? "Kampanyayı Düzenle" : "Yeni Kampanya Oluştur"}
-              </h2>
+              </DialogTitle>
               <p className="text-xs text-zinc-500">
                 {isEditMode
                   ? name
@@ -396,13 +413,14 @@ export function CampaignModal({
               </p>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Step Indicators */}
@@ -1118,7 +1136,7 @@ export function CampaignModal({
             </button>
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
