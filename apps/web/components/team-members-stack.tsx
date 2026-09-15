@@ -8,6 +8,11 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -30,7 +35,7 @@ import {
   X,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ApiClient, type RoleDto, type TenantUserDto } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
@@ -130,7 +135,6 @@ export function TeamMembersStack({
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-  const popoverRef = useRef<HTMLDivElement>(null);
 
   const tenantId = activeTenant?.id;
 
@@ -168,35 +172,6 @@ export function TeamMembersStack({
     };
   }, [tenantId, refreshKey]);
 
-  // Click outside & Escape handler
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
   const copyEmailToClipboard = (email: string, e: React.MouseEvent) => {
     e.stopPropagation();
     navigator.clipboard.writeText(email);
@@ -226,41 +201,47 @@ export function TeamMembersStack({
 
   return (
     <>
-      <div className={`relative inline-block ${className}`} ref={popoverRef}>
-        {/* Trigger: Member Avatars Stack */}
-        <button
-          className="group flex cursor-pointer select-none items-center -space-x-2 rounded-full p-0.5 px-1 transition-all hover:ring-2 hover:ring-blue-400/50 active:scale-95"
-          onClick={() => setIsOpen(!isOpen)}
-          title={`Ekip Üyeleri (${users.length} Kişi) - Detaylar için tıkla`}
-          type="button"
-        >
-          {displayedUsers.map((user, idx) => {
-            const initials = getInitials(user.fullName, user.email);
-            const colorClass = getAvatarColor(
-              user.id || user.email || String(idx)
-            );
+      <div className={`inline-block ${className}`}>
+        <Popover onOpenChange={setIsOpen} open={isOpen}>
+          <PopoverTrigger asChild>
+            <button
+              className="group flex cursor-pointer select-none items-center -space-x-2 rounded-full p-0.5 px-1 transition-all hover:ring-2 hover:ring-blue-400/50 active:scale-95"
+              title={`Ekip Üyeleri (${users.length} Kişi) - Detaylar için tıkla`}
+              type="button"
+            >
+              {displayedUsers.map((user, idx) => {
+                const initials = getInitials(user.fullName, user.email);
+                const colorClass = getAvatarColor(
+                  user.id || user.email || String(idx)
+                );
 
-            return (
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white font-semibold text-xs shadow-xs transition-transform group-hover:scale-105 dark:border-card ${colorClass}`}
-                key={user.id || idx}
-                title={user.fullName || user.email}
-              >
-                {initials}
-              </div>
-            );
-          })}
+                return (
+                  <div
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white font-semibold text-xs shadow-xs transition-transform group-hover:scale-105 dark:border-card ${colorClass}`}
+                    key={user.id || idx}
+                    title={user.fullName || user.email}
+                  >
+                    {initials}
+                  </div>
+                );
+              })}
 
-          {remainingCount > 0 && (
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 font-bold text-[10px] text-slate-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
-              +{remainingCount}
-            </div>
-          )}
-        </button>
+              {remainingCount > 0 && (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 font-bold text-[10px] text-slate-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
+                  +{remainingCount}
+                </div>
+              )}
+            </button>
+          </PopoverTrigger>
 
-        {/* Team Members Popover */}
-        {isOpen && (
-          <div className="fade-in zoom-in-95 fixed inset-x-3 top-14 z-50 animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-md duration-150 sm:absolute sm:inset-x-auto sm:top-11 sm:right-0 sm:w-96 dark:border-border dark:bg-card/95">
+          {/* Team Members Popover */}
+          <PopoverContent
+            align="end"
+            className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-96"
+            collisionPadding={12}
+            side="bottom"
+            sideOffset={10}
+          >
             {/* Header */}
             <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
               <div className="flex items-center gap-2">
@@ -444,8 +425,8 @@ export function TeamMembersStack({
                 <ExternalLink className="h-3 w-3" />
               </button>
             </div>
-          </div>
-        )}
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Embedded Invite Modal */}
