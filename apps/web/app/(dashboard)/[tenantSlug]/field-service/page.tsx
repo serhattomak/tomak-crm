@@ -1,4 +1,3 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md */
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -27,6 +26,12 @@ import {
 } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
@@ -739,16 +744,29 @@ export default function FieldServicePage() {
 
       {/* 1. Modal: Yeni İş Emri Oluşturma */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs animate-in fade-in">
-          <div className="w-full max-w-xl rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 max-h-[90vh] overflow-y-auto space-y-4">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <DialogTitle className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 <Wrench className="h-5 w-5 text-violet-600" />
                 Yeni Saha Servis Emri Aç
-              </h2>
-              <button onClick={() => setIsCreateOpen(false)} className="text-zinc-400 hover:text-zinc-600">
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button type="button" className="text-zinc-400 hover:text-zinc-600">
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form onSubmit={handleCreateJob} className="space-y-4 text-xs">
@@ -901,27 +919,40 @@ export default function FieldServicePage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* 2. Modal: Yerinde Dijital Müşteri İmzası (Canvas E-Sign) */}
       {isSignModalOpen && selectedJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-in fade-in">
-          <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsSignModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-5 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
               <div>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                <DialogTitle className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
                   <PenTool className="h-4 w-4 text-emerald-600" />
                   Müşteri Teslim & Kabul İmzası
-                </h3>
+                </DialogTitle>
                 <p className="text-[11px] text-zinc-500">
                   {selectedJob.jobNumber} • {selectedJob.title}
                 </p>
               </div>
-              <button onClick={() => setIsSignModalOpen(false)} className="text-zinc-400 hover:text-zinc-600">
-                <X className="h-4 w-4" />
-              </button>
+              <DialogClose asChild>
+                <button type="button" className="text-zinc-400 hover:text-zinc-600">
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="space-y-3 text-xs">
@@ -999,8 +1030,8 @@ export default function FieldServicePage() {
                 </Button>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* 3. Modal: İş Emri Silme Onay Penceresi */}
