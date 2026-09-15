@@ -1,7 +1,18 @@
-/* Hallmark · component: project-backlog-engine · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   AlertCircle,
   ArrowLeft,
@@ -1774,8 +1785,24 @@ export default function ProjectDetailPage() {
       {/* ITEM DETAIL DRAWER (SLIDE OVER WITH FULL EDIT & DELETE) */}
       {/* ========================================================= */}
       {selectedItem && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-          <div className="h-full w-full max-w-xl overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedItem(null);
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-xl overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-xl"
+            side="right"
+          >
+            {/* The drawer opens on its type badge and item key, so there is no
+                visible heading - Radix still needs an accessible name. */}
+            <SheetTitle className="sr-only">
+              {selectedItem.itemKey} detayı
+            </SheetTitle>
             {/* Header */}
             <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2">
@@ -1800,13 +1827,14 @@ export default function ProjectDetailPage() {
                   <span>Sil</span>
                 </button>
 
-                <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  onClick={() => setSelectedItem(null)}
-                  type="button"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
             </div>
 
@@ -2165,27 +2193,39 @@ export default function ProjectDetailPage() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {/* ========================================================= */}
       {/* MODAL: CREATE ITEM */}
       {/* ========================================================= */}
       {isCreateItemModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateItemModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni İş Maddesi Oluştur
-              </h3>
-              <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                onClick={() => setIsCreateItemModalOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2330,27 +2370,39 @@ export default function ProjectDetailPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* ========================================================= */}
       {/* MODAL: CREATE SPRINT */}
       {/* ========================================================= */}
       {isCreateSprintModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateSprintModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Sprint Başlat / Planla
-              </h3>
-              <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                onClick={() => setIsCreateSprintModalOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2427,27 +2479,39 @@ export default function ProjectDetailPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* ========================================================= */}
       {/* MODAL: CREATE EPIC */}
       {/* ========================================================= */}
       {isCreateEpicModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateEpicModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Epik Oluştur
-              </h3>
-              <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                onClick={() => setIsCreateEpicModalOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2524,8 +2588,8 @@ export default function ProjectDetailPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
