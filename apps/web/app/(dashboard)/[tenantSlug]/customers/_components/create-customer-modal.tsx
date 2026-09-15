@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
@@ -130,26 +136,38 @@ export function CreateCustomerModal({
 
   return (
     <>
-      <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-        <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-border bg-card shadow-2xl">
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) {
+            onClose();
+          }
+        }}
+        open
+      >
+        <DialogContent
+          aria-describedby={undefined}
+          className="flex max-h-[90vh] w-full max-w-2xl flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+          showCloseButton={false}
+        >
           {/* Header */}
           <div className="flex items-center justify-between border-border/80 border-b p-4 sm:p-5">
             <div>
-              <h2 className="font-semibold text-base text-foreground">
+              <DialogTitle className="font-semibold text-base text-foreground">
                 Yeni Müşteri Ekle
-              </h2>
+              </DialogTitle>
               <p className="text-muted-foreground text-xs">
                 Kurumsal şirket veya bireysel şahıs müşterisi oluşturun
               </p>
             </div>
 
-            <button
-              className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-4.5 w-4.5" />
-            </button>
+            <DialogClose asChild>
+              <button
+                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                type="button"
+              >
+                <X className="h-4.5 w-4.5" />
+              </button>
+            </DialogClose>
           </div>
 
           {/* Form */}
@@ -371,8 +389,8 @@ export function CreateCustomerModal({
               </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Quick Add Sales Rep Modal */}
       {isAddSalesRepOpen && (

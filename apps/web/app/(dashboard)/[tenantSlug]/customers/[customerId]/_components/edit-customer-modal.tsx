@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
@@ -92,20 +98,32 @@ export function EditCustomerModal({
   }
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-y-auto rounded-xl border border-border/80 bg-card p-5 shadow-2xl">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full max-w-lg flex-col gap-0 overflow-y-auto p-5 sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="mb-4 flex items-center justify-between border-border/60 border-b pb-3">
-          <h3 className="font-semibold text-foreground text-sm">
+          <DialogTitle className="font-semibold text-foreground text-sm">
             Müşteri Bilgilerini Düzenle
-          </h3>
-          <Button
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            onClick={onClose}
-            size="icon"
-            variant="ghost"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <Button
+              className="h-8 w-8 text-muted-foreground hover:text-foreground"
+              size="icon"
+              variant="ghost"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -267,7 +285,7 @@ export function EditCustomerModal({
           }}
           tenantId={tenantId}
         />
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
