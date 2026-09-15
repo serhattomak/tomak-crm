@@ -2,6 +2,12 @@
 
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -1123,11 +1129,22 @@ export default function ProductsPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingProduct && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setDeletingProduct(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Ürünü Sil
-            </h3>
+            </DialogTitle>
             <p className="mt-2 text-xs text-zinc-600 leading-relaxed dark:text-zinc-400">
               <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {deletingProduct.name}
@@ -1151,42 +1168,45 @@ export default function ProductsPage() {
                 Evet, Ürünü Sil
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Görsel Lightbox — salt-okunur ProductGallery reuse */}
       {lightboxProduct && (lightboxProduct.images?.length ?? 0) > 0 && (
-        <div
-          aria-label={`${lightboxProduct.name} görselleri`}
-          aria-modal="true"
-          className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-sm"
-          onClick={() => setLightboxProduct(null)}
-          role="dialog"
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setLightboxProduct(null);
+            }
+          }}
+          open
         >
-          <div
-            className="w-full max-w-2xl rounded-3xl border border-zinc-200 bg-white p-4 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
-            onClick={(event) => event.stopPropagation()}
+          <DialogContent
+            aria-describedby={undefined}
+            className="w-full max-w-2xl gap-0 overflow-hidden p-4 sm:max-w-2xl"
+            showCloseButton={false}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 {lightboxProduct.name}
-              </h3>
-              <button
-                aria-label="Önizlemeyi kapat"
-                className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-                onClick={() => setLightboxProduct(null)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  aria-label="Önizlemeyi kapat"
+                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
             <ProductGallery
               images={lightboxProduct.images ?? []}
               productName={lightboxProduct.name}
             />
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Bulk Action Bar */}
@@ -1469,26 +1489,38 @@ function CreateProductModal({
       : 0;
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-zinc-200/80 bg-white shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 p-0 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b p-5 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Ürün / Hizmet Ekle
-            </h2>
+            </DialogTitle>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Fiziksel stoklu ürün, danışmanlık hizmeti veya abonelik paketi
               tanımlayın
             </p>
           </div>
-          <button
-            className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form
@@ -1924,8 +1956,8 @@ function CreateProductModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1987,24 +2019,36 @@ function QuickStockAdjustModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex w-full max-w-md flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Hızlı Stok Hareketi
-            </h3>
+            </DialogTitle>
             <p className="max-w-xs truncate text-xs text-zinc-500 dark:text-zinc-400">
               {product.name}
             </p>
           </div>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Current Stock Banner */}
@@ -2121,8 +2165,8 @@ function QuickStockAdjustModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2193,25 +2237,37 @@ function CategoryManagerModal({
     categories.filter((c) => c.parentId === parentId);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[85vh] w-full max-w-lg flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[85vh] w-full flex-col gap-0 p-6 text-xs sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Kategori & Hiyerarşi Yönetimi
-            </h3>
+            </DialogTitle>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Üst ve alt kategorileri (örn. Elektronik &gt; Küçük Ev Aletleri)
               yapılandırın
             </p>
           </div>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Add Category Form */}
@@ -2332,7 +2388,7 @@ function CategoryManagerModal({
             })
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
