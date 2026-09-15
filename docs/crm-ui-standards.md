@@ -185,6 +185,16 @@ Elle yazılmış bir modal/overlay'i primitife çevirme adımları — Faz 3.0 p
 
 **Kazanç:** backdrop, z-index katmanı, giriş/çıkış animasyonu, focus tuzağı, `Esc`, `aria-modal` ve dışına tıklayınca kapanma **tek yerden** gelir.
 
+**`Sheet` (drawer) için ek notlar** — adımlar aynı, üç fark var:
+
+1. **Yön:** `side="right"` (varsayılan) · `"left"` · `"top"` · `"bottom"`. Mobil navigasyon drawer'ı `side="left"`.
+2. **Genişlik varsayılanı dar:** `SheetContent` sağ/sol için `w-3/4 sm:max-w-sm` gelir. Geniş panel gerekiyorsa `className` ile ez: `w-full max-w-4xl sm:max-w-4xl`.
+3. **`SheetContent` varsayılan olarak `flex flex-col`:** yan yana iki sütunlu bir drawer (ör. liste + sohbet) `flex-row` ister.
+
+> **Neden `className` ezmesi güvenli:** `cn()` **tailwind-merge** kullanır — çakışan utility'lerde **sonuncuyu** tutar. Yani `flex-col` + `flex-row` → `flex-row`; `w-3/4` + `w-full` → `w-full`. CSS'te hangi sınıfın sonra geldiğine bağlı kalınmaz.
+
+**Kazanç (Sheet):** kenardan kayma animasyonu, `Esc`, dışına tıklama, focus tuzağı ve katman yönetimi primitiften gelir.
+
 **Kapsam disiplini:** bu geçişte dosyadaki ADR-0002 ihlalleri (native `<select>`, `type="number|date"`) **düzeltilmez** — onlar Faz 5'in işi. Bir geçişte tek değişken değiştirilir; aksi halde bir hata çıktığında hangi değişikliğin yol açtığı ayırt edilemez.
 
 ---
