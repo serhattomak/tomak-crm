@@ -1,6 +1,11 @@
-/* Hallmark · component: entity-picker-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Check, ChevronDown, Plus, Search, User, X } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -119,21 +124,26 @@ export function EntityPickerModal<T = unknown>({
   };
 
   return (
-    <div
-      className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
-      onClick={handleClose}
-      onKeyDown={handleKeyDown}
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          handleClose();
+        }
+      }}
+      open
     >
-      <div
-        className="relative flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
-        onClick={(e) => e.stopPropagation()}
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[85vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-lg"
+        onKeyDown={handleKeyDown}
+        showCloseButton={false}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b p-4 pb-3 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               {title}
-            </h3>
+            </DialogTitle>
             {description && (
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 {description}
@@ -154,13 +164,14 @@ export function EntityPickerModal<T = unknown>({
                 <span>{addNewLabel}</span>
               </button>
             )}
-            <button
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-              onClick={handleClose}
-              type="button"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <DialogClose asChild>
+              <button
+                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </DialogClose>
           </div>
         </div>
 
@@ -304,8 +315,8 @@ export function EntityPickerModal<T = unknown>({
             </button>
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
