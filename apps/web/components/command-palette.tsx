@@ -1,6 +1,11 @@
 "use client";
 
 import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
   Banknote,
   BarChart3,
   Boxes,
@@ -803,14 +808,23 @@ export function CommandPalette({
   let runningIndex = 0;
 
   return (
-    <div
-      className="fade-in fixed inset-0 z-50 flex animate-in items-start justify-center bg-black/60 p-4 pt-16 backdrop-blur-xs sm:pt-24"
-      onClick={onClose}
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
     >
-      <div
-        className="zoom-in-95 flex max-h-[80vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
-        onClick={(e) => e.stopPropagation()}
+      <DialogContent
+        aria-describedby={undefined}
+        className="top-16 flex max-h-[80vh] w-full translate-y-0 flex-col gap-0 overflow-hidden p-0 text-xs sm:top-24 sm:max-w-2xl"
+        showCloseButton={false}
       >
+        {/* No visible heading: the palette opens straight into its search field,
+            but Radix needs an accessible name for the dialog. */}
+        <DialogTitle className="sr-only">Komut Paleti</DialogTitle>
+
         {/* Search Bar Header */}
         <div className="relative flex items-center border-zinc-100 border-b px-4 py-3.5 dark:border-zinc-800">
           <Search className="mr-3 h-5 w-5 shrink-0 text-zinc-400 dark:text-zinc-500" />
@@ -1029,8 +1043,8 @@ export function CommandPalette({
             </kbd>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
