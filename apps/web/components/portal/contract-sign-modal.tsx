@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { toast } from "@workspace/ui/components/sonner";
 import { Eraser, FileSignature, Loader2, ShieldCheck, X } from "lucide-react";
 import type React from "react";
@@ -163,29 +169,41 @@ export function ContractSignModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-5 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
               <FileSignature className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Sözleşmeyi Dijital Olarak İmzala
-              </h3>
+              </DialogTitle>
               <p className="font-mono text-[11px] text-zinc-500">
                 {contract.contractNumber}
               </p>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="flex-1 overflow-y-auto p-6" onSubmit={handleSubmit}>
@@ -288,7 +306,7 @@ export function ContractSignModal({
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
