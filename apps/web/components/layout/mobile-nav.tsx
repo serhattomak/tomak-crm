@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
+import {
   FileSpreadsheet,
   Kanban,
   LayoutDashboard,
@@ -80,26 +86,32 @@ export function MobileDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex md:hidden print:hidden">
-      {/* Backdrop */}
-      <div
-        className="fade-in fixed inset-0 animate-in bg-background/80 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      {/* Drawer Panel */}
-      <div className="slide-in-from-left relative z-10 flex w-4/5 max-w-xs flex-1 animate-in flex-col justify-between overflow-y-auto bg-card p-4 shadow-xl duration-200">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=left]:w-4/5 max-w-xs justify-between overflow-y-auto p-4 md:hidden print:hidden data-[side=left]:sm:max-w-xs"
+        side="left"
+      >
+        <SheetTitle className="sr-only">Navigasyon menüsü</SheetTitle>
         <div className="space-y-3.5">
           {/* Top Tenant Switcher & Close */}
           <div className="flex items-center justify-between border-border/80 border-b pb-3">
             <TenantSwitcher />
-            <button
-              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-4.5 w-4.5" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                type="button"
+              >
+                <X className="h-4.5 w-4.5" />
+              </button>
+            </SheetClose>
           </div>
 
           {/* Hub Selection Grid for Mobile */}
@@ -223,8 +235,8 @@ export function MobileDrawer({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
