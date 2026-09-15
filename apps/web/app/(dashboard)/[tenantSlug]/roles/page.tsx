@@ -1,6 +1,12 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import { Check, Loader2, Lock, Plus, Shield, Trash2, X } from "lucide-react";
@@ -390,19 +396,32 @@ export default function RolesManagementPage() {
 
       {/* Create Role Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <Shield className="h-4 w-4 text-fuchsia-500" />
                 Create Custom Role
-              </h2>
-              <button
-                className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-                onClick={() => setIsCreateOpen(false)}
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -457,8 +476,8 @@ export default function RolesManagementPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Confirm Dialog */}
