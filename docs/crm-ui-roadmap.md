@@ -103,13 +103,51 @@ Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-m
 
 **Not:** Tüm yeni primitifler `--radius` tabanlı yuvarlaklık, semantic token ve motion tokenlı giriş/çıkış kullanır. `accordion` ve `calendar` **eklenmedi** (gerçek tüketici yok — Gelecek Adımlar'da).
 
-## [ ] Faz 2 — Kanonik sayfa kabuğu (52 ekran)
+## [~] Faz 2 — Kanonik sayfa kabuğu (52 ekran) — **DEVAM EDİYOR (10/52)**
 
-- [ ] `page-container.tsx` — `px-4 py-5` / `md:px-6 md:py-6`, tam genişlik
-- [ ] `page-header.tsx` — başlık / açıklama / aksiyonlar
-- [ ] 52 sayfanın tamamına uygulanır: dashboard + admin + auth + portal
-- [ ] Bugünkü 6 farklı padding varyantı (`p-4 md:p-6`, `p-4 pt-6 md:p-8`, `p-5`, `p-8`, `p-10`, `p-12`) tek değere iner
-- [ ] Navigasyon yüzeye özel kalır; başlık/boşluk/tipografi/renk dili ortaklanır
+- [x] **`page-container.tsx`** — `px-4 py-5` / `md:px-6 md:py-6`, tam genişlik, `bleed` varyantı (full-bleed yüzeyler için)
+- [x] **`page-header.tsx`** — `title` / `description` / `badge` / `actions` slotları
+- [x] **Dashboard layout** — padding kaldırıldı (`p-3.5 pb-24 sm:p-5 md:p-6` → `pb-24 md:pb-0`); mobil bottom-nav payı korundu
+- [x] **Admin layout** — padding + `mx-auto max-w-7xl` kaldırıldı (tam genişlik kararı)
+- [x] **Yanlış Hallmark başlıkları düzeltildi** (dokunulan dosyalarda) — `design.md` referansı ve `theme: Zinc/Violet` iddiası kaldırıldı
+- [x] Sarmalanan 10 sayfa:
+  - `customers` (pilot — `PageHeader`'a da geçirildi, `text-[11px]` → **`text-2xs`** token'ı ilk kez kullanıldı)
+  - `analytics` (legacy çift-padding kanıtı: `space-y-6 p-4 sm:p-6 lg:p-8` → `PageContainer`, sayfa kendi padding'ini bıraktı)
+  - `field-service`, `roles`, `users`, `pipelines`, `orders`, `leaves`, `(admin)/admin/templates`, `(admin)/admin/tenants`
+- [ ] Kalan **42 sayfa**
+
+### ✅ Yan doğrulama: tipografi token'ı işlevsel
+
+`text-2xs` üretilen CSS'te doğrulandı — Faz 0 token'ının gerçekten çalıştığının kanıtı:
+```css
+.text-2xs{font-size:.6875rem;line-height:var(--tw-leading,1rem)}   /* 11px */
+```
+Bu, `ARBITRARY_TEXT_SIZE`'ın ileride `error`'a terfi edebileceğini gösterir (kural artık uygulanabilir bir alternatife sahip).
+
+### ⚠️ Teknik not — kapanış etiketi "son eşleşme" ile bulunamaz
+
+Faz 2'de bu tuzağa **fiilen düşüldü** ve typecheck yakaladı (`TS17002`, 2 dosya). Kök neden: sayfa dosyaları **tek dosyada birden fazla component** barındırıyor (`leaves/page.tsx` → `LeavesPage` + `CreateLeaveModal`; `orders/page.tsx` → `OrdersPage` + `CreateOrderWizardModal`). Her ikisi de aynı girinti seviyesinde.
+
+Sezgisel bir dönüşüm "dosyadaki son `</div>` + `);` + `}`"i ararsa **ikinci component'i** yakalar ve sayfa kökü kapanmadan kalır. `div` sayımı dengeli görünür (1 aç / 1 kapa) çünkü hata *sayıda* değil *kapsamda*dır.
+
+**Kural:** kapanış etiketi **yapısal** olarak bulunur — sayfa component'inin `return (` bloğunun gerçek sonu, yani bir sonraki `function <Ad>(` satırından hemen önceki `);` + `}` bloğu. **Her batch'ten sonra `tsc` zorunludur**; hata bu sayede commit'ten önce yakalandı.
+
+### Faz 2 sayfa haritası (kalan 42)
+
+| Kategori | Sayfalar | Not |
+| --- | --- | --- |
+| **A. Basit `space-y-*` kökü** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Çok component'li olabilir → yapısal kapanış |
+| **B. Legacy çift-padding / max-width** | `inventory` (`max-w-[1600px]` + `p-4 pt-6 md:p-8`), `contracts` (`p-6`), `settings` (`max-w-3xl`), `promotions/new` (`max-w-4xl`) | Sayfa kendi padding'ini **bırakır** |
+| **C. Sayfa-seviyesi kart sarmalayıcı** | `finance`, `invoices` (kök `rounded-2xl border bg-white p-4`) | `Card`'a dönüşmeli |
+| **D. Full-bleed adayları** | `messages`, `calendar`, `orders/[orderId]/print`, `(auth)/login`, `(auth)/register`, `portal/[token]`, `quotes/view/[token]`, `/pipelines`, `/quotes`, `/` | `bleed` varyantı veya kabuk kullanmama |
+| **E. `Suspense` sarmalayıcı** | `organization`, `recruitment` | Suspense sınırının içine |
+| **F. İncelenmesi gereken** | `attendance`, `email`, `automations`, `automations/[workflowId]`, `products`, `products/[productId]`, `promotions`, `promotions/[campaignId]/edit`, `quotes`, `tickets`, `tickets/[ticketId]`, `webhooks`, `webhooks/[endpointId]`, `compliance` | İlk `return` iç fonksiyona ait çıktı → elle bakılacak |
+
+**Sıra:** A → B → C → D → E → F. Her yüzey (dashboard / admin / auth / portal) bitince typecheck + build + duman testi; her batch ayrı commit.
+
+### 📌 Kalıcı borç: 391 dosyada Hallmark imzası
+
+Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
 ## [ ] Faz 3 — Modal & overlay göçü (~60 modal, 156 overlay)
 
@@ -198,6 +236,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 13. **`accordion` ve `calendar` primitifleri** — gerçek tüketici doğduğunda
 14. **`apps/web/components/` kökündeki 14 cross-feature widget'ın gözden geçirilmesi** — hangileri gerçekten paylaşılan, hangileri rota altı `_components/`'e taşınmalı
 15. **`lucide-react ^1.32.0` sürüm pininin doğrulanması** — alışılmadık bir pin
+16. **391 dosyadaki Hallmark imzasının temizliği** — `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlıkları. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik temizlik. Referans verdikleri doküman artık stub olduğu için sessizce yanıltıcılar
 
 ---
 
@@ -219,3 +258,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-15 | Faz 1 | `rounded-4xl` → `rounded-xl` (2 panel, §1.1 yasağı); `ring-3` → `ring-2` (2 dosya) |
 | 2026-09-15 | Faz 1 | **FAZ 1 KAPANDI** — typecheck 2/2, build 2/2, guard PASS, `apps/web` tüketicisi 0 |
 | 2026-09-15 | Faz 1 | Prosedür kalıcılaştırıldı: `crm-ui-standards.md` §2.1 (CLI komutu + 2 tuzak + kontrol listesi) |
+| 2026-09-15 | Faz 2 | `PageContainer` + `PageHeader` yazıldı; dashboard ve admin layout'un padding sahipliği devredildi |
+| 2026-09-15 | Faz 2 | 10 sayfa sarmalandı (customers pilotu `PageHeader`'a da geçti, `text-2xs` ilk kez kullanıldı) |
+| 2026-09-15 | Faz 2 | ✅ `text-2xs` üretilen CSS'te doğrulandı → tipografi token'ı işlevsel |
+| 2026-09-15 | Faz 2 | ⚠️ **Hata:** sezgisel kapanış-etiketi dönüşümü 2 dosyayı kırdı (`TS17002`); typecheck commit öncesi yakaladı. Yapısal eşleştirmeyle elle düzeltildi. Teknik not kaydedildi |
+| 2026-09-15 | Faz 2 | Kalan 42 sayfa kategori haritasıyla kayıt altına alındı |

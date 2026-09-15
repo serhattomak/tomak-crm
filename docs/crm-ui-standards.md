@@ -33,7 +33,8 @@
 
 ### 1.3 Veri Yoğunluğu & Tipografi
 - İş yazılımlarında (B2B CRM) ekran alanı değerlidir. Aşırı devasa dolgular (`p-8`, `p-12`) yerine kompakt ve okunabilir hiyerarşi (`p-3.5`, `p-4`) kullanılır.
-- Başlıklar: `text-sm font-semibold` veya `text-base font-bold` (Tracking: `tracking-tight`).
+- **Sayfa başlığı:** `text-2xl font-bold tracking-tight` (`sm:text-3xl`) — bunu `PageHeader` primitifi taşır, sayfalar elle yazmaz.
+- **Bölüm / kart başlığı:** `text-sm font-semibold` veya `text-base font-bold` (Tracking: `tracking-tight`).
 - Gövde metinleri: `text-xs font-normal`.
 
 **Kanonik tipografi ölçeği:** Keyfi piksel değerleri (`text-[13px]`, `text-[9px]`…) yasaktır. Mikro boyutlar yalnızca iki token'dır:
