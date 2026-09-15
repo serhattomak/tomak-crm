@@ -1,6 +1,11 @@
-/* Hallmark · component: shortcuts-help-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { HelpCircle, Keyboard, X } from "lucide-react";
 
 interface ShortcutsHelpModalProps {
@@ -55,8 +60,19 @@ export function ShortcutsHelpModal({
   ];
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/70 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[85vh] w-full max-w-xl flex-col rounded-2xl border border-zinc-200/80 bg-white p-5 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[85vh] w-full flex-col gap-0 p-5 text-xs sm:max-w-xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
@@ -64,21 +80,22 @@ export function ShortcutsHelpModal({
               <Keyboard className="h-4.5 w-4.5" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Klavye Kısayolları Kılavuzu
-              </h3>
+              </DialogTitle>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 CRM içinde hızlı ve etkili gezinme için klavye komutları
               </p>
             </div>
           </div>
-          <button
-            className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Content */}
@@ -131,7 +148,7 @@ export function ShortcutsHelpModal({
             Kapat
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
