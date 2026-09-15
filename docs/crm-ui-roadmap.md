@@ -182,14 +182,17 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (46/75)**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (48/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
 >
-> **3.2 — sayfa-içi modallar.** **8 dosya tamam**, kalan **26 sayfa**:
+> **3.2 — sayfa-içi modallar.** **10 dosya tamam**, kalan **24 sayfa**:
 > - `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
 > - `automations/[workflowId]` (`d9bbc3b`), `automations` — **2 overlay: drawer→`Sheet` + modal→`Dialog`** (`4e7a387`)
-> - `invoices` — **2 overlay: modal→`Dialog`** (`172fe2a`) + **drawer→`Sheet`** (`e5dfe86`); ayrıca `5229ec9` print kuralı
+> - `invoices` — modal→`Dialog` (`172fe2a`) + drawer→`Sheet` (`e5dfe86`)
+> - `leaves` — **2 modal** (`9b553d3`; ret modalının X'i **yok**, yalnız gövdede "Vazgeç" → `DialogClose` yok)
+> - `contracts` — **modal→`Dialog` + drawer→`Sheet`** (`615ca49`); Hallmark satırı da silindi
+> - **Print altyapısı:** `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`)
 >
 > **✅ 3.2'nin deseni (3.1'den dört fark):**
 > 1. **Backdrop elemanı yok** — sarmalayıcının kendisi backdrop (`fixed inset-0 bg-…`) ve `onClick` taşımıyor. §2.3'ün dış-tıklama politikası uygulanır (form taslağı → varsayılan açık).
@@ -197,21 +200,22 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 3. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent`/`SheetContent` **`overflow-y-auto`** alır. Ama içeride kaydıran blok varsa (ör. `flex-1 overflow-y-auto`) içerik `overflow-hidden` kalır. **Dosya başına doğrulanır** — kopyala-yapıştır yanlış sonuç verir.
 > 4. **`space-y-*` varsa `gap-0` şart**; panelde `max-h`/`overflow` **yoksa eklenir** (body scroll kilidi yüzünden).
 >
-> **Kalan 26 sayfa (en küçükten):** `leaves` (1591), `contracts`, `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11).
+> **Kalan 24 sayfa (en küçükten):** `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11).
 >
 > **Kalan 4 dosya overlay değil ve muaf** (tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header` (mobil alt bar da aynı sınıfta). Gerekçeler §2.3'te.
 >
 > **Tarif:** standart **§2.3** (Dialog + Sheet + print) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
-> **⚠️ Bu fazda sekiz tuzak ölçülerek doğrulandı:**
+> **⚠️ Bu fazda dokuz tuzak ölçülerek doğrulandı:**
 > 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
 > 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
 > 4. **Dış-tıklama:** varsayılan açık; yalnızca **geri alınamaz çıktı** varsa engellenir. → §2.3
-> 5. **Açılış/kapanış SAYILIR** — sezgisel eşleştirme `TS17002` üretir. → §2.3
-> 6. **Kaydırma sahibi dosya başına belirlenir.**
+> 5. **Açılış/kapanış SAYILIR** — bu tuzak fazda **3 kez** çıktı: `email-thread-drawer` `TS2657`, `quick-actions-widget` `TS17002`, `contracts` (okuma sayesinde tsc'den önce yakalandı). → §2.3
+> 6. **Kaydırma sahibi dosya başına belirlenir** — kopyala-yapıştır yanlış sonuç verir.
 > 7. **Print'te `print:*` temel varyantta kalır, önekli kural özgüllükte kazanır** — print genişliğini gerçekten değiştirmek istiyorsanız önekli biçim gerekir. → §2.3
 > 8. **Ölçüm araçları sessizce yanlış sonuç verir** — `Select-String -Path`, `git show <sha>^`, `translate-` içindeki `slate-`. → bulgu 9
+> 9. **Bir dosyada hem drawer hem modal varsa bunlar farklı primitiflerdir** — aynı geçişte yapılır ama **ayrı ayrı** doğrulanır (denge sayımı 8 etiketi birlikte kontrol eder).
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor ama `apps/web` noktalı virgüllü; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor ve 55 satırlık değişikliği **431 satıra** çıkarır. Ayrıntı: Gelecek Adımlar #18.
 >
@@ -219,7 +223,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 1. `tenant-switcher` mobil drawer'ın **içinde** ve `z-[70]` yerine primitifin `z-50`'siyle portallanıyor — gözle doğrulanmalı.
 > 2. İki panelin mobil genişliği artık çapaya bağlı.
 > 3. `product-gallery` lightbox'ı `h-screen w-screen` bir `DialogContent`; ortalanma ve köşe kontrolleri.
-> 4. **PRINT ÖNİZLEMESİ (en önemlisi):** `invoices` detay drawer'ı `Sheet` oldu. Bakılacaklar — backdrop **basmıyor** olmalı, panel genişliği A4'e sığmalı, fatura gövdesi sayfalar arasında kötü bölünmemeli. Portallanmış `fixed` konumlandırma print'te kırılgandır; bu **doğrulanmadı**.
+> 4. **PRINT ÖNİZLEMESİ (en önemlisi):** fazda **iki** print yüzeyi var — `invoices` detay drawer'ı ve `contracts` detay drawer'ı ("Yazdır / PDF" → `window.print()`). Bakılacaklar: backdrop **basmıyor** olmalı (global kural, `5229ec9`), panel A4'e sığmalı, gövde kötü bölünmemeli. Portallanmış `fixed` konumlandırma print'te kırılgandır; bu **doğrulanmadı** → Gelecek Adımlar #21.
 
 **3.2 sayfa modalları için ölçülmüş kapsam:** 34 sayfa · 108 `fixed inset-0`. Yol haritasının başındaki "75 modal component'i" tahmini **isim sayımından** geliyordu (`*Modal`/`*Drawer`); sayfa-içi modallar bu sayıma tam girmemişti. Gerçek ilerleme birimi olarak **3.1 tamamlandı** kabul edilir ve 3.2 kendi başına, yukarıdaki 108 sayaçla izlenir.
 
@@ -234,11 +238,11 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
 - [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
 - [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
-- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **8 dosya tamam, 26 kaldı**
+- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **10 dosya tamam, 24 kaldı**
   - [x] `(admin)/admin/templates` (`ee167e5`) · `(admin)/admin/tenants` (`8f3b524`) · `roles` (`07d476d`) · `users` (`757799b`) · `tickets` (`fbf5591`)
-  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`, drawer→`Sheet` + modal→`Dialog`) · `invoices` (`172fe2a` modal + `e5dfe86` drawer→`Sheet`)
+  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`, drawer→`Sheet` + modal→`Dialog`) · `invoices` (`172fe2a` modal + `e5dfe86` drawer→`Sheet`) · `leaves` (`9b553d3`, 2 modal) · `contracts` (`615ca49`, modal + drawer)
   - [x] **Print altyapısı** — `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`), derlenen CSS'te doğrulandı
-  - [ ] Kalan 26 — en küçükten: `leaves` (1591), `contracts`, `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11)
+  - [ ] Kalan 24 — en küçükten: `compliance`, `payroll`, `field-service`, `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -465,7 +469,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 18. **`apps/web` biçim altyapısı** — bugün **hiçbir biçimlendiricinin kapsamında değil** (Faz 3 bulgusu 3): kök `.prettierrc` `semi: false` diyor ama `apps/web` noktalı virgüllü, `prettier --check` dokunulmamış dosyalarda da FAIL veriyor; Ultracite (`biome.jsonc`) ise dış depoda ve `crm-monorepo/` gitignore'da olduğu için görünmüyor. Seçenekler: (a) `.prettierrc`'yi koda uydur (`semi: true`) ve `apps/web`'i kapsama al, (b) `crm-monorepo/`'yi Ultracite kapsamına sok, (c) `apps/web` için ayrı config. **Her seçenek tek seferlik büyük bir diff üretir** → kendi commit'i + incelemesi gerekir, Faz 3'e karıştırılmaz
 19. **`ConfirmDialog`'un paylaşılan `alert-dialog` primitifine taşınması** — primitif, Faz 1'de eklenen `alert-dialog.tsx`'i değil `radix-ui`'yi doğrudan kullanıp kendi overlay'ini (`fixed inset-0` + `backdrop-blur-xs` + `shadow-2xl`) kuruyor; Faz 3.4 yalnızca renk/token ihlallerini temizledi (Faz 3 bulgusu 6)
 20. **Konteyner radius sweep'i (§1.1)** — **ölçüm düzeltildi** (bulgu 9: ilk sayım `[tenantSlug]` altını atlamıştı): `apps/web`'te **146 × `rounded-3xl`** (28 dosyada) + **459 × `rounded-2xl`**; `packages/ui`'de **14 × `rounded-2xl`**; `rounded-4xl` **0** (yasaklı olan yok). En yoğun: `products/[productId]` (17), `organization` (11), `compliance` (10), `quotes` (10). §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor; ama sayıların bir kısmı küçük çip/rozet olabilir ve konteyner değildir → **önce triyaj, sonra tek geçiş.** Faz 3 overlay işi değil: `bulk-action-bar` (`rounded-2xl` yüzen çubuk) ve `settings` kartı bu borcun örnekleri, ikisi de §2.3'te kapsam dışı ilan edildi
-21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — `invoices` detay drawer'ı hem ekran paneli hem faturanın kendisi. Backdrop artık basılmıyor (`5229ec9`), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm drawer'ı print için ayrı bir yüzey olarak ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir
+21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **iki yüzey** etkileniyor: `invoices` detay drawer'ı ve `contracts` detay drawer'ı ("Yazdır / PDF" → `window.print()`). Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde ikisi de kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu drawer'ları print için ayrı bir yüzey olarak ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
 22. **`overlayClassName` boşluğu** — dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor (bulgu 12'nin kökü). Global print kuralı vakayı çözdü; başka bir ihtiyaç doğarsa (farklı blur/opaklık) API açılmalı. Tek tüketici için eklenmedi
 
 ---
@@ -574,3 +578,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3.2 | ⏳ **Elle print önizlemesi bekliyor** — programatik doğrulanamaz: backdrop basmamalı, panel A4'e sığmalı, gövde kötü bölünmemeli. Portallanmış `fixed` konumlandırma kırılgan; **doğrulanmadı** |
 | 2026-09-16 | Faz 3.2 | 🔧 **Primitif API boşluğu kaydedildi:** dört overlay primitifinin hiçbiri overlay için `className` geçirmiyor. Global print kuralı bu vakayı çözdü; başka bir ihtiyaç doğarsa `overlayClassName` açılmalı |
 | 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · build 2/2 · 3.2'de **8/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `leaves` **iki modal** → `Dialog` → **47/75** (`9b553d3`). Ret modalının **kapatan X'i yok** → `DialogTitle` var ama `DialogClose` yok; denge sayımı (Dialog 2/2, DialogClose 1/1) bunu **doğru** raporlar, simetri beklenmez. `CreateLeaveModal`'da form içeride kaydığı için `flex flex-col overflow-hidden p-0` |
+| 2026-09-16 | Faz 3.2 | ✅ `contracts` **modal + drawer** → `Dialog` + **`Sheet side="right"`** → **48/75** (`615ca49`). Hallmark satırı (uzun varyant) silindi |
+| 2026-09-16 | Faz 3.2 | 🔎 **İkinci print yüzeyi bulundu:** `contracts` detay drawer'ında "Yazdır / PDF" → `window.print()`. `5229ec9`'daki **global** kural bunu kendiliğinden karşıladı — kuralı tek dosyaya özel yazmamanın gerekçesi buydu. Gelecek Adımlar #21 kapsamı genişledi |
+| 2026-09-16 | Faz 3.2 | 🧹 **Hata (kendi, tsc'den önce yakalandı):** `contracts`'ta iki açılış `div`'ini `Sheet`/`SheetContent` yapıp kapanışta bir `</div>` fazla bıraktım — `quick-actions-widget`'teki `TS17002`'nin **aynısı**. Bu kez **okuyarak** yakalandı, çünkü o olay "açılış/kapanış say" kontrolünü devam noktasına yazdırmıştı. Commit edilen ağaç hiç bozulmadı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · 3.2'de **10/34 dosya** |
