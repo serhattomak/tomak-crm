@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import {
@@ -143,12 +149,19 @@ export function TestSendModal({
   const isDisabled: boolean = !templateId || isSending;
 
   return (
-    <div className="fade-in fixed inset-0 z-[60] flex animate-in items-center justify-center overflow-y-auto p-4">
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-lg"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-zinc-200 border-b bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-800/50">
           <div className="flex items-center gap-2.5">
@@ -156,22 +169,23 @@ export function TestSendModal({
               <Mail className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Test Gönder
-              </h3>
+              </DialogTitle>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 {templateName ? `${templateName} — ` : ""}önizleme modunda
                 e-posta hazırla
               </p>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Body */}
@@ -299,7 +313,7 @@ export function TestSendModal({
             <span>{isSending ? "Gönderiliyor..." : "Gönder (önizleme)"}</span>
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
