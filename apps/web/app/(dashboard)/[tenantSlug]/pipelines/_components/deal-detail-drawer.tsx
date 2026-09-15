@@ -1,8 +1,13 @@
-/* Hallmark · component: deal-detail-drawer · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Activity,
@@ -179,25 +184,15 @@ export function DealDetailDrawer({
     }
   };
 
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
-
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end">
-      {/* Backdrop with Click-to-Close */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-      />
-
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
       {/* Design System Confirm Dialog */}
       <ConfirmDialog
         cancelText="Vazgeç"
@@ -211,28 +206,33 @@ export function DealDetailDrawer({
         variant="destructive"
       />
 
-      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-border/80 border-l bg-background shadow-2xl duration-200 md:max-w-2xl">
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full border-border/80 overflow-hidden data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-2xl"
+        showCloseButton={false}
+      >
         {/* Drawer Header */}
         <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-border/80 border-b bg-muted/30 p-3.5 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
-            <Button
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              onClick={onClose}
-              size="icon"
-              title="Kapat & Geri Dön"
-              type="button"
-              variant="ghost"
-            >
-              <ArrowLeft className="h-4 w-4 sm:hidden" />
-              <X className="hidden h-4 w-4 sm:block" />
-            </Button>
+            <SheetClose asChild>
+              <Button
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                size="icon"
+                title="Kapat & Geri Dön"
+                type="button"
+                variant="ghost"
+              >
+                <ArrowLeft className="h-4 w-4 sm:hidden" />
+                <X className="hidden h-4 w-4 sm:block" />
+              </Button>
+            </SheetClose>
             <div className="min-w-0">
               <span className="block truncate font-medium text-[11px] text-muted-foreground">
                 {deal?.pipelineName || "Pipeline Fırsatı"}
               </span>
-              <h2 className="max-w-[200px] truncate font-semibold text-foreground text-sm leading-tight sm:max-w-md sm:text-base">
+              <SheetTitle className="max-w-[200px] truncate font-semibold text-foreground text-sm leading-tight sm:max-w-md sm:text-base">
                 {deal?.title || "Fırsat Detayı"}
-              </h2>
+              </SheetTitle>
             </div>
           </div>
 
@@ -549,7 +549,7 @@ export function DealDetailDrawer({
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
