@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
@@ -795,24 +801,36 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
       {/* Accept Modal */}
       {isAcceptModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsAcceptModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="w-full space-y-4 gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                   <Check className="h-4 w-4" />
                 </div>
-                <h3 className="font-bold text-slate-900 text-sm">
+                <DialogTitle className="font-bold text-slate-900 text-sm">
                   Teklifi Onayla
-                </h3>
+                </DialogTitle>
               </div>
-              <button
-                className="rounded-full p-1 text-slate-400 hover:bg-slate-100"
-                onClick={() => setIsAcceptModalOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-slate-400 hover:bg-slate-100"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="space-y-3 text-xs" onSubmit={handleAccept}>
@@ -873,30 +891,42 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Revision Request Modal */}
       {isRevisionModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsRevisionModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="w-full space-y-4 gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
                   <MessageSquare className="h-4 w-4" />
                 </div>
-                <h3 className="font-bold text-slate-900 text-sm">
+                <DialogTitle className="font-bold text-slate-900 text-sm">
                   Revizyon Talebi İlet
-                </h3>
+                </DialogTitle>
               </div>
-              <button
-                className="rounded-full p-1 text-slate-400 hover:bg-slate-100"
-                onClick={() => setIsRevisionModalOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-slate-400 hover:bg-slate-100"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -938,8 +968,8 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
