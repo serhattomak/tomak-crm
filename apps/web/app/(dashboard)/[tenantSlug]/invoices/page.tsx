@@ -11,6 +11,12 @@ import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
+import {
   AlertCircle,
   CheckCircle2,
   Clock,
@@ -385,14 +391,25 @@ function InvoiceDetailDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs">
-      <div className="flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl dark:bg-zinc-900 print:max-w-none print:shadow-none">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-2xl data-[side=right]:sm:max-w-2xl print:max-w-none print:shadow-none"
+        side="right"
+      >
         <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800 print:hidden">
           <div className="flex items-center gap-2">
             <Receipt className="h-5 w-5 text-violet-600 dark:text-violet-400" />
-            <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Fatura Önizleme & Detay
-            </h2>
+            </SheetTitle>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -402,13 +419,14 @@ function InvoiceDetailDrawer({
             >
               <Printer className="h-3.5 w-3.5" /> Yazdır
             </button>
-            <button
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </SheetClose>
           </div>
         </div>
 
@@ -600,8 +618,8 @@ function InvoiceDetailDrawer({
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
