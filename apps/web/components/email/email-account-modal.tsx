@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { SelectField } from "@workspace/ui/components/select";
 import {
@@ -443,28 +449,30 @@ export function EmailAccountModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-black/40 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-        type="button"
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-6 shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="w-full gap-0 sm:max-w-lg"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
               <Mail className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
             </div>
             <div>
-              <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 {isEdit
                   ? "E-posta Hesabını Düzenle"
                   : "Yeni E-posta Hesabı Bağla"}
-              </h2>
+              </DialogTitle>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 {isEdit
                   ? "Bağlı hesap bilgilerini ve sunucu ayarlarını güncelleyin."
@@ -472,14 +480,15 @@ export function EmailAccountModal({
               </p>
             </div>
           </div>
-          <button
-            aria-label="Kapat"
-            className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              aria-label="Kapat"
+              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
@@ -673,7 +682,7 @@ export function EmailAccountModal({
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
