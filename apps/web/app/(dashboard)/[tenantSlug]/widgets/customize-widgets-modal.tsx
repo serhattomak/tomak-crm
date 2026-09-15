@@ -1,8 +1,13 @@
-/* Hallmark · component: customize-widgets-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import {
   BarChart3,
@@ -157,14 +162,19 @@ export function CustomizeWidgetsModal({
   });
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-      {/* Backdrop with Click-to-Close */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative z-10 my-auto flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-border/80 bg-background shadow-2xl">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[88vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-border/80 border-b p-4 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
@@ -172,9 +182,9 @@ export function CustomizeWidgetsModal({
               <SlidersHorizontal className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-semibold text-foreground text-sm sm:text-base">
+              <DialogTitle className="truncate font-semibold text-foreground text-sm sm:text-base">
                 Dashboard Widget Düzenini Özelleştir
-              </h2>
+              </DialogTitle>
               <p className="truncate text-muted-foreground text-xs">
                 <strong className="font-semibold text-primary">
                   {activeTab}
@@ -185,15 +195,16 @@ export function CustomizeWidgetsModal({
             </div>
           </div>
 
-          <Button
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            onClick={onClose}
-            size="icon"
-            type="button"
-            variant="ghost"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          <DialogClose asChild>
+            <Button
+              className="h-8 w-8 text-muted-foreground hover:text-foreground"
+              size="icon"
+              type="button"
+              variant="ghost"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogClose>
         </div>
 
         {/* Filter and Search Bar */}
@@ -333,7 +344,7 @@ export function CustomizeWidgetsModal({
             Kaydet & Kapat
           </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
