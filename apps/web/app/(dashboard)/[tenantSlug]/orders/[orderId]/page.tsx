@@ -4,6 +4,7 @@ import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -213,7 +214,7 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-white text-xs shadow-2xl">
@@ -772,7 +773,7 @@ export default function OrderDetailPage() {
           tenantId={activeTenant?.id || ""}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }
 

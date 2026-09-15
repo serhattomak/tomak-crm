@@ -1,6 +1,7 @@
 /* Hallmark · component: project-backlog-engine · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   AlertCircle,
   ArrowLeft,
@@ -702,7 +703,7 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <div className="space-y-6 pb-16">
+    <PageContainer className="space-y-6 pb-16">
       {/* Toast */}
       {toastMessage && (
         <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
@@ -2526,6 +2527,6 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

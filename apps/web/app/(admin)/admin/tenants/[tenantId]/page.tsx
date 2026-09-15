@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowLeft,
@@ -229,7 +230,7 @@ export default function AdminTenantDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Top Breadcrumb & Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
@@ -513,6 +514,6 @@ export default function AdminTenantDetailPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
