@@ -231,6 +231,7 @@ onInteractOutside={(event) => {
 | `widgets/draggable-widget-wrapper` | Widget üzerinde hover'da çıkan **sürükleme tutamacı** (`opacity-0 group-hover:opacity-100`) |
 | `layout/dashboard-header` | `sticky` başlığın **fonksiyonel** `backdrop-blur-md`'si (dekoratif değil) |
 | `settings/page` içindeki kart | Kart yüzeyinde dekoratif `backdrop-blur-sm` → §1.2/cilâ işi, overlay işi değil |
+| `orders` + `orders/[orderId]` içindeki elle yazılmış toast (`slide-in-from-top-4 fixed top-6 right-6 z-50 … animate-in … bg-slate-900 … shadow-2xl`) | Overlay **imzasını** taşıyor (`fixed` + `shadow-2xl`) ama overlay değil: backdrop yok, kapatma yok, sayfayı engellemiyor, zamanlayıcıyla kapanıyor. Konusu **toaster spec'i** (`.scratch/ui-system-design-upgrade`), Faz 3 değil |
 
 **Print — overlay'ler ekran kromu, asla basılmaz.** `globals.css`'in `@media print` bloğu backdrop'ları gizler:
 
@@ -248,6 +249,8 @@ onInteractOutside={(event) => {
 **⚠️ Print'te sınıf ezmesi ayrı bir özgüllük problemidir.** `print:max-w-none` **temel varyantta** derlenir; `data-[side=right]:sm:max-w-2xl` ise data-attribute + breakpoint taşır ve **özgüllükte kazanır**. Yani print'te genişliği gerçekten değiştirmek istiyorsanız önekli biçim gerekir. Bugün A4 + 12mm marj ≈ 703px, `2xl` = 672px → pratikte neredeyse tam genişlik, ama bu **tesadüf**, garanti değil.
 
 **Portallanmış `fixed` konumlandırma print'te kırılgandır** ve bu commit'ler onu çözmez — drawer'ı print yüzeyi olarak yeniden düşünmek gerekir (Gelecek Adımlar).
+
+**✅ Karşı örnek zaten kodda var:** `orders/[orderId]`'da `handlePrint` overlay üzerinde `window.print()` çağırmaz — **ayrı bir rotaya** gider (`/{tenantSlug}/orders/{orderId}/print`). Gelecek Adımlar #21'in önerdiği desen bu. Yani `invoices` ve `contracts` drawer'ları **istisna**; doğru çözüm repoda mevcut.
 
 **`Sheet` (drawer) için ek notlar** — adımlar aynı, üç fark var:
 

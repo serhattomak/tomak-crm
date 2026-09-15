@@ -14,10 +14,10 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 
 **176 dosya · 1458 error · 1334 advisory warning**
 
-> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1443 error · 189 dosya.**
+> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1441 error · 189 dosya.**
 > Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
 > Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
-> `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → **`1443`**.
+> `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → `1443` → **−2** Faz 3.2 (`tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60`) → **`1441`**.
 >
 > `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**: panel gidince panelin renk sınıfları da gidiyor.
 
@@ -182,20 +182,23 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (51/75)**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (54/75)**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
 >
-> **3.2 — sayfa-içi modallar.** **13 dosya tamam**, kalan **21 sayfa**:
+> **3.2 — sayfa-içi modallar.** **16 dosya tamam**, kalan **18 sayfa**:
 > - `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
 > - `automations/[workflowId]` (`d9bbc3b`), `automations` — **2 overlay: drawer→`Sheet` + modal→`Dialog`** (`4e7a387`)
 > - `invoices` — modal→`Dialog` (`172fe2a`) + drawer→`Sheet` (`e5dfe86`)
-> - `leaves` — **2 modal** (`9b553d3`; ret modalının X'i **yok**, yalnız gövdede "Vazgeç" → `DialogClose` yok)
-> - `contracts` — **modal→`Dialog` + drawer→`Sheet`** (`615ca49`); Hallmark satırı da silindi
+> - `leaves` — **2 modal** (`9b553d3`; ret modalının X'i **yok** → `DialogClose` yok)
+> - `contracts` — **modal→`Dialog` + drawer→`Sheet`** (`615ca49`); Hallmark silindi
 > - `compliance` — **drawer→`Sheet` + modal→`Dialog`** (`d86f3a1`)
-> - `payroll` — **2 modal** (`f453457`; bu dosyada `rounded-3xl`/`fade-in`/`animate-in` artık **0**)
-> - `field-service` — **2 modal** (`de62bca`); Hallmark silindi. ⚠️ Bu dosya **farklı bir el stiliyle** yazılmış (attribute sırası prettier dışı, trailing comma yok, bir eksik noktalı virgül) → yerel stile uyuldu, normalize edilmedi
+> - `payroll` — **2 modal** (`f453457`; bu dosyada tüm izler **0**)
+> - `field-service` — **2 modal** (`de62bca`); Hallmark silindi. ⚠️ **Farklı el stili** (attribute sırası prettier dışı, trailing comma yok, eksik noktalı virgül) → yerel stile uyuldu
+> - `orders` — **2 modal** (`79b21c7`; silme onayının X'i yok) · `orders/[orderId]` — **2 modal** (`b04982a`) · `tickets/[ticketId]` — **2 modal** (`1cda709`; çözüm modalının X'i yok, şablon yöneticisi **sarmalayıcı kaydıran** desen)
 > - **Print altyapısı:** `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`)
+>
+> **🆕 Yeni muafiyet sınıfı:** `orders` ve `orders/[orderId]` içinde **elle yazılmış toast** (`fixed top-6 right-6 z-50 … animate-in … shadow-2xl`) — overlay **imzasını** taşıyor ama overlay değil (backdrop/kapatma/engelleme yok, zamanlayıcıyla kapanır). Konusu **toaster spec'i**. §2.3'teki muafiyet listesine eklendi. **Yani "`fixed` + `shadow-2xl` var" hâlâ overlay kanıtı değil** — ölçüp bakmak gerekiyor.
 >
 > **✅ 3.2'nin deseni (3.1'den dört fark):**
 > 1. **Backdrop elemanı yok** — sarmalayıcının kendisi backdrop (`fixed inset-0 bg-…`) ve `onClick` taşımıyor. §2.3'ün dış-tıklama politikası uygulanır (form taslağı → varsayılan açık).
@@ -203,7 +206,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 3. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent`/`SheetContent` **`overflow-y-auto`** alır. Ama içeride kaydıran blok varsa (ör. `flex-1 overflow-y-auto`) içerik `overflow-hidden` kalır. **Dosya başına doğrulanır** — kopyala-yapıştır yanlış sonuç verir.
 > 4. **`space-y-*` varsa `gap-0` şart**; panelde `max-h`/`overflow` **yoksa eklenir** (body scroll kilidi yüzünden).
 >
-> **Kalan 21 sayfa (en küçükten):** `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11).
+> **Kalan 18 sayfa (en küçükten):** `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11).
 >
 > **Kalan 4 dosya overlay değil ve muaf** (tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header` (mobil alt bar da aynı sınıfta). Gerekçeler §2.3'te.
 >
@@ -241,11 +244,11 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
 - [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
 - [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
-- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **13 dosya tamam, 21 kaldı**
+- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **16 dosya tamam, 18 kaldı**
   - [x] `(admin)/admin/templates` (`ee167e5`) · `(admin)/admin/tenants` (`8f3b524`) · `roles` (`07d476d`) · `users` (`757799b`) · `tickets` (`fbf5591`)
-  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`)
+  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`) · `orders` (`79b21c7`) · `orders/[orderId]` (`b04982a`) · `tickets/[ticketId]` (`1cda709`)
   - [x] **Print altyapısı** — `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`), derlenen CSS'te doğrulandı
-  - [ ] Kalan 21 — en küçükten: `orders`, `orders/[orderId]`, `tickets/[ticketId]`, `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11)
+  - [ ] Kalan 18 — en küçükten: `email`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar`, `finance`, `inventory`, `products`, `vehicles`, `organization`, `shipments`, `attendance`, `recruitment` (8), `messages` (8), `quotes` (11)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -590,3 +593,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3.2 | ✅ `payroll` **2 modal** → `Dialog` → **50/75** (`f453457`). 2729 satırlık dosyada izler tamamen sıfır: `fixed inset-0`/`backdrop-blur`/`shadow-2xl`/`rounded-3xl`/`fade-in`/`animate-in` = **0** |
 | 2026-09-16 | Faz 3.2 | ✅ `field-service` **2 modal** → `Dialog` → **51/75** (`de62bca`). Hallmark silindi. ⚠️ **Farklı el stili** (attribute sırası prettier dışı, trailing comma yok, eksik noktalı virgül) → **yerel stile uyuldu, normalize edilmedi** |
 | 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · 3.2'de **13/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `orders` **2 modal** → `Dialog` → **52/75** (`79b21c7`). Silme onayının X'i yok → `DialogClose` 1/1 (doğru asimetri). 🆕 **Yeni muafiyet sınıfı:** elle yazılmış toast (satır 358) overlay **imzasını** taşıyor ama overlay değil → §2.3'e eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `orders/[orderId]` **2 modal** (`ChangeStatusModal` + `AddPaymentModal`) → `Dialog` → **53/75** (`b04982a`). 🔎 **Önemli:** bu sayfa print için `window.print()` değil **ayrı rota** kullanıyor (`/orders/{id}/print`) — Gelecek Adımlar #21'in önerdiği desen **repoda zaten var**. Yani `invoices`/`contracts` drawer'ları **istisna**, §2.3'e yazıldı |
+| 2026-09-16 | Faz 3.2 | ✅ `tickets/[ticketId]` **2 modal** → `Dialog` → **54/75** (`1cda709`). Şablon yöneticisi **sarmalayıcı kaydıran** desen (`overflow-y-auto` sarmalayıcıda) → `DialogContent`'e taşındı. Kapatma handler'ı iki iş yapıyordu (kapat + `setEditingTemplate(null)`) → ikisi de `onOpenChange`'e |
+| 2026-09-16 | Faz 3.2 | 📉 **`--full` 1443 → 1441** (−2): `tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60` taşıyordu, yüzey primitife geçince sınıflar gitti |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **16/34 dosya** |
