@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -328,7 +329,7 @@ export default function TicketsDashboardPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* 1. Header & Quick Controls */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -1137,6 +1138,6 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

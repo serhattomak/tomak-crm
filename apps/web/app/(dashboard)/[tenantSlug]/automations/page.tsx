@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
   Activity,
@@ -314,7 +315,7 @@ export default function AutomationsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl flex-1 space-y-6 p-4 md:p-8">
+    <PageContainer className="space-y-6">
       {/* 1. Header & Hero Section */}
       <div className="flex flex-col gap-4 border-zinc-200 border-b pb-6 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
         <div>
@@ -1052,6 +1053,6 @@ export default function AutomationsPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -376,7 +377,7 @@ export default function TicketDetailPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <PageContainer className="space-y-4">
       {/* 1. Top Bar & Navigation */}
       <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/90 dark:bg-zinc-900">
         <div className="flex items-center gap-3">
@@ -1237,6 +1238,6 @@ export default function TicketDetailPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

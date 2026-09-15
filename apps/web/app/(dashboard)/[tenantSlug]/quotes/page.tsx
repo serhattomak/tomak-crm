@@ -6,6 +6,7 @@ import { DatePicker } from "@workspace/ui/components/date-picker";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -312,7 +313,7 @@ export default function QuotesPage() {
   );
 
   return (
-    <div className="space-y-6 p-6">
+    <PageContainer className="space-y-6">
       {/* 1. Top Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -946,7 +947,7 @@ export default function QuotesPage() {
         onClear={() => setSelectedIds(new Set())}
         selectedCount={selectedIds.size}
       />
-    </div>
+    </PageContainer>
   );
 }
 

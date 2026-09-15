@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   AlertCircle,
   ArrowLeft,
@@ -441,7 +442,7 @@ export default function WebhookBuilderPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl flex-1 space-y-6 p-4 md:p-8">
+    <PageContainer className="space-y-6">
       {/* Header Toolbar */}
       <div className="flex flex-col gap-4 border-zinc-200 border-b pb-5 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
         <div className="flex items-center gap-3">
@@ -1178,6 +1179,6 @@ export default function WebhookBuilderPage() {
           {isNew ? "Oluştur" : "Kaydet"}
         </button>
       </div>
-    </div>
+    </PageContainer>
   );
 }

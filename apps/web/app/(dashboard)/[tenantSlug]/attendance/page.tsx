@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
@@ -891,7 +892,7 @@ export default function AttendancePage() {
   }, [scheduleWeekStart]);
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <PageContainer className="flex flex-col gap-6">
       {/* 1. Header & Live Clock Quick Bar */}
       <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
         <div className="flex items-start gap-4">
@@ -2502,6 +2503,6 @@ export default function AttendancePage() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }

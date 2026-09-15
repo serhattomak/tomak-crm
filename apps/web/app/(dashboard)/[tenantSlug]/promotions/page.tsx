@@ -2,6 +2,7 @@
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   AlertCircle,
   BarChart3,
@@ -371,7 +372,7 @@ export default function PromotionsPage() {
   };
 
   return (
-    <div className="space-y-6 pb-12">
+    <PageContainer className="space-y-6 pb-12">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 border-zinc-200/80 border-b pb-5 sm:flex-row sm:items-center dark:border-zinc-800">
         <div>
@@ -1222,6 +1223,6 @@ export default function PromotionsPage() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }

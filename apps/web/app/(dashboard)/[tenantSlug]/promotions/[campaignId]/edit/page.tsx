@@ -2,6 +2,7 @@
 
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   AlertCircle,
   ArrowLeft,
@@ -244,7 +245,7 @@ export default function EditCampaignPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 pb-16">
+    <PageContainer className="mx-auto max-w-4xl space-y-6 pb-16">
       {/* Header */}
       <div className="flex items-center justify-between border-zinc-200/80 border-b pb-4 dark:border-zinc-800">
         <div className="flex items-center gap-3">
@@ -506,6 +507,6 @@ export default function EditCampaignPage() {
           </button>
         </div>
       </form>
-    </div>
+    </PageContainer>
   );
 }
