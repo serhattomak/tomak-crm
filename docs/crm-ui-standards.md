@@ -176,7 +176,7 @@ Muaf yüzeylerde ortaklık **token, primitif ve tipografi** düzeyinde sağlanı
 Elle yazılmış bir modal/overlay'i primitife çevirme adımları — Faz 3.0 pilotunda doğrulandı:
 
 1. **Kapsayıcıyı kaldır:** `fixed inset-0 z-50 flex animate-in items-center justify-center p-4` gibi el yapımı sarmalayıcı silinir.
-2. **Backdrop'u sil:** `fixed inset-0 bg-black/60 backdrop-blur-*` + `onClick` çifti gider — `DialogOverlay`/`SheetOverlay` bunu sağlar.
+2. **Backdrop'u sil:** iki biçimde karşına çıkar — (i) `fixed inset-0 bg-black/60 backdrop-blur-*` + `onClick` div'i, (ii) tam boy `<button aria-label="Kapat" className="fixed inset-0 …">`. İkisi de gider: `DialogOverlay`/`SheetOverlay` backdrop'u sağlar, Radix dışına tıklamayı zaten yönetir. Buton biçimini silmek hiçbir şey kaybettirmez — yaptığı işi primitif doğru yapıyor.
 3. **Paneli primitife ver:** panelin kendi `rounded-* border bg-* shadow-*` sınıfları gider; yüzeyi primitif sahiplenir. Yalnızca **boyut/yerleşim** sınıfları `DialogContent`'e geçer (`max-w-2xl`, `max-h-[90vh]`, `flex flex-col`, `p-0 gap-0` gibi).
 4. **Görünen başlığı `DialogTitle` yap:** Radix erişilebilir isim arar; eksikse konsol uyarır ve ekran okuyucu başlığı okuyamaz.
 5. **Mevcut kapatma butonunu `DialogClose asChild` ile sar:** böylece yardımcı teknoloji onu kapatma kontrolü olarak bulur. `DialogContent`'in kendi X'i istenmiyorsa `showCloseButton={false}`.
