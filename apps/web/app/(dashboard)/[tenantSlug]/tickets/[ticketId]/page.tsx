@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
@@ -1047,16 +1053,27 @@ export default function TicketDetailPage() {
 
       {/* Resolution Notes Modal */}
       {isResolveModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="fade-in zoom-in-95 relative w-full max-w-md animate-in rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsResolveModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center gap-2.5 border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Talebi Çözüldü Olarak İşaretle
-                </h3>
+                </DialogTitle>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Çözüm detaylarını ve notlarınızı ekleyin
                 </p>
@@ -1095,28 +1112,38 @@ export default function TicketDetailPage() {
                 </Button>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Template Manager Modal (PUT/DELETE) */}
       {isTemplateManagerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative my-auto w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsTemplateManagerOpen(false);
+              setEditingTemplate(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Hazır Şablonları Yönet (PUT/DELETE)
-              </h3>
-              <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
-                onClick={() => {
-                  setIsTemplateManagerOpen(false);
-                  setEditingTemplate(null);
-                }}
-                type="button"
-              >
-                ✕
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
+                  type="button"
+                >
+                  ✕
+                </button>
+              </DialogClose>
             </div>
             <div className="mt-3 max-h-56 space-y-2 overflow-y-auto">
               {cannedResponses.map((t) => (
@@ -1235,8 +1262,8 @@ export default function TicketDetailPage() {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
