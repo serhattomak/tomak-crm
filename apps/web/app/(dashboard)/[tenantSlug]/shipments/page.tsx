@@ -1,6 +1,12 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -12,6 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   AlertCircle,
   Building2,
@@ -1499,24 +1511,36 @@ function CreateShipmentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <PackagePlus className="h-4 w-4" />
             </div>
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni Kargo Paketi & Sevkiyat Oluştur
-            </h2>
+            </DialogTitle>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form
@@ -1781,8 +1805,8 @@ function CreateShipmentModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1857,24 +1881,36 @@ function UpdateStatusModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Durumunu İlerlet
-            </h2>
+            </DialogTitle>
             <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
               {shipment.shipmentNumber}
             </span>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
@@ -1962,8 +1998,8 @@ function UpdateStatusModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1982,15 +2018,26 @@ function PrintLabelModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[95vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[95vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-xl"
+        showCloseButton={false}
+      >
         {/* Header (No print) */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Printer className="h-4 w-4 text-blue-600" />
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Sevk Etiketi & Barkod Önizleme
-            </h2>
+            </DialogTitle>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -2001,13 +2048,14 @@ function PrintLabelModal({
               <Printer className="h-3.5 w-3.5" />
               <span>Yazdır (A6 / Termal)</span>
             </button>
-            <button
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <DialogClose asChild>
+              <button
+                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </DialogClose>
           </div>
         </div>
 
@@ -2102,8 +2150,8 @@ function PrintLabelModal({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2125,8 +2173,22 @@ function ShipmentDetailDrawer({
   const StatusIcon = statusConf.icon;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-      <div className="flex h-full w-full max-w-lg flex-col bg-white shadow-2xl dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-lg overflow-hidden p-0 data-[side=right]:sm:max-w-lg"
+        side="right"
+      >
+        <SheetTitle className="sr-only">
+          Kargo Sevkiyat Detayı · {shipment.shipmentNumber}
+        </SheetTitle>
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b p-6 dark:border-zinc-800">
           <div>
@@ -2142,13 +2204,14 @@ function ShipmentDetailDrawer({
               </span>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <SheetClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </SheetClose>
         </div>
 
         {/* Content */}
@@ -2294,8 +2357,8 @@ function ShipmentDetailDrawer({
             <span>Kargo Barkod Etiketi Yazdır</span>
           </button>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -2354,22 +2417,34 @@ function CreateReturnModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <RotateCcw className="h-4 w-4 text-amber-600" />
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni İade Kargo Talebi Başlat
-            </h2>
+            </DialogTitle>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
@@ -2470,8 +2545,8 @@ function CreateReturnModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2523,24 +2598,36 @@ function UpdateReturnStatusModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div>
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               İade Kargo Kabul & Kontrol
-            </h2>
+            </DialogTitle>
             <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
               {returnShipment.returnCode}
             </span>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
@@ -2599,8 +2686,8 @@ function UpdateReturnStatusModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2657,22 +2744,34 @@ function CreateCarrierModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-blue-600" />
-            <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni Taşıyıcı Kargo Firması Ekle
-            </h2>
+            </DialogTitle>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="mt-4 space-y-3.5" onSubmit={handleSubmit}>
@@ -2786,7 +2885,7 @@ function CreateCarrierModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
