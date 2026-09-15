@@ -3,6 +3,12 @@
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -14,6 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -1395,14 +1407,19 @@ function CreateQuoteModal({
   }, [onClose]);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-      {/* Backdrop with Click-to-Close */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative z-10 my-auto flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800/90 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[94vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b bg-zinc-50 p-4 sm:p-6 dark:border-zinc-800/90 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-3">
@@ -1410,22 +1427,23 @@ function CreateQuoteModal({
               <FileSpreadsheet className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate font-bold text-base text-zinc-900 sm:text-lg dark:text-zinc-100">
+              <DialogTitle className="truncate font-bold text-base text-zinc-900 sm:text-lg dark:text-zinc-100">
                 Yeni Teklif Hazırla
-              </h2>
+              </DialogTitle>
               <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                 Müşteri, ürün kalemleri, KDV, iskonto ve şartnameleri belirleyin
               </p>
             </div>
           </div>
 
-          <button
-            className="shrink-0 rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="shrink-0 rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Form */}
@@ -2077,8 +2095,8 @@ function CreateQuoteModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2371,13 +2389,14 @@ function QuoteDetailDrawer({
   }, [onClose]);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in justify-end">
-      {/* Backdrop with Click-to-Close */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
       <ConfirmDialog
         cancelText="Vazgeç"
         confirmText="Evet, Sil"
@@ -2390,20 +2409,25 @@ function QuoteDetailDrawer({
         variant="destructive"
       />
 
-      <div className="slide-in-from-right relative z-10 flex h-full w-full animate-in flex-col overflow-hidden border-zinc-200 border-l bg-white shadow-2xl duration-200 md:max-w-3xl dark:border-zinc-800 dark:bg-zinc-900">
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full overflow-hidden p-0 data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-3xl"
+        side="right"
+      >
         {/* Drawer Header (Mobile-Optimized) */}
         <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 border-b bg-zinc-50/80 p-3.5 sm:p-5 dark:border-zinc-800/90 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-2.5">
             {/* Back / Close Button */}
-            <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-              onClick={onClose}
-              title="Kapat & Geri Dön"
-              type="button"
-            >
-              <ArrowLeft className="h-4.5 w-4.5 sm:hidden" />
-              <X className="hidden h-4.5 w-4.5 sm:block" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                title="Kapat & Geri Dön"
+                type="button"
+              >
+                <ArrowLeft className="h-4.5 w-4.5 sm:hidden" />
+                <X className="hidden h-4.5 w-4.5 sm:block" />
+              </button>
+            </SheetClose>
 
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
@@ -2415,9 +2439,9 @@ function QuoteDetailDrawer({
                 </span>
                 {quote && <QuoteStatusBadge status={quote.status} />}
               </div>
-              <h2 className="mt-0.5 max-w-[170px] truncate font-bold text-xs text-zinc-900 leading-tight sm:max-w-md sm:text-sm dark:text-zinc-100">
+              <SheetTitle className="mt-0.5 max-w-[170px] truncate font-bold text-xs text-zinc-900 leading-tight sm:max-w-md sm:text-sm dark:text-zinc-100">
                 {quote?.title || "Teklif Detayı"}
-              </h2>
+              </SheetTitle>
             </div>
           </div>
 
@@ -3040,15 +3064,26 @@ function QuoteDetailDrawer({
             )}
           </div>
         )}
-      </div>
+      </SheetContent>
 
       {/* Approve / Reject Modal */}
       {isApproveOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsApproveOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yönetici Teklif Değerlendirmesi
-            </h3>
+            </DialogTitle>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Teklifi onaylayarak müşteriye gönderilmeye hazır hale getirebilir
               veya açıklama ekleyerek revizyon isteyebilirsiniz.
@@ -3092,18 +3127,29 @@ function QuoteDetailDrawer({
                 Onayla
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* New Revision Modal with Override */}
       {isRevisionOpen && quote && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="my-auto w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsRevisionOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
+            showCloseButton={false}
+          >
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Revizyon Oluştur (R{quote.revisionNumber + 1}) — Tek Adımda
               Düzenle
-            </h3>
+            </DialogTitle>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Kalem miktar/fiyat ve vade tek adımda güncellenir, yeni versiyon
               oluşturulur.
@@ -3204,24 +3250,36 @@ function QuoteDetailDrawer({
                 Revizyonu Başlat
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
       {/* Convert Preview Modal */}
       {isConvertPreviewOpen && quote && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center overflow-y-auto bg-slate-950/40 p-4 backdrop-blur-xs">
-          <div className="my-auto w-full max-w-3xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsConvertPreviewOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-3xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Siparişe Dönüştür — Önizleme & Düzenle
-              </h3>
-              <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
-                onClick={() => setIsConvertPreviewOpen(false)}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
             {quote.convertedOrderId ? (
               <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 font-semibold text-rose-700 text-xs">
@@ -3395,10 +3453,10 @@ function QuoteDetailDrawer({
                 </div>
               </>
             )}
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
-    </div>
+    </Sheet>
   );
 }
 
@@ -3829,13 +3887,19 @@ function QuoteTemplatesModal({
     : null;
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-4">
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-5xl"
+        showCloseButton={false}
+      >
         <PermissionGate
           fallback={
             <div className="p-8 text-center">
@@ -3863,9 +3927,9 @@ function QuoteTemplatesModal({
                 <Settings className="h-4 w-4" />
               </div>
               <div className="min-w-0">
-                <h3 className="truncate font-bold text-sm text-zinc-900 tracking-tight sm:text-base dark:text-zinc-100">
+                <DialogTitle className="truncate font-bold text-sm text-zinc-900 tracking-tight sm:text-base dark:text-zinc-100">
                   E-posta Şablonları
-                </h3>
+                </DialogTitle>
                 <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                   Handlebars konu + HTML gövdesi — değişken ekle, varsayılan
                   seç, kaydet
@@ -3881,13 +3945,14 @@ function QuoteTemplatesModal({
                 <Plus className="mr-1 h-3.5 w-3.5" />
                 Yeni Şablon
               </button>
-              <button
-                className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                onClick={onClose}
-                type="button"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
           </div>
 
@@ -4228,8 +4293,8 @@ function QuoteTemplatesModal({
           templateId={editingId}
           templateName={selectedTemplate?.name}
         />
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -4853,14 +4918,19 @@ function QuotePrintModal({
   }, [onClose]);
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-2 sm:p-6">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative z-10 my-auto flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-2xl">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
+        showCloseButton={false}
+      >
         {/* Modal Header */}
         <div className="z-20 flex shrink-0 items-center justify-between border-border border-b bg-card px-4 py-3.5 shadow-2xs sm:px-6 sm:py-4">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
@@ -4869,9 +4939,9 @@ function QuotePrintModal({
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-foreground text-sm">
+                <DialogTitle className="font-bold text-foreground text-sm">
                   Teklif Belgesi Önizleme
-                </span>
+                </DialogTitle>
                 <span className="rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 font-bold text-[10px] text-primary">
                   A4 Proforma
                 </span>
@@ -4922,14 +4992,15 @@ function QuotePrintModal({
               <span>Yazdır / PDF</span>
             </button>
 
-            <button
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              onClick={onClose}
-              title="Kapat (ESC)"
-              type="button"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <DialogClose asChild>
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                title="Kapat (ESC)"
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </DialogClose>
           </div>
         </div>
 
@@ -5280,7 +5351,7 @@ function QuotePrintModal({
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
