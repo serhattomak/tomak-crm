@@ -2,6 +2,11 @@
 
 import { toast } from "@workspace/ui/components/sonner";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover";
+import {
   Check,
   Copy,
   Download,
@@ -12,7 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 const noopSubscribe = () => () => {};
 const checkCanShare = () =>
@@ -44,37 +49,6 @@ export function DashboardSharePopover({
     getClientCanShare,
     getServerCanShare
   );
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  // Click outside & Escape handler
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
   const getShareableUrl = () => {
     if (typeof window === "undefined") {
       return "";
@@ -169,25 +143,30 @@ export function DashboardSharePopover({
   };
 
   return (
-    <div className={`relative inline-block ${className}`} ref={popoverRef}>
-      {/* Trigger Button */}
-      <button
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
-        className={
-          buttonClassName ||
-          "flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-all hover:bg-slate-100 hover:text-slate-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
-        }
-        onClick={() => setIsOpen(!isOpen)}
-        title="Panoyu Paylaş ve Dışa Aktar"
-        type="button"
-      >
-        <Share2 className="h-4 w-4" />
-      </button>
+    <div className={`inline-block ${className}`}>
+      <Popover onOpenChange={setIsOpen} open={isOpen}>
+        <PopoverTrigger asChild>
+          <button
+            className={
+              buttonClassName ||
+              "flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-all hover:bg-slate-100 hover:text-slate-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
+            }
+            title="Panoyu Paylaş ve Dışa Aktar"
+            type="button"
+          >
+            <Share2 className="h-4 w-4" />
+          </button>
+        </PopoverTrigger>
+      </Popover>
 
       {/* Share Popover Dropdown */}
-      {isOpen && (
-        <div className="fade-in zoom-in-95 fixed inset-x-3 top-14 z-50 animate-in overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-md duration-150 sm:absolute sm:inset-x-auto sm:top-11 sm:right-0 sm:w-88 dark:border-border dark:bg-card/95">
+      <PopoverContent
+        align="end"
+        className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-88"
+        collisionPadding={12}
+        side="bottom"
+        sideOffset={10}
+      >
           {/* Header */}
           <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
             <div className="flex items-center gap-2">
@@ -322,8 +301,7 @@ export function DashboardSharePopover({
               </div>
             </button>
           </div>
-        </div>
-      )}
+      </PopoverContent>
     </div>
   );
 }
