@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import {
@@ -259,17 +265,19 @@ export function SendQuoteEmailModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-        type="button"
-      />
-
-      {/* Modal Dialog */}
-      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl transition-all dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="w-full gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b bg-zinc-50/75 px-5 py-4 dark:border-zinc-800 dark:bg-zinc-900/50">
           <div className="flex items-center gap-3">
@@ -277,22 +285,23 @@ export function SendQuoteEmailModal({
               <Mail className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Teklifi E-posta ile Gönder
-              </h2>
+              </DialogTitle>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 #{quote.quoteNumber} — {quote.customerName}
               </p>
             </div>
           </div>
-          <button
-            aria-label="Kapat"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DialogClose asChild>
+            <button
+              aria-label="Kapat"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Content */}
@@ -486,7 +495,7 @@ export function SendQuoteEmailModal({
             )}
           </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
