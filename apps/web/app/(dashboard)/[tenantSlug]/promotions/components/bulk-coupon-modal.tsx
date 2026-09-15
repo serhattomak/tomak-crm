@@ -1,6 +1,12 @@
 "use client";
 
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import {
   AlertCircle,
@@ -140,8 +146,27 @@ export function BulkCouponModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs duration-200">
-      <div className="relative w-full max-w-xl rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex w-full flex-col gap-0 overflow-hidden p-6 sm:max-w-xl"
+        // Outside-click is only allowed to discard what the user can retype.
+        // Once coupons exist their codes are shown here and nowhere else, so a
+        // stray click must not throw them away. Escape still closes.
+        onInteractOutside={(event) => {
+          if (generatedResult) {
+            event.preventDefault();
+          }
+        }}
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div className="flex items-center gap-3">
@@ -149,21 +174,22 @@ export function BulkCouponModal({
               <KeyRound className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                 Kupon Kodu Üretici
-              </h2>
+              </DialogTitle>
               <p className="text-xs text-zinc-500">
                 Tekil veya binlerce benzersiz tek kullanımlık kupon oluşturun
               </p>
             </div>
           </div>
-          <button
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {error && (
@@ -410,7 +436,7 @@ export function BulkCouponModal({
             </div>
           </form>
         )}
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
