@@ -47,6 +47,17 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* CRM micro typography scale (ADR-0004 sec.5 / crm-ui-standards.md sec.1.3)
+     9px was removed - unreadable in a data-dense CRM. Arbitrary text-[Npx] is banned. */
+  --text-2xs: 0.6875rem; /* 11px - secondary detail / meta */
+  --text-2xs--line-height: 1rem;
+  --text-3xs: 0.625rem; /* 10px - micro label */
+  --text-3xs--line-height: 0.875rem;
+  /* Motion (ADR-0004 sec.5). NOTE: Tailwind v4 has no --duration-* theme
+     namespace, so durations stay bare values (duration-150/200/250) - see
+     crm-ui-standards.md sec.1.5. Only easings are tokenized. */
+  --ease-crm: cubic-bezier(0.32, 0.72, 0, 1); /* swift-out - overlays, sheets */
+  --ease-crm-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* symmetric - size/position */
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
 }

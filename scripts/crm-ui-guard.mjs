@@ -12,6 +12,15 @@
  *   - `slate-*`                    → `zinc-*` (dark-mode readable)
  *   - `violet-*` / `fuchsia-*`     → `blue-500` scale (CRM accent)
  *
+ * Advisory rules (severity: "warn" — reported, NOT blocking; exit code unaffected).
+ * They exist so the migration in ADR-0004 / docs/crm-ui-roadmap.md can be tracked:
+ *   - arbitrary text size `text-[13px]` / `text-[9px]` / … → `text-2xs` (11px),
+ *                                      `text-3xs` (10px) or the Tailwind scale
+ *   - native `<table>`             → @workspace/ui Table primitives
+ *   - inline `style={{ … }}`        → Tailwind classes + semantic tokens
+ * A warn rule is promoted to "error" (blocking) only once that rule is clean in a
+ * `--full` sweep — see ADR-0004 §9. Rules without an explicit `severity` are errors.
+ *
  * Explicit exceptions (never scanned, never changed by this guard):
  *   - Store: `apps/ecommerce/**` is NOT in scope (light-only store contract).
  *   - Brand fills: tenant logo/brand overrides via `--store-primary` CSS var
@@ -29,7 +38,8 @@
  *   npm run guard:crm-ui:full       # full CRM sweep (migration tracker, may list legacy drift)
  *   node scripts/crm-ui-guard.mjs --help
  *
- * Exit codes: 0 clean · 1 violations found · 2 usage/config error.
+ * Exit codes: 0 clean (advisory warnings do not affect exit code) · 1 error-level
+ * violation(s) found · 2 usage/config error.
  * No auto-fix: failures STOP the batch — fix by hand per ADR-0002, never
  * bulk-sed. Shell-less environments: orchestrator must execute the run
  * commands above and paste the log as proof.
@@ -85,7 +95,7 @@ const SKIP_DIRS = new Set([
 ]);
 
 /**
- * @typedef {{ id: string, pattern: RegExp, hint: string }} Rule
+ * @typedef {{ id: string, pattern: RegExp, hint: string, severity?: "error" | "warn" }} Rule
  * NOTE: SLATE uses a `(?<![A-Za-z])` lookbehind so `translate-x-*`
  * utilities never match.
  * @type {Rule[]}
@@ -143,6 +153,24 @@ const RULES = [
     id: "FUCHSIA",
     pattern:
       /(?<![A-Za-z])fuchsia-(?:50|100|200|300|400|500|600|700|800|900|950)\b/g,
+  },
+  {
+    hint: "arbitrary text size — use text-2xs (11px) / text-3xs (10px) or the Tailwind scale (text-xs, text-sm, …)",
+    id: "ARBITRARY_TEXT_SIZE",
+    pattern: /text-\[[0-9]*\.?[0-9]+(?:px|rem|em)\]/g,
+    severity: "warn",
+  },
+  {
+    hint: "native <table> — use @workspace/ui Table primitives (TableHeader, TableRow, TableCell, …)",
+    id: "NATIVE_TABLE",
+    pattern: /<table(?=[\s>])/g,
+    severity: "warn",
+  },
+  {
+    hint: "inline style object — use Tailwind classes + semantic tokens (keep style only for unmeasurable dynamic values)",
+    id: "INLINE_STYLE_PROP",
+    pattern: /\bstyle=\{\{/g,
+    severity: "warn",
   },
 ];
 
@@ -219,7 +247,7 @@ function allowed(rel, ruleId, allowlist) {
 /**
  * @param {string} abs
  * @param {AllowEntry[]} allowlist
- * @returns {{ violations: { file: string, line: number, rule: string, hint: string, excerpt: string }[], suppressed: number }}
+ * @returns {{ violations: { file: string, line: number, rule: string, hint: string, excerpt: string, severity: "error" | "warn" }[], suppressed: number }}
  */
 function scanFile(abs, allowlist) {
   const rel = relative(REPO_ROOT, abs).replace(/\\/g, "/");
@@ -247,6 +275,7 @@ function scanFile(abs, allowlist) {
         hint: rule.hint,
         line,
         rule: rule.id,
+        severity: rule.severity ?? "error",
       });
       // Guard against zero-width loops on `s`-flag patterns.
       if (rule.pattern.lastIndex === m.index) {
@@ -269,6 +298,15 @@ options:
   --help                  this text
 
   no path + no --full     scan the Batch 1–3 SCOPE list (CI gate).
+
+severity:
+  error (default)   blocking — affects the exit code
+  warn              advisory — printed but never fails the run; a warn rule is
+                    promoted to error only once a --full sweep is clean for it.
+
+note:
+  The scoped SCOPE list is the live regression gate and stays in place until a
+  clean --full sweep (ADR-0004 §9), at which point it is retired.
 
 examples:
   node scripts/crm-ui-guard.mjs
@@ -338,7 +376,7 @@ function main(argv) {
     }
   }
 
-  /** @type {{ file: string, line: number, rule: string, hint: string, excerpt: string }[]} */
+  /** @type {{ file: string, line: number, rule: string, hint: string, excerpt: string, severity: "error" | "warn" }[]} */
   const all = [];
   let suppressed = 0;
   if (files.length === 0) {
@@ -356,21 +394,56 @@ function main(argv) {
     a.file < b.file ? -1 : a.file > b.file ? 1 : a.line - b.line
   );
 
-  if (all.length > 0) {
-    for (const v of all) {
+  const errors = all.filter((v) => v.severity !== "warn");
+  const warnings = all.filter((v) => v.severity === "warn");
+
+  if (errors.length > 0) {
+    for (const v of errors) {
       console.log(
         `${v.file}:${v.line}: [${v.rule}] ${v.hint}\n    → ${v.excerpt}`
       );
     }
   }
+
+  if (warnings.length > 0) {
+    /** @type {Map<string, typeof warnings>} */
+    const byRule = new Map();
+    for (const w of warnings) {
+      const bucket = byRule.get(w.rule);
+      if (bucket) {
+        bucket.push(w);
+      } else {
+        byRule.set(w.rule, [w]);
+      }
+    }
+    console.log(
+      `\n--- advisory: ${warnings.length} warning(s) — NOT blocking (tracked by ADR-0004 / docs/crm-ui-roadmap.md) ---`
+    );
+    const ordered = [...byRule.entries()].sort(
+      (a, b) => b[1].length - a[1].length
+    );
+    for (const [rule, list] of ordered) {
+      console.log(`  [${rule}] ${list.length} hit(s) — ${list[0].hint}`);
+      for (const w of list.slice(0, 5)) {
+        console.log(`    ${w.file}:${w.line}: ${w.excerpt}`);
+      }
+      if (list.length > 5) {
+        console.log(`    … ${list.length - 5} more`);
+      }
+    }
+  }
+
   console.log(
-    `\ncrm-ui-guard: ${all.length} violation(s) in ${files.length} file(s)` +
+    `\ncrm-ui-guard: ${errors.length} error(s) in ${files.length} file(s)` +
+      (warnings.length > 0
+        ? ` · ${warnings.length} advisory warning(s)`
+        : "") +
       (suppressed > 0 ? ` (${suppressed} suppressed by allowlist)` : "") +
-      (all.length > 0
+      (errors.length > 0
         ? " — FAIL (no auto-fix; fix by hand per ADR-0002)"
         : " — PASS")
   );
-  return all.length > 0 ? 1 : 0;
+  return errors.length > 0 ? 1 : 0;
 }
 
 process.exit(main(process.argv.slice(2)));
