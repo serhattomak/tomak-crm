@@ -175,7 +175,14 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (7/75)**
+## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (8/75)**
+
+> **🔄 Devam noktası (yeni oturum buradan başlasın):**
+> 1. **Önce `Sheet` desenini kur** — henüz denenmedi (17 sağ-sheet + 11 `*Drawer` bekliyor). En basit vakayla başla: **`components/chat/whatsapp-chat-drawer.tsx`**. `email-thread-drawer.tsx` (527 satır, 2 overlay) ile başlama.
+> 2. Sonra `components/email` grubunun kalan 4 modali: `convert-to-lead-modal` (792), `template-modal` (740), `email-account-modal` (679), `convert-to-ticket-modal` (546). Desen `compose-modal`'da kurulu (`26bdf0b`).
+> 3. Sonra `components/` kök (6), `widgets` (3), `promotions/components` (2), `pipelines/_components` (2), `components/quotes` (2), `components/products` (2), `components/portal` (1), `components/layout/mobile-nav` (1), `portal/PortalClient` (1).
+>
+> **Tarif:** standart **§2.3** (iki backdrop biçimi + 7 adım). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, typecheck + build yeşil.
 
 **Gerçek iş birimi 75 modal component'i** (`fixed inset-0` sayısı 156 ama şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
 
