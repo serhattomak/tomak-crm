@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -63,7 +64,7 @@ export default function AdminDashboardPage() {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <PageContainer className="space-y-8">
       {/* Top Header Banner */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -324,6 +325,6 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

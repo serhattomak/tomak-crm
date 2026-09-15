@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { CheckCircle2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -216,7 +217,7 @@ export default function CustomerDetailPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <PageContainer className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="space-y-2">
             <Skeleton className="h-8 w-64" />
@@ -237,7 +238,7 @@ export default function CustomerDetailPage() {
             <Skeleton className="h-80 w-full rounded-xl" />
           </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
@@ -246,7 +247,7 @@ export default function CustomerDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fade-in fixed top-5 right-5 z-50 flex animate-in items-center gap-2 rounded-lg border border-border bg-popover px-4 py-2.5 text-popover-foreground text-xs shadow-lg">
@@ -336,6 +337,6 @@ export default function CustomerDetailPage() {
           tenantId={activeTenant?.id || ""}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }

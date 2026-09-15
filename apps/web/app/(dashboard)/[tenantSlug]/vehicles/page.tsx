@@ -3,6 +3,7 @@
 
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -485,7 +486,7 @@ export default function VehiclesPage() {
   };
 
   return (
-    <div className="space-y-6 pb-20">
+    <PageContainer className="space-y-6 pb-20">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
@@ -2381,7 +2382,7 @@ export default function VehiclesPage() {
         title={deleteConfirmation?.title || ""}
         type={deleteConfirmation?.type || "vehicle"}
       />
-    </div>
+    </PageContainer>
   );
 }
 

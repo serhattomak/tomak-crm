@@ -2,6 +2,7 @@
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -616,7 +617,7 @@ export default function PayrollPage() {
   const activeRun = selectedRun?.run || runs[0] || null;
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Header & KPI Summary */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -2723,6 +2724,6 @@ export default function PayrollPage() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }
