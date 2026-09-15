@@ -14,9 +14,10 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 
 **176 dosya · 1458 error · 1334 advisory warning**
 
-> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1451 error · 189 dosya.**
+> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1446 error · 189 dosya.**
 > Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
-> Düşüşün kaynağı: Faz 3.4 `confirm-dialog` (`-4`) ve Faz 3'ün overlay göçleri — son 3'ü ölçülerek doğrulandı: modallar primitife geçerken kendi `slate-*` sınıflarını bıraktı (`team-members-stack` `bg-slate-950/60` + `border-slate-200`, `dashboard-share-popover` `border-slate-200/90`). `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4.
+> Düşüşün kaynağı: Faz 3.4 `confirm-dialog` (`-4`), Faz 3'ün overlay göçleri (`-4`, modallar primitife geçerken kendi `slate-*` sınıflarını bıraktı: `team-members-stack` `bg-slate-950/60` + `border-slate-200`, `dashboard-share-popover` `border-slate-200/90`) ve `PortalClient`'ın iki modalı (`-4`: `border-slate-200` ×2 + `bg-slate-950/50` ×2) + `team-members-stack` popover'ı (`-1`).
+> `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**.
 
 | Metrik | Taban | Hedef |
 | --- | --- | --- |
@@ -179,37 +180,41 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **DEVAM EDİYOR (29/75)**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · sırada 3.2**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
-> 1. ✅ `Sheet` deseni kuruldu (`491cb07`, hatalı ezme `7f639f0`'da düzeltildi — bulgu 5).
-> 2. ✅ `components/email` **tamamlandı** (6/6): `compose-modal` (`26bdf0b`), `convert-to-ticket-modal` (`1508fdc`), `convert-to-lead-modal` (`42e05f5`), `template-modal` (`4700991`), `email-account-modal` (`06af922`), `email-thread-drawer` → `Sheet` (`c226549`).
-> 3. ✅ `components/` kök **tamamlandı** (8/8): `shortcuts-help-modal` (`b2d2b84`), `quick-add-sales-rep-modal` (`a7b9d02`), `entity-picker-modal` (`7f55787`), `team-members-stack` invite modalı (`65b1feb`), `command-palette` (`ce72250`) → `Dialog`; `tenant-switcher` (`8797590`), `dashboard-share-popover` (`90316df`), `notification-center` (`b9ec6fa`) → **`Popover`**. Öncesinde primitif düzeltmesi `db8cf6e`.
-> 4. ✅ `widgets` **tamamlandı** (3/3): `customize-widgets-modal` (`02517d7`), `quick-create-modal` (`fad85b4`), `quick-actions-widget` satır içi modalı (`95af399`).
-> 5. ✅ `pipelines/_components` **tamamlandı** (2/2): `create-deal-modal` (`ae34d03`), `deal-detail-drawer` → `Sheet` (`e78611a`).
-> 6. ✅ `promotions/components` **tamamlandı** (2/2): `bulk-coupon-modal` (`18cae3e`, dış-tıklama korumalı), `campaign-modal` (`dd1c1e9`).
-> 7. **Sıradaki grup:** `components/quotes` (2 — `send-quote-email-modal`, `TestSendModal`), `components/products` (2 — `bulk-assign-modal`, `product-gallery`), `components/portal` (1 — `contract-sign-modal`), `components/layout/mobile-nav` (1 — `Sheet`, `side="left"`), `app/portal/[token]/PortalClient` (1), `team-members-stack.tsx` ertelemeli popover'ı (satır 263) → §2.4.
+> **3.1 bitti.** Tüm isimli gruplar göç etti — `components/email` (6/6), `components/` kök (9/9: 8 dosya + `team-members-stack` popover'ı), `components/chat` (1/1), `widgets` (3/3), `pipelines/_components` (2/2), `promotions/components` (2/2), `components/quotes` (2/2), `components/products` (2/2), `components/portal` (1/1), `components/layout` (1/1), `PortalClient` (2 modal tek dosyada). Toplam **37 birim**.
 >
-> **Tarif:** standart **§2.3** (Dialog + Sheet: 7 adım, iki backdrop biçimi, boyut aktarımı, varyant önekli ezme, dış-tıklama politikası) **+ §2.4** (Popover/DropdownMenu). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+> **▶ Sıradaki: 3.2 — sayfa-içi modallar.** Ölçüm (2026-09-16):
+> - **34 adet `page.tsx`** el yapımı overlay taşıyor; toplam **108 × `fixed inset-0`**.
+> - En ağırlar: `quotes` (11), `messages` (8), `recruitment` (8), `organization` (7), `shipments` (7), `vehicles` (6), `finance` (5), `inventory` (5), `products` (5), `calendar` (4), `projects/[projectId]` (4), `products/[productId]` (4).
+> - **Kalan 5 dosya overlay değil ve muaf** (hepsi tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header`, `layout/mobile-nav` alt bar. Gerekçeler §2.3'te.
+> - Başlanacak yer: **en küçükten büyüğe** — `(admin)/admin/templates`, `(admin)/admin/tenants`, `roles`, `tickets`, `users` (hepsi 1 modal) → sonra `automations`, `leaves`, `payroll`, `invoices`, `contracts`, `compliance` (2) → `attendance`, `orders`… → en son `quotes`/`messages`/`recruitment`.
 >
-> **⚠️ Bu fazda beş tuzak ölçülerek doğrulandı — standarta yazıldı:**
+> **Tarif:** standart **§2.3** (Dialog + Sheet: 7 adım, iki backdrop biçimi, boyut aktarımı, varyant önekli ezme, dış-tıklama politikası) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+>
+> **⚠️ Bu fazda altı tuzak ölçülerek doğrulandı — standarta yazıldı:**
 > 1. **Taban `max-width`'i koşulsuz ezmeyin** (`w-full max-w-2xl` ❌) → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
 > 3. **`Popover` çapaya göre konumlanır** — mobil "başlık altı tam genişlik" deseni yaklaşımla üretilir. → §2.4
 > 4. **Dış-tıklama:** varsayılan açık; yalnızca **geri alınamaz çıktı** varsa `onInteractOutside` ile engellenir (form taslağı sayılmaz). → §2.3
 > 5. **Açılış/kapanış SAYILIR** — sezgisel kapanış eşleştirmesi `TS17002` üretir (Faz 2'de de aynısı olmuştu). → §2.3
+> 6. **Kaydırma sahibi dosya başına belirlenir** — içeride kaydıran bir blok varsa `DialogContent` `overflow-hidden` alır; sarmalayıcı kaydırıyorsa `overflow-y-auto` ona taşınır. Kopyala-yapıştır yanlış sonuç verir.
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor, ama `apps/web` noktalı virgüllü yazılmış; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor. Tek dosyada 55 satırlık değişikliği **431 satıra** çıkarır. Biçim, çevre dosyanın stiline elle uyarlanır. Ayrıntı: Gelecek Adımlar #18.
 >
-> **⚠️ `apps/web` yollarında `-Path` ile ölçüm YAPMAYIN.** Klasör adları `(dashboard)` ve `[tenantSlug]` içeriyor; PowerShell `Select-String -Path` / `Get-ChildItem -Include` bunları **joker** sanır ve o alt ağacın tamamını **sessizce atlar**. `-LiteralPath` kullanın ya da Node ile yürüyün. Ayrıntı: bulgu 9.
+> **⚠️ `apps/web` yollarında `-Path` ile ölçüm YAPMAYIN.** Klasör adları `(dashboard)` ve `[tenantSlug]` içeriyor; PowerShell `Select-String -Path` / `Get-ChildItem -Include` bunları **joker** sanar ve o alt ağacın tamamını **sessizce atlar**. `-LiteralPath` kullanın ya da Node ile yürüyün. Ayrıntı: bulgu 9.
 >
-> **⚠️ Kapsam disiplini hatırlatması:** overlay **olmayan** yüzen yüzeylerin tam listesi ve gerekçeleri §2.3'te (`bulk-action-bar`, `widgets/draggable-widget-wrapper`, `layout/dashboard-header`, `settings/page` kartı). Ölçülerek ayırt edildiler — "`fixed`/`shadow` içeriyor" tek başına overlay kanıtı değil.
+> **⚠️ Kapsam disiplini hatırlatması:** overlay **olmayan** yüzen yüzeylerin tam listesi ve gerekçeleri §2.3'te. Ölçülerek ayırt edildiler — "`fixed`/`shadow` içeriyor" tek başına overlay kanıtı değil.
 >
-> **⚠️ Elle duman testi bekleyen iki nokta (typecheck bunları kanıtlayamaz):**
+> **⚠️ Elle duman testi bekleyen noktalar (typecheck bunları kanıtlayamaz):**
 > 1. `tenant-switcher` mobil navigasyon drawer'ının **içinde** ve popover artık `z-[70]` yerine primitifin `z-50`'siyle body'ye portallanıyor. Eşit z-index'in DOM sırasıyla çözülmesi bekleniyor (portal drawer'dan sonra ekleniyor) — gözle doğrulanmalı.
 > 2. İki panelin mobil genişliği artık çapaya bağlı; tetikleyici başlıkta olduğu sürece eski konuma düşer.
+> 3. `product-gallery` lightbox'ı artık `h-screen w-screen` bir `DialogContent`; görselin ortalanması ve köşe kontrollerinin konumu gözle doğrulanmalı.
 
-**Gerçek iş birimi 75 modal component'i** (`fixed inset-0` sayısı 156 ama şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
+**3.2 sayfa modalları için ölçülmüş kapsam:** 34 sayfa · 108 `fixed inset-0`. Yol haritasının başındaki "75 modal component'i" tahmini **isim sayımından** geliyordu (`*Modal`/`*Drawer`); sayfa-içi modallar bu sayıma tam girmemişti. Gerçek ilerleme birimi olarak **3.1 tamamlandı** kabul edilir ve 3.2 kendi başına, yukarıdaki 108 sayaçla izlenir.
+
+**İlk tahmin (Faz 0, isim sayımı):** `fixed inset-0` sayısı 156 (şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
 
 **Migrasyon tarifi:** `crm-ui-standards.md` **§2.3** (Dialog/Sheet — Faz 3.0 pilotunda doğrulandı) + **§2.4** (Popover/DropdownMenu — `tenant-switcher` ile doğrulandı).
 
@@ -217,10 +222,10 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
 - [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
 - [x] **`customers` grubu tamam** (5 dosya) — `create-customer-modal`, `edit-customer-modal`, `add-contact-modal`, `add-activity-modal` → `Dialog`; `delete-customer-dialog` → `ConfirmDialog` (`dafdeb5`)
-- [x] **`components/email` tamam** (6/6) · `components/` kök tamam (8/8) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2)
-- [ ] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı (satır 263) — §2.4 ile taşınacak
-- [ ] **3.1 kalan:** `components/quotes` (2) · `components/products` (2) · `components/portal` (1) · `components/layout/mobile-nav` (1) · `portal/PortalClient` (1)
-- [ ] **3.2** Sayfa-içi modallar (en küçükten büyüğe)
+- [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
+- [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
+- [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
+- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16). En küçükten: `(admin)/admin/templates`, `(admin)/admin/tenants`, `roles`, `tickets`, `users` → sonra 2'li sayfalar (`automations`, `leaves`, `payroll`, `invoices`, `contracts`, `compliance`) → en son `quotes` (11), `messages` (8), `recruitment` (8), `organization` (7), `shipments` (7)
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -328,6 +333,18 @@ Eski el yapımı modalların bir kısmı **dışına tıklayınca kapanmıyordu*
 | `campaign-modal` (`dd1c1e9`) | 5 adımlı sihirbaz, ama girdi yeniden yazılabilir | Varsayılan **uygulandı** — takasın en görünür örneği, politika sert kalırsa ilk buraya bakılmalı |
 
 Kural §2.3'e tablo + kod örneğiyle yazıldı.
+
+### 🔴 Faz 3 bulgusu 11 — lightbox `aria-modal="true"` diyordu ama focus trap'i yoktu
+
+`components/products/product-gallery.tsx`'teki görsel önizleme elle `role="dialog"` + `aria-modal="true"` kuruyordu — **ama focus trap yoktu.** Sekme tuşu overlay'den çıkıp arkadaki sayfaya gidiyordu; `aria-modal="true"` bunu ekran okuyucuya **yanlış** bildiriyordu. Yani burada mesele kozmetik değil, beyan edilen ile gerçek davranışın uyuşmamasıydı.
+
+`Dialog`'a geçiş trap'i, `role`'ü, `aria-modal`'ı ve scroll lock'u **gerçekten** sağlıyor. Yüzey görselin kendisi olduğu için primitifin chrome'u inherit edilmek yerine **negasyon** edildi (`h-screen w-screen max-w-none rounded-none bg-transparent p-4 shadow-none ring-0`) — kenar kontrolleri eski `fixed inset-0` konumlarında kalsın diye `DialogContent` viewport boyutunda.
+
+**Davranış korundu:** eski `keydown` effect'i üç iş yapıyordu — Esc (primitife geçti), scroll lock (primitifin `RemoveScroll`'ü) ve **ok tuşlarıyla gezinme** (primitif bilemez → `DialogContent`'in `onKeyDown`'una taşındı). Bu, `entity-picker-modal`'daki "Enter ile seç" vakasının aynısı: overlay göçü primitifin sağlayamadığı davranışı sessizce düşürmez.
+
+### 📌 Not — `DialogContent`'in varsayılan yüzeyini ezmek meşru mu?
+
+Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değerleri **bilinçli olarak** sıfırlandı. Kural: **primitif davranışı sağlar, tüketici yüzeyi sağlar.** Bir lightbox'ın yüzeyi görselin kendisidir; primitifin kart görünümü orada yanlış olurdu. §2.3'ün "yalnız boyut/yerleşim sınıfları geçer" cümlesi bu vakayı kapsamıyor — bu yüzden istisna burada, gerekçesiyle kayıtlı.
 
 - [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
 - [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
@@ -492,3 +509,14 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3 | 🔴 **Bulgu 9 — ölçüm hatası (kendi):** radius sayımı `Select-String -Path` ile yapıldı ve `[tenantSlug]` **joker** sanıldığı için 118 dosya **sessizce atlandı**. Doğru değerler: `rounded-3xl` 6 değil **146**, `rounded-2xl` 33 değil **459**. Yol haritası düzeltildi; kural: Node ile yürü ya da `-LiteralPath` |
 | 2026-09-16 | Faz 3 | ✅ **§2.3 genişletildi** — dış-tıklama politikası tablosu + kod örneği, "açılış/kapanış say" kontrolü, overlay **olmayan** yüzen yüzeylerin konsolide listesi (4 dosya, gerekçeleriyle) |
 | 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1451** · typecheck 2/2 · `widgets` (3/3) + `pipelines/_components` (2/2) + `promotions/components` (2/2) tamam |
+| 2026-09-16 | Faz 3 | ✅ `send-quote-email-modal` → `Dialog` → **30/75** (`c922aa4`) · `TestSendModal` → `Dialog` → **31/75** (`64eb943`). İkincisi keyfi `z-[60]`'ı da kaldırdı (Gelecek Adımlar #11) |
+| 2026-09-16 | Faz 3 | ✅ `bulk-assign-modal` → `Dialog` → **32/75** (`942bec0`). Hata raporu **yeniden üretilebilir** (aynı istek aynı hataları verir) → dış-tıklama varsayılanı uygulandı, engellenmedi |
+| 2026-09-16 | Faz 3 | ✅ **`product-gallery` lightbox → `Dialog` → 33/75** (`30ec21d`). 🔴 **Bulgu 11:** elle `aria-modal="true"` + `role="dialog"` kuruluyordu ama **focus trap yoktu** — Sekme arkadaki sayfaya kaçıyordu. Primitif trap/scroll-lock/Esc sağlıyor; **ok tuşları** `DialogContent.onKeyDown`'a taşındı (davranış korundu). Yüzey negasyonu (lightbox) gerekçesiyle kayda geçti |
+| 2026-09-16 | Faz 3 | ✅ `contract-sign-modal` → `Dialog` → **34/75** (`d0cda46`) |
+| 2026-09-16 | Faz 3 | ✅ `layout/mobile-nav` drawer → **`Sheet side="left"`** → **35/75** (`aa45adc`). Faz 3'ün ilk sol Sheet'i; `md:hidden print:hidden` portal edilen içeriğe taşındı, `SheetTitle` sr-only eklendi (görünür başlık yok) |
+| 2026-09-16 | Faz 3 | ✅ `PortalClient`'ın **iki** modalı (onay + revizyon) → `Dialog` → **36/75** (`4e5d722`). Guard **1451 → 1447**: ölçüldü, `PortalClient`'ın `slate-*` sayısı 109 → 105 (panel `border-slate-200` ×2 + backdrop `bg-slate-950/50` ×2) |
+| 2026-09-16 | Faz 3 | ✅ `team-members-stack` ertelemeli popover → **`Popover`** → **37/75** (`138fee4`). `popoverRef` + click-outside/Esc effect'i + elle toggle silindi; gerçek diff 49/68 = **net küçülme** |
+| 2026-09-16 | Faz 3 | 🎉 **3.1 TAMAMLANDI (37/75).** Tüm isimli gruplar bitti. 🧹 **Hata (kendi):** `popoverRef`'i silerken yanlışlıkla yeniden ekledim — sembolü grep'leyerek commit'ten önce yakaladım (tsc de yakalardı) |
+| 2026-09-16 | Faz 3 | 📏 **3.2 kapsamı ölçüldü:** **34 `page.tsx` · 108 `fixed inset-0`**. Kalan 5 dosya overlay değil (muaf, tek `backdrop-blur`/`shadow-2xl`). `settings/page` kartındaki dekoratif blur bu listede |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** scoped **PASS** · `--full` **1446** · typecheck 2/2 · build 2/2 |
+| 2026-09-16 | Faz 3 | ⚠️ **Ortam uyarısı (kod değil):** `build` sırasında "diskte yeterli yer yok" (os error 112). **D: sürücüsünde 0.4 GB boş.** Ölçüm: `crm-monorepo/.turbo/cache` **477 dosyada ~40.6 GB**, `apps/web/.next` ~4 GB. Turbo cache yeniden üretilebilir; temizlik için onay bekliyor |
