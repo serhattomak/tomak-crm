@@ -1,6 +1,12 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
@@ -1069,28 +1075,41 @@ export default function WorkflowBuilderPage() {
 
       {/* 3. Live Simulation Modal */}
       {isSimulationOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="zoom-in-95 w-full max-w-xl animate-in space-y-4 rounded-3xl bg-white p-6 shadow-2xl dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsSimulationOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Play className="h-4 w-4 fill-current" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Akış Simülatörü (Canlı Kural Testi)
-                  </h3>
+                  </DialogTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Örnek veriyle akışın nasıl tepki vereceğini test edin.
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
-                onClick={() => setIsSimulationOpen(false)}
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             {/* Mock input editor */}
@@ -1236,8 +1255,8 @@ export default function WorkflowBuilderPage() {
                 Kapat
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
