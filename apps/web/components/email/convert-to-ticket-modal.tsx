@@ -327,7 +327,7 @@ export function ConvertToTicketModal({
     >
       <DialogContent
         aria-describedby={undefined}
-        className="w-full max-w-lg gap-0 overflow-hidden p-0 sm:max-w-lg"
+        className="w-full gap-0 overflow-hidden p-0 sm:max-w-lg"
         showCloseButton={false}
       >
         {/* Header */}

@@ -575,7 +575,7 @@ export function ConvertToLeadModal({
     >
       <DialogContent
         aria-describedby={undefined}
-        className="w-full max-w-xl gap-0 overflow-hidden p-0 sm:max-w-xl"
+        className="w-full gap-0 overflow-hidden p-0 sm:max-w-xl"
         showCloseButton={false}
       >
         {/* Header */}
