@@ -1,6 +1,7 @@
-/* Hallmark · component: analytics-dashboard · genre: modern-minimal · theme: Adaptive Zinc/Violet */
+/* Analytics dashboard — System: docs/crm-ui-standards.md (ADR-0004). */
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   AlertCircle,
   ArrowUpRight,
@@ -237,7 +238,7 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+    <PageContainer className="space-y-6">
       {/* 1. Header & Controls */}
       <div className="flex flex-col justify-between gap-4 border-zinc-200/80 border-b pb-5 md:flex-row md:items-center dark:border-zinc-800">
         <div>
@@ -784,6 +785,6 @@ export default function AnalyticsPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

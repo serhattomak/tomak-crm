@@ -2,6 +2,7 @@
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -399,7 +400,7 @@ export default function LeavesPage() {
   const pendingLeaves = leaves.filter((l) => l.status === "Pending");
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* 1. Header Section */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -1161,7 +1162,7 @@ export default function LeavesPage() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }
 

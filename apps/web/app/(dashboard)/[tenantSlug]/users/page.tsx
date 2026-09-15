@@ -2,6 +2,7 @@
 
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
@@ -106,7 +107,7 @@ export default function UsersManagementPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -308,6 +309,6 @@ export default function UsersManagementPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

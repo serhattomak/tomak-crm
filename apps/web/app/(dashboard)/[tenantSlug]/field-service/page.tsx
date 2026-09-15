@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import {
@@ -341,7 +342,7 @@ export default function FieldServicePage() {
   const scheduledCount = jobs.filter((j) => j.status === "Scheduled").length;
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -1014,6 +1015,6 @@ export default function FieldServicePage() {
         loading={isDeletingJob}
         onConfirm={handleConfirmDelete}
       />
-    </div>
+    </PageContainer>
   );
 }

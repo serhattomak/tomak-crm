@@ -1,6 +1,7 @@
 /* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet */
 "use client";
 
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { toast } from "@workspace/ui/components/sonner";
 import { useParams, useSearchParams } from "next/navigation";
@@ -308,7 +309,7 @@ export default function PipelinesPage() {
   const slaBreachedCount = deals.filter((d) => d.isSlaBreached).length;
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* 1. Header Section */}
       <PipelineHeader
         activePipeline={activePipeline}
@@ -410,6 +411,6 @@ export default function PipelinesPage() {
           tenantSlug={tenantSlug}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }

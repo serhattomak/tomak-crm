@@ -1,6 +1,7 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Building2,
@@ -199,7 +200,7 @@ function AdminTenantsContent() {
   );
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -533,7 +534,7 @@ function AdminTenantsContent() {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

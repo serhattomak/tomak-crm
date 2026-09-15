@@ -1,4 +1,6 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md · designed-as-app */
+/* Dashboard workspace shell — dual-rail navigation + canonical content viewport.
+   Padding is owned by `PageContainer`; this layout provides the scroll viewport
+   and the mobile bottom-nav clearance only. System: docs/crm-ui-standards.md (ADR-0004). */
 "use client";
 
 import { Toaster } from "@workspace/ui/components/sonner";
@@ -193,9 +195,7 @@ function DashboardLayoutInner({
 
         {/* Main Content Viewport Canvas */}
         <main className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-border/80 bg-card shadow-none md:rounded-lg md:border md:shadow-2xs print:block print:h-auto print:overflow-visible print:rounded-none print:border-none print:p-0 print:shadow-none">
-          <div className="flex-1 p-3.5 pb-24 sm:p-5 md:p-6 md:pb-6 print:p-0">
-            {children}
-          </div>
+          <div className="flex-1 pb-24 md:pb-0 print:p-0">{children}</div>
         </main>
 
         {/* Mobile Bottom Navigation */}

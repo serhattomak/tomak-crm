@@ -202,11 +202,9 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main Content Viewport */}
+      {/* Main Content Viewport — padding is owned by PageContainer (full width, no max-width cap) */}
       <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-zinc-200/80 bg-white shadow-none md:rounded-[28px] md:border md:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <main className="flex-1 p-4 pb-12 sm:p-6 md:p-8">
-          <div className="mx-auto max-w-7xl">{children}</div>
-        </main>
+        <main className="flex-1 pb-12">{children}</main>
       </div>
     </div>
   );

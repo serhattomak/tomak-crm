@@ -1,8 +1,11 @@
-/* Hallmark · component: customers-list · genre: modern-minimal · theme: Adaptive Zinc/Violet · design-system: design.md */
+/* Customers list — coordinator page (ADR-0003 decomposition).
+   System: docs/crm-ui-standards.md (ADR-0004). */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import { PageContainer } from "@workspace/ui/components/page-container";
+import { PageHeader } from "@workspace/ui/components/page-header";
 import { Plus } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -229,26 +232,10 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="space-y-5">
-      {/* 1. Header Row */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-              Müşteriler
-            </h1>
-            <Badge className="gap-1 px-2 py-0.5 text-[11px]" variant="accent">
-              {totalCount} Kayıt
-            </Badge>
-          </div>
-          <p className="mt-0.5 text-muted-foreground text-xs">
-            Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari
-            geçmişini yönetin.
-          </p>
-        </div>
-
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+    <PageContainer className="space-y-6">
+      {/* 1. Header */}
+      <PageHeader
+        actions={
           <PermissionGate permission="Customers.Create">
             <Button
               className="gap-1.5"
@@ -260,8 +247,15 @@ export default function CustomersPage() {
               <span>Yeni Müşteri Ekle</span>
             </Button>
           </PermissionGate>
-        </div>
-      </div>
+        }
+        badge={
+          <Badge className="gap-1 px-2 py-0.5 text-2xs" variant="accent">
+            {totalCount} Kayıt
+          </Badge>
+        }
+        description="Kurumsal ve bireysel tüm müşterilerinizi, yetkililerini ve ticari geçmişini yönetin."
+        title="Müşteriler"
+      />
 
       {/* 2. KPI Summary Cards */}
       <CustomerStatsBanner loading={loading} stats={stats} />
@@ -340,6 +334,6 @@ export default function CustomersPage() {
         onClear={() => setSelectedIds(new Set())}
         selectedCount={selectedIds.size}
       />
-    </div>
+    </PageContainer>
   );
 }

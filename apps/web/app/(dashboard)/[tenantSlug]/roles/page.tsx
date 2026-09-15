@@ -1,6 +1,7 @@
 "use client";
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import { Check, Loader2, Lock, Plus, Shield, Trash2, X } from "lucide-react";
 import type React from "react";
@@ -186,7 +187,7 @@ export default function RolesManagementPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -470,6 +471,6 @@ export default function RolesManagementPage() {
         title={confirmDialog.title}
         variant={confirmDialog.variant}
       />
-    </div>
+    </PageContainer>
   );
 }
