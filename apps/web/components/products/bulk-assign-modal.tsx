@@ -2,6 +2,12 @@
 
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import {
@@ -154,14 +160,25 @@ export function BulkAssignModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl border border-zinc-200 bg-white p-6 text-xs shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-6 text-xs sm:max-w-xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div>
-            <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Toplu Bilgi Ata / Güncelle
-            </h3>
+            </DialogTitle>
             <p className="mt-0.5 text-zinc-500 dark:text-zinc-400">
               Seçilen{" "}
               <strong className="text-zinc-800 dark:text-zinc-200">
@@ -170,13 +187,14 @@ export function BulkAssignModal({
               ürün için toplu değişiklik yapın.
             </p>
           </div>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* Failures List if any */}
@@ -470,7 +488,7 @@ export function BulkAssignModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
