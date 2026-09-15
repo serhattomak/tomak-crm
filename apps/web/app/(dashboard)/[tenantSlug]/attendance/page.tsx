@@ -4,6 +4,12 @@ import { PageContainer } from "@workspace/ui/components/page-container";
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
   DatePicker,
   DateRangePicker,
 } from "@workspace/ui/components/date-picker";
@@ -1845,24 +1851,36 @@ export default function AttendancePage() {
 
       {/* MODAL 1: Vardiya Şablonu Oluştur */}
       {isTemplateModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
-          <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsTemplateModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[90vh] w-full flex-col gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
-                <h3 className="font-bold text-foreground text-lg">
+                <DialogTitle className="font-bold text-foreground text-lg">
                   Yeni Vardiya Şablonu
-                </h3>
+                </DialogTitle>
                 <p className="text-muted-foreground text-xs">
                   Vardiya saatlerini ve kurallarını belirleyin.
                 </p>
               </div>
-              <button
-                className="rounded-full p-1 text-muted-foreground hover:bg-muted"
-                onClick={() => setIsTemplateModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2188,30 +2206,42 @@ export default function AttendancePage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* MODAL 2: Vardiya Ata */}
       {isAssignModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
-          <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsAssignModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[90vh] w-full flex-col gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
-                <h3 className="font-bold text-foreground text-lg">
+                <DialogTitle className="font-bold text-foreground text-lg">
                   Vardiya Çizelgesi Ata
-                </h3>
+                </DialogTitle>
                 <p className="text-muted-foreground text-xs">
                   Personellere veya departmana toplu vardiya planlaması yapın.
                 </p>
               </div>
-              <button
-                className="rounded-full p-1 text-muted-foreground hover:bg-muted"
-                onClick={() => setIsAssignModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2342,30 +2372,42 @@ export default function AttendancePage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* MODAL 3: Düzeltme Talebi */}
       {isCorrectionModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-xs">
-          <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-white p-6 shadow-2xl dark:bg-card">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCorrectionModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex max-h-[90vh] w-full flex-col gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
               <div>
-                <h3 className="font-bold text-foreground text-lg">
+                <DialogTitle className="font-bold text-foreground text-lg">
                   PDKS Düzeltme Talebi
-                </h3>
+                </DialogTitle>
                 <p className="text-muted-foreground text-xs">
                   Unutulan veya hatalı girişi mazeretiyle bildiriniz.
                 </p>
               </div>
-              <button
-                className="rounded-full p-1 text-muted-foreground hover:bg-muted"
-                onClick={() => setIsCorrectionModalOpen(false)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -2488,8 +2530,8 @@ export default function AttendancePage() {
                 </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Confirm Dialog */}
