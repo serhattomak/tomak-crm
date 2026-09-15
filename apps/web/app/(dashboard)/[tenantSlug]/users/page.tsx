@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -236,19 +242,32 @@ export default function UsersManagementPage() {
 
       {/* Invite Modal */}
       {isInviteOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsInviteOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-              <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+              <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <UserPlus className="h-4 w-4 text-indigo-500" />
                 Invite New Member
-              </h2>
-              <button
-                className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-                onClick={() => setIsInviteOpen(false)}
-              >
-                <X className="h-4 w-4" />
-              </button>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DialogClose>
             </div>
 
             <form
@@ -306,8 +325,8 @@ export default function UsersManagementPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
