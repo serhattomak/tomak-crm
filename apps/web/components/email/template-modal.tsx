@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
   ChevronDown,
   ChevronUp,
   Copy,
@@ -565,35 +571,40 @@ export function TemplateModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <button
-        aria-label="Kapat"
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-black/50 backdrop-blur-xs"
-        onClick={onClose}
-        type="button"
-      />
-
-      <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full max-w-5xl flex-col gap-0 overflow-hidden p-0 sm:max-w-5xl"
+        showCloseButton={false}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div>
-            <h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+            <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
               {template ? "Şablonu Düzenle" : "Yeni E-posta Şablonu"}
-            </h2>
+            </DialogTitle>
             <p className="text-xs text-zinc-500">
               Teklifler ve ortak gelen kutusu e-postalarında kullanılabilen
               Handlebars şablonu.
             </p>
           </div>
 
-          <button
-            aria-label="Kapat"
-            className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-            onClick={onClose}
-            type="button"
-          >
-            <XCircle className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              aria-label="Kapat"
+              className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              type="button"
+            >
+              <XCircle className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         {/* 2-Column Body */}
@@ -734,7 +745,7 @@ export function TemplateModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
