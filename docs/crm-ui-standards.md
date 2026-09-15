@@ -195,6 +195,43 @@ Elle yazılmış bir modal/overlay'i primitife çevirme adımları — Faz 3.0 p
 
 **Kural:** genişlik `sm:` ve üstü için yazılır (`sm:max-w-2xl`), taban için yazılmaz. `w-full` zaten varsayılandır; yazmak zararsız ama gereksiz.
 
+**Dışına tıklama politikası — varsayılan açık, ama çıktı kaybı varsa kapat.** `Dialog`/`Sheet`/`Popover` dışına tıklayınca kapanmayı **varsayılan olarak** getirir ve bu istenen kazançtır. Tek istisna: kapanmak, kullanıcının **yeniden üretemeyeceği bir çıktıyı** yok ediyorsa dış-tıklama etkisizleştirilir.
+
+| Durum | Karar | Örnek |
+| --- | --- | --- |
+| Yazılmış form taslağı | **Varsayılan uygulanır** — yeniden yazılabilir | `campaign-modal` (5 adımlı sihirbaz) |
+| Yerel/`localStorage` durumu | **Varsayılan uygulanır** — kayıp yok | `quick-actions-widget` |
+| Başka yerde görünmeyen üretilmiş çıktı | **Engellenir** | `bulk-coupon-modal` (üretilen kupon kodları) |
+
+```tsx
+// Sadece geri alınamaz çıktı varsa; Esc çalışmaya devam eder.
+onInteractOutside={(event) => {
+  if (generatedResult) {
+    event.preventDefault();
+  }
+}}
+```
+
+**Neden koşullu:** `bulk-coupon-modal`'da üretimden **önce** dış-tıklama normal çalışsın (formdan çıkmanın yolu), üretimden **sonra** etkisiz olsun diye. Esc her durumda açık kalır — bu bilinçli bir tuş, kazara bir tıklama değil.
+
+**Kontrol listesi eklemesi — açılış ve kapanışı SAY.** Faz 2'de olduğu gibi Faz 3'te de bu tuzağa düşüldü (`TS17002`, iki kez): açılış tarafında iki `div`'i tek bir primitifle değiştirip kapanışta bir `</div>` bırakmak, JSX'i bozar. Kapanışı **desen eşleştirerek değil**, açılış/kapanış sayısını eşleştirerek kur:
+
+```
+<Dialog          n   </Dialog>          n
+<DialogContent  n'   </DialogContent>  n'
+```
+
+`tsc` bunu her zaman yakalar — ama yalnızca **her dosyadan sonra** çalıştırılırsa.
+
+**Overlay OLMAYAN yüzen yüzeyler (kapsam dışı).** Aşağıdakiler §2.3/§2.4'e **girmez**; backdrop'ları, kapatmaları ve focus yönetimleri yoktur, arkadaki sayfayı engellemezler:
+
+| Dosya | Neden overlay değil |
+| --- | --- |
+| `bulk-action-bar` | Seçim bitene kadar duran alt araç çubuğu; `shadow-2xl` bir yükselti, modal paneli değil |
+| `widgets/draggable-widget-wrapper` | Widget üzerinde hover'da çıkan **sürükleme tutamacı** (`opacity-0 group-hover:opacity-100`) |
+| `layout/dashboard-header` | `sticky` başlığın **fonksiyonel** `backdrop-blur-md`'si (dekoratif değil) |
+| `settings/page` içindeki kart | Kart yüzeyinde dekoratif `backdrop-blur-sm` → §1.2/cilâ işi, overlay işi değil |
+
 **`Sheet` (drawer) için ek notlar** — adımlar aynı, üç fark var:
 
 1. **Yön:** `side="right"` (varsayılan) · `"left"` · `"top"` · `"bottom"`. Mobil navigasyon drawer'ı `side="left"`.
@@ -266,7 +303,7 @@ Bu **yaklaşımdır, kanıt değil**: tetikleyici başlıktan uzaklaşırsa pane
 
 **`DropdownMenu` ne zaman?** İçerik **menü öğelerinden** oluşuyorsa (`DropdownMenuItem`, roving focus, `CheckboxItem`/`RadioItem` semantiği). Panelin içinde arama alanı, serbest form ya da özel içerik varsa **`Popover`** doğru seçimdir — menü semantiği bunlara uymaz.
 
-**Kapsam dışı — overlay olmayan yüzen yüzeyler.** `bulk-action-bar`: backdrop'u yok, kapatma/focus yönetimi yok, arkadaki sayfayı **engellemiyor**; seçim bitene kadar duran bir araç çubuğu. §2.3/§2.4 kapsamına **girmez**. (Yüzeyi `rounded-2xl` olduğu için §1.1 ihlali olarak radius sweep'ine aittir — overlay işi değil.)
+**Kapsam dışı — overlay olmayan yüzen yüzeyler:** listesi §2.3'te (`bulk-action-bar`, sürükleme tutamacı, sticky başlık, dekoratif kart blur'u). §2.4 de yalnızca **tetikleyici + panel** çiftlerine uygulanır.
 
 > **Üç overlay primitifi tek standartta:** `DialogContent`, `SheetContent`, `PopoverContent`, `AlertDialogContent` → hepsi `rounded-xl`. Bir primitif `rounded-3xl` ile yazılırsa (§1.1 dışı) **önce primitif düzeltilir, sonra tüketiciler ona taşınır** — aksi halde ihlal çağrı yerlerine yayılır (bkz. §2.3 bulgu 1 ve `db8cf6e`).
 
