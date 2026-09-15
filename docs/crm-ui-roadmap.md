@@ -1,18 +1,18 @@
-# CRM UI — Tek Design System Yol Haritası
+﻿# CRM UI â€” Tek Design System Yol HaritasÄ±
 
 > **Durum:** Aktif program
-> **Karar kaydı:** [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) · **Kanonik standart:** [`crm-ui-standards.md`](crm-ui-standards.md)
-> **Kapsam:** `crm-monorepo/apps/web` içindeki **52 sayfa**, 3 layout, auth/admin/portal yüzeyleri, tüm state'ler ve modallar.
+> **Karar kaydÄ±:** [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) Â· **Kanonik standart:** [`crm-ui-standards.md`](crm-ui-standards.md)
+> **Kapsam:** `crm-monorepo/apps/web` iÃ§indeki **52 sayfa**, 3 layout, auth/admin/portal yÃ¼zeyleri, tÃ¼m state'ler ve modallar.
 
-Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulanır; ertelenen işler "Gelecek Adımlar" bölümünde kalır.
+Bu dosya **yaÅŸayan bir kontrol listesidir**. Bir faz tamamlandÄ±ÄŸÄ±nda kutulanÄ±r; ertelenen iÅŸler "Gelecek AdÄ±mlar" bÃ¶lÃ¼mÃ¼nde kalÄ±r.
 
 ---
 
-## Ölçülen Taban (2026-09-15, Faz 0 sonrası)
+## Ã–lÃ§Ã¼len Taban (2026-09-15, Faz 0 sonrasÄ±)
 
-Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilgili sayıyı düşürmelidir.
+SayÄ±lar `guard:crm-ui:full` Ã§Ä±ktÄ±sÄ±ndandÄ±r â€” tahmin deÄŸil. Her faz, ilgili sayÄ±yÄ± dÃ¼ÅŸÃ¼rmelidir.
 
-**176 dosya · 1458 error · 1334 advisory warning**
+**176 dosya Â· 1458 error Â· 1334 advisory warning**
 
 | Metrik | Taban | Hedef |
 | --- | --- | --- |
@@ -24,251 +24,251 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 | `ARBITRARY_HEX` (error) | **4** | 0 |
 | `SVG_PAINT_HEX` (error) | 4 (allowlist) | 4 (docs: Google marka) |
 | `INPUT_NUMBER` (error) | **1** | 0 |
-| `ARBITRARY_TEXT_SIZE` (warn) | **1242** | 0 → sonra `error` |
-| `NATIVE_TABLE` (warn) | **61** | 0 → sonra `error` |
-| `INLINE_STYLE_PROP` (warn) | **31** | 0 → sonra `error` |
-| Elle yazılmış `fixed inset-0` overlay | 156 | ~0 (allowlist dışı) |
-| Elle yazılmış `*Modal` / `*Drawer` bileşeni | ~60 | ~0 |
-| `packages/ui` primitif sayısı | 21 | 33+ |
+| `ARBITRARY_TEXT_SIZE` (warn) | **1242** | 0 â†’ sonra `error` |
+| `NATIVE_TABLE` (warn) | **61** | 0 â†’ sonra `error` |
+| `INLINE_STYLE_PROP` (warn) | **31** | 0 â†’ sonra `error` |
+| Elle yazÄ±lmÄ±ÅŸ `fixed inset-0` overlay | 156 | ~0 (allowlist dÄ±ÅŸÄ±) |
+| Elle yazÄ±lmÄ±ÅŸ `*Modal` / `*Drawer` bileÅŸeni | ~60 | ~0 |
+| `packages/ui` primitif sayÄ±sÄ± | 21 | 33+ |
 | CI workflow | yok | 1 |
 
-En çok ihlal veren dosyalar: `vehicles/page.tsx` (191), `portal/[token]/PortalClient.tsx` (114), `projects/[projectId]/page.tsx` (102), `recruitment/page.tsx` (75), `promotions/page.tsx` (69), `messages/page.tsx` (67).
+En Ã§ok ihlal veren dosyalar: `vehicles/page.tsx` (191), `portal/[token]/PortalClient.tsx` (114), `projects/[projectId]/page.tsx` (102), `recruitment/page.tsx` (75), `promotions/page.tsx` (69), `messages/page.tsx` (67).
 
-> **Not:** `VIOLET` 924 ve `ARBITRARY_TEXT_SIZE` 1242 — işin ağırlığı burada. Renk tarafı tahmin edilenden **büyük**, keyfi tipografi ise tek başına en büyük tekil kalem.
-
----
-
-# Program A — Tek Design System (Faz 0 → 7)
-
-Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-monorepo` / `master`).
-
-**Faz kabul kriteri (hepsi):** `npm exec -- ultracite fix` → `tsc --noEmit` → `next build` → `guard:crm-ui:full` (faz kapsamında **0 error**) → etkilenen kritik akışların elle duman testi. **Fail = STOP.** Auto-fix / bulk-sed yok.
+> **Not:** `VIOLET` 924 ve `ARBITRARY_TEXT_SIZE` 1242 â€” iÅŸin aÄŸÄ±rlÄ±ÄŸÄ± burada. Renk tarafÄ± tahmin edilenden **bÃ¼yÃ¼k**, keyfi tipografi ise tek baÅŸÄ±na en bÃ¼yÃ¼k tekil kalem.
 
 ---
 
-## [x] Faz 0 — Zemin (doküman + token + guard severity katmanı) — **TAMAMLANDI**
+# Program A â€” Tek Design System (Faz 0 â†’ 7)
 
-**Kabul kriteri: typecheck + build geçer, hiçbir ekran görsel olarak değişmez.**
+Her faz; **faz sonu Ã¶zet + onay** ile ilerler. Her faz ayrÄ± commit'tir (`crm-monorepo` / `master`).
 
-- [x] `docs/design-system.md` (440 satır) → [`crm-ui-standards.md`](crm-ui-standards.md)'ye yönlendiren redirect stub (silme yok, dış bağlantılar korunur)
-- [x] Kökteki `design.md` (203 satır) → aynı şekilde redirect stub
-- [x] `crm-ui-standards.md` güncellenir: §1.3 tipografi ölçeği (`text-2xs`/`text-3xs`, 9px kaldırıldı), §1.4 bağlayıcı kısıtlar, §2 primitif genişleme notu + "packages/ui kazanır", **§2.1 Kanonik Sayfa Kabuğu**, ADR-0004 referansı
-- [x] `crm-ui-guard.mjs`: **`severity` katmanı** eklendi (`error` varsayılan → mevcut 9 kural etkilenmedi; hata sayısı 1458'de sabit kaldı)
-- [x] `crm-ui-guard.mjs`: 3 yeni kural `warn` olarak eklendi — `ARBITRARY_TEXT_SIZE` (1242), `NATIVE_TABLE` (61), `INLINE_STYLE_PROP` (31)
-- [x] `crm-ui-guard.README.md`: severity tablosu, ölçülen taban, rules→fix map, `apps/ecommerce` hayalet notu
-- [x] `guard:crm-ui:full` ihlal sayıları ölçülüp yukarıdaki tabloya işlendi
-- [x] Fixture'lar doğrulandı: `dirty.tsx` exit 1 · `clean.tsx` exit 0 · scoped kapı **PASS**
-- [x] `globals.css`: **tipografi token'ları** — `--text-2xs` (11px) + `--text-3xs` (10px), Tailwind'in `--text-*--line-height` deseniyle
-- [x] `globals.css`: **motion token'ları** — `--ease-crm` + `--ease-crm-in-out`. Duration token değil, **değer** olarak standartlaştırıldı (§1.5)
-- [x] `crm-ui-standards.md` §1.5 Motion eklendi (easing token'ları + duration değerleri + `prefers-reduced-motion` zorunluluğu)
-- [x] `tsc --noEmit` + `next build` doğrulaması geçti (typecheck 2/2, build 2/2, 52 rota)
-- [x] Scoped kapı doğrulandı: **0 error / 18 dosya → PASS**
+**Faz kabul kriteri (hepsi):** `npm exec -- ultracite fix` â†’ `tsc --noEmit` â†’ `next build` â†’ `guard:crm-ui:full` (faz kapsamÄ±nda **0 error**) â†’ etkilenen kritik akÄ±ÅŸlarÄ±n elle duman testi. **Fail = STOP.** Auto-fix / bulk-sed yok.
 
-> **✅ Çözülen sapma 1 — `--duration-*` yerine duration değerleri.** Tailwind **4.3.3**'te `--duration-*` theme namespace'i yok (kanıtlandı: dist içinde hiç geçmiyor). Ölü token yazmak yerine easing'ler token'landı (`--ease-crm`), duration'lar standartta **değer** olarak sabitlendi (`duration-150` / `200` / `250`). ADR-0004 §5 bu gerçeğe göre düzeltildi.
+---
+
+## [x] Faz 0 â€” Zemin (dokÃ¼man + token + guard severity katmanÄ±) â€” **TAMAMLANDI**
+
+**Kabul kriteri: typecheck + build geÃ§er, hiÃ§bir ekran gÃ¶rsel olarak deÄŸiÅŸmez.**
+
+- [x] `docs/design-system.md` (440 satÄ±r) â†’ [`crm-ui-standards.md`](crm-ui-standards.md)'ye yÃ¶nlendiren redirect stub (silme yok, dÄ±ÅŸ baÄŸlantÄ±lar korunur)
+- [x] KÃ¶kteki `design.md` (203 satÄ±r) â†’ aynÄ± ÅŸekilde redirect stub
+- [x] `crm-ui-standards.md` gÃ¼ncellenir: Â§1.3 tipografi Ã¶lÃ§eÄŸi (`text-2xs`/`text-3xs`, 9px kaldÄ±rÄ±ldÄ±), Â§1.4 baÄŸlayÄ±cÄ± kÄ±sÄ±tlar, Â§2 primitif geniÅŸleme notu + "packages/ui kazanÄ±r", **Â§2.1 Kanonik Sayfa KabuÄŸu**, ADR-0004 referansÄ±
+- [x] `crm-ui-guard.mjs`: **`severity` katmanÄ±** eklendi (`error` varsayÄ±lan â†’ mevcut 9 kural etkilenmedi; hata sayÄ±sÄ± 1458'de sabit kaldÄ±)
+- [x] `crm-ui-guard.mjs`: 3 yeni kural `warn` olarak eklendi â€” `ARBITRARY_TEXT_SIZE` (1242), `NATIVE_TABLE` (61), `INLINE_STYLE_PROP` (31)
+- [x] `crm-ui-guard.README.md`: severity tablosu, Ã¶lÃ§Ã¼len taban, rulesâ†’fix map, `apps/ecommerce` hayalet notu
+- [x] `guard:crm-ui:full` ihlal sayÄ±larÄ± Ã¶lÃ§Ã¼lÃ¼p yukarÄ±daki tabloya iÅŸlendi
+- [x] Fixture'lar doÄŸrulandÄ±: `dirty.tsx` exit 1 Â· `clean.tsx` exit 0 Â· scoped kapÄ± **PASS**
+- [x] `globals.css`: **tipografi token'larÄ±** â€” `--text-2xs` (11px) + `--text-3xs` (10px), Tailwind'in `--text-*--line-height` deseniyle
+- [x] `globals.css`: **motion token'larÄ±** â€” `--ease-crm` + `--ease-crm-in-out`. Duration token deÄŸil, **deÄŸer** olarak standartlaÅŸtÄ±rÄ±ldÄ± (Â§1.5)
+- [x] `crm-ui-standards.md` Â§1.5 Motion eklendi (easing token'larÄ± + duration deÄŸerleri + `prefers-reduced-motion` zorunluluÄŸu)
+- [x] `tsc --noEmit` + `next build` doÄŸrulamasÄ± geÃ§ti (typecheck 2/2, build 2/2, 52 rota)
+- [x] Scoped kapÄ± doÄŸrulandÄ±: **0 error / 18 dosya â†’ PASS**
+
+> **âœ… Ã‡Ã¶zÃ¼len sapma 1 â€” `--duration-*` yerine duration deÄŸerleri.** Tailwind **4.3.3**'te `--duration-*` theme namespace'i yok (kanÄ±tlandÄ±: dist iÃ§inde hiÃ§ geÃ§miyor). Ã–lÃ¼ token yazmak yerine easing'ler token'landÄ± (`--ease-crm`), duration'lar standartta **deÄŸer** olarak sabitlendi (`duration-150` / `200` / `250`). ADR-0004 Â§5 bu gerÃ§eÄŸe gÃ¶re dÃ¼zeltildi.
 >
-> **✅ Çözülen sapma 2 — `SCOPE` listesi Faz 7'ye taşındı.** Ölçüm: scoped kapı 0 hata / 18 dosya → **PASS**, `--full` 1458 hata → FAIL. `SCOPE` Faz 0'da kaldırılsaydı varsayılan mod `--full` olur ve **Program A boyunca hiç regresyon kapısı kalmazdı**. ADR-0004 §9 bu düzeltmeyle güncellendi.
+> **âœ… Ã‡Ã¶zÃ¼len sapma 2 â€” `SCOPE` listesi Faz 7'ye taÅŸÄ±ndÄ±.** Ã–lÃ§Ã¼m: scoped kapÄ± 0 hata / 18 dosya â†’ **PASS**, `--full` 1458 hata â†’ FAIL. `SCOPE` Faz 0'da kaldÄ±rÄ±lsaydÄ± varsayÄ±lan mod `--full` olur ve **Program A boyunca hiÃ§ regresyon kapÄ±sÄ± kalmazdÄ±**. ADR-0004 Â§9 bu dÃ¼zeltmeyle gÃ¼ncellendi.
 >
-> **✅ Çözülen sapma 3 — kök dizin sürüm kontrolüne alındı.** `D:\serhatdev\crm` bir git deposu **değildi**; yani bu yol haritası, ADR-0004 ve kanonik standart sürüm kontrolsüzdü (geri alma/geçmiş yok). Faz 0'da kökte `git init` yapıldı, `crm-monorepo/` `.gitignore`'a alındı. Ayrıntı: ADR-0004 §11.
+> **âœ… Ã‡Ã¶zÃ¼len sapma 3 â€” kÃ¶k dizin sÃ¼rÃ¼m kontrolÃ¼ne alÄ±ndÄ±.** `D:\serhatdev\crm` bir git deposu **deÄŸildi**; yani bu yol haritasÄ±, ADR-0004 ve kanonik standart sÃ¼rÃ¼m kontrolsÃ¼zdÃ¼ (geri alma/geÃ§miÅŸ yok). Faz 0'da kÃ¶kte `git init` yapÄ±ldÄ±, `crm-monorepo/` `.gitignore`'a alÄ±ndÄ±. AyrÄ±ntÄ±: ADR-0004 Â§11.
 
 
-## [x] Faz 1 — Eksik primitif katmanı — **TAMAMLANDI**
+## [x] Faz 1 â€” Eksik primitif katmanÄ± â€” **TAMAMLANDI**
 
-`shadcn` CLI (stil `radix-luma`) ile eklendi, ardından house stiline uyarlandı. **21 → 32 primitif.**
+`shadcn` CLI (stil `radix-luma`) ile eklendi, ardÄ±ndan house stiline uyarlandÄ±. **21 â†’ 32 primitif.**
 
-- [x] `dialog` (155 satır) — ~60 modalın ve 156 overlay'in yerini alacak
-- [x] `alert-dialog` (184 satır) — yıkıcı/önemli onaylar
-- [x] `sheet` (134 satır) — drawer / yan panel
-- [x] `dropdown-menu` (251 satır)
-- [x] `popover` (79 satır)
-- [x] `switch` (29 satır)
-- [x] `radio-group` (39 satır)
-- [x] `progress` (27 satır)
-- [x] `separator` (24 satır)
-- [x] `scroll-area` (50 satır)
-- [x] `alert` (69 satır) — CLI'dan alındı (CVA-only, Base UI yok); elle yazmaya gerek kalmadı
-- [ ] `confirm-dialog`'ın `AlertDialog` temeline taşınması + `rounded-3xl` → `rounded-xl` normalizasyonu → **Faz 3'e taşındı**
-- [ ] `tooltip` tüketicileri standarda bağlanır → **Faz 3'e taşındı** (tüketici işi)
+- [x] `dialog` (155 satÄ±r) â€” ~60 modalÄ±n ve 156 overlay'in yerini alacak
+- [x] `alert-dialog` (184 satÄ±r) â€” yÄ±kÄ±cÄ±/Ã¶nemli onaylar
+- [x] `sheet` (134 satÄ±r) â€” drawer / yan panel
+- [x] `dropdown-menu` (251 satÄ±r)
+- [x] `popover` (79 satÄ±r)
+- [x] `switch` (29 satÄ±r)
+- [x] `radio-group` (39 satÄ±r)
+- [x] `progress` (27 satÄ±r)
+- [x] `separator` (24 satÄ±r)
+- [x] `scroll-area` (50 satÄ±r)
+- [x] `alert` (69 satÄ±r) â€” CLI'dan alÄ±ndÄ± (CVA-only, Base UI yok); elle yazmaya gerek kalmadÄ±
+- [ ] `confirm-dialog`'Ä±n `AlertDialog` temeline taÅŸÄ±nmasÄ± + `rounded-3xl` â†’ `rounded-xl` normalizasyonu â†’ **Faz 3'e taÅŸÄ±ndÄ±**
+- [ ] `tooltip` tÃ¼keticileri standarda baÄŸlanÄ±r â†’ **Faz 3'e taÅŸÄ±ndÄ±** (tÃ¼ketici iÅŸi)
 
-**Kabul kriteri — hepsi geçti:** typecheck 2/2 · build 2/2 (52 rota) · `guard:crm-ui` 0 error → PASS · `apps/web`'de 11 yeni primitifin **tüketicisi 0** · primitif sayısı 32 · `rounded-4xl` 0 · `from "cn"` 0.
+**Kabul kriteri â€” hepsi geÃ§ti:** typecheck 2/2 Â· build 2/2 (52 rota) Â· `guard:crm-ui` 0 error â†’ PASS Â· `apps/web`'de 11 yeni primitifin **tÃ¼keticisi 0** Â· primitif sayÄ±sÄ± 32 Â· `rounded-4xl` 0 Â· `from "cn"` 0.
 
-> **⚠️ Faz 1 bulgusu 1 — CLI `button.tsx`'i ezmek istedi.** `dialog`/`alert-dialog`/`sheet` bağımlılık olarak `button` çekiyor ve CLI onu registry sürümüyle değiştirmeyi teklif etti. Registry sürümü `rounded-lg` yerine **`rounded-4xl`** kullanıyor — §1.1'in yasakladığı hap form. Onaylansaydı **52 ekrandaki tüm butonlar** bozulurdu. Teklif reddedildi; zincir tıkanınca dosya geçici kenara alınıp CLI çalıştırıldı, sonra `git checkout` ile geri alındı. **`git diff` boş → `button.tsx` içerik olarak değişmedi** (hash farkı yalnızca CRLF).
+> **âš ï¸ Faz 1 bulgusu 1 â€” CLI `button.tsx`'i ezmek istedi.** `dialog`/`alert-dialog`/`sheet` baÄŸÄ±mlÄ±lÄ±k olarak `button` Ã§ekiyor ve CLI onu registry sÃ¼rÃ¼mÃ¼yle deÄŸiÅŸtirmeyi teklif etti. Registry sÃ¼rÃ¼mÃ¼ `rounded-lg` yerine **`rounded-4xl`** kullanÄ±yor â€” Â§1.1'in yasakladÄ±ÄŸÄ± hap form. OnaylansaydÄ± **52 ekrandaki tÃ¼m butonlar** bozulurdu. Teklif reddedildi; zincir tÄ±kanÄ±nca dosya geÃ§ici kenara alÄ±nÄ±p CLI Ã§alÄ±ÅŸtÄ±rÄ±ldÄ±, sonra `git checkout` ile geri alÄ±ndÄ±. **`git diff` boÅŸ â†’ `button.tsx` iÃ§erik olarak deÄŸiÅŸmedi** (hash farkÄ± yalnÄ±zca CRLF).
 >
-> **⚠️ Faz 1 bulgusu 2 — CLI yanlış npm bağımlılığı kurdu.** Üretilen 11 dosyada `import { cn } from "cn"` yazdı ve `packages/ui/package.json`'a **`cn@^0.3.0`** ekledi. 8 dosyada import `@workspace/ui/lib/utils`'e düzeltildi; bağımlılık kaldırıldı, `npm install` ile lock senkronlandı → `package.json` ve `package-lock.json` **HEAD ile birebir aynı**. Aksi halde 8 bileşen bir, 21 bileşen başka kütüphane kullanacaktı.
+> **âš ï¸ Faz 1 bulgusu 2 â€” CLI yanlÄ±ÅŸ npm baÄŸÄ±mlÄ±lÄ±ÄŸÄ± kurdu.** Ãœretilen 11 dosyada `import { cn } from "cn"` yazdÄ± ve `packages/ui/package.json`'a **`cn@^0.3.0`** ekledi. 8 dosyada import `@workspace/ui/lib/utils`'e dÃ¼zeltildi; baÄŸÄ±mlÄ±lÄ±k kaldÄ±rÄ±ldÄ±, `npm install` ile lock senkronlandÄ± â†’ `package.json` ve `package-lock.json` **HEAD ile birebir aynÄ±**. Aksi halde 8 bileÅŸen bir, 21 bileÅŸen baÅŸka kÃ¼tÃ¼phane kullanacaktÄ±.
 >
-> **ℹ️ Faz 1 bulgusu 3 — `confirm-dialog.tsx` standart dışı:** paneli `rounded-3xl`. §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor. Yeni paneller **standarta göre** `rounded-xl` yapıldı (legacy kod değil, standart otorite — ADR-0004 §3). `ConfirmDialog` normalizasyonu Faz 3'e taşındı.
+> **â„¹ï¸ Faz 1 bulgusu 3 â€” `confirm-dialog.tsx` standart dÄ±ÅŸÄ±:** paneli `rounded-3xl`. Â§1.1 konteynerler iÃ§in `rounded-lg`/`rounded-xl` diyor. Yeni paneller **standarta gÃ¶re** `rounded-xl` yapÄ±ldÄ± (legacy kod deÄŸil, standart otorite â€” ADR-0004 Â§3). `ConfirmDialog` normalizasyonu Faz 3'e taÅŸÄ±ndÄ±.
 >
-> **✅ Temiz çıkanlar:** dekoratif gradient/blur/hex/keyfi shadow **yok**; `blur` kullanımları yalnızca `supports-backdrop-filter:backdrop-blur-sm` (fonksiyonel backdrop, yasaklı dekoratif küre değil). Radius'lar house dağılımı içinde (`rounded-2xl` 9×, `rounded-3xl` 1× zaten mevcut).
+> **âœ… Temiz Ã§Ä±kanlar:** dekoratif gradient/blur/hex/keyfi shadow **yok**; `blur` kullanÄ±mlarÄ± yalnÄ±zca `supports-backdrop-filter:backdrop-blur-sm` (fonksiyonel backdrop, yasaklÄ± dekoratif kÃ¼re deÄŸil). Radius'lar house daÄŸÄ±lÄ±mÄ± iÃ§inde (`rounded-2xl` 9Ã—, `rounded-3xl` 1Ã— zaten mevcut).
 >
-> **📌 Prosedür kalıcılaştırıldı:** `crm-ui-standards.md` **§2.1 Primitif Ekleme Prosedürü** — doğru CLI komutu + iki tuzak + her yeni primitif için uyarlama kontrol listesi.
+> **ğŸ“Œ ProsedÃ¼r kalÄ±cÄ±laÅŸtÄ±rÄ±ldÄ±:** `crm-ui-standards.md` **Â§2.1 Primitif Ekleme ProsedÃ¼rÃ¼** â€” doÄŸru CLI komutu + iki tuzak + her yeni primitif iÃ§in uyarlama kontrol listesi.
 
-**Not:** Tüm yeni primitifler `--radius` tabanlı yuvarlaklık, semantic token ve motion tokenlı giriş/çıkış kullanır. `accordion` ve `calendar` **eklenmedi** (gerçek tüketici yok — Gelecek Adımlar'da).
+**Not:** TÃ¼m yeni primitifler `--radius` tabanlÄ± yuvarlaklÄ±k, semantic token ve motion tokenlÄ± giriÅŸ/Ã§Ä±kÄ±ÅŸ kullanÄ±r. `accordion` ve `calendar` **eklenmedi** (gerÃ§ek tÃ¼ketici yok â€” Gelecek AdÄ±mlar'da).
 
-## [~] Faz 2 — Kanonik sayfa kabuğu (52 ekran) — **DEVAM EDİYOR (21/52)**
+## [~] Faz 2 â€” Kanonik sayfa kabuÄŸu (52 ekran) â€” **DEVAM EDÄ°YOR (21/52)**
 
-- [x] **`page-container.tsx`** — `px-4 py-5` / `md:px-6 md:py-6`, tam genişlik, `bleed` varyantı (full-bleed yüzeyler için)
-- [x] **`page-header.tsx`** — `title` / `description` / `badge` / `actions` slotları
-- [x] **Dashboard layout** — padding kaldırıldı (`p-3.5 pb-24 sm:p-5 md:p-6` → `pb-24 md:pb-0`); mobil bottom-nav payı korundu
-- [x] **Admin layout** — padding + `mx-auto max-w-7xl` kaldırıldı (tam genişlik kararı)
-- [x] **Yanlış Hallmark başlıkları düzeltildi** (dokunulan dosyalarda) — `design.md` referansı ve `theme: Zinc/Violet` iddiası kaldırıldı
+- [x] **`page-container.tsx`** â€” `px-4 py-5` / `md:px-6 md:py-6`, tam geniÅŸlik, `bleed` varyantÄ± (full-bleed yÃ¼zeyler iÃ§in)
+- [x] **`page-header.tsx`** â€” `title` / `description` / `badge` / `actions` slotlarÄ±
+- [x] **Dashboard layout** â€” padding kaldÄ±rÄ±ldÄ± (`p-3.5 pb-24 sm:p-5 md:p-6` â†’ `pb-24 md:pb-0`); mobil bottom-nav payÄ± korundu
+- [x] **Admin layout** â€” padding + `mx-auto max-w-7xl` kaldÄ±rÄ±ldÄ± (tam geniÅŸlik kararÄ±)
+- [x] **YanlÄ±ÅŸ Hallmark baÅŸlÄ±klarÄ± dÃ¼zeltildi** (dokunulan dosyalarda) â€” `design.md` referansÄ± ve `theme: Zinc/Violet` iddiasÄ± kaldÄ±rÄ±ldÄ±
 - [x] Sarmalanan 10 sayfa:
-  - `customers` (pilot — `PageHeader`'a da geçirildi, `text-[11px]` → **`text-2xs`** token'ı ilk kez kullanıldı)
-  - `analytics` (legacy çift-padding kanıtı: `space-y-6 p-4 sm:p-6 lg:p-8` → `PageContainer`, sayfa kendi padding'ini bıraktı)
+  - `customers` (pilot â€” `PageHeader`'a da geÃ§irildi, `text-[11px]` â†’ **`text-2xs`** token'Ä± ilk kez kullanÄ±ldÄ±)
+  - `analytics` (legacy Ã§ift-padding kanÄ±tÄ±: `space-y-6 p-4 sm:p-6 lg:p-8` â†’ `PageContainer`, sayfa kendi padding'ini bÄ±raktÄ±)
   - `field-service`, `roles`, `users`, `pipelines`, `orders`, `leaves`, `(admin)/admin/templates`, `(admin)/admin/tenants`
 - [ ] Kalan **42 sayfa**
 
-### ✅ Yan doğrulama: tipografi token'ı işlevsel
+### âœ… Yan doÄŸrulama: tipografi token'Ä± iÅŸlevsel
 
-`text-2xs` üretilen CSS'te doğrulandı — Faz 0 token'ının gerçekten çalıştığının kanıtı:
+`text-2xs` Ã¼retilen CSS'te doÄŸrulandÄ± â€” Faz 0 token'Ä±nÄ±n gerÃ§ekten Ã§alÄ±ÅŸtÄ±ÄŸÄ±nÄ±n kanÄ±tÄ±:
 ```css
 .text-2xs{font-size:.6875rem;line-height:var(--tw-leading,1rem)}   /* 11px */
 ```
-Bu, `ARBITRARY_TEXT_SIZE`'ın ileride `error`'a terfi edebileceğini gösterir (kural artık uygulanabilir bir alternatife sahip).
+Bu, `ARBITRARY_TEXT_SIZE`'Ä±n ileride `error`'a terfi edebileceÄŸini gÃ¶sterir (kural artÄ±k uygulanabilir bir alternatife sahip).
 
-### ⚠️ Teknik not — kapanış etiketi "son eşleşme" ile bulunamaz
+### âš ï¸ Teknik not â€” kapanÄ±ÅŸ etiketi "son eÅŸleÅŸme" ile bulunamaz
 
-Faz 2'de bu tuzağa **fiilen düşüldü** ve typecheck yakaladı (`TS17002`, 2 dosya). Kök neden: sayfa dosyaları **tek dosyada birden fazla component** barındırıyor (`leaves/page.tsx` → `LeavesPage` + `CreateLeaveModal`; `orders/page.tsx` → `OrdersPage` + `CreateOrderWizardModal`). Her ikisi de aynı girinti seviyesinde.
+Faz 2'de bu tuzaÄŸa **fiilen dÃ¼ÅŸÃ¼ldÃ¼** ve typecheck yakaladÄ± (`TS17002`, 2 dosya). KÃ¶k neden: sayfa dosyalarÄ± **tek dosyada birden fazla component** barÄ±ndÄ±rÄ±yor (`leaves/page.tsx` â†’ `LeavesPage` + `CreateLeaveModal`; `orders/page.tsx` â†’ `OrdersPage` + `CreateOrderWizardModal`). Her ikisi de aynÄ± girinti seviyesinde.
 
-Sezgisel bir dönüşüm "dosyadaki son `</div>` + `);` + `}`"i ararsa **ikinci component'i** yakalar ve sayfa kökü kapanmadan kalır. `div` sayımı dengeli görünür (1 aç / 1 kapa) çünkü hata *sayıda* değil *kapsamda*dır.
+Sezgisel bir dÃ¶nÃ¼ÅŸÃ¼m "dosyadaki son `</div>` + `);` + `}`"i ararsa **ikinci component'i** yakalar ve sayfa kÃ¶kÃ¼ kapanmadan kalÄ±r. `div` sayÄ±mÄ± dengeli gÃ¶rÃ¼nÃ¼r (1 aÃ§ / 1 kapa) Ã§Ã¼nkÃ¼ hata *sayÄ±da* deÄŸil *kapsamda*dÄ±r.
 
-**Kural:** kapanış etiketi **yapısal** olarak bulunur — sayfa component'inin `return (` bloğunun gerçek sonu, yani bir sonraki `function <Ad>(` satırından hemen önceki `);` + `}` bloğu. **Her batch'ten sonra `tsc` zorunludur**; hata bu sayede commit'ten önce yakalandı.
+**Kural:** kapanÄ±ÅŸ etiketi **yapÄ±sal** olarak bulunur â€” sayfa component'inin `return (` bloÄŸunun gerÃ§ek sonu, yani bir sonraki `function <Ad>(` satÄ±rÄ±ndan hemen Ã¶nceki `);` + `}` bloÄŸu. **Her batch'ten sonra `tsc` zorunludur**; hata bu sayede commit'ten Ã¶nce yakalandÄ±.
 
-### ⚠️ Teknik not 2 — kök eleman yüzeyde göründüğü gibi değil
+### âš ï¸ Teknik not 2 â€” kÃ¶k eleman yÃ¼zeyde gÃ¶rÃ¼ndÃ¼ÄŸÃ¼ gibi deÄŸil
 
-Kategori A'nın "en mekanik" sayfası bile varsayımı kırdı: `customers/[customerId]/page.tsx`'te **ilk `<div className="space-y-6">` sayfanın kökü değil**, `if (loading)` dalının skeleton sarmalayıcısı. Gerçek kök 249. satırda. Bu sayfa **iki dönüş noktası** taşıyor ve **ikisi de** sarmalandı — aksi halde yükleme durumu farklı boşlukta görünürdü.
+Kategori A'nÄ±n "en mekanik" sayfasÄ± bile varsayÄ±mÄ± kÄ±rdÄ±: `customers/[customerId]/page.tsx`'te **ilk `<div className="space-y-6">` sayfanÄ±n kÃ¶kÃ¼ deÄŸil**, `if (loading)` dalÄ±nÄ±n skeleton sarmalayÄ±cÄ±sÄ±. GerÃ§ek kÃ¶k 249. satÄ±rda. Bu sayfa **iki dÃ¶nÃ¼ÅŸ noktasÄ±** taÅŸÄ±yor ve **ikisi de** sarmalandÄ± â€” aksi halde yÃ¼kleme durumu farklÄ± boÅŸlukta gÃ¶rÃ¼nÃ¼rdÃ¼.
 
-Ders: kök eleman, component'in `return (` bloğuna *yapısal olarak* bağlıdır ve sayfa başına doğrulanmalıdır. Bu yüzden toplu script bu iş için emekliye ayrıldı; sayfalar kanıtlanmış satır numaralarıyla elle sarmalanıyor.
+Ders: kÃ¶k eleman, component'in `return (` bloÄŸuna *yapÄ±sal olarak* baÄŸlÄ±dÄ±r ve sayfa baÅŸÄ±na doÄŸrulanmalÄ±dÄ±r. Bu yÃ¼zden toplu script bu iÅŸ iÃ§in emekliye ayrÄ±ldÄ±; sayfalar kanÄ±tlanmÄ±ÅŸ satÄ±r numaralarÄ±yla elle sarmalanÄ±yor.
 
-### Faz 2 sayfa haritası (kalan 31)
+### Faz 2 sayfa haritasÄ± (kalan 31)
 
 | Kategori | Sayfalar | Not |
 | --- | --- | --- |
-| ✅ **A. `space-y-*` kökü — TAMAMLANDI** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Beklenenden zor: kök eleman sayfa başına doğrulanmalı (Teknik not 2) |
-| ✅ **B. Legacy çift-padding / max-width — TAMAMLANDI** | `inventory`, `contracts`, `settings`, `promotions/new` | Çift padding kaldırıldı; form ekranlarının `max-width`'i **istisna olarak korundu** (§2.2) |
-| **C. Sayfa-seviyesi kart sarmalayıcı** | `finance`, `invoices` (kök `rounded-2xl border bg-white p-4`) | `Card`'a dönüşmeli |
-| **D. Full-bleed adayları** | `messages`, `calendar`, `orders/[orderId]/print`, `(auth)/login`, `(auth)/register`, `portal/[token]`, `quotes/view/[token]`, `/pipelines`, `/quotes`, `/` | `bleed` varyantı veya kabuk kullanmama |
-| **E. `Suspense` sarmalayıcı** | `organization`, `recruitment` | Suspense sınırının içine |
-| **F. İncelenmesi gereken** | `attendance`, `email`, `automations`, `automations/[workflowId]`, `products`, `products/[productId]`, `promotions`, `promotions/[campaignId]/edit`, `quotes`, `tickets`, `tickets/[ticketId]`, `webhooks`, `webhooks/[endpointId]`, `compliance` | İlk `return` iç fonksiyona ait çıktı → elle bakılacak |
+| âœ… **A. `space-y-*` kÃ¶kÃ¼ â€” TAMAMLANDI** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Beklenenden zor: kÃ¶k eleman sayfa baÅŸÄ±na doÄŸrulanmalÄ± (Teknik not 2) |
+| âœ… **B. Legacy Ã§ift-padding / max-width â€” TAMAMLANDI** | `inventory`, `contracts`, `settings`, `promotions/new` | Ã‡ift padding kaldÄ±rÄ±ldÄ±; form ekranlarÄ±nÄ±n `max-width`'i **istisna olarak korundu** (Â§2.2) |
+| âœ… **C. Sayfa-seviyesi kart sarmalayÄ±cÄ± â€” TAMAMLANDI (kategori dÃ¼zeltmesiyle)** | `finance`, `invoices` | **YanlÄ±ÅŸ sÄ±nÄ±flandÄ±rÄ±lmÄ±ÅŸtÄ±:** kÃ¶kleri kart deÄŸil, `space-y-6 p-4 sm:p-6 lg:p-8` (analytics deseni). `Card` dÃ¶nÃ¼ÅŸÃ¼mÃ¼ gerekmedi |
+| **D. Full-bleed adaylarÄ±** | `messages`, `calendar`, `orders/[orderId]/print`, `(auth)/login`, `(auth)/register`, `portal/[token]`, `quotes/view/[token]`, `/pipelines`, `/quotes`, `/` | Ã‡ok dÃ¶nÃ¼ÅŸlÃ¼ (loading/error/ana) â€” yÃ¼zey baÅŸÄ±na dikkat |
+| **E. `Suspense` sarmalayÄ±cÄ±** | `organization`, `recruitment` | Suspense sÄ±nÄ±rÄ±nÄ±n iÃ§ine |
+| **F. Ä°ncelenmesi gereken** | `attendance`, `email`, `automations`, `automations/[workflowId]`, `products`, `products/[productId]`, `promotions`, `promotions/[campaignId]/edit`, `quotes`, `tickets`, `tickets/[ticketId]`, `webhooks`, `webhooks/[endpointId]`, `compliance` | Ä°lk `return` iÃ§ fonksiyona ait Ã§Ä±ktÄ± â†’ elle bakÄ±lacak |
 
-**Sıra:** A → B → C → D → E → F. Her yüzey (dashboard / admin / auth / portal) bitince typecheck + build + duman testi; her batch ayrı commit.
+**SÄ±ra:** A â†’ B â†’ C â†’ D â†’ E â†’ F. Her yÃ¼zey (dashboard / admin / auth / portal) bitince typecheck + build + duman testi; her batch ayrÄ± commit.
 
-### 📌 Kalıcı borç: 391 dosyada Hallmark imzası
+### ğŸ“Œ KalÄ±cÄ± borÃ§: 391 dosyada Hallmark imzasÄ±
 
-Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
+Kod tabanÄ±nda **391 dosya** `Hallmark Â· theme: Adaptive Zinc/Violet Â· design-system: design.md` baÅŸlÄ±ÄŸÄ± taÅŸÄ±yor. Dokunulan dosyalarda dÃ¼zeltiliyor; kalanÄ± mekanik bir temizlik iÅŸi olarak Gelecek AdÄ±mlar'a eklendi.
 
-## [ ] Faz 3 — Modal & overlay göçü (~60 modal, 156 overlay)
+## [ ] Faz 3 â€” Modal & overlay gÃ¶Ã§Ã¼ (~60 modal, 156 overlay)
 
-- [ ] Elle yazılmış modallar → `Dialog` / `Sheet` / `ConfirmDialog`
-- [ ] Panel stilinin 4 varyantı (`rounded-lg` / `rounded-xl` / `rounded-2xl` / `rounded-3xl`) tek standarda iner
-- [ ] A11y kazanımı: focus trap, `Esc`, `aria-modal` (primitiflerden gelir)
-- [ ] Motion: tek kanonik giriş/çıkış, `prefers-reduced-motion`
-- [ ] `delete-customer-dialog` gibi `ConfirmDialog`'ı yok sayan yeniden yazımlar temizlenir
-- [ ] **`confirm-dialog.tsx`'in `AlertDialog` temeline taşınması** + panelinin `rounded-3xl` → `rounded-xl` normalize edilmesi (Faz 1'den taşındı — §1.1 ihlali)
-- [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
-- [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003 kuralı)
+- [ ] Elle yazÄ±lmÄ±ÅŸ modallar â†’ `Dialog` / `Sheet` / `ConfirmDialog`
+- [ ] Panel stilinin 4 varyantÄ± (`rounded-lg` / `rounded-xl` / `rounded-2xl` / `rounded-3xl`) tek standarda iner
+- [ ] A11y kazanÄ±mÄ±: focus trap, `Esc`, `aria-modal` (primitiflerden gelir)
+- [ ] Motion: tek kanonik giriÅŸ/Ã§Ä±kÄ±ÅŸ, `prefers-reduced-motion`
+- [ ] `delete-customer-dialog` gibi `ConfirmDialog`'Ä± yok sayan yeniden yazÄ±mlar temizlenir
+- [ ] **`confirm-dialog.tsx`'in `AlertDialog` temeline taÅŸÄ±nmasÄ±** + panelinin `rounded-3xl` â†’ `rounded-xl` normalize edilmesi (Faz 1'den taÅŸÄ±ndÄ± â€” Â§1.1 ihlali)
+- [ ] **`tooltip` tÃ¼keticilerinin standarda baÄŸlanmasÄ±** (Faz 1'den taÅŸÄ±ndÄ± â€” tÃ¼ketici iÅŸi)
+- [ ] Dokunulan her sayfada UI parÃ§alarÄ± `_components/` altÄ±na Ã§Ä±karÄ±lÄ±r (ADR-0003 kuralÄ±)
 
-## [ ] Faz 4 — Renk disiplini (yüzey yüzey)
+## [ ] Faz 4 â€” Renk disiplini (yÃ¼zey yÃ¼zey)
 
-- [ ] Auth + admin + portal yüzeyleri (`slate-*` + hex yoğunluğu burada)
-- [ ] Dashboard: customer-detail, recruitment, roles, settings, contracts, finance, invoices, messages (`violet`/`fuchsia` → `blue`)
-- [ ] `slate-*` → `zinc-*`, `violet`/`fuchsia`/… → `blue-500` skalası
-- [ ] Keyfi hex + inline `style` → semantic token
-- [ ] Widget'lardaki sabit hex → `--chart-*` tokenları
-- [ ] Print/e-posta HTML string'leri: **allowlist'te açıkça kayıtlı** istisna (e-posta istemcileri `oklch`/CSS değişkeni desteklemez)
+- [ ] Auth + admin + portal yÃ¼zeyleri (`slate-*` + hex yoÄŸunluÄŸu burada)
+- [ ] Dashboard: customer-detail, recruitment, roles, settings, contracts, finance, invoices, messages (`violet`/`fuchsia` â†’ `blue`)
+- [ ] `slate-*` â†’ `zinc-*`, `violet`/`fuchsia`/â€¦ â†’ `blue-500` skalasÄ±
+- [ ] Keyfi hex + inline `style` â†’ semantic token
+- [ ] Widget'lardaki sabit hex â†’ `--chart-*` tokenlarÄ±
+- [ ] Print/e-posta HTML string'leri: **allowlist'te aÃ§Ä±kÃ§a kayÄ±tlÄ±** istisna (e-posta istemcileri `oklch`/CSS deÄŸiÅŸkeni desteklemez)
 
-## [ ] Faz 5 — Tablo & form *görünüm* standardı
+## [ ] Faz 5 â€” Tablo & form *gÃ¶rÃ¼nÃ¼m* standardÄ±
 
-**Motor göçü yoktur** — elle yazılmış tablolar/kanban/filtreler kalır, yalnızca görünümleri `@workspace/ui` primitiflerine bağlanır.
+**Motor gÃ¶Ã§Ã¼ yoktur** â€” elle yazÄ±lmÄ±ÅŸ tablolar/kanban/filtreler kalÄ±r, yalnÄ±zca gÃ¶rÃ¼nÃ¼mleri `@workspace/ui` primitiflerine baÄŸlanÄ±r.
 
-- [ ] `Table`, `Badge`, `Button`, `EmptyState`, `Skeleton` kullanımına geçiş
-- [ ] `Input` / `SelectField` / `Combobox` / `DatePicker` / `DateRangePicker` / `NumberInput` / `PhoneInput` standardı (ADR-0002) her ekranda
-- [ ] Native `<select>`, `type=date`, `type=number` → **0**
-- [ ] Kart/panel arka planlarının tek dile inmesi (`bg-card` + `border-border`; `bg-white dark:bg-zinc-900` ve `border-zinc-200` karışımı biter)
+- [ ] `Table`, `Badge`, `Button`, `EmptyState`, `Skeleton` kullanÄ±mÄ±na geÃ§iÅŸ
+- [ ] `Input` / `SelectField` / `Combobox` / `DatePicker` / `DateRangePicker` / `NumberInput` / `PhoneInput` standardÄ± (ADR-0002) her ekranda
+- [ ] Native `<select>`, `type=date`, `type=number` â†’ **0**
+- [ ] Kart/panel arka planlarÄ±nÄ±n tek dile inmesi (`bg-card` + `border-border`; `bg-white dark:bg-zinc-900` ve `border-zinc-200` karÄ±ÅŸÄ±mÄ± biter)
 
-## [ ] Faz 6 — Cila (motion + a11y + terim sözlüğü)
+## [ ] Faz 6 â€” Cila (motion + a11y + terim sÃ¶zlÃ¼ÄŸÃ¼)
 
-- [ ] Motion token'ları tüm overlay/geçişlerde tutarlı
-- [ ] a11y checklist dokunulan her ekranda uygulanır
-- [ ] Türkçe terim sözlüğü hazırlanır ve dokunulan ekranlarda uygulanır
-- [ ] Kalıcı Playwright smoke testleri: login, müşteri listesi, müşteri detayı, pipeline, teklif, admin
+- [ ] Motion token'larÄ± tÃ¼m overlay/geÃ§iÅŸlerde tutarlÄ±
+- [ ] a11y checklist dokunulan her ekranda uygulanÄ±r
+- [ ] TÃ¼rkÃ§e terim sÃ¶zlÃ¼ÄŸÃ¼ hazÄ±rlanÄ±r ve dokunulan ekranlarda uygulanÄ±r
+- [ ] KalÄ±cÄ± Playwright smoke testleri: login, mÃ¼ÅŸteri listesi, mÃ¼ÅŸteri detayÄ±, pipeline, teklif, admin
 
-## [ ] Faz 7 — Sertleştirme (geri dönüşsüz)
+## [ ] Faz 7 â€” SertleÅŸtirme (geri dÃ¶nÃ¼ÅŸsÃ¼z)
 
-- [ ] `guard:crm-ui:full` **kırıcı** gate olur (exit 0'a ulaştıktan sonra)
-- [ ] Yeni kurallar **uyarıdan kırıcıya** terfi eder: `ARBITRARY_TEXT_SIZE`, `NATIVE_TABLE`, `INLINE_STYLE_PROP` → `severity: "error"`
-- [ ] **CI workflow eklenir** (bugün `.github/` hiç yok — `.scratch/` dışında hiçbir pipeline dosyası mevcut değil)
-- [ ] **`SCOPE` listesi emekliye ayrılır** — buraya taşındı (Faz 0'dan). Gerekçe: scoped liste, `--full` temizlenene kadar **tek çalışan regresyon kapısı**. Erken kaldırmak Program A boyunca korumayı sıfırlar. Bkz. ADR-0004 §9 düzeltmesi
-- [ ] `crm-ui-guard.README.md` ve ADR-0004, `SCOPE`'un kaldırıldığı nihai duruma göre güncellenir
-
----
-
-# Program B — Registry Zenginleştirme ❌ İPTAL
-
-Karar: **`reui`, `beUI` ve `Aceternity` registry'leri eklenmez.** Gerekçe [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) §2: reui'nin işe yarayan bileşenlerinin tamamı `@base-ui/react` istiyor; Radix ile birlikte ikinci bir headless foundation doğurur. Ayrıca tablo/kanban/filtre motorlarını değiştirmek, onları olduğu yerde standartlaştırmaktan **daha pahalıdır**.
-
-Bu karar aşağıdakileri kapsar ve yeniden açılmaz (yeni ADR gerekir):
-
-- `data-grid`, `kanban`, `filters`, `gantt`, `event-calendar`, `cascader`, `tree`, `sortable`, `number-field`, `autocomplete`, `stepper`, `timeline` → **alınmaz**
-- Registry config'i (`components.json` → `registries`) **boş kalır** (doğrulandı: bugün hiç third-party registry yok)
+- [ ] `guard:crm-ui:full` **kÄ±rÄ±cÄ±** gate olur (exit 0'a ulaÅŸtÄ±ktan sonra)
+- [ ] Yeni kurallar **uyarÄ±dan kÄ±rÄ±cÄ±ya** terfi eder: `ARBITRARY_TEXT_SIZE`, `NATIVE_TABLE`, `INLINE_STYLE_PROP` â†’ `severity: "error"`
+- [ ] **CI workflow eklenir** (bugÃ¼n `.github/` hiÃ§ yok â€” `.scratch/` dÄ±ÅŸÄ±nda hiÃ§bir pipeline dosyasÄ± mevcut deÄŸil)
+- [ ] **`SCOPE` listesi emekliye ayrÄ±lÄ±r** â€” buraya taÅŸÄ±ndÄ± (Faz 0'dan). GerekÃ§e: scoped liste, `--full` temizlenene kadar **tek Ã§alÄ±ÅŸan regresyon kapÄ±sÄ±**. Erken kaldÄ±rmak Program A boyunca korumayÄ± sÄ±fÄ±rlar. Bkz. ADR-0004 Â§9 dÃ¼zeltmesi
+- [ ] `crm-ui-guard.README.md` ve ADR-0004, `SCOPE`'un kaldÄ±rÄ±ldÄ±ÄŸÄ± nihai duruma gÃ¶re gÃ¼ncellenir
 
 ---
 
-# Program C — Opsiyonel / Kayıt Altında (yapılmayacak)
+# Program B â€” Registry ZenginleÅŸtirme âŒ Ä°PTAL
 
-- **Aceternity / beUI** — CRM ekranlarında **yasak**. Dekoratif bileşenleri `crm-ui-standards.md` §1.2 anti-AI-slop kuralına aykırı; beUI'nin motion katmanı §9 "dekoratif animasyon yok" kararıyla gereksiz. İleride bir **pazarlama/landing yüzeyi** doğarsa, lisansı teyit edilerek ayrıca değerlendirilir. **Paralı plan kullanılmayacaktır.**
-- **`--space-*` ölçeği** (kökteki `design.md`'den) — spacing token ihtiyacı somutlaşırsa değerlendirilir. Bugün reddedilmiştir.
-- **Hue 270 / Geist tipografisi** (kökteki `design.md`'den) — reddedildi. Kod hue 260 + Inter/Playfair kanoniktir; hue değişimi tüm ekranların yeniden temalanması demektir.
+Karar: **`reui`, `beUI` ve `Aceternity` registry'leri eklenmez.** GerekÃ§e [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) Â§2: reui'nin iÅŸe yarayan bileÅŸenlerinin tamamÄ± `@base-ui/react` istiyor; Radix ile birlikte ikinci bir headless foundation doÄŸurur. AyrÄ±ca tablo/kanban/filtre motorlarÄ±nÄ± deÄŸiÅŸtirmek, onlarÄ± olduÄŸu yerde standartlaÅŸtÄ±rmaktan **daha pahalÄ±dÄ±r**.
 
----
+Bu karar aÅŸaÄŸÄ±dakileri kapsar ve yeniden aÃ§Ä±lmaz (yeni ADR gerekir):
 
-# Gelecek Adımlar (Ertelenen İşler)
-
-Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddeler için `.scratch/` altında issue açılabilir.
-
-### Kendi başına proje
-1. **Monolit sayfa ayrıştırması** — `quotes` (~5.000 satır), `vehicles` (~4.900), `recruitment` (~3.200), `shipments` (~2.650), `organization` (~2.500), `payroll` (~2.400), `attendance` (~2.350), `messages` (~1.900), `finance` (~1.900) → 300 satır kuralı + `_components/` mimarisine tam geçiş
-2. **Görsel regresyon altyapısı** — Playwright screenshot testleri + (opsiyonel) Storybook
-3. **Tam a11y denetimi** — 52 ekranın tamamı, primitif göçünün ötesinde kalan elle yazılmış etkileşimler
-
-### Teknik borç (küçük/orta)
-4. **Dark-mode ekran taraması** — token'lar hazır, her ekranın dark'ta doğru göründüğünün denetimi
-5. **Mikro kopya tam geçişi** — Türkçe terim sözlüğünün 52 ekranda eksiksiz uygulanması
-6. **`email-preview.ts` çift paletinin kaldırılması** — paylaşılan tek "token → hex" çeviriciye indirgeme
-7. **`apps/ecommerce` hayalet referanslarının temizliği** — var olmayan bu uygulama `crm-ui-guard.mjs`, `ADR-0002` ve `docs/design-system.md`'de anılıyor
-8. **`design.md` ve `docs/design-system.md` stub'larının tamamen kaldırılması** — dış referans teyidi sonrası
-9. **Boş `packages/ui/src/hooks/` export'unun kaldırılması** — `package.json`'da `"./hooks/*"` tanımlı ama klasör boş
-10. **`apps/web/components/phone-input.tsx` shim'inin kaldırılması** — import'lar doğrudan `@workspace/ui/components/phone-input`'a
-11. **Z-index ölçeği** — `z-[60]`, `z-[70]`, `z-60` keyfi değerleri için katmanlı token'lar
-12. **`--chart-*` tokenlarının kullanımı** — `lead-sources-widget`, `sales-gauge-widget` şu an hex sabit
-13. **`accordion` ve `calendar` primitifleri** — gerçek tüketici doğduğunda
-14. **`apps/web/components/` kökündeki 14 cross-feature widget'ın gözden geçirilmesi** — hangileri gerçekten paylaşılan, hangileri rota altı `_components/`'e taşınmalı
-15. **`lucide-react ^1.32.0` sürüm pininin doğrulanması** — alışılmadık bir pin
-16. **391 dosyadaki Hallmark imzasının temizliği** — `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlıkları. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik temizlik. Referans verdikleri doküman artık stub olduğu için sessizce yanıltıcılar
+- `data-grid`, `kanban`, `filters`, `gantt`, `event-calendar`, `cascader`, `tree`, `sortable`, `number-field`, `autocomplete`, `stepper`, `timeline` â†’ **alÄ±nmaz**
+- Registry config'i (`components.json` â†’ `registries`) **boÅŸ kalÄ±r** (doÄŸrulandÄ±: bugÃ¼n hiÃ§ third-party registry yok)
 
 ---
 
-## İlerleme Günlüğü
+# Program C â€” Opsiyonel / KayÄ±t AltÄ±nda (yapÄ±lmayacak)
+
+- **Aceternity / beUI** â€” CRM ekranlarÄ±nda **yasak**. Dekoratif bileÅŸenleri `crm-ui-standards.md` Â§1.2 anti-AI-slop kuralÄ±na aykÄ±rÄ±; beUI'nin motion katmanÄ± Â§9 "dekoratif animasyon yok" kararÄ±yla gereksiz. Ä°leride bir **pazarlama/landing yÃ¼zeyi** doÄŸarsa, lisansÄ± teyit edilerek ayrÄ±ca deÄŸerlendirilir. **ParalÄ± plan kullanÄ±lmayacaktÄ±r.**
+- **`--space-*` Ã¶lÃ§eÄŸi** (kÃ¶kteki `design.md`'den) â€” spacing token ihtiyacÄ± somutlaÅŸÄ±rsa deÄŸerlendirilir. BugÃ¼n reddedilmiÅŸtir.
+- **Hue 270 / Geist tipografisi** (kÃ¶kteki `design.md`'den) â€” reddedildi. Kod hue 260 + Inter/Playfair kanoniktir; hue deÄŸiÅŸimi tÃ¼m ekranlarÄ±n yeniden temalanmasÄ± demektir.
+
+---
+
+# Gelecek AdÄ±mlar (Ertelenen Ä°ÅŸler)
+
+Bu program tamamlandÄ±ktan sonra ele alÄ±nacak. Kendi baÅŸÄ±na proje olan maddeler iÃ§in `.scratch/` altÄ±nda issue aÃ§Ä±labilir.
+
+### Kendi baÅŸÄ±na proje
+1. **Monolit sayfa ayrÄ±ÅŸtÄ±rmasÄ±** â€” `quotes` (~5.000 satÄ±r), `vehicles` (~4.900), `recruitment` (~3.200), `shipments` (~2.650), `organization` (~2.500), `payroll` (~2.400), `attendance` (~2.350), `messages` (~1.900), `finance` (~1.900) â†’ 300 satÄ±r kuralÄ± + `_components/` mimarisine tam geÃ§iÅŸ
+2. **GÃ¶rsel regresyon altyapÄ±sÄ±** â€” Playwright screenshot testleri + (opsiyonel) Storybook
+3. **Tam a11y denetimi** â€” 52 ekranÄ±n tamamÄ±, primitif gÃ¶Ã§Ã¼nÃ¼n Ã¶tesinde kalan elle yazÄ±lmÄ±ÅŸ etkileÅŸimler
+
+### Teknik borÃ§ (kÃ¼Ã§Ã¼k/orta)
+4. **Dark-mode ekran taramasÄ±** â€” token'lar hazÄ±r, her ekranÄ±n dark'ta doÄŸru gÃ¶rÃ¼ndÃ¼ÄŸÃ¼nÃ¼n denetimi
+5. **Mikro kopya tam geÃ§iÅŸi** â€” TÃ¼rkÃ§e terim sÃ¶zlÃ¼ÄŸÃ¼nÃ¼n 52 ekranda eksiksiz uygulanmasÄ±
+6. **`email-preview.ts` Ã§ift paletinin kaldÄ±rÄ±lmasÄ±** â€” paylaÅŸÄ±lan tek "token â†’ hex" Ã§eviriciye indirgeme
+7. **`apps/ecommerce` hayalet referanslarÄ±nÄ±n temizliÄŸi** â€” var olmayan bu uygulama `crm-ui-guard.mjs`, `ADR-0002` ve `docs/design-system.md`'de anÄ±lÄ±yor
+8. **`design.md` ve `docs/design-system.md` stub'larÄ±nÄ±n tamamen kaldÄ±rÄ±lmasÄ±** â€” dÄ±ÅŸ referans teyidi sonrasÄ±
+9. **BoÅŸ `packages/ui/src/hooks/` export'unun kaldÄ±rÄ±lmasÄ±** â€” `package.json`'da `"./hooks/*"` tanÄ±mlÄ± ama klasÃ¶r boÅŸ
+10. **`apps/web/components/phone-input.tsx` shim'inin kaldÄ±rÄ±lmasÄ±** â€” import'lar doÄŸrudan `@workspace/ui/components/phone-input`'a
+11. **Z-index Ã¶lÃ§eÄŸi** â€” `z-[60]`, `z-[70]`, `z-60` keyfi deÄŸerleri iÃ§in katmanlÄ± token'lar
+12. **`--chart-*` tokenlarÄ±nÄ±n kullanÄ±mÄ±** â€” `lead-sources-widget`, `sales-gauge-widget` ÅŸu an hex sabit
+13. **`accordion` ve `calendar` primitifleri** â€” gerÃ§ek tÃ¼ketici doÄŸduÄŸunda
+14. **`apps/web/components/` kÃ¶kÃ¼ndeki 14 cross-feature widget'Ä±n gÃ¶zden geÃ§irilmesi** â€” hangileri gerÃ§ekten paylaÅŸÄ±lan, hangileri rota altÄ± `_components/`'e taÅŸÄ±nmalÄ±
+15. **`lucide-react ^1.32.0` sÃ¼rÃ¼m pininin doÄŸrulanmasÄ±** â€” alÄ±ÅŸÄ±lmadÄ±k bir pin
+16. **391 dosyadaki Hallmark imzasÄ±nÄ±n temizliÄŸi** â€” `Hallmark Â· theme: Adaptive Zinc/Violet Â· design-system: design.md` baÅŸlÄ±klarÄ±. Dokunulan dosyalarda dÃ¼zeltiliyor; kalanÄ± mekanik temizlik. Referans verdikleri dokÃ¼man artÄ±k stub olduÄŸu iÃ§in sessizce yanÄ±ltÄ±cÄ±lar
+
+---
+
+## Ä°lerleme GÃ¼nlÃ¼ÄŸÃ¼
 
 | Tarih | Faz | Not |
 |---|---|---|
-| 2026-09-15 | — | Oturum kuruldu: 33 karar, Program B iptal, ADR-0004 yazıldı |
-| 2026-09-15 | Faz 0 | Redirect stub'lar yazıldı (`design-system.md` 440→~35 satır, `design.md` 203→~40 satır) |
-| 2026-09-15 | Faz 0 | Kanonik standart güncellendi: §1.3 tipografi ölçeği, §1.4 bağlayıcı kısıtlar, §2.1 sayfa kabuğu |
-| 2026-09-15 | Faz 0 | Guard'a `severity` katmanı: 3 yeni advisory kural. **Hata sayısı 1458'de sabit kaldı** — mevcut 9 kural etkilenmedi |
-| 2026-09-15 | Faz 0 | Taban ölçüldü: 176 dosya, 1458 error, 1334 advisory. Scoped kapı **PASS** |
-| 2026-09-15 | Faz 0 | **Sapma:** `--duration-*` Tailwind 4.3.3'te yok → bekliyor. **Sapma:** `SCOPE` Faz 7'ye taşındı |
-| 2026-09-15 | Faz 0 | Motion çözüldü: `--ease-crm` + `--ease-crm-in-out` token'landı, duration'lar §1.5'te değer olarak sabitlendi |
-| 2026-09-15 | Faz 0 | Kök dizin **sürüm kontrolüne alındı** (`git init` + `crm-monorepo/` gitignore). Yönetişim dokümanları artık tarihçeli |
-| 2026-09-15 | Faz 0 | **FAZ 0 KAPANDI** — typecheck 2/2, build 2/2 (52 rota), scoped kapı PASS, hata sayısı 1458'de sabit |
-| 2026-09-15 | Faz 1 | 11 primitif CLI ile eklendi → **21 → 32**. `button.tsx` ezilmedi (git diff boş) |
-| 2026-09-15 | Faz 1 | CLI'ın `cn@^0.3.0` npm bağımlılığı kaldırıldı; 11 dosyada import `@workspace/ui/lib/utils`'e çekildi. `package.json` + lock HEAD ile aynı |
-| 2026-09-15 | Faz 1 | `rounded-4xl` → `rounded-xl` (2 panel, §1.1 yasağı); `ring-3` → `ring-2` (2 dosya) |
-| 2026-09-15 | Faz 1 | **FAZ 1 KAPANDI** — typecheck 2/2, build 2/2, guard PASS, `apps/web` tüketicisi 0 |
-| 2026-09-15 | Faz 1 | Prosedür kalıcılaştırıldı: `crm-ui-standards.md` §2.1 (CLI komutu + 2 tuzak + kontrol listesi) |
-| 2026-09-15 | Faz 2 | `PageContainer` + `PageHeader` yazıldı; dashboard ve admin layout'un padding sahipliği devredildi |
-| 2026-09-15 | Faz 2 | 10 sayfa sarmalandı (customers pilotu `PageHeader`'a da geçti, `text-2xs` ilk kez kullanıldı) |
-| 2026-09-15 | Faz 2 | ✅ `text-2xs` üretilen CSS'te doğrulandı → tipografi token'ı işlevsel |
-| 2026-09-15 | Faz 2 | ⚠️ **Hata:** sezgisel kapanış-etiketi dönüşümü 2 dosyayı kırdı (`TS17002`); typecheck commit öncesi yakaladı. Yapısal eşleştirmeyle elle düzeltildi. Teknik not kaydedildi |
-| 2026-09-15 | Faz 2 | Kalan 42 sayfa kategori haritasıyla kayıt altına alındı |
-| 2026-09-15 | Faz 2 | ✅ **Kategori A tamamlandı** (7 sayfa) → **17/52**. typecheck 2/2, build 2/2 |
-| 2026-09-15 | Faz 2 | ⚠️ Teknik not 2: `customers/[customerId]`'nin kök adayı loading dalıydı → iki dönüş noktası da sarmalandı. "Mekanik" kategori bile sayfa başına doğrulama gerektiriyor |
-| 2026-09-15 | Faz 2 | ✅ **Kategori B tamamlandı** (4 sayfa) → **21/52**. `inventory`/`contracts` gerçek çift-padding'di; form ekranlarının `max-width`'i istisna olarak belgelendi |
+| 2026-09-15 | â€” | Oturum kuruldu: 33 karar, Program B iptal, ADR-0004 yazÄ±ldÄ± |
+| 2026-09-15 | Faz 0 | Redirect stub'lar yazÄ±ldÄ± (`design-system.md` 440â†’~35 satÄ±r, `design.md` 203â†’~40 satÄ±r) |
+| 2026-09-15 | Faz 0 | Kanonik standart gÃ¼ncellendi: Â§1.3 tipografi Ã¶lÃ§eÄŸi, Â§1.4 baÄŸlayÄ±cÄ± kÄ±sÄ±tlar, Â§2.1 sayfa kabuÄŸu |
+| 2026-09-15 | Faz 0 | Guard'a `severity` katmanÄ±: 3 yeni advisory kural. **Hata sayÄ±sÄ± 1458'de sabit kaldÄ±** â€” mevcut 9 kural etkilenmedi |
+| 2026-09-15 | Faz 0 | Taban Ã¶lÃ§Ã¼ldÃ¼: 176 dosya, 1458 error, 1334 advisory. Scoped kapÄ± **PASS** |
+| 2026-09-15 | Faz 0 | **Sapma:** `--duration-*` Tailwind 4.3.3'te yok â†’ bekliyor. **Sapma:** `SCOPE` Faz 7'ye taÅŸÄ±ndÄ± |
+| 2026-09-15 | Faz 0 | Motion Ã§Ã¶zÃ¼ldÃ¼: `--ease-crm` + `--ease-crm-in-out` token'landÄ±, duration'lar Â§1.5'te deÄŸer olarak sabitlendi |
+| 2026-09-15 | Faz 0 | KÃ¶k dizin **sÃ¼rÃ¼m kontrolÃ¼ne alÄ±ndÄ±** (`git init` + `crm-monorepo/` gitignore). YÃ¶netiÅŸim dokÃ¼manlarÄ± artÄ±k tarihÃ§eli |
+| 2026-09-15 | Faz 0 | **FAZ 0 KAPANDI** â€” typecheck 2/2, build 2/2 (52 rota), scoped kapÄ± PASS, hata sayÄ±sÄ± 1458'de sabit |
+| 2026-09-15 | Faz 1 | 11 primitif CLI ile eklendi â†’ **21 â†’ 32**. `button.tsx` ezilmedi (git diff boÅŸ) |
+| 2026-09-15 | Faz 1 | CLI'Ä±n `cn@^0.3.0` npm baÄŸÄ±mlÄ±lÄ±ÄŸÄ± kaldÄ±rÄ±ldÄ±; 11 dosyada import `@workspace/ui/lib/utils`'e Ã§ekildi. `package.json` + lock HEAD ile aynÄ± |
+| 2026-09-15 | Faz 1 | `rounded-4xl` â†’ `rounded-xl` (2 panel, Â§1.1 yasaÄŸÄ±); `ring-3` â†’ `ring-2` (2 dosya) |
+| 2026-09-15 | Faz 1 | **FAZ 1 KAPANDI** â€” typecheck 2/2, build 2/2, guard PASS, `apps/web` tÃ¼keticisi 0 |
+| 2026-09-15 | Faz 1 | ProsedÃ¼r kalÄ±cÄ±laÅŸtÄ±rÄ±ldÄ±: `crm-ui-standards.md` Â§2.1 (CLI komutu + 2 tuzak + kontrol listesi) |
+| 2026-09-15 | Faz 2 | `PageContainer` + `PageHeader` yazÄ±ldÄ±; dashboard ve admin layout'un padding sahipliÄŸi devredildi |
+| 2026-09-15 | Faz 2 | 10 sayfa sarmalandÄ± (customers pilotu `PageHeader`'a da geÃ§ti, `text-2xs` ilk kez kullanÄ±ldÄ±) |
+| 2026-09-15 | Faz 2 | âœ… `text-2xs` Ã¼retilen CSS'te doÄŸrulandÄ± â†’ tipografi token'Ä± iÅŸlevsel |
+| 2026-09-15 | Faz 2 | âš ï¸ **Hata:** sezgisel kapanÄ±ÅŸ-etiketi dÃ¶nÃ¼ÅŸÃ¼mÃ¼ 2 dosyayÄ± kÄ±rdÄ± (`TS17002`); typecheck commit Ã¶ncesi yakaladÄ±. YapÄ±sal eÅŸleÅŸtirmeyle elle dÃ¼zeltildi. Teknik not kaydedildi |
+| 2026-09-15 | Faz 2 | Kalan 42 sayfa kategori haritasÄ±yla kayÄ±t altÄ±na alÄ±ndÄ± |
+| 2026-09-15 | Faz 2 | âœ… **Kategori A tamamlandÄ±** (7 sayfa) â†’ **17/52**. typecheck 2/2, build 2/2 |
+| 2026-09-15 | Faz 2 | âš ï¸ Teknik not 2: `customers/[customerId]`'nin kÃ¶k adayÄ± loading dalÄ±ydÄ± â†’ iki dÃ¶nÃ¼ÅŸ noktasÄ± da sarmalandÄ±. "Mekanik" kategori bile sayfa baÅŸÄ±na doÄŸrulama gerektiriyor |
+| 2026-09-15 | Faz 2 | âœ… **Kategori B tamamlandÄ±** (4 sayfa) â†’ **21/52**. `inventory`/`contracts` gerÃ§ek Ã§ift-padding'di; form ekranlarÄ±nÄ±n `max-width`'i istisna olarak belgelendi |
