@@ -1,9 +1,14 @@
-/* Hallmark · component: quick-actions · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import {
   Briefcase,
   Calendar,
@@ -302,102 +307,112 @@ export function QuickActionsWidget({
       )}
 
       {/* In-Place Customize Modal */}
-      {isCustomizeOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xl">
-            <div className="flex items-center justify-between border-border border-b pb-3">
-              <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Settings2 className="h-4 w-4" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-foreground text-sm">
-                    Hızlı İşlemleri Özelleştir
-                  </h4>
-                  <p className="text-[11px] text-muted-foreground">
-                    Dashboard üzerinde görünecek butonları seçin
-                  </p>
-                </div>
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsCustomizeOpen(false);
+          }
+        }}
+        open={isCustomizeOpen}
+      >
+        <DialogContent
+          aria-describedby={undefined}
+          className="flex max-h-[85vh] w-full flex-col gap-0 overflow-hidden p-5 sm:max-w-md"
+          showCloseButton={false}
+        >
+          <div className="flex items-center justify-between border-border border-b pb-3">
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Settings2 className="h-4 w-4" />
               </div>
+              <div>
+                <DialogTitle className="font-semibold text-foreground text-sm">
+                  Hızlı İşlemleri Özelleştir
+                </DialogTitle>
+                <p className="text-[11px] text-muted-foreground">
+                  Dashboard üzerinde görünecek butonları seçin
+                </p>
+              </div>
+            </div>
+            <DialogClose asChild>
               <Button
                 className="h-7 w-7 text-muted-foreground"
-                onClick={() => setIsCustomizeOpen(false)}
                 size="icon"
                 type="button"
                 variant="ghost"
               >
                 <X className="h-4 w-4" />
               </Button>
-            </div>
-
-            <div className="my-3 max-h-72 space-y-2 overflow-y-auto pr-1">
-              {ALL_QUICK_ACTIONS.map((act) => {
-                const isSelected = enabledIds.includes(act.id);
-                const Icon = act.icon;
-                return (
-                  <button
-                    className={`flex w-full items-center justify-between rounded-lg border p-2.5 text-left transition-all ${
-                      isSelected
-                        ? "border-primary/50 bg-primary/10"
-                        : "border-border/80 bg-muted/30 opacity-70 hover:border-border"
-                    }`}
-                    key={act.id}
-                    onClick={() => handleToggleAction(act.id)}
-                    type="button"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div
-                        className={`flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} text-white shadow-2xs`}
-                      >
-                        <Icon className="h-3.5 w-3.5" />
-                      </div>
-                      <div>
-                        <div className="font-semibold text-foreground text-xs">
-                          {act.title}
-                        </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          {act.description}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${
-                        isSelected
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-background"
-                      }`}
-                    >
-                      {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex items-center justify-between border-border border-t pt-3">
-              <Button
-                className="h-7 gap-1 text-[11px] text-muted-foreground"
-                onClick={handleResetDefaults}
-                type="button"
-                variant="ghost"
-              >
-                <RotateCcw className="h-3 w-3" />
-                <span>Varsayılanlara Dön</span>
-              </Button>
-
-              <Button
-                className="h-8 px-4 text-xs"
-                onClick={() => setIsCustomizeOpen(false)}
-                size="sm"
-                type="button"
-              >
-                Tamamla
-              </Button>
-            </div>
+            </DialogClose>
           </div>
-        </div>
-      )}
+
+          <div className="my-3 max-h-72 space-y-2 overflow-y-auto pr-1">
+            {ALL_QUICK_ACTIONS.map((act) => {
+              const isSelected = enabledIds.includes(act.id);
+              const Icon = act.icon;
+              return (
+                <button
+                  className={`flex w-full items-center justify-between rounded-lg border p-2.5 text-left transition-all ${
+                    isSelected
+                      ? "border-primary/50 bg-primary/10"
+                      : "border-border/80 bg-muted/30 opacity-70 hover:border-border"
+                  }`}
+                  key={act.id}
+                  onClick={() => handleToggleAction(act.id)}
+                  type="button"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className={`flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} text-white shadow-2xs`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground text-xs">
+                        {act.title}
+                      </div>
+                      <div className="text-[10px] text-muted-foreground">
+                        {act.description}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${
+                      isSelected
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-background"
+                    }`}
+                  >
+                    {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center justify-between border-border border-t pt-3">
+            <Button
+              className="h-7 gap-1 text-[11px] text-muted-foreground"
+              onClick={handleResetDefaults}
+              type="button"
+              variant="ghost"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Varsayılanlara Dön</span>
+            </Button>
+
+            <Button
+              className="h-8 px-4 text-xs"
+              onClick={() => setIsCustomizeOpen(false)}
+              size="sm"
+              type="button"
+            >
+              Tamamla
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
