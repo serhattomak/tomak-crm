@@ -1,0 +1,217 @@
+# CRM UI/UX & Bileşen Mimarisi Standartları
+
+> **Durum:** ✅ Aktif / **TEK KANONİK STANDART**  
+> **Kapsam:** CRM Platformu (`crm-monorepo/apps/web`, `crm-monorepo/packages/ui`) — `apps/web` içindeki **52 sayfanın tamamı**  
+> **Temel Felsefe:** Linear & Stripe ilhamlı temiz kurumsal zanaat (craft), yüksek veri yoğunluğu, sıfır AI-slop dekorasyon.  
+> **Karar kaydı:** [`adr/0004-crm-design-system-enforcement.md`](adr/0004-crm-design-system-enforcement.md) · **Yol haritası:** [`crm-ui-roadmap.md`](crm-ui-roadmap.md)
+
+> ⚠️ **Bu dosya tek doğruluk kaynağıdır.** `docs/design-system.md` ve kökteki `design.md` artık buraya yönlendiren stub'lardır (ADR-0004 §1). Yeni kural, token, renk, tipografi veya bileşen kararı **yalnızca buraya** yazılır.
+
+---
+
+## 1. Tasarım Dili ve İlkeler (Design Principles)
+
+### 1.1 Tactile Feel & Kenar Yuvarlaklığı (Border Radius)
+- **Kural:** Tüm CRM genelinde `--radius: 0.5rem` (8px) taban alınır.
+- **Kartlar & Konteynerler:** `rounded-lg` (8px) veya `rounded-xl` (12px). Bubbly, oyuncak görünümlü `rounded-4xl` hap formları kesinlikle yasaktır.
+- **Butonlar & Girdiler:** `rounded-lg` (8px) / `rounded-md` (6px).
+- **Rozetler (Badges):** `rounded-md` (6px).
+- **Ayrım Çizgileri:** Saydam 1px ince kenarlıklar (`border-border/80` veya `border-border/60`).
+
+### 1.2 Anti-AI-Slop & Renk Disiplini
+- **Dekoratif AI Degrade Küreleri Yasak:** Arka planlarda amaçsızca gezinen bulanık renk topları (`blur-3xl bg-blue-500/20 rounded-full`), parıltı efektleri ve rastgele neon parlamalar kullanılmaz.
+- **Semantik Renk Token'ları:**
+  - `bg-background`, `bg-card`, `bg-muted`
+  - `text-foreground`, `text-muted-foreground`, `text-primary`
+  - `border-border`, `border-input`, `ring-ring`
+- **Durum Renkleri (Status Semantics):**
+  - **Başarılı / Aktif:** `emerald` / `success` token'ları (örn. `Active`, `Paid`)
+  - **Uyarı / Beklemede:** `amber` / `warning` token'ları (örn. `Pending`, `VIP`)
+  - **Bilgi / Potansiyel:** `blue` / `accent` token'ları (örn. `Lead`, `In Progress`)
+  - **Hata / Kaybedildi:** `rose` / `destructive` token'ları (örn. `Churned`, `Urgent`)
+  - **Nötr / Pasif:** `zinc` / `neutral` token'ları (örn. `Draft`, `Closed`)
+
+### 1.3 Veri Yoğunluğu & Tipografi
+- İş yazılımlarında (B2B CRM) ekran alanı değerlidir. Aşırı devasa dolgular (`p-8`, `p-12`) yerine kompakt ve okunabilir hiyerarşi (`p-3.5`, `p-4`) kullanılır.
+- Başlıklar: `text-sm font-semibold` veya `text-base font-bold` (Tracking: `tracking-tight`).
+- Gövde metinleri: `text-xs font-normal`.
+
+**Kanonik tipografi ölçeği:** Keyfi piksel değerleri (`text-[13px]`, `text-[9px]`…) yasaktır. Mikro boyutlar yalnızca iki token'dır:
+
+| Token | Değer | Kullanım |
+| --- | --- | --- |
+| `text-2xs` | 11px | İkincil detay, meta bilgi (`text-muted-foreground` ile) |
+| `text-3xs` | 10px | Mikro etiket (yoğun tablo başlığı, rozet üstü) |
+
+> **9px kaldırıldı** (ADR-0004 §5): veri yoğun bir CRM'de okunmaz ve üçüncü mikro boyutun işlevi yok. Mevcut `text-[9px]` kullanımları `text-3xs`'e (10px) katlanır.
+
+### 1.4 Bağlayıcı Kısıtlar (kaynak değil, sonuç)
+
+> **Temel kural (ADR-0004 §3):** Bir bileşenin **kaynağı** değil, **görsel sonucu** bu standarda tabidir. `shadcn` CLI ile eklenen bir primitif de, elle yazılan da aynı yuvarlaklık, token ve dekorasyonsuzluk kurallarına uymak zorundadır. Uymuyorsa house stiline çekilir.
+
+`crm-ui-guard` tarafından kilitlenen yasaklar:
+
+| Yasak | Yerine |
+| --- | --- |
+| Keyfi tipografi (`text-[9px]`, `text-[13px]`, `text-[1rem]`…) | `text-2xs` / `text-3xs` veya Tailwind ölçeği (`text-xs`, `text-sm`…) |
+| Native `<table>` | `@workspace/ui` `Table` primitifleri (`TableHeader`, `TableRow`, `TableCell`…) |
+| Inline `style={{ … }}` (statik değerler) | Tailwind sınıfları + semantic token (`style` yalnızca ölçülemez dinamik değerler için) |
+| Native `<select>`, `<input type="date">`, `<input type="number">` | ADR-0002 tablosu: `SelectField`, `Combobox`, `DatePicker`, `DateRangePicker`, `NumberInput` |
+| `slate-*`, `violet-*`, `fuchsia-*` | `zinc-*` + `blue-500` skalası |
+| Keyfi hex (`bg-[#…]`, `fill="#…"`, `color: "#…"`) | Semantic token + `dark:` varyantları |
+
+**Muafiyetler yalnızca** `crm-monorepo/scripts/crm-ui-guard.allowlist.json` içinde, gerekçesiyle kayıtlıdır. Sessiz istisna yoktur. Bilinen ve belgeli istisna: e-posta / print HTML şablonlarındaki hex paleti (e-posta istemcileri `oklch`/CSS değişkeni desteklemez — teknik zorunluluk).
+
+### 1.5 Motion
+
+Dekoratif animasyon **yoktur**. Motion, işlevi açıklamak için vardır (bir şeyin nereden geldiğini/durumun değiştiğini göstermek), süslemek için değil.
+
+| Token / Değer | Değer | Kullanım |
+| --- | --- | --- |
+| `ease-crm` | `cubic-bezier(0.32, 0.72, 0, 1)` | Overlay, sheet, drawer giriş/çıkışı (swift-out) |
+| `ease-crm-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Boyut/konum geçişleri (simetrik) |
+| `duration-150` | 150ms | Hover, press, renk geçişi (`transition-colors`) |
+| `duration-200` | 200ms | Overlay giriş/çıkışı — **varsayılan** |
+| `duration-250` | 250ms | Sheet / drawer gibi geniş yüzeyler |
+
+> **Neden duration token değil?** Tailwind **4.3.3**'te `--duration-*` diye bir theme namespace'i **yoktur** (yalnızca `--ease-*` ve `--default-transition-duration` vardır). `@theme`'e eklenen bir `--duration-*` hiçbir utility üretmez — okunmayan ölü bir değişken olurdu. Bu yüzden duration **değer** olarak standartlaştırılır, token olarak değil. (Bu tespit Faz 0'da doğrulanmıştır; ADR-0004 §5 bu gerçeğe göre yazılmıştır.)
+
+**Zorunlu:** `prefers-reduced-motion` desteği. Motion ekleyen her bileşen bu tercihi onurlandırmalıdır (`motion-reduce:transition-none` veya eşdeğeri).
+
+---
+
+## 2. Kanonik Primitif Bileşenler (`@workspace/ui/components/*`)
+
+Tüm CRM arayüzlerinde native HTML etiketleri (`<table/>`, `<div>` kart taklitleri) yerine `@workspace/ui` altındaki paylaşılan primitifler kullanılır:
+
+> **Genişleyen liste (ADR-0004 §4):** Aşağıdaki primitifler **Faz 1**'de pakete eklenir ve bu tabloya işlenir: `Dialog`, `AlertDialog`, `Sheet` (drawer), `DropdownMenu`, `Popover`, `Switch`, `RadioGroup`, `Progress`, `Separator`, `ScrollArea`, `Alert`, `PageContainer`, `PageHeader`. Elle yazılmış modal/overlay kullanımı bu primitifler eklendikçe yasaklanır — hedef ~60 elle yazılmış modal ve 156 `fixed inset-0` bloğunun tasfiyesi. Ekleyen: `shadcn` CLI (stil `radix-luma`) → ardından house stiline uyarlama. **Radix tek foundation'dır**; Base UI tabanlı bileşen alınmaz.
+>
+> Bu tabloda **olmayan** bir şeyi dışarıdan getirmeyin: bir bileşen `packages/ui`'de zaten varsa (ör. `Badge`, `PhoneInput`, `NumberInput`) ikinci bir kopya oluşturulmaz. `packages/ui` her zaman kazanır.
+
+| Primitif | Dosya | Kullanım Amacı |
+|---|---|---|
+| `Card` | `card.tsx` | Veri blokları, özet panelleri (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`) |
+| `Badge` | `badge.tsx` | Durum, segment ve tip etiketleri (8 varyant: `default`, `secondary`, `outline`, `destructive`, `success`, `warning`, `accent`, `neutral`) |
+| `Button` | `button.tsx` | Aksiyonlar (`variant`: `default`, `outline`, `secondary`, `ghost`, `destructive`, `link`; `size`: `sm`, `default`, `lg`, `icon`) |
+| `Table` | `table.tsx` | Yüksek veri yoğunluklu listeler (`TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`) |
+| `Tabs` | `tabs.tsx` | Sekmeli görünümler (Radix UI tabanlı `TabsList`, `TabsTrigger`, `TabsContent`) |
+| `Avatar` | `avatar.tsx` | Kullanıcı/müşteri görselleri ve harf fallback'leri (`AvatarImage`, `AvatarFallback`) |
+| `Skeleton` | `skeleton.tsx` | Sayfa ve widget veri yüklenme durumları |
+| `EmptyState` | `empty-state.tsx` | Veri bulunamadı veya ilk kayıt ekleme durumu (`icon`, `title`, `description`, `action`) |
+| `Input` & `Label` | `input.tsx`, `label.tsx` | Form giriş alanları ve etiketleri |
+| `Checkbox` | `checkbox.tsx` | Çoklu seçim ve onay kutuları (Radix UI Checkbox) |
+
+### 2.1 Kanonik Sayfa Kabuğu
+
+Tüm sayfalar (**52 ekran** — dashboard + admin + auth + portal) aynı kabuğu kullanır. **Navigasyon yüzeye özeldir**; kabuk, boşluk, tipografi ve renk dili ortaktır. Login ekranı ile müşteri listesi aynı navigasyona sahip olmak zorunda değil, ama aynı dilde konuşmak zorundadır.
+
+| Primitif | Görev |
+| --- | --- |
+| `PageContainer` | Sayfa gövdesi: `px-4 py-5` / `md:px-6 md:py-6`. **Tam genişlik** — `max-width` sınırı yok (veri yoğun CRM'de geniş ekran harcanmaz, 4K'da beyaz kenar üretilmez) |
+| `PageHeader` | Başlık / açıklama / aksiyonlar |
+
+**Terk edilen boşluk varyantları:** `p-4 md:p-6`, `p-4 pt-6 md:p-8`, `p-5`, `p-8`, `p-10`, `p-12` — hepsi tek değere iner.
+
+> **Durum:** `PageContainer` / `PageHeader` ADR-0004 **Faz 2**'de eklenir. O zamana kadar yeni sayfa açarken mevcut kabuğu kullanın; **kendi boşluk varyantınızı icat etmeyin**.
+
+---
+
+## 3. Sayfa ve Bileşen Ayrıştırma Mimarisi (Architecture & Decomposition)
+
+### 3.1 300 Satır Kuralı (Single Responsibility)
+- Tek bir `page.tsx` dosyası **asla 300-400 satırı aşmamalıdır.**
+- `page.tsx` yalnızca bir **orkestratör (coordinator)** olmalıdır:
+  - Route parametrelerini (`useParams`) okur.
+  - İstemci durumunu (`useState`, `useCallback`) ve veri çekme döngüsünü (`ApiClient`) yönetir.
+  - Yetki kontrolünü (`usePermissions`) bağlar.
+  - Görünüm ve modalları alt bileşenlere delege eder.
+
+### 3.2 Dizin Standardı: `_components/`
+Her ana rota için alt bileşenler o rotanın dizinindeki `_components/` klasöründe toplanır:
+```text
+app/(dashboard)/[tenantSlug]/customers/
+├── page.tsx                             # ~260 satır ana koordinatör
+└── _components/
+    ├── customer-stats-banner.tsx        # 4 KPI metrik kartı
+    ├── customer-filters-bar.tsx         # Arama, filtreler, dışa aktarım, görünüm toggle
+    ├── customer-table-view.tsx          # Tablo görünümü + Checkbox + Badge + Aksiyonlar
+    ├── customer-grid-view.tsx           # Kart grid görünümü
+    ├── create-customer-modal.tsx        # Yeni müşteri ekleme penceresi
+    └── delete-customer-dialog.tsx       # Silme onay modalı
+
+app/(dashboard)/[tenantSlug]/customers/[customerId]/
+├── page.tsx                             # ~260 satır ana koordinatör
+└── _components/
+    ├── customer-detail-header.tsx       # Geri butonu, unvan, aksiyon butonları
+    ├── customer-sidebar-summary.tsx     # İletişim, temsilci, VKN bilgileri
+    ├── customer-tabs-content.tsx        # 8 sekmeli tuval ve alt görünümler
+    ├── add-contact-modal.tsx            # Şirket yetkilisi ekleme modalı
+    ├── add-activity-modal.tsx           # Etkileşim/aktivite ekleme modalı
+    └── edit-customer-modal.tsx          # Müşteri düzenleme modalı
+```
+
+---
+
+## 4. Gerçekleştirilen Başlıca Revizyonlar (Changelog)
+
+### 4.1 Global Dashboard Kabuğu (`apps/web/app/(dashboard)/layout.tsx`)
+- **Önceki Durum:** 1.350 satırlık devasa monolit, karmaşık switch-case'ler, iç içe menü render fonksiyonları.
+- **Yapılan İyileştirme:** 215 satıra indirildi. `apps/web/components/layout/` altında 6 modüler bileşene bölündü:
+  - `nav-config.ts`: Hub tanımları (CRM, OPS, HRM, CMS, SYS), rota eşlemeleri ve yetki filtreleri.
+  - `hub-rail.tsx`: Sol 64px ray, anlık tooltip'ler, tenant ve kullanıcı profil tetikleyicileri.
+  - `sub-nav-rail.tsx`: Katlanabilir alt navigasyon rayı, ⌘K arama tetikleyicisi.
+  - `dashboard-header.tsx`: Mobil ve duyarlı üst bar.
+  - `mobile-nav.tsx`: Mobil drawer ve alt bar.
+  - `keyboard-shortcuts-listener.tsx`: `gd`, `gp`, `nc`, `?` kısayol dinleyicisi.
+
+### 4.2 Ana Dashboard Genel Bakış (`[tenantSlug]/page.tsx`)
+- Üst filtre barı `@workspace/ui` `Button` ve `Badge` primitiflerine geçirildi.
+- `kpi-metrics-widget.tsx`: Yapay AI gradyan parlamaları kaldırıldı; `Card`, `Badge`, `Skeleton` entegre edildi.
+- `deals-table-widget.tsx`: `Table`, `Badge`, `EmptyState` ve `Button` ile yeniden yazıldı.
+
+### 4.3 Müşteri Listesi (`/customers`)
+- 1.364 satırlık monolit sayfa 260 satıra indirildi.
+- 4'lü KPI istatistik banner'ı, gelişmiş filtreleme barı, yüksek veri yoğunluklu tablo görünümü, kart ızgara görünümü ve modallar ayrıştırıldı.
+
+### 4.4 Müşteri 360° Detay Sayfası (`/customers/[customerId]`)
+- 2.105 satırlık monolit sayfa 260 satıra indirildi.
+- Temel iletişim & temsilci özeti sol sütuna, 8 sekmeli ana etkileşim tuvali sağ sütuna yerleştirildi.
+- Timeline (Aktivite Geçmişi), Dahili Notlar (Yerinde düzenleme & iğneleme), Satış Fırsatları, Teklifler, Siparişler, Destek Biletleri ve Finansal Bakiye sekmeleri modern primitiflerle donatıldı.
+
+### 4.5 Kod Temizliği ve Derleme Başarısı
+- **Temizlenen Monolitik Kod:** Toplam **~4.500 satır** spagetti kod elendi.
+- **TypeScript Doğrulaması:** `packages/ui` ve `apps/web` içinde `0` hata (`tsc --noEmit` exit code 0).
+- **Production Build:** Next.js 16 Turbopack derlemesinde tüm 30+ rota başarıyla derlendi.
+
+---
+
+## 5. Yol Haritası ve Önerilen Sıradaki Adımlar (Roadmap)
+
+Aynı mimari ve tasarım standartlarının platformun diğer temel modüllerine yaygınlaştırılması hedeflenmektedir:
+
+```mermaid
+flowchart LR
+    A["Müşteri 360° & Liste"] --> B["Satış Hunileri & Kanban"]
+    B --> C["Teklifler & Siparişler"]
+    C --> D["Destek / Helpdesk"]
+    D --> E["İK & Operasyon"]
+```
+
+### Aşama 1: Satış Hunileri & Kanban Panosu (`/[tenantSlug]/pipelines`)
+- Sürükle-bırak aşama sütunlarının (`drag-and-drop`) performans optimizasyonu.
+- Aşama bazlı toplam tutar ve adet kartlarının Linear/Stripe kart standartlarına uyarlanması.
+- Anlaşma (`Deal`) kartlarındaki etiketlerin `Badge` primitifine dönüştürülmesi.
+
+### Aşama 2: Teklifler & Siparişler (`/[tenantSlug]/quotes` & `/[tenantSlug]/orders`)
+- Yüksek yoğunluklu `Table` bileşeni kullanımı.
+- Teklif revizyon geçmişi ve onay akışlarının görselleştirilmesi.
+- Yazdırma ve PDF önizleme şablonlarının tipografik kalitesinin yükseltilmesi.
+
+### Aşama 3: Destek Talepleri & Helpdesk (`/[tenantSlug]/tickets`)
+- SLA ihlal göstergelerinin belirginleştirilmesi.
+- Canlı mesajlaşma akışının modern konuşma balonları (`chat bubbles`) ve zaman damgalarıyla zenginleştirilmesi.
+- Kategori ve öncelik rozetlerinin standartlaştırılması.
+
+### Aşama 4: Operasyon ve İK Modülleri (`/attendance`, `/payroll`, `/field-service`)
+- `DatePicker`, `DateRangePicker` ve `NumberInput` kullanımının ADR-0002 doğrultusunda eksiksiz kilitlenmesi.
+- Puantaj ve bordro tablolarının taranabilirliğinin artırılması.
