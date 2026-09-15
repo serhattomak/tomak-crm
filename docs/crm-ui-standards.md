@@ -231,7 +231,7 @@ onInteractOutside={(event) => {
 | `widgets/draggable-widget-wrapper` | Widget üzerinde hover'da çıkan **sürükleme tutamacı** (`opacity-0 group-hover:opacity-100`) |
 | `layout/dashboard-header` | `sticky` başlığın **fonksiyonel** `backdrop-blur-md`'si (dekoratif değil) |
 | `settings/page` içindeki kart | Kart yüzeyinde dekoratif `backdrop-blur-sm` → §1.2/cilâ işi, overlay işi değil |
-| `orders` + `orders/[orderId]` içindeki elle yazılmış toast (`slide-in-from-top-4 fixed top-6 right-6 z-50 … animate-in … bg-slate-900 … shadow-2xl`) | Overlay **imzasını** taşıyor (`fixed` + `shadow-2xl`) ama overlay değil: backdrop yok, kapatma yok, sayfayı engellemiyor, zamanlayıcıyla kapanıyor. Konusu **toaster spec'i** (`.scratch/ui-system-design-upgrade`), Faz 3 değil |
+| `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]` içindeki elle yazılmış toast'lar (`fixed top-6 right-6` / `fixed right-6 bottom-6` … `animate-in` … `bg-slate-900`/`bg-zinc-900` … `shadow-2xl`) | Overlay **imzasını** taşıyor (`fixed` + `shadow-2xl`) ama overlay değil: backdrop yok, kapatma yok, sayfayı engellemiyor, zamanlayıcıyla kapanıyor. `projects` dosyasında kod bunu kendisi `{/* Toast */}` diye adlandırıyor. Konusu **toaster spec'i** (`.scratch/ui-system-design-upgrade`), Faz 3 değil. **4 dosyada 5 örnek** — bu fazın en sık yanlış pozitifi |
 
 **Print — overlay'ler ekran kromu, asla basılmaz.** `globals.css`'in `@media print` bloğu backdrop'ları gizler:
 
