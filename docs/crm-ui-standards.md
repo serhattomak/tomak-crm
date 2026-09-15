@@ -214,14 +214,23 @@ onInteractOutside={(event) => {
 
 **Neden koşullu:** `bulk-coupon-modal`'da üretimden **önce** dış-tıklama normal çalışsın (formdan çıkmanın yolu), üretimden **sonra** etkisiz olsun diye. Esc her durumda açık kalır — bu bilinçli bir tuş, kazara bir tıklama değil.
 
-**Kontrol listesi eklemesi — açılış ve kapanışı SAY.** Faz 2'de olduğu gibi Faz 3'te de bu tuzağa düşüldü (`TS17002`, iki kez): açılış tarafında iki `div`'i tek bir primitifle değiştirip kapanışta bir `</div>` bırakmak, JSX'i bozar. Kapanışı **desen eşleştirerek değil**, açılış/kapanış sayısını eşleştirerek kur:
+**Kontrol listesi eklemesi — açılış ve kapanışı SAY.** Faz 2'de olduğu gibi Faz 3'te de bu tuzağa düşüldü (`TS17002`, **üç kez** + bir okumayla yakalanan near-miss): açılış tarafında iki `div`'i tek bir primitifle değiştirip kapanışta bir `</div>` bırakmak, JSX'i bozar. Kapanışı **desen eşleştirerek değil**, açılış/kapanış sayısını eşleştirerek kur:
 
 ```
 <Dialog          n   </Dialog>          n
 <DialogContent  n'   </DialogContent>  n'
 ```
 
-`tsc` bunu her zaman yakalar — ama yalnızca **her dosyadan sonra** çalıştırılırsa.
+`tsc` bunu her zaman yakalar — ama yalnızca **her dosyadan sonra** çalıştırılırsa. Çok overlay'li dosyalarda "sonra sayarım" refleksi **fiilen atlanıyor**; sayım dosya kapanışında **toplu** yapılmalı.
+
+**Padding sahibi — kaydırma sahibinin kardeşi kuralı.** Panelin kendi `p-*`'i varsa, o padding'i **kim taşır**:
+
+| Durum | Doğru aktarım |
+| --- | --- |
+| Panel `p-6`, içerik kaydırmıyor | `DialogContent` `p-6` alır, iş biter |
+| Panel `p-6`, **içerik** kaydırıyor (`flex-1 overflow-y-auto`) | `DialogContent` **`p-0`** alır + padding **başlığa ve içeriğe dağıtılır** (`p-6 pb-4` / `p-6`) |
+
+İkinci satır `products/[productId]`'de `EditProductModal`'da çıktı: `p-0` verip padding'i dağıtmayı unutmak diff'te **makul görünür**, ekranda içerik kenara yapışır. Kaydırma sahibi kuralıyla aynı ailedendir: **kapsayıcı değişince, ona bağlı olan padding de el değiştirir.**
 
 **Overlay OLMAYAN yüzen yüzeyler (kapsam dışı).** Aşağıdakiler §2.3/§2.4'e **girmez**; backdrop'ları, kapatmaları ve focus yönetimleri yoktur, arkadaki sayfayı engellemezler:
 
@@ -231,7 +240,7 @@ onInteractOutside={(event) => {
 | `widgets/draggable-widget-wrapper` | Widget üzerinde hover'da çıkan **sürükleme tutamacı** (`opacity-0 group-hover:opacity-100`) |
 | `layout/dashboard-header` | `sticky` başlığın **fonksiyonel** `backdrop-blur-md`'si (dekoratif değil) |
 | `settings/page` içindeki kart | Kart yüzeyinde dekoratif `backdrop-blur-sm` → §1.2/cilâ işi, overlay işi değil |
-| `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]` içindeki elle yazılmış toast'lar (`fixed top-6 right-6` / `fixed right-6 bottom-6` … `animate-in` … `bg-slate-900`/`bg-zinc-900` … `shadow-2xl`) | Overlay **imzasını** taşıyor (`fixed` + `shadow-2xl`) ama overlay değil: backdrop yok, kapatma yok, sayfayı engellemiyor, zamanlayıcıyla kapanıyor. `projects` dosyasında kod bunu kendisi `{/* Toast */}` diye adlandırıyor. Konusu **toaster spec'i** (`.scratch/ui-system-design-upgrade`), Faz 3 değil. **4 dosyada 5 örnek** — bu fazın en sık yanlış pozitifi |
+| `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]`, `products/[productId]`, `calendar` içindeki elle yazılmış toast'lar (`fixed top-6 right-6` / `fixed right-6 bottom-6` … `animate-in` … `bg-slate-900`/`bg-zinc-900` … `shadow-2xl`) | Overlay **imzasını** taşıyor (`fixed` + `shadow-2xl`) ama overlay değil: backdrop yok, kapatma yok, sayfayı engellemiyor, zamanlayıcıyla kapanıyor. `projects` dosyasında kod bunu kendisi `{/* Toast */}` diye adlandırıyor. Konusu **toaster spec'i** (`.scratch/ui-system-design-upgrade`), Faz 3 değil. **6 dosyada 7 örnek** — bu fazın en sık yanlış pozitifi. **Her yeni sayfada bu imzayı görünce önce "toast mı?" diye sorun** |
 
 **Print — overlay'ler ekran kromu, asla basılmaz.** `globals.css`'in `@media print` bloğu backdrop'ları gizler:
 
