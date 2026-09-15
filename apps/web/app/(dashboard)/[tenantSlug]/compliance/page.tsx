@@ -1,8 +1,20 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import {
   AlertOctagon,
   AlertTriangle,
@@ -1101,24 +1113,37 @@ export default function CompliancePage() {
 
       {/* 7. Rule Edit Drawer Modal */}
       {editingRule && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-end bg-black/60 backdrop-blur-xs">
-          <div className="slide-in-from-right flex h-full w-full max-w-lg animate-in flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
+        <Sheet
+          onOpenChange={(open) => {
+            if (!open) {
+              setEditingRule(null);
+            }
+          }}
+          open
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            className="data-[side=right]:w-full max-w-lg justify-between overflow-y-auto p-6 data-[side=right]:sm:max-w-lg"
+            side="right"
+          >
             <div className="space-y-4">
               <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
                 <div>
                   <span className="rounded-md bg-amber-50 px-2 py-0.5 font-bold text-[11px] text-amber-800">
                     {editingRule.lawReference}
                   </span>
-                  <h3 className="mt-1 font-bold text-base text-zinc-900 dark:text-zinc-100">
+                  <SheetTitle className="mt-1 font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {editingRule.name}
-                  </h3>
+                  </SheetTitle>
                 </div>
-                <button
-                  className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
-                  onClick={() => setEditingRule(null)}
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                <SheetClose asChild>
+                  <button
+                    className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                    type="button"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </SheetClose>
               </div>
 
               <p className="text-xs text-zinc-600 leading-relaxed dark:text-zinc-400">
@@ -1242,34 +1267,47 @@ export default function CompliancePage() {
                 {isSavingRule ? "Kaydediliyor..." : "Ayarları Kaydet"}
               </button>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {/* 8. Override Violation Modal */}
       {overridingViolation && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="zoom-in-95 w-full max-w-lg animate-in space-y-4 rounded-3xl bg-white p-6 shadow-2xl dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setOverridingViolation(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <div className="rounded-xl bg-amber-50 p-2 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
                   <FileCheck className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Yönetici İstisnası & Onay
-                  </h3>
+                  </DialogTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {overridingViolation.lawReference}
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
-                onClick={() => setOverridingViolation(null)}
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="space-y-1 rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-amber-900 text-xs">
@@ -1316,8 +1354,8 @@ export default function CompliancePage() {
                   : "Gerekçeyi Onayla ve İstisna Tanımla"}
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
