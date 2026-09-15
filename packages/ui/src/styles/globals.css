@@ -177,4 +177,25 @@
     page-break-inside: avoid !important;
     box-shadow: none !important;
   }
+
+  /*
+   * Overlays are screen chrome - never print the backdrop.
+   *
+   * The dialog/sheet/alert-dialog primitives render their overlay as a sibling
+   * of the content inside the portal, so a consumer cannot add a print class to
+   * it from the call site. Doing it here covers every overlay at once, and also
+   * cleans up hand-rolled backdrops such as `fixed inset-0 bg-black/40`, which
+   * current print output has been carrying because this stylesheet forces
+   * `print-color-adjust: exact`.
+   *
+   * Only the backdrop is hidden. The content is left in place: for surfaces that
+   * double as a print target (the invoice detail drawer), the panel is what you
+   * want on paper.
+   */
+  [data-slot="dialog-overlay"],
+  [data-slot="sheet-overlay"],
+  [data-slot="alert-dialog-overlay"],
+  [data-slot$="-backdrop"] {
+    display: none !important;
+  }
 }
