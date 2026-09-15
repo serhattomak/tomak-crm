@@ -2,6 +2,12 @@
 
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
@@ -13,6 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@workspace/ui/components/sheet";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -1950,20 +1962,32 @@ function RequisitionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm">
-      <div className="my-8 w-full max-w-2xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Briefcase className="h-5 w-5 text-violet-600" />
             {requisition?.id ? "İlanı Düzenle" : "Yeni İş İlanı"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
@@ -2137,8 +2161,8 @@ function RequisitionModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2267,20 +2291,32 @@ function CandidateModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm">
-      <div className="my-8 w-full max-w-xl space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Users className="h-5 w-5 text-violet-600" />
             {candidate?.id ? "Adayı Düzenle" : "Yeni Aday Ekle"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -2485,8 +2521,8 @@ function CandidateModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2543,20 +2579,32 @@ function ApplicationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <FileText className="h-5 w-5 text-emerald-600" />
             Yeni Başvuru
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -2649,8 +2697,8 @@ function ApplicationModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2699,20 +2747,32 @@ function StageModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
-          <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Layers className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
             {stage?.id ? "Aşamayı Düzenle" : "Yeni Aşama Ekle"}
-          </h2>
-          <button
-            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-3.5 text-xs" onSubmit={handleSubmit}>
@@ -2805,8 +2865,8 @@ function StageModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -2834,12 +2894,19 @@ function CandidateDetailDrawer({
   const isPdf = candidate.cvFileUrl?.toLowerCase().endsWith(".pdf");
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative z-10 flex h-full w-full max-w-md flex-col overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-md overflow-y-auto p-6 data-[side=right]:sm:max-w-md"
+        side="right"
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
             ADAY DETAYI
@@ -2853,13 +2920,14 @@ function CandidateDetailDrawer({
               <Edit2 className="h-3.5 w-3.5 text-violet-600" />
               Düzenle
             </button>
-            <button
-              className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-              onClick={onClose}
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <SheetClose asChild>
+              <button
+                className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                type="button"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </SheetClose>
           </div>
         </div>
 
@@ -2867,9 +2935,9 @@ function CandidateDetailDrawer({
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 font-extrabold text-lg text-white shadow-lg">
             {candidate.firstName.charAt(0).toUpperCase()}
           </div>
-          <h3 className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+          <SheetTitle className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
             {candidate.fullName}
-          </h3>
+          </SheetTitle>
           <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
             {candidate.email}
           </p>
@@ -2994,8 +3062,8 @@ function CandidateDetailDrawer({
             Kapat
           </button>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -3023,30 +3091,38 @@ function ApplicationDetailDrawer({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative z-10 flex h-full w-full max-w-md flex-col overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-900">
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <SheetContent
+        aria-describedby={undefined}
+        className="data-[side=right]:w-full max-w-md overflow-y-auto p-6 data-[side=right]:sm:max-w-md"
+        side="right"
+      >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
             BAŞVURU DETAYI
           </span>
-          <button
-            className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <SheetClose asChild>
+            <button
+              className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </SheetClose>
         </div>
 
         <div className="mt-4 space-y-4">
           <div>
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
+            <SheetTitle className="font-bold text-zinc-900 dark:text-zinc-100">
               {application.candidateName}
-            </h3>
+            </SheetTitle>
             <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
               {application.candidateEmail}
             </p>
@@ -3213,7 +3289,7 @@ function ApplicationDetailDrawer({
             Kapat
           </button>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
