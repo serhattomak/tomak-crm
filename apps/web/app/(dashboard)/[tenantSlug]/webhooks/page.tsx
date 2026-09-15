@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Activity,
@@ -1146,29 +1152,41 @@ export default function WebhooksPage() {
 
       {/* Test Result Modal */}
       {testResult && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-5 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setTestResult(null);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full overflow-y-auto gap-0 p-5 sm:max-w-lg"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
                   <ShieldCheck className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                     Test Gönderimi Sonucu
-                  </h3>
+                  </DialogTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Dry-run • HMAC imzalı istek simüle edildi
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-full p-1.5 text-zinc-400 transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
-                onClick={() => setTestResult(null)}
-                type="button"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-full p-1.5 text-zinc-400 transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <div className="mt-4 space-y-3 text-sm">
@@ -1253,8 +1271,8 @@ export default function WebhooksPage() {
                 Kapat
               </button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
