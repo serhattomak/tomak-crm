@@ -1,6 +1,12 @@
 "use client";
 
 import { Combobox } from "@workspace/ui/components/combobox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { toast } from "@workspace/ui/components/sonner";
 import {
@@ -382,28 +388,41 @@ function AdminTenantsContent() {
 
       {/* CREATE TENANT MODAL */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-xs">
-          <div className="max-h-[90vh] w-full max-w-2xl space-y-6 overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+        <Dialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsCreateModalOpen(false);
+            }
+          }}
+          open
+        >
+          <DialogContent
+            aria-describedby={undefined}
+            className="max-h-[90vh] w-full space-y-6 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
+            showCloseButton={false}
+          >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
                   <Building2 className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                  <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     Yeni Firma Tanımla
-                  </h2>
+                  </DialogTitle>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Sektör şablonu ve modül paketini yapılandırın
                   </p>
                 </div>
               </div>
-              <button
-                className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                onClick={() => setIsCreateModalOpen(false)}
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogClose asChild>
+                <button
+                  className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  type="button"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogClose>
             </div>
 
             <form className="space-y-4 text-xs" onSubmit={handleCreateTenant}>
@@ -531,8 +550,8 @@ function AdminTenantsContent() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </PageContainer>
   );
