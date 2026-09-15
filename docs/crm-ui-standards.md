@@ -150,7 +150,11 @@ Tüm sayfalar (**52 ekran** — dashboard + admin + auth + portal) aynı kabuğu
 
 **Terk edilen boşluk varyantları:** `p-4 md:p-6`, `p-4 pt-6 md:p-8`, `p-5`, `p-8`, `p-10`, `p-12` — hepsi tek değere iner.
 
-> **Durum:** `PageContainer` / `PageHeader` ADR-0004 **Faz 2**'de eklenir. O zamana kadar yeni sayfa açarken mevcut kabuğu kullanın; **kendi boşluk varyantınızı icat etmeyin**.
+**Padding'in tek sahibi `PageContainer`'dır.** Layout'lar yalnızca kaydırma alanı ve mobil bottom-nav payını (`pb-24`) sağlar; **sayfalar kendi `p-*`/`px-*` sınıflarını yazmaz.** Sayfa kendi padding'ini eklerse layout'un padding'iyle üst üste biner — drift'in en yaygın biçimi buydu.
+
+**İstisna — form ekranları `max-width` kullanabilir.** "Tam genişlik, max-width yok" kuralı veri yoğun liste/tablo ekranları içindir. Tek sütunlu form sayfaları okunabilirlik için `max-w-3xl`/`max-w-4xl` gibi bir üst sınır taşıyabilir; bu, `PageContainer`'ın `className`'i olarak verilir. `max-width` **liste/tablo** ekranlarında yasaktır (ör. `max-w-[1600px]` kaldırıldı).
+
+> **Durum:** `PageContainer` + `PageHeader` **Faz 2'de eklendi ve uygulanıyor**. Yeni sayfa açarken bu kabuğu kullanın; **kendi boşluk varyantınızı icat etmeyin**.
 
 ---
 
