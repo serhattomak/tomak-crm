@@ -1,6 +1,11 @@
 "use client";
 
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover";
+import {
   Bell,
   CheckCheck,
   ExternalLink,
@@ -14,7 +19,7 @@ import {
   Truck,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   type RealtimeNotification,
   useRealtimeNotifications,
@@ -395,8 +400,6 @@ export function NotificationCenter({
   const router = useRouter();
   const params = useParams();
   const tenantSlug = (params.tenantSlug as string) || "";
-  const rootId = useId();
-  const popoverId = useId();
 
   const {
     isConnected,
@@ -413,8 +416,11 @@ export function NotificationCenter({
   const [showTestMenu, setShowTestMenu] = useState(false);
   const [activeFilter, setActiveFilter] = useState<"all" | "unread">("all");
 
-  const handleToggleOpen = useCallback(() => {
-    setIsOpen((prev) => !prev);
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      setShowTestMenu(false);
+    }
   }, []);
 
   const handleToggleTestMenu = useCallback(() => {
@@ -437,35 +443,6 @@ export function NotificationCenter({
     [triggerTestNotification]
   );
 
-  // Close on click outside or Escape
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleClickOutside = (e: MouseEvent) => {
-      const rootEl = document.getElementById(rootId);
-      if (rootEl && !rootEl.contains(e.target as Node)) {
-        setIsOpen(false);
-        setShowTestMenu(false);
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsOpen(false);
-        setShowTestMenu(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, rootId]);
-
   const handleNotificationClick = useCallback(
     (item: RealtimeNotification) => {
       markAsRead(item.id);
@@ -486,37 +463,37 @@ export function NotificationCenter({
   });
 
   return (
-    <div className={`relative inline-block ${className}`} id={rootId}>
-      {/* Trigger Button */}
-      <button
-        aria-controls={popoverId}
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
-        aria-label={`Bildirimler, ${unreadCount} okunmamış bildirim`}
-        className={
-          buttonClassName ||
-          "relative flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 shadow-2xs transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-        }
-        onClick={handleToggleOpen}
-        title="Bildirimler"
-        type="button"
-      >
-        <Bell className="h-4 w-4" />
-        {unreadCount > 0 ? (
-          <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-violet-600 ring-2 ring-white dark:ring-zinc-900" />
-          </span>
-        ) : null}
-      </button>
+    <div className={`inline-block ${className}`}>
+      <Popover onOpenChange={handleOpenChange} open={isOpen}>
+        <PopoverTrigger asChild>
+          <button
+            aria-label={`Bildirimler, ${unreadCount} okunmamış bildirim`}
+            className={
+              buttonClassName ||
+              "relative flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 shadow-2xs transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+            }
+            title="Bildirimler"
+            type="button"
+          >
+            <Bell className="h-4 w-4" />
+            {unreadCount > 0 ? (
+              <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-violet-600 ring-2 ring-white dark:ring-zinc-900" />
+              </span>
+            ) : null}
+          </button>
+        </PopoverTrigger>
+      </Popover>
 
       {/* Popover Dropdown */}
-      {isOpen ? (
-        <div
-          className="fade-in zoom-in-95 fixed inset-x-3 top-14 z-50 animate-in overflow-hidden rounded-3xl border border-zinc-200/90 bg-white/95 shadow-2xl backdrop-blur-md duration-150 sm:absolute sm:inset-x-auto sm:top-11 sm:right-0 sm:w-96 dark:border-zinc-800 dark:bg-zinc-900/95"
-          id={popoverId}
-          role="dialog"
-        >
+      <PopoverContent
+        align="end"
+        className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-96"
+        collisionPadding={12}
+        side="bottom"
+        sideOffset={10}
+      >
           <NotificationHeader
             isConnected={isConnected}
             onMarkAllAsRead={markAllAsRead}
@@ -567,8 +544,7 @@ export function NotificationCenter({
               </span>
             </div>
           ) : null}
-        </div>
-      ) : null}
+      </PopoverContent>
     </div>
   );
 }
