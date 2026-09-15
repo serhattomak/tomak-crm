@@ -2,6 +2,12 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { toast } from "@workspace/ui/components/sonner";
@@ -112,32 +118,38 @@ export function PipelineSettingsModal({
   };
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-border/80 bg-background shadow-2xl">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        showCloseButton={false}
+      >
         <div className="flex items-center justify-between border-border/80 border-b bg-muted/30 p-4 sm:p-5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Settings className="h-4 w-4" />
             </div>
-            <h3 className="font-semibold text-foreground text-sm sm:text-base">
+            <DialogTitle className="font-semibold text-foreground text-sm sm:text-base">
               Pipeline ve Aşama Yapılandırması
-            </h3>
+            </DialogTitle>
           </div>
-          <Button
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            onClick={onClose}
-            size="icon"
-            type="button"
-            variant="ghost"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          <DialogClose asChild>
+            <Button
+              className="h-8 w-8 text-muted-foreground hover:text-foreground"
+              size="icon"
+              type="button"
+              variant="ghost"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogClose>
         </div>
 
         <form
@@ -327,7 +339,7 @@ export function PipelineSettingsModal({
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
