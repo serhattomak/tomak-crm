@@ -2,6 +2,12 @@
 
 import { Button } from "@workspace/ui/components/button";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -651,35 +657,41 @@ export function InviteMemberModal({
   }
 
   return (
-    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center overflow-y-auto p-3 sm:p-4">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="zoom-in-95 relative z-10 my-auto flex max-h-[92vh] w-full max-w-md animate-in flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-2xl duration-150 sm:p-6 dark:border-border dark:bg-card">
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+      open
+    >
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[92vh] w-full flex-col gap-0 overflow-y-auto p-5 sm:max-w-md sm:p-6"
+        showCloseButton={false}
+      >
         <div className="flex shrink-0 items-center justify-between border-slate-100 border-b pb-3.5 dark:border-border">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base dark:text-foreground">
+              <DialogTitle className="font-bold text-slate-900 text-sm sm:text-base dark:text-foreground">
                 Ekip Arkadaşı Davet Et
-              </h3>
+              </DialogTitle>
               <p className="text-[11px] text-slate-500 dark:text-muted-foreground">
                 Çalışma alanınıza yeni bir kullanıcı ekleyin
               </p>
             </div>
           </div>
-          <button
-            className="shrink-0 rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-muted"
-            onClick={onClose}
-            type="button"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <DialogClose asChild>
+            <button
+              className="shrink-0 rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-muted"
+              type="button"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
         </div>
 
         <form className="space-y-4 py-4" onSubmit={handleSubmit}>
@@ -772,7 +784,7 @@ export function InviteMemberModal({
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
