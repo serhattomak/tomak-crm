@@ -147,7 +147,7 @@ export function WhatsAppChatDrawer({
     >
       <SheetContent
         aria-describedby={undefined}
-        className="w-full max-w-4xl flex-row sm:max-w-4xl"
+        className="data-[side=right]:w-full max-w-4xl data-[side=right]:sm:max-w-4xl flex-row"
         showCloseButton={false}
         side="right"
       >
