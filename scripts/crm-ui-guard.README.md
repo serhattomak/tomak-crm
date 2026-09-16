@@ -12,7 +12,7 @@ scope (`apps/web`, `packages/ui`).
 ```sh
 # from crm-monorepo/
 npm run guard:crm-ui            # scoped CI gate: Batch 1–3 touched files (must PASS)
-npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently FAIL — 1458 errors)
+npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently FAIL — 37 errors, all NATIVE_SELECT)
 node scripts/crm-ui-guard.mjs --help
 node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 ```
@@ -30,26 +30,35 @@ original 9 rules are unchanged by the advisory layer.
 
 ## Current baseline (`--full`, 2026-09-16)
 
-189 files scanned. **62 errors · 1334 advisory warnings.**
+189 files scanned. **37 errors · 1329 advisory warnings.** (10 hits suppressed by the
+allowlist.)
 
 | Rule | Severity | Hits | Use instead |
 | --- | --- | --- | --- |
-| NATIVE_SELECT | error | 61 | `SelectField` (≤7 fixed) / `Combobox` (dynamic) |
-| INPUT_NUMBER | error | 1 | `NumberInput` |
+| NATIVE_SELECT | error | **37** | `SelectField` (closed enum) / `Combobox` (data-bound) — source rule, `crm-ui-standards.md` §2.5.1 |
+| INPUT_NUMBER | error | **0** (1 recorded) | `NumberInput` |
 | VIOLET | error | **0** | `blue-*` scale, tone for tone (Faz 4.1) |
 | SLATE | error | **0** | `zinc-*` (Faz 4.0) |
 | FUCHSIA | error | **0** | `blue-*` scale, tone for tone (Faz 4.2) |
 | INLINE_HEX_STYLE | error | **0** (1 recorded) | design tokens / `--chart-*` (Faz 4.4) |
 | ARBITRARY_HEX | error | **0** | design tokens (Faz 4.3) |
 | SVG_PAINT_HEX | error | **0** (8 recorded) | `currentColor` / tokens (brand marks excepted) |
-| ARBITRARY_TEXT_SIZE | warn | 1242 | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale |
-| NATIVE_TABLE | warn | 61 | `@workspace/ui` `Table` primitives |
+| ARBITRARY_TEXT_SIZE | warn | 1237 | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale |
+| NATIVE_TABLE | warn | 61 | `@workspace/ui` `Table` primitives (Faz 5.3) |
 | INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens |
 
 **Faz 4 (colour discipline) is complete**: all six colour rules read 0, down from
-1376 hits across 51 files. What remains in `error` is input standards, which is
-Faz 5. Allowlist entries are now 3: one brand mark pair and one data-contract
-value, each with its reason recorded.
+1376 hits across 51 files. **Faz 5 (form & table presentation) is in progress**:
+`INPUT_NUMBER` was exempted (its only hit was the primitive itself — the rule cannot
+tell an abstraction from a consumer), and `NATIVE_SELECT` is being swept file by
+file, 61 → 37 so far across 13 files. The recipe for the sweep is
+`crm-ui-standards.md` **§2.5**. Allowlist entries are 4: two brand-mark files, one
+data-contract value, one primitive — each with its reason recorded.
+
+> ⚠️ **This table is a copy of a measurement, not a maintained estimate.** After any
+> sweep, re-run `guard:crm-ui:full` and copy the last line. If a count here disagrees
+> with `docs/crm-ui-roadmap.md`, both are wrong until re-measured — that is exactly
+> how this section drifted to 62 while the real number was already 38.
 
 Top offenders in the old baseline (`vehicles` 191, `portal/…/PortalClient` 114,
 `projects/[projectId]` 102) were all violet and slate counts; those files no
@@ -85,7 +94,7 @@ exceptions — prefer fixing over listing. Known documented exceptions: the Goog
 
 | Rule | Use instead |
 | --- | --- |
-| NATIVE_SELECT | `SelectField` (≤7 fixed opts) / `Combobox` (dynamic) |
+| NATIVE_SELECT | `SelectField` (closed enum) / `Combobox` (data-bound list) — source decides, not count; §2.5.1 |
 | INPUT_NUMBER | `NumberInput` (para `precision=2 suffix ₺`, adet `precision=0` stepper) |
 | INPUT_DATE | `DatePicker` (clearable, YYYY-MM-DD, TR) / `DateRangePicker` |
 | ARBITRARY_HEX / INLINE_HEX_STYLE / SVG_PAINT_HEX | design tokens (`bg-muted`, `text-zinc-*`, `dark:` variants) |
