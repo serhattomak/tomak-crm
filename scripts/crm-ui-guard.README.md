@@ -35,7 +35,7 @@ born advisory were promoted after each one measured clean.
 
 ## Current baseline (`--full`, 2026-09-16)
 
-189 files scanned. **0 errors · 0 advisory warnings.** (12 hits suppressed by the
+192 files scanned. **0 errors · 0 advisory warnings.** (12 hits suppressed by the
 allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 
 | Rule | Severity | Hits | Use instead |
