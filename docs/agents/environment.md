@@ -86,7 +86,7 @@ docker inspect supabase_db_crm-monorepo --format '{{range .Mounts}}{{.Name}}{{pr
 - **`git subtree` is available** at `C:/Program Files/Git/mingw64/libexec/git-core/git-subtree`.
   `git subtree --help` prints nothing (no man page), which looks like absence and is not.
 - **`glob` reported "No files found" for files that provably existed**, confirmed by a
-  positive control (`**/dark-mode.spec.ts` vs. `node -e` walking the same tree). Treat
+  positive control (`**/theme-audit.spec.ts` vs. `node -e` walking the same tree). Treat
   any "not found" from a search tool as unverified until a second method agrees.
 
 ## Line endings
@@ -145,7 +145,7 @@ while low contrast went 47 → **83**. Only runtime measurement could see it.
    after `git status` is not the same as before it.
 5. **Fail is stop.** No automatic fixes, no bulk `sed`. Report, propose, get approval.
 6. **Counts are read from artifacts, not from logs.** The dark-mode audit now writes
-   `test-results/dark-mode-audit.json`, because a log that printed eight findings per
+   `test-results/<theme>-mode-audit.json`, because a log that printed eight findings per
    route made a ceiling look like a total.
 
 ## Shell

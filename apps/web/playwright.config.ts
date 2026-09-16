@@ -17,10 +17,10 @@ import { defineConfig, devices } from "@playwright/test";
  *                  is the CI gate.
  *
  *   authenticated  the real flows: dashboard, customer list and detail, pipeline,
- *                  quotes, admin. Plus `dark-mode.spec.ts`, which audits rendered
- *                  surfaces in the dark theme — the one thing a static rule
- *                  cannot check, since a rule knows a surface is tokenised, not
- *                  that it renders correctly.
+ *                  quotes, admin. Plus `theme-audit.spec.ts`, which audits rendered
+ *                  surfaces in whichever theme the project selects — the one thing a
+ *                  static rule cannot check, since a rule knows a surface is
+ *                  tokenised, not that it renders correctly.
  *
  * The authenticated projects are only REGISTERED when credentials exist, so
  * `npm run test:e2e` still passes with just the smoke suite — no `.skip`, no
@@ -101,7 +101,20 @@ export default defineConfig({
           {
             dependencies: ["setup"],
             name: "dark-mode",
-            testMatch: /dark-mode\.spec\.ts/,
+            testMatch: /theme-audit\.spec\.ts/,
+            use: {
+              ...devices["Desktop Chrome"],
+              storageState: AUTH_STATE,
+            },
+          },
+          {
+            // Same spec, same routes, same detectors — the PROJECT NAME picks the
+            // theme. Dark ran alone for a long time, so the light theme had never
+            // been measured at all; `text-zinc-400` sitting at 2.63:1 on white is
+            // what that blind spot looked like.
+            dependencies: ["setup"],
+            name: "light-mode",
+            testMatch: /theme-audit\.spec\.ts/,
             use: {
               ...devices["Desktop Chrome"],
               storageState: AUTH_STATE,

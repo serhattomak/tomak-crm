@@ -214,7 +214,7 @@ its own retirement criterion behind a rule that could not see.
 
 **This rule cannot see whether a surface *renders* correctly** — only that it is paired. That is
 what the Playwright dark-mode audit is for: it walks the real DOM in the dark theme and measures
-painted backgrounds and text contrast (`apps/web/e2e/dark-mode.spec.ts`, 31 routes, both detectors
+painted backgrounds and text contrast (`apps/web/e2e/theme-audit.spec.ts`, 31 routes, both detectors
 carrying positive controls). It found the tinted class in the first place, and it caught the
 contrast regression that fixing surfaces without their text causes.
 

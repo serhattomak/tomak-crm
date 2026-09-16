@@ -5,13 +5,23 @@ import { fileURLToPath } from "node:url";
 import { expect, type Page, test } from "@playwright/test";
 
 /**
- * Runtime dark-mode audit.
+ * Runtime theme audit — runs in BOTH themes.
  *
  * The static rule (`LIGHT_SURFACE_NO_DARK`) knows a surface is *tokenised*; it
- * cannot know that it *renders* correctly. This walks the real DOM in the dark
- * theme and measures what is actually painted: elements whose computed
+ * cannot know that it *renders* correctly. This walks the real DOM in the theme
+ * under test and measures what is actually painted: elements whose computed
  * background is light while the page is dark, and text whose contrast against
  * its own background is too low.
+ *
+ * The theme comes from the project name, so `--project=dark-mode` and
+ * `--project=light-mode` run the same audit. Dark ran alone for a long time and
+ * the light theme was never measured at all — which is how `text-zinc-400` sat at
+ * 2.63:1 on white without anyone knowing.
+ *
+ * One deliberate asymmetry: the LIGHT-SURFACE detector is dark-mode only. It looks
+ * for light surfaces while the page is dark, and in the light theme every surface is
+ * light, so it would flag the whole screen — including the inverted buttons the
+ * project documents as intentional. The CONTRAST detector runs in both themes.
  *
  * Two things make the result trustworthy, and both were needed:
  *
@@ -55,13 +65,24 @@ type Finding = {
   text: string;
 };
 
+/**
+ * Text whose background is a gradient or an image. Kept with its class string, not as a
+ * bare count: when these were 39 anonymous elements, finding out what they were meant
+ * reading source files by hand.
+ */
+type Unmeasurable = { cls: string; tag: string; text: string };
+
 /** One route's slice of the artifact, including how much of it was actually audited. */
 type RouteAudit = {
   audited: number;
   contrast: Finding[];
   light: Finding[];
   route: string;
+  unmeasurable: Unmeasurable[];
 };
+
+/** The JSON-safe shape of a colour parsed out of the canvas. */
+type Rgba = { a: number; b: number; g: number; r: number };
 
 /** Every dashboard route that has a page, taken from the app's own structure. */
 function dashboardRoutes(): string[] {
@@ -88,16 +109,29 @@ async function gotoSettled(page: Page, path: string): Promise<void> {
   await page.waitForTimeout(700);
 }
 
-/** Set the theme before the app boots, so it renders dark on first paint. */
-async function forceDark(page: Page): Promise<void> {
-  await page.addInitScript(() => {
-    localStorage.setItem("crm_app_theme_mode", "dark");
-  });
+/** Set the theme before the app boots, so it renders in that theme on first paint. */
+async function forceTheme(page: Page, theme: "dark" | "light"): Promise<void> {
+  await page.addInitScript((value: string) => {
+    localStorage.setItem("crm_app_theme_mode", value);
+  }, theme);
 }
 
-function auditPage(page: Page, luminance: number, minContrast: number) {
+function auditPage(
+  page: Page,
+  luminance: number,
+  minContrast: number,
+  checkSurfaces: boolean
+) {
   return page.evaluate(
-    ({ threshold, contrastFloor }: { threshold: number; contrastFloor: number }) => {
+    ({
+      checkSurfaces,
+      contrastFloor,
+      threshold,
+    }: {
+      checkSurfaces: boolean;
+      contrastFloor: number;
+      threshold: number;
+    }) => {
       /**
        * Resolve ANY CSS colour to sRGB by painting it and reading the pixel.
        *
@@ -147,6 +181,8 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
       const lowContrast: Finding[] = [];
       /** Elements that passed the size + visibility filter — the audit's actual reach. */
       let audited = 0;
+      /** Elements whose background is an image/gradient — text contrast is unknowable there. */
+      const unmeasurable: Unmeasurable[] = [];
 
       /**
        * The background a text node ACTUALLY sits on. Most text has a
@@ -155,21 +191,32 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
        * which is exactly the blind spot that made the first version of this
        * audit report "0 low-contrast" while measuring almost nothing.
        */
-      const effectiveBackground = (start: Element | null) => {
+      /**
+       * The colour a text node actually sits on, or a verdict that it cannot be known.
+       *
+       * A gradient (or any background image) paints OVER the background colour, and
+       * `backgroundColor` is `rgba(0,0,0,0)` for it. Walking past such an element
+       * measures the text against an ancestor it does not sit on: a white letter on a
+       * blue-to-indigo gradient was reported at 1.04:1 on all 31 routes. Reporting
+       * "cannot measure" is honest; reporting a number there is not.
+       */
+      const effectiveBackground = (
+        start: Element | null
+      ): { color: Rgba } | { unmeasurable: true } => {
         let node: Element | null = start;
         while (node) {
-          const c = parse(getComputedStyle(node).backgroundColor);
+          const cs = getComputedStyle(node);
+          if (cs.backgroundImage !== "none") {
+            return { unmeasurable: true };
+          }
+          const c = parse(cs.backgroundColor);
           if (c && c.a >= 0.5) {
-            return c;
+            return { color: c };
           }
           node = node.parentElement;
         }
-        return parse(getComputedStyle(document.body).backgroundColor) ?? {
-          a: 1,
-          b: 255,
-          g: 255,
-          r: 255,
-        };
+        const body = parse(getComputedStyle(document.body).backgroundColor);
+        return body ? { color: body } : { color: { a: 1, b: 255, g: 255, r: 255 } };
       };
 
       for (const el of document.body.querySelectorAll("*")) {
@@ -189,7 +236,7 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
         const text = (el.textContent ?? "").trim().replace(/\s+/g, " ");
         const bg = parse(cs.backgroundColor);
 
-        if (bg && bg.a >= 0.5 && luminanceOf(bg) > threshold) {
+        if (checkSurfaces && bg && bg.a >= 0.5 && luminanceOf(bg) > threshold) {
           lightSurfaces.push({
             area: Math.round(rect.width * rect.height),
             cls,
@@ -216,8 +263,12 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
         // (as the first version did) skipped that background and compared the
         // text against an ancestor instead — which is how the user avatar was
         // reported at 1.08:1 on all 31 routes when it is actually ~5:1.
-        const bgForText = effectiveBackground(el);
-        const ratio = contrastOf(luminanceOf(fg), luminanceOf(bgForText));
+        const resolved = effectiveBackground(el);
+        if ("unmeasurable" in resolved) {
+          unmeasurable.push({ cls, tag: el.tagName.toLowerCase(), text });
+          continue;
+        }
+        const ratio = contrastOf(luminanceOf(fg), luminanceOf(resolved.color));
         if (ratio < contrastFloor) {
           lowContrast.push({
             area: Math.round(rect.width * rect.height),
@@ -233,16 +284,32 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
         isDark: document.documentElement.classList.contains("dark"),
         lightSurfaces,
         lowContrast,
+        unmeasurable,
       };
     },
-    { contrastFloor: minContrast, threshold: luminance }
+    { checkSurfaces, contrastFloor: minContrast, threshold: luminance }
   );
 }
 
-test("dark mode: audit every reachable screen", async ({ page }) => {
+test("audit every reachable screen in the project's theme", async ({ page }) => {
   // 31 routes, each with a paint settle — well past the default per-test budget.
   test.setTimeout(600_000);
-  await forceDark(page);
+
+  // The project name IS the theme selector. One spec, two projects, no env plumbing
+  // and no duplicated audit.
+  const theme = test.info().project.name === "light-mode" ? "light" : "dark";
+
+  // The surface detector is DIRECTIONAL: it finds LIGHT surfaces while the page is
+  // dark, which is a defect. In the light theme every surface is light, so running it
+  // there would flag the whole page — including the inverted buttons the project
+  // documents as intentional. Dark only.
+  const checkSurfaces = theme === "dark";
+
+  // Near-black on a dark page, near-white on a light one. The control must be
+  // unreadable IN THE THEME UNDER TEST or it proves nothing.
+  const controlTextColor = theme === "dark" ? "#2a2a2e" : "#fafafa";
+
+  await forceTheme(page, theme);
 
   await gotoSettled(page, "/");
   await page.waitForURL((url) => url.pathname !== "/", { timeout: 30_000 });
@@ -250,22 +317,31 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
   expect(slug, "expected a tenant slug after sign-in").toBeTruthy();
 
   // ---- POSITIVE CONTROL: prove the detector can see BOTH defects ----------
-  await page.evaluate(() => {
-    const light = document.createElement("div");
-    light.className = "__audit_control_light";
-    light.style.cssText =
-      "position:fixed;left:0;top:0;width:120px;height:40px;background:#ffffff;z-index:9999";
-    document.body.append(light);
+  await page.evaluate(
+    ({ surfaceControl, textColor }) => {
+      if (surfaceControl) {
+        const light = document.createElement("div");
+        light.className = "__audit_control_light";
+        light.style.cssText =
+          "position:fixed;left:0;top:0;width:120px;height:40px;background:#ffffff;z-index:9999";
+        document.body.append(light);
+      }
 
-    // Nearly invisible text: dark grey on the dark page, well under 3:1.
-    const dim = document.createElement("p");
-    dim.className = "__audit_control_contrast";
-    dim.style.cssText =
-      "position:fixed;left:0;top:60px;width:200px;height:40px;color:#2a2a2e;font-size:14px;z-index:9999";
-    dim.textContent = "control text that should be unreadable";
-    document.body.append(dim);
-  });
-  const control = await auditPage(page, LIGHT_BACKGROUND_LUMINANCE, MIN_CONTRAST);
+      // Nearly invisible text: near-black on a dark page, near-white on a light one.
+      const dim = document.createElement("p");
+      dim.className = "__audit_control_contrast";
+      dim.style.cssText = `position:fixed;left:0;top:60px;width:200px;height:40px;color:${textColor};font-size:14px;z-index:9999`;
+      dim.textContent = "control text that should be unreadable";
+      document.body.append(dim);
+    },
+    { surfaceControl: checkSurfaces, textColor: controlTextColor }
+  );
+  const control = await auditPage(
+    page,
+    LIGHT_BACKGROUND_LUMINANCE,
+    MIN_CONTRAST,
+    checkSurfaces
+  );
   const diagnostic = await page.evaluate(() => {
     const el = document.querySelector(".__audit_control_contrast");
     if (!el) {
@@ -288,30 +364,44 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
     document.querySelector(".__audit_control_light")?.remove();
     document.querySelector(".__audit_control_contrast")?.remove();
   });
-  expect(control.isDark, "the dark theme must be active").toBe(true);
-  expect(
-    control.lightSurfaces.some((f) => f.cls.includes("__audit_control_light")),
-    "the detector failed to flag a known white box — its zero findings mean nothing"
-  ).toBe(true);
+  expect(control.isDark, `the ${theme} theme must be active`).toBe(
+    theme === "dark"
+  );
+  if (checkSurfaces) {
+    expect(
+      control.lightSurfaces.some((f) => f.cls.includes("__audit_control_light")),
+      "the detector failed to flag a known white box — its zero findings mean nothing"
+    ).toBe(true);
+  }
   expect(
     control.lowContrast.some((f) => f.cls.includes("__audit_control_contrast")),
     "the detector failed to flag known unreadable text — its zero findings mean nothing"
   ).toBe(true);
-  console.log("dark-mode audit: positive controls OK (white box + unreadable text both flagged)");
+  console.log(
+    `${theme}-mode audit: positive controls OK ` +
+      `(${checkSurfaces ? "white box + " : ""}unreadable text flagged)`
+  );
 
   // ---- the routes --------------------------------------------------------
   const routes = ["", ...dashboardRoutes().map((name) => `/${name}`)];
-  console.log(`dark-mode audit: ${routes.length} route(s) from the app structure`);
+  console.log(`${theme}-mode audit: ${routes.length} route(s) from the app structure`);
 
   const report: RouteAudit[] = [];
   for (const route of routes) {
     await gotoSettled(page, `/${slug}${route}`);
-    const { audited, lightSurfaces, lowContrast } = await auditPage(
+    const { audited, lightSurfaces, lowContrast, unmeasurable } = await auditPage(
       page,
       LIGHT_BACKGROUND_LUMINANCE,
-      MIN_CONTRAST
+      MIN_CONTRAST,
+      checkSurfaces
     );
-    report.push({ audited, contrast: lowContrast, light: lightSurfaces, route });
+    report.push({
+      audited,
+      contrast: lowContrast,
+      light: lightSurfaces,
+      route,
+      unmeasurable,
+    });
   }
 
   const totalLight = report.reduce((n, r) => n + r.light.length, 0);
@@ -328,7 +418,7 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
    * nine nodes of one kind under-reported and the total read like a fact when it
    * was a ceiling. `test-results/` is gitignored, so this never dirties the tree.
    */
-  const artifactPath = resolve(HERE, "..", "test-results", "dark-mode-audit.json");
+  const artifactPath = resolve(HERE, "..", "test-results", `${theme}-mode-audit.json`);
   mkdirSync(dirname(artifactPath), { recursive: true });
   writeFileSync(
     artifactPath,
@@ -338,12 +428,14 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
         generatedAt: new Date().toISOString(),
         lightSurfaceThreshold: LIGHT_BACKGROUND_LUMINANCE,
         minContrast: MIN_CONTRAST,
+        theme,
         routes: report,
         starvedRouteFloor: STARVED_ROUTE_FLOOR,
         starvedRoutes: starved.map((r) => ({ audited: r.audited, route: r.route })),
         totals: {
           lightSurfaces: totalLight,
           lowContrast: totalContrast,
+          unmeasurableElements: report.reduce((n, r) => n + r.unmeasurable.length, 0),
           routes: routes.length,
           routesWithFindings: withFindings,
         },
@@ -354,13 +446,14 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
   );
 
   console.log(
-    `dark-mode audit: ${withFindings}/${routes.length} route(s) with findings — ` +
+    `${theme}-mode audit: ${withFindings}/${routes.length} route(s) with findings — ` +
       `${totalLight} light surface(s), ${totalContrast} low-contrast node(s) ` +
-      `at ${MIN_CONTRAST}:1 — artifact: ${artifactPath}`
+      `at ${MIN_CONTRAST}:1 — ${report.reduce((n, r) => n + r.unmeasurable.length, 0)} element(s) ` +
+      `unmeasurable (gradient/image background) — artifact: ${artifactPath}`
   );
   if (starved.length > 0) {
     console.log(
-      `dark-mode audit: WARNING — ${starved.length} route(s) audited fewer than ` +
+      `${theme}-mode audit: WARNING — ${starved.length} route(s) audited fewer than ` +
         `${STARVED_ROUTE_FLOOR} element(s); a page that rendered nothing also reports clean:`
     );
     for (const r of starved) {
