@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
@@ -1954,73 +1955,68 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Atanan Temsilci
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDrawerAssigneeId(e.target.value)}
+                  <Combobox
+                    onChange={setDrawerAssigneeId}
+                    options={[
+                      { label: "Atanmamış", value: "" },
+                      ...employees.map((emp) => ({
+                        label: emp.fullName,
+                        value: emp.id,
+                      })),
+                    ]}
+                    placeholder="Atanmamış"
                     value={drawerAssigneeId}
-                  >
-                    <option value="">Atanmamış</option>
-                    {employees.map((emp) => (
-                      <option key={emp.id} value={emp.id}>
-                        {emp.fullName}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Epik
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDrawerEpicId(e.target.value)}
+                  <Combobox
+                    onChange={setDrawerEpicId}
+                    options={[
+                      { label: "Epiksiz", value: "" },
+                      ...epics.map((ep) => ({ label: ep.name, value: ep.id })),
+                    ]}
+                    placeholder="Epiksiz"
                     value={drawerEpicId}
-                  >
-                    <option value="">Epiksiz</option>
-                    {epics.map((ep) => (
-                      <option key={ep.id} value={ep.id}>
-                        {ep.name}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Sprint
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDrawerSprintId(e.target.value)}
+                  <Combobox
+                    onChange={setDrawerSprintId}
+                    options={[
+                      { label: "Backlog Havuzu", value: "" },
+                      ...sprints.map((sp) => ({
+                        label: `${sp.name} (${
+                          sp.status === "Active" ? "Aktif" : sp.status
+                        })`,
+                        value: sp.id,
+                      })),
+                    ]}
+                    placeholder="Backlog Havuzu"
                     value={drawerSprintId}
-                  >
-                    <option value="">Backlog Havuzu</option>
-                    {sprints.map((sp) => (
-                      <option key={sp.id} value={sp.id}>
-                        {sp.name} (
-                        {sp.status === "Active" ? "Aktif" : sp.status})
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Müşteri Bağlantısı
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDrawerCustomerId(e.target.value)}
+                  <Combobox
+                    onChange={setDrawerCustomerId}
+                    options={[
+                      { label: "İlişkisiz", value: "" },
+                      ...customers.map((c) => ({ label: c.name, value: c.id })),
+                    ]}
+                    placeholder="İlişkisiz"
                     value={drawerCustomerId}
-                  >
-                    <option value="">İlişkisiz</option>
-                    {customers.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -2326,36 +2322,33 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Epik
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewItemEpicId(e.target.value)}
+                  <Combobox
+                    onChange={setNewItemEpicId}
+                    options={[
+                      { label: "Epiksiz", value: "" },
+                      ...epics.map((ep) => ({ label: ep.name, value: ep.id })),
+                    ]}
+                    placeholder="Epiksiz"
                     value={newItemEpicId}
-                  >
-                    <option value="">Epiksiz</option>
-                    {epics.map((ep) => (
-                      <option key={ep.id} value={ep.id}>
-                        {ep.name}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Atanan Temsilci
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewItemAssigneeId(e.target.value)}
+                  <Combobox
+                    onChange={setNewItemAssigneeId}
+                    options={[
+                      { label: "Atanmamış", value: "" },
+                      ...employees.map((emp) => ({
+                        label: emp.fullName,
+                        value: emp.id,
+                      })),
+                    ]}
+                    placeholder="Atanmamış"
                     value={newItemAssigneeId}
-                  >
-                    <option value="">Atanmamış</option>
-                    {employees.map((emp) => (
-                      <option key={emp.id} value={emp.id}>
-                        {emp.fullName}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
