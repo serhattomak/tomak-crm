@@ -59,6 +59,8 @@ dist/
 # Turbo & Cache
 # ============================================================================
 .turbo/
+.tmp/
+graphify-out/*
 *.tsbuildinfo
 next-env.d.ts
 
@@ -75,17 +77,25 @@ supabase/seed.sql
 # Supabase CLI scratch (`supabase/.branches`, `supabase/.temp`) is ignored by
 # `supabase/.gitignore`, which the CLI generates and which owns the CLI's own
 # artifacts. Those two files used to be tracked because the only rules lived in
-# the OTHER repo's .gitignore, which does not apply here; an ignore rule never
-# untracks a tracked file, so `git rm --cached` did that part.
+# this repo's former sibling; an ignore rule never untracks a tracked file, so
+# `git rm --cached` did that part.
+
+# ============================================================================
+# Agent tool local state (caches / possible credentials) — never tracked
+# ============================================================================
+.kilo/
+.kilocode/
+.commandcode/
+.hallmark/
+.minimax/
+.qwen/
+.claude/
 
 # ============================================================================
 # Environment & Secrets
 # ============================================================================
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
 !.env.example
 
 # ============================================================================
@@ -105,4 +115,3 @@ Thumbs.db
 .vercel/
 
 inspo/
-graphify-out/*
