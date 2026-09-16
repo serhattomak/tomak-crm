@@ -10,7 +10,6 @@
     "./components/*": "./src/components/*.tsx"
   },
   "scripts": {
-    "format": "prettier --write \"**/*.{ts,tsx}\"",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },

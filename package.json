@@ -15,7 +15,7 @@
     "docker:down": "docker compose down",
     "docker:up": "docker compose up -d",
     "fix": "ultracite fix",
-    "format": "turbo format",
+    "format": "biome format --write .",
     "guard:crm-ui": "node scripts/crm-ui-guard.mjs",
     "guard:crm-ui:full": "node scripts/crm-ui-guard.mjs --full",
     "guard:crm-ui:fixtures": "node scripts/crm-ui-guard.fixtures.mjs",

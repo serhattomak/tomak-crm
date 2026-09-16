@@ -11,9 +11,6 @@
       "dependsOn": ["^lint"]
     },
     "test": {},
-    "format": {
-      "dependsOn": ["^format"]
-    },
     "guard:crm-ui": {
       "cache": false
     },
