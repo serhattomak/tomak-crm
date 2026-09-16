@@ -4,8 +4,10 @@ Zero-dependency Node scan. Bans native inputs + off-palette colors in CRM
 scope (`apps/web`, `packages/ui`).
 
 > **Scope note:** `apps/ecommerce` is referenced by design docs but **does not
-> exist in this repo** — there is nothing to exclude. The rule set still carries
-> the stale exclusion; see [`docs/crm-ui-roadmap.md`](../../docs/crm-ui-roadmap.md) → Gelecek Adımlar #7.
+> exist in this repo** — there is nothing to exclude, and no code path ever excluded
+> it. The remaining mentions are prose in this file, the guard's own header and the
+> allowlist's `_doc`; the ADRs keep theirs **verbatim**, because a dated record that
+> is rewritten to look current stops being a record.
 
 ## Run
 
