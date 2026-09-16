@@ -259,7 +259,7 @@ onInteractOutside={(event) => {
 
 **Portallanmış `fixed` konumlandırma print'te kırılgandır** ve bu commit'ler onu çözmez — drawer'ı print yüzeyi olarak yeniden düşünmek gerekir (Gelecek Adımlar).
 
-**⚠️ Dört print yüzeyi var (2026-09-16):** `invoices`, `contracts`, `finance` (drawer içinde) ve `shipments` ("Kargo Sevk Etiketi & Barkod Önizleme" modalı) — dördü de `window.print()` çağırıyor. İlk üçü `print:` sınıfları taşıyor; **dördüncüsü hiç taşımıyor** (orada print düzeni hiç yoktu). Kalan sayfalar göçerken **beşincisi çıkarsa Gelecek Adımlar #21'e ekleyin.**
+**⚠️ Beş print yüzeyi var (2026-09-16):** `invoices`, `contracts`, `finance` (drawer içinde), `shipments` ("Kargo Sevk Etiketi & Barkod Önizleme" modalı) ve `quotes` ("Teklif Belgesi Önizleme" modalı) — beşi de `window.print()` çağırıyor. İlk üçü `print:` sınıfları taşıyor; **son ikisi hiç taşımıyor** (onlarda print düzeni hiç yoktu). Kalan sayfalar göçerken **altıncısı çıkarsa Gelecek Adımlar #21'e ekleyin.**
 
 **✅ Karşı örnek zaten kodda var:** `orders/[orderId]`'da `handlePrint` overlay üzerinde `window.print()` çağırmaz — **ayrı bir rotaya** gider (`/{tenantSlug}/orders/{orderId}/print`). Gelecek Adımlar #21'in önerdiği desen bu. Yani `invoices` ve `contracts` drawer'ları **istisna**; doğru çözüm repoda mevcut.
 

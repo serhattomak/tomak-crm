@@ -14,7 +14,7 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 
 **176 dosya · 1458 error · 1334 advisory warning**
 
-> **📉 Güncel sayaç (2026-09-16, Faz 3 sürerken): `--full` = 1441 error · 189 dosya.**
+> **📉 Güncel sayaç (2026-09-16, Faz 3.2 bitti): `--full` = 1438 error · 189 dosya.**
 > Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
 > Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
 > `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → `1443` → **−2** Faz 3.2 (`tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60`) → **`1441`**.
@@ -182,11 +182,13 @@ Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların ço
 
 Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
 
-## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 sürüyor (69/75)**
+## [~] Faz 3 — Modal & overlay göçü — **3.1 TAMAMLANDI (37/75) · 3.2 TAMAMLANDI (71/75) — kalan: 3.3**
 
 > **🔄 Devam noktası (yeni oturum buradan başlasın):**
 >
-> **3.2 — sayfa-içi modallar.** **31 göç tamam + 1 muaf (`settings` kartı) = 32/34 dosya**, kalan **2 sayfa** (ölçüm 2026-09-16, `fixed inset-0` toplamı **19**):
+> **3.2 BİTTİ.** **33 göç + 1 muaf (`settings` kartı) = 34/34 dosya.** Sıradaki iş **§3.3** (kalan silme/onay modalları → `ConfirmDialog`) — aşağıdaki checklist'te. Not: 3.3 **`ConfirmDialog` primitifinin kendisini** de düzeltmeli (§3.4 bulgusu: primitif paylaşılan `alert-dialog`'u kullanmıyor, kendi overlay'ini kuruyor → Gelecek Adımlar #19).
+>
+> **📌 Faz 3.2 dosya listesi (34 dosya):**
 > - `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
 > - `automations/[workflowId]` (`d9bbc3b`), `automations` — **2 overlay: drawer→`Sheet` + modal→`Dialog`** (`4e7a387`)
 > - `invoices` — modal→`Dialog` (`172fe2a`) + drawer→`Sheet` (`e5dfe86`)
@@ -209,6 +211,8 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > - `organization` — **3 modal + 2 drawer** (`ae4c309`); **7 `fixed inset-0`'in 2'si drawer backdrop'ı**, overlay değil. Personel detay drawer'ının **iki dalı** (yükleniyor + yüklendi) da `Sheet` oldu; görünür başlık üst çubukta değil, profildeki ad `<h3>`'ü → `SheetTitle`
 > - `shipments` — **6 modal + 1 drawer** (`e1d4742`); **4. print yüzeyi** (aşağıda). Tümü `gap-0`
 > - `recruitment` — **4 modal + 2 drawer** (`61529af`); iki drawer'ın mono etiketi (`ADAY DETAYI`/`BAŞVURU DETAYI`) **etiket olarak kaldı**, gövdedeki ad başlığı `SheetTitle` oldu
+> - `messages` — **4 modal** (`2cc15f0`); **8 `fixed inset-0`'in 4'ü ayrı backdrop div'i.** Hepsi `{isX && …}` biçiminde → koşul korundu + `open`. ⚠️ **Sarmalayıcının `overflow-y-auto`'su hiç uygulanmıyordu** (panel `max-h-[92vh] overflow-hidden` ile kendi çocuklarını kırpıyordu) → aynısı korundu
+> - `quotes` — **6 modal + 1 drawer** (`28d8d6e`); **11 `fixed inset-0`'in 4'ü backdrop.** ⚠️ **Tek `return` içinde 4 overlay** (drawer + 3 modal) → sarmalayıcı `Sheet`, panel `SheetContent`, 3 `Dialog` **`Sheet` kökünün içinde** kaldı (portal → yalnız yapısal). **5. print yüzeyi** (aşağıda)
 > - **Print altyapısı:** `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`)
 >
 > **🆕 Yeni muafiyet sınıfı:** **elle yazılmış toast'lar** — `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]` (**4 dosyada 5 örnek**). `fixed` + `shadow-2xl` taşıdıkları için overlay **imzasına** sahipler ama overlay değiller (backdrop/kapatma/engelleme yok, zamanlayıcıyla kapanırlar). `projects` dosyası bunu kendisi `{/* Toast */}` diye adlandırıyor. Konuları **toaster spec'i**. §2.3'teki muafiyet listesine eklendi. **Fazın en sık yanlış pozitifi** — yani "`fixed` + `shadow-2xl` var" hâlâ overlay kanıtı değil, **okuyup bakmak gerekiyor**.
@@ -219,7 +223,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 3. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent`/`SheetContent` **`overflow-y-auto`** alır. Ama içeride kaydıran blok varsa (ör. `flex-1 overflow-y-auto`) içerik `overflow-hidden` kalır. **Dosya başına doğrulanır** — kopyala-yapıştır yanlış sonuç verir.
 > 4. **`space-y-*` varsa `gap-0` şart**; panelde `max-h`/`overflow` **yoksa eklenir** (body scroll kilidi yüzünden).
 >
-> **Kalan 2 sayfa (en küçükten):** `messages` (8), `quotes` (11). **Toplam 19 overlay.**
+> **3.2 BİTTİ — kalan overlay yok.** Sıradaki: **§3.3** (kalan silme/onay modalları → `ConfirmDialog`). ⚠️ 3.3 başlamadan **`ConfirmDialog` primitifini** okuyun: paylaşılan `alert-dialog`'u kullanmıyor, `radix-ui`'yi doğrudan kullanıp kendi overlay'ini kuruyor (Faz 3 bulgusu 6 → Gelecek Adımlar #19). Yani 3.3, çağrı yerlerini çevirmenin yanında **primitifin kendisini** de düzeltmeli.
 >
 > **📌 Not:** `app/page.tsx` (kök loading sayfası) da bir toast taşıyor ama overlay'i yok → 3.2 kapsamı dışı, toaster spec'ine ait.
 >
@@ -227,7 +231,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 >
 > **Tarif:** standart **§2.3** (Dialog + Sheet + print) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
-> **⚠️ Bu fazda on tuzak ölçülerek doğrulandı:**
+> **⚠️ Bu fazda on üç tuzak ölçülerek doğrulandı:**
 > 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
 > 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
@@ -238,6 +242,9 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 8. **Ölçüm araçları sessizce yanlış sonuç verir** — `Select-String -Path`, `git show <sha>^`, `translate-` içindeki `slate-`. → bulgu 9
 > 9. **Bir dosyada hem drawer hem modal varsa bunlar farklı primitiflerdir** — aynı geçişte yapılır ama **ayrı ayrı** doğrulanır (denge sayımı 8 etiketi birlikte kontrol eder).
 > 10. **Git yazımları paralel çalıştırılmaz** — `git add` + `git commit` eşzamanlı iki komutta `index.lock` çakışır ve bir commit'in **mesajı bir dosyayı, içeriği başkasını** anlatabilir. Bu turda yaşandı; `--soft reset` ile geri alınıp doğru sırayla yeniden commit edildi. **Sıralı çalıştır, sonra `git show --stat` ile mesaj/içerik eşleşmesini doğrula.**
+> 11. **Ham `fixed inset-0` sayısı overlay sayısı DEĞİLDİR — fazladan sayar.** Bazı dosyalar backdrop'u sarmalayıcının **kardeşi** olarak ayrı bir `div` yapar (`messages`, `quotes`), bazıları sarmalayıcının kendisini backdrop yapar (`shipments`, `recruitment`), bazılarında ise drawer **kendi** backdrop'unu taşır (`organization`). Ölçülen fark: `organization` 7→**5**, `messages` 8→**4**, `quotes` 11→**7**. **Sayıyla değil, okuyarak karar verin.**
+> 12. **Sarmalayıcının `overflow-y-auto`'su panel `max-h` + `overflow-hidden` taşıyorsa zaten devrede değildir** — panel kendi çocuklarını kırpıyordur. Göçte "iyileştirme" yapıp `overflow-y-auto` vermek **kısa ekran davranışını sessizce değiştirir**; aslını birebir kurun (bkz. `messages`).
+> 13. **Kapanış bulma sezgiseli "bitişiklik" varsayar** — `tailV2` panel kapanışının **hemen ardından** sarmalayıcı kapanışını arar; araya kardeş bir overlay girerse yanlış çifti sahiplenir (`quotes`'ta oldu; `Dialog` 6 açık / 5 kapalı verdi). **Bitişikliği kardeş overlay bozar** → çok overlay'li dosyalarda denge sayımı **zorunlu**.
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor ama `apps/web` noktalı virgüllü; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor ve 55 satırlık değişikliği **431 satıra** çıkarır. Ayrıntı: Gelecek Adımlar #18.
 >
@@ -260,11 +267,11 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 - [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
 - [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
 - [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
-- [ ] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **31 göç + 1 muaf = 32/34, kalan 2 sayfa / 19 overlay**
+- [x] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **33 göç + 1 muaf = 34/34 — BİTTİ**
   - [x] `(admin)/admin/templates` (`ee167e5`) · `(admin)/admin/tenants` (`8f3b524`) · `roles` (`07d476d`) · `users` (`757799b`) · `tickets` (`fbf5591`)
   - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`) · `orders` (`79b21c7`) · `orders/[orderId]` (`b04982a`) · `tickets/[ticketId]` (`1cda709`) · `email` (`62ed950`) · `projects` (`71335b8`) · `projects/[projectId]` (`1c601be`) · `products/[productId]` (`d2b187d`) · `calendar` (`2d4e61e`) · `finance` (`fd5f715`) · `inventory` (`9313be1`) · `products` (`5d3f8e8`) · `webhooks` (`6ab6e53`) · `webhooks/[endpointId]` (`acace95`) · `attendance` (`8120e2f`) · `vehicles` (`806a3a0`) · `organization` (`ae4c309`) · `shipments` (`e1d4742`) · `recruitment` (`61529af`) · `settings` (muaf — kart blur'u)
   - [x] **Print altyapısı** — `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`), derlenen CSS'te doğrulandı. **4. print yüzeyi** `shipments`'te bulundu (`e1d4742`) → Gelecek Adımlar #21 güncellendi
-  - [ ] Kalan 2 — en küçükten: `messages` (8), `quotes` (11)
+  - [x] `messages` (`2cc15f0`) · `quotes` (`28d8d6e`) — **3.2 tamamlandı, kalan sayfa yok**
 - [ ] **3.3** Kalan silme/onay modalları → `ConfirmDialog`
 - [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
 
@@ -491,7 +498,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 18. **`apps/web` biçim altyapısı** — bugün **hiçbir biçimlendiricinin kapsamında değil** (Faz 3 bulgusu 3): kök `.prettierrc` `semi: false` diyor ama `apps/web` noktalı virgüllü, `prettier --check` dokunulmamış dosyalarda da FAIL veriyor; Ultracite (`biome.jsonc`) ise dış depoda ve `crm-monorepo/` gitignore'da olduğu için görünmüyor. Seçenekler: (a) `.prettierrc`'yi koda uydur (`semi: true`) ve `apps/web`'i kapsama al, (b) `crm-monorepo/`'yi Ultracite kapsamına sok, (c) `apps/web` için ayrı config. **Her seçenek tek seferlik büyük bir diff üretir** → kendi commit'i + incelemesi gerekir, Faz 3'e karıştırılmaz
 19. **`ConfirmDialog`'un paylaşılan `alert-dialog` primitifine taşınması** — primitif, Faz 1'de eklenen `alert-dialog.tsx`'i değil `radix-ui`'yi doğrudan kullanıp kendi overlay'ini (`fixed inset-0` + `backdrop-blur-xs` + `shadow-2xl`) kuruyor; Faz 3.4 yalnızca renk/token ihlallerini temizledi (Faz 3 bulgusu 6)
 20. **Konteyner radius sweep'i (§1.1)** — **ölçüm düzeltildi** (bulgu 9: ilk sayım `[tenantSlug]` altını atlamıştı): `apps/web`'te **146 × `rounded-3xl`** (28 dosyada) + **459 × `rounded-2xl`**; `packages/ui`'de **14 × `rounded-2xl`**; `rounded-4xl` **0** (yasaklı olan yok). En yoğun: `products/[productId]` (17), `organization` (11), `compliance` (10), `quotes` (10). §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor; ama sayıların bir kısmı küçük çip/rozet olabilir ve konteyner değildir → **önce triyaj, sonra tek geçiş.** Faz 3 overlay işi değil: `bulk-action-bar` (`rounded-2xl` yüzen çubuk) ve `settings` kartı bu borcun örnekleri, ikisi de §2.3'te kapsam dışı ilan edildi
-21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **dört yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`) ve `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`; 2026-09-16, `e1d4742` — **bu dördüncüsünde `print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması). Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
+21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **beş yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`), `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`) ve `quotes` "Teklif Belgesi Önizleme" modalı (`handlePrint`; 2026-09-16, `28d8d6e`). Son ikisinde **`print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması. Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
 22. **`overlayClassName` boşluğu** — dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor (bulgu 12'nin kökü). Global print kuralı vakayı çözdü; başka bir ihtiyaç doğarsa (farklı blur/opaklık) API açılmalı. Tek tüketici için eklenmedi
 
 ---
@@ -640,3 +647,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3.2 | ✅ `shipments` **6 modal + 1 drawer** → **68/75** (`e1d4742`). **🆕 4. print yüzeyi bulundu:** `handlePrint` → `window.print()` ("Kargo Sevk Etiketi & Barkod Önizleme") — diğer üçünün aksine **hiç `print:` sınıfı yok** → Gelecek Adımlar #21 + §2.3 güncellendi. **`gap-0`'ın ikinci gerekçesi:** bu 4 formun paneli **hiç dikey boşluk utility'si taşımıyordu** (çocuklar boşluksuz yığılıyordu); primitifin `grid gap-6`'sı kalsaydı her banda 24px eklerdi |
 | 2026-09-16 | Faz 3.2 | ✅ `recruitment` **4 modal + 2 drawer** → **69/75** (`61529af`). İki drawer'ın mono etiketi (`ADAY DETAYI`/`BAŞVURU DETAYI`) etiket kaldı, gövdedeki **ad başlığı** `SheetTitle` oldu — `organization` ile aynı kural |
 | 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **31 göç + 1 muaf = 32/34** · kalan **2 sayfa / 19 overlay** (`messages`, `quotes`) |
+| 2026-09-16 | Faz 3.2 | ✅ `messages` **4 modal** → **70/75** (`2cc15f0`). **8 `fixed inset-0`'in 4'ü ayrı backdrop div'i** → gerçek overlay 4. Hepsi `{isX && …}` biçiminde → koşul **korundu** + `open` verildi (kapanışta unmount → yerel state sıfırlanıyor, o davranış bilinçli). ⚠️ Sarmalayıcının `overflow-y-auto`'su **hiç uygulanmıyordu** (panel `max-h-[92vh] overflow-hidden` ile kendi çocuklarını kırpıyordu) → primitifte de `overflow-hidden` seçildi, kısa ekran davranışı **birebir** korundu |
+| 2026-09-16 | Faz 3.2 | ✅ `quotes` **6 modal + 1 drawer** → **71/75** (`28d8d6e`). **11 `fixed inset-0`'in 4'ü backdrop.** ⚠️ **Tek `return` içinde 4 overlay** (drawer + 3 modal): sarmalayıcı `Sheet`, panel `SheetContent`, 3 `Dialog` **`Sheet` kökünün içinde** kaldı (portal → yalnız yapısal; alternatif ~660 satır drawer gövdesini yeniden girintilemekti). Drawer'ın taban genişlik sınırı yoktu → `data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-3xl` (`deal-detail-drawer` örneği). 3 modal **`z-60` + `bg-slate-950/40` + ayrı backdrop yok** (sarmalayıcı backdrop'un kendisiydi). **5. print yüzeyi** bulundu → #21 + §2.3 güncellendi |
+| 2026-09-16 | Faz 3.2 | ⚠️ **`tailV2` yanlış eşleşti (ilk kez) — denge kontrolü yakaladı.** Sezgisel kural "panel kapanışı **hemen ardından** sarmalayıcı kapanışı gelir" varsayıyor; `quotes`'ta drawer'ın panel kapanışından sonra **yorum** geliyordu (araya 3 modal girmiş), tarama devam edip **şablon modalının** `div/div/);` çiftini sahiplendi. Sonuç: `Dialog` 6 açık / 5 kapalı + bir `Sheet` kapanışı bir dialog'un üzerine yazıldı. **Ders: sezgisel yalnız "bitişik" durumda güvenilir; kardeş overlay tam da o bitişikliği bozar.** |
+| 2026-09-16 | Faz 3.2 | 📉 **`--full` ilk kez düştü: 1441 → 1438 (-3).** Kaynak: `quotes`'ta elle yazılmış yüzeyin primitifle değişmesi, o sınıfların taşıdığı ADR-0002 ihlallerini de götürdü. **Yani scoped göç, kapsam dışı ilan edilen ihlalleri yan etki olarak azaltabiliyor** — yeni dosyalarda da beklenmeli |
+| 2026-09-16 | Faz 3.2 | ✅✅ **3.2 BİTTİ — 33 göç + 1 muaf = 34/34.** typecheck 2/2 · scoped **PASS** · `--full` **1438** · Faz 3 toplamı **71/75** · kalan: **§3.3** (silme/onay modalları, primitifin kendisi dahil) |
