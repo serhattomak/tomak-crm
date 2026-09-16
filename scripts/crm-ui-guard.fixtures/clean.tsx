@@ -15,6 +15,8 @@
  *   INPUT_DATE / INPUT_NUMBER / NATIVE_SELECT  the `@workspace/ui` primitives
  *   MOTION_DURATION / MOTION_EASE  an on-scale duration and a token easing
  *   NATIVE_TABLE       the Table primitive (capital T)
+ *   LIGHT_SURFACE_NO_DARK  a `cn()` union, a paired conditional, and a partner
+ *                      that is itself conditional on a surface outside it
  *   SLATE              a `translate-*` utility that must not read as slate
  *
  * If this file ever fails, the guard is wrong — not the fixture.
@@ -30,6 +32,7 @@ import {
   TableCell,
   TableRow,
 } from "@workspace/ui/components/table";
+import { cn } from "@workspace/ui/lib/utils";
 import { X } from "lucide-react";
 import { useState } from "react";
 
@@ -92,6 +95,24 @@ export function CleanFixture() {
       {/* DYNAMIC inline style: computed width, so INLINE_STYLE_PROP must not
           fire. This is the boundary that rule was narrowed to in Faz 5.6. */}
       <span style={{ width: `${progress}%` }} />
+
+      {/* LIGHT_SURFACE_NO_DARK's branch boundaries. All three must stay silent:
+          (a) a `cn()` union is ONE surface, so a partner in the neighbouring
+              argument counts;
+          (b) both branches of a conditional are paired;
+          (c) a surface OUTSIDE a conditional is in every branch, so a partner that
+              is itself conditional still covers it. */}
+      <span className={cn("bg-white", "dark:bg-zinc-900")} />
+      <span
+        className={
+          status === "active"
+            ? "bg-emerald-50 dark:bg-emerald-950/60"
+            : "bg-zinc-100 dark:bg-zinc-800"
+        }
+      />
+      <span
+        className={`${status === "active" ? "dark:bg-zinc-900" : ""} bg-white`}
+      />
     </div>
   );
 }

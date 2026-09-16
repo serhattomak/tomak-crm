@@ -98,10 +98,11 @@ const SKIP_DIRS = new Set([
  *   used instead of `pattern` for anything that has to look *inside* an
  *   element's attributes. `pattern`-based tag rules must never reach an
  *   attribute with `[^>]*`: see `scanTags`.
- * @property {{ find: (whole: string, literal: string) => { offset: number, token: string } | null }} [className]
- *   used instead of `pattern` for rules about utility classes. The unit is the
- *   whole class expression, so a counterpart in a neighbouring `cn()` argument
- *   counts: see `classExpressions`.
+ * @property {{ find: (scope: string, literal: string) => { offset: number, token: string } | null }} [className]
+ *   used instead of `pattern` for rules about utility classes. `scope` is the union
+ *   of the literals that can COEXIST with `literal`: a counterpart in a neighbouring
+ *   `cn()` argument counts, a counterpart in the other branch of a conditional does
+ *   not. See `classExpressions`.
  *
  * NOTE: SLATE uses a `(?<![A-Za-z])` lookbehind so `translate-x-*`
  * utilities never match.
@@ -208,11 +209,11 @@ const RULES = [
       /style=\{\{(?=[^{}]*?:\s*["'][^"'$]*["'])(?![^{}]*\$\{)(?![^{}]*[.?|])/g,
   },
   {
-    hint: "light surface with no dark: counterpart anywhere in the class expression — in dark mode it keeps its light value. Use the token instead: bg-muted (light ~zinc-100, dark ~zinc-800) for surfaces, or bg-border for 1px rules. A white ring on a coloured surface and a translucent white art divider are NOT flagged — white is correct there",
+    hint: "light surface with no dark: counterpart in the same branch of the class expression — in dark mode it keeps its light value. Use the token instead: bg-muted (light ~zinc-100, dark ~zinc-800) for surfaces, or bg-border for 1px rules. A white ring on a coloured surface and a translucent white art divider are NOT flagged — white is correct there",
     id: "LIGHT_SURFACE_NO_DARK",
     severity: "warn",
     className: {
-      find: (whole, literal) => {
+      find: (scope, literal) => {
         const re = new RegExp(
           "(?<![A-Za-z:\\-])(" +
             "bg-(?:white|zinc-(?:50|100|200))" +
@@ -238,9 +239,13 @@ const RULES = [
         //
         // Returning the first UNPAIRED match keeps the one-finding-per-expression
         // contract and removes the masking.
+        //
+        // The partner is searched in `scope`, not in the whole expression: the
+        // branches of a conditional are alternatives, so a partner sitting in the
+        // other branch does not cover this one. See `classExpressions`.
         for (const m of literal.matchAll(re)) {
           const prop = m[1].split("-")[0];
-          if (new RegExp(`dark:(?:[a-z-]+:)*${prop}-`).test(whole)) {
+          if (new RegExp(`dark:(?:[a-z-]+:)*${prop}-`).test(scope)) {
             continue;
           }
           return { offset: m.index, token: m[1] };
@@ -380,18 +385,338 @@ function scanTags(content, name) {
 }
 
 /**
- * Every `className` expression in a file, as `{ index, literals, whole }`.
+ * Branch-aware class-expression parsing.
+ *
+ * A class expression is not one class set. `className={cond ? "a" : "b"}` and
+ * `` className={`base ${cond ? "a" : "b"}`} `` each render ONE of two sets, never
+ * both. Reading them as a single union lets a `dark:` partner in one branch cover a
+ * light surface that lives alone in the other.
+ *
+ * Measured on the shipped tree, 2026-09-16: `organization/page.tsx:1243` carries
+ * `bg-emerald-50` with no `dark:bg-` in its branch, the sibling branch supplies
+ * `dark:bg-zinc-800`, and this rule read zero while the badge paints near-white in
+ * dark mode. The runtime audit could not see it either — the audited data had no
+ * employee in that state, so the badge never rendered. Two blind instruments, one
+ * invisible defect.
+ *
+ * So every string literal gets a `path` (which branch, at which level) and a
+ * `scope`: the union of exactly those literals that can coexist with it. A literal
+ * inside a branch loses its siblings; a literal outside every conditional keeps the
+ * whole expression.
+ *
+ * With no conditional present, every path is `[]`, every literal coexists, and
+ * `scope` collapses to the union — which IS the previous behaviour, deliberately.
+ * 12,145 of the 12,540 expressions in CRM scope contain no alternative, and all
+ * 12,145 were verified to produce byte-identical verdicts; only the 395 that do can
+ * move. `cn("bg-white", "dark:bg-zinc-900")` still counts as one surface, because
+ * `cn` arguments are a union rather than alternatives — the property behind the
+ * "4245 candidates / real 30" note, and it is fixture-guarded.
+ */
+
+/** Skip a quoted string starting at `i`; returns the index just past its close. */
+function skipQuotedString(src, i, to) {
+  const quote = src[i];
+  let j = i + 1;
+  while (j < to && src[j] !== quote) {
+    if (src[j] === "\\") j++;
+    j++;
+  }
+  return Math.min(j + 1, to);
+}
+
+/**
+ * Skip a whole template literal starting at `i`; returns the index just past its
+ * close. `${…}` is skipped via its matching brace, so a `}` inside an interpolation
+ * cannot end the template early.
+ */
+function skipTemplateLiteral(src, i, to) {
+  let j = i + 1;
+  while (j < to) {
+    const c = src[j];
+    if (c === "\\") {
+      j += 2;
+      continue;
+    }
+    if (c === "`") return j + 1;
+    if (c === "$" && src[j + 1] === "{") {
+      j = matchingDelimiter(src, j + 1, to) + 1;
+      continue;
+    }
+    j++;
+  }
+  return to;
+}
+
+/** `src[i]` is `(`/`[`/`{`; returns the index of its match, else `to - 1`. */
+function matchingDelimiter(src, i, to) {
+  const open = src[i];
+  const close = open === "(" ? ")" : open === "[" ? "]" : "}";
+  let depth = 0;
+  let j = i;
+  while (j < to) {
+    const c = src[j];
+    if (c === '"' || c === "'") {
+      j = skipQuotedString(src, j, to);
+      continue;
+    }
+    if (c === "`") {
+      j = skipTemplateLiteral(src, j, to);
+      continue;
+    }
+    if (c === "/" && src[j + 1] === "/") {
+      while (j < to && src[j] !== "\n") j++;
+      continue;
+    }
+    if (c === "/" && src[j + 1] === "*") {
+      j += 2;
+      while (j < to && !(src[j] === "*" && src[j + 1] === "/")) j++;
+      j += 2;
+      continue;
+    }
+    if (c === open) depth++;
+    else if (c === close) {
+      depth--;
+      if (depth === 0) return j;
+    }
+    j++;
+  }
+  return to - 1;
+}
+
+/**
+ * The string literals of a template, split around its `${…}` interpolations.
+ *
+ * A template used to arrive as ONE literal whose text contained the interpolation
+ * source — quotes, `?`, `:` and all. The branches were therefore inseparable, which
+ * is the bug this whole module exists to close.
+ */
+function tokenizeTemplate(src, i, to, tokens) {
+  let j = i + 1;
+  let chunk = j;
+  while (j < to) {
+    const c = src[j];
+    if (c === "\\") {
+      j += 2;
+      continue;
+    }
+    if (c === "`") {
+      tokens.push({ contentFrom: chunk, contentTo: j, from: chunk, kind: "str", template: true, to: j });
+      return j + 1;
+    }
+    if (c === "$" && src[j + 1] === "{") {
+      tokens.push({ contentFrom: chunk, contentTo: j, from: chunk, kind: "str", template: true, to: j });
+      const close = matchingDelimiter(src, j + 1, to);
+      tokens.push({ from: j + 1, innerFrom: j + 2, innerTo: close, kind: "group", open: "{", to: close + 1 });
+      j = close + 1;
+      chunk = j;
+      continue;
+    }
+    j++;
+  }
+  tokens.push({ contentFrom: chunk, contentTo: to, from: chunk, kind: "str", template: true, to });
+  return to;
+}
+
+/**
+ * Tokenize a class expression. Tokens tile the range in order:
+ *   `str`   a string literal's CONTENT (quotes excluded)
+ *   `group` a nested `(…)`/`[…]`/`{…}`, or a template's `${…}`
+ *   `code`  everything else — identifiers, operators, whitespace
+ *
+ * Tiling is the safety property: a tokenizer that drops or reorders characters
+ * cannot lose a class name silently.
+ *
+ * @returns {{ kind: "str"|"code"|"group", from: number, to: number, contentFrom?: number, contentTo?: number, innerFrom?: number, innerTo?: number }[]}
+ */
+function tokenizeClassExpression(src, from, to) {
+  const tokens = [];
+  let i = from;
+  while (i < to) {
+    const c = src[i];
+    if (c === '"' || c === "'") {
+      const end = skipQuotedString(src, i, to);
+      tokens.push({ contentFrom: i + 1, contentTo: Math.min(end - 1, to), from: i, kind: "str", to: end });
+      i = end;
+    } else if (c === "`") {
+      i = tokenizeTemplate(src, i, to, tokens);
+    } else if (c === "(" || c === "[" || c === "{") {
+      const close = matchingDelimiter(src, i, to);
+      tokens.push({ from: i, innerFrom: i + 1, innerTo: close, kind: "group", open: c, to: close + 1 });
+      i = close + 1;
+    } else if (c === ")" || c === "]" || c === "}") {
+      tokens.push({ from: i, kind: "code", to: i + 1 });
+      i++;
+    } else {
+      let j = i;
+      while (j < to && !"\"'`([{)]}".includes(src[j])) j++;
+      tokens.push({ from: i, kind: "code", to: j });
+      i = j;
+    }
+  }
+  return tokens;
+}
+
+/**
+ * Locate the FIRST conditional at this nesting level.
+ *
+ * Only `code` tokens are inspected: a `?` inside a string or a nested group is not
+ * at this level, and `?.` / `??` are not conditionals. The match is the first `:`
+ * that balances the `?`, which is correct for both `a ? b : c` and the
+ * right-associative `a ? b : c ? d : e`.
+ *
+ * @returns {{ questionTok: number, questionChar: number, colonTok: number, colonChar: number } | null}
+ */
+function findConditionalAt(src, tokens) {
+  const isQuestion = (j) => src[j] === "?" && src[j + 1] !== "." && src[j + 1] !== "?";
+  for (let t = 0; t < tokens.length; t++) {
+    const tok = tokens[t];
+    if (tok.kind !== "code") continue;
+    for (let k = tok.from; k < tok.to; k++) {
+      if (!isQuestion(k)) continue;
+      let depth = 1;
+      for (let u = t; u < tokens.length; u++) {
+        const inner = tokens[u];
+        if (inner.kind !== "code") continue;
+        for (let m = u === t ? k + 1 : inner.from; m < inner.to; m++) {
+          if (isQuestion(m)) depth++;
+          else if (src[m] === "?") continue;
+          else if (src[m] === ":") {
+            depth--;
+            if (depth === 0) {
+              return { colonChar: m, colonTok: u, questionChar: k, questionTok: t };
+            }
+          } else if (src[m] === "," && depth === 1) {
+            return null;
+          }
+        }
+      }
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * Cut a token list at the first top-level comma in a `code` token, so the tail of
+ * `cn(cond ? "a" : "b", "shared")` is not swallowed by the false branch.
+ * @returns {[object[], object[]]} `[before, after]`; `after` is empty when no comma.
+ */
+function cutTokensAtComma(src, tokens) {
+  for (let t = 0; t < tokens.length; t++) {
+    const tok = tokens[t];
+    if (tok.kind !== "code") continue;
+    for (let k = tok.from; k < tok.to; k++) {
+      if (src[k] !== ",") continue;
+      const head = { from: tok.from, kind: "code", to: k };
+      const tail = { from: k + 1, kind: "code", to: tok.to };
+      return [
+        [...tokens.slice(0, t), head].filter((x) => x.to > x.from),
+        [tail, ...tokens.slice(t + 1)].filter((x) => x.to > x.from),
+      ];
+    }
+  }
+  return [tokens, []];
+}
+
+/**
+ * Assign every string literal a `path`: the branch it sits in at each conditional
+ * level. Shared text keeps the path it had; each branch extends it.
+ *
+ * The `?` and the `:` are dropped at every split. Leaving them in let the split
+ * re-find its own operator inside a branch and recurse until the stack blew —
+ * `RangeError` at a frame three calls away from the mistake.
+ *
+ * The `depth` cap falls back to "no conditional here" rather than hanging or
+ * dropping literals: a pathological expression under-reports, it never invents or
+ * loses a finding.
+ */
+function assignExpressionPaths(src, tokens, path, literals, depth = 0) {
+  const cond = depth > 60 ? null : findConditionalAt(src, tokens);
+  if (!cond) {
+    for (const tok of tokens) {
+      if (tok.kind === "str") {
+        const text = src.slice(tok.contentFrom, tok.contentTo);
+        if (text.length > 0) literals.push({ base: tok.contentFrom, path, text });
+      } else if (tok.kind === "group") {
+        assignExpressionPaths(
+          src,
+          tokenizeClassExpression(src, tok.innerFrom, tok.innerTo),
+          path,
+          literals,
+          depth + 1
+        );
+      }
+    }
+    return;
+  }
+
+  const qTok = tokens[cond.questionTok];
+  const cTok = tokens[cond.colonTok];
+  const sameToken = cond.questionTok === cond.colonTok;
+  const code = (from, to) => (to > from ? { from, kind: "code", to } : null);
+
+  const before = tokens.slice(0, cond.questionTok);
+  const beforeTail = code(qTok.from, cond.questionChar);
+  if (beforeTail) before.push(beforeTail);
+
+  const yes = [];
+  const yesHead = code(cond.questionChar + 1, sameToken ? cond.colonChar : qTok.to);
+  if (yesHead) yes.push(yesHead);
+  if (!sameToken) yes.push(...tokens.slice(cond.questionTok + 1, cond.colonTok));
+  const yesTail = sameToken ? null : code(cTok.from, cond.colonChar);
+  if (yesTail) yes.push(yesTail);
+
+  const no = [];
+  const noHead = code(cond.colonChar + 1, cTok.to);
+  if (noHead) no.push(noHead);
+  no.push(...tokens.slice(cond.colonTok + 1));
+
+  const [falseBranch, after] = cutTokensAtComma(src, no);
+
+  assignExpressionPaths(src, before, path, literals, depth + 1);
+  assignExpressionPaths(src, yes, [...path, 0], literals, depth + 1);
+  assignExpressionPaths(src, falseBranch, [...path, 1], literals, depth + 1);
+  if (after.length > 0) {
+    assignExpressionPaths(src, after, path, literals, depth + 1);
+  }
+}
+
+/**
+ * The union of every literal that can coexist with `literal`.
+ *
+ * Two literals coexist when they never sit in different branches of the same
+ * conditional. `-1` means "no branch at this level" at a shorter path, so a literal
+ * outside every conditional coexists with all of them and keeps the whole
+ * expression — that is what makes an alternative-free expression behave exactly as
+ * it did before.
+ */
+function sharedScope(literal, literals) {
+  return literals
+    .filter((other) => {
+      const levels = Math.max(literal.path.length, other.path.length);
+      for (let k = 0; k < levels; k++) {
+        const a = literal.path[k] ?? -1;
+        const b = other.path[k] ?? -1;
+        if (a !== -1 && b !== -1 && a !== b) return false;
+      }
+      return true;
+    })
+    .map((other) => other.text)
+    .join(" ");
+}
+
+/**
+ * Every `className` expression in a file, as `{ index, literals }`, where each
+ * literal carries its absolute `base`, its `text`, its `path` and its `scope`.
  *
  * Tailwind resolves a class *expression*, not one string at a time — so
  * `cn("bg-white", "dark:bg-zinc-900")` is one themed surface, not a missing
  * partner. Checking literal by literal reported 4245 candidates where the truth
- * was 30; the expression is the unit, and this is where that is enforced.
- *
- * Returns `literals` with absolute offsets and `whole` (all literals joined),
- * so a rule can look for a counterpart anywhere in the expression.
+ * was 30; the expression is the unit, and `scope` is where that is enforced while
+ * still telling one branch of a conditional from another.
  *
  * @param {string} src
- * @returns {{ index: number, whole: string, literals: { base: number, text: string }[] }[]}
+ * @returns {{ index: number, literals: { base: number, path: number[], scope: string, text: string }[] }[]}
  */
 function classExpressions(src) {
   const groups = [];
@@ -400,6 +725,8 @@ function classExpressions(src) {
   let m;
   while ((m = re.exec(src)) !== null) {
     let i = m.index + m[0].length;
+    /** @type {{ base: number, path: number[], scope: string, text: string }[]} */
+    const literals = [];
     if (src[i] === '"' || src[i] === "'" || src[i] === "`") {
       const q = src[i];
       const start = ++i;
@@ -408,33 +735,33 @@ function classExpressions(src) {
         i++;
       }
       const text = src.slice(start, i);
-      groups.push({ index: m.index, literals: [{ base: start, text }], whole: text });
+      if (text.length > 0) literals.push({ base: start, path: [], scope: text, text });
+    } else if (src[i] === "{") {
+      const open = i;
+      let depth = 0;
+      while (i < src.length) {
+        const c = src[i];
+        if (c === "{") depth++;
+        else if (c === "}") {
+          depth--;
+          if (depth === 0) break;
+        } else if (c === '"' || c === "'") {
+          i = skipQuotedString(src, i, src.length);
+          continue;
+        } else if (c === "`") {
+          i = skipTemplateLiteral(src, i, src.length);
+          continue;
+        }
+        i++;
+      }
+      assignExpressionPaths(src, tokenizeClassExpression(src, open + 1, i), [], literals);
+      for (const literal of literals) {
+        literal.scope = sharedScope(literal, literals);
+      }
+    } else {
       continue;
     }
-    if (src[i] !== "{") continue;
-    const open = i;
-    let depth = 0;
-    while (i < src.length) {
-      const c = src[i];
-      if (c === "{") depth++;
-      else if (c === "}") { depth--; if (depth === 0) break; }
-      else if (c === '"' || c === "'" || c === "`") {
-        const q = c; i++;
-        while (i < src.length && src[i] !== q) { if (src[i] === "\\") i++; i++; }
-      }
-      i++;
-    }
-    const inner = src.slice(open + 1, i);
-    const lre = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g;
-    /** @type {{ base: number, text: string }[]} */
-    const literals = [];
-    /** @type {RegExpExecArray | null} */
-    let lm;
-    while ((lm = lre.exec(inner)) !== null) {
-      const lit = lm[1] ?? lm[2] ?? lm[3] ?? "";
-      literals.push({ base: open + 1 + lm.index + 1, text: lit });
-    }
-    groups.push({ index: m.index, literals, whole: literals.map((x) => x.text).join(" ") });
+    groups.push({ index: m.index, literals });
   }
   return groups;
 }
@@ -474,7 +801,7 @@ function scanFile(abs, allowlist) {
     } else if (rule.className) {
       for (const group of classExpressions(content)) {
         for (const literal of group.literals) {
-          const hit = rule.className.find(group.whole, literal.text);
+          const hit = rule.className.find(literal.scope, literal.text);
           if (hit) {
             hitIndexes.push(literal.base + hit.offset);
           }

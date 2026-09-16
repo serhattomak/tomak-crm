@@ -71,6 +71,18 @@ export function DirtyFixture() {
       <span style={{ borderColor: "var(--border)" }} />
       {/* LIGHT_SURFACE_NO_DARK — a light surface with no dark: partner at all */}
       <div className="bg-zinc-50 p-4" />
+      {/* LIGHT_SURFACE_NO_DARK — the BRANCH shape: `bg-emerald-50` has no partner of
+          its own, and the sibling branch's `dark:bg-zinc-800` used to cover for it.
+          In dark mode this badge keeps its near-white background. The fixtures check
+          asserts this rule's hit COUNT, so reverting branch-awareness fails here even
+          though the file already fails for other reasons. */}
+      <span
+        className={
+          count > 0
+            ? "bg-emerald-50 text-emerald-700"
+            : "bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-400"
+        }
+      />
       {/* CARD_SURFACE — the paired hardcoded idiom */}
       <div className="bg-white p-4 dark:bg-zinc-900" />
     </div>
