@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
   DialogClose,
@@ -73,6 +74,20 @@ export default function AutomationsPage() {
   // Quick Dry-run Simulation State
   const [simulatingWorkflow, setSimulatingWorkflow] =
     useState<WorkflowSummaryDto | null>(null);
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    description: "",
+    onConfirm: () => {},
+    open: false,
+    title: "",
+  });
   const [simulationResult, setSimulationResult] =
     useState<AutomationExecutionResultDto | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
@@ -168,32 +183,33 @@ export default function AutomationsPage() {
   };
 
   // Delete Workflow
-  const handleDelete = async (
-    id: string,
-    name: string,
-    e: React.MouseEvent
-  ) => {
+  const handleDelete = (id: string, name: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (
-      !confirm(`"${name}" otomasyonunu silmek istediğinizden emin misiniz?`)
-    ) {
-      return;
-    }
 
-    try {
-      const res = await ApiClient.deleteWorkflow(id, tenantSlug);
-      if (res.success) {
-        toast.success("Otomasyon başarıyla silindi.");
-        setWorkflows((prev) => prev.filter((w) => w.id !== id));
-        ApiClient.getWorkflowStats(tenantSlug).then(
-          (s) => s.data && setStats(s.data)
-        );
-      } else {
-        toast.error("Silinirken bir hata oluştu.");
-      }
-    } catch {
-      toast.error("Bağlantı hatası.");
-    }
+    setConfirmDialog({
+      confirmText: "Otomasyonu Sil",
+      description: `"${name}" otomasyonunu silmek istediğinizden emin misiniz?`,
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.deleteWorkflow(id, tenantSlug);
+          if (res.success) {
+            toast.success("Otomasyon başarıyla silindi.");
+            setWorkflows((prev) => prev.filter((w) => w.id !== id));
+            ApiClient.getWorkflowStats(tenantSlug).then(
+              (s) => s.data && setStats(s.data)
+            );
+          } else {
+            toast.error("Silinirken bir hata oluştu.");
+          }
+        } catch {
+          toast.error("Bağlantı hatası.");
+        }
+        setConfirmDialog((prev) => ({ ...prev, open: false }));
+      },
+      open: true,
+      title: "Otomasyonu Sil",
+      variant: "destructive",
+    });
   };
 
   // Use Template
@@ -1090,6 +1106,17 @@ export default function AutomationsPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </PageContainer>
   );
 }
