@@ -28,27 +28,32 @@ A `warn` rule is promoted to `error` only once that rule is clean in a `--full`
 sweep (ADR-0004 §9). Rules without an explicit `severity` are errors — the
 original 9 rules are unchanged by the advisory layer.
 
-## Current baseline (`--full`, 2026-09-15)
+## Current baseline (`--full`, 2026-09-16)
 
-176 files scanned. **1458 errors · 1334 advisory warnings.**
+189 files scanned. **62 errors · 1334 advisory warnings.**
 
 | Rule | Severity | Hits | Use instead |
 | --- | --- | --- | --- |
-| VIOLET | error | 924 | `blue-500` scale |
-| SLATE | error | 415 | `zinc-*` |
 | NATIVE_SELECT | error | 61 | `SelectField` (≤7 fixed) / `Combobox` (dynamic) |
-| FUCHSIA | error | 43 | `blue-500` scale |
-| INLINE_HEX_STYLE | error | 6 | design tokens |
-| ARBITRARY_HEX | error | 4 | design tokens |
-| SVG_PAINT_HEX | error | 4 (allowlisted) | `currentColor` / tokens |
 | INPUT_NUMBER | error | 1 | `NumberInput` |
+| VIOLET | error | **0** | `blue-*` scale, tone for tone (Faz 4.1) |
+| SLATE | error | **0** | `zinc-*` (Faz 4.0) |
+| FUCHSIA | error | **0** | `blue-*` scale, tone for tone (Faz 4.2) |
+| INLINE_HEX_STYLE | error | **0** (1 recorded) | design tokens / `--chart-*` (Faz 4.4) |
+| ARBITRARY_HEX | error | **0** | design tokens (Faz 4.3) |
+| SVG_PAINT_HEX | error | **0** (8 recorded) | `currentColor` / tokens (brand marks excepted) |
 | ARBITRARY_TEXT_SIZE | warn | 1242 | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale |
 | NATIVE_TABLE | warn | 61 | `@workspace/ui` `Table` primitives |
 | INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens |
 
-Top offenders: `vehicles/page.tsx` (191), `portal/[token]/PortalClient.tsx` (114),
-`projects/[projectId]/page.tsx` (102), `recruitment/page.tsx` (75),
-`promotions/page.tsx` (69), `messages/page.tsx` (67).
+**Faz 4 (colour discipline) is complete**: all six colour rules read 0, down from
+1376 hits across 51 files. What remains in `error` is input standards, which is
+Faz 5. Allowlist entries are now 3: one brand mark pair and one data-contract
+value, each with its reason recorded.
+
+Top offenders in the old baseline (`vehicles` 191, `portal/…/PortalClient` 114,
+`projects/[projectId]` 102) were all violet and slate counts; those files no
+longer appear.
 
 ## Proof (fixtures)
 
