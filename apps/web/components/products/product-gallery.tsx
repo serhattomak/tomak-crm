@@ -9,50 +9,10 @@ import {
 import { ChevronLeft, ChevronRight, Package, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { moveImage, removeImage, setCoverImage } from "./product-gallery-utils";
 
 const MAIN_SIZES = "(max-width: 1024px) 100vw, 50vw";
 const THUMB_SIZES = "(max-width: 640px) 20vw, 96px";
-
-/** Kapak görsel her zaman dizinin ilk elemanıdır (`images[0]`). */
-export function setCoverImage(images: string[], index: number): string[] {
-  if (index <= 0 || index >= images.length) {
-    return [...images];
-  }
-  const next = [...images];
-  const [picked] = next.splice(index, 1);
-  if (picked !== undefined) {
-    next.unshift(picked);
-  }
-  return next;
-}
-
-export function removeImage(images: string[], index: number): string[] {
-  if (index < 0 || index >= images.length) {
-    return [...images];
-  }
-  return images.filter((_, i) => i !== index);
-}
-
-/** Öğeyi `from` konumundan `to` konumuna taşır (sınırlar kırpılır). */
-export function moveImage(
-  images: string[],
-  from: number,
-  to: number
-): string[] {
-  if (from < 0 || from >= images.length) {
-    return [...images];
-  }
-  const clampedTo = Math.min(Math.max(to, 0), images.length - 1);
-  if (clampedTo === from) {
-    return [...images];
-  }
-  const next = [...images];
-  const [moved] = next.splice(from, 1);
-  if (moved !== undefined) {
-    next.splice(clampedTo, 0, moved);
-  }
-  return next;
-}
 
 export interface ProductGalleryProps {
   className?: string;

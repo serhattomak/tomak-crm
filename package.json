@@ -18,6 +18,7 @@
     "guard:crm-ui:full": "node scripts/crm-ui-guard.mjs --full",
     "guard:crm-ui:fixtures": "node scripts/crm-ui-guard.fixtures.mjs",
     "lint": "turbo lint",
+    "test": "turbo test",
     "tunnel": "cloudflared tunnel --url http://localhost:3000",
     "typecheck": "turbo typecheck"
   },

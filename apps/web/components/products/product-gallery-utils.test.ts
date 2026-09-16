@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { moveImage, removeImage, setCoverImage } from "./product-gallery";
+// Explicit `.ts` extension: `node --test` runs this file directly, and Node's
+// ESM resolver does not do extensionless resolution. `apps/web/tsconfig.json`
+// sets `allowImportingTsExtensions` for exactly this case. Only this test file
+// uses the form — application code imports stay extensionless.
+import { moveImage, removeImage, setCoverImage } from "./product-gallery-utils.ts";
 
 const IMAGES = ["cover.jpg", "second.jpg", "third.jpg"];
 

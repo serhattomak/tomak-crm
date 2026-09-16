@@ -10,6 +10,7 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {},
     "format": {
       "dependsOn": ["^format"]
     },

@@ -9,6 +9,7 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "lint": "eslint",
     "start": "next start",
+    "test": "node --experimental-strip-types --test \"components/**/*.test.ts\" \"lib/**/*.test.ts\" \"app/**/*.test.ts\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
