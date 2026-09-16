@@ -33,7 +33,8 @@ export function QuoteDocument({
       const raw = (item.unitPrice || 0) * (item.quantity || 1);
       const disc = item.discountRate > 0 ? raw * (item.discountRate / 100) : 0;
       const base = Math.max(0, raw - disc);
-      const tax = item.taxAmount || (item.taxRate > 0 ? base * (item.taxRate / 100) : 0);
+      const tax =
+        item.taxAmount || (item.taxRate > 0 ? base * (item.taxRate / 100) : 0);
       const existing = map.get(item.taxRate) || { baseAmount: 0, taxAmount: 0 };
       existing.baseAmount += base;
       existing.taxAmount += tax;
@@ -85,9 +86,7 @@ export function QuoteDocument({
               <b>Son Geçerlilik:</b>{" "}
               {quote.validUntil ? (
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                  {new Date(quote.validUntil).toLocaleDateString(
-                    "tr-TR"
-                  )}
+                  {new Date(quote.validUntil).toLocaleDateString("tr-TR")}
                 </span>
               ) : (
                 "Süresiz"
@@ -214,9 +213,7 @@ export function QuoteDocument({
                   {formatCurrency(item.unitPrice, quote.currency)}
                 </TableCell>
                 <TableCell className="whitespace-nowrap px-2 py-1.5 text-center font-bold text-rose-600 dark:text-rose-400">
-                  {item.discountRate > 0
-                    ? `%${item.discountRate}`
-                    : "-"}
+                  {item.discountRate > 0 ? `%${item.discountRate}` : "-"}
                 </TableCell>
                 <TableCell className="whitespace-nowrap px-2 py-1.5 text-center text-zinc-600 dark:text-zinc-400">
                   %{item.taxRate}
@@ -241,20 +238,14 @@ export function QuoteDocument({
             <TableHeader>
               <TableRow className="border-border font-bold text-muted-foreground">
                 <TableHead className="pb-1">Oran</TableHead>
-                <TableHead className="pb-1 text-right">
-                  Matrah
-                </TableHead>
-                <TableHead className="pb-1 text-right">
-                  KDV Tutarı
-                </TableHead>
+                <TableHead className="pb-1 text-right">Matrah</TableHead>
+                <TableHead className="pb-1 text-right">KDV Tutarı</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
               {taxBreakdown.map((t) => (
                 <TableRow key={t.rate}>
-                  <TableCell className="py-0.5 font-bold">
-                    %{t.rate}
-                  </TableCell>
+                  <TableCell className="py-0.5 font-bold">%{t.rate}</TableCell>
                   <TableCell className="py-0.5 text-right">
                     {formatCurrency(t.baseAmount, quote.currency)}
                   </TableCell>
@@ -384,12 +375,11 @@ export function QuoteDocument({
       {/* 7. Document Footer Bar */}
       <div className="mt-4 flex items-center justify-between border-border border-t pt-2.5 text-3xs text-muted-foreground">
         <span>
-          Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik
-          olarak üretilmiştir.
+          Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik olarak
+          üretilmiştir.
         </span>
         <span>
-          Belge No: {quote.quoteNumber}-R{quote.revisionNumber} • Sayfa
-          1 / 1
+          Belge No: {quote.quoteNumber}-R{quote.revisionNumber} • Sayfa 1 / 1
         </span>
       </div>
     </div>

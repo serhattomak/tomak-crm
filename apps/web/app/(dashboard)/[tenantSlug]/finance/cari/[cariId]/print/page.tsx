@@ -109,11 +109,7 @@ export default function CariStatementPrintPage() {
         </button>
       </div>
 
-      <CariStatement
-        cari={cari}
-        isLoading={false}
-        statementTx={statementTx}
-      />
+      <CariStatement cari={cari} isLoading={false} statementTx={statementTx} />
     </div>
   );
 }

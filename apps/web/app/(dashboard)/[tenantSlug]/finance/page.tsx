@@ -394,7 +394,6 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
 
 // --- Statement Table Body ---
 
-
 // --- Main Page Component ---
 
 export default function FinancePage() {
@@ -550,7 +549,9 @@ export default function FinancePage() {
     if (!selectedCariForStatement) {
       return;
     }
-    router.push(`/${tenantSlug}/finance/cari/${selectedCariForStatement.id}/print`);
+    router.push(
+      `/${tenantSlug}/finance/cari/${selectedCariForStatement.id}/print`
+    );
   }, [router, selectedCariForStatement, tenantSlug]);
 
   const handleTabCari = useCallback(() => setActiveTab("cari"), []);

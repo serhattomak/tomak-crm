@@ -106,8 +106,7 @@ export function CariStatement({
             {cari?.title}
           </h3>
           <div className="font-mono text-xs text-muted-foreground">
-            Cari Kodu: {cari?.code} • VKN:{" "}
-            {cari?.taxNumber || "—"}
+            Cari Kodu: {cari?.code} • VKN: {cari?.taxNumber || "—"}
           </div>
         </div>
         <div className="text-right">
@@ -129,18 +128,10 @@ export function CariStatement({
           <TableHeader>
             <TableRow className="border-border font-semibold text-muted-foreground">
               <TableHead className="py-2 h-auto">Tarih</TableHead>
-              <TableHead className="py-2 h-auto">
-                İşlem / Evrak
-              </TableHead>
-              <TableHead className="py-2 text-right h-auto">
-                Borç
-              </TableHead>
-              <TableHead className="py-2 text-right h-auto">
-                Alacak
-              </TableHead>
-              <TableHead className="py-2 text-right h-auto">
-                Bakiye
-              </TableHead>
+              <TableHead className="py-2 h-auto">İşlem / Evrak</TableHead>
+              <TableHead className="py-2 text-right h-auto">Borç</TableHead>
+              <TableHead className="py-2 text-right h-auto">Alacak</TableHead>
+              <TableHead className="py-2 text-right h-auto">Bakiye</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">

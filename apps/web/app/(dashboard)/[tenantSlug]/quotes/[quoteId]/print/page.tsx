@@ -68,7 +68,9 @@ export default function QuotePrintPage() {
   if (error || !quote) {
     return (
       <div className="mx-auto max-w-3xl p-8 text-center">
-        <p className="text-destructive text-sm">{error || "Teklif bulunamadı."}</p>
+        <p className="text-destructive text-sm">
+          {error || "Teklif bulunamadı."}
+        </p>
         <Link
           className="mt-4 inline-flex text-primary text-xs underline"
           href={`/${tenantSlug}/quotes`}

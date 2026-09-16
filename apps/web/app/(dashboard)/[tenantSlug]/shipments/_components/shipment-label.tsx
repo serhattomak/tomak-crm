@@ -11,9 +11,7 @@ import type { ShipmentDto } from "@/lib/api-client";
 
 export function ShipmentLabel({ shipment }: { shipment: ShipmentDto }) {
   return (
-    <div
-      className="rounded-2xl border-2 border-zinc-900 bg-card p-6 text-zinc-900 shadow-sm dark:border-zinc-700 dark:text-zinc-100"
-    >
+    <div className="rounded-2xl border-2 border-zinc-900 bg-card p-6 text-zinc-900 shadow-sm dark:border-zinc-700 dark:text-zinc-100">
       {/* Top Bar: Carrier & Code */}
       <div className="flex items-center justify-between border-zinc-900 border-b-2 pb-3 dark:border-zinc-700">
         <div>
@@ -92,8 +90,7 @@ export function ShipmentLabel({ shipment }: { shipment: ShipmentDto }) {
         </div>
         <div>
           <span>
-            TARİH:{" "}
-            {new Date(shipment.createdAt).toLocaleDateString("tr-TR")}
+            TARİH: {new Date(shipment.createdAt).toLocaleDateString("tr-TR")}
           </span>
         </div>
       </div>
