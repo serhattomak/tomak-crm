@@ -314,7 +314,7 @@ export default function RolesManagementPage() {
               <div className="max-h-[460px] space-y-6 overflow-y-auto pr-2">
                 {permissionGroups.map((group) => (
                   <div className="space-y-3" key={group.module}>
-                    <div className="flex items-center gap-1.5 font-bold text-2xs text-blue-600 uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5 font-bold text-2xs text-blue-600 uppercase tracking-wider dark:text-blue-400">
                       <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                       {group.module} Module
                     </div>
@@ -337,7 +337,7 @@ export default function RolesManagementPage() {
                               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                                 {perm.name}
                               </div>
-                              <div className="font-mono text-3xs text-blue-600/90">
+                              <div className="font-mono text-3xs text-blue-600/90 dark:text-blue-400">
                                 {perm.code}
                               </div>
                               {perm.description && (
