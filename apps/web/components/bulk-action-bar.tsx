@@ -42,9 +42,9 @@ export function BulkActionBar({
   }
 
   return (
-    <div className="slide-in-from-bottom-4 fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 animate-in items-center gap-3 rounded-2xl border border-zinc-200/80 bg-white px-4 py-3 shadow-2xl duration-200 dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="slide-in-from-bottom-4 fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 animate-in items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-2xl duration-200">
       {/* Count badge */}
-      <div className="flex items-center gap-2 border-zinc-200 border-r pr-3 dark:border-zinc-700">
+      <div className="flex items-center gap-2 border-border border-r pr-3">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-bold text-[11px] text-white">
           {selectedCount}
         </span>
@@ -57,11 +57,7 @@ export function BulkActionBar({
       <div className="flex items-center gap-2">
         {actions.map((action) => (
           <button
-            className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-semibold text-xs transition-all ${
-              action.variant === "danger"
-                ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-900/60"
-                : "border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-            } disabled:cursor-not-allowed disabled:opacity-50`}
+            className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-semibold text-xs transition-all ${ action.variant === "danger" ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-900/60" : "border-border bg-zinc-50 text-zinc-700 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" } disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={action.disabled}
             key={action.label}
             onClick={action.onClick}
@@ -76,7 +72,7 @@ export function BulkActionBar({
       {/* Clear selection */}
       <button
         aria-label="Seçimi temizle"
-        className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition-colors hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-700 dark:border-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+        className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg border border-border text-zinc-400 transition-colors hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
         onClick={onClear}
         type="button"
       >

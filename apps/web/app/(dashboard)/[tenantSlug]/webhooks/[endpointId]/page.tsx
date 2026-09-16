@@ -451,10 +451,10 @@ export default function WebhookBuilderPage() {
   return (
     <PageContainer className="space-y-6">
       {/* Header Toolbar */}
-      <div className="flex flex-col gap-4 border-zinc-200 border-b pb-5 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-border border-b pb-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <button
-            className="rounded-xl border border-zinc-200 p-2 text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border border-border p-2 text-zinc-600 transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={() => router.push(`/${tenantSlug}/webhooks`)}
             type="button"
           >
@@ -507,16 +507,14 @@ export default function WebhookBuilderPage() {
               type="button"
             >
               <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-150 ease-out dark:bg-zinc-900 ${
-                  isActive ? "translate-x-5" : "translate-x-0"
-                }`}
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-out ${ isActive ? "translate-x-5" : "translate-x-0" }`}
               />
             </button>
           </div>
 
           {!isNew && (
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3.5 py-2 font-medium text-xs text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+              className="flex items-center gap-1.5 rounded-xl border border-border px-3.5 py-2 font-medium text-xs text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={handleOpenTestModal}
               type="button"
             >
@@ -565,7 +563,7 @@ export default function WebhookBuilderPage() {
         {/* Left: Main Form - spans 2 */}
         <div className="space-y-6 lg:col-span-2">
           {/* Endpoint Details */}
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <div className="mb-4 flex items-center gap-2">
               <div className="rounded-lg bg-zinc-900 p-1.5 text-white dark:bg-zinc-100 dark:text-zinc-900">
                 <Globe className="h-4 w-4" />
@@ -589,11 +587,7 @@ export default function WebhookBuilderPage() {
                   İsim <span className="text-red-600">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:bg-zinc-900 dark:text-zinc-100 ${
-                    hasAttemptedSave && !nameIsValid
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800"
-                      : "border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900 dark:border-zinc-800 dark:focus:border-zinc-100"
-                  }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-name"
                   maxLength={255}
                   onChange={(e) => setName(e.target.value)}
@@ -625,11 +619,7 @@ export default function WebhookBuilderPage() {
                   Hedef URL <span className="text-red-600">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-white px-3 py-2 font-mono text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:bg-zinc-900 dark:text-zinc-100 ${
-                    hasAttemptedSave && !urlIsValid
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800"
-                      : "border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900 dark:border-zinc-800 dark:focus:border-zinc-100"
-                  }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-url"
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://example.com/hook"
@@ -654,11 +644,7 @@ export default function WebhookBuilderPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className={`w-full rounded-xl border bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:bg-zinc-900 dark:text-zinc-100 ${
-                    hasAttemptedSave && !descriptionIsValid
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800"
-                      : "border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900 dark:border-zinc-800 dark:focus:border-zinc-100"
-                  }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !descriptionIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-description"
                   maxLength={1000}
                   onChange={(e) => setDescription(e.target.value)}
@@ -683,7 +669,7 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* Events Selector */}
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="rounded-lg bg-zinc-900 p-1.5 text-white dark:bg-zinc-100 dark:text-zinc-900">
@@ -700,14 +686,14 @@ export default function WebhookBuilderPage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <button
-                  className="rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-border px-2.5 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={handleSelectAll}
                   type="button"
                 >
                   Tümünü seç
                 </button>
                 <button
-                  className="rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-border px-2.5 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={handleSelectNone}
                   type="button"
                 >
@@ -721,16 +707,12 @@ export default function WebhookBuilderPage() {
                 const checked = events.includes(ev);
                 return (
                   <label
-                    className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2.5 transition-colors ${
-                      checked
-                        ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-800/60"
-                        : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/40"
-                    }`}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2.5 transition-colors ${ checked ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-800/60" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/40" }`}
                     key={ev}
                   >
                     <input
                       checked={checked}
-                      className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 dark:border-zinc-600 dark:bg-zinc-800"
+                      className="h-4 w-4 rounded border-border text-zinc-900 focus:ring-zinc-900 dark:border-zinc-600 dark:bg-zinc-800"
                       onChange={() => toggleEvent(ev)}
                       type="checkbox"
                     />
@@ -756,7 +738,7 @@ export default function WebhookBuilderPage() {
         {/* Right: Secret + HMAC + Test */}
         <div className="space-y-6">
           {/* Secret Section */}
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Gizli Anahtar
             </h3>
@@ -773,7 +755,7 @@ export default function WebhookBuilderPage() {
                       Secret (bir kez gösterilir)
                     </span>
                     <button
-                      className="rounded-lg border border-zinc-200 p-1 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400"
+                      className="rounded-lg border border-border p-1 text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
                       onClick={() => setShowSecret((prev: boolean) => !prev)}
                       type="button"
                     >
@@ -802,7 +784,7 @@ export default function WebhookBuilderPage() {
                         Kopyala
                       </button>
                       <button
-                        className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+                        className="rounded-lg border border-border bg-card px-2.5 py-1 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300"
                         onClick={() =>
                           toast.info("Yeniden oluşturma yakında eklenecek.")
                         }
@@ -821,12 +803,12 @@ export default function WebhookBuilderPage() {
                   <span className="font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
                     Secret (maskelenmiş)
                   </span>
-                  <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-800/50">
+                  <div className="flex items-center gap-2 rounded-xl border border-border bg-zinc-50 px-3 py-2.5 dark:bg-zinc-800/50">
                     <code className="flex-1 break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">
                       {secretMasked}
                     </code>
                     <button
-                      className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
+                      className="rounded-lg border border-border bg-card p-1.5 text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
                       onClick={() => {
                         void handleCopySecret(secretMasked);
                       }}
@@ -836,7 +818,7 @@ export default function WebhookBuilderPage() {
                     </button>
                   </div>
                   <button
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                    className="w-full rounded-xl border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
                     onClick={() =>
                       toast.info("Secret yenileme yakında eklenecek.")
                     }
@@ -850,7 +832,7 @@ export default function WebhookBuilderPage() {
                   </p>
                 </div>
               ) : (
-                <div className="rounded-xl border border-zinc-200 border-dashed bg-zinc-50 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/30">
+                <div className="rounded-xl border border-border border-dashed bg-zinc-50 p-4 text-center dark:bg-zinc-800/30">
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {isNew
                       ? "Oluşturduğunuzda secret burada görünecek."
@@ -858,7 +840,7 @@ export default function WebhookBuilderPage() {
                   </p>
                   {!isNew && (
                     <button
-                      className="mt-2 rounded-lg border border-zinc-200 bg-white px-3 py-1 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+                      className="mt-2 rounded-lg border border-border bg-card px-3 py-1 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
                       onClick={() =>
                         toast.info("Secret yenileme yakında eklenecek.")
                       }
@@ -873,7 +855,7 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* HMAC Preview */}
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               HMAC İmzası Önizleme
             </h3>
@@ -881,12 +863,12 @@ export default function WebhookBuilderPage() {
               Her istekte bu başlıklar gönderilir. Payload = timestamp +
               &quot;.&quot; + JSON.
             </p>
-            <div className="mt-3 space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+            <div className="mt-3 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
               <div>
                 <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   X-Webhook-Signature
                 </span>
-                <code className="mt-1 block break-all rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <code className="mt-1 block break-all rounded-lg bg-card px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:text-zinc-200">
                   {hmacExampleSignature}
                 </code>
               </div>
@@ -894,7 +876,7 @@ export default function WebhookBuilderPage() {
                 <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   X-Webhook-Timestamp
                 </span>
-                <code className="mt-1 block rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <code className="mt-1 block rounded-lg bg-card px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:text-zinc-200">
                   {hmacExampleTimestamp}
                 </code>
               </div>
@@ -902,7 +884,7 @@ export default function WebhookBuilderPage() {
                 <span className="font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   X-Tenant-Id
                 </span>
-                <code className="mt-1 block rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <code className="mt-1 block rounded-lg bg-card px-2.5 py-1.5 font-mono text-[11px] text-zinc-800 dark:text-zinc-200">
                   {tenantSlug || "tenant-id"}
                 </code>
               </div>
@@ -910,7 +892,7 @@ export default function WebhookBuilderPage() {
                 <span className="font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                   Örnek Payload
                 </span>
-                <pre className="mt-1 max-h-32 overflow-auto rounded-lg bg-white px-2.5 py-2 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                <pre className="mt-1 max-h-32 overflow-auto rounded-lg bg-card px-2.5 py-2 font-mono text-[11px] text-zinc-700 dark:text-zinc-300">
                   {hmacExamplePayload}
                 </pre>
               </div>
@@ -922,7 +904,7 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* Test Send Card */}
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Test Gönderimi
             </h3>
@@ -949,8 +931,8 @@ export default function WebhookBuilderPage() {
 
       {/* Delivery History Mini-Table */}
       {!isNew && (
-        <div className="rounded-2xl border border-zinc-200 bg-white shadow-xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center justify-between border-zinc-100 border-b p-4 dark:border-zinc-800">
+        <div className="rounded-2xl border border-border bg-card shadow-xs backdrop-blur-sm">
+          <div className="flex items-center justify-between border-border border-b p-4">
             <div>
               <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 Teslimat Geçmişi
@@ -960,7 +942,7 @@ export default function WebhookBuilderPage() {
               </p>
             </div>
             <button
-              className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400"
+              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400"
               onClick={() => {
                 void loadDeliveries();
               }}
@@ -995,7 +977,7 @@ export default function WebhookBuilderPage() {
           ) : (
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="border-zinc-200 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/40 dark:text-zinc-400">
                   <TableRow>
                     <TableHead className="px-4 py-2.5 font-semibold h-auto">Olay</TableHead>
                     <TableHead className="px-4 py-2.5 font-semibold h-auto">Durum</TableHead>
@@ -1061,7 +1043,7 @@ export default function WebhookBuilderPage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="rounded-xl bg-zinc-900 p-2 text-white dark:bg-zinc-100 dark:text-zinc-900">
                   <Send className="h-4 w-4" />
@@ -1093,7 +1075,7 @@ export default function WebhookBuilderPage() {
                 JSON Payload
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 font-mono text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 font-mono text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                 id="test-payload"
                 onChange={(e) => setTestPayloadText(e.target.value)}
                 rows={6}
@@ -1106,7 +1088,7 @@ export default function WebhookBuilderPage() {
             </div>
 
             {testResult && (
-              <div className="space-y-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
+              <div className="space-y-3 rounded-xl border border-border bg-zinc-50 p-4 dark:bg-zinc-800/50">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                     Sonuç
@@ -1134,7 +1116,7 @@ export default function WebhookBuilderPage() {
                     <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                       HMAC
                     </span>
-                    <code className="mt-1 block break-all rounded-lg bg-white px-2 py-1 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                    <code className="mt-1 block break-all rounded-lg bg-card px-2 py-1 font-mono text-[11px] text-zinc-700 dark:text-zinc-300">
                       {testResult.hmacSignature ?? "—"}
                     </code>
                   </div>
@@ -1143,7 +1125,7 @@ export default function WebhookBuilderPage() {
                       <span className="block font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
                         Response Body
                       </span>
-                      <pre className="mt-1 max-h-24 overflow-auto rounded-lg bg-white px-2 py-1.5 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                      <pre className="mt-1 max-h-24 overflow-auto rounded-lg bg-card px-2 py-1.5 font-mono text-[11px] text-zinc-700 dark:text-zinc-300">
                         {testResult.responseBody}
                       </pre>
                     </div>
@@ -1154,7 +1136,7 @@ export default function WebhookBuilderPage() {
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300"
+                className="rounded-xl border border-border px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
                 onClick={() => setIsTestModalOpen(false)}
                 type="button"
               >

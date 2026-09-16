@@ -398,7 +398,7 @@ export function CampaignModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Tag className="h-5 w-5" />
@@ -425,7 +425,7 @@ export function CampaignModal({
         </div>
 
         {/* Step Indicators */}
-        <div className="grid grid-cols-5 border-zinc-100 border-b bg-zinc-50/50 px-6 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/30">
+        <div className="grid grid-cols-5 border-border border-b bg-zinc-50/50 px-6 py-2.5 dark:bg-zinc-950/30">
           {steps.map((s) => {
             const isDone = currentStep > s.num;
             const isCurrent = currentStep === s.num;
@@ -472,7 +472,7 @@ export function CampaignModal({
                       Kampanya Başlığı / Adı *
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Örn: Yaz Sezonu %20 İndirimi, 1000 TL Üzeri Kargo Bedava"
                       required
@@ -487,7 +487,7 @@ export function CampaignModal({
                         Dahili Takip Kodu (Opsiyonel)
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                        className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                         onChange={(e) => setCode(e.target.value.toUpperCase())}
                         placeholder="Örn: CAMP-SUMMER-2026"
                         type="text"
@@ -514,7 +514,7 @@ export function CampaignModal({
                       Açıklama & Kampanya Detayları
                     </label>
                     <textarea
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Kampanya şartları ve müşteriye görünecek detaylar..."
                       rows={2}
@@ -548,7 +548,7 @@ export function CampaignModal({
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950">
+                  <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-950">
                     <div>
                       <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                         Diğer Kampanyalarla Birleşebilir (Stacking)
@@ -570,9 +570,7 @@ export function CampaignModal({
                       type="button"
                     >
                       <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          isStackable ? "translate-x-5" : "translate-x-0"
-                        }`}
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-in-out ${ isStackable ? "translate-x-5" : "translate-x-0" }`}
                       />
                     </button>
                   </div>
@@ -619,11 +617,7 @@ export function CampaignModal({
                       const isSelected = type === t.id;
                       return (
                         <button
-                          className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
-                            isSelected
-                              ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40"
-                              : "border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950"
-                          }`}
+                          className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${ isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300" }`}
                           key={t.id}
                           onClick={() => setType(t.id)}
                           type="button"
@@ -644,7 +638,7 @@ export function CampaignModal({
                     })}
                   </div>
 
-                  <div className="space-y-3 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                  <div className="space-y-3 border-border border-t pt-3">
                     {type === "Percentage" && (
                       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                         <div>
@@ -805,11 +799,7 @@ export function CampaignModal({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${
-                        scopeMode === "all"
-                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
-                          : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
-                      }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${ scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
                       onClick={() => setScopeMode("all")}
                       type="button"
                     >
@@ -822,11 +812,7 @@ export function CampaignModal({
                     </button>
 
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${
-                        scopeMode === "custom"
-                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
-                          : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
-                      }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${ scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
                       onClick={() => setScopeMode("custom")}
                       type="button"
                     >
@@ -840,7 +826,7 @@ export function CampaignModal({
                   </div>
 
                   {scopeMode === "custom" && (
-                    <div className="space-y-3 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                    <div className="space-y-3 border-border border-t pt-3">
                       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                         <div>
                           <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
@@ -894,14 +880,14 @@ export function CampaignModal({
                           Hedef Kurallar ({targets.length})
                         </span>
                         {targets.length === 0 ? (
-                          <p className="rounded-xl border border-zinc-200 border-dashed p-3 text-center text-xs text-zinc-400 dark:border-zinc-800">
+                          <p className="rounded-xl border border-border border-dashed p-3 text-center text-xs text-zinc-400">
                             Henüz ürün veya kategori seçilmedi.
                           </p>
                         ) : (
                           <div className="max-h-36 space-y-1.5 overflow-y-auto">
                             {targets.map((t, idx) => (
                               <div
-                                className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-xs dark:border-zinc-800 dark:bg-zinc-950"
+                                className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-2 text-xs dark:bg-zinc-950"
                                 key={idx}
                               >
                                 <div className="flex items-center gap-2">
@@ -934,11 +920,7 @@ export function CampaignModal({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${
-                        triggerType === "Automatic"
-                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
-                          : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
-                      }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${ triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
                       onClick={() => setTriggerType("Automatic")}
                       type="button"
                     >
@@ -952,11 +934,7 @@ export function CampaignModal({
                     </button>
 
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${
-                        triggerType === "CouponCode"
-                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
-                          : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
-                      }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${ triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
                       onClick={() => setTriggerType("CouponCode")}
                       type="button"
                     >
@@ -970,14 +948,14 @@ export function CampaignModal({
                     </button>
                   </div>
 
-                  <div className="space-y-3 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                  <div className="space-y-3 border-border border-t pt-3">
                     {triggerType === "CouponCode" && !isEditMode && (
                       <div>
                         <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                           Birincil Kupon Kodu *
                         </label>
                         <input
-                          className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                          className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                           onChange={(e) =>
                             setInitialCouponCode(e.target.value.toUpperCase())
                           }
@@ -1027,7 +1005,7 @@ export function CampaignModal({
               {currentStep === 5 && (
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
-                    <div className="space-y-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 p-3.5 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div className="space-y-1.5 rounded-xl border border-border bg-zinc-50/50 p-3.5 dark:bg-zinc-950">
                       <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                         Kampanya Bilgileri:
                       </span>
@@ -1060,7 +1038,7 @@ export function CampaignModal({
                       </div>
                     </div>
 
-                    <div className="space-y-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 p-3.5 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div className="space-y-1.5 rounded-xl border border-border bg-zinc-50/50 p-3.5 dark:bg-zinc-950">
                       <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                         İndirim & Kapsam:
                       </span>
@@ -1096,10 +1074,10 @@ export function CampaignModal({
         </div>
 
         {/* Footer Navigation */}
-        <div className="flex items-center justify-between border-zinc-100 border-t px-6 py-3.5 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-t px-6 py-3.5">
           {currentStep > 1 ? (
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={handlePrev}
               type="button"
             >

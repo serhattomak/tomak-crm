@@ -129,7 +129,7 @@ function KpiCard({
   colorClass,
 }: KpiCardProps) {
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-center justify-between">
         <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
           {label}
@@ -176,7 +176,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
 
   return (
     <TableRow
-      className="cursor-pointer border-zinc-100 transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+      className="cursor-pointer border-border transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
       onClick={handleStatement}
     >
       <TableCell className="py-3.5 pr-3 pl-4">
@@ -227,7 +227,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
       <TableCell className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <button
-            className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 active:scale-95 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+            className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 active:scale-95 dark:text-zinc-200"
             onClick={handleTx}
             title="Tahsilat / Ödeme Girişi"
             type="button"
@@ -310,7 +310,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
   }, [account, onTransfer]);
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
       <div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -351,7 +351,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
         ) : null}
       </div>
 
-      <div className="mt-6 flex items-baseline justify-between border-zinc-100 border-t pt-4 dark:border-zinc-800">
+      <div className="mt-6 flex items-baseline justify-between border-border border-t pt-4">
         <div>
           <span className="block font-medium text-[11px] text-zinc-400 uppercase tracking-wider">
             Güncel Bakiye
@@ -365,7 +365,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
         </div>
 
         <button
-          className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+          className="inline-flex items-center gap-1 rounded-xl border border-border bg-zinc-50 px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-200"
           onClick={handleTransferClick}
           type="button"
         >
@@ -688,7 +688,7 @@ export default function FinancePage() {
 
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-sm text-zinc-700 shadow-2xs hover:bg-zinc-50 active:scale-95 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-sm text-zinc-700 shadow-2xs hover:bg-zinc-50 active:scale-95 dark:text-zinc-200"
             onClick={handleOpenTx}
             type="button"
           >
@@ -735,7 +735,7 @@ export default function FinancePage() {
       </div>
 
       {/* 3. Navigation Tabs */}
-      <div className="flex border-zinc-200 border-b dark:border-zinc-800">
+      <div className="flex border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "cari"
@@ -777,11 +777,11 @@ export default function FinancePage() {
       {/* TAB 1: Cari Kartlar */}
       {activeTab === "cari" && (
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/80 dark:bg-zinc-900">
+          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
                 onChange={handleCariSearchChange}
                 placeholder="Cari Ünvanı, Kodu veya Vergi No Ara..."
                 type="text"
@@ -802,11 +802,11 @@ export default function FinancePage() {
             />
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Cari Kart & Kod</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                     <TableHead className="px-3 py-3 h-auto">VKN / TCKN</TableHead>
@@ -858,11 +858,11 @@ export default function FinancePage() {
       {/* TAB 3: Tahsilat & Ödeme Fişleri */}
       {activeTab === "transactions" && (
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Tarih & Evrak</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Hesap (Kasa/Banka)</TableHead>
                     <TableHead className="px-3 py-3 h-auto">İşlem Türü</TableHead>
@@ -885,7 +885,7 @@ export default function FinancePage() {
                   ) : (
                     transactions.map((tx) => (
                       <TableRow
-                        className="border-zinc-100 hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+                        className="border-border hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                         key={tx.id}
                       >
                         <TableCell className="py-3.5 pr-3 pl-4 font-mono text-zinc-700 dark:text-zinc-300">
@@ -948,7 +948,7 @@ export default function FinancePage() {
             className="data-[side=right]:w-full max-w-2xl overflow-hidden print:max-w-none print:shadow-none data-[side=right]:sm:max-w-2xl"
             side="right"
           >
-            <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800 print:hidden">
+            <div className="flex items-center justify-between border-border border-b p-4 print:hidden">
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -957,7 +957,7 @@ export default function FinancePage() {
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-200"
                   onClick={handlePrintStatement}
                   type="button"
                 >
@@ -976,7 +976,7 @@ export default function FinancePage() {
 
             <div className="flex-1 space-y-6 overflow-y-auto p-6">
               {/* Account Overview Header */}
-              <div className="flex items-start justify-between border-zinc-200 border-b pb-4 dark:border-zinc-800">
+              <div className="flex items-start justify-between border-border border-b pb-4">
                 <div>
                   <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                     {selectedCariForStatement?.title}
@@ -1003,7 +1003,7 @@ export default function FinancePage() {
               <div>
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-zinc-200 font-semibold text-zinc-400 dark:border-zinc-800">
+                    <TableRow className="border-border font-semibold text-zinc-400">
                       <TableHead className="py-2 h-auto">Tarih</TableHead>
                       <TableHead className="py-2 h-auto">İşlem / Evrak</TableHead>
                       <TableHead className="py-2 text-right h-auto">Borç</TableHead>
@@ -1175,7 +1175,7 @@ function CreateCariModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-lg"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Cari Kart Aç
           </DialogTitle>
@@ -1198,7 +1198,7 @@ function CreateCariModal({
               Cari Kodu *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 font-mono text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="cari-code-input"
               onChange={handleCodeChange}
               type="text"
@@ -1214,7 +1214,7 @@ function CreateCariModal({
               Cari Ünvan / Ad Soyad *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
               id="cari-title-input"
               onChange={handleTitleChange}
               placeholder="Örn: ABC Lojistik A.Ş."
@@ -1250,7 +1250,7 @@ function CreateCariModal({
                 Şehir
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
                 id="cari-city-input"
                 onChange={handleCityChange}
                 type="text"
@@ -1268,7 +1268,7 @@ function CreateCariModal({
                 Vergi Dairesi
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
                 id="cari-taxoffice-input"
                 onChange={handleTaxOfficeChange}
                 placeholder="Örn: Maslak"
@@ -1285,7 +1285,7 @@ function CreateCariModal({
                 VKN / TCKN
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card p-2 font-mono text-zinc-800 dark:text-zinc-200"
                 id="cari-taxno-input"
                 onChange={handleTaxNumberChange}
                 placeholder="10 veya 11 hane"
@@ -1304,7 +1304,7 @@ function CreateCariModal({
                 Telefon
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
                 id="cari-phone-input"
                 onChange={handlePhoneChange}
                 placeholder="05..."
@@ -1320,7 +1320,7 @@ function CreateCariModal({
                 E-posta
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
                 id="cari-email-input"
                 onChange={handleEmailChange}
                 placeholder="info@..."
@@ -1331,9 +1331,9 @@ function CreateCariModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t p-4">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1446,7 +1446,7 @@ function CreateAccountModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Kasa / Banka Hesabı
           </DialogTitle>
@@ -1469,7 +1469,7 @@ function CreateAccountModal({
               Hesap Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
               id="acc-name-input"
               onChange={handleNameChange}
               placeholder="Örn: Garanti Ticari TL veya Merkez Kasa"
@@ -1526,7 +1526,7 @@ function CreateAccountModal({
                   Banka Adı
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
                   id="acc-bankname-input"
                   onChange={handleBankNameChange}
                   type="text"
@@ -1542,7 +1542,7 @@ function CreateAccountModal({
                   IBAN
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card p-2 font-mono text-zinc-800 dark:text-zinc-200"
                   id="acc-iban-input"
                   onChange={handleIbanChange}
                   type="text"
@@ -1570,9 +1570,9 @@ function CreateAccountModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t p-4">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1708,7 +1708,7 @@ function CreateTransactionModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Tahsilat & Ödeme Fişi
           </DialogTitle>
@@ -1729,22 +1729,14 @@ function CreateTransactionModal({
             </span>
             <div className="grid grid-cols-2 gap-2">
               <button
-                className={`rounded-xl py-2 font-bold text-xs transition-all ${
-                  type === "Collection"
-                    ? "bg-emerald-600 text-white shadow-xs"
-                    : "border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
-                }`}
+                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Collection" ? "bg-emerald-600 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
                 onClick={handleSelectCollection}
                 type="button"
               >
                 + Tahsilat (Giriş)
               </button>
               <button
-                className={`rounded-xl py-2 font-bold text-xs transition-all ${
-                  type === "Payment"
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
-                }`}
+                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Payment" ? "bg-rose-600 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
                 onClick={handleSelectPayment}
                 type="button"
               >
@@ -1822,7 +1814,7 @@ function CreateTransactionModal({
               Dekont / Makbuz No
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
               id="tx-docno-input"
               onChange={handleDocNoChange}
               placeholder="Örn: DEK-2026-0012"
@@ -1839,7 +1831,7 @@ function CreateTransactionModal({
               Açıklama
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
               id="tx-desc-input"
               onChange={handleDescChange}
               placeholder="Örn: Fatura ödemesi veya peşinat..."
@@ -1849,9 +1841,9 @@ function CreateTransactionModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t p-4">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >
@@ -1971,7 +1963,7 @@ function TransferModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-y-auto p-0 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Hesaplar Arası Virman
           </DialogTitle>
@@ -2051,7 +2043,7 @@ function TransferModal({
               Açıklama
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card p-2 text-zinc-800 dark:text-zinc-200"
               id="transfer-desc-input"
               onChange={handleDescChange}
               placeholder="Örn: Kasadan bankaya nakit yatırma..."
@@ -2061,9 +2053,9 @@ function TransferModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t p-4">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={onClose}
             type="button"
           >

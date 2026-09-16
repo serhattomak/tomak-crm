@@ -154,7 +154,7 @@ export default function UsersManagementPage() {
       )}
 
       {/* Users Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
             <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
@@ -162,7 +162,7 @@ export default function UsersManagementPage() {
           </div>
         ) : (
           <Table>
-            <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+            <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
               <TableRow>
                 <TableHead className="px-6 py-3.5 h-auto">User</TableHead>
                 <TableHead className="px-6 py-3.5 h-auto">Email</TableHead>
@@ -256,7 +256,7 @@ export default function UsersManagementPage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <UserPlus className="h-4 w-4 text-indigo-500" />
                 Invite New Member
@@ -306,7 +306,7 @@ export default function UsersManagementPage() {
                 </Select>
               </div>
 
-              <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="flex justify-end gap-2 border-border border-t pt-3">
                 <button
                   className="px-4 py-2 font-semibold text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   onClick={() => setIsInviteOpen(false)}

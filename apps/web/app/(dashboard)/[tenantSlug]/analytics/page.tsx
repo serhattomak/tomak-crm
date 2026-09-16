@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
   return (
     <PageContainer className="space-y-6">
       {/* 1. Header & Controls */}
-      <div className="flex flex-col justify-between gap-4 border-zinc-200/80 border-b pb-5 md:flex-row md:items-center dark:border-zinc-800">
+      <div className="flex flex-col justify-between gap-4 border-border border-b pb-5 md:flex-row md:items-center">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
@@ -258,7 +258,7 @@ export default function AnalyticsPage() {
 
         <div className="flex flex-wrap items-center gap-2.5 print:hidden">
           {/* Time Range Pills */}
-          <div className="flex items-center rounded-xl border border-zinc-200/80 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center rounded-xl border border-border bg-zinc-100/80 p-0.5 dark:bg-zinc-900">
             {(
               [
                 { key: "30d", label: "Son 30 Gün" },
@@ -268,11 +268,7 @@ export default function AnalyticsPage() {
               ] as const
             ).map((t) => (
               <button
-                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${
-                  timeRange === t.key
-                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
+                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${ timeRange === t.key ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
                 key={t.key}
                 onClick={() => setTimeRange(t.key)}
                 type="button"
@@ -284,7 +280,7 @@ export default function AnalyticsPage() {
 
           {/* Export CSV */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 active:scale-95 dark:text-zinc-300 dark:hover:bg-zinc-800"
             onClick={handleExportCsv}
             type="button"
           >
@@ -294,7 +290,7 @@ export default function AnalyticsPage() {
 
           {/* Print */}
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 active:scale-95 dark:text-zinc-300 dark:hover:bg-zinc-800"
             onClick={() => window.print()}
             type="button"
           >
@@ -304,7 +300,7 @@ export default function AnalyticsPage() {
 
           {/* Refresh */}
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
             onClick={loadAnalyticsData}
             title="Yenile"
             type="button"
@@ -319,7 +315,7 @@ export default function AnalyticsPage() {
       {/* 2. Primary KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Total Revenue */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
@@ -333,14 +329,14 @@ export default function AnalyticsPage() {
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-emerald-600 dark:border-zinc-800 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-emerald-600 dark:text-emerald-400">
             <ArrowUpRight className="h-3.5 w-3.5" />
             <span>Geçen döneme göre +%18.4 artış</span>
           </div>
         </div>
 
         {/* Card 2: Average Order Value */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
@@ -354,13 +350,13 @@ export default function AnalyticsPage() {
               <ShoppingCart className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:text-blue-400">
             <span>{totalOrders} Adet Tamamlanan Sipariş</span>
           </div>
         </div>
 
         {/* Card 3: Quote Conversion Rate */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
@@ -374,7 +370,7 @@ export default function AnalyticsPage() {
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:text-blue-400">
             <span>
               {quoteStats?.acceptedCount || 0} Onaylandı /{" "}
               {quoteStats?.totalQuotes || 0} Toplam
@@ -383,7 +379,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 4: Open Balance & Collection Health */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
@@ -397,14 +393,14 @@ export default function AnalyticsPage() {
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Ödeme bekleyen vadeli siparişler</span>
           </div>
         </div>
       </div>
 
       {/* 3. Tab Switcher */}
-      <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto border-zinc-200/80 border-b pb-2 dark:border-zinc-800">
+      <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto border-border border-b pb-2">
         {[
           { icon: BarChart3, key: "overview", label: "Genel Değerlendirme" },
           { icon: TrendingUp, key: "sales", label: "Satış & Gelir Trendi" },
@@ -435,7 +431,7 @@ export default function AnalyticsPage() {
       {(activeTab === "overview" || activeTab === "sales") && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Revenue Monthly Histogram */}
-          <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-2xs lg:col-span-2 dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -445,7 +441,7 @@ export default function AnalyticsPage() {
                   Aylık faturalandırılan ve tahsil edilen sipariş hacimleri
                 </p>
               </div>
-              <span className="rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-bold text-[10px] text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-xl border border-border bg-zinc-50 px-2.5 py-1 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                 2026 TRY Hacim
               </span>
             </div>
@@ -476,7 +472,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Conversion Funnel */}
-          <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Satış Hunisi (Pipeline Funnel)
             </h3>
@@ -524,7 +520,7 @@ export default function AnalyticsPage() {
       {(activeTab === "overview" || activeTab === "crm") && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Customer Tiers & Distribution */}
-          <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Müşteri Segment Dağılımı
             </h3>
@@ -560,7 +556,7 @@ export default function AnalyticsPage() {
                 },
               ].map((tier) => (
                 <div
-                  className="rounded-2xl border border-zinc-100 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-800/40"
+                  className="rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40"
                   key={tier.label}
                 >
                   <div className="flex items-center gap-1.5">
@@ -581,7 +577,7 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="mt-6 flex items-center justify-between border-zinc-100 border-t pt-4 text-xs dark:border-zinc-800">
+            <div className="mt-6 flex items-center justify-between border-border border-t pt-4 text-xs">
               <span className="text-zinc-500 dark:text-zinc-400">
                 Toplam Müşteri Portföyü:
               </span>
@@ -593,7 +589,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* High-Volume Orders or Customers based on tab */}
-          <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
             {activeTab === "crm" ? (
               <>
                 <div className="flex items-center justify-between">
@@ -692,7 +688,7 @@ export default function AnalyticsPage() {
 
       {/* 6. Tab Content: Inventory & Products Profitability */}
       {(activeTab === "overview" || activeTab === "inventory") && (
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -712,7 +708,7 @@ export default function AnalyticsPage() {
 
           <div className="mt-5 overflow-x-auto">
             <Table>
-              <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
                 <TableRow>
                   <TableHead className="py-3 pr-4 pl-4 h-auto">Ürün Adı</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Tip / Kategori</TableHead>

@@ -169,7 +169,7 @@ export function BulkCouponModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <KeyRound className="h-5 w-5" />
@@ -235,11 +235,11 @@ export function BulkCouponModal({
                   {copied ? "Kopyalandı" : "Tümünü Kopyala"}
                 </button>
               </div>
-              <div className="max-h-48 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50 p-3 font-mono text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200">
+              <div className="max-h-48 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 font-mono text-xs text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200">
                 <div className="grid grid-cols-2 gap-2">
                   {generatedResult.codes.slice(0, 50).map((code) => (
                     <div
-                      className="rounded border border-zinc-200/80 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900"
+                      className="rounded border border-border bg-card px-2 py-1"
                       key={code}
                     >
                       {code}
@@ -251,7 +251,7 @@ export function BulkCouponModal({
 
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
-                className="flex items-center gap-2 rounded-xl border border-zinc-200 px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="flex items-center gap-2 rounded-xl border border-border px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 onClick={handleDownloadCsv}
                 type="button"
               >
@@ -275,22 +275,14 @@ export function BulkCouponModal({
             {/* Mode Switcher */}
             <div className="grid grid-cols-2 gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
               <button
-                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${
-                  mode === "bulk"
-                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                }`}
+                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "bulk" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200" }`}
                 onClick={() => setMode("bulk")}
                 type="button"
               >
                 Toplu Üretim (Bulk Batch)
               </button>
               <button
-                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${
-                  mode === "single"
-                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                }`}
+                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "single" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200" }`}
                 onClick={() => setMode("single")}
                 type="button"
               >
@@ -327,7 +319,7 @@ export function BulkCouponModal({
                 <div className="relative">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>
                       setCustomCode(e.target.value.toUpperCase())
                     }
@@ -360,7 +352,7 @@ export function BulkCouponModal({
                       Kod Ön Ek (Prefix)
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                       onChange={(e) => setPrefix(e.target.value.toUpperCase())}
                       placeholder="Örn: CRM, YAZ"
                       type="text"
@@ -410,9 +402,9 @@ export function BulkCouponModal({
               />
             </div>
 
-            <div className="flex items-center justify-end gap-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+            <div className="flex items-center justify-end gap-3 border-border border-t pt-4">
               <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="rounded-xl border border-border px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 onClick={onClose}
                 type="button"
               >

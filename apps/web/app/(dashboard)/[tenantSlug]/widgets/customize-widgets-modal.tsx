@@ -247,11 +247,7 @@ export function CustomizeWidgetsModal({
 
             return (
               <div
-                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${
-                  isActive
-                    ? "border-primary/40 bg-primary/5"
-                    : "border-border/70 bg-card hover:border-border"
-                }`}
+                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${ isActive ? "border-primary/40 bg-primary/5" : "border-border/70 bg-card hover:border-border" }`}
                 key={widget.id}
               >
                 <div className="flex min-w-0 items-start gap-2.5">

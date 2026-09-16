@@ -81,7 +81,7 @@ export default function RecruitmentPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">İşe alım yükleniyor...</p>
         </div>
@@ -338,13 +338,13 @@ function RecruitmentPageContent() {
       case "Open":
         return "border border-emerald-200 bg-emerald-50 text-emerald-700";
       case "Draft":
-        return "border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400";
+        return "border border-border bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400";
       case "Closed":
         return "border border-rose-200 bg-rose-50 text-rose-700";
       case "Cancelled":
-        return "border border-zinc-200 bg-zinc-100 text-zinc-600";
+        return "border border-border bg-zinc-100 text-zinc-600";
       default:
-        return "border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400";
+        return "border border-border bg-zinc-50 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400";
     }
   };
 
@@ -665,7 +665,7 @@ function RecruitmentPageContent() {
 
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={openCandModalForCreate}
             type="button"
           >
@@ -684,15 +684,11 @@ function RecruitmentPageContent() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+      <div className="flex items-center justify-between border-border border-b pb-3">
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             aria-current={activeTab === "ilanlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "ilanlar"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ilanlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("ilanlar")}
             type="button"
           >
@@ -702,11 +698,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "adaylar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "adaylar"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "adaylar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("adaylar")}
             type="button"
           >
@@ -716,11 +708,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "basvurular" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "basvurular"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "basvurular" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("basvurular")}
             type="button"
           >
@@ -730,11 +718,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "ayarlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "ayarlar"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ayarlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("ayarlar")}
             type="button"
           >
@@ -744,7 +728,7 @@ function RecruitmentPageContent() {
         </div>
 
         <button
-          className="flex items-center gap-1 rounded-xl border border-zinc-200 px-3 py-1.5 font-medium text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-medium text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={isLoading}
           onClick={loadData}
           type="button"
@@ -758,7 +742,7 @@ function RecruitmentPageContent() {
 
       {/* Content */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Veriler yükleniyor...</p>
         </div>
@@ -767,12 +751,12 @@ function RecruitmentPageContent() {
           {activeTab === "ilanlar" && (
             <section aria-label="İlanlar tablosu" className="space-y-4">
               {/* Filters */}
-              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="İlan ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setReqSearch(e.target.value)}
                     placeholder="Başlık, departman veya lokasyon ara..."
                     type="text"
@@ -818,7 +802,7 @@ function RecruitmentPageContent() {
               </div>
 
               {/* Table */}
-              <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                 {pagedRequisitions.length === 0 ? (
                   <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
                     <Briefcase className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
@@ -841,7 +825,7 @@ function RecruitmentPageContent() {
                   <>
                     <div className="overflow-x-auto">
                       <Table>
-                        <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                        <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                           <TableRow>
                             <TableHead className="px-6 py-3.5 h-auto">İlan Başlığı</TableHead>
                             <TableHead className="px-6 py-3.5 h-auto">Departman</TableHead>
@@ -932,7 +916,7 @@ function RecruitmentPageContent() {
                               <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => openReqModalForEdit(req)}
                                     type="button"
                                   >
@@ -991,12 +975,12 @@ function RecruitmentPageContent() {
 
           {activeTab === "adaylar" && (
             <section aria-label="Adaylar tablosu" className="space-y-4">
-              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="Aday ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setCandSearch(e.target.value)}
                     placeholder="Ad, e-posta, telefon veya etiket ara..."
                     type="text"
@@ -1004,7 +988,7 @@ function RecruitmentPageContent() {
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 py-2 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2 text-xs text-zinc-600 dark:text-zinc-400">
                     <Filter className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                     <span className="font-semibold">Kaynak:</span>
                   </div>
@@ -1029,7 +1013,7 @@ function RecruitmentPageContent() {
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                 {pagedCandidates.length === 0 ? (
                   <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
                     <Users className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
@@ -1052,7 +1036,7 @@ function RecruitmentPageContent() {
                   <>
                     <div className="overflow-x-auto">
                       <Table>
-                        <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                        <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                           <TableRow>
                             <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
                             <TableHead className="px-6 py-3.5 h-auto">E-posta / Telefon</TableHead>
@@ -1126,14 +1110,14 @@ function RecruitmentPageContent() {
                               <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => setSelectedCandidateId(c.id)}
                                     type="button"
                                   >
                                     Görüntüle
                                   </button>
                                   <button
-                                    className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => openCandModalForEdit(c)}
                                     type="button"
                                   >
@@ -1167,12 +1151,12 @@ function RecruitmentPageContent() {
 
           {activeTab === "basvurular" && (
             <section aria-label="Başvurular" className="space-y-4">
-              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="Başvuru ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setAppSearch(e.target.value)}
                     placeholder="Aday, e-posta, ilan veya aşama ara..."
                     type="text"
@@ -1183,7 +1167,7 @@ function RecruitmentPageContent() {
                   <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
                     <button
                       aria-label="Tablo görünümü"
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "table" ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
                       onClick={() => setViewMode("table")}
                       type="button"
                     >
@@ -1192,7 +1176,7 @@ function RecruitmentPageContent() {
                     </button>
                     <button
                       aria-label="Kanban görünümü"
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "kanban" ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
                       onClick={() => setViewMode("kanban")}
                       type="button"
                     >
@@ -1240,7 +1224,7 @@ function RecruitmentPageContent() {
                           applicationsByStage.map.get(stage.id) || [];
                         return (
                           <div
-                            className="flex w-72 shrink-0 flex-col rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/50"
+                            className="flex w-72 shrink-0 flex-col rounded-2xl border border-border bg-zinc-50 dark:bg-zinc-800/50"
                             key={stage.id}
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={() => {
@@ -1250,7 +1234,7 @@ function RecruitmentPageContent() {
                               }
                             }}
                           >
-                            <div className="flex items-center justify-between rounded-t-2xl border-zinc-200 border-b bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900">
+                            <div className="flex items-center justify-between rounded-t-2xl border-border border-b bg-card px-3 py-2.5">
                               <div className="flex items-center gap-2">
                                 <span
                                   className="h-3 w-3 rounded-full border border-white shadow-xs"
@@ -1274,13 +1258,13 @@ function RecruitmentPageContent() {
                               style={{ maxHeight: "560px", minHeight: "320px" }}
                             >
                               {apps.length === 0 ? (
-                                <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-white p-4 text-center text-xs text-zinc-400 dark:bg-zinc-900 dark:text-zinc-500">
+                                <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-card p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                                   Bu aşamada başvuru yok
                                 </div>
                               ) : (
                                 apps.map((app) => (
                                   <div
-                                    className="group cursor-grab rounded-xl border border-zinc-200 bg-white p-3 shadow-xs transition-all hover:shadow-md active:cursor-grabbing dark:border-zinc-800 dark:bg-zinc-900"
+                                    className="group cursor-grab rounded-xl border border-border bg-card p-3 shadow-xs transition-all hover:shadow-md active:cursor-grabbing"
                                     draggable
                                     key={app.id}
                                     onClick={() =>
@@ -1356,7 +1340,7 @@ function RecruitmentPageContent() {
                       })}
                     {applicationsByStage.unassigned.length > 0 && (
                       <div className="flex w-72 shrink-0 flex-col rounded-2xl border border-amber-200 bg-amber-50/40">
-                        <div className="flex items-center justify-between rounded-t-2xl border-amber-200 border-b bg-white px-3 py-2.5 dark:bg-zinc-900">
+                        <div className="flex items-center justify-between rounded-t-2xl border-amber-200 border-b bg-card px-3 py-2.5">
                           <span className="font-bold text-amber-800 text-xs">
                             Atanmamış
                           </span>
@@ -1367,7 +1351,7 @@ function RecruitmentPageContent() {
                         <div className="flex flex-col gap-2 p-2">
                           {applicationsByStage.unassigned.map((app) => (
                             <div
-                              className="rounded-xl border border-amber-200 bg-white p-3 shadow-xs dark:bg-zinc-900"
+                              className="rounded-xl border border-amber-200 bg-card p-3 shadow-xs"
                               key={app.id}
                             >
                               <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
@@ -1391,7 +1375,7 @@ function RecruitmentPageContent() {
                   </div>
                 </div>
               ) : (
-                <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                   {pagedApplications.length === 0 ? (
                     <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
                       <FileText className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
@@ -1413,7 +1397,7 @@ function RecruitmentPageContent() {
                     <>
                       <div className="overflow-x-auto">
                         <Table>
-                          <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                          <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                             <TableRow>
                               <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
                               <TableHead className="px-6 py-3.5 h-auto">İlan</TableHead>
@@ -1495,7 +1479,7 @@ function RecruitmentPageContent() {
                                 <TableCell className="px-6 py-4 text-right">
                                   <div className="flex items-center justify-end gap-1">
                                     <button
-                                      className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                      className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                       onClick={() =>
                                         setSelectedApplicationId(app.id)
                                       }
@@ -1550,7 +1534,7 @@ function RecruitmentPageContent() {
 
           {activeTab === "ayarlar" && (
             <section aria-label="Ayarlar - aşamalar" className="space-y-4">
-              <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1582,7 +1566,7 @@ function RecruitmentPageContent() {
                     </p>
                   </div>
                 ) : (
-                  <div className="mt-4 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-border">
                     <Table>
                       <TableHeader className="bg-zinc-50 font-bold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                         <TableRow>
@@ -1666,7 +1650,7 @@ function RecruitmentPageContent() {
                                 type="button"
                               >
                                 <span
-                                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform dark:bg-zinc-900 ${s.isActive ? "translate-x-5" : "translate-x-1"}`}
+                                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-card shadow transition-transform ${s.isActive ? "translate-x-5" : "translate-x-1"}`}
                                 />
                               </button>
                               <span className="ml-2 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
@@ -1679,7 +1663,7 @@ function RecruitmentPageContent() {
                             <TableCell className="px-3 py-3 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
-                                  className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                  className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                   onClick={() => openStageModalForEdit(s)}
                                   type="button"
                                 >
@@ -1722,7 +1706,7 @@ function RecruitmentPageContent() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Kanal & KVKK Ayarları (Bilgi)
                 </h3>
@@ -1851,13 +1835,13 @@ function Pagination({
     return null;
   }
   return (
-    <div className="flex items-center justify-between border-zinc-100 border-t px-4 py-3 text-xs dark:border-zinc-800">
+    <div className="flex items-center justify-between border-border border-t px-4 py-3 text-xs">
       <span className="text-zinc-500 dark:text-zinc-400">
         Toplam {totalCount} kayıt • Sayfa {currentPage}/{totalPages}
       </span>
       <div className="flex items-center gap-1.5">
         <button
-          className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
           type="button"
@@ -1865,7 +1849,7 @@ function Pagination({
           Önceki
         </button>
         <button
-          className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={currentPage >= totalPages}
           onClick={() => onPageChange(currentPage + 1)}
           type="button"
@@ -1976,7 +1960,7 @@ function RequisitionModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Briefcase className="h-5 w-5 text-blue-600" />
             {requisition?.id ? "İlanı Düzenle" : "Yeni İş İlanı"}
@@ -2126,7 +2110,7 @@ function RequisitionModal({
           <div className="space-y-1.5">
             <Label>Açıklama</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="İlan detayları..."
               rows={3}
@@ -2136,7 +2120,7 @@ function RequisitionModal({
           <div className="space-y-1.5">
             <Label>Gereksinimler</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setRequirements(e.target.value)}
               placeholder="Aranan nitelikler..."
               rows={2}
@@ -2144,7 +2128,7 @@ function RequisitionModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2305,7 +2289,7 @@ function CandidateModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Users className="h-5 w-5 text-blue-600" />
             {candidate?.id ? "Adayı Düzenle" : "Yeni Aday Ekle"}
@@ -2421,19 +2405,19 @@ function CandidateModal({
               Notlar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               value={notes}
             />
           </div>
 
-          <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+          <div className="rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
             <label className="mb-1 block font-semibold text-zinc-800 dark:text-zinc-200">
               CV Yükle (PDF/DOC/DOCX, max 5MB)
             </label>
             <div className="flex items-center gap-2">
-              <label className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50">
+              <label className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50">
                 <Upload className="h-3.5 w-3.5" />
                 <span>Dosya Seç</span>
                 <input
@@ -2452,7 +2436,7 @@ function CandidateModal({
               </span>
             </div>
             {previewUrl && (
-              <div className="mt-3 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="mt-3 overflow-hidden rounded-xl border border-border bg-card">
                 <object
                   className="h-48 w-full"
                   data={previewUrl}
@@ -2489,7 +2473,7 @@ function CandidateModal({
           <label className="flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-3">
             <input
               checked={consentGiven}
-              className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700"
+              className="mt-0.5 h-4 w-4 rounded border-border text-blue-600 focus:ring-blue-500"
               onChange={(e) => setConsentGiven(e.target.checked)}
               type="checkbox"
             />
@@ -2504,7 +2488,7 @@ function CandidateModal({
             </p>
           )}
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2593,7 +2577,7 @@ function ApplicationModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <FileText className="h-5 w-5 text-emerald-600" />
             Yeni Başvuru
@@ -2673,14 +2657,14 @@ function ApplicationModal({
           <div className="space-y-1.5">
             <Label>Notlar</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               value={notes}
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2761,7 +2745,7 @@ function StageModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Layers className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
             {stage?.id ? "Aşamayı Düzenle" : "Yeni Aşama Ekle"}
@@ -2782,7 +2766,7 @@ function StageModal({
               Aşama Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setName(e.target.value)}
               required
               type="text"
@@ -2794,7 +2778,7 @@ function StageModal({
               Slug (opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="otomatik oluşturulur"
               type="text"
@@ -2808,13 +2792,13 @@ function StageModal({
               </label>
               <div className="flex items-center gap-2">
                 <input
-                  className="h-9 w-12 rounded-xl border border-zinc-200 p-1 dark:border-zinc-800"
+                  className="h-9 w-12 rounded-xl border border-border p-1"
                   onChange={(e) => setColorHex(e.target.value)}
                   type="color"
                   value={colorHex}
                 />
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setColorHex(e.target.value)}
                   type="text"
                   value={colorHex}
@@ -2839,7 +2823,7 @@ function StageModal({
           <label className="flex items-center gap-2">
             <input
               checked={isActive}
-              className="h-4 w-4 rounded border-zinc-300 text-blue-600 dark:border-zinc-700"
+              className="h-4 w-4 rounded border-border text-blue-600"
               onChange={(e) => setIsActive(e.target.checked)}
               type="checkbox"
             />
@@ -2848,7 +2832,7 @@ function StageModal({
             </span>
           </label>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2908,7 +2892,7 @@ function CandidateDetailDrawer({
         className="data-[side=right]:w-full max-w-md overflow-y-auto p-6 data-[side=right]:sm:max-w-md"
         side="right"
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-4">
           <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
             ADAY DETAYI
           </span>
@@ -2960,7 +2944,7 @@ function CandidateDetailDrawer({
           </div>
         </div>
 
-        <div className="mt-6 space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-4 text-xs dark:border-zinc-800 dark:bg-zinc-800/40">
+        <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
           <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Bilgiler
           </h4>
@@ -2997,7 +2981,7 @@ function CandidateDetailDrawer({
             </div>
           )}
           {candidate.notes && (
-            <div className="rounded-xl bg-white p-3 text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+            <div className="rounded-xl bg-card p-3 text-zinc-700 dark:text-zinc-300">
               <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                 Notlar
               </div>
@@ -3006,7 +2990,7 @@ function CandidateDetailDrawer({
           )}
         </div>
 
-        <div className="mt-4 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="mt-4 rounded-2xl border border-border p-4">
           <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             CV
           </h4>
@@ -3022,7 +3006,7 @@ function CandidateDetailDrawer({
                 {candidate.cvFileName || "CV Görüntüle"} — Yeni sekmede aç
               </a>
               {isPdf ? (
-                <div className="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+                <div className="overflow-hidden rounded-xl border border-border">
                   <object
                     className="h-64 w-full"
                     data={candidate.cvFileUrl}
@@ -3054,7 +3038,7 @@ function CandidateDetailDrawer({
           )}
         </div>
 
-        <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+        <div className="mt-6 border-border border-t pt-4">
           <button
             className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs hover:bg-blue-700"
             onClick={onClose}
@@ -3105,7 +3089,7 @@ function ApplicationDetailDrawer({
         className="data-[side=right]:w-full max-w-md overflow-y-auto p-6 data-[side=right]:sm:max-w-md"
         side="right"
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-4">
           <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
             BAŞVURU DETAYI
           </span>
@@ -3132,7 +3116,7 @@ function ApplicationDetailDrawer({
             </p>
           </div>
 
-          <div className="rounded-2xl border border-zinc-100 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+          <div className="rounded-2xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
             <div className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               Aşama
             </div>
@@ -3189,7 +3173,7 @@ function ApplicationDetailDrawer({
           </div>
 
           <div className="flex gap-2">
-            <div className="flex-1 rounded-2xl border border-zinc-100 p-3 text-center dark:border-zinc-800">
+            <div className="flex-1 rounded-2xl border border-border p-3 text-center">
               <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                 Puan
               </div>
@@ -3197,7 +3181,7 @@ function ApplicationDetailDrawer({
                 {application.score ?? "—"}
               </div>
             </div>
-            <div className="flex-1 rounded-2xl border border-zinc-100 p-3 text-center dark:border-zinc-800">
+            <div className="flex-1 rounded-2xl border border-border p-3 text-center">
               <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                 Durum
               </div>
@@ -3208,7 +3192,7 @@ function ApplicationDetailDrawer({
           </div>
 
           {application.notes && (
-            <div className="rounded-2xl border border-zinc-100 p-3 dark:border-zinc-800">
+            <div className="rounded-2xl border border-border p-3">
               <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                 Notlar
               </div>
@@ -3219,7 +3203,7 @@ function ApplicationDetailDrawer({
           )}
 
           {candidate && (
-            <div className="rounded-2xl border border-zinc-100 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+            <div className="rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
               <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                 Aday KVKK & Etiketler
               </div>
@@ -3251,7 +3235,7 @@ function ApplicationDetailDrawer({
               )}
               {candidate.cvFileUrl &&
                 candidate.cvFileUrl.toLowerCase().endsWith(".pdf") && (
-                  <div className="mt-2 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="mt-2 overflow-hidden rounded-xl border border-border bg-card">
                     <object
                       className="h-48 w-full"
                       data={candidate.cvFileUrl}
@@ -3266,7 +3250,7 @@ function ApplicationDetailDrawer({
             </div>
           )}
 
-          <div className="rounded-2xl border border-zinc-100 p-3 text-xs dark:border-zinc-800">
+          <div className="rounded-2xl border border-border p-3 text-xs">
             <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
               Zaman
             </div>
@@ -3281,7 +3265,7 @@ function ApplicationDetailDrawer({
           </div>
         </div>
 
-        <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+        <div className="mt-6 border-border border-t pt-4">
           <button
             className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs hover:bg-blue-700"
             onClick={onClose}

@@ -306,7 +306,7 @@ export default function VehiclesPage() {
       case "Discontinued":
         return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       default:
-        return "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
+        return "bg-zinc-100 text-zinc-700 border-border dark:bg-zinc-800 dark:text-zinc-300";
     }
   };
 
@@ -508,7 +508,7 @@ export default function VehiclesPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col gap-4 border-zinc-100 border-b pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <Link
@@ -582,7 +582,7 @@ export default function VehiclesPage() {
 
       {/* Top Metric Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs">Toplam Araç Modeli</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -598,7 +598,7 @@ export default function VehiclesPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs">Marka Portföyü</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
@@ -613,7 +613,7 @@ export default function VehiclesPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs">EPC Yedek Parça</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
@@ -628,7 +628,7 @@ export default function VehiclesPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs">Teknik Doküman & TSB</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
@@ -645,7 +645,7 @@ export default function VehiclesPage() {
       </div>
 
       {/* Tabs Header */}
-      <div className="flex items-center gap-2 border-zinc-200/80 border-b dark:border-zinc-800">
+      <div className="flex items-center gap-2 border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "catalog"
@@ -724,7 +724,7 @@ export default function VehiclesPage() {
               <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200/80 bg-white py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Marka, model, proje kodu, VIN ara..."
                   type="text"
@@ -793,11 +793,7 @@ export default function VehiclesPage() {
 
             <div className="flex items-center gap-1 self-end sm:self-auto">
               <button
-                className={`rounded-xl p-2 transition ${
-                  catalogViewMode === "grid"
-                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "border border-zinc-200/80 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
-                }`}
+                className={`rounded-xl p-2 transition ${ catalogViewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-500 hover:bg-zinc-50" }`}
                 onClick={() => setCatalogViewMode("grid")}
                 title="Kart Görünümü"
                 type="button"
@@ -805,11 +801,7 @@ export default function VehiclesPage() {
                 <LayoutGrid className="h-4 w-4" />
               </button>
               <button
-                className={`rounded-xl p-2 transition ${
-                  catalogViewMode === "table"
-                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "border border-zinc-200/80 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
-                }`}
+                className={`rounded-xl p-2 transition ${ catalogViewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-500 hover:bg-zinc-50" }`}
                 onClick={() => setCatalogViewMode("table")}
                 title="Tablo Görünümü"
                 type="button"
@@ -835,7 +827,7 @@ export default function VehiclesPage() {
 
                 return (
                   <div
-                    className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-blue-700"
+                    className="group relative flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-700"
                     key={v.id}
                   >
                     <div>
@@ -899,7 +891,7 @@ export default function VehiclesPage() {
                       </div>
 
                       {/* Specs Mini Grid */}
-                      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-zinc-100 bg-zinc-50/70 p-2.5 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
+                      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-zinc-50/70 p-2.5 text-center dark:bg-zinc-800/40">
                         <div>
                           <div className="text-[10px] text-zinc-400">Güç</div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
@@ -928,13 +920,9 @@ export default function VehiclesPage() {
                     </div>
 
                     {/* Bottom Actions */}
-                    <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                    <div className="mt-5 flex items-center justify-between border-border border-t pt-3">
                       <button
-                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${
-                          isCompared
-                            ? "border-blue-600 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300"
-                            : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                        }`}
+                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${ isCompared ? "border-blue-600 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800" }`}
                         onClick={() => toggleCompare(v.id)}
                         type="button"
                       >
@@ -986,7 +974,7 @@ export default function VehiclesPage() {
               })}
 
               {filteredVehicles.length === 0 && (
-                <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+                <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
                   <Car className="mx-auto h-10 w-10 text-zinc-400" />
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                     Arama Kriterlerine Uygun Araç Bulunamadı
@@ -1002,10 +990,10 @@ export default function VehiclesPage() {
 
           {/* Table View */}
           {catalogViewMode === "table" && (
-            <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-zinc-200 bg-zinc-50/70 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/70 font-semibold text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableHead className="py-3 pr-4 pl-5 h-auto">Araç & Model</TableHead>
                     <TableHead className="px-4 py-3 h-auto">Segment</TableHead>
                     <TableHead className="px-4 py-3 h-auto">Model Yılı</TableHead>
@@ -1126,7 +1114,7 @@ export default function VehiclesPage() {
       {activeTab === "compare" && (
         <div className="space-y-6">
           {/* Compare Toolbar & Picked Badges */}
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/90 dark:bg-zinc-900/90">
+          <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Karşılaştırma Masası ({comparedVehicles.length} Araç)
@@ -1140,7 +1128,7 @@ export default function VehiclesPage() {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {comparedVehicles.map((v) => (
                   <span
-                    className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-semibold text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="flex items-center gap-2 rounded-xl border border-border bg-zinc-50 px-2.5 py-1 font-semibold text-xs text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                     key={v.id}
                   >
                     <span>{v.icon}</span>
@@ -1161,7 +1149,7 @@ export default function VehiclesPage() {
 
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-200"
                 onClick={handleExportComparisonCsv}
                 type="button"
               >
@@ -1181,7 +1169,7 @@ export default function VehiclesPage() {
           </div>
 
           {comparedVehicles.length < 2 ? (
-            <div className="rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="rounded-3xl border border-border border-dashed bg-card py-16 text-center">
               <TrendingUp className="mx-auto h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Karşılaştırma için en az 2 araç seçin
@@ -1192,10 +1180,10 @@ export default function VehiclesPage() {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-2xs">
               <Table className="border-collapse">
                 <TableHeader>
-                  <TableRow className="border-zinc-200 bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-800/50">
+                  <TableRow className="border-border bg-zinc-50/70 dark:bg-zinc-800/50">
                     <TableHead className="w-56 py-4 pr-4 pl-5 font-bold text-zinc-700 uppercase tracking-wider dark:text-zinc-300 h-auto">
                       Özellik Grubu
                     </TableHead>
@@ -1420,7 +1408,7 @@ export default function VehiclesPage() {
       {activeTab === "epc" && (
         <div className="grid min-h-[600px] grid-cols-1 gap-4 lg:grid-cols-12">
           {/* Left Panel: Systems Tree (Col 3) */}
-          <div className="max-h-[700px] overflow-y-auto rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs lg:col-span-3 dark:border-zinc-800/90 dark:bg-zinc-900/90">
+          <div className="max-h-[700px] overflow-y-auto rounded-2xl border border-border bg-card p-4 shadow-2xs lg:col-span-3">
             <div className="mb-3 font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
               Sistem Ağacı (Montaj Grupları)
             </div>
@@ -1483,7 +1471,7 @@ export default function VehiclesPage() {
           {/* Middle Panel: Exploded View & Parts Table (Col 6) */}
           <div className="space-y-4 lg:col-span-6">
             {/* Exploded View Figure Card */}
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
               <div className="mb-3 flex items-center justify-between">
                 <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                   Patlatılmış Şema & Hotspotlar (Exploded View)
@@ -1494,7 +1482,7 @@ export default function VehiclesPage() {
               </div>
 
               {/* Interactive SVG Diagram with Hotspots */}
-              <div className="relative flex h-60 w-full items-center justify-center overflow-hidden rounded-xl border border-zinc-300 border-dashed bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50">
+              <div className="relative flex h-60 w-full items-center justify-center overflow-hidden rounded-xl border border-border border-dashed bg-zinc-50 dark:bg-zinc-800/50">
                 <svg className="h-full w-full opacity-60" viewBox="0 0 400 220">
                   <rect
                     fill="currentColor"
@@ -1574,12 +1562,12 @@ export default function VehiclesPage() {
             </div>
 
             {/* Parts List */}
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
               <div className="mb-3 flex items-center justify-between">
                 <div className="relative max-w-xs flex-1">
                   <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setEpcSearch(e.target.value)}
                     placeholder="Parça No / OEM / TR / EN / CN ara..."
                     type="text"
@@ -1653,10 +1641,10 @@ export default function VehiclesPage() {
           </div>
 
           {/* Right Panel: Selected Part Details (Col 3) */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs lg:col-span-3 dark:border-zinc-800/90 dark:bg-zinc-900/90">
+          <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs lg:col-span-3">
             {selectedPart ? (
               <div className="space-y-4 text-xs">
-                <div className="flex items-start justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+                <div className="flex items-start justify-between border-border border-b pb-3">
                   <div>
                     <span className="font-bold font-mono text-[10px] text-blue-600 dark:text-blue-400">
                       {selectedPart.partNumber}
@@ -1666,7 +1654,7 @@ export default function VehiclesPage() {
                     </h3>
                   </div>
                   <button
-                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                    className="flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-200 dark:hover:bg-zinc-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1680,27 +1668,27 @@ export default function VehiclesPage() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-zinc-400">English (EN):</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {selectedPart.nameEn}
                     </span>
                   </div>
                   {selectedPart.nameCn && (
-                    <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                    <div className="flex justify-between border-border border-b pb-1.5">
                       <span className="text-zinc-400">中文 (CN):</span>
                       <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                         {selectedPart.nameCn}
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-zinc-400">OEM No:</span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
                       {selectedPart.oemNumber || "—"}
                     </span>
                   </div>
-                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-zinc-400">Stok Durumu:</span>
                     <span
                       className={`rounded-md px-2 py-0.5 font-bold ${
@@ -1712,13 +1700,13 @@ export default function VehiclesPage() {
                       {selectedPart.stockQuantity} adet
                     </span>
                   </div>
-                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-zinc-400">Birim Fiyat:</span>
                     <span className="font-bold text-emerald-600 dark:text-emerald-400">
                       ${selectedPart.unitPrice}
                     </span>
                   </div>
-                  <div className="flex justify-between border-zinc-100 border-b pb-1.5 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-zinc-400">Süperseksiyon:</span>
                     <span className="text-zinc-600 dark:text-zinc-400">
                       {selectedPart.supersession || "—"}
@@ -1732,7 +1720,7 @@ export default function VehiclesPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between border-zinc-100 border-t pt-2 dark:border-zinc-800">
+                <div className="flex items-center justify-between border-border border-t pt-2">
                   <button
                     className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3 py-1.5 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40"
                     onClick={() =>
@@ -1776,12 +1764,12 @@ export default function VehiclesPage() {
       {activeTab === "docs" && (
         <div className="space-y-4">
           {/* Documents Control & Filter Bar */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs lg:flex-row lg:items-center lg:justify-between dark:border-zinc-800/90 dark:bg-zinc-900/90">
+          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-1 flex-wrap items-center gap-2">
               <div className="relative min-w-[240px] max-w-md flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDocSearch(e.target.value)}
                   placeholder="Doküman adı, bülten no veya etiket ara..."
                   type="text"
@@ -1801,11 +1789,7 @@ export default function VehiclesPage() {
                   "Garanti",
                 ].map((cat) => (
                   <button
-                    className={`rounded-xl px-2.5 py-1.5 font-semibold text-xs transition ${
-                      docCategoryFilter === cat
-                        ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                        : "border border-zinc-200/80 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-                    }`}
+                    className={`rounded-xl px-2.5 py-1.5 font-semibold text-xs transition ${ docCategoryFilter === cat ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
                     key={cat || "all"}
                     onClick={() => setDocCategoryFilter(cat)}
                     type="button"
@@ -1859,7 +1843,7 @@ export default function VehiclesPage() {
 
               return (
                 <div
-                  className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90"
+                  className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition hover:border-blue-300 hover:shadow-md"
                   key={doc.id}
                   onClick={() => setSelectedPreviewDoc(doc)}
                 >
@@ -1921,7 +1905,7 @@ export default function VehiclesPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800">
+                  <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400">
                     <span>
                       {new Date(doc.createdAt).toLocaleDateString("tr-TR")}
                     </span>
@@ -1956,7 +1940,7 @@ export default function VehiclesPage() {
             })}
 
             {filteredDocuments.length === 0 && (
-              <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+              <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
                 <FileText className="mx-auto h-10 w-10 text-zinc-400" />
                 <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                   {docSearch || docCategoryFilter || docTypeFilter
@@ -1996,11 +1980,11 @@ export default function VehiclesPage() {
         >
           <SheetContent
             aria-describedby={undefined}
-            className="data-[side=right]:w-full max-w-2xl overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-2xl"
+            className="data-[side=right]:w-full max-w-2xl overflow-y-auto border-border p-6 data-[side=right]:sm:max-w-2xl"
             side="right"
           >
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{selectedVehicle.icon}</span>
                 <div>
@@ -2021,7 +2005,7 @@ export default function VehiclesPage() {
 
               <div className="flex items-center gap-2">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={() => {
                     setEditingVehicleId(selectedVehicle.id);
                     setIsCreateVehicleOpen(true);
@@ -2084,7 +2068,7 @@ export default function VehiclesPage() {
             </div>
 
             {/* Drawer Sub-Tabs */}
-            <div className="mt-4 flex gap-1 overflow-x-auto border-zinc-100 border-b pb-1 text-xs dark:border-zinc-800">
+            <div className="mt-4 flex gap-1 overflow-x-auto border-border border-b pb-1 text-xs">
               {[
                 { id: "overview", label: "Genel Bakış" },
                 { id: "specs", label: "Teknik & Motor" },
@@ -2228,7 +2212,7 @@ export default function VehiclesPage() {
 
               {vehicleDetailTab === "safety" && (
                 <div className="space-y-3">
-                  <div className="flex justify-between border-zinc-100 border-b pb-2 dark:border-zinc-800">
+                  <div className="flex justify-between border-border border-b pb-2">
                     <span className="text-zinc-400">Hava Yastığı Sayısı:</span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
                       {parseJson<{ airbags?: number }>(
@@ -2293,7 +2277,7 @@ export default function VehiclesPage() {
             </div>
 
             {/* Drawer Action Footer */}
-            <div className="mt-6 flex items-center justify-between border-zinc-100 border-t pt-4 dark:border-zinc-800">
+            <div className="mt-6 flex items-center justify-between border-border border-t pt-4">
               <button
                 className="flex items-center gap-1.5 rounded-xl border border-rose-200 px-3.5 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:hover:bg-rose-950/40"
                 onClick={() => {
@@ -2758,7 +2742,7 @@ function CreateEditVehicleModal({
         showCloseButton={false}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl">{icon || "🚗"}</span>
@@ -2789,19 +2773,13 @@ function CreateEditVehicleModal({
         </div>
 
         {/* Stepper Progress Header */}
-        <div className="grid grid-cols-4 border-zinc-100 border-b bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
+        <div className="grid grid-cols-4 border-border border-b bg-zinc-50/50 p-3 dark:bg-zinc-950/40">
           {stepsConfig.map((s) => {
             const isDone = step > s.num;
             const isCurrent = step === s.num;
             return (
               <button
-                className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${
-                  isCurrent
-                    ? "bg-white shadow-xs ring-1 ring-blue-500/20 dark:bg-zinc-800"
-                    : isDone
-                      ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60"
-                      : "opacity-40"
-                }`}
+                className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${ isCurrent ? "bg-card shadow-xs ring-1 ring-blue-500/20" : isDone ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60" : "opacity-40" }`}
                 key={s.num}
                 onClick={() => {
                   if (s.num === 1 || isStep1Valid) {
@@ -2854,7 +2832,7 @@ function CreateEditVehicleModal({
             {/* ADIM 1: GENEL BİLGİLER, PAZAR & ÜRETİM */}
             {step === 1 && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     1.1 Temel Araç Tanımı
                   </h4>
@@ -2864,7 +2842,7 @@ function CreateEditVehicleModal({
                         Marka <span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setBrand(e.target.value)}
                         placeholder="Örn. ULTRAND, Toyota, Ford"
                         required
@@ -2877,7 +2855,7 @@ function CreateEditVehicleModal({
                         Model <span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setModel(e.target.value)}
                         placeholder="Örn. Voyager, RAV4, Ranger"
                         required
@@ -2890,7 +2868,7 @@ function CreateEditVehicleModal({
                         Trim / Donanım Paketi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setTrim(e.target.value)}
                         placeholder="Örn. Elite, Wildtrak, Premium"
                         type="text"
@@ -2915,7 +2893,7 @@ function CreateEditVehicleModal({
                         Segment
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         list="segment-options"
                         onChange={(e) => setSegment(e.target.value)}
                         placeholder="C-SUV, Pickup 1-Ton, Sedan D..."
@@ -2937,7 +2915,7 @@ function CreateEditVehicleModal({
                         Kasa Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         list="bodytype-options"
                         onChange={(e) => setBodyType(e.target.value)}
                         placeholder="SUV, Pickup, Sedan..."
@@ -2955,7 +2933,7 @@ function CreateEditVehicleModal({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     1.2 Pazar, Üretim & Fiyatlandırma
                   </h4>
@@ -2965,7 +2943,7 @@ function CreateEditVehicleModal({
                         Pazar
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setMarket(e.target.value)}
                         placeholder="Örn. TR / EU / MENA"
                         type="text"
@@ -2977,7 +2955,7 @@ function CreateEditVehicleModal({
                         Menşe Ülke
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setCountry(e.target.value)}
                         placeholder="Türkiye, Almanya..."
                         type="text"
@@ -2989,7 +2967,7 @@ function CreateEditVehicleModal({
                         Üretim Tesisi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setPlant(e.target.value)}
                         placeholder="Bursa Plant..."
                         type="text"
@@ -3001,7 +2979,7 @@ function CreateEditVehicleModal({
                         VIN Öneki
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setVinPrefix(e.target.value)}
                         placeholder="WVU / JTM"
                         type="text"
@@ -3038,7 +3016,7 @@ function CreateEditVehicleModal({
                         İkon / Emoji
                       </Label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-center text-base focus:border-blue-500 focus:outline-none"
                         onChange={(e) => setIcon(e.target.value)}
                         placeholder="🚗, 🚙, 🛻, ⚡"
                         type="text"
@@ -3086,7 +3064,7 @@ function CreateEditVehicleModal({
                       Proje Kodu
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                       onChange={(e) => setProjectCode(e.target.value)}
                       placeholder="ULT-VOY-01"
                       type="text"
@@ -3098,7 +3076,7 @@ function CreateEditVehicleModal({
                       Platform
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                       onChange={(e) => setPlatform(e.target.value)}
                       placeholder="P300 / TNGA-K"
                       type="text"
@@ -3110,7 +3088,7 @@ function CreateEditVehicleModal({
                       Nesil / Seri
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                       onChange={(e) => setGeneration(e.target.value)}
                       placeholder="1st Gen"
                       type="text"
@@ -3124,7 +3102,7 @@ function CreateEditVehicleModal({
             {/* ADIM 2: GÜÇ AKTARIMI & ŞASİ */}
             {step === 2 && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     2.1 Güç Aktarma Organları
                   </h4>
@@ -3134,7 +3112,7 @@ function CreateEditVehicleModal({
                         Motor Adı/Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setEngine(e.target.value)}
                         placeholder="Örn. 2.0L Turbo Petrol, 2.5L Hybrid"
                         type="text"
@@ -3146,7 +3124,7 @@ function CreateEditVehicleModal({
                         Şanzıman
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setTransmission(e.target.value)}
                         placeholder="Örn. 8-Speed Automatic, 7-Speed DCT"
                         type="text"
@@ -3158,7 +3136,7 @@ function CreateEditVehicleModal({
                         Yakıt Türü
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         list="fuel-options"
                         onChange={(e) => setFuel(e.target.value)}
                         placeholder="Benzin, Dizel, Hibrit, EV..."
@@ -3178,7 +3156,7 @@ function CreateEditVehicleModal({
                         Çekiş Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         list="drive-options"
                         onChange={(e) => setDriveType(e.target.value)}
                         placeholder="FWD, RWD, AWD, 4x4..."
@@ -3196,7 +3174,7 @@ function CreateEditVehicleModal({
                         Emisyon Sınıfı
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setEmission(e.target.value)}
                         placeholder="Euro 6d, Euro 6e"
                         type="text"
@@ -3227,7 +3205,7 @@ function CreateEditVehicleModal({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     2.2 Şasi, Süspansiyon, Frenler & Lastik
                   </h4>
@@ -3237,7 +3215,7 @@ function CreateEditVehicleModal({
                         Ön Süspansiyon
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setSuspensionFront(e.target.value)}
                         placeholder="Örn. MacPherson Strut / Çift Salıncak"
                         type="text"
@@ -3249,7 +3227,7 @@ function CreateEditVehicleModal({
                         Arka Süspansiyon
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setSuspensionRear(e.target.value)}
                         placeholder="Örn. Multi-Link Bağımsız / Yaprak Yay"
                         type="text"
@@ -3263,14 +3241,14 @@ function CreateEditVehicleModal({
                       </label>
                       <div className="grid grid-cols-2 gap-2">
                         <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                           onChange={(e) => setBrakesFront(e.target.value)}
                           placeholder="Ön (Havadis Disk)"
                           type="text"
                           value={brakesFront}
                         />
                         <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                           onChange={(e) => setBrakesRear(e.target.value)}
                           placeholder="Arka (Disk / Kampana)"
                           type="text"
@@ -3283,7 +3261,7 @@ function CreateEditVehicleModal({
                         Lastik Ebatları
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setTyres(e.target.value)}
                         placeholder="Örn. 235/55 R19 veya 265/60 R18"
                         type="text"
@@ -3298,7 +3276,7 @@ function CreateEditVehicleModal({
             {/* ADIM 3: BOYUTLAR, AĞIRLIKLAR & MOTOR PERFORMANSI */}
             {step === 3 && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     3.1 Ölçüler (mm) & Hacimler (L)
                   </h4>
@@ -3396,7 +3374,7 @@ function CreateEditVehicleModal({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                   <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                     3.2 Ağırlıklar (kg) & Performans Değerleri
                   </h4>
@@ -3446,7 +3424,7 @@ function CreateEditVehicleModal({
                         Maksimum Güç
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setPower(e.target.value)}
                         placeholder="Örn. 238 hp veya 175 kW"
                         type="text"
@@ -3458,7 +3436,7 @@ function CreateEditVehicleModal({
                         Maksimum Tork
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setTorque(e.target.value)}
                         placeholder="Örn. 350 Nm"
                         type="text"
@@ -3470,7 +3448,7 @@ function CreateEditVehicleModal({
                         Motor Hacmi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setDisplacement(e.target.value)}
                         placeholder="Örn. 1998 cc"
                         type="text"
@@ -3483,7 +3461,7 @@ function CreateEditVehicleModal({
                         0-100 km/s Hızlanma
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setAccel(e.target.value)}
                         placeholder="Örn. 7.8 sn"
                         type="text"
@@ -3495,7 +3473,7 @@ function CreateEditVehicleModal({
                         Maksimum Hız
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                         onChange={(e) => setTopSpeed(e.target.value)}
                         placeholder="Örn. 205 km/h"
                         type="text"
@@ -3513,7 +3491,7 @@ function CreateEditVehicleModal({
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* Sol Kolon: Güvenlik, ADAS & Garanti Form Alanları */}
                   <div className="space-y-3">
-                    <div className="space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                    <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                       <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
                         4.1 Güvenlik & ADAS Sistemleri
                       </h4>
@@ -3562,7 +3540,7 @@ function CreateEditVehicleModal({
                           Tüm Güvenlik & ADAS Listesi (Virgülle ayrılmış)
                         </label>
                         <textarea
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="w-full rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                           onChange={(e) => setAdasString(e.target.value)}
                           placeholder="Adaptif Hız Sabitleyici, Kör Nokta, Şerit Takip..."
                           rows={2}
@@ -3571,7 +3549,7 @@ function CreateEditVehicleModal({
                       </div>
                     </div>
 
-                    <div className="space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+                    <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
                       <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
                         4.2 Garanti Koşulları & Notlar
                       </h4>
@@ -3581,7 +3559,7 @@ function CreateEditVehicleModal({
                             Araç Garantisi
                           </label>
                           <input
-                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            className="w-full rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                             onChange={(e) => setWarrantyVehicle(e.target.value)}
                             placeholder="Örn. 3 Yıl / 100.000 km"
                             type="text"
@@ -3593,7 +3571,7 @@ function CreateEditVehicleModal({
                             Güç Aktarma Garantisi
                           </label>
                           <input
-                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            className="w-full rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                             onChange={(e) =>
                               setWarrantyPowertrain(e.target.value)
                             }
@@ -3609,7 +3587,7 @@ function CreateEditVehicleModal({
                           Notlar
                         </label>
                         <textarea
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="w-full rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                           onChange={(e) => setNotes(e.target.value)}
                           placeholder="Model yılı revizyonları, bayi filo notları veya özel üretim detayları..."
                           rows={2}
@@ -3636,7 +3614,7 @@ function CreateEditVehicleModal({
 
                     <div className="space-y-3 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-3xl shadow-md dark:bg-zinc-800">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-card text-3xl shadow-md">
                           {icon || "🚗"}
                         </div>
                         <div>
@@ -3703,9 +3681,9 @@ function CreateEditVehicleModal({
           </div>
 
           {/* Stepper Footer Navigasyon */}
-          <div className="flex items-center justify-between border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-center justify-between border-border border-t bg-zinc-50/60 px-6 py-3.5 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -3715,7 +3693,7 @@ function CreateEditVehicleModal({
             <div className="flex items-center gap-2">
               {step > 1 && (
                 <button
-                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                  className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200"
                   key="btn-step-prev"
                   onClick={handlePrevStep}
                   type="button"
@@ -3881,7 +3859,7 @@ function CreateEditPartModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               {initialPart
@@ -3908,7 +3886,7 @@ function CreateEditPartModal({
         >
           <div className="flex-1 space-y-4 overflow-y-auto p-6 text-xs">
             {/* Çok Dilli Parça Adları */}
-            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+            <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
               <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                 1. Parça Tanımı & Çok Dilli Çeviriler
               </h4>
@@ -3918,7 +3896,7 @@ function CreateEditPartModal({
                     Parça Adı (TR) <span className="text-red-500">*</span>
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setNameTr(e.target.value)}
                     placeholder="Örn. Silindir Kapağı"
                     required
@@ -3931,7 +3909,7 @@ function CreateEditPartModal({
                     Part Name (EN)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setNameEn(e.target.value)}
                     placeholder="Cylinder Head"
                     type="text"
@@ -3943,7 +3921,7 @@ function CreateEditPartModal({
                     零件名称 (CN)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setNameCn(e.target.value)}
                     placeholder="气缸盖"
                     type="text"
@@ -3954,7 +3932,7 @@ function CreateEditPartModal({
             </div>
 
             {/* Parça Numaraları & Montaj Sistemi */}
-            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+            <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
               <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                 2. Numaralandırma & Sistem Hiyerarşisi
               </h4>
@@ -3964,7 +3942,7 @@ function CreateEditPartModal({
                     Parça No <span className="text-red-500">*</span>
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setPartNumber(e.target.value)}
                     placeholder="ULT-10037"
                     required
@@ -3977,7 +3955,7 @@ function CreateEditPartModal({
                     OEM No
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setOemNumber(e.target.value)}
                     placeholder="OEM-500911"
                     type="text"
@@ -4034,7 +4012,7 @@ function CreateEditPartModal({
             </div>
 
             {/* Stok, Fiyat, Montaj & Konum */}
-            <div className="rounded-2xl border border-zinc-100 bg-zinc-50/40 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+            <div className="rounded-2xl border border-border bg-zinc-50/40 p-4 dark:bg-zinc-950/20">
               <h4 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">
                 3. Stok, Fiyat, Konum & Şema Koordinatları
               </h4>
@@ -4127,7 +4105,7 @@ function CreateEditPartModal({
                     Montaj Konumu
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     list="location-options"
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Motor Bölmesi, Şasi Altı..."
@@ -4147,7 +4125,7 @@ function CreateEditPartModal({
                     Süperseksiyon
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setSupersession(e.target.value)}
                     placeholder="ULT-9022 → ULT-10037"
                     type="text"
@@ -4159,7 +4137,7 @@ function CreateEditPartModal({
                     Uyumlu Modeller
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setCompatibleModels(e.target.value)}
                     placeholder="Voyager, Ranger-X..."
                     type="text"
@@ -4173,7 +4151,7 @@ function CreateEditPartModal({
                   Parça Notları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Montaj torku, servis bülteni bağlantısı veya revizyon notları..."
                   rows={2}
@@ -4183,9 +4161,9 @@ function CreateEditPartModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-center justify-end gap-2 border-border border-t bg-zinc-50/60 px-6 py-3.5 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -4362,7 +4340,7 @@ function CreateDocumentModal({
         showCloseButton={false}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Teknik Doküman & Arşiv
@@ -4383,14 +4361,10 @@ function CreateDocumentModal({
         </div>
 
         {/* Mode Switcher */}
-        <div className="flex border-zinc-100 border-b bg-zinc-50/70 p-2 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex border-border border-b bg-zinc-50/70 p-2 dark:bg-zinc-900/50">
           <div className="grid w-full grid-cols-2 gap-1 rounded-2xl bg-zinc-200/60 p-1 dark:bg-zinc-800">
             <button
-              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${
-                mode === "upload"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
-              }`}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${ mode === "upload" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
               onClick={() => setMode("upload")}
               type="button"
             >
@@ -4398,11 +4372,7 @@ function CreateDocumentModal({
               <span>Dosya Yükle (Drag & Drop)</span>
             </button>
             <button
-              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${
-                mode === "url"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
-              }`}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${ mode === "url" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
               onClick={() => setMode("url")}
               type="button"
             >
@@ -4460,11 +4430,7 @@ function CreateDocumentModal({
                   </div>
                 ) : (
                   <div
-                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${
-                      isDragging
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30"
-                        : "border-zinc-200 bg-zinc-50/60 hover:border-blue-400 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:border-blue-500"
-                    }`}
+                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${ isDragging ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30" : "border-border bg-zinc-50/60 hover:border-blue-400 hover:bg-zinc-50 dark:bg-zinc-800/40 dark:hover:border-blue-500" }`}
                     onClick={() => fileInputRef.current?.click()}
                     onDragLeave={() => setIsDragging(false)}
                     onDragOver={(e) => {
@@ -4516,7 +4482,7 @@ function CreateDocumentModal({
                 <div className="relative">
                   <ExternalLink className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setFileUrl(e.target.value)}
                     placeholder="https://oem-portal.example.com/docs/tsb-2026-01.pdf"
                     type="url"
@@ -4532,7 +4498,7 @@ function CreateDocumentModal({
                 Doküman Başlığı <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Örn. Voyager 2025 Periyodik Bakım ve Tork Tablosu"
                 required
@@ -4659,7 +4625,7 @@ function CreateDocumentModal({
                 Dosya Boyutu
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                 onChange={(e) => setFileSize(e.target.value)}
                 placeholder="Örn. 3.4 MB"
                 type="text"
@@ -4677,11 +4643,7 @@ function CreateDocumentModal({
                   const isSelected = selectedTags.includes(tag);
                   return (
                     <button
-                      className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition ${
-                        isSelected
-                          ? "bg-blue-600 text-white shadow-2xs"
-                          : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-                      }`}
+                      className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition ${ isSelected ? "bg-blue-600 text-white shadow-2xs" : "border border-border bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
                       key={tag}
                       onClick={() => handleToggleTag(tag)}
                       type="button"
@@ -4696,7 +4658,7 @@ function CreateDocumentModal({
               {/* Custom Tag Input */}
               <div className="flex items-center gap-2 pt-1">
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-border bg-card p-2 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                   onChange={(e) => setCustomTagInput(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -4709,7 +4671,7 @@ function CreateDocumentModal({
                   value={customTagInput}
                 />
                 <button
-                  className="rounded-xl border border-zinc-200 px-3 py-2 font-semibold text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border px-3 py-2 font-semibold text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
                   onClick={handleAddCustomTag}
                   type="button"
                 >
@@ -4720,9 +4682,9 @@ function CreateDocumentModal({
           </div>
 
           {/* Modal Footer */}
-          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t bg-zinc-50/60 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-center justify-end gap-2 border-border border-t bg-zinc-50/60 px-6 py-3.5 dark:bg-zinc-950/60">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -4793,7 +4755,7 @@ function DocumentPreviewModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
               <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -4826,7 +4788,7 @@ function DocumentPreviewModal({
             {document.fileUrl && (
               <>
                 <a
-                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-1.5 rounded-xl border border-border px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   download={document.name}
                   href={document.fileUrl}
                   rel="noreferrer"
@@ -4870,7 +4832,7 @@ function DocumentPreviewModal({
         {/* Preview Viewer Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {isPdf && document.fileUrl ? (
-            <div className="h-[65vh] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="h-[65vh] w-full overflow-hidden rounded-2xl border border-border bg-zinc-100 dark:bg-zinc-950">
               <iframe
                 className="h-full w-full"
                 src={`${document.fileUrl}#toolbar=1`}
@@ -4878,7 +4840,7 @@ function DocumentPreviewModal({
               />
             </div>
           ) : isImage && document.fileUrl ? (
-            <div className="flex items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="flex items-center justify-center rounded-2xl border border-border bg-zinc-100 p-4 dark:bg-zinc-950">
               <img
                 alt={document.name}
                 className="max-h-[60vh] max-w-full rounded-xl object-contain shadow-md"
@@ -4886,7 +4848,7 @@ function DocumentPreviewModal({
               />
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50/70 p-12 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-zinc-50/70 p-12 text-center dark:bg-zinc-800/40">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Boxes className="h-8 w-8" />
               </div>
@@ -4922,7 +4884,7 @@ function DocumentPreviewModal({
           )}
 
           {/* Metadata Footer */}
-          <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:bg-zinc-800/30">
             <div>
               <span className="block text-[10px] text-zinc-400">Kategori</span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -5030,7 +4992,7 @@ function DeleteConfirmationModal({
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-800/40">
+        <div className="mt-4 rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
           <div className="truncate font-semibold text-xs text-zinc-900 dark:text-zinc-100">
             {title}
           </div>
@@ -5050,7 +5012,7 @@ function DeleteConfirmationModal({
 
         <div className="mt-6 flex items-center justify-end gap-2.5">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
             disabled={loading}
             onClick={onClose}
             type="button"

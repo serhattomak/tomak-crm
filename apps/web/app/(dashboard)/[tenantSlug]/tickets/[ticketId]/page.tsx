@@ -352,7 +352,7 @@ export default function TicketDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-zinc-200/80 bg-white p-8 dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
         <span className="font-medium text-sm text-zinc-500 dark:text-zinc-400">
           Destek talebi ayrıntıları yükleniyor...
@@ -363,7 +363,7 @@ export default function TicketDetailPage() {
 
   if (!ticket) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-12 text-center">
         <AlertCircle className="h-10 w-10 text-red-500" />
         <h3 className="mt-4 font-bold text-lg text-zinc-900 dark:text-zinc-100">
           Talep Bulunamadı
@@ -385,10 +385,10 @@ export default function TicketDetailPage() {
   return (
     <PageContainer className="space-y-4">
       {/* 1. Top Bar & Navigation */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Button
-            className="rounded-xl border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={() => router.push(`/${tenantSlug}/tickets`)}
             size="sm"
             variant="outline"
@@ -433,7 +433,7 @@ export default function TicketDetailPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Status Selector */}
           <Select onValueChange={handleStatusChange} value={ticket.status}>
-            <SelectTrigger className="h-9 w-[140px] rounded-xl border-zinc-200 font-medium text-xs dark:border-zinc-800">
+            <SelectTrigger className="h-9 w-[140px] rounded-xl border-border font-medium text-xs">
               <SelectValue placeholder="Durum" />
             </SelectTrigger>
             <SelectContent>
@@ -450,7 +450,7 @@ export default function TicketDetailPage() {
 
           {/* Priority Selector */}
           <Select onValueChange={handlePriorityChange} value={ticket.priority}>
-            <SelectTrigger className="h-9 w-[120px] rounded-xl border-zinc-200 font-medium text-xs dark:border-zinc-800">
+            <SelectTrigger className="h-9 w-[120px] rounded-xl border-border font-medium text-xs">
               <SelectValue placeholder="Öncelik" />
             </SelectTrigger>
             <SelectContent>
@@ -466,7 +466,7 @@ export default function TicketDetailPage() {
             onValueChange={handleAssigneeChange}
             value={ticket.assignedUserId || "unassigned"}
           >
-            <SelectTrigger className="h-9 w-[150px] rounded-xl border-zinc-200 font-medium text-xs dark:border-zinc-800">
+            <SelectTrigger className="h-9 w-[150px] rounded-xl border-border font-medium text-xs">
               <SelectValue placeholder="Temsilci" />
             </SelectTrigger>
             <SelectContent>
@@ -480,7 +480,7 @@ export default function TicketDetailPage() {
           </Select>
 
           <Button
-            className="h-9 rounded-xl border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="h-9 rounded-xl border-border text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={() => loadTicket()}
             size="sm"
             variant="outline"
@@ -495,7 +495,7 @@ export default function TicketDetailPage() {
         {/* Left / Center: Conversation Flow (8 Cols) */}
         <div className="space-y-4 lg:col-span-8">
           {/* Tabs for Conversation / Activity Audit */}
-          <div className="flex items-center gap-2 border-zinc-200 border-b pb-2 dark:border-zinc-800">
+          <div className="flex items-center gap-2 border-border border-b pb-2">
             <button
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "conversation"
@@ -521,7 +521,7 @@ export default function TicketDetailPage() {
               <History className="h-3.5 w-3.5" />
               <span>Denetim & İşlem Geçmişi ({ticket.activities.length})</span>
             </button>
-            <label className="ml-auto flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+            <label className="ml-auto flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
               <input
                 checked={includeInternal}
                 onChange={(e) => setIncludeInternal(e.target.checked)}
@@ -532,12 +532,12 @@ export default function TicketDetailPage() {
           </div>
 
           {activeTab === "conversation" ? (
-            <div className="flex min-h-[500px] flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="flex min-h-[500px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
               {/* Messages Stream Container */}
               <div className="max-h-[520px] flex-1 space-y-4 overflow-y-auto bg-zinc-50 p-4 sm:p-6 dark:bg-zinc-800/50">
                 {/* Initial Description if no messages */}
                 {ticket.messages.length === 0 && (
-                  <div className="rounded-2xl border border-zinc-200 bg-white p-4 text-xs shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="rounded-2xl border border-border bg-card p-4 text-xs shadow-2xs">
                     <div className="flex items-center justify-between font-semibold text-zinc-700 dark:text-zinc-300">
                       <span>{ticket.customerName} (İlk Talep)</span>
                       <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -611,18 +611,10 @@ export default function TicketDetailPage() {
                       )}
 
                       <div
-                        className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${
-                          isCustomer
-                            ? "border border-zinc-200 bg-white text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                            : "border border-blue-600 bg-blue-600 text-white"
-                        }`}
+                        className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${ isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white" }`}
                       >
                         <div
-                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-[10px] ${
-                            isCustomer
-                              ? "border-zinc-100 text-zinc-500 dark:border-zinc-800 dark:text-zinc-400"
-                              : "border-blue-500/80 text-blue-100"
-                          }`}
+                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-[10px] ${ isCustomer ? "border-border text-zinc-500 dark:text-zinc-400" : "border-blue-500/80 text-blue-100" }`}
                         >
                           <span className="font-semibold">{m.senderName}</span>
                           <span>
@@ -640,11 +632,7 @@ export default function TicketDetailPage() {
                         {/* Embed Cards if attached */}
                         {m.entityEmbeds?.map((e) => (
                           <div
-                            className={`mt-2.5 flex items-center gap-2 rounded-xl p-2.5 ${
-                              isCustomer
-                                ? "border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/50"
-                                : "border border-blue-400/40 bg-blue-700/60"
-                            }`}
+                            className={`mt-2.5 flex items-center gap-2 rounded-xl p-2.5 ${ isCustomer ? "border border-border bg-zinc-50 dark:bg-zinc-800/50" : "border border-blue-400/40 bg-blue-700/60" }`}
                             key={e.id}
                           >
                             <Package className="h-4 w-4 shrink-0" />
@@ -672,16 +660,12 @@ export default function TicketDetailPage() {
               </div>
 
               {/* Two-Mode Response Composer */}
-              <div className="border-zinc-200 border-t bg-white p-3.5 dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="border-border border-t bg-card p-3.5">
                 {/* Mode Selector & Quick Tools */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5">
-                  <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100 p-0.5 text-xs dark:border-zinc-800 dark:bg-zinc-800">
+                  <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-0.5 text-xs dark:bg-zinc-800">
                     <button
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
-                        messageMode === "public"
-                          ? "bg-white text-blue-700 shadow-xs dark:bg-zinc-900"
-                          : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                      }`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${ messageMode === "public" ? "bg-card text-blue-700 shadow-xs" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
                       onClick={() => setMessageMode("public")}
                       type="button"
                     >
@@ -715,7 +699,7 @@ export default function TicketDetailPage() {
                           }
                         }}
                       >
-                        <SelectTrigger className="h-7 w-[160px] rounded-lg border-zinc-200 text-[11px] dark:border-zinc-800">
+                        <SelectTrigger className="h-7 w-[160px] rounded-lg border-border text-[11px]">
                           <Zap className="mr-1 h-3 w-3 text-amber-500" />
                           <SelectValue placeholder="Hazır Şablonlar" />
                         </SelectTrigger>
@@ -729,7 +713,7 @@ export default function TicketDetailPage() {
                       </Select>
                     )}
                     <button
-                      className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                      className="rounded-lg border border-border bg-card px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
                       onClick={() => setIsTemplateManagerOpen(true)}
                       type="button"
                     >
@@ -740,11 +724,7 @@ export default function TicketDetailPage() {
 
                 <form className="space-y-2" onSubmit={handleSendMessage}>
                   <textarea
-                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${
-                      messageMode === "internal"
-                        ? "border-amber-300 bg-amber-50/40 text-amber-950 focus:border-amber-500"
-                        : "border-zinc-200 bg-white text-zinc-900 focus:border-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                    }`}
+                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 bg-amber-50/40 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder={
                       messageMode === "internal"
@@ -792,11 +772,11 @@ export default function TicketDetailPage() {
             </div>
           ) : (
             /* ACTIVITY AUDIT LOG */
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
               <h3 className="mb-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 İşlem ve Durum Günlüğü
               </h3>
-              <div className="relative ml-3 space-y-4 border-zinc-200 border-l dark:border-zinc-800">
+              <div className="relative ml-3 space-y-4 border-border border-l">
                 {ticket.activities.map((act) => (
                   <div className="relative pl-6 text-xs" key={act.id}>
                     <div className="absolute top-1 -left-1.5 h-3 w-3 rounded-full border-2 border-white bg-blue-500 shadow-xs" />
@@ -821,8 +801,8 @@ export default function TicketDetailPage() {
         {/* Right Panel: Customer 360 & Context (4 Cols) */}
         <div className="space-y-4 lg:col-span-4">
           {/* Customer Profile Card */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-2.5 dark:border-zinc-800">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+            <div className="flex items-center justify-between border-border border-b pb-2.5">
               <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 Müşteri Profili
               </span>
@@ -864,7 +844,7 @@ export default function TicketDetailPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-2 border-zinc-100 border-t pt-2.5 text-center dark:border-zinc-800">
+              <div className="grid grid-cols-2 gap-2 border-border border-t pt-2.5 text-center">
                 <div className="rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/50">
                   <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
                     Toplam Talep
@@ -887,7 +867,7 @@ export default function TicketDetailPage() {
 
           {/* Linked CRM Entity (e.g. Order or Product) */}
           {ticket.linkedEntityTitle && (
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
               <span className="mb-2 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 İlişkili CRM Kaydı
               </span>
@@ -911,7 +891,7 @@ export default function TicketDetailPage() {
           )}
 
           {/* Previous Tickets History */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Müşterinin Geçmiş Talepleri
             </span>
@@ -920,7 +900,7 @@ export default function TicketDetailPage() {
               <div className="space-y-2">
                 {ticket.customer360.recentTickets.map((pt) => (
                   <Link
-                    className="flex items-center justify-between rounded-xl border border-zinc-100 p-2.5 text-xs transition hover:border-blue-200 hover:bg-blue-50/40 dark:border-zinc-800"
+                    className="flex items-center justify-between rounded-xl border border-border p-2.5 text-xs transition hover:border-blue-200 hover:bg-blue-50/40"
                     href={`/${tenantSlug}/tickets/${pt.id}`}
                     key={pt.id}
                   >
@@ -946,7 +926,7 @@ export default function TicketDetailPage() {
           </div>
 
           {/* Customer 360: Recent Orders with Products */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Son Siparişler (Gerçek Veri)
             </span>
@@ -955,7 +935,7 @@ export default function TicketDetailPage() {
               <div className="space-y-2.5">
                 {ticket.customer360.recentOrders.map((ord) => (
                   <div
-                    className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-2.5 text-xs dark:border-zinc-800 dark:bg-zinc-800/30"
+                    className="rounded-xl border border-border bg-zinc-50/50 p-2.5 text-xs dark:bg-zinc-800/30"
                     key={ord.id}
                   >
                     <div className="flex items-center justify-between">
@@ -981,7 +961,7 @@ export default function TicketDetailPage() {
                       </span>
                     </div>
                     {ord.items && ord.items.length > 0 && (
-                      <div className="mt-2 space-y-1 rounded-lg bg-white p-2 dark:bg-zinc-900">
+                      <div className="mt-2 space-y-1 rounded-lg bg-card p-2">
                         {ord.items.slice(0, 3).map((it) => (
                           <div
                             className="flex justify-between text-[11px]"
@@ -1013,7 +993,7 @@ export default function TicketDetailPage() {
           </div>
 
           {/* Customer 360: Recent Shipments / Kargo */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Kargo & Sevkiyat (Son 5)
             </span>
@@ -1022,7 +1002,7 @@ export default function TicketDetailPage() {
               <div className="space-y-2">
                 {ticket.customer360.recentShipments.map((sh) => (
                   <div
-                    className="flex items-center justify-between rounded-xl border border-zinc-100 p-2.5 text-xs dark:border-zinc-800"
+                    className="flex items-center justify-between rounded-xl border border-border p-2.5 text-xs"
                     key={sh.id}
                   >
                     <div>
@@ -1066,7 +1046,7 @@ export default function TicketDetailPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center gap-2.5 border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center gap-2.5 border-border border-b pb-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
@@ -1086,7 +1066,7 @@ export default function TicketDetailPage() {
                   Çözüm Notu / Açıklaması
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 p-2.5 text-xs focus:border-emerald-500 focus:outline-none dark:border-zinc-800"
+                  className="w-full rounded-xl border border-border p-2.5 text-xs focus:border-emerald-500 focus:outline-none"
                   onChange={(e) => setResolutionNotes(e.target.value)}
                   placeholder="Müşteriye sunulan çözüm veya yapılan işlem..."
                   rows={3}
@@ -1096,7 +1076,7 @@ export default function TicketDetailPage() {
 
               <div className="flex items-center justify-end gap-2 pt-2">
                 <Button
-                  className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800"
+                  className="rounded-xl border-border text-xs"
                   onClick={() => setIsResolveModalOpen(false)}
                   type="button"
                   variant="outline"
@@ -1132,7 +1112,7 @@ export default function TicketDetailPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-lg"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Hazır Şablonları Yönet (PUT/DELETE)
               </DialogTitle>
@@ -1148,7 +1128,7 @@ export default function TicketDetailPage() {
             <div className="mt-3 max-h-56 space-y-2 overflow-y-auto">
               {cannedResponses.map((t) => (
                 <div
-                  className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs dark:border-zinc-800 dark:bg-zinc-800/40"
+                  className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-2.5 text-xs dark:bg-zinc-800/40"
                   key={t.id}
                 >
                   <div className="min-w-0">
@@ -1178,7 +1158,7 @@ export default function TicketDetailPage() {
                       Sil
                     </button>
                     <button
-                      className="rounded-lg border border-zinc-200 px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-100"
+                      className="rounded-lg border border-border px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-100"
                       onClick={() => applyCannedResponse(t)}
                       type="button"
                     >
@@ -1191,14 +1171,14 @@ export default function TicketDetailPage() {
                 <p className="text-xs text-zinc-400">Henüz şablon yok.</p>
               )}
             </div>
-            <div className="mt-4 space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+            <div className="mt-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">
               <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider">
                 {editingTemplate
                   ? "Şablonu Düzenle (PUT)"
                   : "Yeni Şablon (POST)"}
               </div>
               <input
-                className="w-full rounded-lg border border-zinc-200 px-2 py-1.5 text-xs dark:border-zinc-800"
+                className="w-full rounded-lg border border-border px-2 py-1.5 text-xs"
                 onChange={(e) =>
                   setTemplateForm((p) => ({ ...p, title: e.target.value }))
                 }
@@ -1208,7 +1188,7 @@ export default function TicketDetailPage() {
               />
               <div className="grid grid-cols-2 gap-2">
                 <input
-                  className="rounded-lg border border-zinc-200 px-2 py-1.5 text-xs dark:border-zinc-800"
+                  className="rounded-lg border border-border px-2 py-1.5 text-xs"
                   onChange={(e) =>
                     setTemplateForm((p) => ({ ...p, shortcut: e.target.value }))
                   }
@@ -1217,7 +1197,7 @@ export default function TicketDetailPage() {
                   value={templateForm.shortcut}
                 />
                 <input
-                  className="rounded-lg border border-zinc-200 px-2 py-1.5 text-xs dark:border-zinc-800"
+                  className="rounded-lg border border-border px-2 py-1.5 text-xs"
                   onChange={(e) =>
                     setTemplateForm((p) => ({ ...p, category: e.target.value }))
                   }
@@ -1227,7 +1207,7 @@ export default function TicketDetailPage() {
                 />
               </div>
               <textarea
-                className="w-full rounded-lg border border-zinc-200 px-2 py-1.5 text-xs dark:border-zinc-800"
+                className="w-full rounded-lg border border-border px-2 py-1.5 text-xs"
                 onChange={(e) =>
                   setTemplateForm((p) => ({ ...p, content: e.target.value }))
                 }

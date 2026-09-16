@@ -182,7 +182,7 @@ export function ContractSignModal({
         className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-lg"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-5 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-5">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <FileSignature className="h-5 w-5" />
@@ -225,7 +225,7 @@ export function ContractSignModal({
                 Ad Soyad (Yetkili) *
               </label>
               <input
-                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="h-10 w-full rounded-xl border border-border bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSignerName(e.target.value)}
                 placeholder="Örn: Ahmet Yılmaz"
                 required
@@ -239,7 +239,7 @@ export function ContractSignModal({
                 E-posta Adresi *
               </label>
               <input
-                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="h-10 w-full rounded-xl border border-border bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSignerEmail(e.target.value)}
                 placeholder="Örn: ahmet@sirket.com"
                 required
@@ -263,7 +263,7 @@ export function ContractSignModal({
                 </button>
               </div>
 
-              <div className="relative overflow-hidden rounded-2xl border-2 border-zinc-200 border-dashed bg-white dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="relative overflow-hidden rounded-2xl border-2 border-border border-dashed bg-card">
                 <canvas
                   className="h-36 w-full cursor-crosshair touch-none"
                   height={144}
@@ -286,7 +286,7 @@ export function ContractSignModal({
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-2 border-zinc-200 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-6 flex items-center justify-end gap-2 border-border border-t pt-4">
             <Button onClick={onClose} type="button" variant="outline">
               Vazgeç
             </Button>

@@ -67,8 +67,8 @@ export default function RootPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4 dark:bg-zinc-950">
-      <div className="w-full max-w-md space-y-6 rounded-3xl border border-zinc-200/80 bg-white p-8 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-5 dark:border-zinc-800">
+      <div className="w-full max-w-md space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl">
+        <div className="flex items-center justify-between border-border border-b pb-5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 text-white shadow-blue-500/25 shadow-md">
               <Building2 className="h-5 w-5" />
@@ -108,7 +108,7 @@ export default function RootPage() {
             </label>
             <input
               autoFocus
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
               onChange={(e) => setNewTenantName(e.target.value)}
               placeholder="e.g. Acme Corp"
               required

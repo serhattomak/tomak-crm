@@ -377,7 +377,7 @@ export default function PromotionsPage() {
   return (
     <PageContainer className="space-y-6 pb-12">
       {/* Header */}
-      <div className="flex flex-col justify-between gap-4 border-zinc-200/80 border-b pb-5 sm:flex-row sm:items-center dark:border-zinc-800">
+      <div className="flex flex-col justify-between gap-4 border-border border-b pb-5 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2 font-medium text-xs text-zinc-500">
             <span>Satış CRM</span>
@@ -399,7 +399,7 @@ export default function PromotionsPage() {
         <div className="flex items-center gap-2.5">
           <PermissionGate permission="Promotions.GenerateCoupons">
             <button
-              className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={() => setIsBulkModalOpen(true)}
               type="button"
             >
@@ -426,7 +426,7 @@ export default function PromotionsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm transition-all hover:shadow dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
           <div className="flex items-center justify-between text-zinc-500">
             <span className="font-medium text-xs">Aktif Kampanyalar</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
@@ -441,7 +441,7 @@ export default function PromotionsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm transition-all hover:shadow dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
           <div className="flex items-center justify-between text-zinc-500">
             <span className="font-medium text-xs">Toplam Kupon Sayısı</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
@@ -453,7 +453,7 @@ export default function PromotionsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm transition-all hover:shadow dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
           <div className="flex items-center justify-between text-zinc-500">
             <span className="font-medium text-xs">
               Toplam Dağıtılan İndirim
@@ -470,7 +470,7 @@ export default function PromotionsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm transition-all hover:shadow dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
           <div className="flex items-center justify-between text-zinc-500">
             <span className="font-medium text-xs">Kampanyalı Ciro</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
@@ -487,7 +487,7 @@ export default function PromotionsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-zinc-200 border-b dark:border-zinc-800">
+      <div className="flex items-center gap-2 border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "campaigns"
@@ -530,12 +530,12 @@ export default function PromotionsPage() {
       {activeTab === "campaigns" && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Kampanya adı veya kod ile ara..."
                   type="text"
@@ -584,7 +584,7 @@ export default function PromotionsPage() {
             </div>
 
             <button
-              className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={loadData}
               type="button"
             >
@@ -595,7 +595,7 @@ export default function PromotionsPage() {
           </div>
 
           {/* Campaigns Table */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
                 <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
@@ -626,7 +626,7 @@ export default function PromotionsPage() {
               </div>
             ) : (
               <Table>
-                <TableHeader className="border-zinc-100 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
+                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-950/50">
                   <TableRow>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya Adı</TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür & Değer</TableHead>
@@ -745,9 +745,7 @@ export default function PromotionsPage() {
                           type="button"
                         >
                           <span
-                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
-                              camp.isActive ? "translate-x-4" : "translate-x-0"
-                            }`}
+                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow-lg ring-0 transition duration-200 ease-in-out ${ camp.isActive ? "translate-x-4" : "translate-x-0" }`}
                           />
                         </button>
                       </TableCell>
@@ -789,12 +787,12 @@ export default function PromotionsPage() {
       {activeTab === "coupons" && (
         <div className="space-y-4">
           {/* Coupon Filters */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setCouponSearch(e.target.value)}
                   placeholder="Kupon kodu ile ara..."
                   type="text"
@@ -826,7 +824,7 @@ export default function PromotionsPage() {
           </div>
 
           {/* Coupons Table */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
                 <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
@@ -854,7 +852,7 @@ export default function PromotionsPage() {
               </div>
             ) : (
               <Table>
-                <TableHeader className="border-zinc-100 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
+                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-950/50">
                   <TableRow>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kupon Kodu</TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya</TableHead>
@@ -951,7 +949,7 @@ export default function PromotionsPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left Column: Cart Builder */}
           <div className="space-y-4 lg:col-span-7">
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 <ShoppingCart className="h-4 w-4 text-blue-600" />
                 Örnek Sepet Oluştur
@@ -969,7 +967,7 @@ export default function PromotionsPage() {
                 <div className="mt-1.5 flex max-h-36 flex-wrap gap-2 overflow-y-auto p-1">
                   {availableProducts.slice(0, 15).map((p) => (
                     <button
-                      className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-800 hover:border-blue-500 hover:bg-blue-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-blue-500"
+                      className="flex items-center gap-1.5 rounded-xl border border-border bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-800 hover:border-blue-500 hover:bg-blue-50 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-blue-500"
                       key={p.id}
                       onClick={() => addSimItem(p)}
                       type="button"
@@ -990,7 +988,7 @@ export default function PromotionsPage() {
                   Sepetteki Ürünler ({simCartItems.length})
                 </label>
                 {simCartItems.length === 0 ? (
-                  <div className="rounded-xl border border-zinc-200 border-dashed p-6 text-center text-xs text-zinc-400 dark:border-zinc-800">
+                  <div className="rounded-xl border border-border border-dashed p-6 text-center text-xs text-zinc-400">
                     Sepetiniz boş. Yukarıdaki ürünlerden tıklayarak sepete
                     ekleyin.
                   </div>
@@ -998,7 +996,7 @@ export default function PromotionsPage() {
                   <div className="space-y-2">
                     {simCartItems.map((item) => (
                       <div
-                        className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/60 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-950"
+                        className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/60 p-3 text-xs dark:bg-zinc-950"
                         key={item.productId}
                       >
                         <div>
@@ -1048,11 +1046,11 @@ export default function PromotionsPage() {
               </div>
 
               {/* Coupon Code Input & Test Button */}
-              <div className="mt-5 flex items-center gap-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+              <div className="mt-5 flex items-center gap-3 border-border border-t pt-4">
                 <div className="relative flex-1">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>
                       setSimCouponCode(e.target.value.toUpperCase())
                     }
@@ -1080,7 +1078,7 @@ export default function PromotionsPage() {
 
           {/* Right Column: Simulation Result */}
           <div className="space-y-4 lg:col-span-5">
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 <BarChart3 className="h-4 w-4 text-emerald-600" />
                 İndirim Motoru Sonuç Özeti
@@ -1142,7 +1140,7 @@ export default function PromotionsPage() {
                   </div>
 
                   {/* Totals */}
-                  <div className="space-y-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                  <div className="space-y-2 border-border border-t pt-3">
                     <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                       <span>Ara Toplam (Brüt):</span>
                       <span className="font-medium">
@@ -1173,7 +1171,7 @@ export default function PromotionsPage() {
                         )}
                       </span>
                     </div>
-                    <div className="flex justify-between border-zinc-200 border-t pt-2 font-bold text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-100">
+                    <div className="flex justify-between border-border border-t pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       <span>Net Ödenecek Tutar:</span>
                       <span className="text-blue-600 dark:text-blue-400">
                         ₺
@@ -1185,7 +1183,7 @@ export default function PromotionsPage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4 rounded-xl border border-zinc-200 border-dashed p-8 text-center text-xs text-zinc-400 dark:border-zinc-800">
+                <div className="mt-4 rounded-xl border border-border border-dashed p-8 text-center text-xs text-zinc-400">
                   Sonuçları görmek için sol taraftan ürün seçip &quot;Hesapla
                   &amp; Test Et&quot; butonuna tıklayın.
                 </div>

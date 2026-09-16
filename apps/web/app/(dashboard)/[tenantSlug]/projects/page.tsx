@@ -186,7 +186,7 @@ export default function ProjectsPage() {
       case "Completed":
         return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       default:
-        return "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
+        return "bg-zinc-100 text-zinc-700 border-border dark:bg-zinc-800 dark:text-zinc-300";
     }
   };
 
@@ -229,7 +229,7 @@ export default function ProjectsPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
             onClick={loadData}
             type="button"
           >
@@ -250,7 +250,7 @@ export default function ProjectsPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
             <Briefcase className="h-5 w-5" />
           </div>
@@ -264,7 +264,7 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
             <Layers className="h-5 w-5" />
           </div>
@@ -278,7 +278,7 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-2xs dark:bg-amber-950/60 dark:text-amber-400">
             <Clock className="h-5 w-5" />
           </div>
@@ -292,7 +292,7 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90">
+        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
             <CheckCircle2 className="h-5 w-5" />
           </div>
@@ -308,12 +308,12 @@ export default function ProjectsPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/90 dark:bg-zinc-900/90">
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400" />
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Proje adı veya anahtarı (örn. CRM) ara..."
               type="text"
@@ -336,7 +336,7 @@ export default function ProjectsPage() {
           />
         </div>
 
-        <div className="flex items-center gap-1.5 border-zinc-100 border-t pt-3 sm:border-t-0 sm:pt-0 dark:border-zinc-800">
+        <div className="flex items-center gap-1.5 border-border border-t pt-3 sm:border-t-0 sm:pt-0">
           <button
             className={`rounded-xl p-2 transition ${
               viewMode === "grid"
@@ -369,13 +369,13 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
-              className="h-56 animate-pulse rounded-2xl border border-zinc-200/60 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/40"
+              className="h-56 animate-pulse rounded-2xl border border-border bg-zinc-100 dark:bg-zinc-800/40"
               key={i}
             />
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
             <Briefcase className="h-7 w-7" />
           </div>
@@ -406,7 +406,7 @@ export default function ProjectsPage() {
 
             return (
               <Link
-                className="group flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-blue-700"
+                className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-700"
                 href={`/${tenantSlug}/projects/${proj.id}`}
                 key={proj.id}
               >
@@ -462,7 +462,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800/80">
+                <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400">
                   <div className="flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5" />
                     <span>{proj.leadUserName || "Atanmamış"}</span>
@@ -478,10 +478,10 @@ export default function ProjectsPage() {
           })}
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="border-zinc-200/80 bg-zinc-50/50 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
+              <TableHeader className="border-border bg-zinc-50/50 text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-300">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">Anahtar</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Proje Adı</TableHead>
@@ -565,7 +565,7 @@ export default function ProjectsPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-lg"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <FolderPlus className="h-5 w-5" />
@@ -594,7 +594,7 @@ export default function ProjectsPage() {
                     Proje Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Örn. Mobil Uygulama Revizyonu"
                     required
@@ -608,7 +608,7 @@ export default function ProjectsPage() {
                     Anahtar (Key) *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 font-bold text-xs text-zinc-900 uppercase focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-xs text-zinc-900 uppercase focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     maxLength={10}
                     onChange={(e) => setKey(e.target.value.toUpperCase())}
                     placeholder="MOB"
@@ -624,7 +624,7 @@ export default function ProjectsPage() {
                   Açıklama & Hedef
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Projenin amacı ve kapsamı..."
                   rows={2}
@@ -675,7 +675,7 @@ export default function ProjectsPage() {
                     Bütçe
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
                     onChange={(e) => setBudget(Number(e.target.value))}
                     type="number"
@@ -706,7 +706,7 @@ export default function ProjectsPage() {
                     Başlangıç Tarihi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setStartDate(e.target.value)}
                     type="date"
                     value={startDate}
@@ -718,7 +718,7 @@ export default function ProjectsPage() {
                     Hedef Bitiş Tarihi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setTargetEndDate(e.target.value)}
                     type="date"
                     value={targetEndDate}
@@ -726,9 +726,9 @@ export default function ProjectsPage() {
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+              <div className="mt-6 flex items-center justify-end gap-2 border-border border-t pt-4">
                 <button
-                  className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateModalOpen(false)}
                   type="button"
                 >

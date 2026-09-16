@@ -71,7 +71,7 @@ export default function OrganizationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Organizasyon yükleniyor...</p>
         </div>
@@ -274,7 +274,7 @@ function OrganizationPageContent() {
         {/* Global Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={() => {
               setEditingDept(null);
               setIsDeptModalOpen(true);
@@ -286,7 +286,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-all hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={() => {
               setEditingPos(null);
               setIsPosModalOpen(true);
@@ -312,14 +312,10 @@ function OrganizationPageContent() {
       </div>
 
       {/* 2. Navigation Tabs */}
-      <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+      <div className="flex items-center justify-between border-border border-b pb-3">
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "chart"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("chart")}
             type="button"
           >
@@ -328,11 +324,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "departments"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "departments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("departments")}
             type="button"
           >
@@ -341,11 +333,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "employees"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "employees" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("employees")}
             type="button"
           >
@@ -354,11 +342,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-              activeTab === "positions"
-                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "positions" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("positions")}
             type="button"
           >
@@ -369,7 +353,7 @@ function OrganizationPageContent() {
 
         {/* Refresh button */}
         <button
-          className="flex items-center gap-1 rounded-xl border border-zinc-200 px-3 py-1.5 font-medium text-xs text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-medium text-xs text-zinc-600 transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={isLoading}
           onClick={loadData}
           type="button"
@@ -383,7 +367,7 @@ function OrganizationPageContent() {
 
       {/* 3. Tab Contents */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">
             Organizasyon verileri yükleniyor...
@@ -649,7 +633,7 @@ function OrgChartTab({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white p-8 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
         <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-blue-50 text-blue-600 shadow-blue-500/10 shadow-sm dark:bg-blue-950/40 dark:text-blue-400">
           <Network className="h-7 w-7" />
         </div>
@@ -665,9 +649,9 @@ function OrgChartTab({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-zinc-50/70 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-800/40">
+    <div className="relative overflow-hidden rounded-3xl border border-border bg-zinc-50/70 shadow-xs dark:bg-zinc-800/40">
       {/* Chart Canvas Controls */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-md backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/95">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-border bg-card p-1.5 shadow-md backdrop-blur-sm">
         <button
           className="rounded-xl p-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
           onClick={() => setZoom((z) => Math.min(z + 0.15, 1.8))}
@@ -757,7 +741,7 @@ function OrgNodeItem({
   return (
     <div className="flex flex-col items-center">
       {/* Node Card */}
-      <div className="group relative z-10 w-72 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-blue-500/10 hover:shadow-xl dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="group relative z-10 w-72 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-blue-500/10 hover:shadow-xl">
         {/* Top badges */}
         <div className="mb-3 flex items-center justify-between">
           <span
@@ -804,7 +788,7 @@ function OrgNodeItem({
         </div>
 
         {/* Card Footer: Subordinates & Quick Actions */}
-        <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-[11px] dark:border-zinc-800">
+        <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-[11px]">
           <div className="flex items-center gap-1 font-semibold text-zinc-500 dark:text-zinc-400">
             <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             <span>{node.directReportsCount} Doğrudan</span>
@@ -830,11 +814,7 @@ function OrgNodeItem({
 
             {hasChildren && (
               <button
-                className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${
-                  isCollapsed
-                    ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
-                    : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
-                }`}
+                className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${ isCollapsed ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-950/40 dark:text-blue-400" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsCollapsed(!isCollapsed);
@@ -925,7 +905,7 @@ function DepartmentsTab({
         <div className="relative max-w-sm flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Departman adı, kod veya maliyet merkezi ara..."
             type="text"
@@ -938,7 +918,7 @@ function DepartmentsTab({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredDepts.map((dept) => (
           <div
-            className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:border-blue-200 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-200 hover:shadow-md"
             key={dept.id}
           >
             <div>
@@ -1023,7 +1003,7 @@ function DepartmentsTab({
             </div>
 
             {/* Footer */}
-            <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 text-xs dark:border-zinc-800">
+            <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-xs">
               <div className="flex items-center gap-3 font-semibold text-zinc-600 dark:text-zinc-400">
                 <span className="flex items-center gap-1">
                   <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
@@ -1094,12 +1074,12 @@ function EmployeesTab({
   return (
     <div className="space-y-4">
       {/* Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:flex-row sm:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
         {/* Search */}
         <div className="relative min-w-[240px] flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
           <input
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="İsim, e-posta, sicil no veya unvan ile ara..."
             type="text"
@@ -1164,7 +1144,7 @@ function EmployeesTab({
           </div>
 
           {/* Toggle View */}
-          <div className="flex items-center rounded-xl border border-zinc-200 p-0.5 dark:border-zinc-800">
+          <div className="flex items-center rounded-xl border border-border p-0.5">
             <button
               className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
@@ -1185,7 +1165,7 @@ function EmployeesTab({
 
       {/* Content: Table or Grid */}
       {employees.length === 0 ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white p-8 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
           <Users className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
           <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
             Çalışan Bulunamadı
@@ -1195,9 +1175,9 @@ function EmployeesTab({
           </p>
         </div>
       ) : viewMode === "table" ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
           <Table>
-            <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+            <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
               <TableRow>
                 <TableHead className="px-6 py-3.5 h-auto">Çalışan</TableHead>
                 <TableHead className="px-6 py-3.5 h-auto">Departman & Pozisyon</TableHead>
@@ -1315,7 +1295,7 @@ function EmployeesTab({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {employees.map((emp) => (
             <div
-              className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900"
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-300 hover:shadow-md"
               key={emp.id}
             >
               <div>
@@ -1372,7 +1352,7 @@ function EmployeesTab({
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-between border-border border-t pt-3">
                 <span className="font-medium text-[11px] text-zinc-400 dark:text-zinc-500">
                   {emp.directReportCount > 0
                     ? `${emp.directReportCount} Doğrudan Ast`
@@ -1419,9 +1399,9 @@ function PositionsTab({
 }) {
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         <Table>
-          <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+          <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
             <TableRow>
               <TableHead className="px-6 py-3.5 h-auto">Pozisyon / Ünvan</TableHead>
               <TableHead className="px-6 py-3.5 h-auto">Kariyer Kademesi</TableHead>
@@ -1563,7 +1543,7 @@ function DepartmentModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
@@ -1584,7 +1564,7 @@ function DepartmentModal({
               Departman Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Yazılım & Teknoloji"
               required
@@ -1599,7 +1579,7 @@ function DepartmentModal({
                 Departman Kodu
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Örn: TECH"
                 type="text"
@@ -1611,7 +1591,7 @@ function DepartmentModal({
                 Maliyet Merkezi
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setCostCenter(e.target.value)}
                 placeholder="CC-102"
                 type="text"
@@ -1671,7 +1651,7 @@ function DepartmentModal({
               Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Departmanın temel görev ve sorumlulukları..."
               rows={2}
@@ -1679,7 +1659,7 @@ function DepartmentModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -1777,7 +1757,7 @@ function PositionModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Briefcase className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
@@ -1798,7 +1778,7 @@ function PositionModal({
               Pozisyon / Ünvan Başlığı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Örn: Senior Frontend Developer"
               required
@@ -1885,7 +1865,7 @@ function PositionModal({
               Görev Tanımı
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Pozisyonun ana sorumlulukları..."
               rows={2}
@@ -1893,7 +1873,7 @@ function PositionModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2053,7 +2033,7 @@ function EmployeeModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {employee?.id
@@ -2080,7 +2060,7 @@ function EmployeeModal({
               onValueChange={(val) => handleUserLink(val === "none" ? "" : val)}
               value={userId || "none"}
             >
-              <SelectTrigger className="bg-white dark:bg-zinc-900">
+              <SelectTrigger className="bg-card">
                 <SelectValue placeholder="Bağımsız Personel Kartı (Hesap Bağlama Yok)" />
               </SelectTrigger>
               <SelectContent>
@@ -2103,7 +2083,7 @@ function EmployeeModal({
                 Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Ahmet"
                 required
@@ -2116,7 +2096,7 @@ function EmployeeModal({
                 Soyadı *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Yılmaz"
                 required
@@ -2132,7 +2112,7 @@ function EmployeeModal({
                 E-posta Adresi *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ahmet@sirket.com"
                 required
@@ -2201,7 +2181,7 @@ function EmployeeModal({
                 Özel / Görünen Ünvan
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Senior Architect"
                 type="text"
@@ -2211,7 +2191,7 @@ function EmployeeModal({
           </div>
 
           {/* Manager / Reports To Hierarchy */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800/90 dark:bg-zinc-800/40">
+          <div className="rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
             <label className="mb-1 block font-bold text-zinc-900 dark:text-zinc-100">
               Bağlı Olduğu Yönetici (Reports To)
             </label>
@@ -2219,7 +2199,7 @@ function EmployeeModal({
               onValueChange={(val) => setManagerId(val === "none" ? "" : val)}
               value={managerId || "none"}
             >
-              <SelectTrigger className="bg-white dark:bg-zinc-900">
+              <SelectTrigger className="bg-card">
                 <SelectValue placeholder="Üst Yönetici Yok (En Üst Düzey / CEO / Founder)" />
               </SelectTrigger>
               <SelectContent>
@@ -2287,7 +2267,7 @@ function EmployeeModal({
                 Sicil No
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setEmployeeNumber(e.target.value)}
                 placeholder="EMP-1002"
                 type="text"
@@ -2346,7 +2326,7 @@ function EmployeeModal({
               Avatar Fotoğraf URL
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://images.unsplash.com/photo-..."
               type="url"
@@ -2354,7 +2334,7 @@ function EmployeeModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
               className="rounded-xl px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
@@ -2446,7 +2426,7 @@ function EmployeeDetailDrawer({
       >
         <div>
           {/* Top Close & Edit actions */}
-          <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-b pb-4">
             <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
               {employeeDetail.employeeNumber || "PERSONEL DETAYI"}
             </span>
@@ -2502,7 +2482,7 @@ function EmployeeDetailDrawer({
           </div>
 
           {/* Contact Details Card */}
-          <div className="mt-6 space-y-3 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-4 text-xs dark:border-zinc-800 dark:bg-zinc-800/40">
+          <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
             <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               İletişim & İK Bilgileri
             </h4>
@@ -2540,7 +2520,7 @@ function EmployeeDetailDrawer({
             </h4>
 
             {/* Manager */}
-            <div className="rounded-2xl border border-zinc-200/80 p-3 dark:border-zinc-800/90">
+            <div className="rounded-2xl border border-border p-3">
               <div className="mb-1.5 font-bold text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
                 Bağlı Olduğu Yönetici
               </div>
@@ -2569,7 +2549,7 @@ function EmployeeDetailDrawer({
             </div>
 
             {/* Direct Reports */}
-            <div className="rounded-2xl border border-zinc-200/80 p-3 dark:border-zinc-800/90">
+            <div className="rounded-2xl border border-border p-3">
               <div className="mb-2 flex items-center justify-between font-bold text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
                 <span>
                   Doğrudan Yönettiği Kişiler (
@@ -2612,7 +2592,7 @@ function EmployeeDetailDrawer({
         </div>
 
         {/* Footer */}
-        <div className="border-zinc-100 border-t pt-4 text-center dark:border-zinc-800">
+        <div className="border-border border-t pt-4 text-center">
           <button
             className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
             onClick={onClose}

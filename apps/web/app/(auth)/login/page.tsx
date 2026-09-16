@@ -70,7 +70,7 @@ export default function LoginPage() {
       </div>
 
       {/* Main Floating Card */}
-      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-white p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12 dark:bg-zinc-900">
+      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-card p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12">
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
@@ -107,7 +107,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Form Container */}
-        <div className="flex flex-col justify-between bg-white px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6 dark:bg-zinc-900 dark:text-zinc-100">
+        <div className="flex flex-col justify-between bg-card px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6 dark:text-zinc-100">
           {/* Brand Logo Header */}
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-white shadow-sm dark:bg-zinc-100 dark:text-zinc-900">
@@ -190,7 +190,7 @@ export default function LoginPage() {
                 <label className="flex cursor-pointer select-none items-center gap-2 text-zinc-600 dark:text-zinc-400">
                   <input
                     checked={rememberMe}
-                    className="h-3.5 w-3.5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800"
+                    className="h-3.5 w-3.5 rounded border-border text-blue-600 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800"
                     onChange={(e) => setRememberMe(e.target.checked)}
                     type="checkbox"
                   />
@@ -221,7 +221,7 @@ export default function LoginPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white py-3 font-medium text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-border bg-card py-3 font-medium text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 sm:text-sm dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={handleGoogleLogin}
                   type="button"
                 >

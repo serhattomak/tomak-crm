@@ -694,7 +694,7 @@ export default function ProjectDetailPage() {
       case "Improvement":
         return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       default:
-        return "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700";
+        return "bg-zinc-100 text-zinc-700 border-border dark:bg-zinc-800 dark:text-zinc-300";
     }
   };
 
@@ -748,7 +748,7 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col gap-4 border-zinc-100 border-b pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <Link
@@ -769,7 +769,7 @@ export default function ProjectDetailPage() {
               {project.name}
             </h1>
             {project.customerName && (
-              <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-semibold text-xs text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-md border border-border bg-zinc-50 px-2 py-0.5 font-semibold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {project.customerName}
               </span>
             )}
@@ -778,7 +778,7 @@ export default function ProjectDetailPage() {
 
         <div className="flex items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
             onClick={() => setIsCreateSprintModalOpen(true)}
             type="button"
           >
@@ -787,7 +787,7 @@ export default function ProjectDetailPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
             onClick={() => setIsCreateEpicModalOpen(true)}
             type="button"
           >
@@ -810,7 +810,7 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-zinc-200/80 border-b dark:border-zinc-800">
+      <div className="flex items-center gap-2 border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "backlog"
@@ -870,11 +870,7 @@ export default function ProjectDetailPage() {
           {/* Active Sprint Section */}
           {activeSprint && (
             <div
-              className={`rounded-2xl border p-5 shadow-2xs transition-all ${
-                dragOverSprintId === activeSprint.id
-                  ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40"
-                  : "border-emerald-200/80 bg-white dark:border-emerald-900/60 dark:bg-zinc-900/90"
-              }`}
+              className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === activeSprint.id ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40" : "border-emerald-200/80 bg-card dark:border-emerald-900/60" }`}
               onDragLeave={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                   setDragOverSprintId(null);
@@ -956,7 +952,7 @@ export default function ProjectDetailPage() {
               </div>
 
               {/* Items in Active Sprint */}
-              <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/30">
+              <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-border bg-zinc-50/50 dark:divide-zinc-800 dark:bg-zinc-800/30">
                 {items
                   .filter((i) => i.sprintId === activeSprint.id)
                   .map((item) => (
@@ -1116,11 +1112,7 @@ export default function ProjectDetailPage() {
 
             return (
               <div
-                className={`rounded-2xl border p-5 shadow-2xs transition-all ${
-                  dragOverSprintId === sprint.id
-                    ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40"
-                    : "border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900/90"
-                }`}
+                className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === sprint.id ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
                 key={sprint.id}
                 onDragLeave={(e) => {
                   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
@@ -1177,7 +1169,7 @@ export default function ProjectDetailPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/30">
+                <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-border bg-zinc-50/50 dark:divide-zinc-800 dark:bg-zinc-800/30">
                   {sprintItems.map((item) => (
                     <div
                       className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
@@ -1262,7 +1254,7 @@ export default function ProjectDetailPage() {
                         />
 
                         <button
-                          className="rounded-lg border border-zinc-200 px-2 py-1 text-[10px] text-zinc-500 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-700"
+                          className="rounded-lg border border-border px-2 py-1 text-[10px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700"
                           onClick={() => handleAssignToSprint(item.id, null)}
                           title="Backlog'a Taşı"
                           type="button"
@@ -1295,11 +1287,7 @@ export default function ProjectDetailPage() {
 
           {/* Backlog Pool Section */}
           <div
-            className={`rounded-2xl border p-5 shadow-2xs transition-all ${
-              dragOverSprintId === "backlog"
-                ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40"
-                : "border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900/90"
-            }`}
+            className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === "backlog" ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
             onDragLeave={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                 setDragOverSprintId(null);
@@ -1337,7 +1325,7 @@ export default function ProjectDetailPage() {
               </span>
             </div>
 
-            <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/30">
+            <div className="mt-4 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-border bg-zinc-50/50 dark:divide-zinc-800 dark:bg-zinc-800/30">
               {backlogPoolItems.map((item) => (
                 <div
                   className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
@@ -1520,11 +1508,7 @@ export default function ProjectDetailPage() {
 
                   return (
                     <div
-                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${
-                        isOver
-                          ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40"
-                          : "border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800/80 dark:bg-zinc-900/50"
-                      }`}
+                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${ isOver ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40" : "border-border bg-zinc-50/70 dark:bg-zinc-900/50" }`}
                       key={colStatus}
                       onDragLeave={(e) => {
                         if (
@@ -1564,11 +1548,7 @@ export default function ProjectDetailPage() {
 
                           return (
                             <div
-                              className={`group rounded-xl border bg-white p-3.5 shadow-2xs transition-all dark:bg-zinc-800/90 ${
-                                isDragging
-                                  ? "scale-95 cursor-grabbing border-blue-500 border-dashed opacity-30 shadow-none"
-                                  : "cursor-grab border-zinc-200/80 hover:border-blue-300 hover:shadow-md active:cursor-grabbing dark:border-zinc-800 dark:hover:border-blue-700"
-                              }`}
+                              className={`group rounded-xl border bg-card p-3.5 shadow-2xs transition-all ${ isDragging ? "scale-95 cursor-grabbing border-blue-500 border-dashed opacity-30 shadow-none" : "cursor-grab border-border hover:border-blue-300 hover:shadow-md active:cursor-grabbing dark:hover:border-blue-700" }`}
                               draggable
                               key={item.id}
                               onClick={() => setSelectedItem(item)}
@@ -1620,7 +1600,7 @@ export default function ProjectDetailPage() {
                               )}
 
                               <div
-                                className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2 text-[10px] text-zinc-400 dark:border-zinc-700/60"
+                                className="mt-3 flex items-center justify-between border-border border-t pt-2 text-[10px] text-zinc-400"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {/* Quick Story Points */}
@@ -1716,7 +1696,7 @@ export default function ProjectDetailPage() {
                         })}
 
                         {colItems.length === 0 && (
-                          <div className="flex h-32 items-center justify-center rounded-xl border border-zinc-200/80 border-dashed p-6 text-center text-[11px] text-zinc-400 dark:border-zinc-800">
+                          <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-[11px] text-zinc-400">
                             Maddeleri buraya sürükleyin
                           </div>
                         )}
@@ -1727,7 +1707,7 @@ export default function ProjectDetailPage() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
               <Layers className="h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Aktif Sprint Bulunmuyor
@@ -1754,7 +1734,7 @@ export default function ProjectDetailPage() {
 
             return (
               <div
-                className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900/90"
+                className="rounded-2xl border border-border bg-card p-5 shadow-2xs"
                 key={epic.id}
               >
                 <div className="flex items-start justify-between">
@@ -1800,7 +1780,7 @@ export default function ProjectDetailPage() {
           })}
 
           {epics.length === 0 && (
-            <div className="col-span-full rounded-3xl border border-zinc-200 border-dashed bg-white py-16 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
               <Milestone className="mx-auto h-10 w-10 text-zinc-400" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Henüz Epik Oluşturulmamış
@@ -1828,7 +1808,7 @@ export default function ProjectDetailPage() {
         >
           <SheetContent
             aria-describedby={undefined}
-            className="data-[side=right]:w-full max-w-xl overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-xl"
+            className="data-[side=right]:w-full max-w-xl overflow-y-auto border-border p-6 data-[side=right]:sm:max-w-xl"
             side="right"
           >
             {/* The drawer opens on its type badge and item key, so there is no
@@ -1837,7 +1817,7 @@ export default function ProjectDetailPage() {
               {selectedItem.itemKey} detayı
             </SheetTitle>
             {/* Header */}
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-2">
                 <span
                   className={`rounded-md border px-2 py-0.5 font-bold text-xs ${getTypeBadge(drawerType)}`}
@@ -1878,7 +1858,7 @@ export default function ProjectDetailPage() {
                   Başlık
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerTitle(e.target.value)}
                   required
                   type="text"
@@ -2036,7 +2016,7 @@ export default function ProjectDetailPage() {
                     Tahmini Efor (Saat)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
                     onChange={(e) =>
                       setDrawerEstimatedHours(Number(e.target.value))
@@ -2052,7 +2032,7 @@ export default function ProjectDetailPage() {
                     Harcanan Efor (Saat)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
                     onChange={(e) =>
                       setDrawerLoggedHours(Number(e.target.value))
@@ -2068,7 +2048,7 @@ export default function ProjectDetailPage() {
                     Bitiş Tarihi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerDueDate(e.target.value)}
                     type="date"
                     value={drawerDueDate}
@@ -2082,7 +2062,7 @@ export default function ProjectDetailPage() {
                   Açıklama & Detaylar
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerDescription(e.target.value)}
                   placeholder="İş maddesinin detaylı açıklaması..."
                   rows={3}
@@ -2120,7 +2100,7 @@ export default function ProjectDetailPage() {
             </form>
 
             {/* Subtasks (Checklist) */}
-            <div className="mt-8 border-zinc-100 border-t pt-6 dark:border-zinc-800">
+            <div className="mt-8 border-border border-t pt-6">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Alt Görevler (
                 {selectedItem.subtasks.filter((s) => s.isCompleted).length}/
@@ -2129,7 +2109,7 @@ export default function ProjectDetailPage() {
 
               <form className="mt-2 flex gap-2" onSubmit={handleAddSubtask}>
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-border bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSubtaskTitle(e.target.value)}
                   placeholder="Yeni kontrol maddesi yazın..."
                   type="text"
@@ -2147,15 +2127,11 @@ export default function ProjectDetailPage() {
               <div className="mt-3 space-y-1.5">
                 {selectedItem.subtasks.map((subtask) => (
                   <div
-                    className="flex items-center gap-2 rounded-xl border border-zinc-100 p-2.5 text-xs dark:border-zinc-800"
+                    className="flex items-center gap-2 rounded-xl border border-border p-2.5 text-xs"
                     key={subtask.id}
                   >
                     <button
-                      className={`flex h-4 w-4 items-center justify-center rounded-md border ${
-                        subtask.isCompleted
-                          ? "border-emerald-500 bg-emerald-500 text-white"
-                          : "border-zinc-300 dark:border-zinc-600"
-                      }`}
+                      className={`flex h-4 w-4 items-center justify-center rounded-md border ${ subtask.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border dark:border-zinc-600" }`}
                       onClick={() => handleToggleSubtask(subtask.id)}
                       type="button"
                     >
@@ -2174,14 +2150,14 @@ export default function ProjectDetailPage() {
             </div>
 
             {/* Comments Feed */}
-            <div className="mt-8 border-zinc-100 border-t pt-6 dark:border-zinc-800">
+            <div className="mt-8 border-border border-t pt-6">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Ekip Yorumları ({selectedItem.comments.length})
               </h4>
 
               <form className="mt-2 space-y-2" onSubmit={handleAddComment}>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewCommentContent(e.target.value)}
                   placeholder="Yorum ekle veya not bırak..."
                   rows={2}
@@ -2201,7 +2177,7 @@ export default function ProjectDetailPage() {
               <div className="mt-4 space-y-3">
                 {selectedItem.comments.map((c) => (
                   <div
-                    className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/40"
+                    className="rounded-xl border border-border bg-zinc-50/50 p-3 text-xs dark:bg-zinc-800/40"
                     key={c.id}
                   >
                     <div className="flex items-center justify-between font-medium text-[11px] text-zinc-400">
@@ -2240,7 +2216,7 @@ export default function ProjectDetailPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-lg"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-4">
               <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni İş Maddesi Oluştur
               </DialogTitle>
@@ -2263,7 +2239,7 @@ export default function ProjectDetailPage() {
                   Başlık *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemTitle(e.target.value)}
                   placeholder="İş maddesi başlığı..."
                   required
@@ -2366,7 +2342,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemDescription(e.target.value)}
                   placeholder="İşin detayları..."
                   rows={2}
@@ -2374,9 +2350,9 @@ export default function ProjectDetailPage() {
                 />
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-border border-t pt-3">
                 <button
-                  className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateItemModalOpen(false)}
                   type="button"
                 >
@@ -2412,7 +2388,7 @@ export default function ProjectDetailPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Sprint Başlat / Planla
               </DialogTitle>
@@ -2435,7 +2411,7 @@ export default function ProjectDetailPage() {
                   Sprint Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintName(e.target.value)}
                   placeholder={`Sprint ${sprints.length + 1}`}
                   required
@@ -2449,7 +2425,7 @@ export default function ProjectDetailPage() {
                   Sprint Hedefi (Goal)
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintGoal(e.target.value)}
                   placeholder="Bu sprintte neyi başarmayı hedefliyoruz?"
                   rows={2}
@@ -2463,7 +2439,7 @@ export default function ProjectDetailPage() {
                     Başlangıç
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewSprintStartDate(e.target.value)}
                     type="date"
                     value={newSprintStartDate}
@@ -2475,7 +2451,7 @@ export default function ProjectDetailPage() {
                     Bitiş
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewSprintEndDate(e.target.value)}
                     type="date"
                     value={newSprintEndDate}
@@ -2483,9 +2459,9 @@ export default function ProjectDetailPage() {
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-border border-t pt-3">
                 <button
-                  className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateSprintModalOpen(false)}
                   type="button"
                 >
@@ -2521,7 +2497,7 @@ export default function ProjectDetailPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni Epik Oluştur
               </DialogTitle>
@@ -2544,7 +2520,7 @@ export default function ProjectDetailPage() {
                   Epik Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicName(e.target.value)}
                   placeholder="Örn. Kullanıcı Yönetimi & Yetkilendirme"
                   required
@@ -2558,7 +2534,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicDescription(e.target.value)}
                   placeholder="Epik hedefleri ve kapsam..."
                   rows={2}
@@ -2592,9 +2568,9 @@ export default function ProjectDetailPage() {
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="mt-5 flex items-center justify-end gap-2 border-border border-t pt-3">
                 <button
-                  className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border px-4 py-2 font-medium text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateEpicModalOpen(false)}
                   type="button"
                 >

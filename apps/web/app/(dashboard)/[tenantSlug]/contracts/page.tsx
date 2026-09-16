@@ -229,7 +229,7 @@ export default function ContractsPage() {
   return (
     <PageContainer className="flex flex-col gap-6">
       {/* 1. Header & Action Path */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-zinc-200/80 border-b pb-4 dark:border-zinc-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-border border-b pb-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
@@ -271,7 +271,7 @@ export default function ContractsPage() {
 
       {/* 2. Bento Grid KPI Strip */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               Toplam Sözleşme
@@ -283,7 +283,7 @@ export default function ContractsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               İmzalanan / Aktif
@@ -295,7 +295,7 @@ export default function ContractsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               Onay Bekleyenler
@@ -307,7 +307,7 @@ export default function ContractsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               Toplam Portföy Değeri
@@ -321,12 +321,12 @@ export default function ContractsPage() {
       </div>
 
       {/* 3. Filter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3 shadow-xs">
         <div className="flex flex-1 items-center gap-2">
           <div className="relative w-full max-w-sm">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
             <input
-              className="h-9 w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 pr-3 pl-9 text-xs text-zinc-900 outline-hidden transition focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-100 dark:focus:border-blue-400"
+              className="h-9 w-full rounded-xl border border-border bg-zinc-50/50 pr-3 pl-9 text-xs text-zinc-900 outline-hidden transition focus:border-blue-500 focus:bg-white dark:bg-zinc-900/80 dark:text-zinc-100 dark:focus:border-blue-400"
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Sözleşme no, başlık veya müşteri ara..."
               type="text"
@@ -362,9 +362,9 @@ export default function ContractsPage() {
       </div>
 
       {/* 4. Contracts Table (Workbench Table Invariant) */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         <Table>
-          <TableHeader className="border-zinc-200/80 bg-zinc-50/75 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/75 text-zinc-500 dark:bg-zinc-900/80 dark:text-zinc-400">
             <TableRow>
               <TableHead className="py-3 pr-4 pl-5 font-semibold h-auto">Sözleşme No</TableHead>
               <TableHead className="px-4 py-3 font-semibold h-auto">Başlık & Müşteri</TableHead>
@@ -498,7 +498,7 @@ export default function ContractsPage() {
             className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b px-6 py-4">
               <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                 Yeni Sözleşme Oluştur
               </DialogTitle>
@@ -522,7 +522,7 @@ export default function ContractsPage() {
                     Sözleşme Başlığı *
                   </label>
                   <input
-                    className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="h-9 w-full rounded-xl border border-border bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="Örn: 2026 Yıllık Yazılım Bakım Sözleşmesi"
                     required
@@ -581,14 +581,14 @@ export default function ContractsPage() {
                     Sözleşme Maddeleri (HTML Metin)
                   </label>
                   <textarea
-                    className="min-h-[160px] w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 font-mono text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="min-h-[160px] w-full rounded-xl border border-border bg-zinc-50 p-3 font-mono text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setNewContentHtml(e.target.value)}
                     value={newContentHtml}
                   />
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-end gap-2 border-zinc-200 border-t pt-4 dark:border-zinc-800">
+              <div className="mt-6 flex items-center justify-end gap-2 border-border border-t pt-4">
                 <Button
                   onClick={() => setIsCreateModalOpen(false)}
                   type="button"
@@ -624,7 +624,7 @@ export default function ContractsPage() {
             className="data-[side=right]:w-full max-w-xl data-[side=right]:sm:max-w-xl"
             side="right"
           >
-            <div className="flex items-center justify-between border-zinc-200 border-b p-5 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b p-5">
               <div>
                 <SheetTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                   {selectedContract.title}
@@ -695,7 +695,7 @@ export default function ContractsPage() {
                     Sözleşme Metni Önizleme
                   </h4>
                   <div
-                    className="prose prose-sm dark:prose-invert rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-900/60"
+                    className="prose prose-sm dark:prose-invert rounded-xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-900/60"
                     dangerouslySetInnerHTML={{
                       __html: selectedContract.contentHtml,
                     }}
@@ -708,7 +708,7 @@ export default function ContractsPage() {
                     <h4 className="mb-2 font-medium text-xs text-zinc-700 uppercase dark:text-zinc-300">
                       Müşteri Dijital İmzası
                     </h4>
-                    <div className="inline-block rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="inline-block rounded-xl border border-border bg-card p-3">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         alt="E-İmza"
@@ -721,7 +721,7 @@ export default function ContractsPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-zinc-200 border-t p-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-t p-4">
               <Button
                 onClick={() => {
                   window.print();

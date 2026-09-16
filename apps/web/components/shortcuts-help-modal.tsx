@@ -74,7 +74,7 @@ export function ShortcutsHelpModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-3.5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Keyboard className="h-4.5 w-4.5" />
@@ -108,7 +108,7 @@ export function ShortcutsHelpModal({
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
                 {section.items.map((item, idx) => (
                   <div
-                    className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50/70 px-3 py-2 dark:border-zinc-800/80 dark:bg-zinc-800/40"
+                    className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/70 px-3 py-2 dark:bg-zinc-800/40"
                     key={idx}
                   >
                     <span className="font-medium text-xs text-zinc-700 dark:text-zinc-300">
@@ -117,7 +117,7 @@ export function ShortcutsHelpModal({
                     <div className="ml-2 flex shrink-0 items-center gap-1">
                       {item.keys.map((k, kIdx) => (
                         <kbd
-                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-zinc-200 bg-white px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-border bg-card px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:text-zinc-200"
                           key={kIdx}
                         >
                           {k}
@@ -132,7 +132,7 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+        <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400 dark:text-zinc-500">
           <div className="flex items-center gap-1.5">
             <HelpCircle className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>
@@ -141,7 +141,7 @@ export function ShortcutsHelpModal({
             </span>
           </div>
           <button
-            className="rounded-xl border border-zinc-200 bg-white px-3.5 py-1.5 font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="rounded-xl border border-border bg-card px-3.5 py-1.5 font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={onClose}
             type="button"
           >

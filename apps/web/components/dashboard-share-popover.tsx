@@ -149,7 +149,7 @@ export function DashboardSharePopover({
           <button
             className={
               buttonClassName ||
-              "flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 shadow-2xs transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
+              "flex h-9 w-9 items-center justify-center rounded-full border border-border text-zinc-600 shadow-2xs transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
             }
             title="Panoyu Paylaş ve Dışa Aktar"
             type="button"
@@ -167,7 +167,7 @@ export function DashboardSharePopover({
           sideOffset={10}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-zinc-100 border-b px-4 py-3 dark:border-border">
+          <div className="flex items-center justify-between border-border border-b px-4 py-3 dark:border-border">
             <div className="flex items-center gap-2">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Share2 className="h-4 w-4" />
@@ -191,13 +191,13 @@ export function DashboardSharePopover({
           </div>
 
           {/* Quick URL Copy Bar */}
-          <div className="border-zinc-100 border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/30">
+          <div className="border-border border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/30">
             <label className="mb-1.5 block font-semibold text-[10px] text-zinc-500 dark:text-muted-foreground">
               Mevcut Görünüm Bağlantısı ({activeTab})
             </label>
             <div className="flex items-center gap-1.5">
               <input
-                className="w-full truncate rounded-xl border border-zinc-200 bg-white px-2.5 py-1.5 text-[11px] text-zinc-600 focus:outline-none dark:border-border dark:bg-card dark:text-zinc-300"
+                className="w-full truncate rounded-xl border border-border bg-card px-2.5 py-1.5 text-[11px] text-zinc-600 focus:outline-none dark:border-border dark:bg-card dark:text-zinc-300"
                 readOnly
                 value={getShareableUrl()}
               />

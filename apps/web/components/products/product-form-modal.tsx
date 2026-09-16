@@ -259,7 +259,7 @@ export function TagsInput({
 
   return (
     <div>
-      <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 py-1.5 shadow-2xs transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1.5 shadow-2xs transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
         {value.map((tag) => (
           <span
             className="inline-flex items-center gap-1 rounded-lg bg-blue-50 px-2 py-0.5 font-semibold text-[11px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
@@ -353,7 +353,7 @@ export function AttributesEditor({
           </div>
           <button
             aria-label={`${index + 1}. özelliği sil`}
-            className="rounded-lg border border-zinc-200 p-2 text-zinc-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-zinc-800 dark:text-zinc-500"
+            className="rounded-lg border border-border p-2 text-zinc-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
             onClick={() => removeRow(index)}
             type="button"
           >
@@ -366,7 +366,7 @@ export function AttributesEditor({
           {value.length}/{max} özellik — boş anahtarlı satırlar kaydedilmez.
         </p>
         <button
-          className="flex items-center gap-1 rounded-xl border border-zinc-200 px-3 py-1.5 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={value.length >= max}
           onClick={addRow}
           type="button"
@@ -528,14 +528,14 @@ export function ProductImagesField({
             />
           </div>
           <button
-            className="rounded-xl border border-zinc-200 px-3 py-2 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border border-border px-3 py-2 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             type="submit"
           >
             Ekle
           </button>
         </form>
         <button
-          className="flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 px-3 py-2 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-border px-3 py-2 font-semibold text-xs text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
           disabled={room <= 0}
           onClick={() => fileInputRef.current?.click()}
           type="button"
@@ -565,7 +565,7 @@ export function ProductImagesField({
           <div className="flex flex-wrap gap-2">
             {staged.map((entry) => (
               <div
-                className="relative h-20 w-20 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800"
+                className="relative h-20 w-20 overflow-hidden rounded-2xl border border-border bg-card"
                 key={entry.previewUrl}
               >
                 <Image
@@ -599,7 +599,7 @@ export function ProductImagesField({
         />
       )}
       {images.length === 0 && staged.length === 0 && (
-        <p className="rounded-2xl border border-zinc-200 border-dashed px-3 py-4 text-center text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+        <p className="rounded-2xl border border-border border-dashed px-3 py-4 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
           Henüz görsel yok — bağlantı yapıştırın veya dosya seçin. JPG/PNG/WebP,
           en fazla 5MB, en fazla 10 görsel.
         </p>

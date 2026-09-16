@@ -378,11 +378,7 @@ export function QuickActionsWidget({
                   </div>
 
                   <div
-                    className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${
-                      isSelected
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-background"
-                    }`}
+                    className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${ isSelected ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background" }`}
                   >
                     {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
                   </div>

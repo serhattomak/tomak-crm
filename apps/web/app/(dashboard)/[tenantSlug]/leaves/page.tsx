@@ -274,16 +274,16 @@ export default function LeavesPage() {
       case "Sick":
         return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Unpaid":
-        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-border";
       case "Marriage":
         return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800";
       case "Maternity":
       case "Paternity":
         return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       case "Bereavement":
-        return "bg-zinc-100 text-zinc-700 border-zinc-200";
+        return "bg-zinc-100 text-zinc-700 border-border";
       default:
-        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-border";
     }
   };
 
@@ -319,9 +319,9 @@ export default function LeavesPage() {
       case "Rejected":
         return "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
       case "Cancelled":
-        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-border";
       default:
-        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-border";
     }
   };
 
@@ -445,7 +445,7 @@ export default function LeavesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Pending Requests */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -459,13 +459,13 @@ export default function LeavesPage() {
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Yönetici onayı bekleyen izinler</span>
           </div>
         </div>
 
         {/* Today on Leave */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -479,13 +479,13 @@ export default function LeavesPage() {
               <Sun className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Bugün aktif izin kullanan personel</span>
           </div>
         </div>
 
         {/* This Month Used Days */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -499,13 +499,13 @@ export default function LeavesPage() {
               <CalendarIcon className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Bu ay içinde onaylanan toplam iş günü</span>
           </div>
         </div>
 
         {/* Annual Leave Balance */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -519,7 +519,7 @@ export default function LeavesPage() {
               <Palmtree className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span>Kullanılan: {myBalance?.usedDays ?? 0} Gün</span>
             <span>Hakediş: {myBalance?.totalDays ?? 14} Gün</span>
           </div>
@@ -529,11 +529,7 @@ export default function LeavesPage() {
       {/* 3. Navigation Tabs Bar */}
       <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-            activeTab === "calendar"
-              ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("calendar")}
           type="button"
         >
@@ -542,11 +538,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-            activeTab === "pending"
-              ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "pending" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("pending")}
           type="button"
         >
@@ -560,11 +552,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-            activeTab === "all"
-              ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "all" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("all")}
           type="button"
         >
@@ -573,11 +561,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-            activeTab === "my"
-              ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "my" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("my")}
           type="button"
         >
@@ -588,12 +572,12 @@ export default function LeavesPage() {
 
       {/* 4. TAB 1: INTERACTIVE MONTHLY CALENDAR */}
       {activeTab === "calendar" && (
-        <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
           {/* Calendar Header / Controls */}
-          <div className="flex flex-col justify-between gap-3 border-zinc-100 border-b pb-4 sm:flex-row sm:items-center dark:border-zinc-800">
+          <div className="flex flex-col justify-between gap-3 border-border border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                 onClick={handlePrevMonth}
                 type="button"
               >
@@ -603,14 +587,14 @@ export default function LeavesPage() {
                 {monthNames[calendarDate.month - 1]} {calendarDate.year}
               </h2>
               <button
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                className="flex h-8 w-8 items-center justify-center rounded-xl border border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                 onClick={handleNextMonth}
                 type="button"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
               <button
-                className="ml-2 rounded-xl border border-zinc-200 px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                className="ml-2 rounded-xl border border-border px-3 py-1.5 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                 onClick={handleCurrentMonth}
                 type="button"
               >
@@ -671,7 +655,7 @@ export default function LeavesPage() {
                   if (!cell.day) {
                     return (
                       <div
-                        className="h-28 rounded-2xl border border-zinc-200/80 border-dashed bg-zinc-50/50 p-2 dark:border-zinc-800 dark:bg-zinc-900/30"
+                        className="h-28 rounded-2xl border border-border border-dashed bg-zinc-50/50 p-2 dark:bg-zinc-900/30"
                         key={idx}
                       />
                     );
@@ -688,11 +672,7 @@ export default function LeavesPage() {
 
                   return (
                     <div
-                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${
-                        isToday
-                          ? "border-blue-500 bg-blue-50/20 ring-1 ring-blue-500"
-                          : "border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900"
-                      }`}
+                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${ isToday ? "border-blue-500 bg-blue-50/20 ring-1 ring-blue-500" : "border-border bg-card" }`}
                       key={idx}
                     >
                       <div className="flex items-center justify-between">
@@ -739,7 +719,7 @@ export default function LeavesPage() {
 
       {/* 5. TAB 2: PENDING APPROVALS (MANAGER WORKBENCH) */}
       {activeTab === "pending" && (
-        <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -755,7 +735,7 @@ export default function LeavesPage() {
           </div>
 
           {pendingLeaves.length === 0 ? (
-            <div className="rounded-2xl border border-zinc-200 border-dashed p-12 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+            <div className="rounded-2xl border border-border border-dashed p-12 text-center text-xs text-zinc-400 dark:text-zinc-500">
               <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
               <p className="font-bold text-zinc-700 dark:text-zinc-300">
                 Tüm talepler sonuçlandırıldı!
@@ -768,7 +748,7 @@ export default function LeavesPage() {
             <div className="space-y-3">
               {pendingLeaves.map((leave) => (
                 <div
-                  className="flex flex-col justify-between gap-4 rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-800/30"
+                  className="flex flex-col justify-between gap-4 rounded-2xl border border-border bg-zinc-50/50 p-4 sm:flex-row sm:items-center dark:bg-zinc-800/30"
                   key={leave.id}
                 >
                   <div className="space-y-1">
@@ -811,7 +791,7 @@ export default function LeavesPage() {
                     </div>
 
                     {leave.reason && (
-                      <p className="mt-1 max-w-xl rounded-xl border border-zinc-200/80 bg-white p-2 text-xs text-zinc-700 italic dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-300">
+                      <p className="mt-1 max-w-xl rounded-xl border border-border bg-card p-2 text-xs text-zinc-700 italic dark:text-zinc-300">
                         "{leave.reason}"
                       </p>
                     )}
@@ -852,11 +832,11 @@ export default function LeavesPage() {
       {activeTab === "all" && (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs md:flex-row md:items-center dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
             <div className="relative max-w-md flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Çalışan adı, departman veya sebep ara..."
                 type="text"
@@ -897,10 +877,10 @@ export default function LeavesPage() {
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
                   <TableRow>
                     <TableHead className="py-3.5 pr-4 pl-6 h-auto">Çalışan</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">İzin Türü</TableHead>
@@ -1000,7 +980,7 @@ export default function LeavesPage() {
 
       {/* 7. TAB 4: MY LEAVE REQUESTS */}
       {activeTab === "my" && (
-        <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1020,9 +1000,9 @@ export default function LeavesPage() {
             </button>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <div className="overflow-x-auto rounded-2xl border border-border">
             <Table>
-              <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">İzin Türü</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Tarih Aralığı</TableHead>
@@ -1145,7 +1125,7 @@ export default function LeavesPage() {
                 Ret Gerekçesi *
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2.5 text-zinc-900 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setRejectionReason(e.target.value)}
                 placeholder="Örn: İlgili tarihte proje lansmanı olması sebebiyle..."
                 rows={3}
@@ -1155,7 +1135,7 @@ export default function LeavesPage() {
 
             <div className="mt-6 flex items-center justify-end gap-2">
               <button
-                className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                 onClick={() => setRejectingLeave(null)}
                 type="button"
               >
@@ -1390,7 +1370,7 @@ function CreateLeaveModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 text-xs sm:max-w-lg"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b p-5 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-5">
           <div>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni İzin Talebi Oluştur
@@ -1471,7 +1451,7 @@ function CreateLeaveModal({
             {/* Half Day Option — only for Casual/Sick */}
             {isHalfDayAllowed && (
               <div className="flex flex-col justify-end">
-                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800">
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 transition-colors hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800">
                   <input
                     aria-label="Yarım Gün İzin"
                     checked={isHalfDay}
@@ -1534,7 +1514,7 @@ function CreateLeaveModal({
           </div>
 
           {/* Smart Duration & Balance Calculation Banner */}
-          <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800/90 dark:bg-zinc-800/40">
+          <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400">
                 <CalendarIcon className="h-4 w-4" />
@@ -1559,7 +1539,7 @@ function CreateLeaveModal({
               İzin Sebebi / Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setReason(e.target.value)}
               placeholder="İzin gerekçenizi kısaca belirtin..."
               rows={2}
@@ -1572,7 +1552,7 @@ function CreateLeaveModal({
               Acil Durum İletişim Notu (Opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setEmergencyContact(e.target.value)}
               placeholder="Örn: 0532 ... veya e-posta ile ulaşılabilir"
               type="text"
@@ -1592,9 +1572,9 @@ function CreateLeaveModal({
           />
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

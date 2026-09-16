@@ -313,7 +313,7 @@ export default function AutomationsPage() {
         );
       default:
         return (
-          <span className="rounded-full border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-semibold text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="rounded-full border border-border bg-zinc-100 px-2 py-0.5 font-semibold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             {category || "Genel"}
           </span>
         );
@@ -346,7 +346,7 @@ export default function AutomationsPage() {
   return (
     <PageContainer className="space-y-6">
       {/* 1. Header & Hero Section */}
-      <div className="flex flex-col gap-4 border-zinc-200 border-b pb-6 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
+      <div className="flex flex-col gap-4 border-border border-b pb-6 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 p-2.5 text-white shadow-blue-500/20 shadow-md">
@@ -388,7 +388,7 @@ export default function AutomationsPage() {
 
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
             <span>AKTİF AKIŞLAR</span>
             <div className="h-2 w-2 animate-ping rounded-full bg-emerald-500" />
@@ -407,7 +407,7 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
             <span>BUGÜNKÜ ÇALIŞMA</span>
             <Activity className="h-4 w-4 text-blue-500" />
@@ -425,7 +425,7 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
             <span>BAŞARI ORANI</span>
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
@@ -441,7 +441,7 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-gradient-to-br bg-white from-indigo-50/50 via-white to-blue-50/50 p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-gradient-to-br bg-card from-indigo-50/50 via-white to-blue-50/50 p-4 shadow-xs">
           <div className="mb-2 flex items-center justify-between font-semibold text-indigo-700 text-xs">
             <span>TASARRUF EDİLEN SÜRE</span>
             <Clock className="h-4 w-4 text-indigo-500" />
@@ -460,35 +460,23 @@ export default function AutomationsPage() {
       </div>
 
       {/* 3. Navigation Tabs & Filtering Toolbar */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-zinc-200/80 bg-white p-2 shadow-xs md:flex-row md:items-center md:justify-between dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-2 shadow-xs md:flex-row md:items-center md:justify-between">
         {/* Main Tabs */}
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${
-              activeTab === "workflows"
-                ? "bg-white font-semibold text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "workflows" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => setActiveTab("workflows")}
           >
             İş Akışlarım ({workflows.length})
           </button>
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${
-              activeTab === "executions"
-                ? "bg-white font-semibold text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "executions" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => setActiveTab("executions")}
           >
             Çalışma Günlüğü & Denetim ({executions.length})
           </button>
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${
-              activeTab === "templates"
-                ? "bg-white font-semibold text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "templates" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => setActiveTab("templates")}
           >
             Hazır Tarifler ({templates.length})
@@ -533,7 +521,7 @@ export default function AutomationsPage() {
             {/* Search Input */}
             <form className="relative" onSubmit={handleSearch}>
               <input
-                className="w-48 rounded-xl border border-zinc-200 bg-zinc-50/50 py-1.5 pr-3 pl-8 text-xs focus:border-blue-500 focus:bg-white focus:outline-none md:w-60 dark:border-zinc-800 dark:bg-zinc-800/30 dark:bg-zinc-900"
+                className="w-48 rounded-xl border border-border bg-zinc-50/50 py-1.5 pr-3 pl-8 text-xs focus:border-blue-500 focus:bg-white focus:outline-none md:w-60 dark:bg-zinc-800/30 dark:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Akış veya tetikleyici ara..."
                 type="text"
@@ -543,7 +531,7 @@ export default function AutomationsPage() {
             </form>
 
             <button
-              className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={loadData}
               title="Yenile"
             >
@@ -557,14 +545,14 @@ export default function AutomationsPage() {
       {activeTab === "workflows" && (
         <div className="space-y-3">
           {isLoading ? (
-            <div className="rounded-2xl border border-zinc-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-border bg-card p-12 text-center">
               <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-blue-600" />
               <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
                 Otomasyon akışları yükleniyor...
               </p>
             </div>
           ) : workflows.length === 0 ? (
-            <div className="mx-auto max-w-lg rounded-2xl border border-zinc-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="mx-auto max-w-lg rounded-2xl border border-border bg-card p-12 text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Zap className="h-6 w-6" />
               </div>
@@ -577,7 +565,7 @@ export default function AutomationsPage() {
               </p>
               <div className="flex items-center justify-center gap-3">
                 <button
-                  className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border px-4 py-2 font-medium text-sm text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                   onClick={() => setIsRecipeDrawerOpen(true)}
                 >
                   Tarif Kütüphanesine Göz At
@@ -594,11 +582,7 @@ export default function AutomationsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {workflows.map((wf) => (
                 <div
-                  className={`group relative flex cursor-pointer flex-col justify-between rounded-2xl border bg-white p-5 transition-all duration-200 hover:shadow-md dark:bg-zinc-900 ${
-                    wf.isActive
-                      ? "border-zinc-200 hover:border-blue-300 dark:border-zinc-800/90"
-                      : "border-zinc-200 bg-zinc-50 opacity-80 dark:border-zinc-800/50 dark:bg-zinc-800/50"
-                  }`}
+                  className={`group relative flex cursor-pointer flex-col justify-between rounded-2xl border bg-card p-5 transition-all duration-200 hover:shadow-md ${ wf.isActive ? "border-border hover:border-blue-300" : "border-border bg-zinc-50 opacity-80 dark:bg-zinc-800/50" }`}
                   key={wf.id}
                   onClick={() =>
                     router.push(`/${tenantSlug}/automations/${wf.id}`)
@@ -646,25 +630,23 @@ export default function AutomationsPage() {
                         onClick={(e) => handleToggle(wf, e)}
                       >
                         <span
-                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-zinc-900 ${
-                            wf.isActive ? "translate-x-5" : "translate-x-0"
-                          }`}
+                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-200 ease-in-out ${ wf.isActive ? "translate-x-5" : "translate-x-0" }`}
                         />
                       </div>
                     </div>
 
                     {/* Trigger & Step Summary */}
-                    <div className="mb-4 space-y-2 rounded-xl border border-zinc-100 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+                    <div className="mb-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-medium text-zinc-500 dark:text-zinc-400">
                           Tetikleyici:
                         </span>
-                        <span className="rounded-md border border-zinc-200 bg-white px-2 py-0.5 font-semibold text-zinc-800 shadow-2xs dark:border-zinc-800/60 dark:bg-zinc-900 dark:text-zinc-200">
+                        <span className="rounded-md border border-border bg-card px-2 py-0.5 font-semibold text-zinc-800 shadow-2xs dark:text-zinc-200">
                           {getTriggerLabel(wf.triggerType)}
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between border-zinc-200 border-t pt-1 text-xs text-zinc-600 dark:border-zinc-800/50 dark:text-zinc-400">
+                      <div className="flex items-center justify-between border-border border-t pt-1 text-xs text-zinc-600 dark:text-zinc-400">
                         <div className="flex items-center gap-3">
                           <span className="flex items-center gap-1 font-medium">
                             <SlidersHorizontal className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
@@ -683,7 +665,7 @@ export default function AutomationsPage() {
                   </div>
 
                   {/* Bottom Bar: Action buttons & Run date */}
-                  <div className="flex items-center justify-between border-zinc-100 border-t pt-2 text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+                  <div className="flex items-center justify-between border-border border-t pt-2 text-xs text-zinc-400 dark:text-zinc-500">
                     <div>
                       {wf.lastExecutedAt ? (
                         <span>
@@ -703,7 +685,7 @@ export default function AutomationsPage() {
 
                     <div className="flex items-center gap-1">
                       <button
-                        className="flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-zinc-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 dark:border-zinc-800 dark:text-zinc-400"
+                        className="flex items-center gap-1 rounded-lg border border-border px-2.5 py-1 font-medium text-zinc-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 dark:text-zinc-400"
                         onClick={(e) => handleQuickSimulate(wf, e)}
                         title="Simüle Et / Test Et"
                       >
@@ -733,8 +715,8 @@ export default function AutomationsPage() {
 
       {/* 5. Tab 2: Executions History & Audit Logs */}
       {activeTab === "executions" && (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center justify-between border-zinc-100 border-b bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/30">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+          <div className="flex items-center justify-between border-border border-b bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Son Çalışma Günlüğü (Audit Trail)
@@ -745,7 +727,7 @@ export default function AutomationsPage() {
               </p>
             </div>
             <button
-              className="flex items-center gap-1 rounded-lg border border-zinc-200 px-3 py-1 font-medium text-xs text-zinc-600 hover:bg-white dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-900"
+              className="flex items-center gap-1 rounded-lg border border-border px-3 py-1 font-medium text-xs text-zinc-600 hover:bg-white dark:text-zinc-400 dark:hover:bg-zinc-900"
               onClick={loadData}
             >
               <RefreshCw className="h-3 w-3" />
@@ -755,7 +737,7 @@ export default function AutomationsPage() {
 
           <div className="overflow-x-auto">
             <Table className="text-zinc-600 dark:text-zinc-400">
-              <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">Tarih / Saat</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Akış Adı</TableHead>
@@ -845,7 +827,7 @@ export default function AutomationsPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {templates.map((tmpl) => (
             <div
-              className="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
+              className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-5 transition-all hover:shadow-md"
               key={tmpl.id}
             >
               <div>
@@ -875,7 +857,7 @@ export default function AutomationsPage() {
                   {tmpl.description}
                 </p>
 
-                <div className="mb-4 space-y-1.5 rounded-xl border border-zinc-100 bg-zinc-50 p-2.5 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <div className="mb-4 space-y-1.5 rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <div className="flex items-center justify-between">
                     <span className="text-zinc-400 dark:text-zinc-500">
                       Tetikleyici:
@@ -922,7 +904,7 @@ export default function AutomationsPage() {
             className="data-[side=right]:w-full max-w-xl justify-between overflow-y-auto p-6 data-[side=right]:sm:max-w-xl"
           >
             <div className="space-y-5">
-              <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+              <div className="flex items-center justify-between border-border border-b pb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="rounded-xl bg-indigo-50 p-2 text-indigo-600">
                     <Sparkles className="h-5 w-5" />
@@ -949,7 +931,7 @@ export default function AutomationsPage() {
               <div className="space-y-3">
                 {templates.map((tmpl) => (
                   <div
-                    className="rounded-2xl border border-zinc-200 bg-white p-4 transition-all hover:border-blue-300 hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900"
+                    className="rounded-2xl border border-border bg-card p-4 transition-all hover:border-blue-300 hover:shadow-sm"
                     key={tmpl.id}
                   >
                     <div className="mb-2 flex items-start justify-between gap-3">
@@ -964,7 +946,7 @@ export default function AutomationsPage() {
                       {getCategoryBadge(tmpl.category)}
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-3 text-xs dark:border-zinc-800">
+                    <div className="mt-3 flex items-center justify-between border-border border-t pt-3 text-xs">
                       <span className="font-mono text-zinc-500 dark:text-zinc-400">
                         {tmpl.actions.length} Otomatik Adım
                       </span>
@@ -981,7 +963,7 @@ export default function AutomationsPage() {
               </div>
             </div>
 
-            <div className="border-zinc-100 border-t pt-4 dark:border-zinc-800">
+            <div className="border-border border-t pt-4">
               <button
                 className="w-full py-2 text-center font-medium text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
                 onClick={() => setIsRecipeDrawerOpen(false)}
@@ -1008,7 +990,7 @@ export default function AutomationsPage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-lg"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2">
                 <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Play className="h-4 w-4 fill-current" />
@@ -1065,13 +1047,13 @@ export default function AutomationsPage() {
                   </p>
                 </div>
 
-                <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+                <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
                   <span className="font-semibold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                     Yürütülen Adımlar ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
                     <div
-                      className="flex items-start justify-between rounded-lg border border-zinc-200/80 bg-white p-2.5 text-xs dark:border-zinc-800/90 dark:bg-zinc-900"
+                      className="flex items-start justify-between rounded-lg border border-border bg-card p-2.5 text-xs"
                       key={idx}
                     >
                       <div>

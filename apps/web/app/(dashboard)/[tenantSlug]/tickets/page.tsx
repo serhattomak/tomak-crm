@@ -240,7 +240,7 @@ export default function TicketsDashboardPage() {
         );
       case "Low":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
             Düşük
           </span>
         );
@@ -291,13 +291,13 @@ export default function TicketsDashboardPage() {
         );
       case "Closed":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-zinc-100 px-2.5 py-0.5 font-medium text-[11px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-zinc-100 px-2.5 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             Kapatıldı
           </span>
         );
       default:
         return (
-          <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <span className="rounded-md border border-border bg-zinc-50 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
             {status}
           </span>
         );
@@ -358,13 +358,9 @@ export default function TicketsDashboardPage() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* View Switcher */}
-          <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100 p-1 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800/80">
+          <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-1 shadow-2xs dark:bg-zinc-800/80">
             <button
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
-                viewMode === "table"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setViewMode("table")}
               type="button"
             >
@@ -372,11 +368,7 @@ export default function TicketsDashboardPage() {
               <span>Tablo</span>
             </button>
             <button
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${
-                viewMode === "kanban"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${ viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setViewMode("kanban")}
               type="button"
             >
@@ -386,7 +378,7 @@ export default function TicketsDashboardPage() {
           </div>
 
           <Button
-            className="rounded-xl border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border-border text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={() => loadData()}
             size="sm"
             variant="outline"
@@ -408,7 +400,7 @@ export default function TicketsDashboardPage() {
 
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               Toplam Açık Talep
@@ -427,7 +419,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               Yanıt Bekleyenler
@@ -444,7 +436,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               SLA Aşımı / Risk
@@ -463,7 +455,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs transition hover:shadow-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               SLA Başarı Oranı
@@ -486,7 +478,7 @@ export default function TicketsDashboardPage() {
       {/* 3. Queue Tabs & Filter Bar */}
       <div className="space-y-3">
         {/* Queues */}
-        <div className="scrollbar-none flex items-center gap-1.5 overflow-x-auto border-zinc-200 border-b pb-2 text-xs dark:border-zinc-800">
+        <div className="scrollbar-none flex items-center gap-1.5 overflow-x-auto border-border border-b pb-2 text-xs">
           {[
             { count: stats?.totalTickets, id: "all", label: "Tüm Talepler" },
             { id: "my", label: "Bana Atananlar" },
@@ -516,12 +508,7 @@ export default function TicketsDashboardPage() {
               <span>{q.label}</span>
               {q.count !== undefined && q.count > 0 && (
                 <span
-                  className={`rounded-full px-1.5 py-0.2 font-bold text-[10px] ${
-                    activeQueue === q.id
-                      ? "bg-white text-white dark:bg-zinc-900/20"
-                      : q.badgeColor ||
-                        "bg-zinc-200 text-zinc-700 dark:text-zinc-300"
-                  }`}
+                  className={`rounded-full px-1.5 py-0.2 font-bold text-[10px] ${ activeQueue === q.id ? "bg-card text-white" : q.badgeColor || "bg-zinc-200 text-zinc-700 dark:text-zinc-300" }`}
                 >
                   {q.count}
                 </span>
@@ -535,7 +522,7 @@ export default function TicketsDashboardPage() {
           <div className="relative flex-1">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+              className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Bilet no (#TICK-1001), müşteri adı veya konu ara..."
               value={searchQuery}
@@ -544,7 +531,7 @@ export default function TicketsDashboardPage() {
 
           <div className="flex flex-wrap items-center gap-2">
             <Select onValueChange={setSelectedStatus} value={selectedStatus}>
-              <SelectTrigger className="h-9 w-[130px] rounded-xl border-zinc-200 bg-white text-xs dark:border-zinc-800 dark:bg-zinc-900">
+              <SelectTrigger className="h-9 w-[130px] rounded-xl border-border bg-card text-xs">
                 <SelectValue placeholder="Durum" />
               </SelectTrigger>
               <SelectContent>
@@ -563,7 +550,7 @@ export default function TicketsDashboardPage() {
               onValueChange={setSelectedPriority}
               value={selectedPriority}
             >
-              <SelectTrigger className="h-9 w-[120px] rounded-xl border-zinc-200 bg-white text-xs dark:border-zinc-800 dark:bg-zinc-900">
+              <SelectTrigger className="h-9 w-[120px] rounded-xl border-border bg-card text-xs">
                 <SelectValue placeholder="Öncelik" />
               </SelectTrigger>
               <SelectContent>
@@ -579,7 +566,7 @@ export default function TicketsDashboardPage() {
               onValueChange={setSelectedCategory}
               value={selectedCategory}
             >
-              <SelectTrigger className="h-9 w-[130px] rounded-xl border-zinc-200 bg-white text-xs dark:border-zinc-800 dark:bg-zinc-900">
+              <SelectTrigger className="h-9 w-[130px] rounded-xl border-border bg-card text-xs">
                 <SelectValue placeholder="Kategori" />
               </SelectTrigger>
               <SelectContent>
@@ -602,14 +589,14 @@ export default function TicketsDashboardPage() {
 
       {/* 4. Main View (Table vs. Kanban) */}
       {isLoading ? (
-        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-zinc-200/80 bg-white p-8 dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
           <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
           <span className="font-medium text-sm text-zinc-500 dark:text-zinc-400">
             Destek biletleri yükleniyor...
           </span>
         </div>
       ) : tickets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 border-dashed bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-border border-dashed bg-card p-12 text-center">
           <div className="rounded-2xl bg-blue-50 p-4 text-blue-600">
             <LifeBuoy className="h-8 w-8" />
           </div>
@@ -630,10 +617,10 @@ export default function TicketsDashboardPage() {
         </div>
       ) : viewMode === "table" ? (
         /* TABLE VIEW */
-        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-600 dark:border-zinc-800/90 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableRow>
                   <TableHead className="px-4 py-3.5 h-auto">Talep No & Konu</TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
@@ -739,7 +726,7 @@ export default function TicketsDashboardPage() {
 
                     <TableCell className="px-4 py-3.5 text-right">
                       <Link
-                        className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-zinc-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400"
+                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1 text-zinc-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-400"
                         href={`/${tenantSlug}/tickets/${t.id}`}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -775,16 +762,16 @@ export default function TicketsDashboardPage() {
 
             return (
               <div
-                className={`flex flex-col rounded-2xl border border-zinc-200/80 dark:border-zinc-800/90 ${col.bg} min-h-[500px] p-3.5 shadow-2xs`}
+                className={`flex flex-col rounded-2xl border border-border ${col.bg} min-h-[500px] p-3.5 shadow-2xs`}
                 key={col.id}
               >
                 {/* Column Header */}
-                <div className="flex items-center justify-between border-zinc-200/80 border-b pb-2.5 dark:border-zinc-800/90">
+                <div className="flex items-center justify-between border-border border-b pb-2.5">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-xs text-zinc-800 tracking-tight dark:text-zinc-200">
                       {col.title}
                     </span>
-                    <span className="rounded-full bg-white px-2 py-0.5 font-bold text-[10px] text-zinc-600 shadow-2xs dark:bg-zinc-900 dark:text-zinc-400">
+                    <span className="rounded-full bg-card px-2 py-0.5 font-bold text-[10px] text-zinc-600 shadow-2xs dark:text-zinc-400">
                       {colTickets.length}
                     </span>
                   </div>
@@ -793,13 +780,13 @@ export default function TicketsDashboardPage() {
                 {/* Column Cards */}
                 <div className="mt-3 flex-1 space-y-3 overflow-y-auto">
                   {colTickets.length === 0 ? (
-                    <div className="flex h-32 items-center justify-center rounded-xl border border-zinc-200/80 border-dashed p-4 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:text-zinc-500">
+                    <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                       Bu aşamada talep yok
                     </div>
                   ) : (
                     colTickets.map((ticket) => (
                       <div
-                        className="group cursor-pointer rounded-xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900"
+                        className="group cursor-pointer rounded-xl border border-border bg-card p-3.5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md"
                         key={ticket.id}
                         onClick={() =>
                           router.push(`/${tenantSlug}/tickets/${ticket.id}`)
@@ -816,7 +803,7 @@ export default function TicketsDashboardPage() {
                           {ticket.subject}
                         </h4>
 
-                        <div className="mt-2.5 flex items-center justify-between border-zinc-100 border-t pt-2 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                        <div className="mt-2.5 flex items-center justify-between border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
                           <span className="max-w-[120px] truncate font-medium text-zinc-700 dark:text-zinc-300">
                             {ticket.customerName}
                           </span>
@@ -855,7 +842,7 @@ export default function TicketsDashboardPage() {
             className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 sm:max-w-xl"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                   <Plus className="h-5 w-5" />
@@ -894,7 +881,7 @@ export default function TicketsDashboardPage() {
                   }
                   value={newTicket.customerId || ""}
                 >
-                  <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                  <SelectTrigger className="rounded-xl border-border text-xs">
                     <SelectValue placeholder="Müşteri seçin..." />
                   </SelectTrigger>
                   <SelectContent className="max-h-56">
@@ -914,7 +901,7 @@ export default function TicketsDashboardPage() {
                   Talep Konusu <span className="text-red-500">*</span>
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs focus:border-blue-500 focus:outline-none"
                   onChange={(e) =>
                     setNewTicket((prev) => ({
                       ...prev,
@@ -939,7 +926,7 @@ export default function TicketsDashboardPage() {
                     }
                     value={newTicket.category || "Teknik Destek"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Kategori seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -973,7 +960,7 @@ export default function TicketsDashboardPage() {
                     }
                     value={newTicket.priority || "Medium"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Öncelik" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1003,7 +990,7 @@ export default function TicketsDashboardPage() {
                     }
                     value={newTicket.assignedUserId || "unassigned"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Temsilci ata" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1030,7 +1017,7 @@ export default function TicketsDashboardPage() {
                     }
                     value={newTicket.departmentId || "none"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Departman seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1072,7 +1059,7 @@ export default function TicketsDashboardPage() {
                     }}
                     value={newTicket.linkedEntityId || "none"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Sipariş bağla..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-48">
@@ -1097,7 +1084,7 @@ export default function TicketsDashboardPage() {
                     }
                     value={newTicket.source || "Web"}
                   >
-                    <SelectTrigger className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800">
+                    <SelectTrigger className="rounded-xl border-border text-xs">
                       <SelectValue placeholder="Kanal" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1119,7 +1106,7 @@ export default function TicketsDashboardPage() {
                   Açıklama / İlk Mesaj
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 p-2.5 text-xs focus:border-blue-500 focus:outline-none dark:border-zinc-800"
+                  className="w-full rounded-xl border border-border p-2.5 text-xs focus:border-blue-500 focus:outline-none"
                   onChange={(e) =>
                     setNewTicket((prev) => ({
                       ...prev,
@@ -1133,9 +1120,9 @@ export default function TicketsDashboardPage() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="flex items-center justify-end gap-2 border-border border-t pt-3">
                 <Button
-                  className="rounded-xl border-zinc-200 text-xs dark:border-zinc-800"
+                  className="rounded-xl border-border text-xs"
                   onClick={() => setIsCreateModalOpen(false)}
                   type="button"
                   variant="outline"

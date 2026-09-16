@@ -88,7 +88,7 @@ export function QuickAddSalesRepModal({
         className="flex w-full flex-col gap-0 overflow-hidden p-5 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-4 w-4" />
@@ -126,7 +126,7 @@ export function QuickAddSalesRepModal({
               </label>
               <input
                 autoFocus
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Örn: Can"
                 required
@@ -139,7 +139,7 @@ export function QuickAddSalesRepModal({
                 Soyad *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Örn: Özkan"
                 required
@@ -154,7 +154,7 @@ export function QuickAddSalesRepModal({
               E-Posta *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="can.ozkan@sirket.com"
               required
@@ -179,7 +179,7 @@ export function QuickAddSalesRepModal({
               Ünvan
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Satış Temsilcisi / Müşteri Yöneticisi"
               type="text"
@@ -187,9 +187,9 @@ export function QuickAddSalesRepModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-3">
             <button
-              className="rounded-xl border border-zinc-200 px-3.5 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-3.5 py-1.5 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >

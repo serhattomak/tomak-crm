@@ -89,7 +89,7 @@ export default function WorkspaceSettingsPage() {
         </div>
       )}
 
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
         <form
           action="javascript:void(0);"
           className="space-y-4"
@@ -102,7 +102,7 @@ export default function WorkspaceSettingsPage() {
             <div className="relative">
               <Building2 className="absolute top-3 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -116,7 +116,7 @@ export default function WorkspaceSettingsPage() {
               Workspace Slug
             </label>
             <input
-              className="w-full cursor-not-allowed rounded-xl border border-zinc-200 bg-zinc-100 px-3 py-2.5 font-mono text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/70 dark:text-zinc-400"
+              className="w-full cursor-not-allowed rounded-xl border border-border bg-zinc-100 px-3 py-2.5 font-mono text-xs text-zinc-500 dark:bg-zinc-800/70 dark:text-zinc-400"
               disabled
               type="text"
               value={activeTenant?.slug || ""}
@@ -132,7 +132,7 @@ export default function WorkspaceSettingsPage() {
               Logo URL
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://example.com/logo.png"
               type="url"
@@ -141,7 +141,7 @@ export default function WorkspaceSettingsPage() {
           </div>
 
           <PermissionGate permission="Tenants.Update">
-            <div className="flex justify-end border-zinc-100 border-t pt-3 dark:border-zinc-800">
+            <div className="flex justify-end border-border border-t pt-3">
               <button
                 className="flex items-center gap-1.5 rounded-xl bg-zinc-950 px-5 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800 disabled:opacity-50"
                 disabled={isSaving}
@@ -161,10 +161,10 @@ export default function WorkspaceSettingsPage() {
 
       {/* Entegrasyonlar & Webhooklar — Workbench Bento link card */}
       <PermissionGate permission="Webhooks.View">
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs backdrop-blur-sm dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 <Webhook className="h-5 w-5" />
               </div>
               <div>
@@ -176,23 +176,23 @@ export default function WorkspaceSettingsPage() {
                   ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Order.Created
                   </span>
-                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Quote.Accepted
                   </span>
-                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Ticket.Created
                   </span>
-                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Deal.StageChanged
                   </span>
                 </div>
               </div>
             </div>
             <Link
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-xs transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700/80"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-medium text-xs text-zinc-700 shadow-xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700/80"
               href={`/${activeTenant?.slug || "workspace"}/webhooks`}
             >
               <Link2 className="h-3.5 w-3.5" />

@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
             <span>Yeni Firma Kaydet</span>
           </Link>
           <Link
-            className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
+            className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
             href="/admin/templates"
           >
             <Sparkles className="h-4 w-4 text-amber-500" />
@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Tenants */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kayıtlı Firma
@@ -121,7 +121,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Active Companies */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Aktif Abonelik
@@ -141,7 +141,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Total Members */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
@@ -161,7 +161,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Sektör Şablonları */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Sektör Şablonu
@@ -182,8 +182,8 @@ export default function AdminDashboardPage() {
       {/* Main Row: Recent Tenants & Industry Distribution */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Recent Tenants Table (2 Columns) */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs lg:col-span-2">
-          <div className="flex items-center justify-between border-zinc-100 border-b pb-4">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
+          <div className="flex items-center justify-between border-border border-b pb-4">
             <div>
               <h2 className="font-bold text-base text-zinc-900">
                 Son Eklenen Firmalar
@@ -256,7 +256,7 @@ export default function AdminDashboardPage() {
                       </p>
                     </div>
                     <Link
-                      className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
+                      className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
                       href={`/admin/tenants/${tenant.id}`}
                       title="Yönet"
                     >
@@ -270,7 +270,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Industry Distribution Widget (1 Column) */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
           <h2 className="font-bold text-base text-zinc-900">
             Sektör Dağılımı
           </h2>

@@ -279,7 +279,7 @@ export function SendQuoteEmailModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b bg-zinc-50/75 px-5 py-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center justify-between border-border border-b bg-zinc-50/75 px-5 py-4 dark:bg-zinc-900/50">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
               <Mail className="h-5 w-5" />
@@ -409,7 +409,7 @@ export function SendQuoteEmailModal({
               E-posta İçeriği / Açıklama
             </Label>
             <textarea
-              className="custom-scrollbar min-h-[100px] w-full rounded-lg border border-zinc-200 bg-transparent p-3 text-xs text-zinc-900 outline-none transition focus:border-blue-500 dark:border-zinc-800 dark:text-zinc-100 dark:focus:border-blue-500"
+              className="custom-scrollbar min-h-[100px] w-full rounded-lg border border-border bg-transparent p-3 text-xs text-zinc-900 outline-none transition focus:border-blue-500 dark:text-zinc-100 dark:focus:border-blue-500"
               onChange={handleBodyChange}
               placeholder="Müşteriye iletilecek mesaj..."
               rows={4}
@@ -440,7 +440,7 @@ export function SendQuoteEmailModal({
 
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
                 disabled={isDownloadingPdf}
                 onClick={handleDownloadPdf}
                 type="button"
@@ -456,7 +456,7 @@ export function SendQuoteEmailModal({
               <label className="flex cursor-pointer items-center gap-1.5 font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 <input
                   checked={attachPdf}
-                  className="rounded border-zinc-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-border text-blue-600 focus:ring-blue-500"
                   onChange={handleAttachPdfToggle}
                   type="checkbox"
                 />
@@ -467,9 +467,9 @@ export function SendQuoteEmailModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-2.5 border-zinc-100 border-t bg-zinc-50/75 px-5 py-3.5 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center justify-end gap-2.5 border-border border-t bg-zinc-50/75 px-5 py-3.5 dark:bg-zinc-900/50">
           <button
-            className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border bg-card px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
             disabled={isSending}
             onClick={onClose}
             type="button"

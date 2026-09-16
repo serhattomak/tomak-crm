@@ -68,11 +68,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
     <Popover onOpenChange={handleOpenChange} open={isOpen}>
       <PopoverTrigger asChild>
         <button
-          className={`group relative flex h-11 w-full items-center rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-1.5 text-left transition-all duration-300 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${
-            isCollapsed
-              ? "justify-center border-transparent bg-transparent p-0"
-              : "justify-between px-2"
-          }`}
+          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-300 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${ isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2" }`}
           title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
           type="button"
         >
@@ -148,7 +144,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
           })}
         </div>
 
-        <div className="mt-1 border-zinc-100 border-t px-1.5 pt-1.5 dark:border-zinc-800">
+        <div className="mt-1 border-border border-t px-1.5 pt-1.5">
           {isCreating ? (
             <form
               action="javascript:void(0);"
@@ -157,7 +153,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             >
               <input
                 autoFocus
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setNewTenantName(e.target.value)}
                 placeholder="Çalışma Alanı Adı..."
                 type="text"

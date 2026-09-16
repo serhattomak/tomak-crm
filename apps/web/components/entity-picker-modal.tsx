@@ -55,7 +55,7 @@ const BADGE_STYLES: Record<string, string> = {
   purple:
     "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800",
   rose: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800",
-  zinc: "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700",
+  zinc: "bg-zinc-100 text-zinc-700 border-border dark:bg-zinc-800 dark:text-zinc-300",
 };
 
 export function EntityPickerModal<T = unknown>({
@@ -139,7 +139,7 @@ export function EntityPickerModal<T = unknown>({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b p-4 pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4 pb-3">
           <div>
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               {title}
@@ -176,11 +176,11 @@ export function EntityPickerModal<T = unknown>({
         </div>
 
         {/* Search Bar */}
-        <div className="border-zinc-100 border-b bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="border-border border-b bg-zinc-50/50 p-3 dark:bg-zinc-900/50">
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
               ref={inputRef}
@@ -300,7 +300,7 @@ export function EntityPickerModal<T = unknown>({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-zinc-100 border-t bg-zinc-50/50 p-2.5 px-3 text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 px-3 text-[11px] text-zinc-500 dark:bg-zinc-900/50 dark:text-zinc-400">
           <span>{filteredItems.length} kayıt listelendi</span>
           {selectedId && (
             <button
@@ -381,7 +381,7 @@ export function SalesRepPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"
@@ -514,7 +514,7 @@ export function CustomerPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"
@@ -641,7 +641,7 @@ export function ProductPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"

@@ -152,8 +152,8 @@ export function WhatsAppChatDrawer({
         side="right"
       >
         {/* Left Column: WhatsApp Conversations */}
-        <div className="flex w-80 flex-col border-zinc-200 border-r dark:border-zinc-800">
-          <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex w-80 flex-col border-border border-r">
+          <div className="flex items-center justify-between border-border border-b p-4">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-xs">
                 <MessageCircle className="h-4 w-4" />
@@ -176,7 +176,7 @@ export function WhatsAppChatDrawer({
             <div className="relative">
               <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-900 outline-hidden dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-900 outline-hidden dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Numara veya kişi ara..."
                 type="text"
@@ -237,7 +237,7 @@ export function WhatsAppChatDrawer({
         {/* Right Column: Chat Window */}
         <div className="flex flex-1 flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-3.5 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-b px-6 py-3.5">
             <div>
               <h4 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 {selectedPhone ? `+${selectedPhone}` : "Konuşma Seçin"}
@@ -278,11 +278,7 @@ export function WhatsAppChatDrawer({
                     key={m.id}
                   >
                     <div
-                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${
-                        isOutbound
-                          ? "bg-emerald-600 text-white"
-                          : "border border-zinc-200 bg-white text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-                      }`}
+                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${ isOutbound ? "bg-emerald-600 text-white" : "border border-border bg-card text-zinc-900 dark:text-zinc-100" }`}
                     >
                       <p className="leading-relaxed">{m.messageText}</p>
                       <div
@@ -307,10 +303,10 @@ export function WhatsAppChatDrawer({
 
           {/* Input Box */}
           {selectedPhone && (
-            <form className="border-zinc-200 border-t p-4 dark:border-zinc-800" onSubmit={handleSendMessage}>
+            <form className="border-border border-t p-4" onSubmit={handleSendMessage}>
               <div className="flex gap-2">
                 <input
-                  className="h-10 flex-1 rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-emerald-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="h-10 flex-1 rounded-xl border border-border bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-emerald-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder="WhatsApp mesajınızı yazın..."
                   type="text"

@@ -101,7 +101,7 @@ function MessageCardBody({
   onReply,
 }: MessageCardBodyProps) {
   return (
-    <div className="space-y-4 border-zinc-100 border-t px-5 py-4 dark:border-zinc-800/80">
+    <div className="space-y-4 border-border border-t px-5 py-4">
       {/* Meta details */}
       {message.ccAddresses && message.ccAddresses.length > 0 ? (
         <div className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -112,11 +112,7 @@ function MessageCardBody({
 
       {/* Sandboxed HTML render via iframe srcDoc */}
       <div
-        className={`rounded-lg border p-3 transition-colors ${
-          isDark
-            ? "border-zinc-800 bg-zinc-950 text-zinc-100"
-            : "border-zinc-200/60 bg-white text-zinc-900"
-        }`}
+        className={`rounded-lg border p-3 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
       >
         {message.htmlBody ? (
           <iframe
@@ -141,7 +137,7 @@ function MessageCardBody({
           <div className="flex flex-wrap gap-2">
             {message.attachments.map((att: EmailAttachmentDto) => (
               <a
-                className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="flex items-center gap-2 rounded-lg border border-border bg-zinc-50 px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-100 dark:bg-zinc-800/60 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 href={att.storagePath}
                 key={att.id}
                 rel="noopener noreferrer"
@@ -162,10 +158,10 @@ function MessageCardBody({
       ) : null}
 
       {/* Message Action Toolbar */}
-      <div className="flex items-center justify-between border-zinc-100 border-t pt-2 dark:border-zinc-800/60">
+      <div className="flex items-center justify-between border-border border-t pt-2">
         <div className="flex items-center gap-2">
           <button
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={onReply}
             type="button"
           >
@@ -173,7 +169,7 @@ function MessageCardBody({
             Yanıtla
           </button>
           <button
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"
             onClick={onForward}
             type="button"
           >
@@ -268,11 +264,7 @@ function MessageCard({
 
   return (
     <div
-      className={`rounded-xl border transition-all ${
-        isOutbound
-          ? "border-sky-200/80 bg-sky-50/30 dark:border-sky-900/30 dark:bg-sky-950/20"
-          : "border-zinc-200/80 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/60"
-      } shadow-2xs`}
+      className={`rounded-xl border transition-all ${ isOutbound ? "border-sky-200/80 bg-sky-50/30 dark:border-sky-900/30 dark:bg-sky-950/20" : "border-border bg-card" } shadow-2xs`}
     >
       {/* Message Header / Accordion trigger */}
       <button
@@ -517,7 +509,7 @@ export function EmailThreadDrawer({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-200 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div className="flex items-center gap-3">
             <button
               aria-label="Geri"

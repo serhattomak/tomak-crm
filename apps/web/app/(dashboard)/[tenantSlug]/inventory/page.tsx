@@ -395,7 +395,7 @@ export default function InventoryPage() {
   return (
     <PageContainer className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col items-start justify-between gap-4 border-zinc-200 border-b pb-5 md:flex-row md:items-center dark:border-zinc-800">
+      <div className="flex flex-col items-start justify-between gap-4 border-border border-b pb-5 md:flex-row md:items-center">
         <div>
           <h1 className="flex items-center gap-3 bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text font-bold text-2xl text-transparent tracking-tight md:text-3xl">
             <WarehouseIcon className="h-8 w-8 text-primary" />
@@ -410,7 +410,7 @@ export default function InventoryPage() {
         {/* Action Buttons based on Active Tab */}
         <div className="flex flex-wrap items-center gap-2.5">
           <button
-            className="inline-flex items-center justify-center rounded-lg border border-zinc-200 bg-white px-3.5 py-2 font-medium text-sm text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+            className="inline-flex items-center justify-center rounded-lg border border-border bg-card px-3.5 py-2 font-medium text-sm text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:text-zinc-200"
             disabled={loading}
             onClick={loadData}
             type="button"
@@ -540,7 +540,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-4 border-zinc-200 border-b dark:border-zinc-800">
+      <div className="flex items-center gap-4 border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 pb-3 font-semibold text-sm transition ${
             activeTab === "warehouses"
@@ -722,7 +722,7 @@ function WarehouseTabContent({
         ))}
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 lg:col-span-3 dark:border-zinc-800/80 dark:bg-zinc-900">
+      <div className="space-y-4 rounded-2xl border border-border bg-card p-5 lg:col-span-3">
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
             <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
@@ -737,7 +737,7 @@ function WarehouseTabContent({
           <div className="relative w-full sm:w-64">
             <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-1.5 pr-3 pl-9 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-zinc-50/60 py-1.5 pr-3 pl-9 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
               onChange={onSearchChange}
               placeholder="Ürün, SKU veya Raf ara..."
               type="text"
@@ -745,9 +745,9 @@ function WarehouseTabContent({
             />
           </div>
         </div>
-        <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
+        <div className="overflow-hidden rounded-xl border border-border">
           <Table>
-            <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
               <TableRow>
                 <TableHead className="p-3 h-auto">Ürün / Varyant</TableHead>
                 <TableHead className="p-3 h-auto">SKU / Barkod</TableHead>
@@ -806,7 +806,7 @@ function TransferTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <ArrowRightLeft className="h-5 w-5 text-primary" />
@@ -816,9 +816,9 @@ function TransferTabContent({
           Kaynak depodan hedef depoya sevk edilen stok fişleri ve durumları.
         </p>
       </div>
-      <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
+      <div className="overflow-hidden rounded-xl border border-border">
         <Table>
-          <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
             <TableRow>
               <TableHead className="p-3 h-auto">Transfer No</TableHead>
               <TableHead className="p-3 h-auto">Güzergah (Kaynak → Hedef)</TableHead>
@@ -866,7 +866,7 @@ function CountTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-5 dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <FileCheck2 className="h-5 w-5 text-primary" />
@@ -877,9 +877,9 @@ function CountTabContent({
           otomatik mutabakat.
         </p>
       </div>
-      <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
+      <div className="overflow-hidden rounded-xl border border-border">
         <Table>
-          <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
             <TableRow>
               <TableHead className="p-3 h-auto">Sayım Fişi</TableHead>
               <TableHead className="p-3 h-auto">Depo</TableHead>
@@ -927,11 +927,7 @@ function WarehouseItemCard({
 
   return (
     <button
-      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${
-        isSelected
-          ? "border-primary/60 bg-primary/5 shadow-sm"
-          : "border-zinc-200/80 bg-white hover:bg-zinc-50/80 dark:border-zinc-800/80 dark:bg-zinc-900 dark:hover:bg-zinc-800/40"
-      }`}
+      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${ isSelected ? "border-primary/60 bg-primary/5 shadow-sm" : "border-border bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" }`}
       onClick={handleClick}
       type="button"
     >
@@ -956,7 +952,7 @@ function WarehouseItemCard({
         <span>{warehouse.type}</span>
       </div>
 
-      <div className="flex items-center justify-between border-zinc-100 border-t pt-2 text-muted-foreground text-xs dark:border-zinc-800">
+      <div className="flex items-center justify-between border-border border-t pt-2 text-muted-foreground text-xs">
         <span>{warehouse.totalDistinctProducts} Ürün Çeşidi</span>
         <span className="font-semibold text-foreground">
           {Number(warehouse.totalStockQuantity).toLocaleString("tr-TR")} Adet
@@ -1018,7 +1014,7 @@ function WarehouseStockRow({
         {isEditing ? (
           <div className="flex items-center gap-1.5">
             <input
-              className="w-28 rounded-xl border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-primary dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-28 rounded-xl border border-border bg-card px-2 py-1 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-primary dark:text-zinc-200"
               onChange={handleLocationInputChange}
               placeholder="Örn: Raf A-12"
               type="text"
@@ -1150,7 +1146,7 @@ function StockTransferRow({
       </TableCell>
       <TableCell className="space-x-1.5 p-3 text-right">
         <button
-          className="rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-xs text-zinc-600 transition hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded-lg border border-border px-2.5 py-1 font-medium text-xs text-zinc-600 transition hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
           onClick={handleOpenClick}
           type="button"
         >
@@ -1417,7 +1413,7 @@ function NewWarehouseModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <Building2 className="h-5 w-5 text-primary" />
             Yeni Depo Lokasyonu Tanımla
@@ -1448,7 +1444,7 @@ function NewWarehouseModal({
                 Depo Kodu *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-800 dark:text-zinc-200"
                 id="wh-code"
                 onChange={handleCodeChange}
                 placeholder="Örn: DEP-01"
@@ -1486,7 +1482,7 @@ function NewWarehouseModal({
               Depo Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
               id="wh-name"
               onChange={handleNameChange}
               placeholder="Örn: Kadıköy Ana Dağıtım Deposu"
@@ -1505,7 +1501,7 @@ function NewWarehouseModal({
                 Şehir
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
                 id="wh-city"
                 onChange={handleCityChange}
                 type="text"
@@ -1520,7 +1516,7 @@ function NewWarehouseModal({
                 Depo Sorumlusu
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
                 id="wh-manager"
                 onChange={handleManagerChange}
                 placeholder="Ad Soyad"
@@ -1536,7 +1532,7 @@ function NewWarehouseModal({
                 Telefon
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
                 id="wh-phone"
                 onChange={handlePhoneChange}
                 placeholder="0212 ..."
@@ -1554,7 +1550,7 @@ function NewWarehouseModal({
               Adres
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
               id="wh-address"
               onChange={handleAddressChange}
               rows={2}
@@ -1575,9 +1571,9 @@ function NewWarehouseModal({
             </label>
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1722,7 +1718,7 @@ function NewTransferModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <ArrowRightLeft className="h-5 w-5 text-primary" />
             Yeni Depolar Arası Sevk Fişi
@@ -1819,7 +1815,7 @@ function NewTransferModal({
               Sevk Açıklaması / Notlar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
               id="tr-notes"
               onChange={handleNotesChange}
               placeholder="Örn: 2026 Sezon ürünleri şube dağıtımı"
@@ -1828,9 +1824,9 @@ function NewTransferModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -1887,7 +1883,7 @@ function TransferItemFormRow({
   }, [onRemove, index]);
 
   return (
-    <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 dark:border-zinc-800 dark:bg-zinc-800/30">
+    <div className="flex items-center gap-2 rounded-xl border border-border bg-zinc-50/50 p-2.5 dark:bg-zinc-800/30">
       <Combobox
         className="flex-1"
         emptyMessage="Sonuç bulunamadı."
@@ -1990,7 +1986,7 @@ function NewCountModal({
         className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
             <FileCheck2 className="h-5 w-5 text-primary" />
             Yeni Periyodik Stok Sayımı Başlat
@@ -2043,7 +2039,7 @@ function NewCountModal({
               Sayım Notu / Dönem
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-800 dark:text-zinc-200"
               id="cnt-notes"
               onChange={handleNotesChange}
               placeholder="Örn: 2026 Q3 Sonu Genel Depo Sayımı"
@@ -2052,9 +2048,9 @@ function NewCountModal({
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+          <div className="flex justify-end gap-2 border-border border-t pt-3">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -2113,11 +2109,11 @@ function TransferDetailDrawer({
     >
       <SheetContent
         aria-describedby={undefined}
-        className="data-[side=right]:w-full max-w-xl justify-between space-y-6 overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-xl"
+        className="data-[side=right]:w-full max-w-xl justify-between space-y-6 overflow-y-auto border-border p-6 data-[side=right]:sm:max-w-xl"
         side="right"
       >
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-b pb-4">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {transfer.transferNumber}
@@ -2136,7 +2132,7 @@ function TransferDetailDrawer({
             </SheetClose>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
+          <div className="grid grid-cols-2 gap-4 rounded-xl border border-border bg-zinc-50 p-4 text-xs dark:bg-zinc-800/50">
             <div>
               <span className="mb-0.5 block text-muted-foreground">
                 Kaynak Depo (Çıkış)
@@ -2171,9 +2167,9 @@ function TransferDetailDrawer({
             <h3 className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Transfer Kalemleri ({transfer.items.length})
             </h3>
-            <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
+            <div className="overflow-hidden rounded-xl border border-border text-xs">
               <Table>
-                <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <TableRow>
                     <TableHead className="p-2.5 h-auto">Ürün</TableHead>
                     <TableHead className="p-2.5 h-auto">SKU</TableHead>
@@ -2203,7 +2199,7 @@ function TransferDetailDrawer({
           </div>
 
           {transfer.notes ? (
-            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <div className="rounded-lg border border-border bg-zinc-50 p-3 text-xs text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
               <span className="mb-0.5 block font-semibold text-foreground">
                 Not:
               </span>
@@ -2212,7 +2208,7 @@ function TransferDetailDrawer({
           ) : null}
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
           {transfer.status === "Draft" ? (
             <button
               className="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white text-xs hover:bg-amber-700"
@@ -2371,11 +2367,11 @@ function StockCountAuditDrawer({
     >
       <SheetContent
         aria-describedby={undefined}
-        className="data-[side=right]:w-full max-w-2xl justify-between space-y-4 overflow-y-auto border-zinc-200 p-6 data-[side=right]:sm:max-w-2xl"
+        className="data-[side=right]:w-full max-w-2xl justify-between space-y-4 overflow-y-auto border-border p-6 data-[side=right]:sm:max-w-2xl"
         side="right"
       >
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-b pb-4">
             <div>
               <span className="font-bold font-mono text-primary text-xs">
                 {count.countNumber}
@@ -2398,11 +2394,11 @@ function StockCountAuditDrawer({
           </div>
 
           {isCompleted ? null : (
-            <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">
               <div className="relative flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-3 pl-9 font-mono text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-primary dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card py-1.5 pr-3 pl-9 font-mono text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-primary dark:text-zinc-200"
                   onChange={handleBarcodeChange}
                   onKeyDown={handleBarcodeScan}
                   placeholder="Barkod veya SKU okutun (Enter ile +1 sayar)..."
@@ -2421,9 +2417,9 @@ function StockCountAuditDrawer({
             </div>
           )}
 
-          <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
+          <div className="overflow-hidden rounded-xl border border-border text-xs">
             <Table>
-              <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableRow>
                   <TableHead className="p-2.5 h-auto">Ürün Adı</TableHead>
                   <TableHead className="p-2.5 text-right h-auto">Sistem Stoğu</TableHead>
@@ -2444,7 +2440,7 @@ function StockCountAuditDrawer({
               </TableBody>
             </Table>
           </div>
-          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
+          <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
             <span className="text-muted-foreground">Toplam Sayım Sapması:</span>
             <span
               className={`font-bold text-sm ${getDifferenceColor(totalDifference)}`}
@@ -2457,7 +2453,7 @@ function StockCountAuditDrawer({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
           {isCompleted ? (
             <div className="flex items-center gap-1.5 font-medium text-emerald-600 text-xs dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />

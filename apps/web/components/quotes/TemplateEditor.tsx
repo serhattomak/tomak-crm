@@ -124,12 +124,12 @@ export function TemplateEditor({
       </div>
 
       {/* Variable Chips */}
-      <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+      <div className="rounded-xl border border-border bg-zinc-50/50 p-3 dark:bg-zinc-800/30">
         <VariableChips onInsert={onInsertVariable} />
       </div>
 
       {/* IsDefault */}
-      <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-2.5">
         <div>
           <p className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
             Varsayılan şablon
@@ -145,7 +145,7 @@ export function TemplateEditor({
       </div>
 
       {/* Extra fields collapsible */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800">
+      <div className="rounded-xl border border-border">
         <button
           className="flex w-full items-center justify-between px-3 py-2.5 text-left"
           onClick={() => setShowExtraFields((prev) => !prev)}
@@ -159,7 +159,7 @@ export function TemplateEditor({
           </span>
         </button>
         {showExtraFields ? (
-          <div className="space-y-3 border-zinc-200 border-t p-3 dark:border-zinc-800">
+          <div className="space-y-3 border-border border-t p-3">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <Label className="text-xs">Ödeme Şartları</Label>
@@ -214,7 +214,7 @@ export function TemplateEditor({
       <div className="flex items-center justify-between gap-2 pt-2">
         {showDelete && onDelete ? (
           <button
-            className="rounded-xl border border-rose-200 bg-white px-4 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/50 dark:bg-zinc-900 dark:text-rose-400 dark:hover:bg-rose-950/30"
+            className="rounded-xl border border-rose-200 bg-card px-4 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 dark:border-rose-900/50 dark:text-rose-400 dark:hover:bg-rose-950/30"
             onClick={onDelete}
             type="button"
           >

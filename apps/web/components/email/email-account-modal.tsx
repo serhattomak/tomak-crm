@@ -57,7 +57,7 @@ function GenericImapFields({
   smtpPort,
 }: GenericImapFieldsProps) {
   return (
-    <div className="space-y-3 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3.5 dark:border-zinc-800/80 dark:bg-zinc-900/40">
+    <div className="space-y-3 rounded-xl border border-border bg-zinc-50/50 p-3.5 dark:bg-zinc-900/40">
       <div className="flex items-center gap-1.5 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
         <Server className="h-3.5 w-3.5" />
         <span>Sunucu Ayarları</span>
@@ -72,7 +72,7 @@ function GenericImapFields({
             IMAP Sunucusu *
           </label>
           <input
-            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+            className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
             id="account-imap-host"
             onChange={onImapHostChange}
             placeholder="imap.domain.com"
@@ -110,7 +110,7 @@ function GenericImapFields({
             SMTP Sunucusu *
           </label>
           <input
-            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+            className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
             id="account-smtp-host"
             onChange={onSmtpHostChange}
             placeholder="smtp.domain.com"
@@ -462,7 +462,7 @@ export function EmailAccountModal({
         className="w-full gap-0 sm:max-w-lg"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
               <Mail className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
@@ -509,7 +509,7 @@ export function EmailAccountModal({
                 E-posta Adresi *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:text-zinc-100"
                 id="account-email"
                 onChange={handleEmailChange}
                 placeholder="destek@sirketiniz.com"
@@ -568,7 +568,7 @@ export function EmailAccountModal({
             </div>
             <div className="relative">
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 pr-10 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 pr-10 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:text-zinc-100"
                 id="account-password"
                 onChange={handlePasswordChange}
                 placeholder={
@@ -608,7 +608,7 @@ export function EmailAccountModal({
               Açıklama (Opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-sm text-zinc-900 focus:border-zinc-400 focus:outline-none dark:text-zinc-100"
               id="account-description"
               onChange={handleDescriptionChange}
               placeholder="Örn: Müşteri Destek & Teklif Postası"
@@ -621,7 +621,7 @@ export function EmailAccountModal({
           <div className="flex items-center gap-2 pt-1">
             <input
               checked={isActive}
-              className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+              className="h-4 w-4 rounded border-border text-zinc-900 focus:ring-zinc-400 dark:bg-zinc-800"
               id="isActiveCheck"
               onChange={handleIsActiveChange}
               type="checkbox"
@@ -641,10 +641,10 @@ export function EmailAccountModal({
           ) : null}
 
           {/* Actions */}
-          <div className="flex items-center justify-between border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-t pt-4">
             {isEdit && account ? (
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-zinc-50 px-3 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-100 disabled:opacity-50 dark:bg-zinc-800 dark:text-zinc-300"
                 disabled={isTesting}
                 onClick={handleTestConnection}
                 type="button"
@@ -662,7 +662,7 @@ export function EmailAccountModal({
 
             <div className="flex items-center gap-2">
               <button
-                className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                className="rounded-xl border border-border bg-card px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
                 disabled={isSubmitting}
                 onClick={onClose}
                 type="button"

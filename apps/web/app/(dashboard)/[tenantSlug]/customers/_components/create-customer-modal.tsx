@@ -184,22 +184,14 @@ export function CreateCustomerModal({
             {/* Type Switcher */}
             <div className="flex items-center gap-1 rounded-lg bg-muted/60 p-1">
               <button
-                className={`flex-1 rounded-md py-1.5 font-medium text-xs transition-all ${
-                  formData.type === "Company"
-                    ? "bg-card font-semibold text-foreground shadow-2xs"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex-1 rounded-md py-1.5 font-medium text-xs transition-all ${ formData.type === "Company" ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground" }`}
                 onClick={() => setFormData({ ...formData, type: "Company" })}
                 type="button"
               >
                 Kurumsal (Şirket)
               </button>
               <button
-                className={`flex-1 rounded-md py-1.5 font-medium text-xs transition-all ${
-                  formData.type === "Individual"
-                    ? "bg-card font-semibold text-foreground shadow-2xs"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex-1 rounded-md py-1.5 font-medium text-xs transition-all ${ formData.type === "Individual" ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground" }`}
                 onClick={() => setFormData({ ...formData, type: "Individual" })}
                 type="button"
               >

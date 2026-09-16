@@ -248,10 +248,10 @@ export default function EditCampaignPage() {
   return (
     <PageContainer className="mx-auto max-w-4xl space-y-6 pb-16">
       {/* Header */}
-      <div className="flex items-center justify-between border-zinc-200/80 border-b pb-4 dark:border-zinc-800">
+      <div className="flex items-center justify-between border-border border-b pb-4">
         <div className="flex items-center gap-3">
           <Link
-            className="rounded-xl border border-zinc-200 p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/promotions`}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -274,7 +274,7 @@ export default function EditCampaignPage() {
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Basic Section */}
-        <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
             <Tag className="h-4 w-4 text-blue-600" />
             Genel Bilgiler & Zamanlama
@@ -286,7 +286,7 @@ export default function EditCampaignPage() {
                 Kampanya Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -300,7 +300,7 @@ export default function EditCampaignPage() {
                   Dahili Takip Kodu
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   type="text"
                   value={code}
@@ -326,7 +326,7 @@ export default function EditCampaignPage() {
                 Açıklama
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
                 value={description}
@@ -359,7 +359,7 @@ export default function EditCampaignPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-950">
               <div>
                 <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Diğer Kampanyalarla Birleşebilir (Stackable)
@@ -375,9 +375,7 @@ export default function EditCampaignPage() {
                 type="button"
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                    isStackable ? "translate-x-5" : "translate-x-0"
-                  }`}
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-in-out ${ isStackable ? "translate-x-5" : "translate-x-0" }`}
                 />
               </button>
             </div>
@@ -385,7 +383,7 @@ export default function EditCampaignPage() {
         </div>
 
         {/* Discount & Targets */}
-        <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
             <Coins className="h-4 w-4 text-blue-600" />
             İndirim Değeri & Kapsam
@@ -424,7 +422,7 @@ export default function EditCampaignPage() {
           </div>
 
           {/* Targets management */}
-          <div className="space-y-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="space-y-3 border-border border-t pt-4">
             <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
               Hedef Ürün ve Kategoriler ({targets.length})
             </span>
@@ -463,7 +461,7 @@ export default function EditCampaignPage() {
             <div className="space-y-2">
               {targets.map((t, idx) => (
                 <div
-                  className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs dark:border-zinc-800 dark:bg-zinc-950"
+                  className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-2.5 text-xs dark:bg-zinc-950"
                   key={idx}
                 >
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -483,9 +481,9 @@ export default function EditCampaignPage() {
         </div>
 
         {/* Submit */}
-        <div className="flex items-center justify-end gap-3 border-zinc-200/80 border-t pt-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-3 border-border border-t pt-4">
           <Link
-            className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/promotions`}
           >
             İptal

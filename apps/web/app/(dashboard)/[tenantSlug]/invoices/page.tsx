@@ -61,7 +61,7 @@ function KpiCard({
   colorClass,
 }: KpiCardProps) {
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-center justify-between">
         <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
           {label}
@@ -150,7 +150,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
 
   return (
     <TableRow
-      className="cursor-pointer border-zinc-100 transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+      className="cursor-pointer border-border transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
       onClick={handleSelect}
     >
       <TableCell className="py-3.5 pr-3 pl-4">
@@ -205,7 +205,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
       <TableCell className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1">
           <a
-            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 font-mono text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300"
+            className="rounded-lg border border-border bg-zinc-50 px-2 py-1 font-mono text-[11px] text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800/60 dark:text-zinc-300"
             download
             href={`/api/invoicing/invoices/${invoice.id}/download-ubl`}
             onClick={(e) => e.stopPropagation()}
@@ -278,11 +278,11 @@ function FilterBar({
   );
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
       <div className="relative flex-1">
         <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
         <input
-          className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200 dark:focus:bg-zinc-800"
+          className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200 dark:focus:bg-zinc-800"
           onChange={handleSearchInput}
           placeholder="Fatura No veya Müşteri Ara..."
           type="text"
@@ -405,7 +405,7 @@ function InvoiceDetailDrawer({
         className="data-[side=right]:w-full max-w-2xl data-[side=right]:sm:max-w-2xl print:max-w-none print:shadow-none"
         side="right"
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800 print:hidden">
+        <div className="flex items-center justify-between border-border border-b p-4 print:hidden">
           <div className="flex items-center gap-2">
             <Receipt className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -414,7 +414,7 @@ function InvoiceDetailDrawer({
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-700"
               onClick={onPrint}
               type="button"
             >
@@ -436,7 +436,7 @@ function InvoiceDetailDrawer({
             <div className="py-12 text-center text-zinc-400">Yükleniyor...</div>
           ) : (
             <div className="space-y-6 text-zinc-800 dark:text-zinc-200">
-              <div className="flex items-start justify-between border-zinc-200 border-b pb-6 dark:border-zinc-800">
+              <div className="flex items-start justify-between border-border border-b pb-6">
                 <div>
                   <span className="font-extrabold text-blue-600 text-xl tracking-tight dark:text-blue-400">
                     {invoice.type === "Sales"
@@ -511,7 +511,7 @@ function InvoiceDetailDrawer({
               <div>
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-zinc-200 font-semibold text-zinc-400 dark:border-zinc-800">
+                    <TableRow className="border-border font-semibold text-zinc-400">
                       <TableHead className="py-2 h-auto">Ürün / Hizmet</TableHead>
                       <TableHead className="py-2 text-right h-auto">Miktar</TableHead>
                       <TableHead className="py-2 text-right h-auto">Birim Fiyat</TableHead>
@@ -561,7 +561,7 @@ function InvoiceDetailDrawer({
                 </Table>
               </div>
 
-              <div className="flex justify-end border-zinc-200 border-t pt-4 dark:border-zinc-800">
+              <div className="flex justify-end border-border border-t pt-4">
                 <div className="w-64 space-y-1.5 text-right text-xs">
                   <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                     <span>Ara Toplam:</span>
@@ -605,7 +605,7 @@ function InvoiceDetailDrawer({
                       </span>
                     </div>
                   ) : null}
-                  <div className="flex justify-between border-zinc-200 border-t pt-2 font-bold text-sm text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
+                  <div className="flex justify-between border-border border-t pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     <span>Genel Toplam:</span>
                     <span className="font-mono text-blue-600 dark:text-blue-400">
                       {invoice.grandTotal.toLocaleString("tr-TR", {
@@ -851,11 +851,11 @@ export default function InvoicesPage() {
       />
 
       {/* 4. Invoices Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         <div className="overflow-x-auto">
           <Table className="font-sans">
             <TableHeader>
-              <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableHead className="py-3 pr-3 pl-4 h-auto">Fatura No & Tarih</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Cari Hesap (Ünvan)</TableHead>
@@ -956,9 +956,9 @@ function InvoiceItemRow({
   }, [item.rowId, onRemove]);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200 p-2.5 dark:border-zinc-800">
+    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border p-2.5">
       <input
-        className="flex-2 rounded-lg border border-zinc-200 bg-white p-1.5 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+        className="flex-2 rounded-lg border border-border bg-card p-1.5 text-xs text-zinc-800 dark:text-zinc-200"
         onChange={handleName}
         placeholder="Ürün / Hizmet Açıklaması *"
         type="text"
@@ -1144,7 +1144,7 @@ function CreateInvoiceModal({
         className="max-h-[90vh] w-full gap-0 overflow-hidden p-0 sm:max-w-3xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b p-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Fatura Düzenle
           </DialogTitle>
@@ -1252,7 +1252,7 @@ function CreateInvoiceModal({
               Notlar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-xs text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
               id="inv-notes-input"
               onChange={handleNotesChange}
               placeholder="Fatura notları veya banka IBAN bilgileri..."
@@ -1262,9 +1262,9 @@ function CreateInvoiceModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-zinc-200 border-t p-4 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-2 border-border border-t p-4">
           <button
-            className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
             onClick={onClose}
             type="button"
           >

@@ -243,7 +243,7 @@ export function TeamMembersStack({
             sideOffset={10}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-zinc-100 border-b px-4 py-3 dark:border-border">
+            <div className="flex items-center justify-between border-border border-b px-4 py-3 dark:border-border">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
                   <Users className="h-4 w-4" />
@@ -287,11 +287,11 @@ export function TeamMembersStack({
             </div>
 
             {/* Search Input */}
-            <div className="border-zinc-100 border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/40">
+            <div className="border-border border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/40">
               <div className="relative">
                 <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-3 pl-8 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none dark:border-border dark:bg-card dark:text-foreground"
+                  className="w-full rounded-xl border border-border bg-card py-1.5 pr-3 pl-8 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none dark:border-border dark:bg-card dark:text-foreground"
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="İsim, e-posta veya role göre ara..."
                   value={searchQuery}
@@ -412,7 +412,7 @@ export function TeamMembersStack({
             </div>
 
             {/* Footer: Manage Users Link */}
-            <div className="border-zinc-100 border-t bg-zinc-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
+            <div className="border-border border-t bg-zinc-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
               <button
                 className="inline-flex items-center gap-1 font-semibold text-[11px] text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
                 onClick={() => {
@@ -651,7 +651,7 @@ export function InviteMemberModal({
         className="flex max-h-[92vh] w-full flex-col gap-0 overflow-y-auto p-5 sm:max-w-md sm:p-6"
         showCloseButton={false}
       >
-        <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-border">
+        <div className="flex shrink-0 items-center justify-between border-border border-b pb-3.5 dark:border-border">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-5 w-5" />
@@ -687,7 +687,7 @@ export function InviteMemberModal({
             <div className="relative">
               <Mail className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 id="invite-email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ornek@sirketiniz.com"
@@ -704,7 +704,7 @@ export function InviteMemberModal({
               Kullanıcı Rolü *
             </label>
             {loadingRoles ? (
-              <div className="flex h-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-400 text-xs">
+              <div className="flex h-9 items-center justify-center rounded-xl border border-border text-zinc-400 text-xs">
                 <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> Rol
                 listesi alınıyor...
               </div>
@@ -735,7 +735,7 @@ export function InviteMemberModal({
             </p>
           </div>
 
-          <div className="flex shrink-0 items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-border">
+          <div className="flex shrink-0 items-center justify-end gap-2 border-border border-t pt-3 dark:border-border">
             <Button
               disabled={isSubmitting}
               onClick={onClose}

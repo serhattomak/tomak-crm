@@ -163,7 +163,7 @@ export function TestSendModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-zinc-200 border-b bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+        <div className="flex shrink-0 items-center justify-between border-border border-b bg-zinc-50 px-4 py-3 dark:bg-zinc-800/50">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Mail className="h-4 w-4" />
@@ -245,7 +245,7 @@ export function TestSendModal({
 
           {/* Current preview summary */}
           {templateId ? (
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+            <div className="rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/30">
               <p className="flex items-center gap-1.5 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
                 <Eye className="h-3.5 w-3.5" />
                 Önizleme özeti
@@ -273,15 +273,15 @@ export function TestSendModal({
                 ) : null}
               </div>
               <details
-                className="rounded-xl border border-zinc-200 bg-white open:shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
+                className="rounded-xl border border-border bg-card open:shadow-2xs"
                 open
               >
                 <summary className="cursor-pointer list-none px-3 py-2 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
                   HTML önizlemeyi aç/kapat
                 </summary>
-                <div className="border-zinc-200 border-t p-2 dark:border-zinc-800">
+                <div className="border-border border-t p-2">
                   <iframe
-                    className="h-[400px] w-full rounded-lg border bg-white"
+                    className="h-[400px] w-full rounded-lg border bg-card"
                     sandbox="allow-same-origin"
                     srcDoc={resultHtml}
                     title="Test E-posta Önizleme"
@@ -293,9 +293,9 @@ export function TestSendModal({
         </div>
 
         {/* Footer */}
-        <div className="flex shrink-0 items-center justify-end gap-2 border-zinc-200 border-t bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+        <div className="flex shrink-0 items-center justify-end gap-2 border-border border-t bg-zinc-50 px-4 py-3 dark:bg-zinc-800/50">
           <button
-            className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={onClose}
             type="button"
           >

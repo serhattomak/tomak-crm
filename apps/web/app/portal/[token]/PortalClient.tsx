@@ -183,7 +183,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
       <div className="min-h-screen bg-zinc-50 p-4 font-sans text-zinc-800 md:p-8">
         <div className="mx-auto max-w-4xl space-y-6">
           {/* Top banner / actions */}
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-sm">
             <div>
               <div className="flex items-center gap-2">
                 <span className="rounded-full bg-blue-100 px-3 py-0.5 font-bold text-[11px] text-blue-700">
@@ -204,7 +204,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
             <div className="flex items-center gap-2.5">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-zinc-700 text-xs shadow-xs hover:bg-zinc-50 active:scale-95"
+                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-medium text-zinc-700 text-xs shadow-xs hover:bg-zinc-50 active:scale-95"
                 onClick={() => window.print()}
                 type="button"
               >
@@ -247,13 +247,13 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           )}
 
           {/* Contract Content Page / Paper */}
-          <div className="rounded-3xl border border-zinc-200/80 bg-white p-8 shadow-md md:p-12">
+          <div className="rounded-3xl border border-border bg-card p-8 shadow-md md:p-12">
             <div
               className="prose prose-slate max-w-none text-sm leading-relaxed"
               dangerouslySetInnerHTML={{ __html: contract.contentHtml }}
             />
 
-            <div className="mt-12 flex items-center justify-between border-zinc-200 border-t pt-8 text-zinc-500 text-xs">
+            <div className="mt-12 flex items-center justify-between border-border border-t pt-8 text-zinc-500 text-xs">
               <div>
                 <p className="font-semibold text-zinc-700">Hizmet Sağlayıcı</p>
                 <p className="mt-1">Dijital Olarak İmzalanmıştır</p>
@@ -309,7 +309,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 p-4">
-        <div className="w-full max-w-md space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-8 text-center shadow-xl">
+        <div className="w-full max-w-md space-y-4 rounded-3xl border border-border bg-card p-8 text-center shadow-xl">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
             <AlertCircle className="h-6 w-6" />
           </div>
@@ -495,7 +495,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
     <div className="min-h-screen bg-zinc-100/70 px-4 py-8 font-sans sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Top Floating Action Bar */}
-        <div className="sticky top-4 z-40 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-white/95 p-4 shadow-md backdrop-blur-md">
+        <div className="sticky top-4 z-40 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-white/95 p-4 shadow-md backdrop-blur-md">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-600">
               <FileSpreadsheet className="h-5 w-5" />
@@ -517,7 +517,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
           <div className="flex items-center gap-2">
             <button
-              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
               onClick={handlePrint}
               type="button"
             >
@@ -526,7 +526,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </button>
 
             <button
-              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
               onClick={() => setIsRevisionModalOpen(true)}
               type="button"
             >
@@ -554,11 +554,11 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
         {/* Main Proposal Card Document */}
         <div
-          className="space-y-8 rounded-3xl border border-zinc-200/80 bg-white p-8 shadow-xl sm:p-12 print:rounded-none print:border-none print:p-0 print:shadow-none"
+          className="space-y-8 rounded-3xl border border-border bg-card p-8 shadow-xl sm:p-12 print:rounded-none print:border-none print:p-0 print:shadow-none"
           id="quote-printable-document"
         >
           {/* Header */}
-          <div className="flex flex-col items-start justify-between gap-4 border-zinc-200 border-b pb-8 sm:flex-row">
+          <div className="flex flex-col items-start justify-between gap-4 border-border border-b pb-8 sm:flex-row">
             <div>
               {quote.companyLogoUrl ? (
                 <Image
@@ -597,7 +597,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           </div>
 
           {/* Client & Description Banner */}
-          <div className="grid grid-cols-1 gap-4 rounded-2xl border border-zinc-200/60 bg-zinc-50 p-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-zinc-50 p-5 sm:grid-cols-2">
             <div>
               <span className="block font-bold text-[10px] text-zinc-400 uppercase tracking-wider">
                 SAYIN / MÜŞTERİ:
@@ -627,10 +627,10 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               Teklif Kalemleri
             </h3>
 
-            <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-card">
               <Table className="border-collapse">
                 <TableHeader>
-                  <TableRow className="border-zinc-200 bg-zinc-50 font-bold text-[11px] text-zinc-600">
+                  <TableRow className="border-border bg-zinc-50 font-bold text-[11px] text-zinc-600">
                     <TableHead className="px-4 py-3 h-auto">#</TableHead>
                     <TableHead className="px-4 py-3 h-auto">Ürün / Hizmet Açıklaması</TableHead>
                     <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
@@ -690,7 +690,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
           {/* Totals Summary */}
           <div className="flex justify-end pt-2">
-            <div className="w-80 space-y-2.5 rounded-2xl border border-zinc-200 bg-zinc-50/80 p-4 text-xs">
+            <div className="w-80 space-y-2.5 rounded-2xl border border-border bg-zinc-50/80 p-4 text-xs">
               <div className="flex justify-between text-zinc-600">
                 <span>Ara Toplam (KDV Hariç):</span>
                 <span className="font-bold text-zinc-900">
@@ -711,7 +711,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                   {formatCurrency(quote.taxAmount, quote.currency)}
                 </span>
               </div>
-              <div className="flex items-baseline justify-between border-zinc-200 border-t pt-2">
+              <div className="flex items-baseline justify-between border-border border-t pt-2">
                 <span className="font-bold text-zinc-900 text-sm">
                   GENEL TOPLAM:
                 </span>
@@ -723,9 +723,9 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           </div>
 
           {/* Terms & Conditions Sections */}
-          <div className="space-y-4 border-zinc-200 border-t pt-6 text-zinc-700 text-xs">
+          <div className="space-y-4 border-border border-t pt-6 text-zinc-700 text-xs">
             {quote.paymentTerms && (
-              <div className="space-y-1 rounded-2xl border border-zinc-200/60 bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Ödeme Şartları
                 </h4>
@@ -736,7 +736,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.deliveryTerms && (
-              <div className="space-y-1 rounded-2xl border border-zinc-200/60 bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Teslimat & Sevkiyat Şartları
                 </h4>
@@ -747,7 +747,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.bankDetails && (
-              <div className="space-y-1 rounded-2xl border border-zinc-200/60 bg-zinc-50 p-4 font-mono">
+              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4 font-mono">
                 <h4 className="font-bold font-sans text-zinc-900 text-xs">
                   Banka Hesap & IBAN Bilgileri
                 </h4>
@@ -758,7 +758,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.termsAndConditions && (
-              <div className="space-y-1 rounded-2xl border border-zinc-200/60 bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Genel Hükümler & Garanti Şartları
                 </h4>
@@ -843,7 +843,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                   Onaylayan Yetkili Adı Soyadı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 p-2.5 font-semibold text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-border p-2.5 font-semibold text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
                   id="acceptedByName"
                   onChange={(e) => setAcceptedByName(e.target.value)}
                   placeholder="Örn: Ahmet Yılmaz"
@@ -861,7 +861,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                   Varsa Notunuz / Sipariş Açıklaması
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 p-2.5 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-border p-2.5 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
                   id="customerNotes"
                   onChange={(e) => setCustomerNotes(e.target.value)}
                   placeholder="Örn: Faturayı şirket adresimize iletmenizi rica ederiz."
@@ -942,7 +942,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                   Değişiklik / Not Talebiniz *
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 p-2.5 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-border p-2.5 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none"
                   id="revisionFeedback"
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Örn: Miktar revizyonu rica ediyoruz veya ödeme vadesini 45 gün yapabilir misiniz?"

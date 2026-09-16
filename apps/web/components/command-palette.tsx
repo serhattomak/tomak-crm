@@ -826,7 +826,7 @@ export function CommandPalette({
         <DialogTitle className="sr-only">Komut Paleti</DialogTitle>
 
         {/* Search Bar Header */}
-        <div className="relative flex items-center border-zinc-100 border-b px-4 py-3.5 dark:border-zinc-800">
+        <div className="relative flex items-center border-border border-b px-4 py-3.5">
           <Search className="mr-3 h-5 w-5 shrink-0 text-zinc-400 dark:text-zinc-500" />
           <input
             className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
@@ -849,7 +849,7 @@ export function CommandPalette({
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-bold text-[10px] text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500">
+            <kbd className="rounded border border-border bg-zinc-50 px-1.5 py-0.5 font-bold text-[10px] text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
               ESC
             </kbd>
           )}
@@ -1008,22 +1008,22 @@ export function CommandPalette({
         </div>
 
         {/* Footer Hotkey Legend */}
-        <div className="flex items-center justify-between border-zinc-100 border-t bg-zinc-50/70 px-4 py-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-border border-t bg-zinc-50/70 px-4 py-2.5 text-[11px] text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <kbd className="rounded border border-border bg-card px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:text-zinc-300">
                 ↑↓
               </kbd>
               <span>Gezin</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-zinc-200 bg-white px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <kbd className="rounded border border-border bg-card px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:text-zinc-300">
                 ↵
               </kbd>
               <span>Seç</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <kbd className="rounded border border-border bg-card px-1 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:text-zinc-300">
                 Esc
               </kbd>
               <span>Kapat</span>
@@ -1033,7 +1033,7 @@ export function CommandPalette({
           <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
             <span>Kısayollar için</span>
             <kbd
-              className="cursor-pointer rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-blue-600 shadow-2xs hover:bg-blue-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-blue-400 dark:hover:bg-blue-950/50"
+              className="cursor-pointer rounded border border-border bg-card px-1 font-bold font-mono text-[10px] text-blue-600 shadow-2xs hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
               onClick={() => {
                 onClose();
                 onOpenShortcutsHelp();
@@ -1103,11 +1103,7 @@ function PaletteRow({
       <div className="ml-2 flex shrink-0 items-center gap-1.5">
         {item.badge && (
           <kbd
-            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-[10px] shadow-2xs ${
-              isSelected
-                ? "border-blue-200 bg-white text-blue-800 dark:border-blue-700 dark:bg-zinc-800 dark:text-blue-300"
-                : "border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
-            }`}
+            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-[10px] shadow-2xs ${ isSelected ? "border-blue-200 bg-card text-blue-800 dark:border-blue-700 dark:text-blue-300" : "border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400" }`}
           >
             {item.badge}
           </kbd>

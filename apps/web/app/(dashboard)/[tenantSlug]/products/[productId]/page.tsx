@@ -367,7 +367,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex h-96 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -407,7 +407,7 @@ export default function ProductDetailPage() {
       case "Subscription":
         return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
       default:
-        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-border";
     }
   };
 
@@ -456,10 +456,10 @@ export default function ProductDetailPage() {
       )}
 
       {/* 1. Header Section */}
-      <div className="flex flex-col justify-between gap-4 border-zinc-100 border-b pb-4 sm:flex-row sm:items-center dark:border-zinc-800">
+      <div className="flex flex-col justify-between gap-4 border-border border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             href={`/${tenantSlug}/products`}
             title="Kataloğa Dön"
           >
@@ -517,7 +517,7 @@ export default function ProductDetailPage() {
           {product.trackInventory && (
             <PermissionGate permission="Products.StockAdjust">
               <button
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
@@ -545,7 +545,7 @@ export default function ProductDetailPage() {
         {/* Left Column: Summary Info & Cards (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Ürün Görselleri — ana + thumb şeridi, kapak her zaman images[0] */}
-          <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Ürün Görselleri
@@ -574,7 +574,7 @@ export default function ProductDetailPage() {
                 type="file"
               />
               <button
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                 disabled={
                   uploadingImages ||
                   galleryBusy ||
@@ -599,7 +599,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Card: Pricing & Margins */}
-          <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Fiyatlandırma & Karlılık
@@ -618,7 +618,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+              <div className="flex items-center justify-between border-border border-b py-1.5">
                 <span className="text-zinc-500 dark:text-zinc-400">
                   Satış Fiyatı (KDV Hariç)
                 </span>
@@ -630,7 +630,7 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+              <div className="flex items-center justify-between border-border border-b py-1.5">
                 <span className="text-zinc-500 dark:text-zinc-400">
                   KDV Oranı & Dahil Fiyat
                 </span>
@@ -643,7 +643,7 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between border-zinc-100 border-b py-1.5 dark:border-zinc-800">
+              <div className="flex items-center justify-between border-border border-b py-1.5">
                 <span className="text-zinc-500 dark:text-zinc-400">
                   Alış / Maliyet Fiyatı
                 </span>
@@ -671,7 +671,7 @@ export default function ProductDetailPage() {
 
           {/* Card: Inventory Stock Status */}
           {product.trackInventory && product.type === "Physical" && (
-            <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
               <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Envanter & Stok Seviyesi
               </h3>
@@ -717,7 +717,7 @@ export default function ProductDetailPage() {
           )}
 
           {/* Card: Meta details */}
-          <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-xs shadow-xs">
             <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
               Teknik & Kimlik Bilgileri
             </h3>
@@ -751,7 +751,7 @@ export default function ProductDetailPage() {
                 </span>
               </div>
               {product.description && (
-                <div className="mt-2 border-zinc-100 border-t pt-2 dark:border-zinc-800">
+                <div className="mt-2 border-border border-t pt-2">
                   <span className="mb-1 block text-zinc-400 dark:text-zinc-500">
                     Açıklama:
                   </span>
@@ -770,11 +770,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             {tabs.map((tab) => (
               <button
-                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-                  activeTab === tab.id
-                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                }`}
+                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 type="button"
@@ -788,7 +784,7 @@ export default function ProductDetailPage() {
           {activeTab === "overview" && (
             <div className="space-y-6">
               {/* F2-4 — SEO & vitrin özeti: slug + meta + zengin açıklama */}
-              <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-xs shadow-xs">
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     SEO & Vitrin
@@ -821,7 +817,7 @@ export default function ProductDetailPage() {
               </div>
               {/* Quick Stock Movement Box */}
               {product.trackInventory && (
-                <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
                   <h4 className="mb-3 font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Hızlı Stok Hareketi İşle
                   </h4>
@@ -883,7 +879,7 @@ export default function ProductDetailPage() {
               )}
 
               {/* Recent Movements Preview */}
-              <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
                 <div className="mb-4 flex items-center justify-between">
                   <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Son Stok Hareketleri
@@ -909,7 +905,7 @@ export default function ProductDetailPage() {
                         key={mov.id}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-zinc-200 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-card shadow-2xs">
                             {getMovementIcon(mov.movementType)}
                           </div>
                           <div>
@@ -960,13 +956,13 @@ export default function ProductDetailPage() {
               </div>
 
               {product.variants.length === 0 ? (
-                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Bu ürüne ait tanımlanmış varyant bulunmamaktadır.
                 </div>
               ) : (
-                <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
                   <Table>
-                    <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                    <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
                       <TableRow>
                         <TableHead className="w-12 px-3 py-3 h-auto">Görsel</TableHead>
                         <TableHead className="px-4 py-3 h-auto">Varyant Adı</TableHead>
@@ -993,7 +989,7 @@ export default function ProductDetailPage() {
                               {variantCover ? (
                                 <img
                                   alt={v.name}
-                                  className="h-8 w-8 rounded-lg border border-zinc-200 object-cover dark:border-zinc-700"
+                                  className="h-8 w-8 rounded-lg border border-border object-cover"
                                   src={variantCover}
                                 />
                               ) : (
@@ -1067,7 +1063,7 @@ export default function ProductDetailPage() {
               </div>
 
               {product.stockMovements.length === 0 ? (
-                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Kayıtlı stok hareketi bulunmuyor.
                 </div>
               ) : (
@@ -1077,11 +1073,11 @@ export default function ProductDetailPage() {
                       className="relative flex items-start gap-3 text-xs"
                       key={mov.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-800">
+                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-card shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
                         {getMovementIcon(mov.movementType)}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                      <div className="flex-1 rounded-2xl border border-border bg-card p-4 shadow-xs">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getMovementLabel(mov.movementType)} (
@@ -1130,7 +1126,7 @@ export default function ProductDetailPage() {
           {/* TAB 4: PRICING & MARGIN SIMULATOR */}
           {activeTab === "pricing" && (
             <div className="space-y-4">
-              <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-6 text-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+              <div className="space-y-4 rounded-3xl border border-border bg-card p-6 text-xs">
                 <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Fiyat & Karlılık Simülasyonu
                 </h4>
@@ -1192,7 +1188,7 @@ export default function ProductDetailPage() {
               </div>
 
               {!product.priceHistory || product.priceHistory.length === 0 ? (
-                <div className="rounded-3xl border border-zinc-200/80 border-dashed bg-white p-10 text-center text-xs text-zinc-400 dark:border-zinc-800/90 dark:bg-zinc-900 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Henüz bir fiyat değişikliği kaydedilmemiştir.
                 </div>
               ) : (
@@ -1208,10 +1204,10 @@ export default function ProductDetailPage() {
 
                     return (
                       <div
-                        className="rounded-2xl border border-zinc-200/80 bg-white p-4 text-xs shadow-xs transition-all dark:border-zinc-800/90 dark:bg-zinc-900"
+                        className="rounded-2xl border border-border bg-card p-4 text-xs shadow-xs transition-all"
                         key={hist.id}
                       >
-                        <div className="flex items-center justify-between border-zinc-100 border-b pb-2.5 dark:border-zinc-800">
+                        <div className="flex items-center justify-between border-border border-b pb-2.5">
                           <div className="flex items-center gap-2">
                             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
                               <History className="h-3.5 w-3.5" />
@@ -1476,7 +1472,7 @@ function StockAdjustModal({
         className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Stok Hareketi Ekle
           </DialogTitle>
@@ -1559,9 +1555,9 @@ function StockAdjustModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1651,7 +1647,7 @@ function AddVariantModal({
         className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Yeni Varyant Ekle
           </DialogTitle>
@@ -1671,7 +1667,7 @@ function AddVariantModal({
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1721,7 +1717,7 @@ function AddVariantModal({
                 Varyant SKU
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1735,7 +1731,7 @@ function AddVariantModal({
                 Barkod
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1745,9 +1741,9 @@ function AddVariantModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1843,7 +1839,7 @@ function EditVariantModal({
         className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Varyantı Düzenle
           </DialogTitle>
@@ -1863,7 +1859,7 @@ function EditVariantModal({
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1910,7 +1906,7 @@ function EditVariantModal({
             <div>
               <Label className="mb-1">SKU</Label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1922,7 +1918,7 @@ function EditVariantModal({
             <div>
               <Label className="mb-1">Barkod</Label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1936,7 +1932,7 @@ function EditVariantModal({
           <div>
             <Label className="mb-1">Varyant Görsel URL'si (Opsiyonel)</Label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="https://... (boşsa ana ürün görseli kullanılır)"
               type="url"
@@ -1944,9 +1940,9 @@ function EditVariantModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -2118,7 +2114,7 @@ function EditProductModal({
         className="flex max-h-[90vh] w-full flex-col gap-0 overflow-hidden p-0 text-xs sm:max-w-xl"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b p-6 pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b p-6 pb-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Ürün / Hizmet Bilgilerini Düzenle
           </DialogTitle>
@@ -2169,7 +2165,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="SKU oto-üret"
-                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, sku: generateSku() })
                   }
@@ -2194,7 +2190,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="Barkod oto-üret"
-                  className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, barcode: generateBarcode() })
                   }
@@ -2289,7 +2285,7 @@ function EditProductModal({
           </div>
 
           {/* Images / Tags / Attributes — F1-6 wiring */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/30">
+          <div className="space-y-4 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <ProductImagesField
               images={images}
               onChange={setImages}
@@ -2316,9 +2312,9 @@ function EditProductModal({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

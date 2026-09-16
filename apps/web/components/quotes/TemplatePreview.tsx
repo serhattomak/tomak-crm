@@ -55,7 +55,7 @@ export function TemplatePreview({
   return (
     <div className="flex h-full flex-col gap-3">
       {/* Header controls — Bento 1px border, no gradients */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-3 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="rounded-xl border border-border bg-card p-3 shadow-2xs">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
@@ -105,21 +105,17 @@ export function TemplatePreview({
         </div>
 
         {previewSubject ? (
-          <p className="mt-2 truncate rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 font-medium text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
+          <p className="mt-2 truncate rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300">
             Konu: {previewSubject}
           </p>
         ) : null}
 
         {/* Zoom + Copy controls */}
-        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-zinc-200 border-t pt-2.5 dark:border-zinc-800">
-          <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-800/50">
+        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-border border-t pt-2.5">
+          <div className="flex items-center gap-1 rounded-lg border border-border bg-zinc-50 p-1 dark:bg-zinc-800/50">
             {ZOOM_OPTIONS.map((level) => (
               <button
-                className={`rounded-md px-2.5 py-1 font-bold text-[11px] transition ${
-                  zoom === level
-                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
-                    : "text-zinc-500 hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
-                }`}
+                className={`rounded-md px-2.5 py-1 font-bold text-[11px] transition ${ zoom === level ? "bg-card text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100" : "text-zinc-500 hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200" }`}
                 key={level}
                 onClick={() => onZoomChange(level)}
                 type="button"
@@ -130,7 +126,7 @@ export function TemplatePreview({
           </div>
 
           <button
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
             onClick={() => {
               void handleCopyInternal();
             }}
@@ -143,7 +139,7 @@ export function TemplatePreview({
       </div>
 
       {/* Preview body — iframe srcDoc only, no dangerouslySetInnerHTML */}
-      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
         {isLoading ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-zinc-500 dark:text-zinc-400">
             <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
@@ -163,7 +159,7 @@ export function TemplatePreview({
           </div>
         ) : (
           <div className="flex flex-1 flex-col overflow-hidden p-2">
-            <div className="flex-1 overflow-auto rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-white">
+            <div className="flex-1 overflow-auto rounded-lg border border-border bg-card dark:bg-white">
               <iframe
                 className="h-[600px] w-full border-0"
                 sandbox="allow-same-origin"

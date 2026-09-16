@@ -59,7 +59,7 @@ export default function AdminLayout({
       <Toaster position="top-right" richColors />
 
       {/* Mobile Top Header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-zinc-200/80 border-b bg-white px-4 py-3 shadow-2xs md:hidden dark:border-zinc-800 dark:bg-zinc-900">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-border border-b bg-card px-4 py-3 shadow-2xs md:hidden">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
             <ShieldCheck className="h-5 w-5" />
@@ -88,7 +88,7 @@ export default function AdminLayout({
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="space-y-2 border-zinc-200 border-b bg-white p-4 shadow-lg md:hidden dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="space-y-2 border-border border-b bg-card p-4 shadow-lg md:hidden">
           {navItems.map((item) => {
             const isActive = item.exact
               ? pathname === item.href
@@ -109,7 +109,7 @@ export default function AdminLayout({
               </Link>
             );
           })}
-          <div className="border-zinc-100 border-t pt-2 dark:border-zinc-800">
+          <div className="border-border border-t pt-2">
             <button
               className="flex w-full items-center gap-2 rounded-xl bg-zinc-100 px-3.5 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
               onClick={() => router.push("/")}
@@ -123,7 +123,7 @@ export default function AdminLayout({
       )}
 
       {/* Desktop Left Floating Sidebar */}
-      <aside className="hidden w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-zinc-200/80 bg-white p-4 shadow-sm md:flex dark:border-zinc-800 dark:bg-zinc-900">
+      <aside className="hidden w-64 shrink-0 flex-col justify-between overflow-y-auto rounded-[28px] border border-border bg-card p-4 shadow-sm md:flex">
         <div className="space-y-6">
           {/* Logo & Admin Branding */}
           <div className="flex items-center gap-3 px-1 pt-1">
@@ -175,9 +175,9 @@ export default function AdminLayout({
         </div>
 
         {/* Bottom Profile & Return to Workspace */}
-        <div className="space-y-3 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+        <div className="space-y-3 border-border border-t pt-4">
           <button
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50/80 px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-blue-700 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-zinc-50/80 px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-blue-700 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
             onClick={() => router.push("/")}
             type="button"
           >
@@ -185,7 +185,7 @@ export default function AdminLayout({
             <span>Firmalara Dön</span>
           </button>
 
-          <div className="flex items-center gap-3 rounded-xl border border-zinc-100 bg-zinc-50/80 p-2.5 dark:border-zinc-800 dark:bg-zinc-800/60">
+          <div className="flex items-center gap-3 rounded-xl border border-border bg-zinc-50/80 p-2.5 dark:bg-zinc-800/60">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-600 font-bold text-white text-xs shadow-2xs">
               SA
             </div>
@@ -203,7 +203,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Viewport — padding is owned by PageContainer (full width, no max-width cap) */}
-      <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-zinc-200/80 bg-white shadow-none md:rounded-[28px] md:border md:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-border bg-card shadow-none md:rounded-[28px] md:border md:shadow-sm">
         <main className="flex-1 pb-12">{children}</main>
       </div>
     </div>

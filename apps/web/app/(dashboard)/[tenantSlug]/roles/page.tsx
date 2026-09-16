@@ -233,7 +233,7 @@ export default function RolesManagementPage() {
       {/* Main Grid: Roles List (Left) and Matrix (Right) */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
-        <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs md:col-span-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs md:col-span-4">
           <div className="mb-2 px-2 font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Available Roles ({roles.length})
           </div>
@@ -248,11 +248,7 @@ export default function RolesManagementPage() {
                 const isSelected = selectedRole?.id === role.id;
                 return (
                   <div
-                    className={`cursor-pointer rounded-xl border p-3 transition-all ${
-                      isSelected
-                        ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs"
-                        : "border-zinc-100 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
-                    }`}
+                    className={`cursor-pointer rounded-xl border p-3 transition-all ${ isSelected ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs" : "border-border bg-card text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
                   >
@@ -283,10 +279,10 @@ export default function RolesManagementPage() {
         </div>
 
         {/* Permissions Matrix */}
-        <div className="flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs md:col-span-8 dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs md:col-span-8">
           {selectedRole ? (
             <div>
-              <div className="mb-6 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+              <div className="mb-6 flex items-center justify-between border-border border-b pb-4">
                 <div>
                   <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedRole.name}
@@ -328,16 +324,12 @@ export default function RolesManagementPage() {
                         const isChecked = selectedPermIds.has(perm.id);
                         return (
                           <label
-                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${
-                              isChecked
-                                ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:text-zinc-100"
-                                : "border-zinc-100 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
-                            }`}
+                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${ isChecked ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:text-zinc-100" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
                             key={perm.id}
                           >
                             <input
                               checked={isChecked}
-                              className="mt-0.5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700"
+                              className="mt-0.5 rounded border-border text-blue-600 focus:ring-blue-500"
                               onChange={() => togglePermission(perm.id)}
                               type="checkbox"
                             />
@@ -363,7 +355,7 @@ export default function RolesManagementPage() {
               </div>
 
               {/* Action Bar */}
-              <div className="mt-6 flex items-center justify-between border-zinc-100 border-t pt-4 dark:border-zinc-800">
+              <div className="mt-6 flex items-center justify-between border-border border-t pt-4">
                 <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                   {selectedPermIds.size} permission
                   {selectedPermIds.size === 1 ? "" : "s"} selected
@@ -409,7 +401,7 @@ export default function RolesManagementPage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <Shield className="h-4 w-4 text-blue-500" />
                 Create Custom Role
@@ -434,7 +426,7 @@ export default function RolesManagementPage() {
                   Role Name
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleName(e.target.value)}
                   placeholder="e.g. Sales Manager"
                   required
@@ -448,7 +440,7 @@ export default function RolesManagementPage() {
                   Description
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleDesc(e.target.value)}
                   placeholder="Responsibilities and access scope..."
                   rows={3}
@@ -456,7 +448,7 @@ export default function RolesManagementPage() {
                 />
               </div>
 
-              <div className="flex justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+              <div className="flex justify-end gap-2 border-border border-t pt-3">
                 <button
                   className="px-4 py-2 font-semibold text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   onClick={() => setIsCreateOpen(false)}

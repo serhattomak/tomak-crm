@@ -174,7 +174,7 @@ export function BulkAssignModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <div>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Toplu Bilgi Ata / Güncelle
@@ -223,7 +223,7 @@ export function BulkAssignModal({
           onSubmit={handleSubmit}
         >
           {/* Section 1: Kategori Atama */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 transition-all dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="rounded-2xl border border-border bg-zinc-50/50 p-4 transition-all dark:bg-zinc-800/30">
             <div className="flex items-center gap-2">
               <Checkbox
                 checked={assignCategory}
@@ -239,7 +239,7 @@ export function BulkAssignModal({
             </div>
 
             {assignCategory && (
-              <div className="mt-3 space-y-2 border-zinc-200/60 border-t pt-3 dark:border-zinc-700/60">
+              <div className="mt-3 space-y-2 border-border border-t pt-3">
                 <div className="flex items-center gap-2">
                   <Checkbox
                     checked={clearCategory}
@@ -280,7 +280,7 @@ export function BulkAssignModal({
           </div>
 
           {/* Section 2: Marka Atama */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 transition-all dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="rounded-2xl border border-border bg-zinc-50/50 p-4 transition-all dark:bg-zinc-800/30">
             <div className="flex items-center gap-2">
               <Checkbox
                 checked={assignBrand}
@@ -296,7 +296,7 @@ export function BulkAssignModal({
             </div>
 
             {assignBrand && (
-              <div className="mt-3 border-zinc-200/60 border-t pt-3 dark:border-zinc-700/60">
+              <div className="mt-3 border-border border-t pt-3">
                 {brands.length > 7 ? (
                   <Combobox
                     clearable
@@ -340,7 +340,7 @@ export function BulkAssignModal({
           </div>
 
           {/* Section 3: Durum Güncelleme */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 transition-all dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="rounded-2xl border border-border bg-zinc-50/50 p-4 transition-all dark:bg-zinc-800/30">
             <div className="flex items-center gap-2">
               <Checkbox
                 checked={assignStatus}
@@ -356,7 +356,7 @@ export function BulkAssignModal({
             </div>
 
             {assignStatus && (
-              <div className="mt-3 border-zinc-200/60 border-t pt-3 dark:border-zinc-700/60">
+              <div className="mt-3 border-border border-t pt-3">
                 <Select
                   onValueChange={(val) => setSelectedStatus(val)}
                   value={selectedStatus}
@@ -378,7 +378,7 @@ export function BulkAssignModal({
           </div>
 
           {/* Section 4: Etiketler */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 transition-all dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="rounded-2xl border border-border bg-zinc-50/50 p-4 transition-all dark:bg-zinc-800/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -408,14 +408,14 @@ export function BulkAssignModal({
             </div>
 
             {assignTags && (
-              <div className="mt-3 border-zinc-200/60 border-t pt-3 dark:border-zinc-700/60">
+              <div className="mt-3 border-border border-t pt-3">
                 <TagsInput onChange={setTags} value={tags} />
               </div>
             )}
           </div>
 
           {/* Section 5: Toplu Görsel Ekle */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 transition-all dark:border-zinc-800 dark:bg-zinc-800/30">
+          <div className="rounded-2xl border border-border bg-zinc-50/50 p-4 transition-all dark:bg-zinc-800/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -445,7 +445,7 @@ export function BulkAssignModal({
             </div>
 
             {assignImage && (
-              <div className="mt-3 space-y-2 border-zinc-200/60 border-t pt-3 dark:border-zinc-700/60">
+              <div className="mt-3 space-y-2 border-border border-t pt-3">
                 <Input
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="https://example.com/shared-product-image.jpg"
@@ -461,9 +461,9 @@ export function BulkAssignModal({
           </div>
 
           {/* Action buttons */}
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

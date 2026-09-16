@@ -66,7 +66,7 @@ function AttachmentItem({ att, index, onRemove }: AttachmentItemProps) {
   }, [onRemove, index]);
 
   return (
-    <div className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+    <div className="flex items-center gap-1.5 rounded-lg border border-border bg-zinc-50 px-2.5 py-1 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
       <FileText className="h-3.5 w-3.5 text-zinc-400" />
       <span className="max-w-[140px] truncate">{att.filename}</span>
       <button
@@ -470,7 +470,7 @@ export function ComposeModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
               <Send className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
@@ -557,7 +557,7 @@ export function ComposeModal({
                 )}
               </div>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-mono text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 font-mono text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                 id="compose-to"
                 onChange={handleToChange}
                 placeholder="ornek@musteri.com, diger@sirket.com (virgülle ayırın)"
@@ -575,7 +575,7 @@ export function ComposeModal({
                   Bilgi (Cc)
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-mono text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card px-3 py-1.5 font-mono text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                   id="compose-cc"
                   onChange={handleCcChange}
                   placeholder="bilgi@sirket.com"
@@ -593,7 +593,7 @@ export function ComposeModal({
                 Konu *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 font-medium text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                 id="compose-subject"
                 onChange={handleSubjectChange}
                 placeholder="E-posta konusu..."
@@ -604,31 +604,23 @@ export function ComposeModal({
           </div>
 
           {/* Variable Chips */}
-          <div className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-2.5 dark:border-zinc-800/80 dark:bg-zinc-900/40">
+          <div className="rounded-xl border border-border bg-zinc-50/50 p-2.5 dark:bg-zinc-900/40">
             <VariableChips onInsert={handleInsertVariable} />
           </div>
 
           {/* Edit / Preview Tabs */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-0.5 text-xs dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="flex items-center gap-1 rounded-lg border border-border bg-zinc-50 p-0.5 text-xs dark:bg-zinc-900">
                 <button
-                  className={`rounded-md px-3 py-1 font-medium transition ${
-                    activeView === "edit"
-                      ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-zinc-100"
-                      : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                  }`}
+                  className={`rounded-md px-3 py-1 font-medium transition ${ activeView === "edit" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
                   onClick={handleSetEditView}
                   type="button"
                 >
                   HTML / Metin Düzenleyici
                 </button>
                 <button
-                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-medium transition ${
-                    activeView === "preview"
-                      ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-zinc-100"
-                      : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                  }`}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-medium transition ${ activeView === "preview" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
                   onClick={handleSetPreviewView}
                   type="button"
                 >
@@ -648,7 +640,7 @@ export function ComposeModal({
                   E-posta İçeriği
                 </label>
                 <textarea
-                  className="w-full resize-y rounded-xl border border-zinc-200 bg-white p-3 font-mono text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full resize-y rounded-xl border border-border bg-card p-3 font-mono text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                   id="compose-body-textarea"
                   onChange={handleHtmlBodyChange}
                   placeholder="E-posta içeriğinizi yazın veya HTML formatında girin..."
@@ -658,11 +650,7 @@ export function ComposeModal({
               </div>
             ) : (
               <div
-                className={`min-h-[220px] rounded-xl border p-2 transition-colors ${
-                  isDark
-                    ? "border-zinc-800 bg-zinc-950 text-zinc-100"
-                    : "border-zinc-200 bg-white text-zinc-900"
-                }`}
+                className={`min-h-[220px] rounded-xl border p-2 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
               >
                 <iframe
                   className="min-h-[200px] w-full border-0"
@@ -706,9 +694,9 @@ export function ComposeModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-t pt-3">
           <button
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-300"
             disabled={isSavingDraft || isSending}
             onClick={handleSaveDraft}
             type="button"
@@ -723,7 +711,7 @@ export function ComposeModal({
 
           <div className="flex items-center gap-2">
             <button
-              className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+              className="rounded-xl border border-border bg-card px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
               disabled={isSending}
               onClick={onClose}
               type="button"

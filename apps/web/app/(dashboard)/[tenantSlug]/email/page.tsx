@@ -105,7 +105,7 @@ interface KpiCardsProps {
 function KpiCards({ isLoading, stats }: KpiCardsProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Gelen Kutusu
@@ -122,7 +122,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Okunmamış İletiler
@@ -143,7 +143,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
             Bugün Gönderilen
@@ -381,7 +381,7 @@ function AccountRow({
       <TableCell className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <button
-            className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="rounded-lg border border-border bg-card px-2 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={handleTest}
             title="Bağlantıyı Test Et"
             type="button"
@@ -505,7 +505,7 @@ function TemplateCard({
   }, []);
 
   return (
-    <div className="flex flex-col justify-between space-y-3 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+    <div className="flex flex-col justify-between space-y-3 rounded-2xl border border-border bg-card p-5 shadow-2xs">
       <div>
         <div className="flex items-center justify-between">
           <h3 className="line-clamp-1 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -524,7 +524,7 @@ function TemplateCard({
         ) : null}
       </div>
 
-      <div className="flex items-center justify-between border-zinc-100 border-t pt-3 dark:border-zinc-800/60">
+      <div className="flex items-center justify-between border-border border-t pt-3">
         <div className="flex items-center gap-1.5">
           <button
             className="inline-flex items-center gap-1 font-medium text-sky-600 text-xs hover:underline dark:text-sky-400"
@@ -557,7 +557,7 @@ function TemplateCard({
         </div>
 
         <button
-          className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-medium text-xs text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+          className="inline-flex items-center gap-1 rounded-lg border border-border bg-zinc-50 px-2.5 py-1 font-medium text-xs text-zinc-700 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300"
           onClick={handleCompose}
           type="button"
         >
@@ -633,7 +633,7 @@ function MessagesTableView({
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
           <TableRow>
             <TableHead className="px-4 py-3 font-medium h-auto">
               {activeTab === "inbox" ? "Gönderen" : "Alıcı"}
@@ -722,7 +722,7 @@ function AccountsTableView({
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
           <TableRow>
             <TableHead className="px-4 py-3 font-medium h-auto">E-posta & Açıklama</TableHead>
             <TableHead className="px-4 py-3 font-medium h-auto">Sağlayıcı</TableHead>
@@ -779,7 +779,7 @@ function TemplatesGridView({
 
   if (templates.length === 0) {
     return (
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-8 text-center dark:border-zinc-800/80 dark:bg-zinc-900/40">
+      <div className="rounded-2xl border border-border bg-card p-8 text-center">
         <FileText className="mx-auto mb-2 h-10 w-10 text-zinc-300" />
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           Henüz kayıtlı şablon bulunmuyor
@@ -832,7 +832,7 @@ function EmailNavHeader({
   unreadCount,
 }: EmailNavHeaderProps) {
   return (
-    <div className="border-zinc-200 border-b dark:border-zinc-800">
+    <div className="border-border border-b">
       <nav className="flex space-x-6">
         <button
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
@@ -947,7 +947,7 @@ function MessagesFilterBar({
         <div className="relative max-w-sm flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
           <input
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
             onChange={onSearchChange}
             placeholder="Gönderen, konu veya içerik ara..."
             type="text"
@@ -1050,14 +1050,14 @@ function TemplatePreviewModal({
         className="flex max-h-[85vh] w-full flex-col gap-0 p-6 sm:max-w-2xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-3">
             <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
               {template.name} Önizleme
             </DialogTitle>
 
             <button
-              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-0.5 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+              className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-0.5 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
               onClick={handleTogglePreviewTheme}
               title={isDark ? "Açık (Kağıt) Görünüme Geç" : "Koyu Görünüme Geç"}
               type="button"
@@ -1083,11 +1083,7 @@ function TemplatePreviewModal({
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <div
-            className={`rounded-xl border p-2 transition-colors ${
-              isDark
-                ? "border-zinc-800 bg-zinc-950 text-zinc-100"
-                : "border-zinc-200 bg-white text-zinc-900"
-            }`}
+            className={`rounded-xl border p-2 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
           >
             <iframe
               className="min-h-[350px] w-full border-0"
@@ -1570,7 +1566,7 @@ export default function EmailWorkbenchPage() {
 
         <div className="flex items-center gap-2">
           <button
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={handleRefreshAll}
             title="Yenile"
             type="button"
@@ -1624,7 +1620,7 @@ export default function EmailWorkbenchPage() {
       {activeTab === "inbox" ||
       activeTab === "sent" ||
       activeTab === "drafts" ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
           <MessagesTableView
             accounts={accounts}
             activeTab={activeTab}
@@ -1638,13 +1634,13 @@ export default function EmailWorkbenchPage() {
 
           {/* Pagination */}
           {totalPages > 1 ? (
-            <div className="flex items-center justify-between border-zinc-200/80 border-t px-4 py-3 dark:border-zinc-800/80">
+            <div className="flex items-center justify-between border-border border-t px-4 py-3">
               <span className="text-xs text-zinc-500">
                 Sayfa {page} / {totalPages}
               </span>
               <div className="flex items-center gap-1">
                 <button
-                  className="rounded-lg border border-zinc-200 p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-400"
+                  className="rounded-lg border border-border p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400"
                   disabled={page <= 1}
                   onClick={handlePrevPage}
                   type="button"
@@ -1652,7 +1648,7 @@ export default function EmailWorkbenchPage() {
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
-                  className="rounded-lg border border-zinc-200 p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-400"
+                  className="rounded-lg border border-border p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400"
                   disabled={page >= totalPages}
                   onClick={handleNextPage}
                   type="button"
@@ -1691,7 +1687,7 @@ export default function EmailWorkbenchPage() {
             </PermissionGate>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/80 dark:bg-zinc-900/40">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
             <AccountsTableView
               accounts={accounts}
               isLoading={isLoadingAccounts}

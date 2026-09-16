@@ -233,7 +233,7 @@ function AdminTenantsContent() {
       <div className="relative">
         <Search className="absolute top-3 left-3.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
         <input
-          className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="w-full rounded-xl border border-border bg-card py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Firma adı veya slug ile ara..."
           type="text"
@@ -242,10 +242,10 @@ function AdminTenantsContent() {
       </div>
 
       {/* Tenants Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="border-zinc-200/80 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400">
+            <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400">
               <TableRow>
                 <TableHead className="px-5 py-3.5 h-auto">Firma / Çalışma Alanı</TableHead>
                 <TableHead className="px-5 py-3.5 h-auto">Sektör Şablonu</TableHead>
@@ -363,14 +363,14 @@ function AdminTenantsContent() {
                           <Power className="h-4 w-4" />
                         </button>
                         <Link
-                          className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/admin/tenants/${tenant.id}`}
                           title="Firma Modül & Etiket Ayarları"
                         >
                           <Sliders className="h-4 w-4" />
                         </Link>
                         <Link
-                          className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/${tenant.slug}`}
                           target="_blank"
                           title="Çalışma Alanına Git"
@@ -402,7 +402,7 @@ function AdminTenantsContent() {
             className="max-h-[90vh] w-full space-y-6 overflow-y-auto gap-0 p-6 sm:max-w-2xl"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
                   <Building2 className="h-5 w-5" />
@@ -434,7 +434,7 @@ function AdminTenantsContent() {
                     Firma Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
@@ -450,7 +450,7 @@ function AdminTenantsContent() {
                     Özel URL / Slug (Opsiyonel)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, slug: e.target.value })
                     }
@@ -481,7 +481,7 @@ function AdminTenantsContent() {
               </div>
 
               {/* Modül Seçimi */}
-              <div className="border-zinc-100 border-t pt-2 dark:border-zinc-800">
+              <div className="border-border border-t pt-2">
                 <div className="mb-2 flex items-center justify-between">
                   <label className="font-bold text-zinc-700 dark:text-zinc-300">
                     Aktif Edilecek Modüller ({formData.enabledModules.length}{" "}
@@ -506,23 +506,19 @@ function AdminTenantsContent() {
                   </button>
                 </div>
 
-                <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/50 p-1 sm:grid-cols-2 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-xl border border-border bg-zinc-50/50 p-1 sm:grid-cols-2 dark:bg-zinc-800/40">
                   {ALL_MODULES.map((mod) => {
                     const checked = formData.enabledModules.includes(mod.key);
                     return (
                       <label
-                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 transition ${
-                          checked
-                            ? "border-blue-200 bg-blue-50 font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
-                            : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                        }`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 transition ${ checked ? "border-blue-200 bg-blue-50 font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800" }`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
                       >
                         <span className="text-xs">{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3.5 w-3.5 rounded border-zinc-300 text-blue-600 focus:ring-0 dark:border-zinc-700"
+                          className="h-3.5 w-3.5 rounded border-border text-blue-600 focus:ring-0"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -533,9 +529,9 @@ function AdminTenantsContent() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2.5 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+              <div className="flex items-center justify-end gap-2.5 border-border border-t pt-4">
                 <button
-                  className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => setIsCreateModalOpen(false)}
                   type="button"
                 >

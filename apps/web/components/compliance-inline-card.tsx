@@ -110,7 +110,7 @@ export function ComplianceInlineCard({
         {metrics && (
           <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
             {metrics.netWorkHours !== undefined && (
-              <span className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white/90 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+              <span className="inline-flex items-center gap-1 rounded-xl border border-border bg-white/90 px-2.5 py-1 font-semibold text-[11px] text-zinc-700 shadow-2xs dark:bg-zinc-800 dark:text-zinc-200">
                 <Clock className="h-3 w-3 text-indigo-500 dark:text-indigo-400" />
                 Net Çalışma:{" "}
                 <strong>{metrics.netWorkHours.toFixed(1)} saat</strong>
@@ -119,12 +119,7 @@ export function ComplianceInlineCard({
 
             {metrics.providedBreakMinutes !== undefined && (
               <span
-                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-[11px] shadow-2xs ${
-                  metrics.requiredBreakMinutes &&
-                  metrics.providedBreakMinutes < metrics.requiredBreakMinutes
-                    ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                    : "border-zinc-200 bg-white/90 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                }`}
+                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-[11px] shadow-2xs ${ metrics.requiredBreakMinutes && metrics.providedBreakMinutes < metrics.requiredBreakMinutes ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200" }`}
               >
                 <Coffee className="h-3 w-3 text-amber-600 dark:text-amber-400" />
                 Mola: <strong>{metrics.providedBreakMinutes} dk</strong>
@@ -153,11 +148,7 @@ export function ComplianceInlineCard({
 
             {metrics.projectedWeeklyHours !== undefined && (
               <span
-                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-[11px] shadow-2xs ${
-                  metrics.projectedWeeklyHours > 45
-                    ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                    : "border-zinc-200 bg-white/90 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                }`}
+                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-[11px] shadow-2xs ${ metrics.projectedWeeklyHours > 45 ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200" }`}
               >
                 Haftalık Toplam:{" "}
                 <strong>{metrics.projectedWeeklyHours.toFixed(1)} saat</strong>
@@ -180,7 +171,7 @@ export function ComplianceInlineCard({
           <div className="space-y-2">
             {violations.map((v, i) => (
               <div
-                className="space-y-1 rounded-xl border border-zinc-200/80 bg-white/95 p-2.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
+                className="space-y-1 rounded-xl border border-border bg-white/95 p-2.5 shadow-2xs dark:bg-zinc-900"
                 key={i}
               >
                 <div className="flex items-center justify-between gap-2">
@@ -235,7 +226,7 @@ export function ComplianceInlineCard({
             {localChecked && (
               <div className="fade-in slide-in-from-top-1 animate-in space-y-1">
                 <input
-                  className="w-full rounded-lg border border-amber-300 bg-white px-2.5 py-1.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-amber-500 focus:outline-none dark:border-amber-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                  className="w-full rounded-lg border border-amber-300 bg-card px-2.5 py-1.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-amber-500 focus:outline-none dark:border-amber-700 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                   onChange={(e) => handleReasonChange(e.target.value)}
                   placeholder="Gerekçe giriniz (Örn: Acil operasyonel ihtiyaç ve personel onayı)"
                   type="text"

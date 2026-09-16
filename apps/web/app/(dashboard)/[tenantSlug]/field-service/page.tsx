@@ -385,7 +385,7 @@ export default function FieldServicePage() {
 
       {/* KPI Bento Ribbon */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 shadow-2xs">
+        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
           <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Toplam Servis Kartı</span>
           <div className="mt-1 flex items-baseline justify-between">
             <span className="text-2xl font-black tabular-nums text-zinc-900 dark:text-zinc-50">{totalCount}</span>
@@ -421,7 +421,7 @@ export default function FieldServicePage() {
       {/* Main Split Workbench (Job List + Detail Drawer / Field Tech Mobile View) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-4">
-          <div className="flex items-center gap-3 p-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900">
+          <div className="flex items-center gap-3 p-2 rounded-xl border border-border bg-card">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
               <input
@@ -455,7 +455,7 @@ export default function FieldServicePage() {
               Saha servis görevleri listeleniyor...
             </div>
           ) : jobs.length === 0 ? (
-            <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40">
+            <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
               <Wrench className="h-8 w-8 mx-auto mb-3 text-zinc-400" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Kayıtlı Saha Servis Emri Yok</p>
               <p className="text-xs text-zinc-500 mt-1">Saha teknisyenleri için ilk servis görevini oluşturun.</p>
@@ -478,11 +478,7 @@ export default function FieldServicePage() {
                   <div
                     key={job.id}
                     onClick={() => setSelectedJob(job)}
-                    className={`p-4 rounded-xl border transition-all cursor-pointer ${
-                      isSelected
-                        ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/20 shadow-xs"
-                        : "border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700"
-                    }`}
+                    className={`p-4 rounded-xl border transition-all cursor-pointer ${ isSelected ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/20 shadow-xs" : "border-border bg-card hover:border-zinc-300 dark:hover:border-zinc-700" }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1 flex-1">
@@ -540,7 +536,7 @@ export default function FieldServicePage() {
                       </div>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
+                    <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-zinc-500">
                       <div className="flex items-center gap-2">
                         <CheckSquare className="h-3.5 w-3.5 text-zinc-400" />
                         <span>
@@ -568,7 +564,7 @@ export default function FieldServicePage() {
 
         <div className="lg:col-span-5">
           {selectedJob ? (
-            <div className="p-5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 shadow-sm space-y-6 sticky top-6">
+            <div className="p-5 rounded-2xl border border-border bg-card shadow-sm space-y-6 sticky top-6">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
@@ -676,11 +672,7 @@ export default function FieldServicePage() {
                       <div
                         key={task.id}
                         onClick={() => handleToggleTask(task.id)}
-                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${
-                          task.isCompleted
-                            ? "border-emerald-200/80 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through"
-                            : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300"
-                        }`}
+                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${ task.isCompleted ? "border-emerald-200/80 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300" }`}
                       >
                         {task.isCompleted ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
@@ -704,7 +696,7 @@ export default function FieldServicePage() {
                     İmzalayan: <strong>{selectedJob.customerSignedName || "Müşteri"}</strong>
                   </div>
                   {selectedJob.customerSignatureData && (
-                    <div className="mt-2 bg-white dark:bg-zinc-900 p-2 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <div className="mt-2 bg-card p-2 rounded-lg border border-emerald-200 dark:border-emerald-800">
                       <img
                         src={selectedJob.customerSignatureData}
                         alt="Müşteri İmzası"
@@ -731,7 +723,7 @@ export default function FieldServicePage() {
               )}
             </div>
           ) : (
-            <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
+            <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
               <Truck className="h-8 w-8 mx-auto mb-3 text-zinc-400" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Servis Emri Seçiniz</p>
               <p className="text-xs text-zinc-500 mt-1">
@@ -757,7 +749,7 @@ export default function FieldServicePage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-6 sm:max-w-xl"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+            <div className="flex items-center justify-between border-b border-border pb-3">
               <DialogTitle className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 <Wrench className="h-5 w-5 text-blue-600" />
                 Yeni Saha Servis Emri Aç
@@ -780,7 +772,7 @@ export default function FieldServicePage() {
                   placeholder="örn: Fiber Optik Switch Montajı veya Arıza Tespiti"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                  className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -877,7 +869,7 @@ export default function FieldServicePage() {
                   placeholder="Açık adres veya tesis konumu..."
                   value={formData.serviceAddress}
                   onChange={(e) => setFormData({ ...formData, serviceAddress: e.target.value })}
-                  className="w-full p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+                  className="w-full p-2.5 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
                 />
               </div>
 
@@ -889,7 +881,7 @@ export default function FieldServicePage() {
                     placeholder="Ad Soyad"
                     value={formData.contactPerson}
                     onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                    className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"
+                    className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                   />
                 </div>
 
@@ -900,12 +892,12 @@ export default function FieldServicePage() {
                     placeholder="05XX XXX XX XX"
                     value={formData.contactPhone}
                     onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
-                    className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"
+                    className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateOpen(false)}>
                   İptal
                 </Button>
@@ -938,7 +930,7 @@ export default function FieldServicePage() {
             className="max-h-[90vh] w-full space-y-4 overflow-y-auto gap-0 p-5 sm:max-w-md"
             showCloseButton={false}
           >
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+            <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
                 <DialogTitle className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
                   <PenTool className="h-4 w-4 text-emerald-600" />
@@ -966,7 +958,7 @@ export default function FieldServicePage() {
                   placeholder="örn: Ahmet Yılmaz"
                   value={signerName}
                   onChange={(e) => setSignerName(e.target.value)}
-                  className="w-full h-8 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"
+                  className="w-full h-8 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                 />
               </div>
 
@@ -979,7 +971,7 @@ export default function FieldServicePage() {
                   placeholder="İşlem tamamlandı, cihaz devreye alındı..."
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
-                  className="w-full p-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"
+                  className="w-full p-2 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                 />
               </div>
 
@@ -998,7 +990,7 @@ export default function FieldServicePage() {
                   </button>
                 </div>
 
-                <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl overflow-hidden bg-zinc-50 dark:bg-zinc-950">
+                <div className="border-2 border-dashed border-border rounded-xl overflow-hidden bg-zinc-50 dark:bg-zinc-950">
                   <canvas
                     ref={canvasRef}
                     width={400}
@@ -1015,7 +1007,7 @@ export default function FieldServicePage() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-border">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsSignModalOpen(false)}>
                   Vazgeç
                 </Button>

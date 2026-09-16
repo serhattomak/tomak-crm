@@ -107,7 +107,7 @@ export default function OrderPrintPage() {
       }
       permission="Orders.View"
     >
-      <div className="mx-auto max-w-4xl bg-white p-6 text-zinc-900 dark:bg-white dark:text-zinc-900 print:p-0">
+      <div className="mx-auto max-w-4xl bg-card p-6 text-zinc-900 dark:bg-white dark:text-zinc-900 print:p-0">
         <style>{`
           @media print {
             .no-print { display: none !important; }
@@ -119,7 +119,7 @@ export default function OrderPrintPage() {
         {/* No-print toolbar */}
         <div className="no-print mb-4 flex items-center justify-between">
           <Link
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/orders/${orderId}`}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -163,10 +163,10 @@ export default function OrderPrintPage() {
               {order.orderNumber}
             </div>
             <div className="mt-1 flex justify-end gap-1">
-              <span className="rounded-md border border-zinc-300 bg-zinc-100 px-2 py-0.5 font-bold text-[10px]">
+              <span className="rounded-md border border-border bg-zinc-100 px-2 py-0.5 font-bold text-[10px]">
                 {getLabel(order.status)}
               </span>
-              <span className="rounded-md border border-zinc-300 bg-zinc-50 px-2 py-0.5 font-bold text-[10px]">
+              <span className="rounded-md border border-border bg-zinc-50 px-2 py-0.5 font-bold text-[10px]">
                 {order.paymentStatus}
               </span>
             </div>
@@ -189,7 +189,7 @@ export default function OrderPrintPage() {
 
         {/* Customer */}
         <div className="mt-4 grid grid-cols-2 gap-4">
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+          <div className="rounded-xl border border-border bg-zinc-50 p-3">
             <div className="font-extrabold text-[10px] text-blue-700 uppercase tracking-wider">
               Müşteri
             </div>
@@ -205,7 +205,7 @@ export default function OrderPrintPage() {
               </div>
             )}
           </div>
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+          <div className="rounded-xl border border-border bg-zinc-50 p-3">
             <div className="font-extrabold text-[10px] text-zinc-500 uppercase tracking-wider">
               Ödeme Bilgisi
             </div>
@@ -235,7 +235,7 @@ export default function OrderPrintPage() {
         </div>
 
         {/* Items table */}
-        <table className="mt-4 w-full border-collapse border border-zinc-300 text-xs">
+        <table className="mt-4 w-full border-collapse border border-border text-xs">
           <thead>
             <tr className="bg-zinc-900 text-white">
               <th className="px-2 py-2 text-left">#</th>
@@ -250,13 +250,13 @@ export default function OrderPrintPage() {
           <tbody>
             {order.items.map((it, idx) => (
               <tr
-                className={idx % 2 === 1 ? "bg-zinc-50" : "bg-white"}
+                className={idx % 2 === 1 ? "bg-zinc-50" : "bg-card"}
                 key={it.id}
               >
-                <td className="border-zinc-200 border-t px-2 py-2 text-center">
+                <td className="border-border border-t px-2 py-2 text-center">
                   {idx + 1}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2">
+                <td className="border-border border-t px-2 py-2">
                   <div className="font-semibold">{it.productName}</div>
                   {it.optionsOrNotes && (
                     <div className="text-[11px] text-zinc-500">
@@ -264,22 +264,22 @@ export default function OrderPrintPage() {
                     </div>
                   )}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2 text-center font-mono text-[11px]">
+                <td className="border-border border-t px-2 py-2 text-center font-mono text-[11px]">
                   {it.sku || "—"}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2 text-center font-bold">
+                <td className="border-border border-t px-2 py-2 text-center font-bold">
                   {it.quantity} {it.unit}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2 text-right">
+                <td className="border-border border-t px-2 py-2 text-right">
                   ₺
                   {it.unitPrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
                   })}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2 text-center">
+                <td className="border-border border-t px-2 py-2 text-center">
                   %{it.taxRate}
                 </td>
-                <td className="border-zinc-200 border-t px-2 py-2 text-right font-bold">
+                <td className="border-border border-t px-2 py-2 text-right font-bold">
                   ₺
                   {it.totalPrice.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -342,7 +342,7 @@ export default function OrderPrintPage() {
                 })}
               </span>
             </div>
-            <div className="flex justify-between border-zinc-200 border-t pt-1">
+            <div className="flex justify-between border-border border-t pt-1">
               <span>Ödenen</span>
               <span className="font-bold text-emerald-700">
                 ₺
@@ -371,7 +371,7 @@ export default function OrderPrintPage() {
             <div className="font-bold text-[11px] uppercase tracking-wider">
               Tahsilat Geçmişi
             </div>
-            <div className="mt-1 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+            <div className="mt-1 divide-y divide-zinc-200 rounded-xl border border-border">
               {order.payments.map((p) => (
                 <div
                   className="flex justify-between px-3 py-2 text-xs"
@@ -395,7 +395,7 @@ export default function OrderPrintPage() {
         )}
 
         {order.notes && (
-          <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-3 text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+          <div className="mt-4 rounded-xl border border-border bg-card p-3 text-xs dark:text-zinc-200">
             <div className="font-bold">Notlar</div>
             <p className="mt-1 whitespace-pre-wrap text-zinc-700 dark:text-zinc-300">
               {order.notes}
@@ -408,7 +408,7 @@ export default function OrderPrintPage() {
           </div>
         )}
 
-        <div className="mt-6 flex justify-between border-zinc-200 border-t pt-3 text-[10px] text-zinc-400">
+        <div className="mt-6 flex justify-between border-border border-t pt-3 text-[10px] text-zinc-400">
           <span>
             Bu belge {isProforma ? "proforma" : "sipariş"} olarak elektronik
             ortamda oluşturulmuştur.

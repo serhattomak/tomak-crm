@@ -235,7 +235,7 @@ export default function AdminTenantDetailPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-zinc-600 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             href="/admin/tenants"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -263,7 +263,7 @@ export default function AdminTenantDetailPage() {
 
         <div className="flex items-center gap-2.5">
           <Link
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-300 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
             href={`/${tenant?.slug}`}
             target="_blank"
           >
@@ -274,7 +274,7 @@ export default function AdminTenantDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-1 border-zinc-200 border-b dark:border-zinc-800">
+      <div className="flex space-x-1 border-border border-b">
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "modules"
@@ -303,7 +303,7 @@ export default function AdminTenantDetailPage() {
       {/* TAB 1: MODULES MANAGEMENT */}
       {activeTab === "modules" && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 text-xs text-zinc-600 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+          <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800/40 dark:text-zinc-400">
             <p>
               Bu firmanın kullanıcılarının erişebileceği modülleri aşağıdan
               aktif/pasif yapabilir veya menüde görünecek özel ismi
@@ -318,11 +318,7 @@ export default function AdminTenantDetailPage() {
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((mod) => (
               <div
-                className={`rounded-2xl border p-4.5 transition-all ${
-                  mod.isEnabled
-                    ? "border-blue-200/80 bg-white shadow-xs dark:border-blue-800 dark:bg-zinc-900"
-                    : "border-zinc-200/80 bg-zinc-50/40 opacity-70 dark:border-zinc-800 dark:bg-zinc-800/30"
-                }`}
+                className={`rounded-2xl border p-4.5 transition-all ${ mod.isEnabled ? "border-blue-200/80 bg-card shadow-xs dark:border-blue-800" : "border-border bg-zinc-50/40 opacity-70 dark:bg-zinc-800/30" }`}
                 key={mod.moduleKey}
               >
                 <div className="flex items-center justify-between">
@@ -356,12 +352,12 @@ export default function AdminTenantDetailPage() {
                 </div>
 
                 {/* Custom Display Name Input */}
-                <div className="mt-3 space-y-1 border-zinc-100 border-t pt-3 dark:border-zinc-800">
+                <div className="mt-3 space-y-1 border-border border-t pt-3">
                   <label className="font-bold text-[10px] text-zinc-500 dark:text-zinc-400">
                     Menüde Görünecek Özel İsim:
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-2.5 py-1.5 text-xs text-zinc-800 placeholder-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
+                    className="w-full rounded-xl border border-border bg-zinc-50/50 px-2.5 py-1.5 text-xs text-zinc-800 placeholder-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
                     defaultValue={mod.displayNameOverride ?? ""}
                     onBlur={(e) =>
                       handleUpdateModuleName(mod.moduleKey, e.target.value)
@@ -409,14 +405,14 @@ export default function AdminTenantDetailPage() {
           </div>
 
           {/* Add New Override Box */}
-          <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800/40">
+          <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs dark:bg-zinc-800/40">
             <h3 className="font-bold text-xs text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
               Yeni Özel Alan Etiketi (Override) Ekle
             </h3>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-xs text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setNewOverrideKey(e.target.value)}
                   placeholder="Alan Anahtarı (örn: products.name)"
                   type="text"
@@ -425,7 +421,7 @@ export default function AdminTenantDetailPage() {
               </div>
               <div>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setNewOverrideValue(e.target.value)}
                   placeholder="Görünecek Etiket (örn: Araç Modeli)"
                   type="text"
@@ -434,7 +430,7 @@ export default function AdminTenantDetailPage() {
               </div>
               <div>
                 <button
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white p-2.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-2.5 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={handleAddOverride}
                   type="button"
                 >
@@ -459,8 +455,8 @@ export default function AdminTenantDetailPage() {
           </div>
 
           {/* List of Custom Overrides */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between border-zinc-100 border-b p-4 font-bold text-xs text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:text-zinc-400">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+            <div className="flex items-center justify-between border-border border-b p-4 font-bold text-xs text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
               <span>
                 Bu Firmaya Özel Etiket Tanımları ({customOverrides.length})
               </span>
@@ -486,7 +482,7 @@ export default function AdminTenantDetailPage() {
                         ➔
                       </span>
                       <input
-                        className="rounded-xl border border-zinc-200 bg-zinc-50/50 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
+                        className="rounded-xl border border-border bg-zinc-50/50 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
                         onChange={(e) => {
                           const val = e.target.value;
                           setCustomOverrides((prev) =>

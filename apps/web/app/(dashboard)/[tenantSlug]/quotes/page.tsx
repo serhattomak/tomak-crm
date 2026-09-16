@@ -348,7 +348,7 @@ export default function QuotesPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-100"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-100"
             onClick={() => setIsTemplatesOpen(true)}
             type="button"
           >
@@ -357,7 +357,7 @@ export default function QuotesPage() {
           </button>
 
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200"
             onClick={() => {
               fetchQuotes();
               fetchStats();
@@ -386,7 +386,7 @@ export default function QuotesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Active Proposals Volume */}
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Açık Teklif Hacmi
@@ -406,7 +406,7 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 2: Conversion Rate */}
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Kabul & Kazanma Oranı
@@ -432,7 +432,7 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 3: Pending Approval */}
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Yönetici Onayı Bekleyen
@@ -452,7 +452,7 @@ export default function QuotesPage() {
         </div>
 
         {/* Card 4: Sent / Viewed / Expired */}
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900">
+        <div className="rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
             <span className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
               Müşteride Olanlar
@@ -481,7 +481,7 @@ export default function QuotesPage() {
       </div>
 
       {/* 3. Toolbar & Status Filter Tabs */}
-      <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="space-y-4 rounded-3xl border border-border bg-card p-4 shadow-2xs">
         {/* Status Pills */}
         <div className="custom-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
           {[
@@ -535,7 +535,7 @@ export default function QuotesPage() {
       </div>
 
       {/* 4. Quotes Data Table */}
-      <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-2xs">
         {isLoading ? (
           <div className="flex min-h-[300px] flex-col items-center justify-center p-8 text-zinc-500 dark:text-zinc-400">
             <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600" />
@@ -606,7 +606,7 @@ export default function QuotesPage() {
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-[11px] text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                  <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-[11px] text-zinc-500 dark:text-zinc-400">
                     <div className="flex items-center gap-2">
                       <span className="text-zinc-400 dark:text-zinc-500">
                         {quote.itemCount} Kalem
@@ -680,7 +680,7 @@ export default function QuotesPage() {
             <div className="hidden overflow-x-auto md:block">
               <Table className="border-collapse">
                 <TableHeader>
-                  <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/40 dark:text-zinc-400">
                     <TableHead className="w-10 py-3.5 pr-2 pl-4 h-auto">
                       <Checkbox
                         aria-label="Tümünü seç"
@@ -978,7 +978,7 @@ function QuoteStatusBadge({ status }: { status: string }) {
       );
     case "Draft":
       return (
-        <span className="inline-flex items-center rounded-lg border border-zinc-200/80 bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:border-zinc-800/90 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="inline-flex items-center rounded-lg border border-border bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
           Taslak
         </span>
       );
@@ -1422,7 +1422,7 @@ function CreateQuoteModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b bg-zinc-50 p-4 sm:p-6 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+        <div className="flex shrink-0 items-center justify-between border-border border-b bg-zinc-50 p-4 sm:p-6 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/60 dark:text-blue-400">
               <FileSpreadsheet className="h-5 w-5" />
@@ -1453,7 +1453,7 @@ function CreateQuoteModal({
           onSubmit={handleSubmit}
         >
           {/* Section 1: Customer & Deal Linking */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+          <div className="space-y-4 rounded-2xl border border-border bg-zinc-50 p-4 dark:bg-zinc-800/50">
             <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
               <Building2 className="h-4 w-4 text-blue-600" />
               <span>1. Müşteri & Fırsat Bilgileri</span>
@@ -1593,10 +1593,10 @@ function CreateQuoteModal({
               </button>
             </div>
 
-            <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-card">
               <Table className="border-collapse">
                 <TableHeader>
-                  <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/40 dark:text-zinc-400">
                     <TableHead className="min-w-[200px] px-3 py-2.5 h-auto">
                       Ürün / Hizmet Adı
                     </TableHead>
@@ -1658,7 +1658,7 @@ function CreateQuoteModal({
                               </Select>
                             )}
                             <input
-                              className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                              className="w-full rounded-lg border border-border bg-card px-2 py-1 font-semibold text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                               onChange={(e) =>
                                 handleItemChange(
                                   idx,
@@ -1711,7 +1711,7 @@ function CreateQuoteModal({
                         {/* Unit */}
                         <TableCell className="px-2 py-2.5">
                           <input
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                            className="w-full rounded-lg border border-border bg-card px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                             onChange={(e) =>
                               handleItemChange(idx, "unit", e.target.value)
                             }
@@ -1814,29 +1814,21 @@ function CreateQuoteModal({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left: General Discount & Approval warning */}
             <div className="space-y-3">
-              <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+              <div className="space-y-3 rounded-2xl border border-border bg-zinc-50 p-4 dark:bg-zinc-800/50">
                 <h4 className="font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   Genel Teklif İskontosu
                 </h4>
                 <div className="flex items-center gap-3">
                   <div className="flex rounded-xl bg-zinc-200 p-0.5 font-semibold text-xs">
                     <button
-                      className={`rounded-lg px-3 py-1 transition ${
-                        discountType === "Percentage"
-                          ? "bg-white text-blue-600 shadow-xs dark:bg-zinc-900"
-                          : "text-zinc-600 dark:text-zinc-400"
-                      }`}
+                      className={`rounded-lg px-3 py-1 transition ${ discountType === "Percentage" ? "bg-card text-blue-600 shadow-xs" : "text-zinc-600 dark:text-zinc-400" }`}
                       onClick={() => setDiscountType("Percentage")}
                       type="button"
                     >
                       Oran (%)
                     </button>
                     <button
-                      className={`rounded-lg px-3 py-1 transition ${
-                        discountType === "Amount"
-                          ? "bg-white text-blue-600 shadow-xs dark:bg-zinc-900"
-                          : "text-zinc-600 dark:text-zinc-400"
-                      }`}
+                      className={`rounded-lg px-3 py-1 transition ${ discountType === "Amount" ? "bg-card text-blue-600 shadow-xs" : "text-zinc-600 dark:text-zinc-400" }`}
                       onClick={() => setDiscountType("Amount")}
                       type="button"
                     >
@@ -1896,7 +1888,7 @@ function CreateQuoteModal({
             </div>
 
             {/* Right: Live Calculated Totals Card */}
-            <div className="space-y-2.5 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/40">
+            <div className="space-y-2.5 rounded-2xl border border-border bg-zinc-50/70 p-4 dark:bg-zinc-800/40">
               <div className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400">
                 <span>Ara Toplam (KDV Hariç):</span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -1920,7 +1912,7 @@ function CreateQuoteModal({
                 </span>
               </div>
 
-              <div className="flex items-baseline justify-between border-zinc-200 border-t pt-2 dark:border-zinc-800">
+              <div className="flex items-baseline justify-between border-border border-t pt-2">
                 <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Genel Toplam:
                 </span>
@@ -1932,7 +1924,7 @@ function CreateQuoteModal({
           </div>
 
           {/* Section 4: Payment Method & Due Date */}
-          <div className="space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+          <div className="space-y-3 rounded-2xl border border-border bg-zinc-50 p-4 dark:bg-zinc-800/50">
             <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
               <span>4. Ödeme Yöntemi & Vade</span>
             </h3>
@@ -1979,7 +1971,7 @@ function CreateQuoteModal({
           </div>
 
           {/* Section 5: Terms, Delivery, Bank Details Templates */}
-          <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+          <div className="space-y-4 rounded-2xl border border-border bg-zinc-50 p-4 dark:bg-zinc-800/50">
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
                 <FileText className="h-4 w-4 text-blue-600" />
@@ -2021,7 +2013,7 @@ function CreateQuoteModal({
                   Ödeme & Fatura Şartları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setPaymentTerms(e.target.value)}
                   placeholder="Örn: %50 siparişte peşin, %50 teslimatta 30 gün vadeli."
                   rows={2}
@@ -2034,7 +2026,7 @@ function CreateQuoteModal({
                   Teslimat & Sevkiyat Şartları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setDeliveryTerms(e.target.value)}
                   placeholder="Örn: Sipariş onayından itibaren 10 iş günü içerisinde adrese teslim."
                   rows={2}
@@ -2049,7 +2041,7 @@ function CreateQuoteModal({
                   Banka Hesap & IBAN Bilgileri
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setBankDetails(e.target.value)}
                   placeholder="Örn: Garanti BBVA TR12 0006 2000... (ABC Ltd Şti)"
                   rows={2}
@@ -2062,7 +2054,7 @@ function CreateQuoteModal({
                   Genel Şartlar & Garanti Koşulları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setTermsAndConditions(e.target.value)}
                   placeholder="Örn: Ürünler 2 yıl resmi garantilidir. Fiyatlarımıza KDV dahildir."
                   rows={2}
@@ -2073,9 +2065,9 @@ function CreateQuoteModal({
           </div>
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end gap-3 border-zinc-200 border-t pt-4 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-3 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -2416,12 +2408,12 @@ function QuoteDetailDrawer({
         side="right"
       >
         {/* Drawer Header (Mobile-Optimized) */}
-        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-zinc-200/80 border-b bg-zinc-50/80 p-3.5 sm:p-5 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-border border-b bg-zinc-50/80 p-3.5 sm:p-5 dark:bg-zinc-800/50">
           <div className="flex min-w-0 items-center gap-2.5">
             {/* Back / Close Button */}
             <SheetClose asChild>
               <button
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-zinc-700 shadow-2xs transition hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 title="Kapat & Geri Dön"
                 type="button"
               >
@@ -2448,7 +2440,7 @@ function QuoteDetailDrawer({
 
           <div className="flex shrink-0 items-center gap-1">
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+              className="flex h-8 items-center gap-1 rounded-xl border border-border bg-card px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={async () => {
                 if (!quote) {
                   return;
@@ -2480,7 +2472,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+              className="flex h-8 items-center gap-1 rounded-xl border border-border bg-card px-2 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:px-2.5 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
               onClick={() => quote && onPrint(quote.id)}
               title="Yazdır / Önizle"
               type="button"
@@ -2490,7 +2482,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2 font-semibold text-[11px] text-blue-600 shadow-2xs transition hover:bg-blue-50 sm:px-2.5 dark:border-zinc-800 dark:bg-zinc-900"
+              className="flex h-8 items-center gap-1 rounded-xl border border-border bg-card px-2 font-semibold text-[11px] text-blue-600 shadow-2xs transition hover:bg-blue-50 sm:px-2.5"
               onClick={() => {
                 if (!quote) {
                   return;
@@ -2507,7 +2499,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
               onClick={() => setIsDeleteDialogOpen(true)}
               title="Teklifi Sil"
               type="button"
@@ -2669,7 +2661,7 @@ function QuoteDetailDrawer({
             )}
 
             {/* 2. Primary CTA Toolbar */}
-            <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-3 dark:border-zinc-800/90 dark:bg-zinc-800/50">
+            <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
               {quote.status !== "Accepted" &&
                 quote.status !== "ConvertedToOrder" &&
                 !quote.convertedOrderId && (
@@ -2715,7 +2707,7 @@ function QuoteDetailDrawer({
               )}
 
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 onClick={async () => {
                   if (!quote) {
                     return;
@@ -2746,7 +2738,7 @@ function QuoteDetailDrawer({
               </button>
 
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 onClick={() => setIsRevisionOpen(true)}
                 type="button"
               >
@@ -2756,7 +2748,7 @@ function QuoteDetailDrawer({
             </div>
 
             {/* 3. Core Properties Grid */}
-            <div className="grid grid-cols-2 gap-3 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs sm:grid-cols-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:grid-cols-4">
               <div>
                 <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
                   Müşteri
@@ -2798,7 +2790,7 @@ function QuoteDetailDrawer({
             </div>
 
             {/* 4. Tab Navigation */}
-            <div className="flex border-zinc-200 border-b dark:border-zinc-800">
+            <div className="flex border-border border-b">
               {[
                 { key: "items", label: `Kalemler (${quote.items.length})` },
                 { key: "terms", label: "Şartlar & Banka" },
@@ -2829,10 +2821,10 @@ function QuoteDetailDrawer({
             {/* 5. Tab Contents */}
             {activeTab === "items" && (
               <div className="space-y-4">
-                <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="overflow-x-auto rounded-2xl border border-border bg-card">
                   <Table className="border-collapse">
                     <TableHeader>
-                      <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                      <TableRow className="border-border bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/40 dark:text-zinc-400">
                         <TableHead className="px-3 py-2.5 h-auto">Ürün / Hizmet</TableHead>
                         <TableHead className="px-2 py-2.5 text-center h-auto">Miktar</TableHead>
                         <TableHead className="px-2 py-2.5 text-right h-auto">Birim Fiyat</TableHead>
@@ -2891,7 +2883,7 @@ function QuoteDetailDrawer({
 
                 {/* Subtotals Box */}
                 <div className="flex justify-end">
-                  <div className="w-72 space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs dark:border-zinc-800/90 dark:bg-zinc-800/50">
+                  <div className="w-72 space-y-2 rounded-2xl border border-border bg-zinc-50 p-3.5 text-xs dark:bg-zinc-800/50">
                     <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                       <span>Ara Toplam:</span>
                       <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -2913,7 +2905,7 @@ function QuoteDetailDrawer({
                         {formatCurrency(quote.taxAmount, quote.currency)}
                       </span>
                     </div>
-                    <div className="flex items-baseline justify-between border-zinc-200 border-t pt-2 dark:border-zinc-800">
+                    <div className="flex items-baseline justify-between border-border border-t pt-2">
                       <span className="font-bold text-zinc-900 dark:text-zinc-100">
                         Genel Toplam:
                       </span>
@@ -2929,7 +2921,7 @@ function QuoteDetailDrawer({
             {activeTab === "terms" && (
               <div className="space-y-4 text-xs text-zinc-700 dark:text-zinc-300">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="rounded-2xl border border-border bg-card p-3">
                     <div className="font-bold text-[11px] text-zinc-500 uppercase tracking-wider">
                       Ödeme Yöntemi
                     </div>
@@ -2937,7 +2929,7 @@ function QuoteDetailDrawer({
                       {quote.paymentMethod || "Belirtilmedi"}
                     </div>
                   </div>
-                  <div className="rounded-2xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="rounded-2xl border border-border bg-card p-3">
                     <div className="font-bold text-[11px] text-zinc-500 uppercase tracking-wider">
                       Vade Tarihi
                     </div>
@@ -2956,7 +2948,7 @@ function QuoteDetailDrawer({
                       )}
                   </div>
                 </div>
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Ödeme Şartları
                   </h4>
@@ -2965,7 +2957,7 @@ function QuoteDetailDrawer({
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Teslimat & Sevkiyat Koşulları
                   </h4>
@@ -2974,7 +2966,7 @@ function QuoteDetailDrawer({
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Banka Hesap & IBAN Bilgileri
                   </h4>
@@ -2983,7 +2975,7 @@ function QuoteDetailDrawer({
                   </p>
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-4 dark:border-zinc-800/90 dark:bg-zinc-900">
+                <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     Genel Hükümler & Garanti
                   </h4>
@@ -3003,11 +2995,7 @@ function QuoteDetailDrawer({
                   const isCurrent = rev.id === quote.id;
                   return (
                     <div
-                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${
-                        isCurrent
-                          ? "border-blue-300 bg-blue-50/70 ring-2 ring-blue-500/20"
-                          : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/50"
-                      }`}
+                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${ isCurrent ? "border-blue-300 bg-blue-50/70 ring-2 ring-blue-500/20" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50" }`}
                       key={rev.id}
                     >
                       <div className="flex items-center gap-3">
@@ -3040,7 +3028,7 @@ function QuoteDetailDrawer({
               <div className="space-y-3">
                 {quote.activities.map((act) => (
                   <div
-                    className="flex gap-3 rounded-2xl border border-zinc-200 bg-white p-3.5 dark:border-zinc-800 dark:bg-zinc-900"
+                    className="flex gap-3 rounded-2xl border border-border bg-card p-3.5"
                     key={act.id}
                   >
                     <div className="mt-0.5 flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -3095,7 +3083,7 @@ function QuoteDetailDrawer({
                 Değerlendirme Notu
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setApprovalNotes(e.target.value)}
                 placeholder="Örn: %18 iskonto onaylandı veya %10 seviyesine çekilmesini rica ederim."
                 rows={3}
@@ -3156,7 +3144,7 @@ function QuoteDetailDrawer({
               oluşturulur.
             </p>
 
-            <div className="space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+            <div className="space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">
               <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
                 Kalemler (Miktar / Birim Fiyat)
               </div>
@@ -3164,7 +3152,7 @@ function QuoteDetailDrawer({
                 const qItem = quote.items.find((q) => q.id === ri.id);
                 return (
                   <div
-                    className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900"
+                    className="flex items-center gap-2 rounded-lg border border-border bg-card p-2"
                     key={ri.id}
                   >
                     <span className="min-w-0 flex-1 truncate font-semibold text-xs">
@@ -3290,13 +3278,13 @@ function QuoteDetailDrawer({
               </div>
             ) : (
               <>
-                <div className="space-y-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <div className="space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">
                   <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
                     Kalemler — Seç / Miktar / Fiyat
                   </div>
                   {convertItems.map((ci) => (
                     <div
-                      className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900"
+                      className="flex items-center gap-2 rounded-lg border border-border bg-card p-2"
                       key={ci.quoteItemId}
                     >
                       <label className="flex items-center gap-1.5 text-xs">
@@ -3911,7 +3899,7 @@ function QuoteTemplatesModal({
                 Yöneticinizden Quotes.Templates izni isteyin.
               </p>
               <button
-                className="mt-4 rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                className="mt-4 rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
                 onClick={onClose}
                 type="button"
               >
@@ -3922,9 +3910,9 @@ function QuoteTemplatesModal({
           permission="Quotes.Templates"
         >
           {/* Header — Bento, 1px border, Geist, 4pt spacing, 8-20px radii */}
-          <div className="flex shrink-0 items-center justify-between border-zinc-200/80 border-b bg-white/80 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4 dark:border-zinc-800/90 dark:bg-zinc-900/80">
+          <div className="flex shrink-0 items-center justify-between border-border border-b bg-white/80 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4 dark:bg-zinc-900/80">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 <Settings className="h-4 w-4" />
               </div>
               <div className="min-w-0">
@@ -3939,7 +3927,7 @@ function QuoteTemplatesModal({
             </div>
             <div className="flex items-center gap-2">
               <button
-                className="hidden rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:inline-flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                className="hidden rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 sm:inline-flex dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                 onClick={handleSelectNew}
                 type="button"
               >
@@ -3960,7 +3948,7 @@ function QuoteTemplatesModal({
           {/* Body — Workbench Bento Grid, responsive stacked on mobile */}
           <div className="custom-scrollbar flex flex-1 flex-col overflow-hidden">
             {/* Template list strip */}
-            <div className="shrink-0 border-zinc-200/60 border-b bg-zinc-50/60 px-3 py-2.5 sm:px-4 dark:border-zinc-800/60 dark:bg-zinc-800/20">
+            <div className="shrink-0 border-border border-b bg-zinc-50/60 px-3 py-2.5 sm:px-4 dark:bg-zinc-800/20">
               <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
                   Şablonlar ({templates.length})
@@ -3974,7 +3962,7 @@ function QuoteTemplatesModal({
               </div>
               <div className="custom-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
                 {templates.length === 0 && !isLoading ? (
-                  <span className="rounded-xl border border-zinc-300 border-dashed bg-white px-3 py-2 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
+                  <span className="rounded-xl border border-border border-dashed bg-card px-3 py-2 text-xs text-zinc-500 dark:text-zinc-400">
                     Henüz şablon yok — sağdaki editörden oluşturun.
                   </span>
                 ) : (
@@ -3982,11 +3970,7 @@ function QuoteTemplatesModal({
                     const isActive = t.id === editingId;
                     return (
                       <button
-                        className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-left shadow-2xs transition ${
-                          isActive
-                            ? "border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100"
-                            : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
-                        }`}
+                        className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-left shadow-2xs transition ${ isActive ? "border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100" : "border-border bg-card text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
                         key={t.id}
                         onClick={() => handleEdit(t)}
                         type="button"
@@ -4009,8 +3993,8 @@ function QuoteTemplatesModal({
             {/* Split-pane editor: left = editor, right = preview placeholder */}
             <div className="grid flex-1 grid-cols-1 gap-0 overflow-hidden lg:grid-cols-2">
               {/* Left pane — editor (Bento card, 1px border, blur) */}
-              <div className="custom-scrollbar overflow-y-auto border-zinc-200 p-4 sm:p-5 lg:border-r dark:border-zinc-800">
-                <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="custom-scrollbar overflow-y-auto border-border p-4 sm:p-5 lg:border-r">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-2xs backdrop-blur-sm">
                   <div className="mb-3 flex items-center justify-between">
                     <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                       {editingId ? "Şablonu Düzenle" : "Yeni Şablon"}
@@ -4086,11 +4070,11 @@ function QuoteTemplatesModal({
                       />
                     </div>
 
-                    <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+                    <div className="rounded-xl border border-border bg-zinc-50/50 p-3 dark:bg-zinc-800/30">
                       <VariableChips onInsert={insertVariable} />
                     </div>
 
-                    <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-2.5">
                       <div>
                         <p className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                           Varsayılan şablon
@@ -4107,7 +4091,7 @@ function QuoteTemplatesModal({
                       />
                     </div>
 
-                    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800">
+                    <div className="rounded-xl border border-border">
                       <button
                         className="flex w-full items-center justify-between px-3 py-2.5 text-left"
                         onClick={() => setShowExtraFields((prev) => !prev)}
@@ -4121,7 +4105,7 @@ function QuoteTemplatesModal({
                         </span>
                       </button>
                       {showExtraFields ? (
-                        <div className="space-y-3 border-zinc-200 border-t p-3 dark:border-zinc-800">
+                        <div className="space-y-3 border-border border-t p-3">
                           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <div className="space-y-1.5">
                               <Label className="text-xs">Ödeme Şartları</Label>
@@ -4181,7 +4165,7 @@ function QuoteTemplatesModal({
                     <div className="flex items-center justify-between gap-2 pt-2">
                       {editingId ? (
                         <button
-                          className="rounded-xl border border-rose-200 bg-white px-4 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/50 dark:bg-zinc-900 dark:text-rose-400 dark:hover:bg-rose-950/30"
+                          className="rounded-xl border border-rose-200 bg-card px-4 py-2 font-semibold text-rose-600 text-xs transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/50 dark:text-rose-400 dark:hover:bg-rose-950/30"
                           disabled={isSaving || isDeletingId === editingId}
                           onClick={() => setDeleteConfirmId(editingId)}
                           type="button"
@@ -4193,7 +4177,7 @@ function QuoteTemplatesModal({
                       )}
                       <div className="flex items-center gap-2">
                         <button
-                          className="rounded-xl border border-zinc-200 bg-white px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                          className="rounded-xl border border-border bg-card px-4 py-2 font-semibold text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                           onClick={() => {
                             if (editingId) {
                               const orig = templates.find(
@@ -5016,7 +5000,7 @@ function QuotePrintModal({
             </div>
           ) : (
             <div
-              className="my-1 w-full max-w-[210mm] shrink-0 select-text space-y-5 rounded-xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-xl sm:p-10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="my-1 w-full max-w-[210mm] shrink-0 select-text space-y-5 rounded-xl border border-border bg-card p-6 text-zinc-900 shadow-xl sm:p-10 dark:text-zinc-100"
               style={{
                 transform: `scale(${zoom / 100})`,
                 transformOrigin: "top center",
@@ -5042,7 +5026,7 @@ function QuotePrintModal({
                 </div>
 
                 <div className="space-y-1 text-right">
-                  <div className="inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 dark:border-zinc-800 dark:bg-zinc-800">
+                  <div className="inline-flex items-center gap-2 rounded-md border border-border bg-zinc-100 px-2.5 py-0.5 dark:bg-zinc-800">
                     <span className="font-black font-mono text-xs text-zinc-900 tracking-wider dark:text-zinc-100">
                       {quote.quoteNumber}
                     </span>
@@ -5077,7 +5061,7 @@ function QuotePrintModal({
 
               {/* 2. Client & Issuer Party Cards */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="space-y-0.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <div className="space-y-0.5 rounded-xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
                   <span className="block font-extrabold text-[8px] text-blue-700 uppercase tracking-wider">
                     SAYIN / MÜŞTERİ (ALICI)
                   </span>
@@ -5097,7 +5081,7 @@ function QuotePrintModal({
                   )}
                 </div>
 
-                <div className="space-y-0.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+                <div className="space-y-0.5 rounded-xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
                   <span className="block font-extrabold text-[8px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
                     TEKLİFİ VEREN / TEMSİLCİ
                   </span>
@@ -5120,7 +5104,7 @@ function QuotePrintModal({
               </div>
 
               {/* 3. Itemized Products/Services Table */}
-              <div className="overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700">
+              <div className="overflow-hidden rounded-xl border border-border">
                 <Table className="border-collapse text-[10px]">
                   <TableHeader>
                     <TableRow className="bg-zinc-900 font-bold text-[9px] text-white uppercase tracking-wider">
@@ -5143,7 +5127,7 @@ function QuotePrintModal({
                             ? "bg-amber-50/60 opacity-85"
                             : idx % 2 === 1
                               ? "bg-zinc-50/70 dark:bg-zinc-800/40"
-                              : "bg-white dark:bg-zinc-900"
+                              : "bg-card"
                         }
                         key={item.id}
                       >
@@ -5196,13 +5180,13 @@ function QuotePrintModal({
               {/* 4. Financial Calculations & Tax Breakdown Matrix */}
               <div className="grid grid-cols-1 gap-3 pt-0.5 sm:grid-cols-2">
                 {/* Left: VAT Rate Breakdown Box */}
-                <div className="space-y-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 dark:border-zinc-800 dark:bg-zinc-800/30">
+                <div className="space-y-1.5 rounded-xl border border-border bg-zinc-50/50 p-2.5 dark:bg-zinc-800/30">
                   <span className="block font-extrabold text-[8px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
                     KDV ORAN & MATRAH DAĞILIMI
                   </span>
                   <Table className="text-[9px]">
                     <TableHeader>
-                      <TableRow className="border-zinc-200 font-bold text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                      <TableRow className="border-border font-bold text-zinc-500 dark:text-zinc-400">
                         <TableHead className="pb-1">Oran</TableHead>
                         <TableHead className="pb-1 text-right">Matrah</TableHead>
                         <TableHead className="pb-1 text-right">KDV Tutarı</TableHead>
@@ -5263,7 +5247,7 @@ function QuotePrintModal({
               {/* 5. Terms & Banking Details */}
               <div className="grid grid-cols-1 gap-2.5 text-[9px] text-zinc-700 sm:grid-cols-2 dark:text-zinc-300">
                 {quote.paymentTerms && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="space-y-0.5 rounded-lg border border-border bg-card p-2">
                     <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       ÖDEME VE VADE KOŞULLARI:
                     </span>
@@ -5274,7 +5258,7 @@ function QuotePrintModal({
                 )}
 
                 {quote.deliveryTerms && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="space-y-0.5 rounded-lg border border-border bg-card p-2">
                     <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       TESLİMAT VE SEVKİYAT ŞARTLARI:
                     </span>
@@ -5285,7 +5269,7 @@ function QuotePrintModal({
                 )}
 
                 {quote.bankDetails && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-2 font-mono sm:col-span-2 dark:border-zinc-800 dark:bg-zinc-800/50">
+                  <div className="space-y-0.5 rounded-lg border border-border bg-zinc-50 p-2 font-mono sm:col-span-2 dark:bg-zinc-800/50">
                     <span className="block font-bold font-sans text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       RESMİ BANKA VE HESAP (IBAN) BİLGİLERİ:
                     </span>
@@ -5296,7 +5280,7 @@ function QuotePrintModal({
                 )}
 
                 {quote.termsAndConditions && (
-                  <div className="space-y-0.5 rounded-lg border border-zinc-200 bg-white p-2 sm:col-span-2 dark:border-zinc-800 dark:bg-zinc-900">
+                  <div className="space-y-0.5 rounded-lg border border-border bg-card p-2 sm:col-span-2">
                     <span className="block font-bold text-[8px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       GENEL HÜKÜMLER VE GARANTİ ŞARTLARI:
                     </span>
@@ -5309,28 +5293,28 @@ function QuotePrintModal({
 
               {/* 6. Stamp / Signature Box */}
               <div className="grid grid-cols-2 gap-6 pt-2 text-center text-[9px]">
-                <div className="rounded-xl border border-zinc-300 bg-white p-2.5 dark:border-zinc-700 dark:bg-zinc-900">
+                <div className="rounded-xl border border-border bg-card p-2.5">
                   <p className="font-bold text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                     TEKLİFİ DÜZENLEYEN (FİRMA YETKİLİSİ)
                   </p>
                   <p className="mt-0.5 text-[8px] text-zinc-500 dark:text-zinc-400">
                     Yetkili Kaşe & İmza
                   </p>
-                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 border-b border-dashed pb-1 dark:border-zinc-700">
+                  <div className="mt-2 flex h-12 items-end justify-center border-border border-b border-dashed pb-1">
                     <span className="text-[8px] text-zinc-400 dark:text-zinc-500">
                       {quote.assignedUserName || activeTenant?.name}
                     </span>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-zinc-300 bg-white p-2.5 dark:border-zinc-700 dark:bg-zinc-900">
+                <div className="rounded-xl border border-border bg-card p-2.5">
                   <p className="font-bold text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                     TEKLİFİ ONAYLAYAN (MÜŞTERİ YETKİLİSİ)
                   </p>
                   <p className="mt-0.5 text-[8px] text-zinc-500 dark:text-zinc-400">
                     Kabul & Onay İmzası
                   </p>
-                  <div className="mt-2 flex h-12 items-end justify-center border-zinc-300 border-b border-dashed pb-1 dark:border-zinc-700">
+                  <div className="mt-2 flex h-12 items-end justify-center border-border border-b border-dashed pb-1">
                     <span className="text-[8px] text-zinc-400 dark:text-zinc-500">
                       {quote.customerName}
                     </span>
@@ -5339,7 +5323,7 @@ function QuotePrintModal({
               </div>
 
               {/* 7. Document Footer Bar */}
-              <div className="mt-4 flex items-center justify-between border-zinc-200 border-t pt-2.5 text-[8px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+              <div className="mt-4 flex items-center justify-between border-border border-t pt-2.5 text-[8px] text-zinc-400 dark:text-zinc-500">
                 <span>
                   Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik
                   olarak üretilmiştir.

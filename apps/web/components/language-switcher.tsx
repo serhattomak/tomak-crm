@@ -32,7 +32,7 @@ export function LanguageSwitcher({
     return (
       <button
         aria-label="Dili Değiştir / Switch Language"
-        className="flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-zinc-50 px-2.5 py-1.5 font-bold text-[11px] text-zinc-700 transition hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        className="flex items-center gap-1.5 rounded-xl border border-border bg-zinc-50 px-2.5 py-1.5 font-bold text-[11px] text-zinc-700 transition hover:bg-zinc-100 disabled:opacity-50 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
         disabled={isPending}
         onClick={() => switchLocale(activeLocale === "tr" ? "en" : "tr")}
         type="button"
@@ -44,13 +44,9 @@ export function LanguageSwitcher({
   }
 
   return (
-    <div className="flex items-center rounded-xl border border-zinc-200/80 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="flex items-center rounded-xl border border-border bg-zinc-100/80 p-0.5 dark:bg-zinc-900">
       <button
-        className={`rounded-lg px-2.5 py-1 font-bold text-[11px] transition-all ${
-          activeLocale === "tr"
-            ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-zinc-100"
-            : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
-        }`}
+        className={`rounded-lg px-2.5 py-1 font-bold text-[11px] transition-all ${ activeLocale === "tr" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         disabled={isPending}
         onClick={() => switchLocale("tr")}
         type="button"
@@ -58,11 +54,7 @@ export function LanguageSwitcher({
         TR
       </button>
       <button
-        className={`rounded-lg px-2.5 py-1 font-bold text-[11px] transition-all ${
-          activeLocale === "en"
-            ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-zinc-100"
-            : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
-        }`}
+        className={`rounded-lg px-2.5 py-1 font-bold text-[11px] transition-all ${ activeLocale === "en" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         disabled={isPending}
         onClick={() => switchLocale("en")}
         type="button"

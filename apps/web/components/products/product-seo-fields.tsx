@@ -151,7 +151,7 @@ export function ProductSeoFields({
           </div>
           <button
             aria-label="Slug oto-üret"
-            className="rounded-xl border border-zinc-200 p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={handleNameSync}
             title="Ürün adından slug üret"
             type="button"
@@ -197,7 +197,7 @@ export function ProductSeoFields({
           Zengin Açıklama (markdown-lite)
         </Label>
         <textarea
-          className="min-h-24 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 shadow-2xs outline-none transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="min-h-24 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 shadow-2xs outline-none transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100"
           id="product-rich-desc"
           onChange={(e) =>
             onChange({ ...values, richDescription: e.target.value })

@@ -75,7 +75,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Main Floating Card */}
-      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-white p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12">
+      <div className="relative z-10 grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-[32px] bg-card p-3 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:rounded-[40px] sm:p-4 lg:grid-cols-12">
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
@@ -112,7 +112,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side: Form Container */}
-        <div className="flex flex-col justify-between bg-white px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6">
+        <div className="flex flex-col justify-between bg-card px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6">
           {/* Brand Logo Header */}
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-white shadow-sm">
@@ -220,7 +220,7 @@ export default function RegisterPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white py-3 font-medium text-zinc-700 text-xs shadow-sm transition-all hover:bg-zinc-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-border bg-card py-3 font-medium text-zinc-700 text-xs shadow-sm transition-all hover:bg-zinc-50 sm:text-sm"
                   onClick={handleGoogleLogin}
                   type="button"
                 >

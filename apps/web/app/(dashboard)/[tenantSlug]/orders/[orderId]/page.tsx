@@ -113,7 +113,7 @@ export default function OrderDetailPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Draft":
-        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-border";
       case "PendingApproval":
         return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
       case "Confirmed":
@@ -129,7 +129,7 @@ export default function OrderDetailPage() {
       case "Refunded":
         return "bg-orange-50 text-orange-700 border-orange-200";
       default:
-        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-border";
     }
   };
 
@@ -167,7 +167,7 @@ export default function OrderDetailPage() {
       case "Refunded":
         return "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800";
       default:
-        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800";
+        return "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-border";
     }
   };
 
@@ -205,7 +205,7 @@ export default function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+      <div className="flex h-96 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
           <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
@@ -231,10 +231,10 @@ export default function OrderDetailPage() {
       )}
 
       {/* 1. Header Bar */}
-      <div className="flex flex-col justify-between gap-4 border-zinc-100 border-b pb-4 sm:flex-row sm:items-center dark:border-zinc-800">
+      <div className="flex flex-col justify-between gap-4 border-border border-b pb-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <Link
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-zinc-600 shadow-2xs transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             href={`/${tenantSlug}/orders`}
             title="Siparişlere Dön"
           >
@@ -288,7 +288,7 @@ export default function OrderDetailPage() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
             onClick={handlePrint}
             title="Siparişi Yazdır / PDF"
             type="button"
@@ -340,12 +340,12 @@ export default function OrderDetailPage() {
         {/* Left Column: Customer, Delivery, & Financial Summary (4 Cols) */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Financial Summary */}
-          <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-xs shadow-xs">
             <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
               Sipariş Tutarı & Ödeme Özeti
             </h3>
 
-            <div className="space-y-2 border-zinc-100 border-b pb-3 dark:border-zinc-800">
+            <div className="space-y-2 border-border border-b pb-3">
               <div className="flex items-center justify-between">
                 <span className="text-zinc-500 dark:text-zinc-400">
                   Ara Toplam:
@@ -451,7 +451,7 @@ export default function OrderDetailPage() {
           </div>
 
           {/* Card: Customer & Delivery Info */}
-          <div className="space-y-3 rounded-3xl border border-zinc-200/80 bg-white p-5 text-xs shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+          <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-xs shadow-xs">
             <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
               Müşteri & Sevkiyat Bilgileri
             </h3>
@@ -526,33 +526,21 @@ export default function OrderDetailPage() {
           {/* Pill Tabs */}
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-                activeTab === "items"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "items" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("items")}
               type="button"
             >
               Sipariş Kalemleri ({order.items.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-                activeTab === "payments"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "payments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("payments")}
               type="button"
             >
               Tahsilat & Ödemeler ({order.payments.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
-                activeTab === "timeline"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "timeline" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("timeline")}
               type="button"
             >
@@ -562,14 +550,14 @@ export default function OrderDetailPage() {
 
           {/* TAB 1: ORDER ITEMS TABLE */}
           {activeTab === "items" && (
-            <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Sipariş Edilen Ürün ve Hizmetler
               </h4>
 
-              <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+              <div className="overflow-x-auto rounded-2xl border border-border">
                 <Table>
-                  <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableRow>
                       <TableHead className="px-3.5 py-3 h-auto">Kalem / Ürün</TableHead>
                       <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
@@ -635,7 +623,7 @@ export default function OrderDetailPage() {
 
           {/* TAB 2: PAYMENTS LIST */}
           {activeTab === "payments" && (
-            <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                   Tahsilat & Ödeme Kayıtları
@@ -653,7 +641,7 @@ export default function OrderDetailPage() {
               </div>
 
               {order.payments.length === 0 ? (
-                <div className="rounded-2xl border border-zinc-200 border-dashed p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Bu sipariş için henüz tahsilat kaydedilmedi.
                 </div>
               ) : (
@@ -700,13 +688,13 @@ export default function OrderDetailPage() {
 
           {/* TAB 3: TIMELINE & ACTIVITIES */}
           {activeTab === "timeline" && (
-            <div className="space-y-4 rounded-3xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+            <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
               <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Sipariş Yaşam Döngüsü & Etkinlik Defteri
               </h4>
 
               {order.activities.length === 0 ? (
-                <div className="rounded-2xl border border-zinc-200 border-dashed p-8 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
                   Etkinlik kaydı bulunmuyor.
                 </div>
               ) : (
@@ -716,7 +704,7 @@ export default function OrderDetailPage() {
                       className="relative flex items-start gap-3 text-xs"
                       key={act.id}
                     >
-                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-white shadow-2xs ring-2 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-800">
+                      <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-card shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
                         {act.activityType === "StatusChange" ? (
                           <RotateCcw className="h-3.5 w-3.5 text-blue-600" />
                         ) : act.activityType === "PaymentAdded" ? (
@@ -726,7 +714,7 @@ export default function OrderDetailPage() {
                         )}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
+                      <div className="flex-1 rounded-2xl border border-border bg-card p-4 shadow-xs">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {act.title}
@@ -857,7 +845,7 @@ function ChangeStatusModal({
         className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
             Sipariş Durumunu Değiştir
           </DialogTitle>
@@ -915,9 +903,9 @@ function ChangeStatusModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >
@@ -1029,7 +1017,7 @@ function AddPaymentModal({
         className="max-h-[90vh] w-full overflow-y-auto gap-0 p-6 text-xs sm:max-w-md"
         showCloseButton={false}
       >
-        <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
+        <div className="mb-4 flex items-center justify-between border-border border-b pb-4">
           <div>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Tahsilat Kaydet
@@ -1137,9 +1125,9 @@ function AddPaymentModal({
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-zinc-100 border-t pt-4 dark:border-zinc-800">
+          <div className="mt-4 flex items-center justify-end gap-2 border-border border-t pt-4">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border px-4 py-2 font-semibold text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
               onClick={onClose}
               type="button"
             >

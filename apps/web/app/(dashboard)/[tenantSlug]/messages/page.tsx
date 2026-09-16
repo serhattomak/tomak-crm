@@ -675,7 +675,7 @@ export default function MessagesPage() {
     >
       {/* Top Header Bar (Hidden on mobile if a chat is active) */}
       <div
-        className={`shrink-0 flex-wrap items-center justify-between gap-2.5 border-zinc-200 border-b bg-white p-3 sm:flex-nowrap sm:px-6 sm:py-3 dark:border-border dark:bg-card ${selectedChannel ? "hidden md:flex" : "flex"}`}
+        className={`shrink-0 flex-wrap items-center justify-between gap-2.5 border-border border-b bg-card p-3 sm:flex-nowrap sm:px-6 sm:py-3 dark:border-border dark:bg-card ${selectedChannel ? "hidden md:flex" : "flex"}`}
       >
         <div className="flex min-w-0 flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
@@ -705,7 +705,7 @@ export default function MessagesPage() {
             <span>WhatsApp Sohbet</span>
           </Button>
           <Button
-            className="h-8 border border-zinc-200 bg-white font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+            className="h-8 border border-border bg-card font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 sm:h-9 dark:text-zinc-200 dark:hover:bg-zinc-700"
             onClick={() => setIsCreateChannelOpen(true)}
             size="sm"
             variant="outline"
@@ -728,14 +728,14 @@ export default function MessagesPage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Left Column: Channels / Conversations List */}
         <div
-          className={`flex-col border-zinc-200 border-r bg-white dark:border-border dark:bg-card ${selectedChannel ? "hidden md:flex md:w-80 md:shrink-0" : "flex w-full"}`}
+          className={`flex-col border-border border-r bg-card dark:border-border dark:bg-card ${selectedChannel ? "hidden md:flex md:w-80 md:shrink-0" : "flex w-full"}`}
         >
           {/* Search Box */}
-          <div className="border-zinc-100 border-b p-3 dark:border-border">
+          <div className="border-border border-b p-3 dark:border-border">
             <div className="relative">
               <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearchQuery(e.target.value)
                 }
@@ -828,7 +828,7 @@ export default function MessagesPage() {
                   {!isDmsCollapsed && (
                     <div className="space-y-0.5">
                       {directChannels.length === 0 ? (
-                        <div className="my-1 rounded-xl border border-zinc-200 border-dashed p-3 text-center dark:border-zinc-800">
+                        <div className="my-1 rounded-xl border border-border border-dashed p-3 text-center">
                           <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                             Henüz bir direkt mesaj yok.
                           </p>
@@ -856,9 +856,9 @@ export default function MessagesPage() {
 
         {/* Middle Column: Chat Conversation Stream */}
         {selectedChannel ? (
-          <div className="flex w-full flex-1 flex-col overflow-hidden bg-white dark:bg-card">
+          <div className="flex w-full flex-1 flex-col overflow-hidden bg-card dark:bg-card">
             {/* Active Chat Header */}
-            <div className="flex shrink-0 items-center justify-between gap-2 border-zinc-200 border-b px-3 py-2.5 sm:px-6 sm:py-3.5 dark:border-border">
+            <div className="flex shrink-0 items-center justify-between gap-2 border-border border-b px-3 py-2.5 sm:px-6 sm:py-3.5 dark:border-border">
               <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                 {/* Mobile Back Button */}
                 <button
@@ -998,7 +998,7 @@ export default function MessagesPage() {
                           {isEditing ? (
                             <div className="mt-2 space-y-2">
                               <textarea
-                                className="w-full rounded-lg border border-amber-300 bg-white p-2 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:bg-card dark:text-foreground"
+                                className="w-full rounded-lg border border-amber-300 bg-card p-2 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:bg-card dark:text-foreground"
                                 onChange={(e) => setEditInput(e.target.value)}
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter" && !e.shiftKey) {
@@ -1114,9 +1114,7 @@ export default function MessagesPage() {
                           {/* Floating Micro Action Toolbar */}
                           {!isEditing && (
                             <div
-                              className={`absolute -top-7 z-10 hidden items-center gap-0.5 rounded-lg border border-zinc-200 bg-white p-0.5 shadow-md group-hover/bubble:flex dark:border-border dark:bg-card ${
-                                isMe ? "right-0" : "left-0"
-                              }`}
+                              className={`absolute -top-7 z-10 hidden items-center gap-0.5 rounded-lg border border-border bg-card p-0.5 shadow-md group-hover/bubble:flex dark:border-border dark:bg-card ${ isMe ? "right-0" : "left-0" }`}
                             >
                               <button
                                 className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
@@ -1157,16 +1155,12 @@ export default function MessagesPage() {
 
                           {/* Message Bubble */}
                           <div
-                            className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${
-                              isMe
-                                ? "rounded-br-xs bg-blue-600 text-white"
-                                : "rounded-bl-xs border border-zinc-200 bg-white text-zinc-900 dark:border-border dark:bg-card dark:text-foreground"
-                            }`}
+                            className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${ isMe ? "rounded-br-xs bg-blue-600 text-white" : "rounded-bl-xs border border-border bg-card text-zinc-900 dark:border-border dark:bg-card dark:text-foreground" }`}
                           >
                             {isEditing ? (
                               <div className="min-w-[240px] space-y-2">
                                 <textarea
-                                  className="w-full rounded-lg border border-blue-400 bg-white p-2 text-xs text-zinc-900 focus:outline-none dark:bg-card dark:text-foreground"
+                                  className="w-full rounded-lg border border-blue-400 bg-card p-2 text-xs text-zinc-900 focus:outline-none dark:bg-card dark:text-foreground"
                                   onChange={(e) => setEditInput(e.target.value)}
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
@@ -1192,7 +1186,7 @@ export default function MessagesPage() {
                                       İptal
                                     </button>
                                     <button
-                                      className="rounded bg-white px-2 py-0.5 font-bold text-blue-700 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+                                      className="rounded bg-card px-2 py-0.5 font-bold text-blue-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                                       disabled={savingEdit || !editInput.trim()}
                                       onClick={() => handleSaveEdit(msg.id)}
                                       type="button"
@@ -1213,17 +1207,13 @@ export default function MessagesPage() {
                             {/* Render Embedded Entity Card if any */}
                             {msg.entityEmbeds?.map((embed) => (
                               <div
-                                className={`mt-2.5 rounded-xl border p-3 transition-all ${
-                                  isMe
-                                    ? "border-blue-500 bg-blue-700/80 text-white"
-                                    : "border-zinc-200 bg-zinc-50 text-zinc-900 dark:border-border dark:bg-muted/60 dark:text-foreground"
-                                }`}
+                                className={`mt-2.5 rounded-xl border p-3 transition-all ${ isMe ? "border-blue-500 bg-blue-700/80 text-white" : "border-border bg-zinc-50 text-zinc-900 dark:border-border dark:bg-muted/60 dark:text-foreground" }`}
                                 key={embed.id}
                               >
                                 <div className="flex items-start justify-between gap-2">
                                   <div className="flex items-center gap-2">
                                     <div
-                                      className={`rounded-lg p-1.5 ${isMe ? "bg-blue-800" : "bg-white shadow-2xs dark:bg-card"}`}
+                                      className={`rounded-lg p-1.5 ${isMe ? "bg-blue-800" : "bg-card shadow-2xs dark:bg-card"}`}
                                     >
                                       {embed.entityType === "Customer" && (
                                         <Users2 className="h-4 w-4 text-blue-500" />
@@ -1261,7 +1251,7 @@ export default function MessagesPage() {
                                   </div>
 
                                   {embed.entityStatus && (
-                                    <span className="rounded-md bg-white px-2 py-0.5 font-semibold text-[10px] dark:bg-zinc-900/20">
+                                    <span className="rounded-md bg-card px-2 py-0.5 font-semibold text-[10px]">
                                       {embed.entityStatus}
                                     </span>
                                   )}
@@ -1306,7 +1296,7 @@ export default function MessagesPage() {
             </div>
 
             {/* Rich Message Composer Bar */}
-            <div className="border-zinc-200 border-t bg-white p-3 pb-20 sm:p-4 md:pb-4 dark:border-border dark:bg-card">
+            <div className="border-border border-t bg-card p-3 pb-20 sm:p-4 md:pb-4 dark:border-border dark:bg-card">
               {/* Internal Note Banner if active */}
               {isInternalNote && (
                 <div className="mb-2 flex items-center justify-between rounded-lg bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 text-xs dark:bg-amber-950/40 dark:text-amber-300">
@@ -1385,7 +1375,7 @@ export default function MessagesPage() {
               {/* Text Input & Send */}
               <div className="flex items-end gap-2">
                 <textarea
-                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
+                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setMessageInput(e.target.value)
                   }
@@ -1445,7 +1435,7 @@ export default function MessagesPage() {
             className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-xl sm:p-6"
             showCloseButton={false}
           >
-            <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border">
+            <div className="flex shrink-0 items-center justify-between border-border border-b pb-3 dark:border-border">
               <div className="min-w-0 pr-2">
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Sohbete CRM Kartı Ekle
@@ -1468,33 +1458,21 @@ export default function MessagesPage() {
             {/* Type Selector Tabs */}
             <div className="my-3 flex shrink-0 rounded-xl bg-zinc-100 p-1 dark:bg-muted dark:bg-zinc-800">
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${
-                  entityType === "Customer"
-                    ? "bg-white text-blue-600 shadow-xs dark:bg-card"
-                    : "text-zinc-600 dark:text-zinc-400"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Customer" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Customer")}
                 type="button"
               >
                 Müşteriler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${
-                  entityType === "Order"
-                    ? "bg-white text-blue-600 shadow-xs dark:bg-card"
-                    : "text-zinc-600 dark:text-zinc-400"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Order" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Order")}
                 type="button"
               >
                 Siparişler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${
-                  entityType === "Product"
-                    ? "bg-white text-blue-600 shadow-xs dark:bg-card"
-                    : "text-zinc-600 dark:text-zinc-400"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Product" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Product")}
                 type="button"
               >
@@ -1506,7 +1484,7 @@ export default function MessagesPage() {
             <div className="relative my-2 shrink-0">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEntitySearch(e.target.value)
                 }
@@ -1524,7 +1502,7 @@ export default function MessagesPage() {
               ) : entityType === "Customer" ? (
                 customersList.map((cust) => (
                   <div
-                    className="flex cursor-pointer items-center justify-between rounded-xl border border-zinc-100 p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
+                    className="flex cursor-pointer items-center justify-between rounded-xl border border-border p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
                     key={cust.id}
                     onClick={() => {
                       handleSendMessage({
@@ -1559,7 +1537,7 @@ export default function MessagesPage() {
               ) : entityType === "Order" ? (
                 ordersList.map((ord) => (
                   <div
-                    className="flex cursor-pointer items-center justify-between rounded-xl border border-zinc-100 p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
+                    className="flex cursor-pointer items-center justify-between rounded-xl border border-border p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
                     key={ord.id}
                     onClick={() => {
                       handleSendMessage({
@@ -1594,7 +1572,7 @@ export default function MessagesPage() {
               ) : (
                 productsList.map((prod) => (
                   <div
-                    className="flex cursor-pointer items-center justify-between rounded-xl border border-zinc-100 p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
+                    className="flex cursor-pointer items-center justify-between rounded-xl border border-border p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:hover:bg-muted/40"
                     key={prod.id}
                     onClick={() => {
                       handleSendMessage({
@@ -1647,7 +1625,7 @@ export default function MessagesPage() {
             className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-4 sm:max-w-lg sm:p-6"
             showCloseButton={false}
           >
-            <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border">
+            <div className="flex shrink-0 items-center justify-between border-border border-b pb-3 dark:border-border">
               <div className="min-w-0 pr-2">
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Hazır Yanıt Şablonları
@@ -1669,7 +1647,7 @@ export default function MessagesPage() {
             <div className="custom-scrollbar mt-4 max-h-72 space-y-2 overflow-y-auto">
               {cannedResponses.map((item) => (
                 <div
-                  className="flex cursor-pointer items-start justify-between rounded-xl border border-zinc-100 p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:bg-card"
+                  className="flex cursor-pointer items-start justify-between rounded-xl border border-border p-3 transition-all hover:border-blue-200 hover:bg-blue-50/50 dark:border-border dark:bg-card"
                   key={item.id}
                   onClick={() => {
                     setMessageInput((prev) =>
@@ -1720,7 +1698,7 @@ export default function MessagesPage() {
             showCloseButton={false}
           >
             <form onSubmit={handleCreateChannel}>
-              <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border">
+              <div className="flex shrink-0 items-center justify-between border-border border-b pb-3 dark:border-border">
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Yeni Sohbet Kanalı Oluştur
                 </DialogTitle>
@@ -1745,7 +1723,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <Hash className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                      className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                       id="channel-name"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setNewChannelTitle(
@@ -1767,7 +1745,7 @@ export default function MessagesPage() {
                     Açıklama
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                    className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                     id="channel-desc"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelDesc(e.target.value)
@@ -1780,7 +1758,7 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     checked={newChannelIsPrivate}
-                    className="rounded border-zinc-300 text-blue-600 dark:border-zinc-700"
+                    className="rounded border-border text-blue-600"
                     id="is-private"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelIsPrivate(e.target.checked)
@@ -1796,7 +1774,7 @@ export default function MessagesPage() {
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-border">
+              <div className="flex shrink-0 items-center justify-end gap-2 border-border border-t pt-3 dark:border-border">
                 <Button
                   onClick={() => setIsCreateChannelOpen(false)}
                   size="sm"
@@ -1834,7 +1812,7 @@ export default function MessagesPage() {
             showCloseButton={false}
           >
             {/* Header */}
-            <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3 dark:border-border">
+            <div className="flex shrink-0 items-center justify-between border-border border-b pb-3 dark:border-border">
               <div className="min-w-0 pr-2">
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Yeni Direkt Mesaj
@@ -1859,7 +1837,7 @@ export default function MessagesPage() {
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                 <input
                   autoFocus
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setDmSearchQuery(e.target.value)
                   }
@@ -1956,7 +1934,7 @@ export default function MessagesPage() {
             </div>
 
             {/* Footer */}
-            <div className="mt-3 flex shrink-0 items-center justify-end border-zinc-100 border-t pt-3 dark:border-border">
+            <div className="mt-3 flex shrink-0 items-center justify-end border-border border-t pt-3 dark:border-border">
               <Button
                 onClick={() => setIsNewDmModalOpen(false)}
                 size="sm"

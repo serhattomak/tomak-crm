@@ -149,7 +149,7 @@ export function ProductGallery({
   if (displayImages.length === 0) {
     return (
       <div
-        className={`flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-3xl border border-zinc-200 border-dashed bg-white text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500 ${className}`}
+        className={`flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-3xl border border-border border-dashed bg-card text-zinc-400 dark:text-zinc-500 ${className}`}
         role="status"
       >
         <Package aria-hidden="true" className="h-10 w-10" />
@@ -186,7 +186,7 @@ export function ProductGallery({
       {/* Ana görsel */}
       <button
         aria-label={`${imageAlt(productName, safeActiveIndex)} — büyüt`}
-        className="relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs focus-visible:outline-2 focus-visible:outline-blue-600 dark:border-zinc-800/90 dark:bg-zinc-900"
+        className="relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-3xl border border-border bg-card shadow-xs focus-visible:outline-2 focus-visible:outline-blue-600"
         onClick={() => setLightboxIndex(safeActiveIndex)}
         type="button"
       >
@@ -219,11 +219,7 @@ export function ProductGallery({
             <div
               aria-label={imageAlt(productName, index)}
               aria-selected={isActive}
-              className={`group relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border bg-white transition-all dark:bg-zinc-900 ${
-                isActive
-                  ? "border-blue-600 ring-2 ring-blue-600/30"
-                  : "border-zinc-200/80 hover:border-zinc-300 dark:border-zinc-800/90 dark:hover:border-zinc-700"
-              } ${isDragging ? "opacity-50" : ""}`}
+              className={`group relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border bg-card transition-all ${ isActive ? "border-blue-600 ring-2 ring-blue-600/30" : "border-border hover:border-zinc-300 dark:hover:border-zinc-700" } ${isDragging ? "opacity-50" : ""}`}
               draggable={editable}
               key={`${src}-${index}`}
               onClick={() => setActiveIndex(index)}

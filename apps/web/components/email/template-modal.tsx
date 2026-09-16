@@ -129,7 +129,7 @@ function VariableChipButton({ onInsert, variable }: VariableChipButtonProps) {
 
   return (
     <button
-      className="inline-flex items-center gap-0.5 rounded-lg border border-zinc-200 bg-white px-2 py-0.5 font-medium font-mono text-[10px] text-zinc-700 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+      className="inline-flex items-center gap-0.5 rounded-lg border border-border bg-card px-2 py-0.5 font-medium font-mono text-[10px] text-zinc-700 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700"
       onClick={handleClick}
       title={VARIABLE_LABELS[variable]}
       type="button"
@@ -170,7 +170,7 @@ function ExtraFieldsSection({
   termsAndConditions,
 }: ExtraFieldsProps) {
   return (
-    <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/30">
+    <div className="rounded-xl border border-border bg-zinc-50/50 dark:bg-zinc-900/30">
       <button
         className="flex w-full items-center justify-between px-3 py-2.5 text-left font-medium text-xs text-zinc-700 transition hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
         onClick={onToggle}
@@ -188,7 +188,7 @@ function ExtraFieldsSection({
       </button>
 
       {isOpen ? (
-        <div className="space-y-3 border-zinc-200/60 border-t p-3 text-xs dark:border-zinc-800">
+        <div className="space-y-3 border-border border-t p-3 text-xs">
           <div>
             <label
               className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300"
@@ -197,7 +197,7 @@ function ExtraFieldsSection({
               Banka Bilgileri
             </label>
             <textarea
-              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
               id="extraBankDetails"
               onChange={onBankDetailsChange}
               placeholder="IBAN, Banka ve Şube bilgileri..."
@@ -214,7 +214,7 @@ function ExtraFieldsSection({
               Ödeme Koşulları
             </label>
             <textarea
-              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
               id="extraPaymentTerms"
               onChange={onPaymentTermsChange}
               placeholder="Ödeme vadesi ve şartları..."
@@ -231,7 +231,7 @@ function ExtraFieldsSection({
               Teslimat Şartları
             </label>
             <textarea
-              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
               id="extraDeliveryTerms"
               onChange={onDeliveryTermsChange}
               placeholder="Teslimat süresi ve taşıma koşulları..."
@@ -248,7 +248,7 @@ function ExtraFieldsSection({
               Genel Hüküm ve Koşullar
             </label>
             <textarea
-              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
               id="extraTerms"
               onChange={onTermsChange}
               placeholder="Yasal maddeler ve şartlar..."
@@ -303,8 +303,8 @@ function TemplateLivePreview({
   const displayHtml = renderEmailPreviewHtml(htmlBody, isDark);
 
   return (
-    <div className="flex h-full flex-col space-y-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-900/30">
-      <div className="flex items-center justify-between border-zinc-200 border-b pb-2.5 dark:border-zinc-800">
+    <div className="flex h-full flex-col space-y-3 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-900/30">
+      <div className="flex items-center justify-between border-border border-b pb-2.5">
         <div className="flex items-center gap-1.5 font-medium text-xs text-zinc-700 dark:text-zinc-300">
           <Eye className="h-4 w-4 text-sky-500" />
           <span>Canlı Şablon Önizlemesi</span>
@@ -312,7 +312,7 @@ function TemplateLivePreview({
 
         <div className="flex items-center gap-1.5">
           <button
-            className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
             onClick={handleTogglePreviewTheme}
             title={isDark ? "Açık (Kağıt) Görünüme Geç" : "Koyu Görünüme Geç"}
             type="button"
@@ -326,7 +326,7 @@ function TemplateLivePreview({
           </button>
 
           <button
-            className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2.5 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
             onClick={onCopyHtml}
             title="HTML Kodunu Kopyala"
             type="button"
@@ -337,7 +337,7 @@ function TemplateLivePreview({
         </div>
       </div>
 
-      <div className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="rounded-xl border border-border bg-card px-3 py-2 text-xs">
         <span className="font-semibold text-zinc-500">Konu: </span>
         <span className="text-zinc-900 dark:text-zinc-100">
           {subject || "(Konu belirtilmedi)"}
@@ -345,9 +345,7 @@ function TemplateLivePreview({
       </div>
 
       <div
-        className={`flex-1 overflow-hidden rounded-xl border transition-colors ${
-          isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"
-        }`}
+        className={`flex-1 overflow-hidden rounded-xl border transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950" : "border-border bg-card" }`}
       >
         <iframe
           className="h-full min-h-[380px] w-full border-0"
@@ -585,7 +583,7 @@ export function TemplateModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div>
             <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
               {template ? "Şablonu Düzenle" : "Yeni E-posta Şablonu"}
@@ -623,7 +621,7 @@ export function TemplateModal({
                   Şablon Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                   id="templateNameInput"
                   onChange={handleNameChange}
                   placeholder="Örn: Standart Bilgilendirme / Teklif Şablonu"
@@ -641,7 +639,7 @@ export function TemplateModal({
                   E-posta Konusu *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                   id="templateSubjectInput"
                   onChange={handleSubjectChange}
                   placeholder="Örn: {{companyName}} - Teklif #{{quoteNumber}}"
@@ -675,7 +673,7 @@ export function TemplateModal({
                   Şablon Gövdesi (HTML / Handlebars) *
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-3 font-mono text-xs text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card p-3 font-mono text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
                   id="templateHtmlBodyTextarea"
                   onChange={handleHtmlBodyChange}
                   placeholder="<p>Sayın {{customerName}},</p><p>Teklifimiz ektedir...</p>"
@@ -688,7 +686,7 @@ export function TemplateModal({
               <div className="flex items-center gap-2">
                 <input
                   checked={isDefault}
-                  className="h-4 w-4 rounded border-zinc-300 text-sky-600 focus:ring-sky-500 dark:border-zinc-700"
+                  className="h-4 w-4 rounded border-border text-sky-600 focus:ring-sky-500"
                   id="templateIsDefaultCheckbox"
                   onChange={handleIsDefaultChange}
                   type="checkbox"
@@ -725,9 +723,9 @@ export function TemplateModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-zinc-100 border-t px-6 py-3.5 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 border-border border-t px-6 py-3.5">
             <button
-              className="rounded-xl border border-zinc-200 px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border px-4 py-2 font-medium text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
