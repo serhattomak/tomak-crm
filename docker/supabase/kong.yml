@@ -1,0 +1,189 @@
+# Kong declarative configuration for the crm local Supabase stack.
+#
+# Reference for the route set: `D:/serhatdev/nereye/docker/volumes/api/kong.yml`
+# (auth + rest) extended with the two routes crm actually needs beyond that:
+# storage (product images, CV uploads — see CRM.BuildingBlock/Storage) and
+# realtime (kept available even though the app currently notifies over SignalR).
+#
+# NOTE ON THE KEYS BELOW — read before "fixing" this to use ${VARS}.
+# nereye and W2Wear both write `${SUPABASE_ANON_KEY}` here, and it does NOT work:
+# Kong 2.8.1 does not interpolate environment variables in declarative config.
+# Measured on this machine 2026-09-17 by parsing the file and reading the values
+# back from the Admin API — both `${VAR}` and `${{ env "VAR" }}` survived as
+# literal text. It went unnoticed because no route here applies the `key-auth`
+# plugin, so nothing ever validated these credentials.
+#
+# The values below are Supabase's *published local-dev* keys (JWT issuer
+# "supabase-demo"), not secrets. The identical strings are already committed in
+# this repo in `apps/web/.env.local` and in
+# `apps/api/src/CRM.BuildingBlocks/Storage/SupabaseStorageOptions.cs`.
+# They are signed with JWT secret
+# `super-secret-jwt-token-with-at-least-32-characters-long`. Changing one without
+# the others breaks login and file uploads.
+
+_format_version: "2.1"
+_transform: true
+
+consumers:
+  - username: anon
+    keyauth_credentials:
+      - key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+  - username: service_role
+    keyauth_credentials:
+      - key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+
+acls:
+  - consumer: anon
+    group: anon
+  - consumer: service_role
+    group: admin
+
+services:
+  # ---------------------------------------------------------------------------
+  # Auth (GoTrue)
+  # ---------------------------------------------------------------------------
+  # verify / callback / authorize are open: they are reached by the browser
+  # before a session exists.
+  - name: auth-v1-open
+    url: http://auth:9999/verify
+    routes:
+      - name: auth-v1-open
+        strip_path: true
+        paths:
+          - /auth/v1/verify
+    plugins:
+      - name: cors
+
+  - name: auth-v1-open-callback
+    url: http://auth:9999/callback
+    routes:
+      - name: auth-v1-open-callback
+        strip_path: true
+        paths:
+          - /auth/v1/callback
+    plugins:
+      - name: cors
+
+  - name: auth-v1-open-authorize
+    url: http://auth:9999/authorize
+    routes:
+      - name: auth-v1-open-authorize
+        strip_path: true
+        paths:
+          - /auth/v1/authorize
+    plugins:
+      - name: cors
+
+  - name: auth-v1
+    url: http://auth:9999/
+    routes:
+      - name: auth-v1
+        strip_path: true
+        paths:
+          - /auth/v1/
+    plugins:
+      - name: cors
+
+  # OIDC discovery document. Auth serves it; Kong must not strip the leading dot.
+  - name: well-known-oauth
+    url: http://auth:9999/.well-known/oauth-authorization-server
+    routes:
+      - name: well-known-oauth
+        strip_path: true
+        paths:
+          - /.well-known/oauth-authorization-server
+    plugins:
+      - name: cors
+
+  # ---------------------------------------------------------------------------
+  # REST (PostgREST)
+  # ---------------------------------------------------------------------------
+  - name: rest-v1
+    url: http://rest:3000/
+    routes:
+      - name: rest-v1
+        strip_path: true
+        paths:
+          - /rest/v1/
+    plugins:
+      - name: cors
+
+  # ---------------------------------------------------------------------------
+  # Storage
+  # ---------------------------------------------------------------------------
+  # The .NET API calls this exact shape:
+  #   POST {Url}/storage/v1/object/{bucket}/{path}   with apikey + Bearer service key
+  #   POST {Url}/storage/v1/object/sign/{bucket}/{path}
+  # See CRM.BuildingBlocks/Storage/SupabaseStorageService.cs.
+  # Authorization is passed through untouched — storage-api does its own JWT check.
+  - name: storage-v1
+    url: http://storage:5000/
+    routes:
+      - name: storage-v1
+        strip_path: true
+        paths:
+          - /storage/v1/
+    plugins:
+      - name: cors
+
+  # ---------------------------------------------------------------------------
+  # Realtime (websocket + REST control plane)
+  # ---------------------------------------------------------------------------
+  - name: realtime-v1-ws
+    url: http://realtime:4000/socket
+    protocol: ws
+    routes:
+      - name: realtime-v1-ws
+        strip_path: true
+        paths:
+          - /realtime/v1/
+    plugins:
+      - name: cors
+
+  - name: realtime-v1-rest
+    url: http://realtime:4000/api
+    protocol: http
+    routes:
+      - name: realtime-v1-rest
+        strip_path: true
+        paths:
+          - /realtime/v1/api
+    plugins:
+      - name: cors
+
+  # ---------------------------------------------------------------------------
+  # postgres-meta — Studio's intropsection API
+  # ---------------------------------------------------------------------------
+  - name: pg-meta
+    url: http://meta:8080/
+    routes:
+      - name: pg-meta
+        strip_path: true
+        paths:
+          - /pg/
+    plugins:
+      - name: cors
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      headers:
+        - Authorization
+        - Content-Type
+        - apikey
+        - x-upsert
+        - x-client-info
+      exposed_headers:
+        - Content-Range
+        - X-Total-Count
+      credentials: true
+      max_age: 3600

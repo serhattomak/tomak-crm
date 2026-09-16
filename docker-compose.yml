@@ -4,9 +4,342 @@
 # hoisted to the workspace root, which renames the folder — without this line,
 # `docker compose up` would create a second, empty set of volumes and the existing
 # data would look lost. Same failure mode as `project_id` in `supabase/config.toml`.
+#
+# It is also what makes Docker Desktop show the whole stack as ONE group with a
+# single Start/Stop control. Do not rename it.
 name: crm-monorepo
 
+# ---------------------------------------------------------------------------
+# Shared local-dev values.
+#
+# Every value has a working default so that `docker compose up` — and Docker
+# Desktop's Start button — needs no `.env` at all. To override, create a root
+# `.env`; `.env.example` documents the full contract.
+#
+# The JWT secret and the two legacy keys are Supabase's *published* local-dev
+# values. They are not secrets, and the same strings are already committed in
+# this repo — `apps/web/.env.local` (URL + anon key) and
+# `apps/api/src/CRM.BuildingBlocks/Storage/SupabaseStorageOptions.cs`
+# (URL + service-role key). They are all signed with the JWT secret below.
+# Change one of the three and login plus file uploads break.
+# ---------------------------------------------------------------------------
+x-jwt-secret: &jwt-secret "${SUPABASE_JWT_SECRET:-super-secret-jwt-token-with-at-least-32-characters-long}"
+x-anon-key: &anon-key "${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0}"
+x-service-key: &service-key "${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU}"
+
 services:
+  # ===========================================================================
+  # Supabase
+  #
+  # This replaces the Supabase CLI stack (`supabase start`) so that the whole
+  # environment is one Docker Compose project: one group in Docker Desktop, one
+  # Start/Stop button, and image tags pinned to a version instead of whatever the
+  # installed CLI happens to ship.
+  #
+  # What is here, and why the rest is not:
+  #   postgres / auth / rest / storage / meta / studio / kong / mailpit / realtime
+  # Dropped as unused, each verified rather than assumed:
+  #   edge-runtime — no `supabase/functions/` directory exists and nothing calls
+  #                  `functions.invoke`
+  #   analytics (logflare) + vector — nothing reads analytics
+  #   pooler (supavisor) — `[db.pooler] enabled = false` in supabase/config.toml
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # Postgres — the Supabase build (pgvector, pgcrypto, pgaudit, pgjwt, and the
+  # `auth`/`storage`/`_realtime` schemas plus the anon/authenticated/service_role
+  # roles baked into the image).
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: public.ecr.aws/supabase/postgres:17.6.1.165
+    container_name: crm-supabase-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: postgres
+      JWT_SECRET: *jwt-secret
+      JWT_EXP: 3600
+    ports:
+      - "${POSTGRES_PORT:-54322}:5432"
+    volumes:
+      # Named on purpose: this is the volume the Supabase CLI created and the
+      # 267 MB of real development data lives in. A project-prefixed default
+      # (`crm-monorepo_pg_data`) would be a new, empty volume and the data would
+      # appear lost. Verify with:
+      #   docker volume inspect supabase_db_crm-monorepo --format '{{.Mountpoint}}'
+      - supabase_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # Auth (GoTrue)
+  # ---------------------------------------------------------------------------
+  auth:
+    image: public.ecr.aws/supabase/gotrue:v2.195.0
+    container_name: crm-supabase-auth
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}/auth/v1
+      GOTRUE_DB_DRIVER: postgres
+      # Must be supabase_auth_admin, NOT postgres. Measured on this database:
+      # `postgres` is not a superuser (rolsuper = f) and the `auth` schema ACL
+      # grants it only USAGE — running GoTrue as `postgres` fails with
+      # "permission denied for schema auth (SQLSTATE 42501)" on its very first
+      # migration. supabase_auth_admin is the only login role with CREATE there.
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres?sslmode=disable
+      # Mirrors `[auth] site_url` in supabase/config.toml.
+      GOTRUE_SITE_URL: ${SITE_URL:-http://127.0.0.1:3000}
+      GOTRUE_URI_ALLOW_LIST: "*"
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_SECRET: *jwt-secret
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_SMTP_HOST: mailpit
+      GOTRUE_SMTP_PORT: 1025
+      GOTRUE_SMTP_ADMIN_EMAIL: admin@crm.local
+      GOTRUE_SMTP_SENDER_NAME: CRM Local
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # REST (PostgREST)
+  # ---------------------------------------------------------------------------
+  rest:
+    image: public.ecr.aws/supabase/postgrest:v16.1
+    container_name: crm-supabase-rest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
+      # `postgres` deliberately, not the conventional `authenticator`: PostgREST
+      # switches roles per request, and on this database only `postgres` is a
+      # member of anon/authenticated/service_role (`authenticator` is not —
+      # measured with pg_has_role). Using authenticator would make every request
+      # fail at SET ROLE.
+      # `public` and `graphql_public` mirror `[api] schemas` in config.toml;
+      # `storage` is included because storage-api resolves object metadata
+      # through PostgREST.
+      PGRST_DB_SCHEMAS: public,graphql_public,storage
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: *jwt-secret
+      PGRST_DB_EXTRA_SEARCH_PATH: public,extensions
+
+  # ---------------------------------------------------------------------------
+  # Storage API
+  #
+  # Required: the .NET API uploads product images and CVs through this service.
+  # ---------------------------------------------------------------------------
+  storage:
+    image: public.ecr.aws/supabase/storage-api:v1.70.3
+    container_name: crm-supabase-storage
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rest:
+        condition: service_started
+    environment:
+      ANON_KEY: *anon-key
+      SERVICE_KEY: *service-key
+      POSTGREST_URL: http://rest:3000
+      PGRST_JWT_SECRET: *jwt-secret
+      AUTH_JWT_SECRET: *jwt-secret
+      # supabase_storage_admin is the schema owner and the only login role with
+      # CREATE on `storage`. `postgres` has USAGE only, which is enough to
+      # upload but not to run storage-api's own DDL.
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres?sslmode=disable
+      STORAGE_PUBLIC_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+      REQUEST_ALLOW_X_FORWARDED_PATH: "true"
+      FILE_SIZE_LIMIT: 52428800
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+    volumes:
+      # Named on purpose — same reasoning as above. The CLI kept this volume at
+      # /mnt and its only contents were an empty `stub/` directory, so there is
+      # nothing to migrate; new objects land in /var/lib/storage/stub/.
+      - supabase_storage_data:/var/lib/storage
+    healthcheck:
+      # 127.0.0.1, NOT localhost. storage-api binds to 127.0.0.1 and the
+      # container IP only; inside the container `localhost` resolves to [::1]
+      # first, so a localhost probe fails with "Connection refused" and reports
+      # (unhealthy) while the API is serving fine. Measured: 127.0.0.1 exit 0,
+      # localhost exit 1. (W2Wear's compose has the same latent fault.)
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5000/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Realtime
+  #
+  # The web app currently pushes notifications over SignalR (`/hubs/crm`), not
+  # Supabase Realtime — kept running by request so it is available without a
+  # later rebuild. Healthcheck probes the root: v2.129.x answers /api/tenants/
+  # <tenant>/health with 403 even for valid keys.
+  # ---------------------------------------------------------------------------
+  realtime:
+    image: public.ecr.aws/supabase/realtime:v2.129.3
+    container_name: crm-supabase-realtime
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${REALTIME_PORT:-54325}:4000"
+    environment:
+      PORT: 4000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: supabase_admin
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      DB_NAME: postgres
+      DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
+      DB_ENC_KEY: ${REALTIME_DB_ENC_KEY:-supabaserealtime}
+      API_JWT_SECRET: *jwt-secret
+      METRICS_JWT_SECRET: *jwt-secret
+      SECRET_KEY_BASE: "${REALTIME_SECRET_KEY_BASE:-crm-local-realtime-secret-key-base-change-me-in-production-0123456789}"
+      ERL_AFLAGS: -proto_dist inet_tcp
+      DNS_NODES: "''"
+      RLIMIT_NOFILE: "10000"
+      APP_NAME: realtime
+      SEED_SELF_HOST: "true"
+      RUN_JANITOR: "true"
+      DISABLE_HEALTHCHECK_LOGGING: "true"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4000/"]
+      timeout: 5s
+      interval: 15s
+      retries: 5
+      start_period: 20s
+
+  # ---------------------------------------------------------------------------
+  # postgres-meta — introspection API used by Studio
+  # ---------------------------------------------------------------------------
+  meta:
+    image: public.ecr.aws/supabase/postgres-meta:v0.97.0
+    container_name: crm-supabase-meta
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: postgres
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: postgres
+      PG_META_DB_USER: postgres
+      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    healthcheck:
+      # No wget/curl in this image — a wget probe fails with exit 127 and the
+      # container reports (unhealthy) while the API is answering 200. Probe with
+      # the runtime that is actually present.
+      test: ["CMD-SHELL", "node -e 'fetch(\"http://localhost:8080/health\").then(r=>process.exit(r.status===200?0:1)).catch(()=>process.exit(1))'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Studio — the dashboard on http://127.0.0.1:54323
+  # ---------------------------------------------------------------------------
+  studio:
+    image: public.ecr.aws/supabase/studio:2026.08.10-sha-5b68af1
+    container_name: crm-supabase-studio
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      meta:
+        condition: service_started
+    ports:
+      - "${STUDIO_PORT:-54323}:3000"
+    environment:
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      DEFAULT_ORGANIZATION_NAME: CRM
+      DEFAULT_PROJECT_NAME: Local
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_PUBLIC_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+      SUPABASE_ANON_KEY: *anon-key
+      SUPABASE_SERVICE_KEY: *service-key
+      AUTH_JWT_SECRET: *jwt-secret
+    healthcheck:
+      # This OVERRIDES the probe the image ships. The image's probe fetches
+      # http://localhost:3000/api/platform/profile, but the Next server binds to
+      # the container hostname, so `localhost` refuses and Studio reports
+      # (unhealthy) even though http://127.0.0.1:54323 answers 200 from the host.
+      # Verified: correct port exits 0, a dead port exits 1.
+      test: ["CMD-SHELL", "node -e 'fetch(\"http://\"+require(\"os\").hostname()+\":3000/api/platform/profile\").then(r=>process.exit(r.status===200?0:1)).catch(()=>process.exit(1))'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ---------------------------------------------------------------------------
+  # Kong — the single entry point on http://127.0.0.1:54321
+  # Routes and the credential block live in docker/supabase/kong.yml.
+  # ---------------------------------------------------------------------------
+  kong:
+    image: public.ecr.aws/supabase/kong:2.8.1
+    container_name: crm-supabase-kong
+    restart: unless-stopped
+    depends_on:
+      auth:
+        condition: service_healthy
+      rest:
+        condition: service_started
+      storage:
+        condition: service_started
+    ports:
+      - "${SUPABASE_PORT:-54321}:8000"
+    volumes:
+      - ./docker/supabase/kong.yml:/var/lib/kong/kong.yml:ro
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
+      KONG_DNS_ORDER: LAST,A,CNAME
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
+      KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
+
+  # ---------------------------------------------------------------------------
+  # Mailpit — captures every email the stack sends.
+  #
+  # UI on http://127.0.0.1:54324. SMTP 1025 is deliberately NOT published: auth
+  # reaches it over the compose network, and publishing it collides with the
+  # mailpit of any other stack that happens to be up.
+  # ---------------------------------------------------------------------------
+  mailpit:
+    image: public.ecr.aws/supabase/mailpit:v1.30.2
+    container_name: crm-supabase-mailpit
+    restart: unless-stopped
+    ports:
+      - "${MAILPIT_PORT:-54324}:8025"
+
+  # ===========================================================================
+  # Application backing services
+  # ===========================================================================
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: crm-rabbitmq
@@ -41,5 +374,14 @@ services:
       retries: 5
 
 volumes:
+  # Unnamed on purpose: the project prefix supplies the name, which is what makes
+  # them `crm-monorepo_rabbitmq_data` / `crm-monorepo_redis_data` and reuses the
+  # volumes that already exist.
   rabbitmq_data:
   redis_data:
+  # Named on purpose: these two predate this compose file and belong to the
+  # Supabase CLI. Keeping the literal names is what preserves the data.
+  supabase_db_data:
+    name: supabase_db_crm-monorepo
+  supabase_storage_data:
+    name: supabase_storage_crm-monorepo
