@@ -1,8 +1,10 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   AlertCircle,
   BarChart3,
@@ -540,38 +542,44 @@ export default function PromotionsPage() {
                 />
               </div>
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => setTypeFilter(e.target.value)}
+              <SelectField
+                aria-label="İndirim tipi filtresi"
+                onChange={setTypeFilter}
+                options={[
+                  { label: "Yüzde İndirimi (%)", value: "Percentage" },
+                  { label: "Sabit Tutar (₺)", value: "FixedAmount" },
+                  { label: "Sepet Barajı", value: "CartThreshold" },
+                  { label: "X Al Y Öde", value: "BuyXGetY" },
+                  { label: "Ücretsiz Kargo", value: "FreeShipping" },
+                ]}
+                placeholder="Tüm İndirim Tipleri"
+                triggerClassName="h-8 px-3"
                 value={typeFilter}
-              >
-                <option value="">Tüm İndirim Tipleri</option>
-                <option value="Percentage">Yüzde İndirimi (%)</option>
-                <option value="FixedAmount">Sabit Tutar (₺)</option>
-                <option value="CartThreshold">Sepet Barajı</option>
-                <option value="BuyXGetY">X Al Y Öde</option>
-                <option value="FreeShipping">Ücretsiz Kargo</option>
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => setTriggerFilter(e.target.value)}
+              <SelectField
+                aria-label="Tetikleyici filtresi"
+                onChange={setTriggerFilter}
+                options={[
+                  { label: "Otomatik Kural", value: "Automatic" },
+                  { label: "Kupon Kodu Gerektiren", value: "CouponCode" },
+                ]}
+                placeholder="Tüm Tetikleyiciler"
+                triggerClassName="h-8 px-3"
                 value={triggerFilter}
-              >
-                <option value="">Tüm Tetikleyiciler</option>
-                <option value="Automatic">Otomatik Kural</option>
-                <option value="CouponCode">Kupon Kodu Gerektiren</option>
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => setActiveFilter(e.target.value)}
+              <SelectField
+                aria-label="Aktiflik filtresi"
+                onChange={setActiveFilter}
+                options={[
+                  { label: "Sadece Aktif", value: "true" },
+                  { label: "Sadece Pasif", value: "false" },
+                ]}
+                placeholder="Tüm Durumlar"
+                triggerClassName="h-8 px-3"
                 value={activeFilter}
-              >
-                <option value="">Tüm Durumlar</option>
-                <option value="true">Sadece Aktif</option>
-                <option value="false">Sadece Pasif</option>
-              </select>
+              />
             </div>
 
             <button
@@ -793,18 +801,17 @@ export default function PromotionsPage() {
                 />
               </div>
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => setCouponCampaignFilter(e.target.value)}
+              <Combobox
+                aria-label="Kampanya filtresi"
+                onChange={setCouponCampaignFilter}
+                options={[
+                  { label: "Tüm Kampanyalar", value: "" },
+                  ...campaigns.map((c) => ({ label: c.name, value: c.id })),
+                ]}
+                placeholder="Tüm Kampanyalar"
+                triggerClassName="h-8 px-3"
                 value={couponCampaignFilter}
-              >
-                <option value="">Tüm Kampanyalar</option>
-                {campaigns.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <button
