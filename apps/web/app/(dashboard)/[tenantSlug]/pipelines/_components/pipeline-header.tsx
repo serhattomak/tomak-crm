@@ -1,7 +1,7 @@
-/* Hallmark · component: pipeline-header · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { Combobox } from "@workspace/ui/components/combobox";
 import {
   Kanban,
   Plus,
@@ -46,17 +46,16 @@ export function PipelineHeader({
 
           {/* Pipeline Selector */}
           <div className="flex items-center gap-1.5">
-            <select
-              className="h-8 rounded-md border border-input bg-background px-3 font-semibold text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-              onChange={(e) => onSelectPipeline(e.target.value)}
+            <Combobox
+              aria-label="Pipeline seçici"
+              onChange={onSelectPipeline}
+              options={pipelines.map((p) => ({
+                label: p.isDefault ? `${p.name} (Varsayılan)` : p.name,
+                value: p.id,
+              }))}
+              triggerClassName="h-8"
               value={selectedPipelineId}
-            >
-              {pipelines.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} {p.isDefault ? "(Varsayılan)" : ""}
-                </option>
-              ))}
-            </select>
+            />
 
             <Button
               className="h-8 w-8 text-muted-foreground hover:text-foreground"
