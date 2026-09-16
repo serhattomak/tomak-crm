@@ -172,6 +172,13 @@ const RULES = [
     pattern: /\bstyle=\{\{/g,
     severity: "warn",
   },
+  {
+    hint: "hardcoded card surface — use bg-card / border-border. The dark: partner must go with it: it sets the same property in the same variant, so the legacy class wins in the compiled CSS and the token never applies (Faz 5.0)",
+    id: "CARD_SURFACE",
+    pattern:
+      /(?<![A-Za-z:/-])(?:bg-white(?=[^"'\n]*dark:bg-zinc-(?:800|900|950))|border-zinc-(?:100|200|300)(?:\/\d+)?(?=[^"'\n]*dark:border-zinc-(?:700|800|900)))/g,
+    severity: "warn",
+  },
 ];
 
 /**
