@@ -1,0 +1,44 @@
+# Line endings, made explicit.
+#
+# The repo had `core.autocrlf = true` and NO .gitattributes, so every blob was LF while
+# the working tree was CRLF (368 tracked text files) and 82 files were LF — the state was
+# not even uniform. Measured consequences, 2026-09-16:
+#   - `edit` cannot match multi-line content in a CRLF file, so multi-line edits had to go
+#     through bespoke scripts that use the file's own EOL
+#   - Biome flags every line ending, roughly DOUBLING the error density of a CRLF file
+#     (0.061-0.077 errors/line) against an LF one (0.032-0.045)
+#   - comparing a checked-out file with `git show` flags every text file as different
+#
+# `eol=lf` overrides `core.autocrlf` for every file matched here, so the working tree and
+# the blobs agree from now on. A refresh of the working tree is still needed once:
+#   git checkout-index --force --all
+* text=auto eol=lf
+
+# Windows-only shells genuinely need CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Not text. `text=auto` would usually detect these, but a mis-detection here corrupts a
+# binary silently, and the failure surfaces much later.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.icns binary
+*.svg text eol=lf
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.xlsx binary
+*.xls binary
+*.docx binary
+*.mp4 binary
+*.mp3 binary
