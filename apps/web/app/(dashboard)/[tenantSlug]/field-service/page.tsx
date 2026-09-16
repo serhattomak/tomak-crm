@@ -672,7 +672,7 @@ export default function FieldServicePage() {
                       <div
                         key={task.id}
                         onClick={() => handleToggleTask(task.id)}
-                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${ task.isCompleted ? "border-emerald-200/80 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300" }`}
+                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${ task.isCompleted ? "border-emerald-200/80 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300" }`}
                       >
                         {task.isCompleted ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />

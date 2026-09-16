@@ -81,8 +81,8 @@ export default function WorkspaceSettingsPage() {
         <div
           className={`rounded-xl p-3.5 font-medium text-xs ${
             statusMsg.type === "success"
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-rose-200 bg-rose-50 text-rose-700"
+              ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+              : "border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
           }`}
         >
           {statusMsg.text}

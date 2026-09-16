@@ -222,8 +222,8 @@ export default function RolesManagementPage() {
         <div
           className={`rounded-xl p-3.5 font-medium text-xs ${
             statusMsg.type === "success"
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-rose-200 bg-rose-50 text-rose-700"
+              ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+              : "border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
           }`}
         >
           {statusMsg.text}
@@ -248,7 +248,7 @@ export default function RolesManagementPage() {
                 const isSelected = selectedRole?.id === role.id;
                 return (
                   <div
-                    className={`cursor-pointer rounded-xl border p-3 transition-all ${ isSelected ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs" : "border-border bg-card text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
+                    className={`cursor-pointer rounded-xl border p-3 transition-all ${ isSelected ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60" : "border-border bg-card text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
                   >
@@ -287,7 +287,7 @@ export default function RolesManagementPage() {
                   <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedRole.name}
                     {selectedRole.isDefault && (
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-3xs text-amber-700">
+                      <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-semibold text-3xs text-amber-700 dark:text-amber-300">
                         Sistem Varsayılanı
                       </span>
                     )}
@@ -324,7 +324,7 @@ export default function RolesManagementPage() {
                         const isChecked = selectedPermIds.has(perm.id);
                         return (
                           <label
-                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${ isChecked ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:text-zinc-100" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
+                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${ isChecked ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60 dark:text-zinc-100" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
                             key={perm.id}
                           >
                             <input

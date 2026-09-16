@@ -858,7 +858,7 @@ function RecruitmentPageContent() {
                                     </>
                                   )}
                                   {req.employmentType && (
-                                    <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-semibold text-3xs text-blue-700">
+                                    <span className="rounded-md bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 font-semibold text-3xs text-blue-700 dark:text-blue-300">
                                       {req.employmentType}
                                     </span>
                                   )}
@@ -1089,7 +1089,7 @@ function RecruitmentPageContent() {
                                   <div className="flex flex-wrap gap-1">
                                     {c.tags.slice(0, 3).map((tag) => (
                                       <span
-                                        className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
+                                        className="inline-flex items-center gap-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-3xs text-blue-700 dark:text-blue-300"
                                         key={`${c.id}-${tag}`}
                                       >
                                         <Tags className="h-2.5 w-2.5" />
@@ -1247,7 +1247,7 @@ function RecruitmentPageContent() {
                                   {stage.name}
                                 </span>
                                 {stage.isDefault && (
-                                  <span className="rounded-full bg-blue-100 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
+                                  <span className="rounded-full bg-blue-100 dark:bg-blue-950/60 px-1.5 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                                     Varsayılan
                                   </span>
                                 )}
@@ -1291,7 +1291,7 @@ function RecruitmentPageContent() {
                                       </span>
                                       {app.score !== undefined &&
                                         app.score !== null && (
-                                          <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
+                                          <span className="rounded-md bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                                             Puan {app.score}
                                           </span>
                                         )}
@@ -1339,19 +1339,19 @@ function RecruitmentPageContent() {
                         );
                       })}
                     {applicationsByStage.unassigned.length > 0 && (
-                      <div className="flex w-72 shrink-0 flex-col rounded-2xl border border-amber-200 bg-amber-50/40">
-                        <div className="flex items-center justify-between rounded-t-2xl border-amber-200 border-b bg-card px-3 py-2.5">
+                      <div className="flex w-72 shrink-0 flex-col rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50/40 dark:bg-amber-950/60">
+                        <div className="flex items-center justify-between rounded-t-2xl border-amber-200 dark:border-amber-800 border-b bg-card px-3 py-2.5">
                           <span className="font-bold text-amber-800 text-xs">
                             Atanmamış
                           </span>
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-2xs text-amber-700">
+                          <span className="rounded-full bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-700 dark:text-amber-300">
                             {applicationsByStage.unassigned.length}
                           </span>
                         </div>
                         <div className="flex flex-col gap-2 p-2">
                           {applicationsByStage.unassigned.map((app) => (
                             <div
-                              className="rounded-xl border border-amber-200 bg-card p-3 shadow-xs"
+                              className="rounded-xl border border-amber-200 dark:border-amber-800 bg-card p-3 shadow-xs"
                               key={app.id}
                             >
                               <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
@@ -1467,7 +1467,7 @@ function RecruitmentPageContent() {
                                 <TableCell className="px-6 py-4 text-center">
                                   {app.score !== undefined &&
                                   app.score !== null ? (
-                                    <span className="rounded-lg bg-blue-50 px-2.5 py-1 font-bold text-blue-700 text-xs">
+                                    <span className="rounded-lg bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 font-bold text-blue-700 dark:text-blue-300 text-xs">
                                       {app.score}
                                     </span>
                                   ) : (
@@ -1626,7 +1626,7 @@ function RecruitmentPageContent() {
                                   {s.name}
                                 </span>
                                 {s.isDefault && (
-                                  <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-3xs text-blue-700">
+                                  <span className="rounded-full bg-blue-100 dark:bg-blue-950/60 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                                     Varsayılan
                                   </span>
                                 )}
@@ -1692,7 +1692,7 @@ function RecruitmentPageContent() {
                   </div>
                 )}
 
-                <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-800 text-xs">
+                <div className="mt-4 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 p-3 text-amber-800 dark:text-amber-300 text-xs">
                   <p className="font-bold">Notlar</p>
                   <ul className="mt-1 list-disc space-y-0.5 pl-4">
                     <li>
@@ -2473,7 +2473,7 @@ function CandidateModal({
             )}
           </div>
 
-          <label className="flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-3">
+          <label className="flex items-start gap-2 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 p-3">
             <input
               checked={consentGiven}
               className="mt-0.5 h-4 w-4 rounded border-border text-blue-600 focus:ring-blue-500"
@@ -2940,7 +2940,7 @@ function CandidateDetailDrawer({
           )}
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
             <span
-              className={`rounded-full px-2.5 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "border border-emerald-200 bg-emerald-50 text-emerald-700" : "border border-rose-200 bg-rose-50 text-rose-700"}`}
+              className={`rounded-full px-2.5 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" : "border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"}`}
             >
               {candidate.consentGiven ? "KVKK ✓" : "KVKK Onay Yok"}
             </span>
@@ -2977,7 +2977,7 @@ function CandidateDetailDrawer({
             <div className="flex flex-wrap gap-1 pt-1">
               {candidate.tags.map((tag) => (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
+                  className="inline-flex items-center gap-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-3xs text-blue-700 dark:text-blue-300"
                   key={tag}
                 >
                   <Tags className="h-2.5 w-2.5" />
@@ -3216,13 +3216,13 @@ function ApplicationDetailDrawer({
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
                 <span
-                  className={`rounded-full px-2 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}
+                  className={`rounded-full px-2 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" : "bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"}`}
                 >
                   {candidate.consentGiven ? "KVKK ✓" : "KVKK Yok"}
                 </span>
                 {candidate.tags?.map((t) => (
                   <span
-                    className="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
+                    className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-3xs text-blue-700 dark:text-blue-300"
                     key={t}
                   >
                     {t}

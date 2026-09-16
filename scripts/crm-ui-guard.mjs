@@ -213,7 +213,15 @@ const RULES = [
     severity: "warn",
     className: {
       find: (whole, literal) => {
-        const re = /(?<![A-Za-z:\-])(bg-(?:white|zinc-(?:50|100|200))|border-zinc-(?:100|200|300))(?![A-Za-z0-9\-\/])/g;
+        const re = new RegExp(
+          "(?<![A-Za-z:\\-])(" +
+            "bg-(?:white|zinc-(?:50|100|200))" +
+            "|border-zinc-(?:100|200|300)" +
+            "|bg-(?:blue|emerald|amber|red|rose|indigo|purple|sky|teal|cyan|violet|orange|yellow|lime|green|pink|fuchsia)-(?:50|100|200)" +
+            "|border-(?:blue|emerald|amber|red|rose|indigo|purple|sky|teal|cyan|violet|orange|yellow|lime|green|pink|fuchsia)-(?:100|200|300)" +
+            ")(?![A-Za-z0-9\\-\\/])",
+          "g"
+        );
         const m = re.exec(literal);
         if (!m) return null;
         const prop = m[1].split("-")[0];

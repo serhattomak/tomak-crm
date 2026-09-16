@@ -420,7 +420,7 @@ export default function QuotesPage() {
               <span className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 %{stats?.conversionRate || 0}
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-3xs text-emerald-700">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:text-emerald-300">
                 <TrendingUp className="h-3 w-3" />
                 {stats?.acceptedCount || 0} Sipariş
               </span>
@@ -467,7 +467,7 @@ export default function QuotesPage() {
                 {stats?.sentCount || 0}
               </span>
               {stats?.expiredCount ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 font-bold text-3xs text-rose-700">
+                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 font-bold text-3xs text-rose-700 dark:text-rose-300">
                   <AlertTriangle className="h-3 w-3" />
                   {stats.expiredCount} Süresi Dolan
                 </span>
@@ -586,7 +586,7 @@ export default function QuotesPage() {
                         <span className="font-bold font-mono text-xs text-zinc-900 dark:text-zinc-100">
                           {quote.quoteNumber}
                         </span>
-                        <span className="rounded-md bg-blue-100 px-1.5 py-0.2 font-bold text-3xs text-blue-700">
+                        <span className="rounded-md bg-blue-100 dark:bg-blue-950/60 px-1.5 py-0.2 font-bold text-3xs text-blue-700 dark:text-blue-300">
                           R{quote.revisionNumber}
                         </span>
                       </div>
@@ -730,7 +730,7 @@ export default function QuotesPage() {
                             <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100">
                               {quote.quoteNumber}
                             </span>
-                            <span className="rounded-md bg-blue-100 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
+                            <span className="rounded-md bg-blue-100 dark:bg-blue-950/60 px-1.5 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                               R{quote.revisionNumber}
                             </span>
                           </div>
@@ -1585,7 +1585,7 @@ function CreateQuoteModal({
               </h3>
 
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-1 font-semibold text-blue-700 text-xs transition hover:bg-blue-100"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-3 py-1 font-semibold text-blue-700 dark:text-blue-300 text-xs transition hover:bg-blue-100"
                 onClick={handleAddItem}
                 type="button"
               >
@@ -1873,7 +1873,7 @@ function CreateQuoteModal({
               </div>
 
               {calculations.requiresApproval && (
-                <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-3.5">
+                <div className="flex items-start gap-3 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50/80 dark:bg-amber-950/60 p-3.5">
                   <AlertCircle className="mt-0.5 h-5 w-5 flex-none text-amber-600" />
                   <div className="text-xs">
                     <h5 className="font-bold text-amber-900">
@@ -2429,7 +2429,7 @@ function QuoteDetailDrawer({
                 <span className="font-extrabold font-mono text-xs text-zinc-900 sm:text-sm dark:text-zinc-100">
                   {quote?.quoteNumber || "TEK-..."}
                 </span>
-                <span className="rounded-md bg-blue-100 px-1.5 py-0.2 font-bold text-3xs text-blue-700">
+                <span className="rounded-md bg-blue-100 dark:bg-blue-950/60 px-1.5 py-0.2 font-bold text-3xs text-blue-700 dark:text-blue-300">
                   R{quote?.revisionNumber ?? 0}
                 </span>
                 {quote && <QuoteStatusBadge status={quote.status} />}
@@ -2678,7 +2678,7 @@ function QuoteDetailDrawer({
                   </button>
                 )}
               {quote.convertedOrderId && (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 font-semibold text-amber-800 text-xs">
+                <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-2 font-semibold text-amber-800 dark:text-amber-300 text-xs">
                   ⚠️ Bu teklif zaten siparişe çevrildi —{" "}
                   {quote.convertedOrderNumber || quote.convertedOrderId}
                 </div>
@@ -2855,7 +2855,7 @@ function QuoteDetailDrawer({
                               </span>
                             )}
                             {item.isOptional && (
-                              <span className="ml-1 rounded bg-amber-100 px-1.5 py-0.2 font-bold text-3xs text-amber-800">
+                              <span className="ml-1 rounded bg-amber-100 dark:bg-amber-950/60 px-1.5 py-0.2 font-bold text-3xs text-amber-800 dark:text-amber-300">
                                 Opsiyonel
                               </span>
                             )}
@@ -3103,7 +3103,7 @@ function QuoteDetailDrawer({
               </button>
 
               <button
-                className="rounded-xl bg-rose-50 px-4 py-2 font-semibold text-rose-700 text-xs transition hover:bg-rose-100"
+                className="rounded-xl bg-rose-50 dark:bg-rose-950/60 px-4 py-2 font-semibold text-rose-700 dark:text-rose-300 text-xs transition hover:bg-rose-100"
                 onClick={() => handleApprove(false)}
                 type="button"
               >
@@ -3274,7 +3274,7 @@ function QuoteDetailDrawer({
               </DialogClose>
             </div>
             {quote.convertedOrderId ? (
-              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 font-semibold text-rose-700 text-xs">
+              <div className="rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 p-3 font-semibold text-rose-700 dark:text-rose-300 text-xs">
                 Bu teklif zaten siparişe çevrilmiş (
                 {quote.convertedOrderNumber || quote.convertedOrderId}). Tekrar
                 dönüştürülemez.
@@ -4003,7 +4003,7 @@ function QuoteTemplatesModal({
                     <h4 className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                       {editingId ? "Şablonu Düzenle" : "Yeni Şablon"}
                       {selectedTemplate?.isDefault ? (
-                        <span className="ml-2 rounded bg-blue-100 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
+                        <span className="ml-2 rounded bg-blue-100 dark:bg-blue-950/60 px-1.5 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                           Varsayılan
                         </span>
                       ) : null}
@@ -5153,7 +5153,7 @@ function QuotePrintModal({
                             </span>
                           )}
                           {item.isOptional && (
-                            <span className="mt-0.5 inline-block rounded bg-amber-200/80 px-1.5 py-0.2 font-bold text-3xs text-amber-900">
+                            <span className="mt-0.5 inline-block rounded bg-amber-200/80 dark:bg-amber-900/60 px-1.5 py-0.2 font-bold text-3xs text-amber-900 dark:text-amber-300">
                               Opsiyonel Kalem (Toplama Dahil Değil)
                             </span>
                           )}

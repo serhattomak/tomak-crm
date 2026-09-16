@@ -72,7 +72,7 @@ export default function AdminDashboardPage() {
             <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight md:text-3xl">
               Merkezi Yönetim Konsolu
             </h1>
-            <span className="rounded-md border border-blue-200/60 bg-blue-50 px-2 py-0.5 font-bold text-blue-600 text-xs">
+            <span className="rounded-md border border-blue-200/60 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-bold text-blue-600 dark:text-blue-400 text-xs">
               Super Admin
             </span>
           </div>
@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kayıtlı Firma
             </span>
-            <div className="rounded-xl border border-blue-100 bg-blue-50 p-2 text-blue-600">
+            <div className="rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 p-2 text-blue-600 dark:text-blue-400">
               <Building2 className="h-4.5 w-4.5" />
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function AdminDashboardPage() {
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Aktif Abonelik
             </span>
-            <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-2 text-emerald-600">
+            <div className="rounded-xl border border-emerald-100 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="h-4.5 w-4.5" />
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
             </span>
-            <div className="rounded-xl border border-purple-100 bg-purple-50 p-2 text-purple-600">
+            <div className="rounded-xl border border-purple-100 dark:border-purple-900/40 bg-purple-50 dark:bg-purple-950/60 p-2 text-purple-600 dark:text-purple-400">
               <Users className="h-4.5 w-4.5" />
             </div>
           </div>
@@ -166,7 +166,7 @@ export default function AdminDashboardPage() {
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Sektör Şablonu
             </span>
-            <div className="rounded-xl border border-amber-100 bg-amber-50 p-2 text-amber-600">
+            <div className="rounded-xl border border-amber-100 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-600 dark:text-amber-400">
               <Sparkles className="h-4.5 w-4.5" />
             </div>
           </div>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
                   key={tenant.id}
                 >
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 font-bold text-blue-600 text-xs">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 font-bold text-blue-600 dark:text-blue-400 text-xs">
                       {tenant.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -225,11 +225,11 @@ export default function AdminDashboardPage() {
                           {tenant.name}
                         </Link>
                         {tenant.isActive ? (
-                          <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-3xs text-emerald-700">
+                          <span className="rounded-full border border-emerald-200/60 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:text-emerald-300">
                             Aktif
                           </span>
                         ) : (
-                          <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-3xs text-rose-700">
+                          <span className="rounded-full border border-rose-200/60 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 font-bold text-3xs text-rose-700 dark:text-rose-300">
                             Askıda
                           </span>
                         )}
@@ -312,7 +312,7 @@ export default function AdminDashboardPage() {
             )}
           </div>
 
-          <div className="mt-8 rounded-xl border border-blue-100 bg-blue-50/50 p-4 text-zinc-700 text-xs">
+          <div className="mt-8 rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-950/60 p-4 text-zinc-700 dark:text-zinc-300 text-xs">
             <div className="mb-1 flex items-center gap-2 font-bold text-blue-700">
               <Shield className="h-4 w-4" />
               <span>Modüler Satış Prensibi</span>

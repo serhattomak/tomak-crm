@@ -227,7 +227,7 @@ export function TeamMembersStack({
               })}
 
               {remainingCount > 0 && (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-zinc-100 font-bold text-3xs text-zinc-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-zinc-100 font-bold text-3xs text-zinc-700 dark:text-zinc-300 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
                   +{remainingCount}
                 </div>
               )}
@@ -689,7 +689,7 @@ export function InviteMemberModal({
             <div className="relative">
               <Mail className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 id="invite-email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ornek@sirketiniz.com"

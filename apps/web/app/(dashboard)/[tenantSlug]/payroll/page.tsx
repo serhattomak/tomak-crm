@@ -925,7 +925,7 @@ export default function PayrollPage() {
                           {run.status !== "Locked" && (
                             <PermissionGate permission="Payroll.Manage">
                               <button
-                                className="rounded-lg border border-blue-200 bg-blue-50 px-2 py-1 font-semibold text-blue-700 text-xs hover:bg-blue-100"
+                                className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-1 font-semibold text-blue-700 dark:text-blue-300 text-xs hover:bg-blue-100"
                                 onClick={() => handleCalculateRun(run.id)}
                                 title="Yeniden Hesapla"
                               >
@@ -937,7 +937,7 @@ export default function PayrollPage() {
                           {run.status === "Calculated" && (
                             <PermissionGate permission="Payroll.Approve">
                               <button
-                                className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 text-xs hover:bg-emerald-100"
+                                className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 font-semibold text-emerald-700 dark:text-emerald-300 text-xs hover:bg-emerald-100"
                                 onClick={() => handleApproveRun(run.id)}
                               >
                                 Onayla
@@ -948,7 +948,7 @@ export default function PayrollPage() {
                           {run.status === "Approved" && (
                             <PermissionGate permission="Payroll.Approve">
                               <button
-                                className="flex items-center gap-1 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1 font-semibold text-purple-700 text-xs hover:bg-purple-100"
+                                className="flex items-center gap-1 rounded-lg border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-1 font-semibold text-purple-700 dark:text-purple-300 text-xs hover:bg-purple-100"
                                 onClick={() => handleLockRun(run.id)}
                               >
                                 <Lock className="h-3 w-3" />
@@ -1032,7 +1032,7 @@ export default function PayrollPage() {
               {selectedRunId && selectedRun?.run.status !== "Locked" && (
                 <>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 font-semibold text-blue-700 text-xs shadow-2xs hover:bg-blue-100"
+                    className="flex items-center gap-1.5 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-3 py-1.5 font-semibold text-blue-700 dark:text-blue-300 text-xs shadow-2xs hover:bg-blue-100"
                     onClick={() => handleCalculateRun(selectedRunId)}
                   >
                     <RefreshCw className="h-3.5 w-3.5" />
@@ -1091,7 +1091,7 @@ export default function PayrollPage() {
                     </TableCell>
                     <TableCell className="px-2 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
                       {emp.contractSalaryType === "Net" ? (
-                        <span className="rounded bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
+                        <span className="rounded bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 font-bold text-3xs text-blue-700 dark:text-blue-300">
                           Net: {formatCurrency(emp.baseSalary)}
                         </span>
                       ) : (
@@ -1114,7 +1114,7 @@ export default function PayrollPage() {
                     </TableCell>
                     <TableCell className="px-2 py-3 text-center">
                       {emp.unpaidLeaveDays > 0 ? (
-                        <span className="rounded bg-red-50 px-1.5 py-0.5 font-bold text-red-600">
+                        <span className="rounded bg-red-50 dark:bg-red-950/60 px-1.5 py-0.5 font-bold text-red-600 dark:text-red-400">
                           {emp.unpaidLeaveDays} g
                         </span>
                       ) : (
@@ -1528,7 +1528,7 @@ export default function PayrollPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center">
+                  <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 p-3 text-center">
                     <div className="font-bold text-3xs text-emerald-800 uppercase tracking-wider">
                       ÖDENECEK NET ÜCRET
                     </div>
@@ -1951,7 +1951,7 @@ export default function PayrollPage() {
               <div className="space-y-4">
                 {/* Highlight Cards */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 shadow-2xs">
+                  <div className="rounded-2xl border border-emerald-200/80 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 shadow-2xs">
                     <div className="font-bold text-emerald-800 text-xs uppercase tracking-wider">
                       ÖDENECEK NET MAAŞ
                     </div>
@@ -1963,7 +1963,7 @@ export default function PayrollPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-purple-200/80 bg-gradient-to-br from-purple-50 to-indigo-50 p-5 shadow-2xs">
+                  <div className="rounded-2xl border border-purple-200/80 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 p-5 shadow-2xs">
                     <div className="font-bold text-purple-800 text-xs uppercase tracking-wider">
                       TOPLAM İŞVEREN MALİYETİ
                     </div>
@@ -2382,7 +2382,7 @@ export default function PayrollPage() {
                 />
               </div>
 
-              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 font-medium text-2xs text-blue-900 leading-relaxed">
+              <div className="rounded-2xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/60 dark:bg-blue-950/60 p-3 font-medium text-2xs text-blue-900 dark:text-blue-300 leading-relaxed">
                 Bu işlem başlatıldığında şirketteki tüm aktif çalışanların
                 kadro, pozisyon ve taban maaş bilgileri otomatik olarak
                 kopyalanır ve 30 günlük standart puantaj hesabı yapılır.

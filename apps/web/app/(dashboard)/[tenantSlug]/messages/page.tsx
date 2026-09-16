@@ -735,7 +735,7 @@ export default function MessagesPage() {
             <div className="relative">
               <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearchQuery(e.target.value)
                 }
@@ -1207,7 +1207,7 @@ export default function MessagesPage() {
                             {/* Render Embedded Entity Card if any */}
                             {msg.entityEmbeds?.map((embed) => (
                               <div
-                                className={`mt-2.5 rounded-xl border p-3 transition-all ${ isMe ? "border-blue-500 bg-blue-700/80 text-white" : "border-border bg-zinc-50 text-zinc-900 dark:border-border dark:bg-muted/60 dark:text-foreground" }`}
+                                className={`mt-2.5 rounded-xl border p-3 transition-all ${ isMe ? "border-blue-500 bg-blue-700/80 text-white" : "border-border bg-zinc-50 text-zinc-900 dark:text-zinc-100 dark:border-border dark:bg-muted/60 dark:text-foreground" }`}
                                 key={embed.id}
                               >
                                 <div className="flex items-start justify-between gap-2">
@@ -1376,7 +1376,7 @@ export default function MessagesPage() {
               {/* Text Input & Send */}
               <div className="flex items-end gap-2">
                 <textarea
-                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
+                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setMessageInput(e.target.value)
                   }
@@ -1486,7 +1486,7 @@ export default function MessagesPage() {
             <div className="relative my-2 shrink-0">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEntitySearch(e.target.value)
                 }
@@ -1727,7 +1727,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <Hash className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     <input
-                      className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                      className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                       id="channel-name"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setNewChannelTitle(
@@ -1749,7 +1749,7 @@ export default function MessagesPage() {
                     Açıklama
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                    className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                     id="channel-desc"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelDesc(e.target.value)

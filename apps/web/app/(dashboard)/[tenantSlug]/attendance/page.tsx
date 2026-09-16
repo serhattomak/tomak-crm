@@ -1062,7 +1062,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Şu Anda Çalışan
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:text-emerald-400 dark:bg-emerald-950/50">
                     <UserCheck className="h-4 w-4" />
                   </div>
                 </div>
@@ -1079,7 +1079,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Molada Olanlar
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/50">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:text-amber-400 dark:bg-amber-950/50">
                     <Coffee className="h-4 w-4" />
                   </div>
                 </div>
@@ -1096,7 +1096,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Geç Kalanlar
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 dark:bg-rose-950/50">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 dark:text-rose-400 dark:bg-rose-950/50">
                     <AlertCircle className="h-4 w-4" />
                   </div>
                 </div>
@@ -1113,7 +1113,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Beklenen / Gelmeyen
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 dark:text-zinc-400 dark:bg-zinc-800">
                     <UserX className="h-4 w-4" />
                   </div>
                 </div>
@@ -1364,7 +1364,7 @@ export default function AttendancePage() {
                           wd.toDateString() === new Date().toDateString();
                         return (
                           <TableHead
-                            className={`border-border border-r p-3 text-center font-semibold ${ isToday ? "bg-blue-50/60 text-blue-600 dark:bg-blue-950/30" : "" }`}
+                            className={`border-border border-r p-3 text-center font-semibold ${ isToday ? "bg-blue-50/60 text-blue-600 dark:text-blue-400 dark:bg-blue-950/30" : "" }`}
                             key={wd.toISOString()}
                           >
                             <div>
@@ -1533,11 +1533,11 @@ export default function AttendancePage() {
                         </TableCell>
                         <TableCell className="p-4">
                           {r.overtimeMinutes > 0 ? (
-                            <span className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-600 text-xs">
+                            <span className="inline-flex rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-blue-600 dark:text-blue-400 text-xs">
                               +{formatMinutes(r.overtimeMinutes)} (1.5x)
                             </span>
                           ) : r.holidayOvertimeMinutes > 0 ? (
-                            <span className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-600 text-xs">
+                            <span className="inline-flex rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-blue-600 dark:text-blue-400 text-xs">
                               +{formatMinutes(r.holidayOvertimeMinutes)} (2.0x)
                             </span>
                           ) : (
@@ -1636,10 +1636,10 @@ export default function AttendancePage() {
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                               c.status === "Approved"
-                                ? "bg-emerald-50 text-emerald-700"
+                                ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                                 : c.status === "Rejected"
-                                  ? "bg-rose-50 text-rose-700"
-                                  : "bg-amber-50 text-amber-700"
+                                  ? "bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
+                                  : "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
                             }`}
                           >
                             {c.status === "Approved"
@@ -1732,7 +1732,7 @@ export default function AttendancePage() {
                       </div>
                     </div>
                   </div>
-                  <span className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700 text-xs">
+                  <span className="inline-flex rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-semibold text-emerald-700 dark:text-emerald-300 text-xs">
                     Aktif / Bağlı
                   </span>
                 </div>
@@ -1768,7 +1768,7 @@ export default function AttendancePage() {
                       </div>
                     </div>
                   </div>
-                  <span className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700 text-xs">
+                  <span className="inline-flex rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-semibold text-emerald-700 dark:text-emerald-300 text-xs">
                     Aktif / Bağlı
                   </span>
                 </div>
@@ -1804,7 +1804,7 @@ export default function AttendancePage() {
                       </div>
                     </div>
                   </div>
-                  <span className="inline-flex rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-blue-700 text-xs">
+                  <span className="inline-flex rounded-full bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-semibold text-blue-700 dark:text-blue-300 text-xs">
                     50 Metre Yarıçap
                   </span>
                 </div>

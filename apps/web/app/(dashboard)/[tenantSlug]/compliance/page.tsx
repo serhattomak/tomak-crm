@@ -288,7 +288,7 @@ export default function CompliancePage() {
     switch (level?.toLowerCase()) {
       case "critical":
         return (
-          <span className="flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-bold text-red-700 text-xs">
+          <span className="flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-bold text-red-700 dark:text-red-300 text-xs">
             <AlertOctagon className="h-3 w-3" /> Kritik Ceza Riski
           </span>
         );
@@ -361,7 +361,7 @@ export default function CompliancePage() {
             <div>
               <h1 className="flex items-center gap-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Mevzuat & İş Hukuku Uyum Motoru
-                <span className="flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 font-semibold text-emerald-800 text-xs">
+                <span className="flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-emerald-800 dark:text-emerald-300 text-xs">
                   <ShieldCheck className="h-3.5 w-3.5" /> 4857 / 5510 / 6331
                   Uyumlu
                 </span>
@@ -376,7 +376,7 @@ export default function CompliancePage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50/70 px-3.5 py-2 font-semibold text-indigo-700 text-xs shadow-xs transition-all hover:bg-indigo-100"
+            className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50/70 dark:bg-indigo-950/60 px-3.5 py-2 font-semibold text-indigo-700 dark:text-indigo-300 text-xs shadow-xs transition-all hover:bg-indigo-100"
             onClick={() => setActiveTab("simulator")}
           >
             <Play className="h-3.5 w-3.5 fill-current" />
@@ -602,7 +602,7 @@ export default function CompliancePage() {
                     {/* Header: Law Reference & Risk */}
                     <div className="mb-3 flex items-start justify-between gap-2">
                       <div>
-                        <span className="mb-1 inline-block rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-2xs text-amber-800">
+                        <span className="mb-1 inline-block rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-800 dark:text-amber-300">
                           {rule.lawReference}
                         </span>
                         <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -717,7 +717,7 @@ export default function CompliancePage() {
                         {v.employeeName}
                       </TableCell>
                       <TableCell className="px-4 py-3">
-                        <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold font-mono text-2xs text-amber-800">
+                        <span className="rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold font-mono text-2xs text-amber-800 dark:text-amber-300">
                           {v.lawReference}
                         </span>
                       </TableCell>
@@ -734,12 +734,12 @@ export default function CompliancePage() {
                       </TableCell>
                       <TableCell className="whitespace-nowrap px-4 py-3">
                         {v.status === "Overridden" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-bold text-2xs text-blue-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
                             <FileCheck className="h-3 w-3" /> Onaylandı
                             (İstisna)
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-bold text-2xs text-red-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-bold text-2xs text-red-700 dark:text-red-300">
                             <AlertTriangle className="h-3 w-3" /> Aktif İhlal
                           </span>
                         )}
@@ -779,7 +779,7 @@ export default function CompliancePage() {
           {/* Controls Form */}
           <div className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-xs">
             <div className="flex items-center gap-2 border-border border-b pb-3">
-              <div className="rounded-xl bg-indigo-50 p-2 text-indigo-600">
+              <div className="rounded-xl bg-indigo-50 dark:bg-indigo-950/60 p-2 text-indigo-600 dark:text-indigo-400">
                 <Play className="h-4 w-4 fill-current" />
               </div>
               <div>
@@ -1003,7 +1003,7 @@ export default function CompliancePage() {
 
               {simResult ? (
                 simResult.isCompliant ? (
-                  <div className="zoom-in-95 animate-in space-y-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+                  <div className="zoom-in-95 animate-in space-y-3 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 p-6 text-center">
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white shadow-emerald-500/30 shadow-md">
                       <Check className="h-6 w-6 stroke-[3]" />
                     </div>
@@ -1023,8 +1023,8 @@ export default function CompliancePage() {
                     <div
                       className={`rounded-2xl border p-4 ${
                         simResult.hasHardBlock
-                          ? "border-red-200 bg-red-50 text-red-900"
-                          : "border-amber-200 bg-amber-50 text-amber-900"
+                          ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-300"
+                          : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300"
                       }`}
                     >
                       <div className="mb-1 flex items-center gap-2 font-bold text-sm">
@@ -1052,7 +1052,7 @@ export default function CompliancePage() {
                           key={idx}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="rounded-md border border-amber-200 bg-amber-100 px-2 py-0.5 font-bold text-2xs text-amber-800">
+                            <span className="rounded-md border border-amber-200 dark:border-amber-800 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-800 dark:text-amber-300">
                               {v.lawReference}
                             </span>
                             {getEnforcementBadge(v.enforcementLevel)}
@@ -1064,7 +1064,7 @@ export default function CompliancePage() {
                             {v.details}
                           </p>
                           {v.penaltyRisk && (
-                            <div className="rounded-lg border border-red-100 bg-card p-2 font-semibold text-2xs text-red-600">
+                            <div className="rounded-lg border border-red-100 dark:border-red-900/40 bg-card p-2 font-semibold text-2xs text-red-600">
                               🚨 Ceza Riski: {v.penaltyRisk}
                             </div>
                           )}
@@ -1110,7 +1110,7 @@ export default function CompliancePage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-border border-b pb-3">
                 <div>
-                  <span className="rounded-md bg-amber-50 px-2 py-0.5 font-bold text-2xs text-amber-800">
+                  <span className="rounded-md bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-800 dark:text-amber-300">
                     {editingRule.lawReference}
                   </span>
                   <SheetTitle className="mt-1 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -1139,7 +1139,7 @@ export default function CompliancePage() {
                 </label>
                 <div className="space-y-2">
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50" : "border-border hover:border-zinc-300" }`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50 dark:bg-red-950/60" : "border-border hover:border-zinc-300" }`}
                     onClick={() => setEditEnforcement("HardBlock")}
                   >
                     <input
@@ -1161,7 +1161,7 @@ export default function CompliancePage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50" : "border-border hover:border-zinc-300" }`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/60" : "border-border hover:border-zinc-300" }`}
                     onClick={() => setEditEnforcement("SoftWarning")}
                   >
                     <input
@@ -1281,7 +1281,7 @@ export default function CompliancePage() {
               </DialogClose>
             </div>
 
-            <div className="space-y-1 rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-amber-900 text-xs">
+            <div className="space-y-1 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 p-3.5 text-amber-900 dark:text-amber-300 text-xs">
               <span className="block font-bold">
                 İhlal Edilen Kural: {overridingViolation.details}
               </span>

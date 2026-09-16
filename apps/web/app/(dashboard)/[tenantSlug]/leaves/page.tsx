@@ -417,7 +417,7 @@ export default function LeavesPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               İzin & Zaman Yönetimi
             </h1>
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-2xs text-blue-700">
+            <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
               {stats?.totalApprovedRequests ?? 0} Onaylı İzin
             </span>
           </div>
@@ -674,7 +674,7 @@ export default function LeavesPage() {
 
                   return (
                     <div
-                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${ isToday ? "border-blue-500 bg-blue-50/20 ring-1 ring-blue-500" : "border-border bg-card" }`}
+                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${ isToday ? "border-blue-500 bg-blue-50/20 dark:bg-blue-950/60 ring-1 ring-blue-500" : "border-border bg-card" }`}
                       key={idx}
                     >
                       <div className="flex items-center justify-between">
@@ -700,8 +700,8 @@ export default function LeavesPage() {
                           <div
                             className={`truncate rounded-lg border px-1.5 py-0.5 font-semibold ${
                               ev.status === "Approved"
-                                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                                : "border-amber-200 bg-amber-50 text-amber-800"
+                                ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
+                                : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300"
                             }`}
                             key={ev.id}
                             title={`${ev.employeeName} - ${getLeaveTypeLabel(ev.leaveType)} (${ev.totalDays} Gün)`}
@@ -731,7 +731,7 @@ export default function LeavesPage() {
                 Onay veya ret işlemi bekleyen personel izin talepleri
               </p>
             </div>
-            <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-bold text-amber-700 text-xs">
+            <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 font-bold text-amber-700 dark:text-amber-300 text-xs">
               {pendingLeaves.length} Bekleyen Talep
             </span>
           </div>
@@ -803,7 +803,7 @@ export default function LeavesPage() {
                   <div className="flex shrink-0 items-center gap-2">
                     <PermissionGate permission="Leaves.Approve">
                       <button
-                        className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100 disabled:opacity-50"
+                        className="rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-3.5 py-2 font-semibold text-rose-700 dark:text-rose-300 text-xs hover:bg-rose-100 disabled:opacity-50"
                         disabled={actionLoading}
                         onClick={() => {
                           setRejectingLeave(leave);
@@ -950,14 +950,14 @@ export default function LeavesPage() {
                             <PermissionGate permission="Leaves.Approve">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
-                                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-bold text-2xs text-emerald-700 hover:bg-emerald-100"
+                                  className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 font-bold text-2xs text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100"
                                   onClick={() => handleApprove(l.id)}
                                   type="button"
                                 >
                                   Onayla
                                 </button>
                                 <button
-                                  className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-2xs text-rose-700 hover:bg-rose-100"
+                                  className="rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1 font-bold text-2xs text-rose-700 dark:text-rose-300 hover:bg-rose-100"
                                   onClick={() => {
                                     setRejectingLeave(l);
                                     setRejectionReason("");
@@ -1062,7 +1062,7 @@ export default function LeavesPage() {
                       <TableCell className="py-3.5 pr-4 pl-3 text-right">
                         {l.status === "Pending" && (
                           <button
-                            className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-2xs text-rose-700 hover:bg-rose-100"
+                            className="rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1 font-bold text-2xs text-rose-700 dark:text-rose-300 hover:bg-rose-100"
                             onClick={() => handleCancel(l.id)}
                             type="button"
                           >
@@ -1397,7 +1397,7 @@ function CreateLeaveModal({
           onSubmit={handleSubmit}
         >
           {error && (
-            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
+            <div className="rounded-xl bg-rose-50 dark:bg-rose-950/60 p-3 font-medium text-rose-700 dark:text-rose-300 text-xs">
               {error}
             </div>
           )}

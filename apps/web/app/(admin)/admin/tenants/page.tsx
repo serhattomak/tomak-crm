@@ -284,7 +284,7 @@ function AdminTenantsContent() {
                     {/* Name & Slug */}
                     <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 font-bold text-blue-600 text-xs">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 font-bold text-blue-600 dark:text-blue-400 text-xs">
                           {tenant.name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>

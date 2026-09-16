@@ -510,7 +510,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 1: TETİKLEYİCİ (TRIGGER) */}
         {/* ======================================================== */}
-        <div className="relative rounded-3xl border-2 border-blue-200 bg-card p-6 shadow-sm">
+        <div className="relative rounded-3xl border-2 border-blue-200 dark:border-blue-800 bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 font-bold text-white shadow-blue-500/20 shadow-md">
@@ -632,7 +632,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 2: FİLTRE VE KOŞULLAR (IF / CONDITIONS) */}
         {/* ======================================================== */}
-        <div className="rounded-3xl border-2 border-amber-200 bg-card p-6 shadow-sm">
+        <div className="rounded-3xl border-2 border-amber-200 dark:border-amber-800 bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-500 font-bold text-white shadow-amber-500/20 shadow-md">
@@ -649,7 +649,7 @@ export default function WorkflowBuilderPage() {
             </div>
 
             <button
-              className="flex items-center gap-1 rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 text-xs transition-all hover:bg-amber-100"
+              className="flex items-center gap-1 rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/60 px-3 py-1.5 font-semibold text-amber-800 dark:text-amber-300 text-xs transition-all hover:bg-amber-100"
               onClick={addConditionGroup}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -658,7 +658,7 @@ export default function WorkflowBuilderPage() {
           </div>
 
           {conditions.length === 0 ? (
-            <div className="rounded-2xl border border-amber-200/60 bg-amber-50/50 p-4 text-center">
+            <div className="rounded-2xl border border-amber-200/60 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/60 p-4 text-center">
               <p className="font-medium text-amber-800 text-xs">
                 Koşul eklenmedi. Tetikleyici gerçekleştiğinde aksiyonlar{" "}
                 <strong>her zaman</strong> çalışacaktır.
@@ -808,7 +808,7 @@ export default function WorkflowBuilderPage() {
         {/* ======================================================== */}
         {/* NODE 3: AKSİYON ZİNCİRİ (THEN / ACTIONS) */}
         {/* ======================================================== */}
-        <div className="rounded-3xl border-2 border-emerald-200 bg-card p-6 shadow-sm">
+        <div className="rounded-3xl border-2 border-emerald-200 dark:border-emerald-800 bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 font-bold text-white shadow-emerald-500/20 shadow-md">
@@ -1200,10 +1200,10 @@ export default function WorkflowBuilderPage() {
                 <div
                   className={`rounded-2xl border p-3.5 text-xs ${
                     simulationResult.status === "Success"
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+                      ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300"
                       : simulationResult.status === "Skipped"
-                        ? "border-amber-200 bg-amber-50 text-amber-900"
-                        : "border-red-200 bg-red-50 text-red-900"
+                        ? "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300"
+                        : "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-300"
                   }`}
                 >
                   <div className="mb-1 flex items-center gap-2 font-bold">

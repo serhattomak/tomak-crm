@@ -145,8 +145,8 @@ export default function UsersManagementPage() {
         <div
           className={`rounded-xl p-3.5 font-medium text-xs ${
             statusMessage.type === "success"
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border border-rose-200 bg-rose-50 text-rose-700"
+              ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+              : "border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
           }`}
         >
           {statusMessage.text}
@@ -179,7 +179,7 @@ export default function UsersManagementPage() {
                 >
                   <TableCell className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-950/60 font-bold text-blue-700 dark:text-blue-300 text-xs">
                         {(user.fullName || user.email).charAt(0).toUpperCase()}
                       </div>
                       <span className="font-semibold text-zinc-900 dark:text-zinc-100">
@@ -224,7 +224,7 @@ export default function UsersManagementPage() {
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         user.isActive
-                          ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 text-emerald-700 dark:text-emerald-300"
                           : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >

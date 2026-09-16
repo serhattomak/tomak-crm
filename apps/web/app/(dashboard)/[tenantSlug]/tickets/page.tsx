@@ -226,14 +226,14 @@ export default function TicketsDashboardPage() {
     switch (priority) {
       case "Urgent":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-bold text-2xs text-red-700 shadow-2xs">
+          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-bold text-2xs text-red-700 dark:text-red-300 shadow-2xs">
             <Flame className="h-3 w-3 animate-pulse text-red-600" />
             Acil / Kritik
           </span>
         );
       case "High":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-2xs text-amber-800 shadow-2xs">
+          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-800 dark:text-amber-300 shadow-2xs">
             <AlertCircle className="h-3 w-3 text-amber-600" />
             Yüksek
           </span>
@@ -246,7 +246,7 @@ export default function TicketsDashboardPage() {
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-medium text-2xs text-blue-700">
+          <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-medium text-2xs text-blue-700 dark:text-blue-300">
             Orta
           </span>
         );
@@ -257,34 +257,34 @@ export default function TicketsDashboardPage() {
     switch (status) {
       case "New":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-0.5 font-semibold text-2xs text-emerald-800">
+          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-800 dark:text-emerald-300">
             <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-500" />
             Yeni
           </span>
         );
       case "InProgress":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-blue-300 bg-blue-50 px-2.5 py-0.5 font-semibold text-2xs text-blue-800">
+          <span className="inline-flex items-center gap-1 rounded-full border border-blue-300 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-semibold text-2xs text-blue-800 dark:text-blue-300">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
             İşlemde
           </span>
         );
       case "PendingCustomer":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 font-semibold text-2xs text-amber-800">
+          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-semibold text-2xs text-amber-800 dark:text-amber-300">
             <Clock className="h-3 w-3 text-amber-600" />
             Müşteri Bekleniyor
           </span>
         );
       case "OnHold":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-purple-300 bg-purple-50 px-2.5 py-0.5 font-semibold text-2xs text-purple-800">
+          <span className="inline-flex items-center gap-1 rounded-full border border-purple-300 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-0.5 font-semibold text-2xs text-purple-800 dark:text-purple-300">
             Beklemede
           </span>
         );
       case "Resolved":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100/70 px-2.5 py-0.5 font-semibold text-2xs text-emerald-900">
+          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100/70 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-900 dark:text-emerald-300">
             <CheckCircle2 className="h-3 w-3 text-emerald-700" />
             Çözüldü
           </span>
@@ -405,7 +405,7 @@ export default function TicketsDashboardPage() {
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               Toplam Açık Talep
             </span>
-            <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
+            <div className="rounded-xl bg-blue-50 dark:bg-blue-950/60 p-2 text-blue-600 dark:text-blue-400">
               <FolderOpen className="h-4 w-4" />
             </div>
           </div>
@@ -424,7 +424,7 @@ export default function TicketsDashboardPage() {
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               Yanıt Bekleyenler
             </span>
-            <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
+            <div className="rounded-xl bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-600 dark:text-amber-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
@@ -441,7 +441,7 @@ export default function TicketsDashboardPage() {
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               SLA Aşımı / Risk
             </span>
-            <div className="rounded-xl bg-red-50 p-2 text-red-600">
+            <div className="rounded-xl bg-red-50 dark:bg-red-950/60 p-2 text-red-600 dark:text-red-400">
               <Flame className="h-4 w-4 animate-pulse" />
             </div>
           </div>
@@ -460,7 +460,7 @@ export default function TicketsDashboardPage() {
             <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
               SLA Başarı Oranı
             </span>
-            <div className="rounded-xl bg-emerald-50 p-2 text-emerald-600">
+            <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
@@ -597,7 +597,7 @@ export default function TicketsDashboardPage() {
         </div>
       ) : tickets.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-border border-dashed bg-card p-12 text-center">
-          <div className="rounded-2xl bg-blue-50 p-4 text-blue-600">
+          <div className="rounded-2xl bg-blue-50 dark:bg-blue-950/60 p-4 text-blue-600 dark:text-blue-400">
             <LifeBuoy className="h-8 w-8" />
           </div>
           <h3 className="mt-4 font-semibold text-base text-zinc-900 dark:text-zinc-100">
@@ -651,7 +651,7 @@ export default function TicketsDashboardPage() {
                             {t.category}
                           </span>
                           {t.linkedEntityTitle && (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-1.5 py-0.5 text-3xs text-blue-700">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 text-3xs text-blue-700 dark:text-blue-300">
                               <Package className="h-2.5 w-2.5" />
                               {t.linkedEntityTitle}
                             </span>
@@ -695,7 +695,7 @@ export default function TicketsDashboardPage() {
 
                     <TableCell className="px-4 py-3.5">
                       {t.isSlaBreached ? (
-                        <span className="inline-flex items-center gap-1 rounded-md bg-red-50 px-2 py-0.5 font-bold text-2xs text-red-600">
+                        <span className="inline-flex items-center gap-1 rounded-md bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-bold text-2xs text-red-600 dark:text-red-400">
                           <Flame className="h-3 w-3 animate-pulse" />
                           SLA Aşıldı
                         </span>

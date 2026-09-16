@@ -1240,9 +1240,9 @@ function EmployeesTab({
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         emp.status === "Active"
-                          ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 text-emerald-700 dark:text-emerald-300"
                           : emp.status === "OnLeave"
-                            ? "border border-amber-200 bg-amber-50 text-amber-700"
+                            ? "border border-amber-200 dark:border-amber-800 bg-amber-50 text-amber-700 dark:text-amber-300"
                             : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
@@ -1319,7 +1319,7 @@ function EmployeesTab({
                   <span
                     className={`rounded-full px-2 py-0.5 font-bold text-3xs ${
                       emp.status === "Active"
-                        ? "bg-emerald-50 text-emerald-700"
+                        ? "bg-emerald-50 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                     }`}
                   >
@@ -2054,7 +2054,7 @@ function EmployeeModal({
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
           {/* Quick link existing user */}
-          <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-3">
+          <div className="rounded-2xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/60 p-3">
             <label className="mb-1 block font-bold text-blue-950">
               Sistem Kullanıcısı Eşleştir (Opsiyonel)
             </label>
@@ -2478,7 +2478,7 @@ function EmployeeDetailDrawer({
               <span className="rounded-full bg-zinc-100 px-3 py-0.5 font-bold text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {employeeDetail.departmentName || "Genel"}
               </span>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 font-bold text-2xs text-emerald-700">
+              <span className="rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-0.5 font-bold text-2xs text-emerald-700 dark:text-emerald-300">
                 {employeeDetail.status}
               </span>
             </div>

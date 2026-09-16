@@ -369,7 +369,7 @@ export default function OrdersPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Sipariş & Satış Yönetimi
             </h1>
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-2xs text-blue-700">
+            <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
               {totalCount} Sipariş
             </span>
           </div>
@@ -562,7 +562,7 @@ export default function OrdersPage() {
           {/* Reset Filters */}
           {(search || statusFilter || paymentStatusFilter) && (
             <button
-              className="flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs hover:bg-rose-100"
+              className="flex items-center gap-1 rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-3 py-2 font-semibold text-rose-700 dark:text-rose-300 text-xs hover:bg-rose-100"
               onClick={handleResetFilters}
               type="button"
             >
@@ -1211,7 +1211,7 @@ function CreateOrderWizardModal({
           onSubmit={handleSubmit}
         >
           {error && (
-            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
+            <div className="rounded-xl bg-rose-50 dark:bg-rose-950/60 p-3 font-medium text-rose-700 dark:text-rose-300 text-xs">
               {error}
             </div>
           )}

@@ -467,7 +467,7 @@ export default function ProductDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 shadow-xs dark:bg-zinc-800">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 dark:text-blue-400 shadow-xs dark:bg-zinc-800">
               {product.type === "Physical" ? (
                 <Package className="h-6 w-6" />
               ) : (
@@ -488,7 +488,7 @@ export default function ProductDetailPage() {
                   {product.type}
                 </span>
                 {product.trackInventory && product.isLowStock && (
-                  <span className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-3xs text-amber-700">
+                  <span className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-300">
                     Kritik Stok
                   </span>
                 )}
@@ -607,10 +607,10 @@ export default function ProductDetailPage() {
               <span
                 className={`rounded-lg px-2 py-0.5 font-bold text-3xs ${
                   product.profitMargin >= 40
-                    ? "bg-emerald-100 text-emerald-800"
+                    ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
                     : product.profitMargin > 0
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-rose-100 text-rose-800"
+                      ? "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300"
+                      : "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300"
                 }`}
               >
                 Kar: %{Math.round(product.profitMargin)}
@@ -677,7 +677,7 @@ export default function ProductDetailPage() {
               </h3>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="rounded-2xl bg-blue-50/60 p-3">
+                <div className="rounded-2xl bg-blue-50/60 dark:bg-blue-950/60 p-3">
                   <span className="font-semibold text-3xs text-blue-600 uppercase">
                     Mevcut Stok
                   </span>
@@ -1155,7 +1155,7 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-emerald-50/70 p-4">
+                  <div className="rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/60 p-4">
                     <span className="font-medium text-2xs text-emerald-800">
                       Net Brüt Kar
                     </span>
@@ -2137,7 +2137,7 @@ function EditProductModal({
           onSubmit={handleSubmit}
         >
           {submitError && (
-            <div className="rounded-xl bg-rose-50 p-3 font-medium text-rose-700 text-xs">
+            <div className="rounded-xl bg-rose-50 dark:bg-rose-950/60 p-3 font-medium text-rose-700 dark:text-rose-300 text-xs">
               {submitError}
             </div>
           )}

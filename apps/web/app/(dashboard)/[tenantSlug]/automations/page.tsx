@@ -369,7 +369,7 @@ export default function AutomationsPage() {
 
         <div className="flex items-center gap-2.5">
           <button
-            className="flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50/70 px-3.5 py-2 font-medium text-indigo-700 text-sm shadow-xs transition-all hover:bg-indigo-100"
+            className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50/70 dark:bg-indigo-950/60 px-3.5 py-2 font-medium text-indigo-700 dark:text-indigo-300 text-sm shadow-xs transition-all hover:bg-indigo-100"
             onClick={() => setIsRecipeDrawerOpen(true)}
           >
             <Sparkles className="h-4 w-4 text-indigo-600" />
@@ -789,17 +789,17 @@ export default function AutomationsPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3">
                         {exec.status === "Success" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:text-emerald-300">
                             <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                             Başarılı
                           </span>
                         ) : exec.status === "Skipped" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-2xs text-amber-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:text-amber-300">
                             <AlertCircle className="h-3 w-3 text-amber-600" />
                             Koşul Sağlanmadı
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-medium text-2xs text-red-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-medium text-2xs text-red-700 dark:text-red-300">
                             <XCircle className="h-3 w-3 text-red-600" />
                             Hata
                           </span>
@@ -906,7 +906,7 @@ export default function AutomationsPage() {
             <div className="space-y-5">
               <div className="flex items-center justify-between border-border border-b pb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="rounded-xl bg-indigo-50 p-2 text-indigo-600">
+                  <div className="rounded-xl bg-indigo-50 dark:bg-indigo-950/60 p-2 text-indigo-600 dark:text-indigo-400">
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
@@ -1028,10 +1028,10 @@ export default function AutomationsPage() {
                 <div
                   className={`rounded-2xl border p-3.5 text-xs ${
                     simulationResult.status === "Success"
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+                      ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300"
                       : simulationResult.status === "Skipped"
-                        ? "border-amber-200 bg-amber-50 text-amber-900"
-                        : "border-red-200 bg-red-50 text-red-900"
+                        ? "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300"
+                        : "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-300"
                   }`}
                 >
                   <div className="mb-1 flex items-center gap-2 font-bold">

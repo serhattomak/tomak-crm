@@ -97,7 +97,7 @@ export function HubRail({
 
                   {/* Hub Notification Badge */}
                   {hub.badge && (
-                    <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-bold text-3xs text-destructive-foreground ring-2 ring-background">
+                    <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-bold text-3xs text-white ring-2 ring-background">
                       {hub.badge}
                     </span>
                   )}

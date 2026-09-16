@@ -242,7 +242,7 @@ export default function OrderDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 shadow-xs dark:bg-zinc-800">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 dark:text-blue-400 shadow-xs dark:bg-zinc-800">
               <ShoppingCart className="h-6 w-6" />
             </div>
 
@@ -313,7 +313,7 @@ export default function OrderDetailPage() {
 
           <PermissionGate permission="Orders.PaymentRecord">
             <button
-              className="flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 font-semibold text-emerald-800 text-xs shadow-2xs transition-colors hover:bg-emerald-100"
+              className="flex items-center gap-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-2 font-semibold text-emerald-800 dark:text-emerald-300 text-xs shadow-2xs transition-colors hover:bg-emerald-100"
               onClick={() => setIsPaymentModalOpen(true)}
               type="button"
             >
@@ -489,7 +489,7 @@ export default function OrderDetailPage() {
               )}
 
               {(order.carrier || order.trackingNumber) && (
-                <div className="space-y-1 rounded-2xl border border-cyan-100 bg-cyan-50/50 p-3">
+                <div className="space-y-1 rounded-2xl border border-cyan-100 dark:border-cyan-900/40 bg-cyan-50/50 dark:bg-cyan-950/60 p-3">
                   <div className="flex items-center gap-1.5 font-bold text-cyan-900">
                     <Truck className="h-3.5 w-3.5 text-cyan-600" />
                     <span>Kargo & Takip</span>
@@ -1039,7 +1039,7 @@ function AddPaymentModal({
         </div>
 
         {/* Balance Strip */}
-        <div className="mb-4 flex items-center justify-between rounded-2xl bg-emerald-50/70 p-3">
+        <div className="mb-4 flex items-center justify-between rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/60 p-3">
           <span className="font-semibold text-emerald-900">
             Kalan Açık Bakiye:
           </span>
@@ -1067,7 +1067,7 @@ function AddPaymentModal({
           </div>
 
           {isOverpayment && (
-            <p className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-semibold text-rose-700 text-xs">
+            <p className="rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-3 py-2 font-semibold text-rose-700 dark:text-rose-300 text-xs">
               ⚠️ Tutar kalan bakiyeyi aşıyor (₺
               {order.remainingAmount.toLocaleString("tr-TR", {
                 minimumFractionDigits: 2,

@@ -408,12 +408,12 @@ export default function TicketDetailPage() {
                 {ticket.category}
               </span>
               {ticket.isSlaBreached ? (
-                <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-0.5 font-bold text-2xs text-red-700">
+                <span className="inline-flex items-center gap-1 rounded-md bg-red-100 dark:bg-red-950/60 px-2 py-0.5 font-bold text-2xs text-red-700 dark:text-red-300">
                   <Flame className="h-3 w-3 animate-pulse" />
                   SLA Aşıldı
                 </span>
               ) : ticket.slaResolutionDueAt ? (
-                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:text-emerald-300">
                   <Timer className="h-3 w-3 text-emerald-600" />
                   SLA:{" "}
                   {new Date(ticket.slaResolutionDueAt).toLocaleTimeString(
@@ -571,10 +571,10 @@ export default function TicketDetailPage() {
                     return (
                       /* Yellow / Amber Internal Whisper Note */
                       <div
-                        className="rounded-2xl border border-amber-300/80 bg-amber-50/90 p-4 text-xs shadow-xs"
+                        className="rounded-2xl border border-amber-300/80 bg-amber-50/90 dark:bg-amber-950/60 p-4 text-xs shadow-xs"
                         key={m.id}
                       >
-                        <div className="flex items-center justify-between border-amber-200/70 border-b pb-2 text-amber-900">
+                        <div className="flex items-center justify-between border-amber-200/70 dark:border-amber-800 border-b pb-2 text-amber-900">
                           <div className="flex items-center gap-2">
                             <span className="flex items-center gap-1 font-bold text-2xs text-amber-800">
                               <Lock className="h-3 w-3 text-amber-600" />
@@ -649,7 +649,7 @@ export default function TicketDetailPage() {
                       </div>
 
                       {!isCustomer && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700 text-xs">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950/60 font-bold text-blue-700 dark:text-blue-300 text-xs">
                           {m.senderName.charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -675,7 +675,7 @@ export default function TicketDetailPage() {
                     <button
                       className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${
                         messageMode === "internal"
-                          ? "bg-amber-100 text-amber-900 shadow-xs"
+                          ? "bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 shadow-xs"
                           : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                       }`}
                       onClick={() => setMessageMode("internal")}
@@ -724,7 +724,7 @@ export default function TicketDetailPage() {
 
                 <form className="space-y-2" onSubmit={handleSendMessage}>
                   <textarea
-                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 bg-amber-50/40 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
+                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder={
                       messageMode === "internal"
@@ -817,7 +817,7 @@ export default function TicketDetailPage() {
 
             <div className="mt-3 space-y-2.5 text-xs">
               <div className="flex items-center gap-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-700 text-sm">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/60 font-bold text-blue-700 dark:text-blue-300 text-sm">
                   {ticket.customerName.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -871,7 +871,7 @@ export default function TicketDetailPage() {
               <span className="mb-2 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 İlişkili CRM Kaydı
               </span>
-              <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/70 p-3 text-xs">
+              <div className="flex items-center justify-between rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/70 dark:bg-blue-950/60 p-3 text-xs">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="h-4 w-4 text-blue-600" />
                   <span className="font-semibold text-blue-900">
@@ -943,7 +943,7 @@ export default function TicketDetailPage() {
                         {ord.orderNumber}
                       </span>
                       <span
-                        className={`rounded-md px-1.5 py-0.5 font-bold text-3xs ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-muted text-zinc-700"}`}
+                        className={`rounded-md px-1.5 py-0.5 font-bold text-3xs ${ord.status === "Delivered" ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" : ord.status === "Cancelled" ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300" : "bg-muted text-zinc-700 dark:text-zinc-300"}`}
                       >
                         {ord.status}
                       </span>
@@ -1015,7 +1015,7 @@ export default function TicketDetailPage() {
                       </div>
                     </div>
                     <span
-                      className={`rounded-md px-2 py-0.5 font-bold text-3xs ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-muted text-zinc-700"}`}
+                      className={`rounded-md px-2 py-0.5 font-bold text-3xs ${sh.status === "Delivered" ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" : sh.status === "InTransit" ? "bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300" : "bg-muted text-zinc-700 dark:text-zinc-300"}`}
                     >
                       {sh.status}
                     </span>
@@ -1144,14 +1144,14 @@ export default function TicketDetailPage() {
                   </div>
                   <div className="flex shrink-0 items-center gap-1">
                     <button
-                      className="rounded-lg bg-blue-50 px-2 py-1 font-semibold text-2xs text-blue-700 hover:bg-blue-100"
+                      className="rounded-lg bg-blue-50 dark:bg-blue-950/60 px-2 py-1 font-semibold text-2xs text-blue-700 dark:text-blue-300 hover:bg-blue-100"
                       onClick={() => handleTemplateEdit(t)}
                       type="button"
                     >
                       Düzenle
                     </button>
                     <button
-                      className="rounded-lg bg-rose-50 px-2 py-1 font-semibold text-2xs text-rose-700 hover:bg-rose-100"
+                      className="rounded-lg bg-rose-50 dark:bg-rose-950/60 px-2 py-1 font-semibold text-2xs text-rose-700 dark:text-rose-300 hover:bg-rose-100"
                       onClick={() => handleTemplateDelete(t.id)}
                       type="button"
                     >
