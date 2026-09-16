@@ -5,6 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@workspace/ui/components/popover";
+import { toast } from "@workspace/ui/components/sonner";
 import { Check, ChevronDown, Loader2, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type React from "react";
@@ -56,7 +57,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
       setIsOpen(false);
       router.push(`/${res.data.slug}`);
     } else {
-      alert(res.message || "Çalışma alanı oluşturulamadı");
+      toast.error(res.message || "Çalışma alanı oluşturulamadı");
     }
   };
 

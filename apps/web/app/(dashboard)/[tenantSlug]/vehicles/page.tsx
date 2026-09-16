@@ -23,6 +23,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
   AlertTriangle,
@@ -2705,10 +2706,10 @@ function CreateEditVehicleModal({
       if (res.success) {
         onSuccess();
       } else {
-        alert(res.message || "İşlem sırasında bir hata oluştu.");
+        toast.error(res.message || "İşlem sırasında bir hata oluştu.");
       }
     } catch {
-      alert("İşlem sırasında bir hata oluştu.");
+      toast.error("İşlem sırasında bir hata oluştu.");
     } finally {
       setSubmitting(false);
     }
@@ -3839,10 +3840,10 @@ function CreateEditPartModal({
       if (res.success) {
         onSuccess();
       } else {
-        alert(res.message || "Parça kaydedilirken bir hata oluştu.");
+        toast.error(res.message || "Parça kaydedilirken bir hata oluştu.");
       }
     } catch {
-      alert("Parça kaydedilirken bir hata oluştu.");
+      toast.error("Parça kaydedilirken bir hata oluştu.");
     } finally {
       setSubmitting(false);
     }
@@ -4320,10 +4321,10 @@ function CreateDocumentModal({
       if (res.success) {
         onSuccess();
       } else {
-        alert(res.message || "Doküman kaydedilirken bir hata oluştu.");
+        toast.error(res.message || "Doküman kaydedilirken bir hata oluştu.");
       }
     } catch {
-      alert("Doküman kaydedilirken bir hata oluştu.");
+      toast.error("Doküman kaydedilirken bir hata oluştu.");
     } finally {
       setSubmitting(false);
     }

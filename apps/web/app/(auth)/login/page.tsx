@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@workspace/ui/components/sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -203,8 +204,8 @@ export default function LoginPage() {
                   href="#forgot"
                   onClick={(e) => {
                     e.preventDefault();
-                    alert(
-                      "Password reset instructions will be sent to your email."
+                    toast.info(
+                      "Şifre sıfırlama henüz hazır değil. Lütfen yöneticinizle iletişime geçin."
                     );
                   }}
                 >

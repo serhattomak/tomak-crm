@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import { Textarea } from "@workspace/ui/components/textarea";
+import { toast } from "@workspace/ui/components/sonner";
 import {
   CalendarDays,
   Calendar as CalendarIcon,
@@ -547,7 +548,7 @@ export default function CalendarHubPage() {
   const handleSaveActivity = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!activityForm.title.trim()) {
-      alert("Lütfen randevu başlığı giriniz.");
+      toast.error("Lütfen randevu başlığı giriniz.");
       return;
     }
 
@@ -611,7 +612,7 @@ export default function CalendarHubPage() {
   const handleSaveCallLog = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!(callForm.customerId || callForm.customerName.trim())) {
-      alert("Lütfen bir müşteri seçiniz veya müşteri adı giriniz.");
+      toast.error("Lütfen bir müşteri seçiniz veya müşteri adı giriniz.");
       return;
     }
 
