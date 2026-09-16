@@ -157,16 +157,15 @@ export function DashboardSharePopover({
             <Share2 className="h-4 w-4" />
           </button>
         </PopoverTrigger>
-      </Popover>
 
-      {/* Share Popover Dropdown */}
-      <PopoverContent
-        align="end"
-        className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-88"
-        collisionPadding={12}
-        side="bottom"
-        sideOffset={10}
-      >
+        {/* Share Popover Dropdown */}
+        <PopoverContent
+          align="end"
+          className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-88"
+          collisionPadding={12}
+          side="bottom"
+          sideOffset={10}
+        >
           {/* Header */}
           <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
             <div className="flex items-center gap-2">
@@ -301,7 +300,8 @@ export function DashboardSharePopover({
               </div>
             </button>
           </div>
-      </PopoverContent>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

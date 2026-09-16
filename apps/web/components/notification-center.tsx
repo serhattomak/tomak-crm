@@ -484,16 +484,15 @@ export function NotificationCenter({
             ) : null}
           </button>
         </PopoverTrigger>
-      </Popover>
 
-      {/* Popover Dropdown */}
-      <PopoverContent
-        align="end"
-        className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-96"
-        collisionPadding={12}
-        side="bottom"
-        sideOffset={10}
-      >
+        {/* Popover Dropdown */}
+        <PopoverContent
+          align="end"
+          className="w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-96"
+          collisionPadding={12}
+          side="bottom"
+          sideOffset={10}
+        >
           <NotificationHeader
             isConnected={isConnected}
             onMarkAllAsRead={markAllAsRead}
@@ -544,7 +543,8 @@ export function NotificationCenter({
               </span>
             </div>
           ) : null}
-      </PopoverContent>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
