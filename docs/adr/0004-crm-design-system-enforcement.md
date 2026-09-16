@@ -110,6 +110,26 @@ Kapsam **52 ekranın tamamı**: dashboard + admin + auth + portal. **Navigasyon 
 
 Kabul kriteri her faz için: `guard:crm-ui:full` o fazın ekranlarında **0 error**.
 
+**Faz 7 uygulaması (2026-09-16) — §9'un üç maddesi tamamlandı:**
+
+1. **Yedi uyarı kuralı `error`'a terfi etti** (§9.3): `ARBITRARY_TEXT_SIZE`, `NATIVE_TABLE`, `INLINE_STYLE_PROP`, `CARD_SURFACE`, `MOTION_DURATION`, `MOTION_EASE`, `A11Y_ICON_BUTTON`. `severity: "warn"` kaldırıldı; §9.1'e göre varsayılan `error`. Uyarı katmanı kodda **ve** bu belgede kalır — sonraki kural yine uyarı olarak doğup terfi etmeyi hak edebilmeli; şu an sadece boş.
+2. **`SCOPE` listesi emekliye ayrıldı** (§9.5). Varsayılan tarama artık tam kapsam, yani `guard:crm-ui` ile `guard:crm-ui:full` aynı işi yapar. `--full` kabul edilmeye devam ediyor, çünkü bu ADR, yol haritası ve CI onu adıyla anıyor; ama artık ayrı bir mod değil.
+3. **CI eklendi** (§9.4) — `.github/workflows/ci.yml`, üç iş: `guard` (bağımlılıksız, `npm ci` bile yok, saniyeler içinde), `web` (tip/lint/build), `api` (.NET 10 build). Prettier bilinçli olarak **yok**: `apps/web` hiçbir biçimlendiricinin kapsamında değil, geçemeyecek bir kontrol koymak yerine ertelenmiş madde olarak kalıyor (#18).
+
+> 🔴 **⚠️ Uygulama sırasında bulunan kusur — ve sıralamanın neden önemli olduğu.** §9.3'ün ön koşulu ("o kural temiz olduğunda") **ölçülmüş görünüyordu**, ama ölçüm aracı bir kısmını göremiyordu: `INPUT_NUMBER`, `INPUT_DATE`, `SVG_PAINT_HEX` ve `A11Y_ICON_BUTTON` desenleri niteliğe `[^>]*` ile ulaşıyordu ve bu şekil bir `>` geçemez — JSX'te `onClick={() => f()}` ya da `disabled={page >= n}` yeterlidir. Ölçülen fark:
+>
+> | Kural | Guard'ın dediği | Gerçek | Gizli kalan |
+> |---|---|---|---|
+> | `INPUT_NUMBER` | 1 | **4** | 3 |
+> | `INPUT_DATE` | 0 | **5** | 5 |
+> | `A11Y_ICON_BUTTON` | 0 | **31** | 31 |
+>
+> Yani **"106 → 0" diye kaydedilen a11y süpürmesi eksikti; gerçek sayı 137'ydi.** Kanıt tek dosyada duruyor: `email/page.tsx`'te "önceki sayfa" oku `disabled={page <= 1}` taşıdığı için raporlandı ve etiketlendi; kardeşi `disabled={page >= totalPages}` taşıdığı için görünmedi. İkisi arasındaki tek fark `<=` ile `>=`.
+>
+> Bu, Program A'nın iki kez yaşadığı **"kural standarttan geniş olabilir"** dersinin ikizidir — ama bu kez kural standarttan **dardı**, ki daha kötüsüdür: çünkü **başarı raporluyor**. Terfi ve emeklilik ancak (a) kurallar brace/string-farkında bir tarayıcıya geçirildikten, (b) ortaya çıkan 8 native input süpürüldükten ve (c) 31 etiket eklendikten **sonra** yapıldı. Aksi hâlde delikleri olan bir kapı sertleştirilmiş olurdu — ve delikler tam da terfi eden kuralların içindeydi.
+>
+> Fixture çifti de bu yüzden güçlendirildi: eski `dirty.tsx` "her ihlal sınıfı bir kez" diyordu ama 16 kuralın **9'unu** tetikliyordu ve `INPUT_NUMBER` vakası hiç ateşlemiyordu. Kontrol "dosya FAIL veriyor mu" idi — veriyordu, diğer sekiz kural sayesinde. **Çıkış kodu kapsam değildir.** Artık `guard:crm-ui:fixtures` kural-id **kümesini** iddia eder: 16/16, eksik yok, fazla yok — ve bu kontrolün kendisi de negatif testle doğrulandı (dirty fixture'dan bir vakayı silmek onu kırmızıya çeviriyor).
+
 ### 10. Doğrulama
 Görsel regresyon altyapısı **kurulmaz** (yol haritasında). Faz kabulü: `tsc --noEmit` + `next build` + guard + **etkilenen kritik akışların elle duman testi** (login, müşteri listesi, müşteri detayı, pipeline, teklif, admin). Cila fazında kalıcı Playwright smoke testleri eklenir.
 
