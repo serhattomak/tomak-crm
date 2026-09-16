@@ -331,6 +331,14 @@ first is recorded under "Tool limits". Present the glob's zero only with a walk 
   `check` prints 20 diagnostics and then "Diagnostics not shown: 5629". The total on the last
   line was right; the per-rule table built from the visible ones described 0.3% of the tree and
   read as though the rest were something else. Re-run with `--max-diagnostics=none`.
+- **The guard reads `className` expressions and JSX attributes. It cannot see a colour written
+  as a hex inside a plain JS template literal.** `quotes/page.tsx` built a whole A4 document as
+  an HTML string and carried **69 inline hexes, 53 of them the banned slate scale**; the SLATE
+  rule reported nothing, because there is no `slate-<tone>` utility to match. When a renderer
+  emits HTML/CSS as strings, treat it as **outside every instrument here** and read it by hand.
+  Related, and measured: the same blindness applies to a plugin's palette — if
+  `@tailwindcss/typography` were installed, `prose-slate` would activate a slate palette the
+  SLATE rule cannot match (`text-slate-500` is caught; `prose-slate` is not).
 - **Inline `node -e` breaks on quoting here**, repeatedly. Write a script file.
 - **Git writes are never parallel** — `index.lock` collides and a commit's message ends
   up describing a different file than its content. Long messages go in a file with
