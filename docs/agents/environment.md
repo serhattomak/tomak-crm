@@ -253,12 +253,32 @@ Verify with `/health` returning 200 and a `masstransit-bus` block.
    **zero** packages; the line count was churn, the name set was the fact.
 
 **A `toast()` call is silent where no `<Toaster>` is mounted.** Measured 2026-09-16: sonner
-is the app-wide toast mechanism — **17 files import it** and `<Toaster>` is mounted in exactly
-two layouts, `app/(admin)/layout.tsx` and `app/(dashboard)/layout.tsx`. It is **not** in
-`app/(auth)/layout.tsx`, so `toast(...)` in `app/(auth)/login/page.tsx` would render nothing
-at all. That is the same failure shape as an undefined token: no error, no output, and only a
-hand-check finds it. Before replacing an `alert()` with a `toast()`, confirm the route's layout
-tree mounts one.
+is the app-wide toast mechanism — **17 files import it**. `<Toaster>` was mounted in exactly
+two layouts, `app/(admin)/layout.tsx` and `app/(dashboard)/layout.tsx`, and not for `(auth)`,
+so `toast(...)` in `app/(auth)/login/page.tsx` would render nothing at all. That is the same
+failure shape as an undefined token: no error, no output, and only a hand-check finds it.
+Before replacing an `alert()` with a `toast()`, confirm the route's layout tree mounts one.
+
+**Corrected later the same day** (roadmap #23): `app/(auth)/layout.tsx` **did not exist at
+all** — `(auth)/` held only `login/page.tsx` and `register/page.tsx`. The gap was a **missing
+file**, not a missing line, and the paragraph above named a mount that was never there. The
+conclusion held and was in fact stronger: nothing would have rendered, and no layout was even
+available to put the Toaster in. The file now exists and mounts one, so the count is **three**.
+Also measured: **no guard rule covers `alert()`** — 17 rule IDs enumerated, `grep alert
+scripts/` returns 0 — so neither this fix nor its reintroduction is gated, and a green
+`guard:crm-ui` says nothing about it.
+
+**An in-page toast is invisible behind an open modal, and an equal `z-index` does not save
+it.** Measured 2026-09-16: the hand-written toasts are `fixed … z-50`
+(`vehicles/page.tsx:504`, `calendar/page.tsx:766`) while `DialogOverlay` and `DialogContent`
+are also `z-50` (`packages/ui/src/components/dialog.tsx:42,64`) and are **portaled to
+`document.body`**. An equal `z-index` is broken by DOM order, and the portal is appended last,
+so the modal paints over the toast — a validation message nobody can read, sitting under a
+`bg-black/30` + `backdrop-blur-sm` scrim. Sonner's toaster is `z-index: 999999999` in its
+compiled CSS, so `toast()` **is** visible above an open dialog where a helper owning its own
+`div` is not. This is why #23's ten `alert()` calls went to sonner rather than to the pages'
+existing helper — and why that helper's own successes looked fine: they fire after the dialog
+closes.
 
 Also measured in the same pass: **the `**` glob was blind again.** A
 `Select-String -Path "apps/web/**/*.tsx"` found **0** sonner imports; a plain `readdirSync` walk
