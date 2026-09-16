@@ -46,7 +46,7 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | ARBITRARY_TEXT_SIZE | warn | 1188 | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale |
 | NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
 | INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens |
-| CARD_SURFACE | warn | 2240 | `bg-card` / `border-border` — **and delete the `dark:` partner**, see below (Faz 5.4) |
+| CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner**, see below (Faz 5.4) |
 
 **Faz 4 (colour discipline) and 5.2/5.3 are complete**: all six colour rules read 0,
 `NATIVE_SELECT` 61 → 0 across 13 files, `NATIVE_TABLE` 61 → 0 across 28. `--full` has
@@ -56,23 +56,33 @@ count reaches 0 (ADR-0004 §9).
 
 **CARD_SURFACE (Faz 5.4) is deliberately narrow:** it fires only on the *paired* idiom
 (`bg-white … dark:bg-zinc-9xx`, `border-zinc-2xx … dark:border-zinc-8xx`), because a
-hardcoded pair is provably a themed surface while a bare `bg-white` may be deliberate
-(print, a fixed light surface). The `dark:` partner is part of the finding, not a detail:
-it sets the same property in the same variant at the same specificity, so the legacy
-class wins in the compiled stylesheet and the token never applies — measured in 5.0 on 31
-lines of `messages` where exactly that had happened.
+hardcoded pair is provably a themed surface. Two deliberate exclusions:
 
-Measured by two independent methods, both landing on **2240**: the rule itself, and a
-line-based walk. Total hardcoded surfaces are **2425** (799 `bg-white` + 1626 borders), so
-**185 carry no `dark:` partner at all** — those are the triage list for the sweep, since
-an unpaired white surface is a dark-mode defect candidate rather than a tokenisation
-task.
+- A bare `bg-white` with no dark partner is not flagged — it may be a fixed light
+  surface (print) rather than a themed one.
+- **Translucent `bg-white/90` or `/80` with `backdrop-blur` is not flagged.** That frosted
+  panel is a surface whose translucency is the point; swapping it to `bg-card` would make
+  it opaque and kill the effect. This one is worth remembering because the rule got it
+  wrong first and matched `bg-white` as a prefix — 15 sites where the migration was right
+  and the rule was wrong. An over-matching rule never announces itself; it simply never
+  reaches zero, and the tempting fix is to widen the migration until the counter clears.
 
-The primitive layer is already clean (`packages/ui` reports 0 for this rule) — it was
-settled first, in `beb9cc6`, because a rule that fires on the authority components starts
-with built-in false positives. Allowlist entries are 6, each with its reason recorded:
-two brand-mark files, one data-contract value, the `NumberInput` primitive, the `Table`
-primitive, and the order print surface.
+The `dark:` partner is part of the finding, not a detail: it sets the same property in
+the same variant at the same specificity, so the legacy class wins in the compiled
+stylesheet and the token never applies — measured in 5.0 on 31 lines of `messages`.
+
+**Swept to zero:** 85 files, 1912 class strings. A separate check for token-and-legacy
+coexistence in the same string also reads 0, which is the check the guard itself cannot
+perform.
+
+Total hardcoded surfaces were **2425** (799 `bg-white` + 1626 borders); **185 carried no
+`dark:` partner at all** and remain — those are dark-mode defect candidates rather than
+tokenisation work, and they are triaged separately.
+
+The primitive layer was settled first, in `beb9cc6`, because a rule that fires on the
+authority components starts with built-in false positives. Allowlist entries are 6, each
+with its reason recorded: two brand-mark files, one data-contract value, the `NumberInput`
+primitive, the `Table` primitive, and the order print surface.
 
 > ⚠️ **This table is a copy of a measurement, not a maintained estimate.** After any
 > sweep, re-run `guard:crm-ui:full` and copy the last line. If a count here disagrees
