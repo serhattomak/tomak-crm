@@ -182,7 +182,7 @@ export function ComplianceInlineCard({
                     className={`rounded px-1.5 py-0.5 font-bold text-3xs ${
                       v.enforcementLevel === "HardBlock"
                         ? "bg-red-600 text-white dark:bg-red-500"
-                        : "bg-amber-500 text-white dark:bg-amber-600"
+                        : "bg-amber-700 text-white"
                     }`}
                   >
                     {v.enforcementLevel === "HardBlock"

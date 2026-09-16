@@ -2527,7 +2527,7 @@ function QuoteDetailDrawer({
               <div className="space-y-3 rounded-2xl border-2 border-amber-400/80 bg-amber-50/90 p-4.5 shadow-md dark:border-amber-500/40 dark:bg-amber-950/40">
                 <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs">
+                    <div className="mt-0.5 flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-amber-700 text-white shadow-xs">
                       <RefreshCw className="h-5 w-5" />
                     </div>
                     <div>

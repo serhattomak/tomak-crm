@@ -323,7 +323,7 @@ export default function CompliancePage() {
         );
       case "SoftWarning":
         return (
-          <span className="flex items-center gap-1 rounded-md bg-amber-500 px-2 py-0.5 font-bold text-2xs text-white">
+          <span className="flex items-center gap-1 rounded-md bg-amber-700 px-2 py-0.5 font-bold text-2xs text-white">
             <AlertTriangle className="h-3 w-3" /> Uyar (Soft Warning)
           </span>
         );

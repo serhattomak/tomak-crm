@@ -314,7 +314,7 @@ export default function AdminTemplatesPage() {
           >
             <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-700 text-white shadow-sm">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
