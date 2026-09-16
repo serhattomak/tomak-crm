@@ -40,8 +40,8 @@
  *     style props, SVG paint attributes).
  *
  * Run:
- *   npm run guard:crm-ui            # scoped check (Batch 1–3 touched files) — CI gate
- *   npm run guard:crm-ui:full       # full CRM sweep (migration tracker, may list legacy drift)
+ *   npm run guard:crm-ui            # the gate: full CRM sweep (see the note below)
+ *   npm run guard:crm-ui:full       # identical — kept because ADR-0004/CI name it
  *   node scripts/crm-ui-guard.mjs --help
  *
  * Exit codes: 0 clean (advisory warnings do not affect exit code) · 1 error-level
@@ -62,33 +62,15 @@ const REPO_ROOT = resolve(fileURLToPath(import.meta.url), "..", "..");
 const DEFAULT_ALLOWLIST = "scripts/crm-ui-guard.allowlist.json";
 
 /**
- * Batch 1–3 touched files. The CI gate scans exactly this list:
- * every file here was migrated to packages/ui standards, so any hit
- * is a regression.
+ * CRM scope. Store (`apps/ecommerce`) is deliberately absent — it does not
+ * exist in this repo, and `apps/api` is .NET, not styled here.
+ *
+ * This used to be split in two: an 18-file `SCOPE` list was the CI gate while
+ * `--full` was only a tracker. ADR-0004 §9 retired that list once a full sweep
+ * came back clean, so as of Faz 7 the guard has **one scope and one gate**.
+ * There is no narrower mode left for a regression to hide in.
  * @type {string[]}
  */
-const SCOPE = [
-  "apps/web/app/(dashboard)/[tenantSlug]/compliance/page.tsx",
-  "apps/web/app/(dashboard)/[tenantSlug]/automations/[workflowId]/page.tsx",
-  "apps/web/app/(dashboard)/[tenantSlug]/attendance/page.tsx",
-  "apps/web/components/phone-input.tsx",
-  "packages/ui/src/components/phone-input.tsx",
-  "apps/web/components/email/compose-modal.tsx",
-  "apps/web/components/email/convert-to-lead-modal.tsx",
-  "apps/web/components/email/email-account-modal.tsx",
-  "apps/web/app/(dashboard)/[tenantSlug]/organization/page.tsx",
-  "apps/web/app/(admin)/admin/tenants/page.tsx",
-  "apps/web/app/(admin)/admin/tenants/[tenantId]/page.tsx",
-  "apps/web/app/(dashboard)/[tenantSlug]/automations/page.tsx",
-  "apps/web/app/(dashboard)/[tenantSlug]/email/page.tsx",
-  "apps/web/app/(admin)/layout.tsx",
-  "apps/web/app/(auth)/login/page.tsx",
-  "apps/web/components/bulk-action-bar.tsx",
-  "apps/web/app/page.tsx",
-  "apps/web/lib/email-preview.ts",
-];
-
-/** Full-sweep roots for `--full`. Store (`apps/ecommerce`) is deliberately absent. */
 const FULL_ROOTS = ["apps/web", "packages/ui"];
 const SKIP_DIRS = new Set([
   "node_modules",
@@ -419,11 +401,11 @@ usage:
   node scripts/crm-ui-guard.mjs [options] [path...]
 
 options:
-  --full                  scan all of apps/web + packages/ui (Store excluded by design)
+  --full                  accepted, and now identical to the default (see note)
   --allowlist <file>      allowlist JSON (default: ${DEFAULT_ALLOWLIST})
   --help                  this text
 
-  no path + no --full     scan the Batch 1–3 SCOPE list (CI gate).
+  no path                 scan all of apps/web + packages/ui (Store excluded by design).
 
 severity:
   error (default)   blocking — affects the exit code
@@ -431,8 +413,9 @@ severity:
                     promoted to error only once a --full sweep is clean for it.
 
 note:
-  The scoped SCOPE list is the live regression gate and stays in place until a
-  clean --full sweep (ADR-0004 §9), at which point it is retired.
+  There is one scope and one gate. The 18-file SCOPE list that used to be the CI
+  gate was retired in Faz 7, once a full sweep reached 0 errors and 0 warnings
+  (ADR-0004 §9), so "guard:crm-ui" and "guard:crm-ui:full" run the same scan.
 
 examples:
   node scripts/crm-ui-guard.mjs
@@ -447,7 +430,6 @@ function main(argv) {
     printHelp();
     return 0;
   }
-  const full = argv.includes("--full");
   const ai = argv.indexOf("--allowlist");
   const allowlistPath = ai === -1 ? DEFAULT_ALLOWLIST : (argv[ai + 1] ?? "");
   if (ai !== -1 && !argv[ai + 1]) {
@@ -487,18 +469,12 @@ function main(argv) {
         files.push(abs);
       }
     }
-  } else if (full) {
+  } else {
+    // No positionals → all of CRM scope. `--full` is still accepted and means
+    // exactly this; it survives because ADR-0004, the roadmap and CI all spell
+    // it out, but it is no longer a distinct mode.
     for (const root of FULL_ROOTS) {
       files = walk(resolve(REPO_ROOT, root), files);
-    }
-  } else {
-    for (const rel of SCOPE) {
-      const abs = resolve(REPO_ROOT, rel);
-      if (!existsSync(abs)) {
-        console.warn(`warn: scope file missing (skipped): ${rel}`);
-        continue;
-      }
-      files.push(abs);
     }
   }
 
