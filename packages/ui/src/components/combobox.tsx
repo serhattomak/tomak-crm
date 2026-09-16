@@ -22,6 +22,7 @@ export interface ComboboxOption {
 }
 
 export interface ComboboxProps {
+  "aria-label"?: string;
   className?: string;
   clearable?: boolean;
   disabled?: boolean;
@@ -102,6 +103,7 @@ function OptionRow({
 }
 
 export function Combobox({
+  "aria-label": ariaLabel,
   options,
   value,
   onChange,
@@ -174,6 +176,7 @@ export function Combobox({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           aria-expanded={open}
+          aria-label={ariaLabel}
           className={cn(
             "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             triggerClassName
