@@ -198,6 +198,35 @@ this repo had for a sweep, **passed clean: whitespace is not a token.**
   across 6 files when the audit alone would have needed a hand-read of the class strings.
 - Emit the whitespace that PRECEDES each kept token, re-emit the trailing run, return
   any token-less literal untouched, and assert it. **In a class attribute, whitespace is
+
+**`npm run build` fails while the API is running — it is a file lock, not a compile error.**
+`dotnet build` cannot overwrite `apps/api/src/CRM.Api/bin/Debug/net10.0/*.dll`, and a running
+`CRM.Api.exe` holds them:
+
+```
+error MSB3027: ... CRM.Modules.Orders.dll ... Dosya şunun tarafından kilitlendi: "CRM.Api (23328)"
+```
+
+Measured 2026-09-16: 46 "errors" on the api step, 0 actual compile errors, and `web` built
+fine in the same run. The trap is that this only surfaces when turbo's cache is invalidated —
+for most of a session `api:build` is a cache **hit** and never touches disk, so a green
+`npm run build` says nothing about whether the api compiles. A change that touches every
+file (adding `.gitattributes`) is what forced it.
+
+Recipe:
+```powershell
+Stop-Process -Name CRM.Api -Force
+npm run build
+$dir = "apps\api\src\CRM.Api\bin\Debug\net10.0"
+$env:ASPNETCORE_ENVIRONMENT = "Development"; $env:ASPNETCORE_URLS = "http://localhost:5000"
+Start-Process -FilePath "$dir\CRM.Api.exe" -WorkingDirectory $dir
+```
+
+The two environment variables are **not optional**: the exe started bare answers `/health`
+with **401**, because `launchSettings.json` carries `ASPNETCORE_ENVIRONMENT=Development` and a
+`dotnet run` that nobody remembers using. `ASPNETCORE_URLS` is needed too — launchSettings
+points at `:5187` while the app, `next.config.ts` and every doc here assume `:5000`.
+Verify with `/health` returning 200 and a `masstransit-bus` block.
   content.**
 
 ## Verification rules
