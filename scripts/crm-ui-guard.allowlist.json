@@ -10,6 +10,11 @@
       "file": "apps/web/app/(auth)/register/page.tsx",
       "reason": "Google G logo official brand fill colors — must not be tokenized per brand guidelines",
       "rule": "SVG_PAINT_HEX"
+    },
+    {
+      "file": "apps/web/app/(dashboard)/[tenantSlug]/pipelines/_components/pipeline-settings-modal.tsx",
+      "reason": "Stage color default is persisted data, not a styling literal: the field is user-editable text, consumed as a Tailwind class by the pipeline board and as a raw hex (with alpha suffixes) by the kanban and table views. Constraining it to a token vocabulary is a data-contract change, tracked as deferred item 25",
+      "rule": "INLINE_HEX_STYLE"
     }
   ]
 }

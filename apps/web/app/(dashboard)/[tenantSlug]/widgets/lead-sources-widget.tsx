@@ -60,11 +60,31 @@ export function LeadSourcesWidget({
   const hasData = totalCustomers > 0;
 
   const segments = [
-    { color: "#10b981", count: activeCount, name: "Aktif Müşteriler" },
-    { color: "#8b5cf6", count: leadCount, name: "Müşteri Adayları (Lead)" },
-    { color: "#f59e0b", count: vipCount, name: "VIP / Stratejik" },
-    { color: "#06b6d4", count: companiesCount, name: "Kurumsal Firmalar" },
-    { color: "#ec4899", count: individualsCount, name: "Bireysel Müşteriler" },
+    {
+      className: "bg-chart-2",
+      count: activeCount,
+      name: "Aktif Müşteriler",
+    },
+    {
+      className: "bg-chart-1",
+      count: leadCount,
+      name: "Müşteri Adayları (Lead)",
+    },
+    {
+      className: "bg-chart-3",
+      count: vipCount,
+      name: "VIP / Stratejik",
+    },
+    {
+      className: "bg-chart-5",
+      count: companiesCount,
+      name: "Kurumsal Firmalar",
+    },
+    {
+      className: "bg-chart-4",
+      count: individualsCount,
+      name: "Bireysel Müşteriler",
+    },
   ].filter((s) => s.count > 0);
 
   return (
@@ -124,8 +144,7 @@ export function LeadSourcesWidget({
                     >
                       <div className="flex items-center gap-2">
                         <span
-                          className="h-2 w-2 flex-none rounded-full"
-                          style={{ backgroundColor: s.color }}
+                          className={`h-2 w-2 flex-none rounded-full ${s.className}`}
                         />
                         <span className="font-medium text-[11px] text-muted-foreground">
                           {s.name}
