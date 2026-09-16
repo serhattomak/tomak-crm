@@ -606,7 +606,7 @@ export default function WebhookBuilderPage() {
                       </p>
                     )}
                   </div>
-                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-muted-foreground">
                     {name.length}/255
                   </span>
                 </div>
@@ -661,7 +661,7 @@ export default function WebhookBuilderPage() {
                       </p>
                     )}
                   </div>
-                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-muted-foreground">
                     {description.length}/1000
                   </span>
                 </div>
@@ -923,7 +923,7 @@ export default function WebhookBuilderPage() {
               Test Gönder
             </button>
             {isNew && (
-              <p className="mt-2 text-center text-2xs text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2 text-center text-2xs text-muted-foreground">
                 Önce kaydedin
               </p>
             )}
@@ -1017,7 +1017,7 @@ export default function WebhookBuilderPage() {
                             {d.responseCode}
                           </span>
                         ) : (
-                          <span className="text-zinc-400 dark:text-zinc-500">
+                          <span className="text-muted-foreground">
                             —
                           </span>
                         )}

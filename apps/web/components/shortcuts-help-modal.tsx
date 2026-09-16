@@ -133,7 +133,7 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400 dark:text-zinc-500">
+        <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <HelpCircle className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>

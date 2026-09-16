@@ -678,7 +678,7 @@ export default function PayrollPage() {
                 Toplam Brüt Maaş ({MONTH_NAMES[activeRun.month - 1]}{" "}
                 {activeRun.year})
               </span>
-              <Banknote className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Banknote className="h-4 w-4 text-muted-foreground" />
             </div>
             <div className="mt-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
               {formatCurrency(activeRun.totalGross)}
@@ -976,7 +976,7 @@ export default function PayrollPage() {
                 {runs.length === 0 && (
                   <TableRow>
                     <TableCell
-                      className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                      className="py-12 text-center text-muted-foreground"
                       colSpan={8}
                     >
                       Henüz oluşturulmuş bir bordro dönemi bulunmuyor. "Yeni
@@ -1019,7 +1019,7 @@ export default function PayrollPage() {
 
             <div className="flex flex-wrap items-center gap-2">
               <div className="relative">
-                <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
                 <input
                   className="rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-800 placeholder:text-zinc-400 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-200 dark:text-zinc-500"
                   onChange={(e) => setPuantajSearch(e.target.value)}
@@ -1118,7 +1118,7 @@ export default function PayrollPage() {
                           {emp.unpaidLeaveDays} g
                         </span>
                       ) : (
-                        <span className="text-zinc-400 dark:text-zinc-500">
+                        <span className="text-muted-foreground">
                           0 g
                         </span>
                       )}
@@ -1132,7 +1132,7 @@ export default function PayrollPage() {
                           {emp.overtimeHours} sa
                         </span>
                       ) : (
-                        <span className="text-zinc-400 dark:text-zinc-500">
+                        <span className="text-muted-foreground">
                           -
                         </span>
                       )}
@@ -1181,7 +1181,7 @@ export default function PayrollPage() {
                 {filteredEmployees.length === 0 && (
                   <TableRow>
                     <TableCell
-                      className="py-8 text-center text-zinc-400 dark:text-zinc-500"
+                      className="py-8 text-center text-muted-foreground"
                       colSpan={14}
                     >
                       Kayıt bulunamadı.
@@ -1607,7 +1607,7 @@ export default function PayrollPage() {
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-border bg-card p-12 text-center text-zinc-400 dark:text-zinc-500">
+            <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
               Görüntülemek için puantaj ekranından veya yukarıdaki seçim
               kutusundan bir çalışan seçiniz.
             </div>
@@ -1829,7 +1829,7 @@ export default function PayrollPage() {
                 step={1000}
                 value={simForm.priorCumulativeIncomeTaxBase}
               />
-              <p className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
+              <p className="mt-1 text-3xs text-muted-foreground">
                 Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek
                 için
               </p>
@@ -2078,7 +2078,7 @@ export default function PayrollPage() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center text-zinc-400 dark:text-zinc-500">
+              <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
                 Hesaplama yapılıyor...
               </div>
             )}
@@ -2275,7 +2275,7 @@ export default function PayrollPage() {
                 </div>
               </div>
             ) : (
-              <div className="py-8 text-center text-zinc-400 dark:text-zinc-500">
+              <div className="py-8 text-center text-muted-foreground">
                 Parametreler yükleniyor...
               </div>
             )}

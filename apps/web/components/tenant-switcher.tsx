@@ -86,7 +86,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 {activeTenant?.name || "Çalışma Alanı Seçin"}
               </div>
-              <div className="truncate font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+              <div className="truncate font-medium text-3xs text-muted-foreground">
                 Kurumsal Workspace
               </div>
             </div>

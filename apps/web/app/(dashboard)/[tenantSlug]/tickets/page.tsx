@@ -413,7 +413,7 @@ export default function TicketsDashboardPage() {
             <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {stats?.totalOpenTickets ?? 0}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               ({stats?.newTickets ?? 0} yeni)
             </span>
           </div>
@@ -520,7 +520,7 @@ export default function TicketsDashboardPage() {
         {/* Filter Controls */}
         <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -668,7 +668,7 @@ export default function TicketsDashboardPage() {
                         {t.customerName}
                       </div>
                       {t.customerEmail && (
-                        <div className="text-2xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-2xs text-muted-foreground">
                           {t.customerEmail}
                         </div>
                       )}
@@ -701,7 +701,7 @@ export default function TicketsDashboardPage() {
                         </span>
                       ) : t.slaResolutionDueAt ? (
                         <span className="inline-flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
-                          <Timer className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
+                          <Timer className="h-3 w-3 text-muted-foreground" />
                           {new Date(t.slaResolutionDueAt).toLocaleTimeString(
                             "tr-TR",
                             {
@@ -711,7 +711,7 @@ export default function TicketsDashboardPage() {
                           )}
                         </span>
                       ) : (
-                        <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-xs text-muted-foreground">
                           -
                         </span>
                       )}
@@ -780,7 +780,7 @@ export default function TicketsDashboardPage() {
                 {/* Column Cards */}
                 <div className="mt-3 flex-1 space-y-3 overflow-y-auto">
                   {colTickets.length === 0 ? (
-                    <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                    <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-4 text-center text-xs text-muted-foreground">
                       Bu aşamada talep yok
                     </div>
                   ) : (
@@ -808,7 +808,7 @@ export default function TicketsDashboardPage() {
                             {ticket.customerName}
                           </span>
                           <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-0.5 text-zinc-400 dark:text-zinc-500">
+                            <span className="flex items-center gap-0.5 text-muted-foreground">
                               <MessageSquare className="h-3 w-3" />
                               {ticket.messageCount}
                             </span>

@@ -543,7 +543,7 @@ export default function WebhooksPage() {
             <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {displayActiveCount}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               / {totalEndpointsDisplay} toplam
             </span>
           </div>
@@ -564,7 +564,7 @@ export default function WebhooksPage() {
             <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {deliveriesTotal}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               deneme
             </span>
           </div>
@@ -589,7 +589,7 @@ export default function WebhooksPage() {
             <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               %{displaySuccessRate}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               success / total
             </span>
           </div>
@@ -1267,7 +1267,7 @@ export default function WebhooksPage() {
                 </div>
               )}
 
-              <p className="text-center text-2xs text-zinc-400 dark:text-zinc-500">
+              <p className="text-center text-2xs text-muted-foreground">
                 Dry-run modunda gerçek teslimat yazılmaz, sadece imza ve akış
                 doğrulanır.
               </p>

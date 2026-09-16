@@ -397,7 +397,7 @@ export default function AutomationsPage() {
             <span className="font-bold text-2xl text-zinc-900 dark:text-zinc-100">
               {stats?.activeWorkflows ?? 0}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               / {stats?.totalWorkflows ?? 0} Akış
             </span>
           </div>
@@ -416,7 +416,7 @@ export default function AutomationsPage() {
             <span className="font-bold text-2xl text-blue-600">
               {stats?.executionsToday ?? 0}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               tetikleme
             </span>
           </div>
@@ -527,7 +527,7 @@ export default function AutomationsPage() {
                 type="text"
                 value={searchQuery}
               />
-              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
             </form>
 
             <button
@@ -649,7 +649,7 @@ export default function AutomationsPage() {
                       <div className="flex items-center justify-between border-border border-t pt-1 text-xs text-zinc-600 dark:text-zinc-400">
                         <div className="flex items-center gap-3">
                           <span className="flex items-center gap-1 font-medium">
-                            <SlidersHorizontal className="h-3 w-3 text-zinc-400 dark:text-zinc-500" />
+                            <SlidersHorizontal className="h-3 w-3 text-muted-foreground" />
                             {wf.conditionsCount} Koşul
                           </span>
                           <span className="flex items-center gap-1 font-medium text-blue-600">
@@ -657,7 +657,7 @@ export default function AutomationsPage() {
                             {wf.actionsCount} Aksiyon Adımı
                           </span>
                         </div>
-                        <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+                        <span className="font-mono text-2xs text-muted-foreground">
                           {wf.executionCount} kez çalıştı
                         </span>
                       </div>
@@ -665,7 +665,7 @@ export default function AutomationsPage() {
                   </div>
 
                   {/* Bottom Bar: Action buttons & Run date */}
-                  <div className="flex items-center justify-between border-border border-t pt-2 text-xs text-zinc-400 dark:text-zinc-500">
+                  <div className="flex items-center justify-between border-border border-t pt-2 text-xs text-muted-foreground">
                     <div>
                       {wf.lastExecutedAt ? (
                         <span>
@@ -752,7 +752,7 @@ export default function AutomationsPage() {
                 {executions.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      className="py-8 text-center text-zinc-400 dark:text-zinc-500"
+                      className="py-8 text-center text-muted-foreground"
                       colSpan={7}
                     >
                       Henüz çalışma kaydı bulunmuyor.
@@ -782,7 +782,7 @@ export default function AutomationsPage() {
                             {exec.entityType} ({exec.entityId?.substring(0, 8)})
                           </span>
                         ) : (
-                          <span className="text-zinc-400 dark:text-zinc-500">
+                          <span className="text-muted-foreground">
                             -
                           </span>
                         )}
@@ -859,7 +859,7 @@ export default function AutomationsPage() {
 
                 <div className="mb-4 space-y-1.5 rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-400 dark:text-zinc-500">
+                    <span className="text-muted-foreground">
                       Tetikleyici:
                     </span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -867,7 +867,7 @@ export default function AutomationsPage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-400 dark:text-zinc-500">
+                    <span className="text-muted-foreground">
                       Aksiyonlar:
                     </span>
                     <span className="font-semibold text-blue-600">
@@ -1066,14 +1066,14 @@ export default function AutomationsPage() {
                           {log.message}
                         </div>
                       </div>
-                      <span className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-3xs text-muted-foreground">
                         {log.executionDurationMs}ms
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <p className="text-center text-2xs text-zinc-400 dark:text-zinc-500">
+                <p className="text-center text-2xs text-muted-foreground">
                   * Dry-Run modunda gerçek e-posta veya webhook fırlatılmaz,
                   yalnızca kural testi yapılır.
                 </p>

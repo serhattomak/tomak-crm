@@ -540,7 +540,7 @@ export default function TicketDetailPage() {
                   <div className="rounded-2xl border border-border bg-card p-4 text-xs shadow-2xs">
                     <div className="flex items-center justify-between font-semibold text-zinc-700 dark:text-zinc-300">
                       <span>{ticket.customerName} (İlk Talep)</span>
-                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                      <span className="text-3xs text-muted-foreground">
                         {new Date(ticket.createdAt).toLocaleString("tr-TR")}
                       </span>
                     </div>
@@ -736,7 +736,7 @@ export default function TicketDetailPage() {
                   />
 
                   <div className="flex items-center justify-between">
-                    <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                    <span className="text-2xs text-muted-foreground">
                       {messageMode === "internal" ? (
                         <span className="font-medium text-amber-700">
                           ⚠️ Bu not müşteriye iletilmez
@@ -780,7 +780,7 @@ export default function TicketDetailPage() {
                 {ticket.activities.map((act) => (
                   <div className="relative pl-6 text-xs" key={act.id}>
                     <div className="absolute top-1 -left-1.5 h-3 w-3 rounded-full border-2 border-white bg-blue-500 shadow-xs" />
-                    <div className="flex items-center justify-between text-2xs text-zinc-400 dark:text-zinc-500">
+                    <div className="flex items-center justify-between text-2xs text-muted-foreground">
                       <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                         {act.userName}
                       </span>
@@ -824,7 +824,7 @@ export default function TicketDetailPage() {
                   <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     {ticket.customerName}
                   </h4>
-                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-muted-foreground">
                     Kayıtlı Müşteri
                   </span>
                 </div>
@@ -832,21 +832,21 @@ export default function TicketDetailPage() {
 
               {ticket.customerEmail && (
                 <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
-                  <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                  <Mail className="h-3.5 w-3.5 text-muted-foreground" />
                   <span className="truncate">{ticket.customerEmail}</span>
                 </div>
               )}
 
               {ticket.customerPhone && (
                 <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
-                  <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                  <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                   <span>{ticket.customerPhone}</span>
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-2 border-border border-t pt-2.5 text-center">
                 <div className="rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/50">
-                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-muted-foreground">
                     Toplam Talep
                   </span>
                   <span className="font-bold text-sm text-zinc-800 dark:text-zinc-200">
@@ -854,7 +854,7 @@ export default function TicketDetailPage() {
                   </span>
                 </div>
                 <div className="rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/50">
-                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-muted-foreground">
                     Açık Talepler
                   </span>
                   <span className="font-bold text-blue-600 text-sm">
@@ -919,7 +919,7 @@ export default function TicketDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-zinc-400 dark:text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 Müşterinin başka bir geçmiş talebi yok.
               </p>
             )}
@@ -986,7 +986,7 @@ export default function TicketDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-zinc-400 dark:text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 Son 5 sipariş bulunamadı.
               </p>
             )}
@@ -1023,7 +1023,7 @@ export default function TicketDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-zinc-400 dark:text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 Kargo kaydı yok.
               </p>
             )}

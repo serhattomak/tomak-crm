@@ -39,7 +39,7 @@ function SelectScrollUpButton({
   return (
     <SelectPrimitive.ScrollUpButton
       className={cn(
-        "flex cursor-default items-center justify-center py-1 text-zinc-400 dark:text-zinc-500",
+        "flex cursor-default items-center justify-center py-1 text-muted-foreground",
         className
       )}
       {...props}
@@ -56,7 +56,7 @@ function SelectScrollDownButton({
   return (
     <SelectPrimitive.ScrollDownButton
       className={cn(
-        "flex cursor-default items-center justify-center py-1 text-zinc-400 dark:text-zinc-500",
+        "flex cursor-default items-center justify-center py-1 text-muted-foreground",
         className
       )}
       {...props}

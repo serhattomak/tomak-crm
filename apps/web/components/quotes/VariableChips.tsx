@@ -59,9 +59,9 @@ export function VariableChips({
             title={VARIABLE_LABELS[variable]}
             type="button"
           >
-            <span className="text-zinc-400 dark:text-zinc-500">{"{{"}</span>
+            <span className="text-muted-foreground">{"{{"}</span>
             <span>{variable}</span>
-            <span className="text-zinc-400 dark:text-zinc-500">{"}}"}</span>
+            <span className="text-muted-foreground">{"}}"}</span>
           </button>
         ))}
       </div>

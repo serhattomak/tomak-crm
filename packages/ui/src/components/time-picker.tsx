@@ -121,12 +121,12 @@ export function TimePicker({
           type="button"
         >
           <div className="flex items-center gap-2 truncate">
-            <Clock className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+            <Clock className="h-4 w-4 shrink-0 text-muted-foreground" />
             <span
               className={cn(
                 "truncate font-mono",
                 !normalizedValue &&
-                  "font-sans font-normal text-zinc-400 dark:text-zinc-500"
+                  "font-sans font-normal text-muted-foreground"
               )}
             >
               {normalizedValue || placeholder}
@@ -173,7 +173,7 @@ export function TimePicker({
           <div className="grid grid-cols-2 gap-2 border-b border-border pb-2.5">
             {/* Hours */}
             <div>
-              <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
+              <div className="text-3xs font-bold text-muted-foreground uppercase tracking-wider text-center mb-1">
                 Saat
               </div>
               <div className="h-44 overflow-y-auto space-y-0.5 pr-1 no-scrollbar rounded-xl bg-zinc-50/70 dark:bg-zinc-800/40 p-1">
@@ -200,7 +200,7 @@ export function TimePicker({
 
             {/* Minutes */}
             <div>
-              <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
+              <div className="text-3xs font-bold text-muted-foreground uppercase tracking-wider text-center mb-1">
                 Dakika
               </div>
               <div className="h-44 overflow-y-auto space-y-0.5 pr-1 no-scrollbar rounded-xl bg-zinc-50/70 dark:bg-zinc-800/40 p-1">
@@ -228,7 +228,7 @@ export function TimePicker({
 
           {/* Quick Preset Chips */}
           <div className="pt-2">
-            <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1.5">
+            <div className="text-3xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
               Hızlı Seçenekler
             </div>
             <div className="flex flex-wrap gap-1">

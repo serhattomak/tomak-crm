@@ -990,8 +990,8 @@ export default function CalendarHubPage() {
             <span>Çar</span>
             <span>Per</span>
             <span>Cum</span>
-            <span className="text-zinc-400 dark:text-zinc-500">Cmt</span>
-            <span className="text-zinc-400 dark:text-zinc-500">Paz</span>
+            <span className="text-muted-foreground">Cmt</span>
+            <span className="text-muted-foreground">Paz</span>
           </div>
 
           <div className="grid auto-rows-[115px] grid-cols-7 divide-x divide-y divide-zinc-100 sm:auto-rows-[135px] dark:divide-zinc-800/80">
@@ -1015,7 +1015,7 @@ export default function CalendarHubPage() {
                           ? "bg-blue-600 font-black text-white shadow-md"
                           : cell.isCurrentMonth
                             ? "text-zinc-800 dark:text-zinc-200"
-                            : "text-zinc-400 dark:text-zinc-600"
+                            : "text-muted-foreground"
                       }`}
                     >
                       {cell.dayNumber}

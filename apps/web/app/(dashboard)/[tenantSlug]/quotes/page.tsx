@@ -137,7 +137,7 @@ function QuoteExpiryBadge({ validUntil }: { validUntil?: string }) {
   }
   return (
     <span className="inline-flex items-center gap-1">
-      <Clock className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+      <Clock className="h-3.5 w-3.5 text-muted-foreground" />
       <span>{new Date(validUntil).toLocaleDateString("tr-TR")}</span>
     </span>
   );
@@ -594,7 +594,7 @@ export default function QuotesPage() {
                         {quote.title}
                       </h4>
                       <div className="mt-0.5 flex items-center gap-1.5 text-2xs text-zinc-500 dark:text-zinc-400">
-                        <Building className="h-3 w-3 flex-none text-zinc-400 dark:text-zinc-500" />
+                        <Building className="h-3 w-3 flex-none text-muted-foreground" />
                         <span className="truncate">{quote.customerName}</span>
                       </div>
                     </div>
@@ -608,7 +608,7 @@ export default function QuotesPage() {
 
                   <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-2xs text-zinc-500 dark:text-zinc-400">
                     <div className="flex items-center gap-2">
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         {quote.itemCount} Kalem
                       </span>
                       {quote.validUntil
@@ -669,7 +669,7 @@ export default function QuotesPage() {
                       >
                         <Printer className="h-3.5 w-3.5" />
                       </button>
-                      <ChevronRight className="ml-1 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                      <ChevronRight className="ml-1 h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
                 </div>
@@ -734,7 +734,7 @@ export default function QuotesPage() {
                               R{quote.revisionNumber}
                             </span>
                           </div>
-                          <span className="mt-0.5 block text-3xs text-zinc-400 dark:text-zinc-500">
+                          <span className="mt-0.5 block text-3xs text-muted-foreground">
                             {quote.itemCount} Kalem
                           </span>
                         </TableCell>
@@ -745,7 +745,7 @@ export default function QuotesPage() {
                             {quote.title}
                           </span>
                           <div className="mt-0.5 flex items-center gap-1.5 text-2xs text-zinc-500 dark:text-zinc-400">
-                            <Building className="h-3 w-3 flex-none text-zinc-400 dark:text-zinc-500" />
+                            <Building className="h-3 w-3 flex-none text-muted-foreground" />
                             <span className="truncate">
                               {quote.customerName}
                             </span>
@@ -2589,7 +2589,7 @@ function QuoteDetailDrawer({
                           <FileText className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                           Müşterinin İlettiği Talep Notu:
                         </span>
-                        <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-3xs text-muted-foreground">
                           {new Date(revAct.createdAt).toLocaleString("tr-TR")}
                         </span>
                       </div>
@@ -2850,7 +2850,7 @@ function QuoteDetailDrawer({
                               {item.productName}
                             </span>
                             {item.sku && (
-                              <span className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+                              <span className="font-mono text-3xs text-muted-foreground">
                                 SKU: {item.sku}
                               </span>
                             )}
@@ -3008,7 +3008,7 @@ function QuoteDetailDrawer({
                           <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {rev.quoteNumber}
                           </span>
-                          <span className="block text-2xs text-zinc-400 dark:text-zinc-500">
+                          <span className="block text-2xs text-muted-foreground">
                             {new Date(rev.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
@@ -3041,7 +3041,7 @@ function QuoteDetailDrawer({
                         <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {act.title}
                         </span>
-                        <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-3xs text-muted-foreground">
                           {new Date(act.createdAt).toLocaleString("tr-TR")}
                         </span>
                       </div>
@@ -5135,7 +5135,7 @@ function QuotePrintModal({
                         }
                         key={item.id}
                       >
-                        <TableCell className="px-2.5 py-1.5 text-center font-bold text-zinc-400 dark:text-zinc-500">
+                        <TableCell className="px-2.5 py-1.5 text-center font-bold text-muted-foreground">
                           {idx + 1}
                         </TableCell>
                         <TableCell className="px-2.5 py-1.5">
@@ -5305,7 +5305,7 @@ function QuotePrintModal({
                     Yetkili Kaşe & İmza
                   </p>
                   <div className="mt-2 flex h-12 items-end justify-center border-border border-b border-dashed pb-1">
-                    <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                    <span className="text-3xs text-muted-foreground">
                       {quote.assignedUserName || activeTenant?.name}
                     </span>
                   </div>
@@ -5319,7 +5319,7 @@ function QuotePrintModal({
                     Kabul & Onay İmzası
                   </p>
                   <div className="mt-2 flex h-12 items-end justify-center border-border border-b border-dashed pb-1">
-                    <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                    <span className="text-3xs text-muted-foreground">
                       {quote.customerName}
                     </span>
                   </div>
@@ -5327,7 +5327,7 @@ function QuotePrintModal({
               </div>
 
               {/* 7. Document Footer Bar */}
-              <div className="mt-4 flex items-center justify-between border-border border-t pt-2.5 text-3xs text-zinc-400 dark:text-zinc-500">
+              <div className="mt-4 flex items-center justify-between border-border border-t pt-2.5 text-3xs text-muted-foreground">
                 <span>
                   Bu teklif belgesi CRM sistemi üzerinden resmi ve elektronik
                   olarak üretilmiştir.

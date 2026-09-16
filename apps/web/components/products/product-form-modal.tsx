@@ -293,7 +293,7 @@ export function TagsInput({
           value={draft}
         />
       </div>
-      <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+      <p className="mt-1 text-2xs text-muted-foreground">
         {value.length}/{max} etiket — listede etiket filtresi olarak aranabilir.
       </p>
     </div>
@@ -362,7 +362,7 @@ export function AttributesEditor({
         </div>
       ))}
       <div className="flex items-center justify-between">
-        <p className="text-2xs text-zinc-400 dark:text-zinc-500">
+        <p className="text-2xs text-muted-foreground">
           {value.length}/{max} özellik — boş anahtarlı satırlar kaydedilmez.
         </p>
         <button
@@ -505,7 +505,7 @@ export function ProductImagesField({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <Label>Ürün Görselleri</Label>
-        <span className="font-semibold text-2xs text-zinc-400 dark:text-zinc-500">
+        <span className="font-semibold text-2xs text-muted-foreground">
           {totalCount}/{MAX_PRODUCT_IMAGES} — kapak ilk görseldir
         </span>
       </div>
@@ -599,7 +599,7 @@ export function ProductImagesField({
         />
       )}
       {images.length === 0 && staged.length === 0 && (
-        <p className="rounded-2xl border border-border border-dashed px-3 py-4 text-center text-2xs text-zinc-400 dark:text-zinc-500">
+        <p className="rounded-2xl border border-border border-dashed px-3 py-4 text-center text-2xs text-muted-foreground">
           Henüz görsel yok — bağlantı yapıştırın veya dosya seçin. JPG/PNG/WebP,
           en fazla 5MB, en fazla 10 görsel.
         </p>

@@ -493,7 +493,7 @@ export default function CompliancePage() {
             <span className="font-extrabold text-3xl text-blue-600">
               {scoreData?.overriddenViolationsCount ?? 0}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               kayıt
             </span>
           </div>
@@ -559,7 +559,7 @@ export default function CompliancePage() {
                 type="text"
                 value={searchQuery}
               />
-              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
             </div>
           </div>
         )}
@@ -633,7 +633,7 @@ export default function CompliancePage() {
                   {/* Bottom Bar: Mode & Edit Button */}
                   <div className="flex items-center justify-between border-border border-t pt-3 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-2xs text-zinc-400 dark:text-zinc-500">
+                      <span className="font-medium text-2xs text-muted-foreground">
                         Denetim Modu:
                       </span>
                       {getEnforcementBadge(rule.enforcementLevel)}
@@ -693,7 +693,7 @@ export default function CompliancePage() {
                 {violations.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                      className="py-12 text-center text-muted-foreground"
                       colSpan={7}
                     >
                       Kayıtlı herhangi bir mevzuat ihlali bulunmuyor. Tüm
@@ -757,7 +757,7 @@ export default function CompliancePage() {
                           </button>
                         ) : (
                           <span
-                            className="font-mono text-2xs text-zinc-400 dark:text-zinc-500"
+                            className="font-mono text-2xs text-muted-foreground"
                             title={v.overrideReason || ""}
                           >
                             Onaylandı
@@ -996,7 +996,7 @@ export default function CompliancePage() {
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Doğrulama Sonuç Raporu
                 </h3>
-                <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                <span className="text-xs text-muted-foreground">
                   Gerçek zamanlı kural denetimi
                 </span>
               </div>
@@ -1074,7 +1074,7 @@ export default function CompliancePage() {
                   </div>
                 )
               ) : (
-                <div className="space-y-2 py-16 text-center text-zinc-400 dark:text-zinc-500">
+                <div className="space-y-2 py-16 text-center text-muted-foreground">
                   <Scale className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
                   <p className="font-semibold text-xs">
                     Doğrulama sonucunu görüntülemek için sol paneldeki
@@ -1084,7 +1084,7 @@ export default function CompliancePage() {
               )}
             </div>
 
-            <div className="border-border border-t pt-4 text-2xs text-zinc-400 dark:text-zinc-500">
+            <div className="border-border border-t pt-4 text-2xs text-muted-foreground">
               * Doğrulama motoru 4857 Sayılı Kanun ve alt yönetmelikler
               çerçevesinde hesaplama yapmaktadır.
             </div>
@@ -1209,7 +1209,7 @@ export default function CompliancePage() {
               <div className="space-y-1.5 pt-2">
                 <label className="block flex items-center justify-between font-bold text-xs text-zinc-700 dark:text-zinc-300">
                   <span>Parametrik Eşik Değerleri (JSON)</span>
-                  <span className="font-normal text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="font-normal text-3xs text-muted-foreground">
                     İşçi lehine esnetilebilir
                   </span>
                 </label>
@@ -1302,7 +1302,7 @@ export default function CompliancePage() {
                 rows={3}
                 value={overrideReason}
               />
-              <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+              <span className="block text-3xs text-muted-foreground">
                 * Bu gerekçe ve kullanıcı kimliğiniz denetim günlüğüne (audit
                 log) silinmez şekilde işlenecektir.
               </span>

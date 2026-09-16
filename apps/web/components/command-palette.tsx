@@ -827,7 +827,7 @@ export function CommandPalette({
 
         {/* Search Bar Header */}
         <div className="relative flex items-center border-border border-b px-4 py-3.5">
-          <Search className="mr-3 h-5 w-5 shrink-0 text-zinc-400 dark:text-zinc-500" />
+          <Search className="mr-3 h-5 w-5 shrink-0 text-muted-foreground" />
           <input
             className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setQuery(e.target.value)}
@@ -862,12 +862,12 @@ export function CommandPalette({
           ref={listRef}
         >
           {allFilteredItems.length === 0 ? (
-            <div className="py-12 text-center text-zinc-400 dark:text-zinc-500">
+            <div className="py-12 text-center text-muted-foreground">
               <Search className="mx-auto mb-2 h-8 w-8 text-zinc-300 dark:text-zinc-600" />
               <p className="font-semibold text-xs text-zinc-600 dark:text-zinc-300">
                 "{query}" ile eşleşen sonuç bulunamadı
               </p>
-              <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Lütfen farklı bir arama terimi deneyin
               </p>
             </div>
@@ -1031,7 +1031,7 @@ export function CommandPalette({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
+          <div className="flex items-center gap-1 text-muted-foreground">
             <span>Kısayollar için</span>
             <kbd
               className="cursor-pointer rounded border border-border bg-card px-1 font-bold font-mono text-3xs text-blue-600 shadow-2xs hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
@@ -1092,7 +1092,7 @@ function PaletteRow({
               className={`mt-0.5 truncate text-2xs ${
                 isSelected
                   ? "text-blue-700/80 dark:text-blue-300/80"
-                  : "text-zinc-400 dark:text-zinc-500"
+                  : "text-muted-foreground"
               }`}
             >
               {item.subtitle}

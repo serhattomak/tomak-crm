@@ -231,7 +231,7 @@ function AdminTenantsContent() {
 
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute top-3 left-3.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+        <Search className="absolute top-3 left-3.5 h-4 w-4 text-muted-foreground" />
         <input
           className="w-full rounded-xl border border-border bg-card py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -259,7 +259,7 @@ function AdminTenantsContent() {
               {loading ? (
                 <TableRow>
                   <TableCell
-                    className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                    className="py-12 text-center text-muted-foreground"
                     colSpan={6}
                   >
                     <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
@@ -269,7 +269,7 @@ function AdminTenantsContent() {
               ) : filteredTenants.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                    className="py-12 text-center text-muted-foreground"
                     colSpan={6}
                   >
                     Kayıtlı firma bulunamadı.
@@ -294,7 +294,7 @@ function AdminTenantsContent() {
                           >
                             {tenant.name}
                           </Link>
-                          <p className="text-2xs text-zinc-400 dark:text-zinc-500">
+                          <p className="text-2xs text-muted-foreground">
                             /{tenant.slug}
                           </p>
                         </div>

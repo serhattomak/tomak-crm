@@ -874,7 +874,7 @@ export default function WorkflowBuilderPage() {
 
           {actions.length === 0 ? (
             <div className="rounded-2xl border border-border bg-zinc-50 p-8 text-center dark:bg-zinc-800/50">
-              <Layers className="mx-auto mb-2 h-8 w-8 text-zinc-400 dark:text-zinc-500" />
+              <Layers className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
               <p className="font-medium text-xs text-zinc-600 dark:text-zinc-400">
                 Henüz bir aksiyon adımı eklenmedi.
               </p>
@@ -1238,7 +1238,7 @@ export default function WorkflowBuilderPage() {
                           {log.message}
                         </div>
                       </div>
-                      <span className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-3xs text-muted-foreground">
                         {log.executionDurationMs}ms
                       </span>
                     </div>

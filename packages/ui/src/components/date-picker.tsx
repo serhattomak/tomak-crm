@@ -179,11 +179,11 @@ export function DatePicker({
           type="button"
         >
           <div className="flex items-center gap-2 truncate">
-            <CalendarIcon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+            <CalendarIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
             <span
               className={cn(
                 "truncate",
-                !value && "font-normal text-zinc-400 dark:text-zinc-500"
+                !value && "font-normal text-muted-foreground"
               )}
             >
               {displayFormatted || placeholder}
@@ -235,7 +235,7 @@ export function DatePicker({
           </div>
 
           {/* Days of week */}
-          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-3xs text-zinc-400 dark:text-zinc-500">
+          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-3xs text-muted-foreground">
             {TURKISH_DAYS_SHORT.map((day) => (
               <div key={day}>{day}</div>
             ))}
@@ -372,7 +372,7 @@ export function DateRangePicker({
           )}
           type="button"
         >
-          <CalendarIcon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
           <span>{displayString}</span>
         </button>
       </PopoverPrimitive.Trigger>

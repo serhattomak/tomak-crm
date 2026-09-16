@@ -737,12 +737,12 @@ export default function LeavesPage() {
           </div>
 
           {pendingLeaves.length === 0 ? (
-            <div className="rounded-2xl border border-border border-dashed p-12 text-center text-xs text-zinc-400 dark:text-zinc-500">
+            <div className="rounded-2xl border border-border border-dashed p-12 text-center text-xs text-muted-foreground">
               <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
               <p className="font-bold text-zinc-700 dark:text-zinc-300">
                 Tüm talepler sonuçlandırıldı!
               </p>
-              <p className="mt-0.5 text-zinc-400 dark:text-zinc-500">
+              <p className="mt-0.5 text-muted-foreground">
                 Şu anda onay bekleyen yeni izin talebi bulunmuyor.
               </p>
             </div>
@@ -772,7 +772,7 @@ export default function LeavesPage() {
 
                     <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400">
                       <span className="flex items-center gap-1">
-                        <CalendarIcon className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                        <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground" />
                         <strong>
                           {new Date(leave.startDate).toLocaleDateString(
                             "tr-TR"
@@ -836,7 +836,7 @@ export default function LeavesPage() {
           {/* Filter Bar */}
           <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
             <div className="relative max-w-md flex-1">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setSearch(e.target.value)}
@@ -897,7 +897,7 @@ export default function LeavesPage() {
                   {leaves.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        className="py-8 text-center text-zinc-400 dark:text-zinc-500"
+                        className="py-8 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         İzin kaydı bulunamadı.
@@ -914,7 +914,7 @@ export default function LeavesPage() {
                             {l.employeeName}
                           </div>
                           {l.departmentName && (
-                            <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                            <div className="text-3xs text-muted-foreground">
                               {l.departmentName}
                             </div>
                           )}
@@ -1018,7 +1018,7 @@ export default function LeavesPage() {
                 {leaves.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      className="py-6 text-center text-zinc-400 dark:text-zinc-500"
+                      className="py-6 text-center text-muted-foreground"
                       colSpan={6}
                     >
                       Henüz bir izin talebiniz bulunmuyor.

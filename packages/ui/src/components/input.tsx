@@ -56,13 +56,13 @@ export function Input({
     <div className="w-full">
       <div className="relative flex w-full items-center">
         {leftIcon ? (
-          <div className="pointer-events-none absolute left-3 flex items-center justify-center text-zinc-400 dark:text-zinc-500 [&_svg]:size-4">
+          <div className="pointer-events-none absolute left-3 flex items-center justify-center text-muted-foreground [&_svg]:size-4">
             {leftIcon}
           </div>
         ) : null}
         {baseInput}
         {rightIcon ? (
-          <div className="pointer-events-none absolute right-3 flex items-center justify-center text-zinc-400 dark:text-zinc-500 [&_svg]:size-4">
+          <div className="pointer-events-none absolute right-3 flex items-center justify-center text-muted-foreground [&_svg]:size-4">
             {rightIcon}
           </div>
         ) : null}

@@ -676,7 +676,7 @@ export default function OrdersPage() {
                       >
                         {o.orderNumber}
                       </Link>
-                      <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                      <div className="text-3xs text-muted-foreground">
                         {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                       </div>
                     </TableCell>
@@ -686,7 +686,7 @@ export default function OrdersPage() {
                         {o.customerName}
                       </div>
                       {o.invoiceNumber && (
-                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-muted-foreground">
                           Fat: {o.invoiceNumber}
                         </div>
                       )}
@@ -723,7 +723,7 @@ export default function OrdersPage() {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                      <div className="font-medium text-3xs text-muted-foreground">
                         KDV Dahil
                       </div>
                     </TableCell>
@@ -808,7 +808,7 @@ export default function OrdersPage() {
                 {/* Column Orders */}
                 <div className="max-h-[600px] flex-1 space-y-2.5 overflow-y-auto">
                   {colOrders.length === 0 ? (
-                    <div className="rounded-2xl border border-border border-dashed p-6 text-center text-2xs text-zinc-400 dark:text-zinc-500">
+                    <div className="rounded-2xl border border-border border-dashed p-6 text-center text-2xs text-muted-foreground">
                       Bu aşamada sipariş yok
                     </div>
                   ) : (
@@ -838,7 +838,7 @@ export default function OrdersPage() {
                         </div>
 
                         <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-2xs">
-                          <span className="font-medium text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-muted-foreground">
                             {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                           </span>
                           <span className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
@@ -1318,7 +1318,7 @@ function CreateOrderWizardModal({
 
             {/* Cart Table */}
             {items.length === 0 ? (
-              <div className="rounded-xl border border-border border-dashed p-6 text-center text-zinc-400 dark:text-zinc-500">
+              <div className="rounded-xl border border-border border-dashed p-6 text-center text-muted-foreground">
                 Henüz sepete ürün veya hizmet eklenmedi.
               </div>
             ) : (
@@ -1357,7 +1357,7 @@ function CreateOrderWizardModal({
                               {item.productName}
                             </span>
                             {item.sku && (
-                              <span className="ml-1 text-3xs text-zinc-400 dark:text-zinc-500">
+                              <span className="ml-1 text-3xs text-muted-foreground">
                                 ({item.sku})
                               </span>
                             )}
@@ -1566,7 +1566,7 @@ function CreateOrderWizardModal({
                     Genel İskonto / İndirim (₺)
                   </label>
                   <div className="relative">
-                    <span className="absolute top-2 left-3 font-semibold text-zinc-400 dark:text-zinc-500">
+                    <span className="absolute top-2 left-3 font-semibold text-muted-foreground">
                       ₺
                     </span>
                     <NumberInput
@@ -1650,7 +1650,7 @@ function CreateOrderWizardModal({
                     <span className="block font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       Genel Toplam
                     </span>
-                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-muted-foreground">
                       Tüm Vergiler Dahil
                     </span>
                   </div>

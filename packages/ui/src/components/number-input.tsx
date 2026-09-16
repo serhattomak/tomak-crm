@@ -128,7 +128,7 @@ export function NumberInput({
       )}
     >
       {prefix && (
-        <span className="flex select-none items-center pl-3 font-semibold text-xs text-zinc-400 dark:text-zinc-500">
+        <span className="flex select-none items-center pl-3 font-semibold text-xs text-muted-foreground">
           {prefix}
         </span>
       )}
@@ -153,7 +153,7 @@ export function NumberInput({
       />
 
       {suffix && (
-        <span className="flex select-none items-center pr-3 font-medium text-xs text-zinc-400 dark:text-zinc-500">
+        <span className="flex select-none items-center pr-3 font-medium text-xs text-muted-foreground">
           {suffix}
         </span>
       )}

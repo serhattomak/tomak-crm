@@ -484,7 +484,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {stats?.totalShipments ?? 0}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Kayıtlı paket
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-amber-600 dark:text-amber-400">
             {stats?.preparingCount ?? 0}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Depo masasında
           </div>
         </div>
@@ -514,7 +514,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-indigo-600 dark:text-indigo-400">
             {stats?.inTransitCount ?? 0}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Kurye / Taşıyıcıda
           </div>
         </div>
@@ -529,7 +529,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-emerald-600 dark:text-emerald-400">
             {stats?.deliveredTodayCount ?? 0}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Başarılı teslimat
           </div>
         </div>
@@ -544,7 +544,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-teal-600 dark:text-teal-400">
             %{stats?.deliverySuccessRatePercentage ?? 100}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-muted-foreground">
             {stats?.pendingReturnsCount ?? 0} bekleyen iade
           </div>
         </div>
@@ -628,7 +628,7 @@ export default function ShipmentsPage() {
           {/* Filters Bar */}
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -707,7 +707,7 @@ export default function ShipmentsPage() {
                   {isLoading ? (
                     <TableRow>
                       <TableCell
-                        className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                        className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
@@ -719,7 +719,7 @@ export default function ShipmentsPage() {
                   ) : filteredShipments.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                        className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
@@ -727,7 +727,7 @@ export default function ShipmentsPage() {
                           <p className="font-medium text-zinc-600 dark:text-zinc-300">
                             Kayıtlı kargo gönderisi bulunamadı.
                           </p>
-                          <p className="text-2xs text-zinc-400 dark:text-zinc-500">
+                          <p className="text-2xs text-muted-foreground">
                             Filtreleri değiştirebilir veya yeni bir kargo paketi
                             oluşturabilirsiniz.
                           </p>
@@ -750,7 +750,7 @@ export default function ShipmentsPage() {
                               <span className="font-bold text-zinc-900 dark:text-zinc-100">
                                 {s.shipmentNumber}
                               </span>
-                              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                              <span className="text-2xs text-muted-foreground">
                                 {new Date(s.createdAt).toLocaleDateString(
                                   "tr-TR",
                                   {
@@ -776,7 +776,7 @@ export default function ShipmentsPage() {
                                   {s.orderNumber}
                                 </span>
                               ) : (
-                                <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                                <span className="text-2xs text-muted-foreground">
                                   Doğrudan Sevkiyat
                                 </span>
                               )}
@@ -834,7 +834,7 @@ export default function ShipmentsPage() {
                                 {s.packageCount} Koli / Paket (
                                 {s.items?.length || 0} Kalem Ürün)
                               </span>
-                              <span className="text-zinc-400 dark:text-zinc-500">
+                              <span className="text-muted-foreground">
                                 {s.totalWeightKg} kg • {s.totalDesi} Desi
                               </span>
                             </div>
@@ -938,7 +938,7 @@ export default function ShipmentsPage() {
         <div className="space-y-4">
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -999,7 +999,7 @@ export default function ShipmentsPage() {
                   {isLoading ? (
                     <TableRow>
                       <TableCell
-                        className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                        className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600" />
@@ -1008,7 +1008,7 @@ export default function ShipmentsPage() {
                   ) : filteredReturns.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        className="py-12 text-center text-zinc-400 dark:text-zinc-500"
+                        className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
@@ -1046,7 +1046,7 @@ export default function ShipmentsPage() {
                                   <Copy className="h-3 w-3" />
                                 </button>
                               </div>
-                              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                              <span className="text-2xs text-muted-foreground">
                                 {new Date(r.createdAt).toLocaleDateString(
                                   "tr-TR"
                                 )}
@@ -1065,7 +1065,7 @@ export default function ShipmentsPage() {
                           <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col text-2xs">
                               <span>{r.carrierName || "Taşıyıcı Yok"}</span>
-                              <span className="font-mono text-zinc-400 dark:text-zinc-500">
+                              <span className="font-mono text-muted-foreground">
                                 {r.trackingNumber || "Takip No Yok"}
                               </span>
                             </div>
@@ -1157,7 +1157,7 @@ export default function ShipmentsPage() {
                         <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {c.name}
                         </h2>
-                        <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+                        <span className="font-mono text-2xs text-muted-foreground">
                           {c.code}
                         </span>
                       </div>
@@ -1172,7 +1172,7 @@ export default function ShipmentsPage() {
 
                   <div className="mt-4 space-y-2 border-border border-t pt-3 text-2xs text-zinc-600 dark:text-zinc-300">
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         Müşteri Hesap No:
                       </span>
                       <span className="font-medium">
@@ -1180,7 +1180,7 @@ export default function ShipmentsPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         Şube Kodu:
                       </span>
                       <span className="font-medium">
@@ -1188,7 +1188,7 @@ export default function ShipmentsPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         Aktif Yoldaki Kargo:
                       </span>
                       <span className="font-bold text-indigo-600 dark:text-indigo-400">
@@ -1199,7 +1199,7 @@ export default function ShipmentsPage() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between border-border border-t pt-3">
-                  <span className="block max-w-[200px] truncate text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block max-w-[200px] truncate text-3xs text-muted-foreground">
                     {c.trackingUrlTemplate || "Manuel takip bağlantısı"}
                   </span>
                   <button
@@ -1291,7 +1291,7 @@ export default function ShipmentsPage() {
                 <span className="font-bold text-4xl text-amber-600 dark:text-amber-400">
                   {returns.length}
                 </span>
-                <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                <span className="text-xs text-muted-foreground">
                   Toplam İade
                 </span>
               </div>
@@ -1903,7 +1903,7 @@ function UpdateStatusModal({
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Durumunu İlerlet
             </DialogTitle>
-            <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+            <span className="font-mono text-2xs text-muted-foreground">
               {shipment.shipmentNumber}
             </span>
           </div>
@@ -2226,7 +2226,7 @@ function ShipmentDetailDrawer({
           {/* Quick Info Grid */}
           <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50 dark:bg-zinc-900/60">
             <div>
-              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-muted-foreground">
                 Müşteri
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2234,7 +2234,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-muted-foreground">
                 Taşıyıcı
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2242,7 +2242,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-muted-foreground">
                 Takip No
               </span>
               <span className="block font-mono font-semibold text-blue-600 dark:text-blue-400">
@@ -2250,7 +2250,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-muted-foreground">
                 Paket & Desi
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2293,7 +2293,7 @@ function ShipmentDetailDrawer({
                       {it.productName}
                     </span>
                     {it.sku && (
-                      <span className="block font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+                      <span className="block font-mono text-3xs text-muted-foreground">
                         {it.sku}
                       </span>
                     )}
@@ -2319,7 +2319,7 @@ function ShipmentDetailDrawer({
                   <span className="font-bold text-zinc-900 dark:text-zinc-100">
                     {h.status}
                   </span>
-                  <span className="ml-2 text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="ml-2 text-3xs text-muted-foreground">
                     {new Date(h.createdAt).toLocaleDateString("tr-TR", {
                       day: "2-digit",
                       hour: "2-digit",
@@ -2624,7 +2624,7 @@ function UpdateReturnStatusModal({
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               İade Kargo Kabul & Kontrol
             </DialogTitle>
-            <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+            <span className="font-mono text-2xs text-muted-foreground">
               {returnShipment.returnCode}
             </span>
           </div>
@@ -2851,7 +2851,7 @@ function CreateCarrierModal({
               type="text"
               value={trackingUrlTemplate}
             />
-            <span className="mt-1 block text-3xs text-zinc-400 dark:text-zinc-500">
+            <span className="mt-1 block text-3xs text-muted-foreground">
               Takip numarası için <code>{"{tracking_number}"}</code>{" "}
               kullanabilirsiniz.
             </span>

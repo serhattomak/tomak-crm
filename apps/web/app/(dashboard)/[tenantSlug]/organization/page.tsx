@@ -774,7 +774,7 @@ function OrgNodeItem({
             <p className="truncate font-medium text-2xs text-zinc-500 dark:text-zinc-400">
               {node.title || "Ünvan Belirtilmedi"}
             </p>
-            <p className="truncate font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+            <p className="truncate font-mono text-3xs text-muted-foreground">
               {node.email}
             </p>
           </div>
@@ -783,10 +783,10 @@ function OrgNodeItem({
         {/* Card Footer: Subordinates & Quick Actions */}
         <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-2xs">
           <div className="flex items-center gap-1 font-semibold text-zinc-500 dark:text-zinc-400">
-            <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <Users className="h-3.5 w-3.5 text-muted-foreground" />
             <span>{node.directReportsCount} Doğrudan</span>
             {node.totalSubordinatesCount > node.directReportsCount && (
-              <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-3xs text-muted-foreground">
                 ({node.totalSubordinatesCount} Toplam)
               </span>
             )}
@@ -896,7 +896,7 @@ function DepartmentsTab({
       {/* Search Bar */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative max-w-sm flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
             className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -956,7 +956,7 @@ function DepartmentsTab({
               {/* Description & Parent */}
               {dept.parentName && (
                 <div className="mt-3 flex items-center gap-1 font-medium text-2xs text-zinc-500 dark:text-zinc-400">
-                  <span className="text-zinc-400 dark:text-zinc-500">
+                  <span className="text-muted-foreground">
                     Üst Departman:
                   </span>
                   <span className="font-semibold text-zinc-700 dark:text-zinc-300">
@@ -974,7 +974,7 @@ function DepartmentsTab({
               {/* Lead & Stats */}
               <div className="mt-4 space-y-2 rounded-xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-muted-foreground">
                     Departman Lideri:
                   </span>
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -984,7 +984,7 @@ function DepartmentsTab({
 
                 {dept.costCenter && (
                   <div className="flex items-center justify-between">
-                    <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                    <span className="text-2xs text-muted-foreground">
                       Maliyet Merkezi:
                     </span>
                     <span className="font-mono font-semibold text-2xs text-zinc-700 dark:text-zinc-300">
@@ -999,11 +999,11 @@ function DepartmentsTab({
             <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-xs">
               <div className="flex items-center gap-3 font-semibold text-zinc-600 dark:text-zinc-400">
                 <span className="flex items-center gap-1">
-                  <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                  <Users className="h-3.5 w-3.5 text-muted-foreground" />
                   {dept.employeeCount} Personel
                 </span>
                 {dept.subDepartmentCount > 0 && (
-                  <span className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
+                  <span className="flex items-center gap-1 text-muted-foreground">
                     <Layers className="h-3.5 w-3.5" />
                     {dept.subDepartmentCount} Alt Birim
                   </span>
@@ -1070,7 +1070,7 @@ function EmployeesTab({
       <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
         {/* Search */}
         <div className="relative min-w-[240px] flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
             className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -1205,7 +1205,7 @@ function EmployeesTab({
                         <div className="font-bold text-zinc-900 dark:text-zinc-100">
                           {emp.fullName}
                         </div>
-                        <div className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+                        <div className="font-mono text-2xs text-muted-foreground">
                           {emp.email}
                         </div>
                       </div>
@@ -1226,7 +1226,7 @@ function EmployeesTab({
                         {emp.managerName}
                       </span>
                     ) : (
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         Üst Yönetici Yok
                       </span>
                     )}
@@ -1329,18 +1329,18 @@ function EmployeesTab({
 
                 <div className="mt-4 space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
                   <div className="flex items-center gap-2">
-                    <Building className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                    <Building className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>{emp.departmentName || "Departmansız"}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                    <Mail className="h-3.5 w-3.5 text-muted-foreground" />
                     <span className="truncate font-mono text-2xs">
                       {emp.email}
                     </span>
                   </div>
                   {emp.phone && (
                     <div className="flex items-center gap-2">
-                      <Phone className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                      <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                       <span>{emp.phone}</span>
                     </div>
                   )}
@@ -1348,7 +1348,7 @@ function EmployeesTab({
               </div>
 
               <div className="mt-5 flex items-center justify-between border-border border-t pt-3">
-                <span className="font-medium text-2xs text-zinc-400 dark:text-zinc-500">
+                <span className="font-medium text-2xs text-muted-foreground">
                   {emp.directReportCount > 0
                     ? `${emp.directReportCount} Doğrudan Ast`
                     : "Bireysel Katılımcı"}
@@ -1419,7 +1419,7 @@ function PositionsTab({
                     {pos.title}
                   </div>
                   {pos.jobDescription && (
-                    <div className="mt-0.5 line-clamp-1 text-2xs text-zinc-400 dark:text-zinc-500">
+                    <div className="mt-0.5 line-clamp-1 text-2xs text-muted-foreground">
                       {pos.jobDescription}
                     </div>
                   )}
@@ -2429,7 +2429,7 @@ function EmployeeDetailDrawer({
         <div>
           {/* Top Close & Edit actions */}
           <div className="flex items-center justify-between border-border border-b pb-4">
-            <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="font-bold font-mono text-xs text-muted-foreground">
               {employeeDetail.employeeNumber || "PERSONEL DETAYI"}
             </span>
             <div className="flex items-center gap-1">
@@ -2490,24 +2490,24 @@ function EmployeeDetailDrawer({
               İletişim & İK Bilgileri
             </h4>
             <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
-              <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Mail className="h-4 w-4 text-muted-foreground" />
               <span className="font-mono">{employeeDetail.email}</span>
             </div>
             {employeeDetail.phone && (
               <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
-                <Phone className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                <Phone className="h-4 w-4 text-muted-foreground" />
                 <span>{employeeDetail.phone}</span>
               </div>
             )}
             <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
-              <Briefcase className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Briefcase className="h-4 w-4 text-muted-foreground" />
               <span>
                 Çalışma Türü: <strong>{employeeDetail.employmentType}</strong>
               </span>
             </div>
             {employeeDetail.hireDate && (
               <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
-                <Calendar className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span>
                   İşe Giriş:{" "}
                   {new Date(employeeDetail.hireDate).toLocaleDateString()}
@@ -2585,7 +2585,7 @@ function EmployeeDetailDrawer({
                           </div>
                         </div>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </div>
                   ))}
                 </div>

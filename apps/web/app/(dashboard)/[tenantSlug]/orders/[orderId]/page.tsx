@@ -458,7 +458,7 @@ export default function OrderDetailPage() {
 
             <div className="space-y-2.5 text-zinc-600 dark:text-zinc-400">
               <div>
-                <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                <span className="block text-3xs text-muted-foreground">
                   Müşteri / Firma
                 </span>
                 <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -468,7 +468,7 @@ export default function OrderDetailPage() {
 
               {order.shippingAddress && (
                 <div>
-                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-muted-foreground">
                     Teslimat Adresi
                   </span>
                   <p className="mt-0.5 rounded-xl bg-zinc-50 p-2.5 text-zinc-800 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-200">
@@ -479,7 +479,7 @@ export default function OrderDetailPage() {
 
               {order.billingAddress && (
                 <div>
-                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-muted-foreground">
                     Fatura Adresi
                   </span>
                   <p className="mt-0.5 rounded-xl bg-zinc-50 p-2.5 text-zinc-800 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-200">
@@ -509,7 +509,7 @@ export default function OrderDetailPage() {
 
               {order.notes && (
                 <div>
-                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-muted-foreground">
                     Sipariş Notu
                   </span>
                   <p className="text-zinc-700 italic dark:text-zinc-300">
@@ -580,7 +580,7 @@ export default function OrderDetailPage() {
                             {item.productName}
                           </div>
                           {item.sku && (
-                            <div className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
+                            <div className="font-mono text-3xs text-muted-foreground">
                               SKU: {item.sku}
                             </div>
                           )}
@@ -641,7 +641,7 @@ export default function OrderDetailPage() {
               </div>
 
               {order.payments.length === 0 ? (
-                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-muted-foreground">
                   Bu sipariş için henüz tahsilat kaydedilmedi.
                 </div>
               ) : (
@@ -659,7 +659,7 @@ export default function OrderDetailPage() {
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getPaymentMethodLabel(p.paymentMethod)}
                           </div>
-                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-muted-foreground">
                             {p.referenceNumber
                               ? `Dekont / Ref: ${p.referenceNumber}`
                               : "Referans girilmedi"}
@@ -675,7 +675,7 @@ export default function OrderDetailPage() {
                             minimumFractionDigits: 2,
                           })}
                         </div>
-                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-muted-foreground">
                           {new Date(p.paymentDate).toLocaleDateString("tr-TR")}
                         </div>
                       </div>
@@ -694,7 +694,7 @@ export default function OrderDetailPage() {
               </h4>
 
               {order.activities.length === 0 ? (
-                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="rounded-2xl border border-border border-dashed p-8 text-center text-xs text-muted-foreground">
                   Etkinlik kaydı bulunmuyor.
                 </div>
               ) : (
@@ -719,7 +719,7 @@ export default function OrderDetailPage() {
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {act.title}
                           </span>
-                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-muted-foreground">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>

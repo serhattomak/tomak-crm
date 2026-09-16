@@ -753,7 +753,7 @@ function RecruitmentPageContent() {
               {/* Filters */}
               <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
-                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="İlan ara"
                     className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
@@ -883,7 +883,7 @@ function RecruitmentPageContent() {
                                   <Users className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
                                   {req.hiredCount}/{req.headcount}
                                 </span>
-                                <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
+                                <div className="mt-1 text-3xs text-muted-foreground">
                                   {req.applicationCount} başvuru
                                 </div>
                               </TableCell>
@@ -902,7 +902,7 @@ function RecruitmentPageContent() {
                                         : ""}
                                     </span>
                                   ) : (
-                                    <span className="text-zinc-400 dark:text-zinc-500">
+                                    <span className="text-muted-foreground">
                                       Taslak
                                     </span>
                                   )}
@@ -978,7 +978,7 @@ function RecruitmentPageContent() {
             <section aria-label="Adaylar tablosu" className="space-y-4">
               <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
-                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="Aday ara"
                     className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
@@ -990,7 +990,7 @@ function RecruitmentPageContent() {
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2 text-xs text-zinc-600 dark:text-zinc-400">
-                    <Filter className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                    <Filter className="h-3.5 w-3.5 text-muted-foreground" />
                     <span className="font-semibold">Kaynak:</span>
                   </div>
                   <Select
@@ -1080,7 +1080,7 @@ function RecruitmentPageContent() {
                                 <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                   {c.source}
                                 </span>
-                                <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
+                                <div className="mt-1 text-3xs text-muted-foreground">
                                   {c.consentGiven ? "KVKK ✓" : "Onay yok"}
                                 </div>
                               </TableCell>
@@ -1097,13 +1097,13 @@ function RecruitmentPageContent() {
                                       </span>
                                     ))}
                                     {c.tags.length > 3 && (
-                                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                                      <span className="text-3xs text-muted-foreground">
                                         +{c.tags.length - 3}
                                       </span>
                                     )}
                                   </div>
                                 ) : (
-                                  <span className="text-zinc-400 dark:text-zinc-500">
+                                  <span className="text-muted-foreground">
                                     —
                                   </span>
                                 )}
@@ -1156,7 +1156,7 @@ function RecruitmentPageContent() {
             <section aria-label="Başvurular" className="space-y-4">
               <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
                 <div className="relative min-w-[240px] flex-1">
-                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                  <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="Başvuru ara"
                     className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
@@ -1258,7 +1258,7 @@ function RecruitmentPageContent() {
                             </div>
                             <div className="flex max-h-[560px] min-h-[320px] flex-1 flex-col gap-2 overflow-y-auto p-2">
                               {apps.length === 0 ? (
-                                <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-card p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                                <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-card p-4 text-center text-xs text-muted-foreground">
                                   Bu aşamada başvuru yok
                                 </div>
                               ) : (
@@ -1286,7 +1286,7 @@ function RecruitmentPageContent() {
                                       {app.requisitionTitle}
                                     </div>
                                     <div className="mt-2 flex items-center justify-between">
-                                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                                      <span className="text-3xs text-muted-foreground">
                                         {formatDate(app.createdAt)}
                                       </span>
                                       {app.score !== undefined &&
@@ -1456,11 +1456,11 @@ function RecruitmentPageContent() {
                                       {app.stageName}
                                     </span>
                                   ) : (
-                                    <span className="text-zinc-400 dark:text-zinc-500">
+                                    <span className="text-muted-foreground">
                                       —
                                     </span>
                                   )}
-                                  <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
+                                  <div className="mt-1 text-3xs text-muted-foreground">
                                     {app.status}
                                   </div>
                                 </TableCell>
@@ -1471,7 +1471,7 @@ function RecruitmentPageContent() {
                                       {app.score}
                                     </span>
                                   ) : (
-                                    <span className="text-zinc-400 dark:text-zinc-500">
+                                    <span className="text-muted-foreground">
                                       —
                                     </span>
                                   )}
@@ -2898,7 +2898,7 @@ function CandidateDetailDrawer({
         side="right"
       >
         <div className="flex items-center justify-between border-border border-b pb-4">
-          <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="font-bold font-mono text-xs text-muted-foreground">
             ADAY DETAYI
           </span>
           <div className="flex items-center gap-1">
@@ -2955,7 +2955,7 @@ function CandidateDetailDrawer({
             Bilgiler
           </h4>
           <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
-            <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+            <Mail className="h-4 w-4 text-muted-foreground" />
             <span>{candidate.email}</span>
           </div>
           {candidate.address && (
@@ -2965,7 +2965,7 @@ function CandidateDetailDrawer({
           )}
           {candidate.birthDate && (
             <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
-              <Calendar className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Calendar className="h-4 w-4 text-muted-foreground" />
               Doğum: {new Date(candidate.birthDate).toLocaleDateString("tr-TR")}
             </div>
           )}
@@ -3096,7 +3096,7 @@ function ApplicationDetailDrawer({
         side="right"
       >
         <div className="flex items-center justify-between border-border border-b pb-4">
-          <span className="font-bold font-mono text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="font-bold font-mono text-xs text-muted-foreground">
             BAŞVURU DETAYI
           </span>
           <SheetClose asChild>
@@ -3143,7 +3143,7 @@ function ApplicationDetailDrawer({
                 </span>
               </div>
             ) : (
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs text-muted-foreground">
                 Atanmamış
               </span>
             )}

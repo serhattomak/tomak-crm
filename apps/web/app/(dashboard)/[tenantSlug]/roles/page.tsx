@@ -239,7 +239,7 @@ export default function RolesManagementPage() {
           </div>
 
           {isLoading ? (
-            <div className="p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+            <div className="p-4 text-center text-xs text-muted-foreground">
               <Loader2 className="mx-auto h-4 w-4 animate-spin text-blue-500" />
             </div>
           ) : (
@@ -261,7 +261,7 @@ export default function RolesManagementPage() {
                           </span>
                         )}
                       </span>
-                      <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-2xs text-muted-foreground">
                         {role.memberCount} member
                         {role.memberCount === 1 ? "" : "s"}
                       </span>
@@ -378,7 +378,7 @@ export default function RolesManagementPage() {
               </div>
             </div>
           ) : (
-            <div className="p-12 text-center text-xs text-zinc-400 dark:text-zinc-500">
+            <div className="p-12 text-center text-xs text-muted-foreground">
               Soldaki panelden bir rol seçip yetki matrisini
               yapılandırın.
             </div>

@@ -724,7 +724,7 @@ export default function ProductDetailPage() {
             <div className="space-y-2 text-zinc-600 dark:text-zinc-400">
               {product.barcode && (
                 <div className="flex justify-between">
-                  <span className="text-zinc-400 dark:text-zinc-500">
+                  <span className="text-muted-foreground">
                     Barkod (EAN):
                   </span>
                   <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
@@ -734,7 +734,7 @@ export default function ProductDetailPage() {
               )}
               {product.sku && (
                 <div className="flex justify-between">
-                  <span className="text-zinc-400 dark:text-zinc-500">
+                  <span className="text-muted-foreground">
                     Stok Kodu (SKU):
                   </span>
                   <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
@@ -743,7 +743,7 @@ export default function ProductDetailPage() {
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-zinc-400 dark:text-zinc-500">
+                <span className="text-muted-foreground">
                   Ölçü Birimi:
                 </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -752,7 +752,7 @@ export default function ProductDetailPage() {
               </div>
               {product.description && (
                 <div className="mt-2 border-border border-t pt-2">
-                  <span className="mb-1 block text-zinc-400 dark:text-zinc-500">
+                  <span className="mb-1 block text-muted-foreground">
                     Açıklama:
                   </span>
                   <p className="text-zinc-700 leading-relaxed dark:text-zinc-300">
@@ -809,7 +809,7 @@ export default function ProductDetailPage() {
                 )}
                 <ProductRichDescription text={product.richDescription} />
                 {!(product.richDescription || product.seoTitle) && (
-                  <p className="text-zinc-400 dark:text-zinc-500">
+                  <p className="text-muted-foreground">
                     SEO bilgisi girilmedi — Düzenle penceresinden slug ve
                     açıklama ekleyin.
                   </p>
@@ -894,7 +894,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {product.stockMovements.length === 0 ? (
-                  <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                  <div className="py-6 text-center text-xs text-muted-foreground">
                     Henüz stok hareketi kaydedilmedi.
                   </div>
                 ) : (
@@ -916,7 +916,7 @@ export default function ProductDetailPage() {
                                 : `+${mov.quantity}`}{" "}
                               {product.unit})
                             </div>
-                            <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                            <div className="text-3xs text-muted-foreground">
                               {mov.reason || "Kayıtlı açıklama yok"}
                             </div>
                           </div>
@@ -926,7 +926,7 @@ export default function ProductDetailPage() {
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {mov.previousStock} → {mov.newStock} {product.unit}
                           </div>
-                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-muted-foreground">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </div>
                         </div>
@@ -956,7 +956,7 @@ export default function ProductDetailPage() {
               </div>
 
               {product.variants.length === 0 ? (
-                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-muted-foreground">
                   Bu ürüne ait tanımlanmış varyant bulunmamaktadır.
                 </div>
               ) : (
@@ -1063,7 +1063,7 @@ export default function ProductDetailPage() {
               </div>
 
               {product.stockMovements.length === 0 ? (
-                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-muted-foreground">
                   Kayıtlı stok hareketi bulunmuyor.
                 </div>
               ) : (
@@ -1086,7 +1086,7 @@ export default function ProductDetailPage() {
                               : `+${mov.quantity}`}{" "}
                             {product.unit})
                           </span>
-                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-muted-foreground">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
@@ -1188,7 +1188,7 @@ export default function ProductDetailPage() {
               </div>
 
               {!product.priceHistory || product.priceHistory.length === 0 ? (
-                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="rounded-3xl border border-border border-dashed bg-card p-10 text-center text-xs text-muted-foreground">
                   Henüz bir fiyat değişikliği kaydedilmemiştir.
                 </div>
               ) : (
@@ -1216,7 +1216,7 @@ export default function ProductDetailPage() {
                               {hist.changeReason || "Fiyat Güncellemesi"}
                             </span>
                           </div>
-                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-muted-foreground">
                             {new Date(hist.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>

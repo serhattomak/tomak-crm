@@ -58,7 +58,7 @@ export function TemplatePreview({
       <div className="rounded-xl border border-border bg-card p-3 shadow-2xs">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+            <Eye className="h-4 w-4 text-muted-foreground" />
             <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
               Önizleme
             </span>
@@ -144,7 +144,7 @@ export function TemplatePreview({
           <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-zinc-500 dark:text-zinc-400">
             <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
             <span className="font-semibold text-xs">Preview yükleniyor...</span>
-            <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+            <span className="text-2xs text-muted-foreground">
               Handlebars derleniyor...
             </span>
           </div>
@@ -172,7 +172,7 @@ export function TemplatePreview({
                 title="E-posta Önizleme"
               />
             </div>
-            <p className="mt-2 text-center text-3xs text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2 text-center text-3xs text-muted-foreground">
               iframe sandbox=&quot;allow-same-origin&quot; · srcDoc render ·
               bağlantılar rel noopener ile korunur
             </p>

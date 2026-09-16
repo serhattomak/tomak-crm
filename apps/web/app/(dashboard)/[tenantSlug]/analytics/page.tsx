@@ -614,7 +614,7 @@ export default function AnalyticsPage() {
                         <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {cust.name}
                         </span>
-                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-muted-foreground">
                           {cust.city || "Konum belirtilmemiş"} •{" "}
                           {cust.type === "Company" ? "Kurumsal" : "Bireysel"}
                         </div>
@@ -652,7 +652,7 @@ export default function AnalyticsPage() {
                         <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {order.customerName}
                         </span>
-                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-muted-foreground">
                           {order.orderNumber} •{" "}
                           {new Date(order.orderDate).toLocaleDateString(
                             "tr-TR"

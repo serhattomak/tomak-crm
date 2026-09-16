@@ -242,7 +242,7 @@ function NotificationEmptyState({
       <h4 className="mt-3 font-semibold text-xs text-zinc-800 dark:text-zinc-200">
         Bildirim Bulunmuyor
       </h4>
-      <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
+      <p className="mt-1 text-2xs text-muted-foreground">
         {isUnreadFilter
           ? "Tüm bildirimleri okudunuz."
           : "Henüz yeni bir sistem bildirimi almadınız."}

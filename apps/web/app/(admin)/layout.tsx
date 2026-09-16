@@ -139,7 +139,7 @@ export default function AdminLayout({
                   ADMIN
                 </span>
               </div>
-              <p className="truncate text-2xs text-zinc-400 dark:text-zinc-500">
+              <p className="truncate text-2xs text-muted-foreground">
                 Lisans & Çoklu Firma
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function AdminLayout({
                   key={item.href}
                 >
                   <item.icon
-                    className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-zinc-400 dark:text-zinc-500"}`}
+                    className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"}`}
                   />
                   <span>{item.name}</span>
                 </Link>

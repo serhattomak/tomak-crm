@@ -179,7 +179,7 @@ export function EntityPickerModal<T = unknown>({
         {/* Search Bar */}
         <div className="border-border border-b bg-zinc-50/50 p-3 dark:bg-zinc-900/50">
           <div className="relative">
-            <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+            <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
             <input
               className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
@@ -409,8 +409,8 @@ export function SalesRepPicker({
               </>
             ) : (
               <>
-                <User className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
-                <span className="truncate font-normal text-zinc-400 dark:text-zinc-500">
+                <User className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="truncate font-normal text-muted-foreground">
                   {placeholder}
                 </span>
               </>
@@ -429,7 +429,7 @@ export function SalesRepPicker({
                 <X className="h-3.5 w-3.5" />
               </span>
             )}
-            <ChevronDown className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
         </button>
       </div>
@@ -538,8 +538,8 @@ export function CustomerPicker({
               </>
             ) : (
               <>
-                <Search className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
-                <span className="truncate font-normal text-zinc-400 dark:text-zinc-500">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="truncate font-normal text-muted-foreground">
                   {placeholder}
                 </span>
               </>
@@ -558,7 +558,7 @@ export function CustomerPicker({
                 <X className="h-3.5 w-3.5" />
               </span>
             )}
-            <ChevronDown className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
         </button>
       </div>
@@ -663,8 +663,8 @@ export function ProductPicker({
               </>
             ) : (
               <>
-                <Search className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
-                <span className="truncate font-normal text-zinc-400 dark:text-zinc-500">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="truncate font-normal text-muted-foreground">
                   {placeholder}
                 </span>
               </>
@@ -683,7 +683,7 @@ export function ProductPicker({
                 <X className="h-3.5 w-3.5" />
               </span>
             )}
-            <ChevronDown className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
         </button>
       </div>

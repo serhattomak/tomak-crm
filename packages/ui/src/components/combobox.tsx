@@ -72,7 +72,7 @@ function OptionRow({
                 "block font-normal text-3xs",
                 isSelected
                   ? "text-blue-600/80 dark:text-blue-300/80"
-                  : "text-zinc-400 dark:text-zinc-500"
+                  : "text-muted-foreground"
               )}
             >
               {option.description}
@@ -193,7 +193,7 @@ export function Combobox({
                 "truncate",
                 selectedOption
                   ? null
-                  : "font-normal text-zinc-400 dark:text-zinc-500"
+                  : "font-normal text-muted-foreground"
               )}
             >
               {displayLabel}
@@ -227,7 +227,7 @@ export function Combobox({
         >
           {/* Search Box */}
           <div className="relative mb-1 flex items-center border-border border-b px-2 pb-1.5">
-            <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400 dark:text-zinc-500" />
+            <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <input
               autoFocus
               className="w-full bg-transparent px-2 font-medium text-xs text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
@@ -251,7 +251,7 @@ export function Combobox({
           {/* List */}
           <div className="max-h-60 space-y-0.5 overflow-y-auto">
             {filteredOptions.length === 0 ? (
-              <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
+              <div className="py-6 text-center text-xs text-muted-foreground">
                 {emptyMessage}
               </div>
             ) : (

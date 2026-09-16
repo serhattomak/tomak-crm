@@ -255,7 +255,7 @@ export default function AdminTenantDetailPage() {
                 </span>
               )}
             </div>
-            <p className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+            <p className="font-mono text-xs text-muted-foreground">
               /{tenant?.slug}
             </p>
           </div>
@@ -346,7 +346,7 @@ export default function AdminTenantDetailPage() {
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     {mod.defaultDisplayName}
                   </h3>
-                  <p className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
+                  <p className="font-mono text-2xs text-muted-foreground">
                     key: {mod.moduleKey}
                   </p>
                 </div>
@@ -439,7 +439,7 @@ export default function AdminTenantDetailPage() {
                 </button>
               </div>
             </div>
-            <p className="text-2xs text-zinc-400 dark:text-zinc-500">
+            <p className="text-2xs text-muted-foreground">
               Örnekler:{" "}
               <code className="font-semibold text-blue-600">products.name</code>
               ,{" "}
@@ -464,7 +464,7 @@ export default function AdminTenantDetailPage() {
 
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {customOverrides.length === 0 ? (
-                <div className="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="p-8 text-center text-xs text-muted-foreground">
                   Bu firmaya özel ezilmiş bir alan etiketi yok. Sektör
                   şablonundan gelen varsayılanlar kullanılır.
                 </div>
@@ -478,7 +478,7 @@ export default function AdminTenantDetailPage() {
                       <span className="font-mono font-semibold text-blue-700">
                         {item.key}
                       </span>
-                      <span className="text-zinc-400 dark:text-zinc-500">
+                      <span className="text-muted-foreground">
                         ➔
                       </span>
                       <input

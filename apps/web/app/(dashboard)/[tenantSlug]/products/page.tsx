@@ -821,7 +821,7 @@ export default function ProductsPage() {
                           >
                             {p.name}
                           </Link>
-                          <div className="flex items-center gap-2 font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                          <div className="flex items-center gap-2 font-medium text-3xs text-muted-foreground">
                             {p.sku && <span>SKU: {p.sku}</span>}
                             {p.barcode && (
                               <>
@@ -847,7 +847,7 @@ export default function ProductsPage() {
                         {p.categoryName || "Kategorisiz"}
                       </div>
                       {p.brand && (
-                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-muted-foreground">
                           {p.brand}
                         </div>
                       )}
@@ -893,12 +893,12 @@ export default function ProductsPage() {
                               </span>
                             )}
                           </div>
-                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-muted-foreground">
                             Min: {p.minStockLevel} {p.unit}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-2xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-2xs text-muted-foreground">
                           — (Stoksuz)
                         </span>
                       )}
@@ -920,7 +920,7 @@ export default function ProductsPage() {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                      <div className="text-3xs text-muted-foreground">
                         KDV: %{p.taxRate}
                       </div>
                     </TableCell>
@@ -1000,7 +1000,7 @@ export default function ProductsPage() {
                     >
                       {p.name}
                     </Link>
-                    <div className="text-3xs text-zinc-400 dark:text-zinc-500">
+                    <div className="text-3xs text-muted-foreground">
                       {p.categoryName || "Kategorisiz"}{" "}
                       {p.brand && `• ${p.brand}`}
                     </div>
@@ -1018,7 +1018,7 @@ export default function ProductsPage() {
                 {/* Stock & Price Strip */}
                 <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                   <div>
-                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-muted-foreground">
                       Satış Fiyatı
                     </span>
                     <div className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1029,7 +1029,7 @@ export default function ProductsPage() {
                     </div>
                   </div>
                   <div>
-                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-muted-foreground">
                       Stok Miktarı
                     </span>
                     <div
@@ -2307,7 +2307,7 @@ function CategoryManagerModal({
         {/* Categories Hierarchical List */}
         <div className="flex-1 space-y-2 overflow-y-auto">
           {categories.length === 0 ? (
-            <div className="py-6 text-center text-zinc-400 dark:text-zinc-500">
+            <div className="py-6 text-center text-muted-foreground">
               Henüz kategori eklenmedi.
             </div>
           ) : (
@@ -2343,13 +2343,13 @@ function CategoryManagerModal({
                       key={sub.id}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-zinc-400 dark:text-zinc-500">
+                        <span className="font-bold text-muted-foreground">
                           ↳
                         </span>
                         <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                           {sub.name}
                         </span>
-                        <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
+                        <span className="font-medium text-3xs text-muted-foreground">
                           ({sub.productsCount} Ürün)
                         </span>
                       </div>

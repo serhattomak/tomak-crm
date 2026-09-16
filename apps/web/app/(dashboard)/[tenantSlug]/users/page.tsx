@@ -156,7 +156,7 @@ export default function UsersManagementPage() {
       {/* Users Table */}
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         {isLoading ? (
-          <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
+          <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
             Kullanıcılar yükleniyor...
           </div>
@@ -231,7 +231,7 @@ export default function UsersManagementPage() {
                       {user.isActive ? "Active" : "Inactive"}
                     </span>
                   </TableCell>
-                  <TableCell className="px-6 py-4 text-zinc-400 dark:text-zinc-500">
+                  <TableCell className="px-6 py-4 text-muted-foreground">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>
                 </TableRow>

@@ -109,7 +109,7 @@ export function ProductGallery({
   if (displayImages.length === 0) {
     return (
       <div
-        className={`flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-3xl border border-border border-dashed bg-card text-zinc-400 dark:text-zinc-500 ${className}`}
+        className={`flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-3xl border border-border border-dashed bg-card text-muted-foreground ${className}`}
         role="status"
       >
         <Package aria-hidden="true" className="h-10 w-10" />

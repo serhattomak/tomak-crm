@@ -649,7 +649,7 @@ export default function MessagesPage() {
               {displayInfo.title}
             </span>
             {channel.lastMessageAt && (
-              <span className="shrink-0 text-3xs text-zinc-400 dark:text-zinc-500">
+              <span className="shrink-0 text-3xs text-muted-foreground">
                 {new Date(channel.lastMessageAt).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -733,7 +733,7 @@ export default function MessagesPage() {
           {/* Search Box */}
           <div className="border-border border-b p-3 dark:border-border">
             <div className="relative">
-              <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -748,7 +748,7 @@ export default function MessagesPage() {
           {/* List Stream */}
           <div className="flex-1 space-y-3 overflow-y-auto p-2">
             {loadingChannels ? (
-              <div className="p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+              <div className="p-4 text-center text-xs text-muted-foreground">
                 Kanallar yükleniyor...
               </div>
             ) : (
@@ -913,7 +913,7 @@ export default function MessagesPage() {
                         {getChannelDisplayInfo(selectedChannel).role}
                       </span>
                     ) : selectedChannel.isPrivate ? (
-                      <Lock className="h-3 w-3 shrink-0 text-zinc-400 dark:text-zinc-500" />
+                      <Lock className="h-3 w-3 shrink-0 text-muted-foreground" />
                     ) : null}
                   </div>
                   <p className="max-w-[140px] truncate text-3xs text-zinc-500 sm:max-w-xs sm:text-xs dark:text-zinc-400">
@@ -929,7 +929,7 @@ export default function MessagesPage() {
             {/* Messages Scroll Area */}
             <div className="flex-1 space-y-4 overflow-y-auto bg-zinc-50/50 p-3 sm:p-6 dark:bg-background/50 dark:bg-zinc-800/30">
               {loadingMessages ? (
-                <div className="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="p-8 text-center text-xs text-muted-foreground">
                   Mesajlar yükleniyor...
                 </div>
               ) : messages.length === 0 ? (
@@ -1096,7 +1096,7 @@ export default function MessagesPage() {
                           <span className="font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                             {msg.senderName}
                           </span>
-                          <span className="text-3xs text-zinc-400 dark:text-zinc-500">
+                          <span className="text-3xs text-muted-foreground">
                             {new Date(msg.createdAt).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -1408,7 +1408,7 @@ export default function MessagesPage() {
         ) : (
           <div className="hidden flex-1 items-center justify-center bg-zinc-50 md:flex dark:bg-background dark:bg-zinc-800/50">
             <div className="text-center">
-              <MessagesSquare className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-400 dark:text-zinc-600" />
+              <MessagesSquare className="mx-auto h-12 w-12 text-zinc-300 dark:text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-foreground dark:text-zinc-200">
                 Bir Sohbet Seçin
               </h3>
@@ -1484,7 +1484,7 @@ export default function MessagesPage() {
 
             {/* Search Input */}
             <div className="relative my-2 shrink-0">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1498,7 +1498,7 @@ export default function MessagesPage() {
             {/* Items List */}
             <div className="custom-scrollbar max-h-64 space-y-1.5 overflow-y-auto p-1">
               {loadingEntities ? (
-                <div className="py-6 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="py-6 text-center text-xs text-muted-foreground">
                   Yükleniyor...
                 </div>
               ) : entityType === "Customer" ? (
@@ -1725,7 +1725,7 @@ export default function MessagesPage() {
                     Kanal Adı *
                   </label>
                   <div className="relative">
-                    <Hash className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                    <Hash className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                     <input
                       className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                       id="channel-name"
@@ -1839,7 +1839,7 @@ export default function MessagesPage() {
             {/* Search Input */}
             <div className="py-3">
               <div className="relative">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
                   autoFocus
                   className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
@@ -1867,7 +1867,7 @@ export default function MessagesPage() {
                   <p className="mt-2 font-semibold text-xs text-zinc-600 dark:text-zinc-400">
                     Kullanıcı bulunamadı
                   </p>
-                  <p className="mt-0.5 text-2xs text-zinc-400 dark:text-zinc-500">
+                  <p className="mt-0.5 text-2xs text-muted-foreground">
                     Aramanızla eşleşen başka bir çalışma arkadaşı bulunmuyor.
                   </p>
                 </div>
