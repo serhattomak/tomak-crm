@@ -10,15 +10,23 @@ Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulan
 
 ## 📍 NEREDE KALDIK — buradan başla
 
-> **Son güncelleme: 2026-09-16.** Bu bölüm aşağıdaki ~1050 satırın (ve 269 satırlık İlerleme
+> **Son güncelleme: 2026-09-17** — yalnızca push durumu tazelendi; aşağıdaki özetin geri
+> kalanı 2026-09-16 tarihli. Bu bölüm aşağıdaki ~1050 satırın (ve 269 satırlık İlerleme
 > Günlüğü'nün) özetidir. Devam etmek için günlüğe inmene gerek yok.
 
 **Program A (Faz 0–7) TAMAMEN KAPANDI** — sekiz fazın hepsi `[x]`. **Program B** iptal edildi,
 **Program C** ertelendi. Açık iş yalnız **Gelecek Adımlar** listesindedir (#1–#32).
 
-### 🔴 PUSH EDİLMEDİ
-`origin/master` = `525ac9d`. Yerel `master` **33 commit ileri**; bu oturumun payı **19 commit**
-(`b812bd4` … `3b6624c`). Ağaç temiz, tüm kapılar yeşil. **Push kararı verilmedi.**
+### 🟢 PUSH EDİLDİ
+`origin/master` = `58859ec`. Bu bölümün 2026-09-16'daki hali **"push edilmedi"** diyordu
+(`origin/master` = `525ac9d`, 33 commit ileri); o durum çözüldü. `525ac9d`'den biriken
+commit'ler push edildi, üzerine bu oturumun 4 altyapı commit'i eklendi
+(`fd09786` `e0f5e4f` `c4adf20` `58859ec`) ve onlar da push edildi. `525ac9d`..`origin/master`
+= **38 commit**. Yerel `master` ile `origin/master` **aynı**; ağaç temiz, bekleyen push yok.
+
+> **Nasıl doğrulanır:** `git fetch origin` sonrası `git rev-list --count origin/master..master`
+> → `0`. Fetch'siz okunan "ileri" sayısı bayat olabilir: bu satır yazılırken fetch'ten önce
+> `ahead 4`, fetch'ten sonra `ahead 0` okundu.
 
 ### ✅ Bu oturumda kapananlar
 
