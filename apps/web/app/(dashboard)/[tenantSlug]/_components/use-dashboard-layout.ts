@@ -1,4 +1,3 @@
-/* Hallmark · hook: use-dashboard-layout · genre: modern-minimal */
 "use client";
 
 import type React from "react";

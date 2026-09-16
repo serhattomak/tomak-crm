@@ -1,4 +1,3 @@
-/* Hallmark · component: upcoming-meetings · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";

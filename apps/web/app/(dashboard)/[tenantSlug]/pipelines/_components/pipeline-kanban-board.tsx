@@ -1,4 +1,3 @@
-/* Hallmark · component: pipeline-kanban-board · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Award, Clock, Kanban } from "lucide-react";

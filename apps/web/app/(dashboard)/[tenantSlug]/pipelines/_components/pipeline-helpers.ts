@@ -1,5 +1,3 @@
-/* Hallmark · pipeline-helpers · genre: modern-minimal */
-
 export const formatCurrency = (val: number, cur = "TRY") =>
   new Intl.NumberFormat("tr-TR", {
     currency: cur === "TRY" ? "TRY" : cur,

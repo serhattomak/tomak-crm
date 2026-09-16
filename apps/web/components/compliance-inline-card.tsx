@@ -1,4 +1,3 @@
-/* Hallmark · component: compliance-inline-card · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import {

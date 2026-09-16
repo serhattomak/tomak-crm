@@ -1,4 +1,3 @@
-/* Hallmark · component: dashboard-tabs-bar · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";

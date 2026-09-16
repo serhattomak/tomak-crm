@@ -1,4 +1,3 @@
-/* Hallmark · component: date-picker · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { cn } from "@workspace/ui/lib/utils";

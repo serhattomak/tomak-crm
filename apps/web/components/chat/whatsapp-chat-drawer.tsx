@@ -1,4 +1,3 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet · design-system: design.md */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";

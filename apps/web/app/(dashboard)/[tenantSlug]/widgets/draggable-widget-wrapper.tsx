@@ -1,4 +1,3 @@
-/* Hallmark · genre: modern-minimal · theme: Adaptive Zinc/Violet · design-system: design.md */
 "use client";
 
 import {

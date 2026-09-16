@@ -1,4 +1,3 @@
-/* Hallmark · component: activity-timeline · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";

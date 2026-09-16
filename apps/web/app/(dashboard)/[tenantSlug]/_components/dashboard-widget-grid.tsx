@@ -1,4 +1,3 @@
-/* Hallmark · component: dashboard-widget-grid · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import type React from "react";

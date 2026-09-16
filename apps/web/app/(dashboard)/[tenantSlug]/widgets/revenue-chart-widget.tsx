@@ -1,4 +1,3 @@
-/* Hallmark · component: revenue-chart · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";

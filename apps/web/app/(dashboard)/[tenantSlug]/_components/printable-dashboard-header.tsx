@@ -1,4 +1,3 @@
-/* Hallmark · component: printable-dashboard-header · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import type { DashboardTab, DateRange } from "../widgets/dashboard-types";

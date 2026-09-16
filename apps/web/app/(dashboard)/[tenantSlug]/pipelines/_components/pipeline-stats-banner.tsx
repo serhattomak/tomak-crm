@@ -1,4 +1,3 @@
-/* Hallmark · component: pipeline-stats-banner · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Card } from "@workspace/ui/components/card";

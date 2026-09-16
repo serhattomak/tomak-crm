@@ -1,4 +1,3 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { PageContainer } from "@workspace/ui/components/page-container";

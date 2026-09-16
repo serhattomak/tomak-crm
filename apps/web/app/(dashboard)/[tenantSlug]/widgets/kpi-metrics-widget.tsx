@@ -1,4 +1,3 @@
-/* Hallmark · component: kpi-metrics · genre: modern-minimal · theme: Adaptive Zinc/Violet · design-system: design.md */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
