@@ -89,6 +89,147 @@ Dekoratif animasyon **yoktur**. Motion, işlevi açıklamak için vardır (bir �
 
 ---
 
+### 1.6 Türkçe Terim Sözlüğü (Kanonik Sözlük)
+
+Arayüz kopyası **Türkçedir**. İngilizce yalnız *kimliklerde* (rota, anahtar adı, API alanı, veritabanı enum'u) yaşar. Bu bölüm hangi kavramın hangi kelimeyle yazılacağını **bağlar**.
+
+> **Neden bu bölüm var?** 2026-09-16 ölçümü: aynı kavram ekran ekran farklı yazılıyordu (`Personel` 40 / `Çalışan` 24 · `Pipeline` 32 / `Huni` 7 · `Durum` 123 / `Statü` 4) ve üç etiket **iki terimi birden** taşıyordu: `"Personel / Çalışan *"`, `"Yeni Çalışan / Personel Kartı Aç"`, `"Çalışanlar & Personel Listesi"`. İki terimin aynı etikette durması, kararın verilmediğinin kanıtıdır — sözlük kararı verir. Ölçüm yöntemi §1.6.7'de.
+
+#### 1.6.1 Dört sözlük katmanı ve yetki sırası
+
+| Katman | Yeri | Yetki |
+| --- | --- | --- |
+| **Ürün varsayılanı** | **bu bölüm** | Kanonik. Bir çelişkide burası kazanır. |
+| i18n kataloğu | `apps/web/messages/tr.json` | Bu tablonun makine-okunur kopyası. Çelişirse **tr.json düzeltilir**, sözlük değil. |
+| Kiracı override'ı | `useLabels().getModuleDisplayName()` | **Meşru istisna.** Modül adını kiracı değiştirebilir; sözlük varsayılanı bağlar, override'ı bağlamaz. |
+| Kimlikler | rota, `moduleKey`, `navigation.*` anahtarı, `permission`, DB enum | **UI kopyası değildir; çevrilmez.** |
+
+> ⚠️ `moduleKey` ≠ `navigation.*` anahtarı: `messages` modülünün `moduleKey`'i `"chat"`, `shipments`'ınki `"shipping"`. İkisi eşit varsayılırsa yanlış hedef vurulur.
+
+#### 1.6.2 Kavram sözlüğü
+
+| Kavram | **Kanonik** | Kullanılmaz | Ölçüm (2026-09-16) |
+| --- | --- | --- | --- |
+| Müşteri | **Müşteri** | `Customer` (kopyada) | 244 · 69 dosya |
+| Potansiyel müşteri | **Potansiyel Müşteri** | `Lead` · `Potansiyel (Lead)` · `Müşteri Adayı` | Potansiyel 6 + Aday 26 |
+| Durum | **Durum** | `Statü` · `Status` (kopyada) | Durum 123 / Statü 4 |
+| Teklif | **Teklif** | `Quote` · `Proposal` (kopyada) | 116 · 38 dosya |
+| Fırsat | **Fırsat** | `Deal` · `Anlaşma` (fırsat anlamında) | Fırsat 63 / Anlaşma 3 |
+| Aşama | **Aşama** — satış hattı aşaması | `Stage` · `Etap` | 55 / Adım 12 |
+| Adım | **Adım** — sihirbaz ve iş akışı adımı | `Step` | 12 · 4 dosya |
+| Pipeline | **Pipeline** | `Huni` · `boru hattı` · `Funnel` | Pipeline 32 / Huni 7 |
+| Personel | **Personel** | `Çalışan` · `Employee` · `Staff` | Personel 40 / Çalışan 24 |
+| Kullanıcı | **Kullanıcı** (hesap) | `User` · `Team Member` (kopyada) | 19 · 12 dosya |
+| Talep | **Talep** — destek talebi | `Ticket` (kopyada) · `Bilet` | Talep 21 + Destek Talebi 11 |
+| Görev | **Görev** | `Task` · `Todo` · `Yapılacak` | 22 / Yapılacak 1 |
+| Kayıt | **Kayıt** | `Record` | 33 · 23 dosya |
+| Sözleşme | **Sözleşme** | `Anlaşma` · `Contract` (kopyada) | contracts modülü |
+
+**Ayırt edilmesi zorunlu çiftler** (bunlar rakip değil, farklı kavramdır — birleştirilmez):
+
+- **Aşama** = satış hattındaki konum · **Adım** = sihirbaz/iş akışı sırası. `automations`'ta "Aksiyon Adımı", `promotions/new`'de "Adım 3" doğrudur.
+- **İptal Edildi** = kaydın durumu · **Vazgeç** = aksiyon butonu (§1.6.3).
+- **Aday** = yalnız `recruitment` modülünde **işe alım adayı**. CRM tarafında bu kelime kullanılmaz (potansiyel müşteri = **Potansiyel Müşteri**), aksi hâlde iki modül aynı kelimeyi farklı şeyler için söyler.
+- **Anlaşma** = `contracts` modülü bağlamı dışında kullanılmaz; fırsat için **Fırsat**, sözleşme için **Sözleşme**.
+
+#### 1.6.3 Aksiyon sözlüğü (buton, `aria-label`, `title`)
+
+Bu tablo `tr.json` → `common` namespace'inin birebir karşılığıdır.
+
+| Aksiyon | **Kanonik** | Kullanılmaz |
+| --- | --- | --- |
+| Kaydet | **Kaydet** · `Kaydediliyor...` | `Save` · `KAYDET` |
+| Vazgeç (aksiyon) | **Vazgeç** | `İptal` (aksiyon olarak) · `Cancel` |
+| İptal Edildi (durum) | **İptal Edildi** | `Cancelled` (kopyada) |
+| Sil | **Sil** | `Delete` |
+| Kaldır | **Kaldır** — listeden/satırdan çıkarma | `Remove` |
+| Düzenle | **Düzenle** | `Edit` |
+| Güncelle | **Güncelle** — kayıt sonrası kaydetme | `Update` |
+| Kapat | **Kapat** | `Close` · `Kapat & Geri Dön` |
+| Yenile | **Yenile** | `Refresh` · `Reload` |
+| Ara | **Ara...** | `Search` |
+| Filtrele · Sıfırla | **Filtrele** · **Sıfırla** | `Filter` · `Reset` |
+| Tümü | **Tümü** | `All` · `ALL` |
+| Seçiniz | **Seçiniz** | `Select` |
+
+#### 1.6.4 Modül adları — hangi ekranda ne
+
+**Nav etiketi kanoniktir; ekran başlığı ona uyar.** Gerekçe: nav `tr.json`'dan beslenir ve canlıdır, kullanıcının yol bulma aracıdır.
+
+| Rota | **Kanonik etiket** | i18n anahtarı | Ekran başlığı (2026-09-16) |
+| --- | --- | --- | --- |
+| `[tenantSlug]` | Genel Bakış | `dashboard` | ✅ |
+| `pipelines` | Satış Pipeline | `pipelines` | ⚠️ "Pipeline & Satış Hunisi" |
+| `calendar` | Takvim & Görüşmeler | **yok** (hardcoded) | ⚠️ |
+| `quotes` | Teklifler | `quotes` | ⚠️ "Teklif Yönetimi & Fiyatlandırma" |
+| `contracts` | Sözleşmeler & E-İmza | **yok** (hardcoded) | ✅ |
+| `customers` | Müşteriler | `customers` | ⚠️ "Müşteri Portföyü" (`customers.title`) |
+| `orders` | Siparişler | `orders` | ⚠️ "Sipariş & Satış Yönetimi" |
+| `products` | Ürünler & Katalog | `products` | ⚠️ "Ürün & Hizmetler" |
+| `inventory` | Depolar & Stok | `inventory` | ⚠️ "Depo & Envanter Yönetimi" |
+| `invoices` | Faturalar | `invoices` | ⚠️ "Faturalar & e-Fatura" |
+| `finance` | Cari & Finans | `finance` | ⚠️ "Cari & Finans Yönetimi" |
+| `promotions` | Kampanya & Kuponlar | `promotions` | ⚠️ "Kampanya & Promosyon Yönetimi" |
+| `vehicles` | Otomotiv & Araçlar | `vehicles` | ⚠️ "Otomotiv & Araç İstihbarat Platformu" |
+| `projects` | Projeler & Backlog | `projects` | ⚠️ "Projeler & Agile Backlog" |
+| `shipments` | Kargo & Sevkiyat | `shipments` (`moduleKey: shipping`) | ⚠️ "Kargo & Sevkiyat Yönetimi" |
+| `field-service` | Saha Servis & Mobil | **yok** (hardcoded) | ⚠️ "Saha Servis & Mobil Teknisyen Yönetimi" |
+| `attendance` | Vardiya & PDKS | `attendance` | ⚠️ "Vardiya & PDKS Takibi" |
+| `leaves` | İzin Yönetimi | `leaves` | ⚠️ "İzin & Zaman Yönetimi" |
+| `payroll` | Bordro & Maaş | `payroll` | ⚠️ "Bordro & Maaş Yönetimi" |
+| `recruitment` | İşe Alım & Adaylar | `recruitment` | ⚠️ "İşe Alım" |
+| `organization` | Organizasyon Şeması | `organization` | ⚠️ "Organizasyon & Departmanlar" |
+| `compliance` | Uyum & Mevzuat | `compliance` | — |
+| `tickets` | Destek Masası | `tickets` | ⚠️ "Destek Masası & Talepler" |
+| `messages` | Ekip Mesajları | `messages` (`moduleKey: chat`) | ⚠️ "Ekip İçi Sohbet" |
+| `email` | E-Posta Yönetimi | `email` | ✅ |
+| `automations` | İş Akışları & Robotlar | `automations` | — |
+| `analytics` | Raporlar & Analitik | `analytics` | ⚠️ "Raporlar & İş Analitiği" |
+| `integrations` | Entegrasyonlar | **yok** (hardcoded) | — |
+| `webhooks` | Webhook & Entegrasyon | `webhooks` | — |
+| `users` | Kullanıcı Yönetimi | `users` | 🔴 "Team Members" |
+| `roles` | Roller & Yetkiler | `roles` | 🔴 "Roles & Permissions Matrix" |
+| `settings` | Sistem Ayarları | `settings` | 🔴 "Workspace Settings" |
+
+> `customers` örneği katman karışmasının kanıtıdır: nav `navigation.customers` ("Müşteriler") okurken ekran başlığı `customers.title` ("Müşteri Portföyü") okuyor — iki farklı namespace, iki farklı ad. Başlık nav etiketine çekilir.
+>
+> `calendar` · `contracts` · `field-service` · `integrations` modüllerinin **i18n anahtarı yoktur**; adları `nav-config.ts` içinde sabittir ve bu yüzden hiçbir dilde çevrilemezler. Anahtar eklemek ayrı bir iştir (Faz 6 sonrası). `contracts` ayrıca `moduleKey` taşıdığı hâlde adını `getModuleDisplayName`'e vermez — kiracı yeniden adlandırması bu modülde çalışmaz.
+
+#### 1.6.5 İkon-buton etiketleri
+
+İkon-only butonun erişilebilir adı bu sözlükten yazılır. Ölçüm (2026-09-16): 106 sitenin **95'i `X` ikonu ve hepsi `DialogClose`/`SheetClose` içinde** → tek terim yeter.
+
+| Bağlam | Etiket |
+| --- | --- |
+| Dialog / Sheet kapatma (`X`) | **Kapat** |
+| Sayfa/ay gezinme (`ChevronLeft`/`ChevronRight`) | **Önceki ay** · **Sonraki ay** · **Önceki sayfa** · **Sonraki sayfa** |
+| Satır/satır kalemi çıkarma | **Kaldır** |
+| Düzenleme moduna giriş / çıkış | **Düzenle** · **Düzenlemeyi iptal et** |
+| Liste yenileme | **Yenile** |
+| Arama alanını temizleme | **Aramayı temizle** |
+| Kayıt silme | **Sil** |
+
+#### 1.6.6 Bağlayıcı kurallar
+
+1. **Aynı etikette iki terim olamaz.** `"Personel / Çalışan *"` tipi "ikisinden biri" yazımı yasaktır — terim seçilmemiş demektir.
+2. **İngilizce parantez yok.** `Potansiyel (Lead)` · `Aşama (Stage)` · `Task (Görev)` · `Yapılacak (To Do)` · `Sıcak Fırsatlar (Top Deals)` kaldırılır. Karşılık Türkçe terim varsa parantez gereksizdir.
+3. **Tamamen İngilizce kopya yok.** Ekran başlığı, alt başlık ve buton metinleri Türkçedir.
+4. **İç implementasyon kullanıcı metnine sızmaz.** Örnek ihlal: `roles` ekranının alt başlığındaki *"Changes automatically update Redis cache."* — kullanıcı Redis'i bilmez.
+5. **Aksiyon ile durum ayrı kelimelerdir.** Buton **Vazgeç**, kayıt durumu **İptal Edildi**.
+6. **Kimlikler İngilizce kalır ve çevrilmez:** `Customer.Created`, `Quotes.View`, `moduleKey: "chat"`, DB enum değerleri, API alan adları. Bunlar UI kopyası değil **veri sözleşmesidir** (§2.5.3 ve Gelecek Adımlar #25'in kardeşi).
+7. **İstisna sessiz olamaz.** Kiracı modül adı override'ı meşrudur (katman 3); bunun dışında bir sapma gerekiyorsa gerekçesiyle kaydedilir.
+
+#### 1.6.7 Doğrulama
+
+Metin kopyasını **hiçbir lint kuralı görmez** — `tsc` ve `crm-ui-guard` yalnız kod ve sınıf dizesi denetler. Tek gerçek kontrol ölçüm + diff okumasıdır:
+
+1. Kullanıcıya görünen dizeleri **Node ile** çıkar (JSX metni + string literal). PowerShell `Select-String -Path` joker tuzağına düşer — `[tenantSlug]` altındaki dosyaları sessizce atlar.
+2. Terim gruplarını **Türkçe eklerine dayanıklı** ara (`Müşteri[\p{L}]*`), İngilizce karşılıkları ayrıca say.
+3. İngilizce sonuçları **triage et**: kimlik mi (rota, API alanı, event adı), kopya mı? Yalnız kopya olanlar iş kalemidir.
+4. Değişiklikten sonra sayacı **iki bağımsız yöntemle** doğrula.
+
+---
+
 ## 2. Kanonik Primitif Bileşenler (`@workspace/ui/components/*`)
 
 Tüm CRM arayüzlerinde native HTML etiketleri (`<table/>`, `<div>` kart taklitleri) yerine `@workspace/ui` altındaki paylaşılan primitifler kullanılır:
