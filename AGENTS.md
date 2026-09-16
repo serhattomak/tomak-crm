@@ -42,6 +42,16 @@ Two names still say `crm-monorepo` on purpose, because renaming them would orpha
 data — the Supabase `project_id` in `supabase/config.toml`, and the compose `name` in
 `docker-compose.yml`. Both pin the identity the folder name used to provide.
 
+## Environment and measurement
+
+Machine-specific facts (services, ports, the names that must not be renamed, tool
+limits) and the traps that follow: **[environment.md](docs/agents/environment.md)**.
+
+Read it before trusting any "no findings" result. The lesson it is built around is
+that **a blind measurement looks identical to a clean one** — every rule in that file
+exists because something here reported "nothing found" while being incapable of
+finding anything, including three times during the session that wrote it.
+
 ## Coding Standards
 
 - [TypeScript conventions](docs/agents/ts-conventions.md) — type safety, async, error handling

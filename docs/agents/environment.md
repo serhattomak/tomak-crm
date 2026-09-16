@@ -1,0 +1,136 @@
+# Environment and measurement
+
+Measured facts about this machine and this repo, plus the traps that follow from
+measuring in it. Everything here was observed, not inferred. Dates are when it was
+last confirmed.
+
+The single lesson underneath all of it: **a blind measurement looks identical to a
+clean one.** Every rule below exists because something reported "no findings" while
+being incapable of finding anything.
+
+## Services
+
+| Service | Address | Notes |
+|---|---|---|
+| Supabase API | `127.0.0.1:54321` | The middleware falls back here when env is missing |
+| Supabase DB | `127.0.0.1:54322` | `postgres` / `postgres` |
+| Supabase Studio | `127.0.0.1:54323` | |
+| Mailpit | `127.0.0.1:54324` | |
+| .NET API | `localhost:5000` | CRM data; `next.config.ts` proxies `/api/*` and `/hubs/*` |
+| Web | `127.0.0.1:3210` | Playwright's `webServer` builds and starts it |
+| RabbitMQ | `5672` / `15672` | `docker compose up -d` |
+| Redis | `6379` | `docker compose up -d` |
+
+Ports are not reliable as a liveness check: `Test-NetConnection` on `54321` succeeded
+while the whole stack was stopped. Check containers, not ports.
+
+## Names that must not be renamed
+
+Both of these exist because a service derives its identity from the **directory name**.
+The repo was hoisted from `crm-monorepo/` to the workspace root on 2026-09-16, and
+without these two pins that rename would have silently pointed both stacks at new,
+empty storage while the real data sat on disk under the old name.
+
+| What | Where | Why |
+|---|---|---|
+| `project_id = "crm-monorepo"` | `supabase/config.toml` | Container and volume names (`supabase_db_crm-monorepo`) |
+| `name: crm-monorepo` | `docker-compose.yml` | Volume names (`crm-monorepo_rabbitmq_data`) |
+
+This machine already carries an orphaned `supabase_db_crm` volume from an earlier
+attempt, so the failure mode is not hypothetical. Verify with:
+
+```sh
+docker inspect supabase_db_crm-monorepo --format '{{range .Mounts}}{{.Name}}{{println}}{{end}}'
+# expect: supabase_db_crm-monorepo
+```
+
+## Tool limits
+
+- **Supabase CLI is 2.67.1** (2.117.0 is current). `supabase db query` needs 2.79.0+
+  and `supabase db advisors` needs 2.81.3+, so **neither exists here**. Use the
+  container:
+  ```sh
+  docker exec supabase_db_crm-monorepo psql -U postgres -d postgres -tAc "select 1"
+  ```
+- **No `psql` on PATH.** Docker is the way in.
+- **`supabase status` proves the config parses, not that the stack works.** Its
+  `No such container: supabase_db_crm-monorepo` is evidence that `project_id` resolved
+  correctly — which is useful, but it is not a running stack.
+- **`git subtree` is available** at `C:/Program Files/Git/mingw64/libexec/git-core/git-subtree`.
+  `git subtree --help` prints nothing (no man page), which looks like absence and is not.
+- **`glob` reported "No files found" for files that provably existed**, confirmed by a
+  positive control (`**/dark-mode.spec.ts` vs. `node -e` walking the same tree). Treat
+  any "not found" from a search tool as unverified until a second method agrees.
+
+## Line endings
+
+`core.autocrlf = true` in this repo, with **no `.gitattributes`**. The working tree is
+therefore CRLF while every blob is LF. This is not cosmetic:
+
+- `edit` does not match multi-line content in CRLF files. Edit those with a script that
+  uses the file's own EOL and refuses to write when the match count is not exactly one.
+- **Comparing a checked-out file against `git show` flags every text file as different.**
+  This produced a false "254 files differ" during the repo merge. Compare blob to blob.
+- It inflates `npm run check` (Biome flags every line ending), which is why roadmap #18
+  cannot be sized before the line-ending config is fixed.
+- Within the web app, never run `prettier --write`: the root `.prettierrc` says
+  `semi: false` while the code has semicolons. A 55-line change became 431 lines.
+
+## Measurement traps
+
+**Truncating output invents findings.** A class string cut to `text-destru…` misread a
+real defect. A `git worktree list` piped through `-First 22` hid its second line and
+produced a false "the worktree disappeared" alarm. Print the whole thing, or read the
+file it was written to.
+
+**A rule can be wider or narrower than the standard it encodes.** Both are dangerous,
+and the narrower one is worse because it *reports success*:
+
+- Wider: a pattern matched comments and dynamic style. The count never reached zero,
+  which invited widening the migration instead of fixing the rule.
+- Narrower: `[^>]*` cannot cross a `>`, and `onClick={() => f()}` provides one. Four
+  rules were blind this way — 31 unlabelled buttons stayed invisible, and a sweep
+  recorded as "106 → 0" was actually 137.
+
+**A unified expression lies.** Merging the excluding branches of a ternary makes
+"partner exists" appear true and hides a real leak. Read the source, not the summary.
+
+**Exit codes are not coverage.** A fixtures file claiming "every rule once" triggered 9
+of 16. The check was only "exit 1", and the other seven carried it. Assert the rule-id
+**set**.
+
+**A token that does not exist does nothing, silently.** A class pointing at an undefined
+`--destructive-foreground` left a badge at ~1:1 contrast across 31 routes.
+
+**Fixing a surface without its text makes it worse.** Measured: light surfaces 51 → 10
+while low contrast went 47 → **83**. Only runtime measurement could see it.
+
+## Verification rules
+
+1. **Every detector gets a positive control.** Inject a known defect; if the detector
+   does not flag it, its zero findings mean nothing. The dark-mode audit requires two.
+2. **Every measurement gets a second method.** Blob vs. working tree, `grep` vs. Node,
+   line count vs. name set. A lockfile diff of 1618 lines looked alarming and lost
+   **zero** packages; the line count was churn, the name set was the fact.
+3. **Compare like with like.** Regexes cannot count what they cannot see: three
+   matching *lines* held four references.
+4. **Read the diff.** Class strings are checked by neither `tsc` nor the guard, and
+   after `git status` is not the same as before it.
+5. **Fail is stop.** No automatic fixes, no bulk `sed`. Report, propose, get approval.
+6. **Counts are read from artifacts, not from logs.** The dark-mode audit now writes
+   `test-results/dark-mode-audit.json`, because a log that printed eight findings per
+   route made a ceiling look like a total.
+
+## Shell
+
+- **PowerShell 5.1 reads `.ps1` as ANSI** unless there is a BOM. Non-ASCII characters
+  mangle silently. Write scripts in Node.
+- **`$ErrorActionPreference = "Stop"` plus `Write-Error` closes the window on failure**,
+  so the error is printed and unreadable. A script that hides its own failure reports
+  nothing: capture stdout, stderr and the exit code, log them, and wait before exiting.
+- **Never write repo files with `Set-Content`** (mojibake). Use `edit`/`write`, or a Node
+  script with explicit UTF-8.
+- **Inline `node -e` breaks on quoting here**, repeatedly. Write a script file.
+- **Git writes are never parallel** — `index.lock` collides and a commit's message ends
+  up describing a different file than its content. Long messages go in a file with
+  `git commit -F`.
