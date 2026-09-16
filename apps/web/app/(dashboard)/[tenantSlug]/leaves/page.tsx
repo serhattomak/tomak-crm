@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import {
@@ -12,6 +13,7 @@ import { PageContainer } from "@workspace/ui/components/page-container";
 import {
   Select,
   SelectContent,
+  SelectField,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -620,18 +622,17 @@ export default function LeavesPage() {
               <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Departman:
               </span>
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-medium text-xs text-zinc-800 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-200"
-                onChange={(e) => setCalendarDeptFilter(e.target.value)}
+              <Combobox
+                aria-label="Departman filtresi"
+                onChange={setCalendarDeptFilter}
+                options={[
+                  { label: "Tüm Departmanlar", value: "" },
+                  ...departments.map((d) => ({ label: d.name, value: d.id })),
+                ]}
+                placeholder="Tüm Departmanlar"
+                triggerClassName="h-8 px-3 font-medium"
                 value={calendarDeptFilter}
-              >
-                <option value="">Tüm Departmanlar</option>
-                {departments.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
 
@@ -863,30 +864,34 @@ export default function LeavesPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setStatusFilter(e.target.value)}
+              <SelectField
+                aria-label="Durum filtresi"
+                onChange={setStatusFilter}
+                options={[
+                  { label: "Onay Bekliyor", value: "Pending" },
+                  { label: "Onaylandı", value: "Approved" },
+                  { label: "Reddedildi", value: "Rejected" },
+                  { label: "İptal Edildi", value: "Cancelled" },
+                ]}
+                placeholder="Tüm Durumlar"
+                triggerClassName="h-8 px-3 font-medium"
                 value={statusFilter}
-              >
-                <option value="">Tüm Durumlar</option>
-                <option value="Pending">Onay Bekliyor</option>
-                <option value="Approved">Onaylandı</option>
-                <option value="Rejected">Reddedildi</option>
-                <option value="Cancelled">İptal Edildi</option>
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setLeaveTypeFilter(e.target.value)}
+              <SelectField
+                aria-label="İzin türü filtresi"
+                onChange={setLeaveTypeFilter}
+                options={[
+                  { label: "Yıllık İzin", value: "Annual" },
+                  { label: "Mazeret İzni", value: "Casual" },
+                  { label: "Hastalık / Rapor", value: "Sick" },
+                  { label: "Ücretsiz İzin", value: "Unpaid" },
+                  { label: "Evlilik İzni", value: "Marriage" },
+                ]}
+                placeholder="Tüm İzin Türleri"
+                triggerClassName="h-8 px-3 font-medium"
                 value={leaveTypeFilter}
-              >
-                <option value="">Tüm İzin Türleri</option>
-                <option value="Annual">Yıllık İzin</option>
-                <option value="Casual">Mazeret İzni</option>
-                <option value="Sick">Hastalık / Rapor</option>
-                <option value="Unpaid">Ücretsiz İzin</option>
-                <option value="Marriage">Evlilik İzni</option>
-              </select>
+              />
             </div>
           </div>
 
