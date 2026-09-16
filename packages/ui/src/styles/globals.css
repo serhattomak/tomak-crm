@@ -167,7 +167,14 @@
     overflow: visible !important;
   }
 
-  /* Prevent page breaks inside cards */
+  /* Prevent page breaks inside cards.
+     `[data-slot="card"]` is the intended key: the Card primitive carries it. Keying on a
+     radius class made a visual choice load-bearing — §1.1 permits `rounded-lg` for
+     containers, which is exactly what `Card` uses, so the primitive sat outside this rule.
+     The radius list stays as a bridge for hand-rolled cards and is retired LAST, because
+     dropping it first would leave every surface it currently protects unprotected
+     (roadmap #30). */
+  [data-slot="card"],
   .rounded-3xl,
   .rounded-2xl,
   .rounded-xl,
