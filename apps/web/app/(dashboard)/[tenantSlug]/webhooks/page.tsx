@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
   DialogClose,
@@ -156,6 +157,20 @@ export default function WebhooksPage() {
   const [endpointsError, setEndpointsError] = useState<string | null>(null);
 
   const [search, setSearch] = useState<string>("");
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    description: "",
+    onConfirm: () => {},
+    open: false,
+    title: "",
+  });
   const debouncedSearch = useDebounce<string>(search, 400);
   const [eventFilter, setEventFilter] = useState<string>("");
   const [isActiveFilter, setIsActiveFilter] = useState<
@@ -351,34 +366,40 @@ export default function WebhooksPage() {
     }
   };
 
-  const handleDelete = async (
+  const handleDelete = (
     id: string,
     name: string,
     e: React.MouseEvent<HTMLButtonElement>
-  ): Promise<void> => {
+  ): void => {
     e.preventDefault();
     e.stopPropagation();
-    const confirmed = window.confirm(
-      `"${name}" webhook endpointini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`
-    );
-    if (!confirmed) {
-      return;
-    }
-    try {
-      const res = await ApiClient.deleteWebhookEndpoint(id, tenantSlug);
-      if (res.success) {
-        toast.success("Endpoint silindi.");
-        setEndpoints((prev) => prev.filter((ep) => ep.id !== id));
-        setEndpointsTotal((prev) => Math.max(0, prev - 1));
-        await loadKpiActive();
-      } else {
-        toast.error(res.message || "Silme işlemi başarısız.");
-      }
-    } catch (error: unknown) {
-      const message =
-        error instanceof Error ? error.message : "Silme sırasında hata oluştu.";
-      toast.error(message);
-    }
+    setConfirmDialog({
+      confirmText: "Endpointi Sil",
+      description: `"${name}" webhook endpointini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`,
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.deleteWebhookEndpoint(id, tenantSlug);
+          if (res.success) {
+            toast.success("Endpoint silindi.");
+            setEndpoints((prev) => prev.filter((ep) => ep.id !== id));
+            setEndpointsTotal((prev) => Math.max(0, prev - 1));
+            await loadKpiActive();
+          } else {
+            toast.error(res.message || "Silme işlemi başarısız.");
+          }
+        } catch (error: unknown) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "Silme sırasında hata oluştu.";
+          toast.error(message);
+        }
+        setConfirmDialog((prev) => ({ ...prev, open: false }));
+      },
+      open: true,
+      title: "Endpointi Sil",
+      variant: "destructive",
+    });
   };
 
   const handleCopyUrl = async (url: string): Promise<void> => {
@@ -1274,6 +1295,17 @@ export default function WebhooksPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </PageContainer>
   );
 }
