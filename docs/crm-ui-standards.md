@@ -507,13 +507,31 @@ Tek başına `bg-white` **ihlal değildir** — sabit açık yüzey (print, kas�
 
 **Ton birebir (Faz 4'ün kararıyla aynı sınıf):** `--card` açık `oklch(1 0 0)` = **saf beyaz**, koyu `0.18` ≈ `zinc-900` (`0.19`); `--border` açık `0.91` ≈ `zinc-200`, koyu `0.28` ≈ `zinc-800`. Yani **görünürde hiçbir şey oynamaz** — değişen, rengin artık temadan gelmesidir.
 
-**Kapsam dışı (bilinçli):** metin renkleri (`text-zinc-900` / `dark:text-zinc-100`) bu fazın değişkeni **değildir**; yüzey + kenarlık dönüşür, tipografi/foreground ayrı bir karardır.
+**Kapsam dışı (bilinçli), üç grup:**
+1. **Metin renkleri** (`text-zinc-900` / `dark:text-zinc-100`) bu fazın değişkeni **değildir**; yüzey + kenarlık dönüşür, tipografi/foreground ayrı bir karardır.
+2. **`bg-white/90` · `bg-white/80` + `backdrop-blur`** (15 site) — **çevrilmez.** Buzlu cam panelinin yarı saydamlığı **kasıtlıdır**; `bg-card` (opak) yapmak etkiyi öldürür ve bu bir **tasarım** değişikliğidir, tokenizasyon değil.
+   > ⚠️ **Kural burada yanlış başladı ve kural düzeltildi, göç genişletilmedi.** İlk sürüm `bg-white`'ı **önek** olarak eşleştirdiği için `bg-white/90`'a da ateşliyordu. Aşırı eşleşen bir kural **kendini duyurmaz** — sadece **asla 0'a inmez**; ve baştan çıkarıcı "çözüm" göçü, sayaç temizlenene kadar genişletmektir. O yol uygulamadaki **her buzlu yüzeyi sessizce düzleştirirdi**.
+3. **`dark:` partneri hiç olmayan 185 yüzey** — token bekleyen iş değil, **dark-mode hata adayı**; ayrı triyaj.
+
+**Kapsam dışı olmayan ama sınırda olan:** `border-zinc-2xx/NN` (opaklık soneki) **dahildir** — 90% ile 100% bir kart kenarında ayırt edilemez; token kendi alfasını taşır.
 
 **Eşsiz yüzeyler triyajdır, tokenizasyon değil.** Ölçüm: toplam sert yüzey **2425** (799 `bg-white` + 1626 border), kuralın yakaladığı eşli **2240**. Fark **185**, yani `dark:` partneri **hiç olmayan** yüzeyler. Bunlar token bekleyen iş değil, **dark-mode hata adayıdır** — süpürmede ayrıca bakılır; bir kısmı meşru (print, sabit yüzey) olabilir.
 
 **Ölçüm iki yöntemle doğrulanır:** kuralın kendi sayacı **ve** bağımsız satır-tabanlı yürüyüş. (Faz 5.4'te ilk kapsam ölçümü iki regex'in farklı pencereleri yüzünden `bg-white`'ı **çift saydı**: 552 "eşli" + 505 "eşsiz" = 1057, gerçek **799**. Sayı üç yere yazılmadan önce ikinci yöntemle doğrulanmalı.)
 
-**Kalan iş:** `apps/web`'te **2240 site** (726 `bg-white` + 1514 border). Primitif katmanı **zaten temiz** (`packages/ui` bu kural için 0) — önce o düzeltildi (`beb9cc6`), çünkü otorite bileşenlerde ateşleyen bir kural **yerleşik yanlış pozitifle** başlar (Faz 3 bulguları 1 ve 7, 5.2 `aria-label`, 5.3 `table.tsx` — aynı sınıfın beşinci tekrarı).
+**Kalan iş:** ~~`apps/web`'te 2240 site~~ → **SÜPÜRÜLDÜ: 2240 → 0** (`fa7c52b`, **85 dosya / 1912 string**). Kalan tek iş: **185 eşsiz yüzeyin dark-mode triyajı** (kural bunları yakalamaz, çünkü eşli değiller).
+
+**Süpürmede çıkan dört araç hatası — dördü de sessiz, dördü de aynı geçişte:**
+1. **`className={cn("...")}` biçimi** ilk eşleyicide yoktu (yalnız tırnak/template) → **4 dosya atlandı.**
+2. **Değişiklik sayacı** o dala bağlı değildi → dönüşüm hesaplanıyor, sayaç 0 olduğu için **yazılmıyordu.**
+3. **İç içe string:** template içindeki koşullu sınıf dizesi dıştaki backtick tarafından **yutuluyor**, token `"bg-white` (tırnaklı) oluyor → tam eşleşme tutmuyor; **124 site** hayatta kaldı. Çözüm: template gövdesine **özyinelemeli** inmek.
+4. **Opaklık sonekli `dark:` partneri** (`dark:bg-zinc-900/60`) tam-token desenine takılmadı → **59 string** aynı anda hem token hem onu ezen eski sınıfı taşıyordu; yani **bu fazın ortadan kaldırmak için var olduğu kusurun ta kendisi.**
+
+**Ve en kötüsü:** `transform` string beklenen yere doğrudan geçirildiği için üç yerde `className="[object Object]"` üretti. **`tsc` geçti** (bozuk sınıf dizesi de geçerli bir string'tir) ve **guard da geçti**. **Diff okunarak** yakalandı; script artık bu işareti taşıyan dosyayı **yazmayı reddediyor**. → **Sınıf dizelerinde tip denetimi ve guard yoktur; tek gerçek kontrol diff'i okumaktır.**
+
+**Doğrulama:** kural **0** · token+eski-çift birlikteliği **0** · `text-[Npx]` deltası **0** (bir an −30 görünmüştü; o, bozulmanın artefaktıymış) · typecheck 2/2 · build 2/2 · scoped + full **PASS**.
+
+**Karar sırası (bağlayıcı):** önce **primitif** (`beb9cc6`) → sonra **kural** (`5d1eb37`, düzeltme `2a7a6b4`) → sonra **süpürme** (`fa7c52b`). Primitif önce düzeltildi çünkü otorite bileşenlerde ateşleyen bir kural **yerleşik yanlış pozitifle** başlar (Faz 3 bulguları 1 ve 7, 5.2 `aria-label`, 5.3 `table.tsx` — aynı sınıfın beşinci tekrarı).
 
 
 ---
