@@ -1049,21 +1049,25 @@ export default function ProjectDetailPage() {
                         />
 
                         {/* Priority Quick Picker */}
-                        <select
+                        {/* Badge colour is data-driven and encodes priority, so it is
+                            carried in triggerClassName rather than dropped with the rest
+                            of the surface classes. */}
+                        <SelectField
                           aria-label="Öncelik"
-                          className={`rounded-lg border border-transparent px-2 py-1 font-bold text-[10px] ${getPriorityBadge(item.priority)}`}
-                          onChange={(e) =>
+                          onChange={(value) =>
                             handleQuickUpdateItem(item.id, {
-                              priority: e.target.value,
+                              priority: value,
                             })
                           }
+                          options={[
+                            { label: "Düşük", value: "Low" },
+                            { label: "Normal", value: "Medium" },
+                            { label: "Yüksek", value: "High" },
+                            { label: "Acil", value: "Urgent" },
+                          ]}
+                          triggerClassName={`h-6 px-2 font-bold text-3xs ${getPriorityBadge(item.priority)}`}
                           value={item.priority}
-                        >
-                          <option value="Low">Düşük</option>
-                          <option value="Medium">Normal</option>
-                          <option value="High">Yüksek</option>
-                          <option value="Urgent">Acil</option>
-                        </select>
+                        />
 
                         {/* Status Quick Picker */}
                         <SelectField
