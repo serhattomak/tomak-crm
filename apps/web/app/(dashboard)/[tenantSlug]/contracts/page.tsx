@@ -276,7 +276,7 @@ export default function ContractsPage() {
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               Toplam Sözleşme
             </span>
-            <FileText className="h-4 w-4 text-zinc-400" />
+            <FileText className="h-4 w-4 text-muted-foreground" />
           </div>
           <p className="mt-2 font-semibold text-2xl text-zinc-900 tabular-nums dark:text-zinc-100">
             {totalCount}
@@ -324,7 +324,7 @@ export default function ContractsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3 shadow-xs">
         <div className="flex flex-1 items-center gap-2">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+            <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
             <input
               className="h-9 w-full rounded-xl border border-border bg-zinc-50/50 pr-3 pl-9 text-xs text-zinc-900 outline-hidden transition focus:border-blue-500 focus:bg-white dark:bg-zinc-900/80 dark:text-zinc-100 dark:focus:border-blue-400"
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -437,7 +437,7 @@ export default function ContractsPage() {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-zinc-400">İmza Bekliyor</span>
+                      <span className="text-muted-foreground">İmza Bekliyor</span>
                     )}
                   </TableCell>
                   <TableCell className="py-3 pr-5 pl-4 text-right">
@@ -467,7 +467,7 @@ export default function ContractsPage() {
                       </button>
 
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
                         onClick={() => handlePromptDelete({ id: c.id, title: c.title, contractNumber: c.contractNumber })}
                         title="Sil"
                         type="button"
@@ -505,7 +505,7 @@ export default function ContractsPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -636,7 +636,7 @@ export default function ContractsPage() {
               </div>
               <div className="flex items-center gap-1">
                 <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
                   onClick={() =>
                     handlePromptDelete({
                       contractNumber: selectedContract.contractNumber,
@@ -652,7 +652,7 @@ export default function ContractsPage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />

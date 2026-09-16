@@ -186,7 +186,7 @@ export function BulkCouponModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -318,7 +318,7 @@ export function BulkCouponModal({
                   Özel Kupon Kodu *
                 </label>
                 <div className="relative">
-                  <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                  <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>

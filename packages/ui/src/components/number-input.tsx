@@ -136,7 +136,7 @@ export function NumberInput({
       <input
         aria-invalid={hasError ? "true" : undefined}
         className={cn(
-          "w-full bg-transparent px-3 py-1.5 font-medium text-xs text-zinc-900 outline-none [appearance:textfield] placeholder:text-zinc-400 disabled:cursor-not-allowed dark:text-zinc-100 dark:placeholder:text-zinc-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          "w-full bg-transparent px-3 py-1.5 font-medium text-xs text-zinc-900 outline-none [appearance:textfield] placeholder:text-muted-foreground disabled:cursor-not-allowed dark:text-zinc-100 dark:placeholder:text-zinc-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
           Boolean(prefix) && "pl-1.5",
           Boolean(suffix) && "pr-1.5"
         )}
@@ -162,7 +162,7 @@ export function NumberInput({
         <div className="flex h-full items-center border-border border-l">
           <button
             aria-label="Decrease value"
-            className="flex h-full w-6 items-center justify-center text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            className="flex h-full w-6 items-center justify-center text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleDecrement}
             tabIndex={-1}
             type="button"
@@ -171,7 +171,7 @@ export function NumberInput({
           </button>
           <button
             aria-label="Increase value"
-            className="flex h-full w-6 items-center justify-center border-border border-l text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            className="flex h-full w-6 items-center justify-center border-border border-l text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleIncrement}
             tabIndex={-1}
             type="button"

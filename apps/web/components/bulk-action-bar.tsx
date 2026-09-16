@@ -72,7 +72,7 @@ export function BulkActionBar({
       {/* Clear selection */}
       <button
         aria-label="Seçimi temizle"
-        className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg border border-border text-zinc-400 transition-colors hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+        className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
         onClick={onClear}
         type="button"
       >

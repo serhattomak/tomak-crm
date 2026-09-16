@@ -700,7 +700,7 @@ export default function WorkflowBuilderPage() {
                     </div>
 
                     <button
-                      className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
                       onClick={() => removeConditionGroup(gIdx)}
                       title="Grubu Kaldır"
                     >
@@ -776,7 +776,7 @@ export default function WorkflowBuilderPage() {
                             value={rule.value}
                           />
                           <button
-                            className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
+                            className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
                             onClick={() => removeRuleFromGroup(gIdx, rIdx)}
                             title="Kuralı Sil"
                           >
@@ -905,7 +905,7 @@ export default function WorkflowBuilderPage() {
                     </div>
 
                     <button
-                      className="p-1 text-zinc-400 hover:text-red-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
                       onClick={() => removeAction(act.id)}
                       title="Adımı Sil"
                     >
@@ -1104,7 +1104,7 @@ export default function WorkflowBuilderPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  className="rounded-full p-1 text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1222,7 +1222,7 @@ export default function WorkflowBuilderPage() {
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                     Adım Logları ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (

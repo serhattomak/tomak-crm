@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
 
           <div className="mt-2 divide-y divide-zinc-100">
             {recentTenants.length === 0 ? (
-              <div className="py-8 text-center text-zinc-400 text-xs">
+              <div className="py-8 text-center text-muted-foreground text-xs">
                 {loading ? "Yükleniyor..." : "Henüz kayıtlı firma bulunamadı."}
               </div>
             ) : (
@@ -251,7 +251,7 @@ export default function AdminDashboardPage() {
                       <p className="font-semibold text-zinc-700 text-xs">
                         {tenant.enabledModuleCount} Modül
                       </p>
-                      <p className="text-2xs text-zinc-400">
+                      <p className="text-2xs text-muted-foreground">
                         {tenant.memberCount} Üye
                       </p>
                     </div>
@@ -306,7 +306,7 @@ export default function AdminDashboardPage() {
                 );
               })
             ) : (
-              <div className="py-6 text-center text-zinc-400 text-xs">
+              <div className="py-6 text-center text-muted-foreground text-xs">
                 {loading ? "Yükleniyor..." : "Veri bulunamadı."}
               </div>
             )}

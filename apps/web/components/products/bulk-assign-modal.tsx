@@ -190,7 +190,7 @@ export function BulkAssignModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -453,7 +453,7 @@ export function BulkAssignModal({
                   type="url"
                   value={imageUrl}
                 />
-                <p className="text-3xs text-zinc-400">
+                <p className="text-3xs text-muted-foreground">
                   Girilen görsel URL'si seçili tüm ürünlerin galeri listesine
                   atanacaktır.
                 </p>

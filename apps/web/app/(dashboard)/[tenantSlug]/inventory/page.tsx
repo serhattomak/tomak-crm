@@ -737,7 +737,7 @@ function WarehouseTabContent({
           <div className="relative w-full sm:w-64">
             <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50/60 py-1.5 pr-3 pl-9 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
+              className="w-full rounded-xl border border-border bg-zinc-50/60 py-1.5 pr-3 pl-9 text-xs text-zinc-800 placeholder:text-muted-foreground focus:border-primary focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
               onChange={onSearchChange}
               placeholder="Ürün, SKU veya Raf ara..."
               type="text"
@@ -1029,7 +1029,7 @@ function WarehouseStockRow({
             </button>
             <button
               aria-label="Düzenlemeyi iptal et"
-              className="rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onCancelEdit}
               type="button"
             >
@@ -1423,7 +1423,7 @@ function NewWarehouseModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -1729,7 +1729,7 @@ function NewTransferModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -1912,7 +1912,7 @@ function TransferItemFormRow({
       {showRemove ? (
         <button
           aria-label="Kaldır"
-          className="rounded p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
+          className="rounded p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
           onClick={handleRemove}
           type="button"
         >
@@ -1999,7 +1999,7 @@ function NewCountModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2131,7 +2131,7 @@ function TransferDetailDrawer({
             <SheetClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -2393,7 +2393,7 @@ function StockCountAuditDrawer({
             <SheetClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -2406,7 +2406,7 @@ function StockCountAuditDrawer({
               <div className="relative flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-border bg-card py-1.5 pr-3 pl-9 font-mono text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-primary dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card py-1.5 pr-3 pl-9 font-mono text-xs text-zinc-800 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary dark:text-zinc-200"
                   onChange={handleBarcodeChange}
                   onKeyDown={handleBarcodeScan}
                   placeholder="Barkod veya SKU okutun (Enter ile +1 sayar)..."

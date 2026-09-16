@@ -650,7 +650,7 @@ export default function QuotesPage() {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                         onClick={() => {
                           const publicUrl = `${window.location.origin}/portal/${quote.publicViewToken}`;
                           navigator.clipboard.writeText(publicUrl);
@@ -662,7 +662,7 @@ export default function QuotesPage() {
                         <LinkIcon className="h-3.5 w-3.5" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                         onClick={() => setPrintQuoteId(quote.id)}
                         title="PDF"
                         type="button"
@@ -791,7 +791,7 @@ export default function QuotesPage() {
                               </span>
                             </div>
                           ) : (
-                            <span className="text-xs text-zinc-400 italic dark:text-zinc-500">
+                            <span className="text-xs text-muted-foreground italic dark:text-zinc-500">
                               Atanmamış
                             </span>
                           )}
@@ -804,7 +804,7 @@ export default function QuotesPage() {
                         >
                           <div className="flex items-center justify-end gap-1.5">
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={() => setSelectedQuoteId(quote.id)}
                               title="Detay & İncele"
                               type="button"
@@ -813,7 +813,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={async () => {
                                 toast.info("PDF hazırlanıyor...");
                                 const blob = await ApiClient.downloadQuotePdf(
@@ -858,7 +858,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                               onClick={() => setPrintQuoteId(quote.id)}
                               title="Yazdır / Önizle"
                               type="button"
@@ -867,7 +867,7 @@ export default function QuotesPage() {
                             </button>
 
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
+                              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500"
                               onClick={() => {
                                 const publicUrl = `${window.location.origin}/portal/${quote.publicViewToken}`;
                                 navigator.clipboard.writeText(publicUrl);
@@ -1440,7 +1440,7 @@ function CreateQuoteModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="shrink-0 rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
+              className="shrink-0 rounded-xl p-2 text-muted-foreground transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2501,7 +2501,7 @@ function QuoteDetailDrawer({
             </button>
 
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-zinc-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
               onClick={() => setIsDeleteDialogOpen(true)}
               title="Teklifi Sil"
               type="button"
@@ -3266,7 +3266,7 @@ function QuoteDetailDrawer({
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -3305,7 +3305,7 @@ function QuoteDetailDrawer({
                           type="checkbox"
                         />
                         <span
-                          className={`truncate font-semibold ${ci.isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 line-through"}`}
+                          className={`truncate font-semibold ${ci.isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-muted-foreground line-through"}`}
                         >
                           {ci.productName}
                         </span>
@@ -3940,7 +3940,7 @@ function QuoteTemplatesModal({
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  className="shrink-0 rounded-xl p-2 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                   type="button"
                 >
                   <X className="h-4 w-4" />

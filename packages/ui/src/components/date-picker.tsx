@@ -173,7 +173,7 @@ export function DatePicker({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             className
           )}
           type="button"
@@ -193,7 +193,7 @@ export function DatePicker({
           <div className="flex shrink-0 items-center gap-1">
             {clearable && value ? (
               <span
-                className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-full p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={handleClear}
               >
                 <X className="h-3.5 w-3.5" />
@@ -281,7 +281,7 @@ export function DatePicker({
               Bugün
             </button>
             <button
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 dark:hover:text-zinc-500"
+              className="text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300 dark:hover:text-zinc-500"
               onClick={() => {
                 onChange?.("");
                 setOpen(false);
@@ -383,7 +383,7 @@ export function DateRangePicker({
           className="z-50 w-64 overflow-hidden rounded-2xl border border-border bg-card p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:text-zinc-100"
           sideOffset={4}
         >
-          <div className="mb-2 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
             Hızlı Tarih Filtreleri
           </div>
           <div className="space-y-1 font-semibold text-xs">

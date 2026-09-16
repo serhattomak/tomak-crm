@@ -313,9 +313,9 @@ export default function ProjectsPage() {
       <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Proje adı veya anahtarı (örn. CRM) ara..."
               type="text"
@@ -343,7 +343,7 @@ export default function ProjectsPage() {
             className={`rounded-xl p-2 transition ${
               viewMode === "grid"
                 ? "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                : "text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
             }`}
             onClick={() => setViewMode("grid")}
             title="Kart Görünümü"
@@ -355,7 +355,7 @@ export default function ProjectsPage() {
             className={`rounded-xl p-2 transition ${
               viewMode === "table"
                 ? "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                : "text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
             }`}
             onClick={() => setViewMode("table")}
             title="Tablo Görünümü"
@@ -378,7 +378,7 @@ export default function ProjectsPage() {
         </div>
       ) : projects.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
             <Briefcase className="h-7 w-7" />
           </div>
           <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -579,7 +579,7 @@ export default function ProjectsPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-4 w-4" />

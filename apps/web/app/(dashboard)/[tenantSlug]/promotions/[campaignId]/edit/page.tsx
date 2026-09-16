@@ -469,7 +469,7 @@ export default function EditCampaignPage() {
                   </span>
                   <button
                     aria-label="Hedefi kaldır"
-                    className="rounded p-1 text-zinc-400 hover:text-red-600"
+                    className="rounded p-1 text-muted-foreground hover:text-red-600"
                     onClick={() => removeTarget(idx)}
                     type="button"
                   >

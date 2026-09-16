@@ -110,7 +110,7 @@ export default defineConfig({
           {
             // Same spec, same routes, same detectors — the PROJECT NAME picks the
             // theme. Dark ran alone for a long time, so the light theme had never
-            // been measured at all; `text-zinc-400` sitting at 2.63:1 on white is
+            // been measured at all; `text-muted-foreground` sitting at 2.63:1 on white is
             // what that blind spot looked like.
             dependencies: ["setup"],
             name: "light-mode",

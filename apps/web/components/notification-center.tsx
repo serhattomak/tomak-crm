@@ -155,7 +155,7 @@ function NotificationItemRow({
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
               )}
             </div>
-            <span className="shrink-0 text-3xs text-zinc-400">
+            <span className="shrink-0 text-3xs text-muted-foreground">
               {formatTimeAgo(item.createdAt)}
             </span>
           </div>
@@ -181,7 +181,7 @@ function NotificationItemRow({
       {/* Actions */}
       <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <button
-          className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800 dark:hover:text-rose-400"
+          className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800 dark:hover:text-rose-400"
           onClick={handleDelete}
           title="Sil"
           type="button"
@@ -236,7 +236,7 @@ function NotificationEmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
         <Bell className="h-6 w-6" />
       </div>
       <h4 className="mt-3 font-semibold text-xs text-zinc-800 dark:text-zinc-200">
@@ -300,7 +300,7 @@ function NotificationHeader({
               {unreadCount} yeni okunmamış bildirim
             </p>
           ) : (
-            <p className="text-3xs text-zinc-400">Tümü okundu</p>
+            <p className="text-3xs text-muted-foreground">Tümü okundu</p>
           )}
         </div>
       </div>
@@ -319,7 +319,7 @@ function NotificationHeader({
 
           {showTestMenu ? (
             <div className="absolute top-8 right-0 z-50 w-44 rounded-2xl border border-border bg-card p-1.5 shadow-xl">
-              <div className="px-2 py-1 font-semibold text-3xs text-zinc-400 uppercase tracking-wider">
+              <div className="px-2 py-1 font-semibold text-3xs text-muted-foreground uppercase tracking-wider">
                 Simülasyon Seç
               </div>
               {TEST_PRESETS.map((p) => (
@@ -530,7 +530,7 @@ export function NotificationCenter({
               >
                 Listeyi Temizle
               </button>
-              <span className="text-3xs text-zinc-400">
+              <span className="text-3xs text-muted-foreground">
                 {notifications.length} toplam bildirim
               </span>
             </div>

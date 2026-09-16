@@ -483,7 +483,7 @@ export function EmailAccountModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              className="rounded-lg p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -561,7 +561,7 @@ export function EmailAccountModal({
                 {isEdit ? null : " *"}
               </label>
               {isEdit && account?.secretMasked ? (
-                <span className="font-mono text-2xs text-zinc-400">
+                <span className="font-mono text-2xs text-muted-foreground">
                   Mevcut: {account.secretMasked}
                 </span>
               ) : null}
@@ -581,7 +581,7 @@ export function EmailAccountModal({
               />
               <button
                 aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
                 onClick={handleTogglePassword}
                 tabIndex={-1}
                 type="button"

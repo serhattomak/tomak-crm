@@ -150,7 +150,7 @@ export default function LoginPage() {
                   E-posta
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+                  className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-xs text-zinc-900 outline-none transition-all placeholder:text-muted-foreground focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                   id="login-email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="E-postanızı girin"
@@ -166,7 +166,7 @@ export default function LoginPage() {
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+                    className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-xs text-zinc-900 outline-none transition-all placeholder:text-muted-foreground focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                     id="login-password"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Şifrenizi girin"
@@ -175,7 +175,7 @@ export default function LoginPage() {
                     value={password}
                   />
                   <button
-                    className="absolute top-3.5 right-3 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                    className="absolute top-3.5 right-3 text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
                     onClick={() => setShowPassword(!showPassword)}
                     type="button"
                   >

@@ -147,7 +147,7 @@ export default function AdminLayout({
 
           {/* Navigation Links */}
           <nav className="space-y-1">
-            <div className="px-3 pb-2 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <div className="px-3 pb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               Yönetim Menüsü
             </div>
             {navItems.map((item) => {

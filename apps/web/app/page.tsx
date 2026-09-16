@@ -83,7 +83,7 @@ export default function RootPage() {
             </div>
           </div>
           <button
-            className="rounded-xl p-2 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            className="rounded-xl p-2 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleLogout}
             title="Çıkış Yap"
           >
@@ -108,7 +108,7 @@ export default function RootPage() {
             </label>
             <input
               autoFocus
-              className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
               onChange={(e) => setNewTenantName(e.target.value)}
               placeholder="Örn: Acme A.Ş."
               required

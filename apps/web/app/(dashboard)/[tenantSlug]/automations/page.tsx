@@ -694,14 +694,14 @@ export default function AutomationsPage() {
                       </button>
 
                       <button
-                        className="rounded-lg p-1 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500"
+                        className="rounded-lg p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:text-zinc-500"
                         onClick={(e) => handleDelete(wf.id, wf.name, e)}
                         title="Sil"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
 
-                      <div className="p-1 text-zinc-400 transition-colors group-hover:text-blue-600 dark:text-zinc-500">
+                      <div className="p-1 text-muted-foreground transition-colors group-hover:text-blue-600 dark:text-zinc-500">
                         <ChevronRight className="h-4 w-4" />
                       </div>
                     </div>
@@ -921,7 +921,7 @@ export default function AutomationsPage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -1008,7 +1008,7 @@ export default function AutomationsPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  className="rounded-full p-1 text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1050,7 +1050,7 @@ export default function AutomationsPage() {
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                     Yürütülen Adımlar ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (

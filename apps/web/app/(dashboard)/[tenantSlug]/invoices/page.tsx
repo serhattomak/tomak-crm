@@ -75,7 +75,7 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-2xs text-zinc-400">{trend}</span>
+          <span className="font-medium text-2xs text-muted-foreground">{trend}</span>
         ) : null}
       </div>
     </div>
@@ -157,7 +157,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {invoice.invoiceNumber}
         </div>
-        <div className="font-medium text-2xs text-zinc-400">
+        <div className="font-medium text-2xs text-muted-foreground">
           {invoice.profile} •{" "}
           {new Date(invoice.issueDate).toLocaleDateString("tr-TR")}
         </div>
@@ -178,7 +178,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           {invoice.cariTitle}
         </div>
         {invoice.cariTaxNumber ? (
-          <div className="text-2xs text-zinc-400">
+          <div className="text-2xs text-muted-foreground">
             VKN/TCKN: {invoice.cariTaxNumber}
           </div>
         ) : null}
@@ -191,7 +191,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           })}{" "}
           {invoice.currency}
         </div>
-        <div className="text-2xs text-zinc-400">
+        <div className="text-2xs text-muted-foreground">
           KDV:{" "}
           {invoice.taxTotal.toLocaleString("tr-TR", {
             minimumFractionDigits: 2,
@@ -225,7 +225,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           ) : null}
           {invoice.status === "Cancelled" ? null : (
             <button
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800 dark:hover:text-rose-400"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800 dark:hover:text-rose-400"
               onClick={handleCancel}
               title="Faturayı İptal Et"
               type="button"
@@ -280,9 +280,9 @@ function FilterBar({
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
       <div className="relative flex-1">
-        <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+        <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
         <input
-          className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200 dark:focus:bg-zinc-800"
+          className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200 dark:focus:bg-zinc-800"
           onChange={handleSearchInput}
           placeholder="Fatura No veya Müşteri Ara..."
           type="text"
@@ -339,7 +339,7 @@ function InvoiceTableBody({
   if (isLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-zinc-400" colSpan={6}>
+        <TableCell className="py-8 text-center text-muted-foreground" colSpan={6}>
           Faturalar yükleniyor...
         </TableCell>
       </TableRow>
@@ -349,7 +349,7 @@ function InvoiceTableBody({
   if (invoices.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-12 text-center text-zinc-400" colSpan={6}>
+        <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
           <Receipt className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Henüz kayıtlı fatura bulunmuyor.
         </TableCell>
@@ -423,7 +423,7 @@ function InvoiceDetailDrawer({
             <SheetClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -434,7 +434,7 @@ function InvoiceDetailDrawer({
 
         <div className="flex-1 overflow-y-auto p-6">
           {isLoading || !invoice ? (
-            <div className="py-12 text-center text-zinc-400">Yükleniyor...</div>
+            <div className="py-12 text-center text-muted-foreground">Yükleniyor...</div>
           ) : (
             <div className="space-y-6 text-zinc-800 dark:text-zinc-200">
               <div className="flex items-start justify-between border-border border-b pb-6">
@@ -447,20 +447,20 @@ function InvoiceDetailDrawer({
                   <div className="mt-1 font-bold font-mono text-base text-zinc-900 dark:text-zinc-100">
                     {invoice.invoiceNumber}
                   </div>
-                  <div className="text-xs text-zinc-400">
+                  <div className="text-xs text-muted-foreground">
                     Profil: {invoice.profile}
                   </div>
                 </div>
                 <div className="space-y-1 text-right text-xs">
                   <div>
-                    <span className="text-zinc-400">Düzenleme:</span>{" "}
+                    <span className="text-muted-foreground">Düzenleme:</span>{" "}
                     <span className="font-semibold">
                       {new Date(invoice.issueDate).toLocaleDateString("tr-TR")}
                     </span>
                   </div>
                   {invoice.dueDate ? (
                     <div>
-                      <span className="text-zinc-400">Vade:</span>{" "}
+                      <span className="text-muted-foreground">Vade:</span>{" "}
                       <span className="font-semibold">
                         {new Date(invoice.dueDate as string).toLocaleDateString(
                           "tr-TR"
@@ -476,7 +476,7 @@ function InvoiceDetailDrawer({
 
               <div className="grid grid-cols-2 gap-4 rounded-xl bg-zinc-50 p-4 text-xs dark:bg-zinc-800/40">
                 <div>
-                  <span className="font-semibold text-zinc-400 uppercase tracking-wider">
+                  <span className="font-semibold text-muted-foreground uppercase tracking-wider">
                     Müşteri / Cari
                   </span>
                   <div className="mt-1 font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -495,14 +495,14 @@ function InvoiceDetailDrawer({
                 </div>
 
                 <div className="text-right">
-                  <span className="font-semibold text-zinc-400 uppercase tracking-wider">
+                  <span className="font-semibold text-muted-foreground uppercase tracking-wider">
                     Ödeme Koşulları
                   </span>
                   <div className="mt-1 font-medium text-zinc-700 dark:text-zinc-300">
                     {invoice.paymentTerms || "Standart Cari Hesaba Mahsuben"}
                   </div>
                   {invoice.notes ? (
-                    <div className="mt-2 text-zinc-400 italic">
+                    <div className="mt-2 text-muted-foreground italic">
                       &quot;{invoice.notes}&quot;
                     </div>
                   ) : null}
@@ -512,7 +512,7 @@ function InvoiceDetailDrawer({
               <div>
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-border font-semibold text-zinc-400">
+                    <TableRow className="border-border font-semibold text-muted-foreground">
                       <TableHead className="py-2 h-auto">Ürün / Hizmet</TableHead>
                       <TableHead className="py-2 text-right h-auto">Miktar</TableHead>
                       <TableHead className="py-2 text-right h-auto">Birim Fiyat</TableHead>
@@ -528,7 +528,7 @@ function InvoiceDetailDrawer({
                             {item.productName}
                           </div>
                           {item.sku ? (
-                            <div className="font-mono text-3xs text-zinc-400">
+                            <div className="font-mono text-3xs text-muted-foreground">
                               {item.sku}
                             </div>
                           ) : null}
@@ -994,7 +994,7 @@ function InvoiceItemRow({
       {canRemove ? (
         <button
           aria-label="Kaldır"
-          className="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
+          className="p-1.5 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
           onClick={handleRemove}
           type="button"
         >
@@ -1153,7 +1153,7 @@ function CreateInvoiceModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />

@@ -234,7 +234,7 @@ export default function RolesManagementPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
         <div className="space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs md:col-span-4">
-          <div className="mb-2 px-2 font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 px-2 font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
             Available Roles ({roles.length})
           </div>
 
@@ -300,7 +300,7 @@ export default function RolesManagementPage() {
                 {!selectedRole.isDefault && (
                   <PermissionGate permission="Roles.Delete">
                     <button
-                      className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                      className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                       onClick={() => handleDeleteRole(selectedRole.id)}
                       title="Rolü Sil"
                     >
@@ -409,7 +409,7 @@ export default function RolesManagementPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+                  className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -427,7 +427,7 @@ export default function RolesManagementPage() {
                   Rol Adı
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleName(e.target.value)}
                   placeholder="Örn: Satış Yöneticisi"
                   required
@@ -441,7 +441,7 @@ export default function RolesManagementPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleDesc(e.target.value)}
                   placeholder="Sorumluluklar ve erişim kapsamı..."
                   rows={3}

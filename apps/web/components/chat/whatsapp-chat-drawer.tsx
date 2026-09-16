@@ -163,7 +163,7 @@ export function WhatsAppChatDrawer({
               </SheetTitle>
             </div>
             <button
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={() => loadMessages()}
               title="Yenile"
               type="button"
@@ -174,7 +174,7 @@ export function WhatsAppChatDrawer({
 
           <div className="p-3">
             <div className="relative">
-              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400" />
+              <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-900 outline-hidden dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -187,7 +187,7 @@ export function WhatsAppChatDrawer({
 
           <div className="flex-1 space-y-1 overflow-y-auto p-2">
             {conversations.length === 0 ? (
-              <div className="py-8 text-center text-xs text-zinc-400">
+              <div className="py-8 text-center text-xs text-muted-foreground">
                 Henüz kayıtlı WhatsApp mesajı yok.
               </div>
             ) : (
@@ -214,7 +214,7 @@ export function WhatsAppChatDrawer({
                       <div className="flex items-center justify-between">
                         <span className="truncate font-semibold text-xs">{conv.title}</span>
                         {conv.lastMsg && (
-                          <span className="text-3xs text-zinc-400">
+                          <span className="text-3xs text-muted-foreground">
                             {new Date(conv.lastMsg.createdAt).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -222,7 +222,7 @@ export function WhatsAppChatDrawer({
                           </span>
                         )}
                       </div>
-                      <p className="truncate font-mono text-3xs text-zinc-400">{conv.phone}</p>
+                      <p className="truncate font-mono text-3xs text-muted-foreground">{conv.phone}</p>
                       <p className="mt-0.5 truncate text-2xs text-zinc-500">
                         {conv.lastMsg?.messageText || "—"}
                       </p>
@@ -250,7 +250,7 @@ export function WhatsAppChatDrawer({
             </div>
             <SheetClose asChild>
               <button
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
                 ✕
@@ -261,12 +261,12 @@ export function WhatsAppChatDrawer({
           {/* Messages Area */}
           <div className="flex-1 space-y-3 overflow-y-auto bg-zinc-50/50 p-6 dark:bg-zinc-900/30">
             {!selectedPhone ? (
-              <div className="flex h-full flex-col items-center justify-center text-center text-xs text-zinc-400">
+              <div className="flex h-full flex-col items-center justify-center text-center text-xs text-muted-foreground">
                 <MessageCircle className="mb-2 h-8 w-8 text-zinc-300" />
                 Soldaki listeden bir konuşma seçin veya yeni mesaj başlatın.
               </div>
             ) : activeMessages.length === 0 ? (
-              <div className="text-center text-xs text-zinc-400">
+              <div className="text-center text-xs text-muted-foreground">
                 Bu numara ile henüz mesaj geçmişi bulunmuyor.
               </div>
             ) : (
@@ -283,7 +283,7 @@ export function WhatsAppChatDrawer({
                       <p className="leading-relaxed">{m.messageText}</p>
                       <div
                         className={`mt-1 flex items-center justify-end gap-1 text-3xs ${
-                          isOutbound ? "text-emerald-200" : "text-zinc-400"
+                          isOutbound ? "text-emerald-200" : "text-muted-foreground"
                         }`}
                       >
                         <span>

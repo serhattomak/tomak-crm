@@ -178,7 +178,7 @@ export function Combobox({
           aria-expanded={open}
           aria-label={ariaLabel}
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             triggerClassName
           )}
           role="combobox"
@@ -204,14 +204,14 @@ export function Combobox({
             {clearable === true && value !== undefined && value !== "" ? (
               <button
                 aria-label="Temizle"
-                className="rounded-full bg-transparent p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-full bg-transparent p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={handleClear}
                 type="button"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
             ) : null}
-            <ChevronDown className="h-4 w-4 text-zinc-400 opacity-80 dark:text-zinc-500" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground opacity-80 dark:text-zinc-500" />
           </span>
         </button>
       </PopoverPrimitive.Trigger>
@@ -230,7 +230,7 @@ export function Combobox({
             <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <input
               autoFocus
-              className="w-full bg-transparent px-2 font-medium text-xs text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full bg-transparent px-2 font-medium text-xs text-zinc-900 outline-none placeholder:text-muted-foreground dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={handleSearchChange}
               placeholder={searchPlaceholder}
               type="text"
@@ -239,7 +239,7 @@ export function Combobox({
             {search.length > 0 ? (
               <button
                 aria-label="Aramayı temizle"
-                className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                className="text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
                 onClick={handleResetSearch}
                 type="button"
               >

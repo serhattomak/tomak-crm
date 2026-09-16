@@ -663,9 +663,9 @@ export default function WebhooksPage() {
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
             <div className="flex flex-1 flex-col gap-2.5 md:flex-row md:items-center">
               <div className="relative min-w-[220px] flex-1">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-sm text-zinc-900 placeholder:text-muted-foreground focus:border-zinc-900 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-100"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="İsim veya URL ara..."
                   type="text"
@@ -822,7 +822,7 @@ export default function WebhooksPage() {
                               {truncateUrl(ep.url)}
                             </a>
                             <button
-                              className="rounded p-1 text-zinc-400 transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                              className="rounded p-1 text-muted-foreground transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                               onClick={() => handleCopyUrl(ep.url)}
                               title="URL kopyala"
                               type="button"
@@ -834,7 +834,7 @@ export default function WebhooksPage() {
                               )}
                             </button>
                             <a
-                              className="rounded p-1 text-zinc-400 transition-colors duration-150 hover:text-zinc-700 dark:hover:text-zinc-200"
+                              className="rounded p-1 text-muted-foreground transition-colors duration-150 hover:text-zinc-700 dark:hover:text-zinc-200"
                               href={ep.url}
                               rel="noopener"
                               target="_blank"
@@ -847,7 +847,7 @@ export default function WebhooksPage() {
                         <TableCell className="px-4 py-3">
                           <div className="flex max-w-[280px] flex-wrap gap-1">
                             {ep.events.length === 0 ? (
-                              <span className="text-xs text-zinc-400">—</span>
+                              <span className="text-xs text-muted-foreground">—</span>
                             ) : (
                               ep.events.map((ev) => getEventBadge(ev))
                             )}
@@ -897,7 +897,7 @@ export default function WebhooksPage() {
                               <Pencil className="h-4 w-4" />
                             </Link>
                             <button
-                              className="rounded-lg p-1.5 text-zinc-400 transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
+                              className="rounded-lg p-1.5 text-muted-foreground transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
                               onClick={(
                                 e: React.MouseEvent<HTMLButtonElement>
                               ) => handleDelete(ep.id, ep.name, e)}
@@ -1107,7 +1107,7 @@ export default function WebhooksPage() {
                         <TableCell className="px-3 py-3 text-center">
                           {d.responseCode === null ||
                           d.responseCode === undefined ? (
-                            <span className="text-xs text-zinc-400">—</span>
+                            <span className="text-xs text-muted-foreground">—</span>
                           ) : (
                             <span
                               className={`rounded px-1.5 py-0.5 font-mono text-xs ${
@@ -1191,7 +1191,7 @@ export default function WebhooksPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1.5 text-zinc-400 transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                  className="rounded-full p-1.5 text-muted-foreground transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1225,7 +1225,7 @@ export default function WebhooksPage() {
                   {testResult.hmacSignature && (
                     <button
                       aria-label="Kopyala"
-                      className="rounded p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                      className="rounded p-1 text-muted-foreground hover:text-zinc-700 dark:hover:text-zinc-200"
                       onClick={() =>
                         handleCopySignature(testResult.hmacSignature || "")
                       }

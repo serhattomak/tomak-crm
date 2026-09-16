@@ -22,7 +22,7 @@ export function Textarea({
     <textarea
       aria-invalid={hasError ? "true" : undefined}
       className={cn(
-        "w-full rounded-xl border bg-card p-3 font-medium text-xs text-zinc-900 shadow-2xs transition-all placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:placeholder:text-zinc-500",
+        "w-full rounded-xl border bg-card p-3 font-medium text-xs text-zinc-900 shadow-2xs transition-all placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:placeholder:text-zinc-500",
         hasError
           ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 dark:border-red-500/80"
           : "border-border hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700",

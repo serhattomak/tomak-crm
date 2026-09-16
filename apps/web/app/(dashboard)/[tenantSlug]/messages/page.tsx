@@ -773,7 +773,7 @@ export default function MessagesPage() {
                       </span>
                     </button>
                     <button
-                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                      className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                       onClick={() => setIsCreateChannelOpen(true)}
                       title="Yeni Kanal Oluştur"
                       type="button"
@@ -785,7 +785,7 @@ export default function MessagesPage() {
                   {!isChannelsCollapsed && (
                     <div className="space-y-0.5">
                       {groupChannels.length === 0 ? (
-                        <div className="px-3 py-2 text-2xs text-zinc-400 italic">
+                        <div className="px-3 py-2 text-2xs text-muted-foreground italic">
                           Kanal bulunamadı.
                         </div>
                       ) : (
@@ -816,7 +816,7 @@ export default function MessagesPage() {
                       </span>
                     </button>
                     <button
-                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                      className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                       onClick={() => setIsNewDmModalOpen(true)}
                       title="Yeni Direkt Mesaj Başlat"
                       type="button"
@@ -1103,7 +1103,7 @@ export default function MessagesPage() {
                             })}
                           </span>
                           {msg.isEdited && (
-                            <span className="text-3xs text-zinc-400 italic dark:text-zinc-500">
+                            <span className="text-3xs text-muted-foreground italic dark:text-zinc-500">
                               (düzenlendi)
                             </span>
                           )}
@@ -1449,7 +1449,7 @@ export default function MessagesPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  className="shrink-0 rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1639,7 +1639,7 @@ export default function MessagesPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  className="shrink-0 rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1708,7 +1708,7 @@ export default function MessagesPage() {
                 <DialogClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                    className="shrink-0 rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -1828,7 +1828,7 @@ export default function MessagesPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                  className="shrink-0 rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />

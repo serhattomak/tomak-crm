@@ -199,7 +199,7 @@ export function ContractSignModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -279,7 +279,7 @@ export function ContractSignModal({
                   width={460}
                 />
                 {!hasSignature && (
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs text-zinc-400">
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
                     İmzanızı bu alana çizin
                   </div>
                 )}

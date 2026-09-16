@@ -278,7 +278,7 @@ export function TeamMembersStack({
 
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
+                  className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
                   onClick={() => setIsOpen(false)}
                   type="button"
                 >
@@ -290,7 +290,7 @@ export function TeamMembersStack({
             {/* Search Input */}
             <div className="border-border border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/40">
               <div className="relative">
-                <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400" />
+                <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
                 <input
                   className="w-full rounded-xl border border-border bg-card py-1.5 pr-3 pl-8 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none dark:border-border dark:bg-card dark:text-foreground"
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -303,7 +303,7 @@ export function TeamMembersStack({
             {/* Members List Stream */}
             <div className="max-h-[340px] divide-y divide-zinc-100 overflow-y-auto dark:divide-border/50">
               {loading ? (
-                <div className="py-8 text-center text-zinc-400 text-xs">
+                <div className="py-8 text-center text-muted-foreground text-xs">
                   <Loader2 className="mx-auto mb-2 h-5 w-5 animate-spin text-blue-600" />
                   Üyeler yükleniyor...
                 </div>
@@ -313,7 +313,7 @@ export function TeamMembersStack({
                   <p className="mt-2 font-semibold text-zinc-700 text-xs dark:text-zinc-300">
                     Kullanıcı bulunamadı
                   </p>
-                  <p className="mt-1 text-2xs text-zinc-400">
+                  <p className="mt-1 text-2xs text-muted-foreground">
                     Aramanıza uygun üye eşleşmedi.
                   </p>
                 </div>
@@ -385,7 +385,7 @@ export function TeamMembersStack({
                       {/* Quick Actions */}
                       <div className="flex shrink-0 items-center gap-1">
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-muted dark:hover:text-foreground"
+                          className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-muted dark:hover:text-foreground"
                           onClick={(e) => copyEmailToClipboard(user.email, e)}
                           title="E-posta Kopyala"
                           type="button"
@@ -398,7 +398,7 @@ export function TeamMembersStack({
                         </button>
 
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
+                          className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
                           onClick={(e) => navigateToChat(user.fullName, e)}
                           title="Mesaj Gönder"
                           type="button"
@@ -669,7 +669,7 @@ export function InviteMemberModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
+              className="shrink-0 rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -687,7 +687,7 @@ export function InviteMemberModal({
               E-posta Adresi *
             </label>
             <div className="relative">
-              <Mail className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+              <Mail className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
                 className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 dark:text-zinc-100 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 id="invite-email"
@@ -706,7 +706,7 @@ export function InviteMemberModal({
               Kullanıcı Rolü *
             </label>
             {loadingRoles ? (
-              <div className="flex h-9 items-center justify-center rounded-xl border border-border text-zinc-400 text-xs">
+              <div className="flex h-9 items-center justify-center rounded-xl border border-border text-muted-foreground text-xs">
                 <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> Rol
                 listesi alınıyor...
               </div>

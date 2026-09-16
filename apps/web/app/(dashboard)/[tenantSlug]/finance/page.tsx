@@ -143,7 +143,7 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-2xs text-zinc-400">{trend}</span>
+          <span className="font-medium text-2xs text-muted-foreground">{trend}</span>
         ) : null}
       </div>
     </div>
@@ -183,7 +183,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {cari.title}
         </div>
-        <div className="font-mono text-2xs text-zinc-400">
+        <div className="font-mono text-2xs text-muted-foreground">
           {cari.code} • {cari.city || "Şehir Belirtilmemiş"}
         </div>
       </TableCell>
@@ -264,7 +264,7 @@ function CariTableBody({
   if (isCariLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-zinc-400" colSpan={7}>
+        <TableCell className="py-8 text-center text-muted-foreground" colSpan={7}>
           Cari hesaplar yükleniyor...
         </TableCell>
       </TableRow>
@@ -274,7 +274,7 @@ function CariTableBody({
   if (cariList.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-12 text-center text-zinc-400" colSpan={7}>
+        <TableCell className="py-12 text-center text-muted-foreground" colSpan={7}>
           <Users2 className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Kayıtlı cari hesap bulunamadı.
         </TableCell>
@@ -331,7 +331,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 {account.name}
               </h3>
-              <span className="font-medium text-xs text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 {isBank
                   ? `${account.bankName || "Banka"} • ${account.branchName || "Şube"}`
                   : "Nakit Kasa"}
@@ -353,7 +353,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
 
       <div className="mt-6 flex items-baseline justify-between border-border border-t pt-4">
         <div>
-          <span className="block font-medium text-2xs text-zinc-400 uppercase tracking-wider">
+          <span className="block font-medium text-2xs text-muted-foreground uppercase tracking-wider">
             Güncel Bakiye
           </span>
           <span className="font-extrabold font-mono text-xl text-zinc-900 dark:text-zinc-100">
@@ -390,7 +390,7 @@ function StatementTableBody({
   if (isStatementLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-zinc-400" colSpan={5}>
+        <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
           Ekstre yükleniyor...
         </TableCell>
       </TableRow>
@@ -400,7 +400,7 @@ function StatementTableBody({
   if (statementTx.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-zinc-400" colSpan={5}>
+        <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
           Bu cari hesaba ait hareket bulunamadı.
         </TableCell>
       </TableRow>
@@ -419,7 +419,7 @@ function StatementTableBody({
               {tx.description}
             </div>
             {tx.documentNumber ? (
-              <div className="font-mono text-3xs text-zinc-400">
+              <div className="font-mono text-3xs text-muted-foreground">
                 {tx.documentNumber}
               </div>
             ) : null}
@@ -779,9 +779,9 @@ export default function FinancePage() {
         <div className="space-y-4">
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
                 onChange={handleCariSearchChange}
                 placeholder="Cari Ünvanı, Kodu veya Vergi No Ara..."
                 type="text"
@@ -875,7 +875,7 @@ export default function FinancePage() {
                   {transactions.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        className="py-12 text-center text-zinc-400"
+                        className="py-12 text-center text-muted-foreground"
                         colSpan={6}
                       >
                         <Receipt className="mx-auto mb-2 h-8 w-8 opacity-40" />
@@ -894,7 +894,7 @@ export default function FinancePage() {
                               "tr-TR"
                             )}
                           </div>
-                          <div className="text-3xs text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             {tx.documentNumber || "—"}
                           </div>
                         </TableCell>
@@ -966,7 +966,7 @@ export default function FinancePage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -982,13 +982,13 @@ export default function FinancePage() {
                   <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                     {selectedCariForStatement?.title}
                   </h3>
-                  <div className="font-mono text-xs text-zinc-400">
+                  <div className="font-mono text-xs text-muted-foreground">
                     Cari Kodu: {selectedCariForStatement?.code} • VKN:{" "}
                     {selectedCariForStatement?.taxNumber || "—"}
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="block font-medium text-2xs text-zinc-400 uppercase tracking-wider">
+                  <span className="block font-medium text-2xs text-muted-foreground uppercase tracking-wider">
                     Güncel Bakiye
                   </span>
                   <span className="font-bold font-mono text-lg text-blue-600 dark:text-blue-400">
@@ -1004,7 +1004,7 @@ export default function FinancePage() {
               <div>
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-border font-semibold text-zinc-400">
+                    <TableRow className="border-border font-semibold text-muted-foreground">
                       <TableHead className="py-2 h-auto">Tarih</TableHead>
                       <TableHead className="py-2 h-auto">İşlem / Evrak</TableHead>
                       <TableHead className="py-2 text-right h-auto">Borç</TableHead>
@@ -1183,7 +1183,7 @@ function CreateCariModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1455,7 +1455,7 @@ function CreateAccountModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1718,7 +1718,7 @@ function CreateTransactionModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1974,7 +1974,7 @@ function TransferModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />

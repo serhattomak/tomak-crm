@@ -599,7 +599,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           {/* Client & Description Banner */}
           <div className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-zinc-50 p-5 sm:grid-cols-2">
             <div>
-              <span className="block font-bold text-3xs text-zinc-400 uppercase tracking-wider">
+              <span className="block font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                 SAYIN / MÜŞTERİ:
               </span>
               <h3 className="mt-1 font-extrabold text-zinc-900 text-sm">
@@ -611,7 +611,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </div>
 
             <div>
-              <span className="block font-bold text-3xs text-zinc-400 uppercase tracking-wider">
+              <span className="block font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                 TEKLİF DETAYI:
               </span>
               <p className="mt-1 text-zinc-600 text-xs">
@@ -648,7 +648,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                       }
                       key={item.id}
                     >
-                      <TableCell className="px-4 py-3 font-bold text-zinc-400">
+                      <TableCell className="px-4 py-3 font-bold text-muted-foreground">
                         {idx + 1}
                       </TableCell>
                       <TableCell className="px-4 py-3">
@@ -827,7 +827,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100"
+                  className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -924,7 +924,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100"
+                  className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100"
                   type="button"
                 >
                   <X className="h-4 w-4" />

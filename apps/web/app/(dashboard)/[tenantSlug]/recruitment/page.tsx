@@ -756,7 +756,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="İlan ara"
-                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setReqSearch(e.target.value)}
                     placeholder="Başlık, departman veya lokasyon ara..."
                     type="text"
@@ -947,7 +947,7 @@ function RecruitmentPageContent() {
                                   )}
                                   <button
                                     aria-label="İlanı sil"
-                                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                                     onClick={() =>
                                       handleDeleteRequisition(req.id)
                                     }
@@ -981,7 +981,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="Aday ara"
-                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setCandSearch(e.target.value)}
                     placeholder="Ad, e-posta, telefon veya etiket ara..."
                     type="text"
@@ -1127,7 +1127,7 @@ function RecruitmentPageContent() {
                                   </button>
                                   <button
                                     aria-label="Adayı sil"
-                                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                                     onClick={() => handleDeleteCandidate(c.id)}
                                     type="button"
                                   >
@@ -1159,7 +1159,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     aria-label="Başvuru ara"
-                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setAppSearch(e.target.value)}
                     placeholder="Aday, e-posta, ilan veya aşama ara..."
                     type="text"
@@ -1593,7 +1593,7 @@ function RecruitmentPageContent() {
                                 <div className="flex flex-col">
                                   <button
                                     aria-label="Yukarı taşı"
-                                    className="rounded p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                                    className="rounded p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                                     disabled={idx === 0}
                                     onClick={() =>
                                       handleReorderStage(idx, "up")
@@ -1604,7 +1604,7 @@ function RecruitmentPageContent() {
                                   </button>
                                   <button
                                     aria-label="Aşağı taşı"
-                                    className="rounded p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                                    className="rounded p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 disabled:opacity-30 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                                     disabled={idx === sortedStages.length - 1}
                                     onClick={() =>
                                       handleReorderStage(idx, "down")
@@ -1671,7 +1671,7 @@ function RecruitmentPageContent() {
                                   <Edit2 className="h-3.5 w-3.5" />
                                 </button>
                                 <button
-                                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 dark:text-zinc-500"
+                                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 dark:text-zinc-500"
                                   disabled={s.isDefault}
                                   onClick={() => handleDeleteStage(s)}
                                   title={
@@ -1969,7 +1969,7 @@ function RequisitionModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2299,7 +2299,7 @@ function CandidateModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2588,7 +2588,7 @@ function ApplicationModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2757,7 +2757,7 @@ function StageModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2913,7 +2913,7 @@ function CandidateDetailDrawer({
             <SheetClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                className="rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -2951,7 +2951,7 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-          <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
             Bilgiler
           </h4>
           <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
@@ -2997,7 +2997,7 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-4 rounded-2xl border border-border p-4">
-          <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
             CV
           </h4>
           {candidate.cvFileUrl ? (
@@ -3102,7 +3102,7 @@ function ApplicationDetailDrawer({
           <SheetClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -3124,7 +3124,7 @@ function ApplicationDetailDrawer({
           </div>
 
           <div className="rounded-2xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
-            <div className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <div className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               Aşama
             </div>
             {application.stageName ? (
@@ -3181,7 +3181,7 @@ function ApplicationDetailDrawer({
 
           <div className="flex gap-2">
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                 Puan
               </div>
               <div className="mt-1 font-bold text-blue-700">
@@ -3189,7 +3189,7 @@ function ApplicationDetailDrawer({
               </div>
             </div>
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                 Durum
               </div>
               <div className="mt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
@@ -3200,7 +3200,7 @@ function ApplicationDetailDrawer({
 
           {application.notes && (
             <div className="rounded-2xl border border-border p-3">
-              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                 Notlar
               </div>
               <p className="mt-1 text-xs text-zinc-700 leading-relaxed dark:text-zinc-300">
@@ -3211,7 +3211,7 @@ function ApplicationDetailDrawer({
 
           {candidate && (
             <div className="rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
                 Aday KVKK & Etiketler
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
@@ -3258,7 +3258,7 @@ function ApplicationDetailDrawer({
           )}
 
           <div className="rounded-2xl border border-border p-3 text-xs">
-            <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
+            <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
               Zaman
             </div>
             <div className="mt-1 text-zinc-600 dark:text-zinc-400">

@@ -91,7 +91,7 @@ export function ShortcutsHelpModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -103,7 +103,7 @@ export function ShortcutsHelpModal({
         <div className="flex-1 space-y-4 overflow-y-auto pr-1">
           {shortcutSections.map((section) => (
             <div className="space-y-1.5" key={section.title}>
-              <div className="font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+              <div className="font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                 {section.title}
               </div>
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">

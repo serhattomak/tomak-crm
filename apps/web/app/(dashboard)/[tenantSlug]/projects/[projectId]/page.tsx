@@ -725,7 +725,7 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <AlertCircle className="h-12 w-12 text-zinc-400" />
+        <AlertCircle className="h-12 w-12 text-muted-foreground" />
         <h2 className="mt-4 font-bold text-lg text-zinc-800 dark:text-zinc-200">
           Proje Bulunamadı
         </h2>
@@ -1082,7 +1082,7 @@ export default function ProjectDetailPage() {
 
                         {/* Delete Button */}
                         <button
-                          className="p-1 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
+                          className="p-1 text-muted-foreground opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
                           onClick={() => handleDeleteItem(item.id)}
                           title="Sil"
                           type="button"
@@ -1095,7 +1095,7 @@ export default function ProjectDetailPage() {
 
                 {items.filter((i) => i.sprintId === activeSprint.id).length ===
                   0 && (
-                  <div className="p-4 text-center text-xs text-zinc-400">
+                  <div className="p-4 text-center text-xs text-muted-foreground">
                     Bu sprintte henüz iş maddesi yok. Görevleri buraya
                     sürükleyip bırakabilirsiniz.
                   </div>
@@ -1265,7 +1265,7 @@ export default function ProjectDetailPage() {
                         </button>
 
                         <button
-                          className="p-1 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
+                          className="p-1 text-muted-foreground opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
                           onClick={() => handleDeleteItem(item.id)}
                           title="Sil"
                           type="button"
@@ -1277,7 +1277,7 @@ export default function ProjectDetailPage() {
                   ))}
 
                   {sprintItems.length === 0 && (
-                    <div className="p-4 text-center text-xs text-zinc-400">
+                    <div className="p-4 text-center text-xs text-muted-foreground">
                       Bu sprint henüz boş. Görevleri buraya sürükleyip
                       bırakabilirsiniz.
                     </div>
@@ -1461,7 +1461,7 @@ export default function ProjectDetailPage() {
                     )}
 
                     <button
-                      className="p-1 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
+                      className="p-1 text-muted-foreground opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
                       onClick={() => handleDeleteItem(item.id)}
                       title="Sil"
                       type="button"
@@ -1473,7 +1473,7 @@ export default function ProjectDetailPage() {
               ))}
 
               {backlogPoolItems.length === 0 && (
-                <div className="p-6 text-center text-xs text-zinc-400">
+                <div className="p-6 text-center text-xs text-muted-foreground">
                   Backlog havuzunda iş bulunmuyor. Yeni bir iş maddesi
                   oluşturabilirsiniz.
                 </div>
@@ -1574,11 +1574,11 @@ export default function ProjectDetailPage() {
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
-                                  <span className="font-bold text-3xs text-zinc-400">
+                                  <span className="font-bold text-3xs text-muted-foreground">
                                     {item.itemKey}
                                   </span>
                                   <button
-                                    className="p-0.5 text-zinc-400 opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
+                                    className="p-0.5 text-muted-foreground opacity-0 transition hover:text-rose-600 group-hover:opacity-100 dark:hover:text-rose-400"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       handleDeleteItem(item.id);
@@ -1602,7 +1602,7 @@ export default function ProjectDetailPage() {
                               )}
 
                               <div
-                                className="mt-3 flex items-center justify-between border-border border-t pt-2 text-3xs text-zinc-400"
+                                className="mt-3 flex items-center justify-between border-border border-t pt-2 text-3xs text-muted-foreground"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {/* Quick Story Points */}
@@ -1698,7 +1698,7 @@ export default function ProjectDetailPage() {
                         })}
 
                         {colItems.length === 0 && (
-                          <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-2xs text-zinc-400">
+                          <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-2xs text-muted-foreground">
                             Maddeleri buraya sürükleyin
                           </div>
                         )}
@@ -1710,7 +1710,7 @@ export default function ProjectDetailPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-              <Layers className="h-10 w-10 text-zinc-400" />
+              <Layers className="h-10 w-10 text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Aktif Sprint Bulunmuyor
               </h3>
@@ -1783,7 +1783,7 @@ export default function ProjectDetailPage() {
 
           {epics.length === 0 && (
             <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-              <Milestone className="mx-auto h-10 w-10 text-zinc-400" />
+              <Milestone className="mx-auto h-10 w-10 text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Henüz Epik Oluşturulmamış
               </h3>
@@ -1845,7 +1845,7 @@ export default function ProjectDetailPage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -2137,7 +2137,7 @@ export default function ProjectDetailPage() {
                       )}
                     </button>
                     <span
-                      className={`flex-1 ${subtask.isCompleted ? "text-zinc-400 line-through dark:text-zinc-500" : "text-zinc-700 dark:text-zinc-300"}`}
+                      className={`flex-1 ${subtask.isCompleted ? "text-muted-foreground line-through dark:text-zinc-500" : "text-zinc-700 dark:text-zinc-300"}`}
                     >
                       {subtask.title}
                     </span>
@@ -2177,7 +2177,7 @@ export default function ProjectDetailPage() {
                     className="rounded-xl border border-border bg-zinc-50/50 p-3 text-xs dark:bg-zinc-800/40"
                     key={c.id}
                   >
-                    <div className="flex items-center justify-between font-medium text-2xs text-zinc-400">
+                    <div className="flex items-center justify-between font-medium text-2xs text-muted-foreground">
                       <span className="font-bold text-zinc-800 dark:text-zinc-200">
                         {c.userName}
                       </span>
@@ -2220,7 +2220,7 @@ export default function ProjectDetailPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -2393,7 +2393,7 @@ export default function ProjectDetailPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -2499,7 +2499,7 @@ export default function ProjectDetailPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-4 w-4" />

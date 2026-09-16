@@ -226,7 +226,7 @@ export function ComplianceInlineCard({
             {localChecked && (
               <div className="fade-in slide-in-from-top-1 animate-in space-y-1">
                 <input
-                  className="w-full rounded-lg border border-amber-300 bg-card px-2.5 py-1.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-amber-500 focus:outline-none dark:border-amber-700 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+                  className="w-full rounded-lg border border-amber-300 bg-card px-2.5 py-1.5 text-xs text-zinc-800 placeholder:text-muted-foreground focus:border-amber-500 focus:outline-none dark:border-amber-700 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                   onChange={(e) => handleReasonChange(e.target.value)}
                   placeholder="Gerekçe giriniz (Örn: Acil operasyonel ihtiyaç ve personel onayı)"
                   type="text"

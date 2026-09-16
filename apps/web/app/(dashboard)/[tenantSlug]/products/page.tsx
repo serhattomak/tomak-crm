@@ -713,7 +713,7 @@ export default function ProductsPage() {
           {/* View Switcher */}
           <div className="flex items-center rounded-xl bg-zinc-100 p-0.5 dark:bg-zinc-800">
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
               onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
@@ -721,7 +721,7 @@ export default function ProductsPage() {
               <TableIcon className="h-4 w-4" />
             </button>
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "grid" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${ viewMode === "grid" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
               onClick={() => handleViewMode("grid")}
               title="Görsel Kart Görünümü"
               type="button"
@@ -744,7 +744,7 @@ export default function ProductsPage() {
         </div>
       ) : displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
             <Package className="h-6 w-6" />
           </div>
           <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -963,7 +963,7 @@ export default function ProductsPage() {
                         </Link>
                         <PermissionGate permission="Products.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-zinc-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                             onClick={() => setDeletingProduct(p)}
                             title="Sil"
                             type="button"
@@ -1187,7 +1187,7 @@ export default function ProductsPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Önizlemeyi kapat"
-                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                  className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1509,7 +1509,7 @@ function CreateProductModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2022,7 +2022,7 @@ function QuickStockAdjustModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2242,7 +2242,7 @@ function CategoryManagerModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2327,7 +2327,7 @@ function CategoryManagerModal({
                       </span>
                     </div>
                     <button
-                      className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-rose-600 dark:text-zinc-500"
                       onClick={() => handleDelete(root.id)}
                       title="Ana Kategoriyi Sil"
                       type="button"
@@ -2354,7 +2354,7 @@ function CategoryManagerModal({
                         </span>
                       </div>
                       <button
-                        className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
+                        className="p-1 text-muted-foreground hover:text-rose-600 dark:text-zinc-500"
                         onClick={() => handleDelete(sub.id)}
                         title="Alt Kategoriyi Sil"
                         type="button"

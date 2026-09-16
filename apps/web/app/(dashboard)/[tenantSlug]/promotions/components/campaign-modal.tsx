@@ -417,7 +417,7 @@ export function CampaignModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -437,7 +437,7 @@ export function CampaignModal({
                     ? "border-blue-600 border-b-2 font-bold text-blue-600 dark:text-blue-400"
                     : isDone
                       ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                      : "text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
                 }`}
                 key={s.num}
                 onClick={() => setCurrentStep(s.num)}
@@ -881,7 +881,7 @@ export function CampaignModal({
                           Hedef Kurallar ({targets.length})
                         </span>
                         {targets.length === 0 ? (
-                          <p className="rounded-xl border border-border border-dashed p-3 text-center text-xs text-zinc-400">
+                          <p className="rounded-xl border border-border border-dashed p-3 text-center text-xs text-muted-foreground">
                             Henüz ürün veya kategori seçilmedi.
                           </p>
                         ) : (
@@ -895,13 +895,13 @@ export function CampaignModal({
                                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                                     {t.targetName}
                                   </span>
-                                  <span className="text-zinc-400">
+                                  <span className="text-muted-foreground">
                                     ({t.targetType})
                                   </span>
                                 </div>
                                 <button
                                   aria-label="Hedefi kaldır"
-                                  className="rounded p-1 text-zinc-400 hover:text-red-600"
+                                  className="rounded p-1 text-muted-foreground hover:text-red-600"
                                   onClick={() => removeTarget(idx)}
                                   type="button"
                                 >

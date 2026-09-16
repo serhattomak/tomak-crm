@@ -435,7 +435,7 @@ export default function PromotionsPage() {
           </div>
           <div className="mt-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             {stats?.activeCampaigns ?? 0}
-            <span className="ml-1 font-normal text-xs text-zinc-400">
+            <span className="ml-1 font-normal text-xs text-muted-foreground">
               / {stats?.totalCampaigns ?? 0} toplam
             </span>
           </div>
@@ -533,7 +533,7 @@ export default function PromotionsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
                   className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setSearch(e.target.value)}
@@ -604,7 +604,7 @@ export default function PromotionsPage() {
             ) : campaigns.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                  <Tag className="h-6 w-6 text-zinc-400" />
+                  <Tag className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Henüz Kampanya Bulunamadı
@@ -656,7 +656,7 @@ export default function PromotionsPage() {
                           {camp.name}
                         </div>
                         {camp.description && (
-                          <div className="line-clamp-1 text-2xs text-zinc-400">
+                          <div className="line-clamp-1 text-2xs text-muted-foreground">
                             {camp.description}
                           </div>
                         )}
@@ -689,7 +689,7 @@ export default function PromotionsPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5 text-zinc-400" />
+                          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                           <span>
                             {new Date(camp.startDate).toLocaleDateString(
                               "tr-TR"
@@ -728,7 +728,7 @@ export default function PromotionsPage() {
                         <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                           {camp.currentUsageCount}
                           {camp.totalUsageLimit && (
-                            <span className="font-normal text-zinc-400">
+                            <span className="font-normal text-muted-foreground">
                               {" "}
                               / {camp.totalUsageLimit}
                             </span>
@@ -753,7 +753,7 @@ export default function PromotionsPage() {
                       <TableCell className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                            className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                             onClick={() => {
                               setEditingCampaignId(camp.id);
                               setIsCampaignModalOpen(true);
@@ -764,7 +764,7 @@ export default function PromotionsPage() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
+                            className="rounded-lg p-1.5 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
                             onClick={() =>
                               handleDeleteCampaign(camp.id, camp.name)
                             }
@@ -791,7 +791,7 @@ export default function PromotionsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
                   className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setCouponSearch(e.target.value)}
@@ -833,7 +833,7 @@ export default function PromotionsPage() {
             ) : coupons.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                  <Ticket className="h-6 w-6 text-zinc-400" />
+                  <Ticket className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Kayıtlı Kupon Kodu Bulunamadı
@@ -880,7 +880,7 @@ export default function PromotionsPage() {
                             {coup.code}
                           </code>
                           <button
-                            className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800"
+                            className="rounded p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800"
                             onClick={() => handleCopyCode(coup.code)}
                             title="Kodu Kopyala"
                             type="button"
@@ -923,12 +923,12 @@ export default function PromotionsPage() {
                           ? new Date(coup.expiresAt).toLocaleDateString("tr-TR")
                           : "Süresiz"}
                       </TableCell>
-                      <TableCell className="px-4 py-3.5 font-mono text-2xs text-zinc-400">
+                      <TableCell className="px-4 py-3.5 font-mono text-2xs text-muted-foreground">
                         {coup.batchId || "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3.5 text-right">
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
+                          className="rounded-lg p-1.5 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
                           onClick={() => handleDeleteCoupon(coup.id, coup.code)}
                           title="Sil"
                           type="button"
@@ -989,7 +989,7 @@ export default function PromotionsPage() {
                   Sepetteki Ürünler ({simCartItems.length})
                 </label>
                 {simCartItems.length === 0 ? (
-                  <div className="rounded-xl border border-border border-dashed p-6 text-center text-xs text-zinc-400">
+                  <div className="rounded-xl border border-border border-dashed p-6 text-center text-xs text-muted-foreground">
                     Sepetiniz boş. Yukarıdaki ürünlerden tıklayarak sepete
                     ekleyin.
                   </div>
@@ -1004,7 +1004,7 @@ export default function PromotionsPage() {
                           <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                             {item.productName}
                           </span>
-                          <div className="text-2xs text-zinc-400">
+                          <div className="text-2xs text-muted-foreground">
                             ₺{item.unitPrice} / adet
                           </div>
                         </div>
@@ -1034,7 +1034,7 @@ export default function PromotionsPage() {
                           </span>
                           <button
                             aria-label="Ürünü kaldır"
-                            className="rounded p-1 text-zinc-400 hover:text-red-500"
+                            className="rounded p-1 text-muted-foreground hover:text-red-500"
                             onClick={() => removeSimItem(item.productId)}
                             type="button"
                           >
@@ -1050,7 +1050,7 @@ export default function PromotionsPage() {
               {/* Coupon Code Input & Test Button */}
               <div className="mt-5 flex items-center gap-3 border-border border-t pt-4">
                 <div className="relative flex-1">
-                  <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                  <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>
@@ -1111,7 +1111,7 @@ export default function PromotionsPage() {
                       Uygulanan Kampanyalar:
                     </span>
                     {simResult.appliedPromotions.length === 0 ? (
-                      <p className="mt-1 text-zinc-400 italic">
+                      <p className="mt-1 text-muted-foreground italic">
                         Hiçbir kampanya koşulu sağlanmadı.
                       </p>
                     ) : (
@@ -1185,7 +1185,7 @@ export default function PromotionsPage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4 rounded-xl border border-border border-dashed p-8 text-center text-xs text-zinc-400">
+                <div className="mt-4 rounded-xl border border-border border-dashed p-8 text-center text-xs text-muted-foreground">
                   Sonuçları görmek için sol taraftan ürün seçip &quot;Hesapla
                   &amp; Test Et&quot; butonuna tıklayın.
                 </div>

@@ -278,7 +278,7 @@ export function TagsInput({
         ))}
         <input
           aria-label="Etiket ekle"
-          className="min-w-24 flex-1 bg-transparent text-xs text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+          className="min-w-24 flex-1 bg-transparent text-xs text-zinc-900 outline-none placeholder:text-muted-foreground dark:text-zinc-100 dark:placeholder:text-zinc-500"
           disabled={value.length >= max}
           onBlur={commitDraft}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -353,7 +353,7 @@ export function AttributesEditor({
           </div>
           <button
             aria-label={`${index + 1}. özelliği sil`}
-            className="rounded-lg border border-border p-2 text-zinc-400 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
             onClick={() => removeRow(index)}
             type="button"
           >

@@ -961,7 +961,7 @@ export default function CalendarHubPage() {
 
         {/* Search */}
         <div className="relative w-full sm:w-[220px]">
-          <Search className="absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+          <Search className="absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             className="h-8 rounded-lg border-border pl-8 text-xs"
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -1005,7 +1005,7 @@ export default function CalendarHubPage() {
 
               return (
                 <div
-                  className={`group relative flex flex-col overflow-hidden p-1.5 transition-colors sm:p-2 ${ cell.isCurrentMonth ? "bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" : "bg-zinc-50/40 text-zinc-400 dark:bg-zinc-950/40" }`}
+                  className={`group relative flex flex-col overflow-hidden p-1.5 transition-colors sm:p-2 ${ cell.isCurrentMonth ? "bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" : "bg-zinc-50/40 text-muted-foreground dark:bg-zinc-950/40" }`}
                   key={cell.dateStr || idx}
                 >
                   <div className="mb-1 flex items-center justify-between">
@@ -1251,24 +1251,24 @@ export default function CalendarHubPage() {
 
                       <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
                         <span className="flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                          <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                           {dateFormatted}
                         </span>
                         {act.customerName && (
                           <span className="flex items-center gap-1 font-medium text-zinc-700 dark:text-zinc-300">
-                            <User className="h-3.5 w-3.5 text-zinc-400" />
+                            <User className="h-3.5 w-3.5 text-muted-foreground" />
                             {act.customerName}
                           </span>
                         )}
                         {act.assignedUserName && (
                           <span className="flex items-center gap-1">
-                            <Users className="h-3.5 w-3.5 text-zinc-400" />
+                            <Users className="h-3.5 w-3.5 text-muted-foreground" />
                             {act.assignedUserName}
                           </span>
                         )}
                         {act.location && (
                           <span className="flex items-center gap-1">
-                            <MapPin className="h-3.5 w-3.5 text-zinc-400" />
+                            <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
                             {act.location}
                           </span>
                         )}
@@ -1322,7 +1322,7 @@ export default function CalendarHubPage() {
             })}
 
             {filteredActivities.length === 0 && (
-              <div className="py-12 text-center text-zinc-400">
+              <div className="py-12 text-center text-muted-foreground">
                 <CalendarIcon className="mx-auto mb-2 h-10 w-10 opacity-40" />
                 <p className="font-semibold text-sm">
                   Bu filtreye uygun aktivite bulunamadı.
@@ -1362,7 +1362,7 @@ export default function CalendarHubPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1660,7 +1660,7 @@ export default function CalendarHubPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1893,7 +1893,7 @@ export default function CalendarHubPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1937,7 +1937,7 @@ export default function CalendarHubPage() {
               {selectedActivity.customerName && (
                 <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-2.5 dark:bg-zinc-800/40">
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-zinc-400" />
+                    <User className="h-4 w-4 text-muted-foreground" />
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
                       {selectedActivity.customerName}
                     </span>
@@ -1975,7 +1975,7 @@ export default function CalendarHubPage() {
 
               {selectedActivity.location && (
                 <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
-                  <MapPin className="h-4 w-4 text-zinc-400" />
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
                   <span>{selectedActivity.location}</span>
                 </div>
               )}
@@ -2118,7 +2118,7 @@ export default function CalendarHubPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
                   <X className="h-5 w-5" />

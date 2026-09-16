@@ -976,7 +976,7 @@ export default function TicketDetailPage() {
                           </div>
                         ))}
                         {ord.items.length > 3 && (
-                          <div className="text-3xs text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             +{ord.items.length - 3} ürün daha
                           </div>
                         )}
@@ -1118,7 +1118,7 @@ export default function TicketDetailPage() {
               </DialogTitle>
               <DialogClose asChild>
                 <button
-                  className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100"
                   type="button"
                 >
                   ✕
@@ -1168,7 +1168,7 @@ export default function TicketDetailPage() {
                 </div>
               ))}
               {cannedResponses.length === 0 && (
-                <p className="text-xs text-zinc-400">Henüz şablon yok.</p>
+                <p className="text-xs text-muted-foreground">Henüz şablon yok.</p>
               )}
             </div>
             <div className="mt-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">

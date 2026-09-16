@@ -159,7 +159,7 @@ export default function RegisterPage() {
                   Ad Soyad
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-muted px-4 py-3 text-foreground text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-muted px-4 py-3 text-foreground text-xs outline-none transition-all placeholder:text-muted-foreground focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   id="register-full-name"
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Ahmet Yılmaz"
@@ -174,7 +174,7 @@ export default function RegisterPage() {
                   E-posta
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-muted px-4 py-3 text-foreground text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-muted px-4 py-3 text-foreground text-xs outline-none transition-all placeholder:text-muted-foreground focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   id="register-email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="E-postanızı girin"
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-muted px-4 py-3 pr-10 text-foreground text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-muted px-4 py-3 pr-10 text-foreground text-xs outline-none transition-all placeholder:text-muted-foreground focus:bg-card focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                     id="register-password"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="En az 6 karakter"
@@ -199,7 +199,7 @@ export default function RegisterPage() {
                     value={password}
                   />
                   <button
-                    className="absolute top-3.5 right-3 text-zinc-400 hover:text-zinc-600"
+                    className="absolute top-3.5 right-3 text-muted-foreground hover:text-zinc-600"
                     onClick={() => setShowPassword(!showPassword)}
                     type="button"
                   >

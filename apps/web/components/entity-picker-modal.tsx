@@ -167,7 +167,7 @@ export function EntityPickerModal<T = unknown>({
             <DialogClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 type="button"
               >
                 <X className="h-4 w-4" />
@@ -181,7 +181,7 @@ export function EntityPickerModal<T = unknown>({
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
               ref={inputRef}
@@ -191,7 +191,7 @@ export function EntityPickerModal<T = unknown>({
             {search && (
               <button
                 aria-label="Aramayı temizle"
-                className="absolute top-2.5 right-2.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
                 onClick={() => setSearch("")}
                 type="button"
               >
@@ -290,7 +290,7 @@ export function EntityPickerModal<T = unknown>({
                         <Check className="h-3 w-3" />
                       </div>
                     ) : (
-                      <span className="text-3xs text-zinc-400 opacity-0 group-hover:opacity-100 dark:text-zinc-500">
+                      <span className="text-3xs text-muted-foreground opacity-0 group-hover:opacity-100 dark:text-zinc-500">
                         Seç
                       </span>
                     )}
@@ -402,7 +402,7 @@ export function SalesRepPicker({
                   {selectedEmployee.fullName || selectedEmployee.email}
                 </span>
                 {selectedEmployee.title && (
-                  <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
                     ({selectedEmployee.title})
                   </span>
                 )}
@@ -420,7 +420,7 @@ export function SalesRepPicker({
           <div className="flex shrink-0 items-center gap-1">
             {clearable && selectedEmployee && (
               <span
-                className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-full p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   onChange("", undefined);
@@ -531,7 +531,7 @@ export function CustomerPicker({
                   {selectedCustomer.name}
                 </span>
                 {selectedCustomer.city && (
-                  <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
                     ({selectedCustomer.city})
                   </span>
                 )}
@@ -549,7 +549,7 @@ export function CustomerPicker({
           <div className="flex shrink-0 items-center gap-1">
             {clearable && selectedCustomer && (
               <span
-                className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-full p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   onChange("", undefined);
@@ -657,7 +657,7 @@ export function ProductPicker({
                 <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
                   {selectedProduct.name}
                 </span>
-                <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
+                <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
                   ({selectedProduct.sellingPrice?.toLocaleString("tr-TR")} ₺)
                 </span>
               </>
@@ -674,7 +674,7 @@ export function ProductPicker({
           <div className="flex shrink-0 items-center gap-1">
             {clearable && selectedProduct && (
               <span
-                className="rounded-full p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                className="rounded-full p-0.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   onChange("", undefined);

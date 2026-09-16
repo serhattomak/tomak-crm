@@ -37,7 +37,7 @@ export function LanguageSwitcher({
         onClick={() => switchLocale(activeLocale === "tr" ? "en" : "tr")}
         type="button"
       >
-        <Globe className="h-3.5 w-3.5 text-zinc-400" />
+        <Globe className="h-3.5 w-3.5 text-muted-foreground" />
         <span className="uppercase">{activeLocale}</span>
       </button>
     );

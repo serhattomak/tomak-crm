@@ -105,7 +105,7 @@ export function QuickAddSalesRepModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -127,7 +127,7 @@ export function QuickAddSalesRepModal({
               </label>
               <input
                 autoFocus
-                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Örn: Can"
                 required
@@ -140,7 +140,7 @@ export function QuickAddSalesRepModal({
                 Soyad *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Örn: Özkan"
                 required
@@ -155,7 +155,7 @@ export function QuickAddSalesRepModal({
               E-Posta *
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="can.ozkan@sirket.com"
               required
@@ -180,7 +180,7 @@ export function QuickAddSalesRepModal({
               Ünvan
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-1.5 text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Satış Temsilcisi / Müşteri Yöneticisi"
               type="text"

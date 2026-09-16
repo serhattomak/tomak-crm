@@ -15,7 +15,7 @@ import { expect, type Page, test } from "@playwright/test";
  *
  * The theme comes from the project name, so `--project=dark-mode` and
  * `--project=light-mode` run the same audit. Dark ran alone for a long time and
- * the light theme was never measured at all — which is how `text-zinc-400` sat at
+ * the light theme was never measured at all — which is how `text-muted-foreground` sat at
  * 2.63:1 on white without anyone knowing.
  *
  * One deliberate asymmetry: the LIGHT-SURFACE detector is dark-mode only. It looks

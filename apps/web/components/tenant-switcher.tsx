@@ -92,7 +92,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             </div>
           </div>
           <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-all duration-250 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
+            className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-all duration-250 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
               isOpen ? "rotate-180" : ""
             } ${isCollapsed ? "hidden opacity-0" : "opacity-100"}`}
           />
@@ -109,9 +109,9 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
         side={isCollapsed ? "right" : "bottom"}
         sideOffset={isCollapsed ? 14 : 6}
       >
-        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
           <span>Çalışma Alanları</span>
-          <span className="font-mono text-3xs text-zinc-400">
+          <span className="font-mono text-3xs text-muted-foreground">
             {tenants.length} Alan
           </span>
         </div>
@@ -153,7 +153,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             >
               <input
                 autoFocus
-                className="w-full rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setNewTenantName(e.target.value)}
                 placeholder="Çalışma Alanı Adı..."
                 type="text"

@@ -408,7 +408,7 @@ export default function OrderPrintPage() {
           </div>
         )}
 
-        <div className="mt-6 flex justify-between border-border border-t pt-3 text-3xs text-zinc-400">
+        <div className="mt-6 flex justify-between border-border border-t pt-3 text-3xs text-muted-foreground">
           <span>
             Bu belge {isProforma ? "proforma" : "sipariş"} olarak elektronik
             ortamda oluşturulmuştur.

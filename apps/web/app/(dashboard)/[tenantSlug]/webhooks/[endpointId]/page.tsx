@@ -588,7 +588,7 @@ export default function WebhookBuilderPage() {
                   İsim <span className="text-red-600">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-name"
                   maxLength={255}
                   onChange={(e) => setName(e.target.value)}
@@ -620,7 +620,7 @@ export default function WebhookBuilderPage() {
                   Hedef URL <span className="text-red-600">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-url"
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://example.com/hook"
@@ -645,7 +645,7 @@ export default function WebhookBuilderPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !descriptionIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !descriptionIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
                   id="webhook-description"
                   maxLength={1000}
                   onChange={(e) => setDescription(e.target.value)}
@@ -959,7 +959,7 @@ export default function WebhookBuilderPage() {
 
           {isLoadingDeliveries ? (
             <div className="flex items-center justify-center p-8">
-              <RefreshCw className="h-5 w-5 animate-spin text-zinc-400" />
+              <RefreshCw className="h-5 w-5 animate-spin text-muted-foreground" />
               <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">
                 Teslimatlar yükleniyor...
               </span>
@@ -967,7 +967,7 @@ export default function WebhookBuilderPage() {
           ) : deliveries.length === 0 ? (
             <div className="p-8 text-center">
               <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
-                <Send className="h-5 w-5 text-zinc-400" />
+                <Send className="h-5 w-5 text-muted-foreground" />
               </div>
               <p className="font-medium text-sm text-zinc-700 dark:text-zinc-300">
                 Henüz teslimat yok
@@ -1063,7 +1063,7 @@ export default function WebhookBuilderPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />

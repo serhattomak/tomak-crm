@@ -118,7 +118,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
           <span className="font-mono font-semibold text-2xl text-zinc-900 dark:text-zinc-100">
             {isLoading ? "-" : stats.inboxTotal}
           </span>
-          <span className="text-xs text-zinc-400">toplam ileti</span>
+          <span className="text-xs text-muted-foreground">toplam ileti</span>
         </div>
       </div>
 
@@ -156,7 +156,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
           <span className="font-mono font-semibold text-2xl text-zinc-900 dark:text-zinc-100">
             {isLoading ? "-" : stats.sentToday}
           </span>
-          <span className="text-xs text-zinc-400">başarılı çıkış</span>
+          <span className="text-xs text-muted-foreground">başarılı çıkış</span>
         </div>
       </div>
     </div>
@@ -233,7 +233,7 @@ function MessageRow({
             {msg.subject || "(Konusuz)"}
           </span>
           {msg.hasAttachments ? (
-            <Paperclip className="h-3 w-3 shrink-0 text-zinc-400" />
+            <Paperclip className="h-3 w-3 shrink-0 text-muted-foreground" />
           ) : null}
         </div>
         <p className="line-clamp-1 font-normal text-2xs text-zinc-500 dark:text-zinc-400">
@@ -261,7 +261,7 @@ function MessageRow({
         </TableCell>
       ) : null}
 
-      <TableCell className="whitespace-nowrap px-4 py-3 text-right font-mono text-2xs text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 text-right font-mono text-2xs text-muted-foreground">
         {formatDateTr(msg.createdAt)}
       </TableCell>
 
@@ -278,7 +278,7 @@ function MessageRow({
             </button>
           ) : null}
           <button
-            className="rounded-lg p-1 text-zinc-400 hover:text-rose-600"
+            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600"
             onClick={handleDeleteClick}
             title="Sil"
             type="button"
@@ -399,7 +399,7 @@ function AccountRow({
           </button>
 
           <button
-            className="rounded-lg p-1 text-zinc-400 hover:text-rose-600"
+            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600"
             onClick={handleDelete}
             title="Sil"
             type="button"
@@ -449,7 +449,7 @@ function DeleteActionButton({
 
   return (
     <button
-      className="p-1 text-zinc-400 hover:text-rose-600"
+      className="p-1 text-muted-foreground hover:text-rose-600"
       onClick={onConfirm}
       title="Şablonu Sil"
       type="button"
@@ -595,7 +595,7 @@ function MessagesTableView({
   if (isLoading) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
-        <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">İletiler yükleniyor...</span>
       </div>
     );
@@ -690,7 +690,7 @@ function AccountsTableView({
   if (isLoading) {
     return (
       <div className="flex h-48 flex-col items-center justify-center gap-2 text-zinc-500">
-        <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">Hesaplar yükleniyor...</span>
       </div>
     );
@@ -771,7 +771,7 @@ function TemplatesGridView({
   if (isLoading) {
     return (
       <div className="flex h-48 flex-col items-center justify-center gap-2 text-zinc-500">
-        <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">Şablonlar yükleniyor...</span>
       </div>
     );
@@ -945,7 +945,7 @@ function MessagesFilterBar({
     <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
       <div className="flex w-full flex-1 items-center gap-2 sm:w-auto">
         <div className="relative max-w-sm flex-1">
-          <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+          <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
             className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs text-zinc-900 focus:outline-none dark:text-zinc-100"
             onChange={onSearchChange}
@@ -989,7 +989,7 @@ function MessagesFilterBar({
         ) : null}
       </div>
 
-      <span className="text-xs text-zinc-400">Toplam {totalCount} ileti</span>
+      <span className="text-xs text-muted-foreground">Toplam {totalCount} ileti</span>
     </div>
   );
 }
@@ -1074,7 +1074,7 @@ function TemplatePreviewModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600"
+              className="rounded-lg p-1 text-muted-foreground hover:text-zinc-600"
               type="button"
             >
               <XCircle className="h-5 w-5" />

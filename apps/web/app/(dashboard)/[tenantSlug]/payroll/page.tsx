@@ -960,7 +960,7 @@ export default function PayrollPage() {
                           {run.status !== "Locked" && (
                             <PermissionGate permission="Payroll.Manage">
                               <button
-                                className="rounded-lg p-1 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500"
+                                className="rounded-lg p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:text-zinc-500"
                                 onClick={() => handleDeleteRun(run.id)}
                                 title="Dönemi Sil"
                               >
@@ -1021,7 +1021,7 @@ export default function PayrollPage() {
               <div className="relative">
                 <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
                 <input
-                  className="rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-800 placeholder:text-zinc-400 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-200 dark:text-zinc-500"
+                  className="rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-8 text-xs text-zinc-800 placeholder:text-muted-foreground focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-200 dark:text-zinc-500"
                   onChange={(e) => setPuantajSearch(e.target.value)}
                   placeholder="Personel veya ünvan ara..."
                   type="text"
@@ -2305,7 +2305,7 @@ export default function PayrollPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                   type="button"
                 >
                   <X className="h-4 w-4" />
@@ -2435,7 +2435,7 @@ export default function PayrollPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                   type="button"
                 >
                   <X className="h-4 w-4" />

@@ -197,7 +197,7 @@ export function ProductSeoFields({
           Zengin Açıklama (markdown-lite)
         </Label>
         <textarea
-          className="min-h-24 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 shadow-2xs outline-none transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100"
+          className="min-h-24 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 shadow-2xs outline-none transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100"
           id="product-rich-desc"
           onChange={(e) =>
             onChange({ ...values, richDescription: e.target.value })

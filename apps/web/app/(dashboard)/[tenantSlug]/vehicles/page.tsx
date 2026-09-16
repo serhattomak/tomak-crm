@@ -336,7 +336,7 @@ export default function VehiclesPage() {
       case "STEP":
         return <Boxes className="h-5 w-5 text-blue-500" />;
       default:
-        return <FileText className="h-5 w-5 text-zinc-400" />;
+        return <FileText className="h-5 w-5 text-muted-foreground" />;
     }
   };
 
@@ -592,7 +592,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {vehicles.length}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400">
+          <div className="mt-1 text-2xs text-muted-foreground">
             {vehicles.filter((v) => v.status === "Active").length} Aktif ·{" "}
             {vehicles.filter((v) => v.status === "Development").length} Ar-Ge
           </div>
@@ -608,7 +608,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {brands.length}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Kendi Modellerimiz + Rakipler
           </div>
         </div>
@@ -623,7 +623,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {parts.length}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400">
+          <div className="mt-1 text-2xs text-muted-foreground">
             {epcSystems.length} Ana Montaj Sisteminde
           </div>
         </div>
@@ -638,7 +638,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {documents.length}
           </div>
-          <div className="mt-1 text-2xs text-zinc-400">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Kılavuzlar, Homologasyon & CAD
           </div>
         </div>
@@ -722,7 +722,7 @@ export default function VehiclesPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-1 flex-wrap items-center gap-2">
               <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
                   className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
                   onChange={(e) => setSearch(e.target.value)}
@@ -884,7 +884,7 @@ export default function VehiclesPage() {
                           v.driveType ||
                           v.projectCode
                         ) && (
-                          <span className="text-2xs text-zinc-400 italic">
+                          <span className="text-2xs text-muted-foreground italic">
                             Temel Tanım
                           </span>
                         )}
@@ -893,13 +893,13 @@ export default function VehiclesPage() {
                       {/* Specs Mini Grid */}
                       <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-zinc-50/70 p-2.5 text-center dark:bg-zinc-800/40">
                         <div>
-                          <div className="text-3xs text-zinc-400">Güç</div>
+                          <div className="text-3xs text-muted-foreground">Güç</div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                             {engineSpec.power || v.engine || "—"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-3xs text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             0-100 km/s
                           </div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
@@ -907,7 +907,7 @@ export default function VehiclesPage() {
                           </div>
                         </div>
                         <div>
-                          <div className="text-3xs text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             Ref. Fiyat
                           </div>
                           <div className="font-bold text-emerald-600 text-xs dark:text-emerald-400">
@@ -936,7 +936,7 @@ export default function VehiclesPage() {
 
                       <div className="flex items-center gap-1">
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           onClick={() => {
                             setSelectedVehicle(v);
                             setVehicleDetailTab("overview");
@@ -947,7 +947,7 @@ export default function VehiclesPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                           onClick={() => {
                             setEditingVehicleId(v.id);
                             setIsCreateVehicleOpen(true);
@@ -958,7 +958,7 @@ export default function VehiclesPage() {
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
                           onClick={() =>
                             handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
                           }
@@ -975,7 +975,7 @@ export default function VehiclesPage() {
 
               {filteredVehicles.length === 0 && (
                 <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-                  <Car className="mx-auto h-10 w-10 text-zinc-400" />
+                  <Car className="mx-auto h-10 w-10 text-muted-foreground" />
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                     Arama Kriterlerine Uygun Araç Bulunamadı
                   </h3>
@@ -1022,7 +1022,7 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </div>
                             {v.trim && (
-                              <div className="text-2xs text-zinc-400">
+                              <div className="text-2xs text-muted-foreground">
                                 {v.trim}
                               </div>
                             )}
@@ -1040,7 +1040,7 @@ export default function VehiclesPage() {
                           {v.engine || "—"}
                         </div>
                         {(v.fuel || v.transmission) && (
-                          <div className="text-2xs text-zinc-400">
+                          <div className="text-2xs text-muted-foreground">
                             {[v.fuel, v.transmission]
                               .filter(Boolean)
                               .join(" · ")}
@@ -1066,7 +1066,7 @@ export default function VehiclesPage() {
                       >
                         <div className="flex items-center justify-end gap-1">
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                             onClick={() => {
                               setSelectedVehicle(v);
                               setVehicleDetailTab("overview");
@@ -1077,7 +1077,7 @@ export default function VehiclesPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                             onClick={() => {
                               setEditingVehicleId(v.id);
                               setIsCreateVehicleOpen(true);
@@ -1088,7 +1088,7 @@ export default function VehiclesPage() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
                             onClick={() =>
                               handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
                             }
@@ -1137,7 +1137,7 @@ export default function VehiclesPage() {
                     </span>
                     <button
                       aria-label="Karşılaştırmadan çıkar"
-                      className="text-zinc-400 hover:text-rose-600"
+                      className="text-muted-foreground hover:text-rose-600"
                       onClick={() => toggleCompare(v.id)}
                       type="button"
                     >
@@ -1171,7 +1171,7 @@ export default function VehiclesPage() {
 
           {comparedVehicles.length < 2 ? (
             <div className="rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-              <TrendingUp className="mx-auto h-10 w-10 text-zinc-400" />
+              <TrendingUp className="mx-auto h-10 w-10 text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Karşılaştırma için en az 2 araç seçin
               </h3>
@@ -1200,7 +1200,7 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </div>
                             {v.trim && (
-                              <div className="font-normal text-3xs text-zinc-400">
+                              <div className="font-normal text-3xs text-muted-foreground">
                                 {v.trim}
                               </div>
                             )}
@@ -1477,7 +1477,7 @@ export default function VehiclesPage() {
                 <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                   Patlatılmış Şema & Hotspotlar (Exploded View)
                 </span>
-                <span className="text-3xs text-zinc-400">
+                <span className="text-3xs text-muted-foreground">
                   Şemadaki numaralara tıklayarak parçayı seçin
                 </span>
               </div>
@@ -1566,7 +1566,7 @@ export default function VehiclesPage() {
             <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
               <div className="mb-3 flex items-center justify-between">
                 <div className="relative max-w-xs flex-1">
-                  <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-zinc-400" />
+                  <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
                   <input
                     className="w-full rounded-xl border border-border bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setEpcSearch(e.target.value)}
@@ -1602,7 +1602,7 @@ export default function VehiclesPage() {
                           <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {p.nameTr}
                           </div>
-                          <div className="font-mono text-3xs text-zinc-400">
+                          <div className="font-mono text-3xs text-muted-foreground">
                             {p.partNumber}
                           </div>
                         </div>
@@ -1616,7 +1616,7 @@ export default function VehiclesPage() {
                           ${p.unitPrice}
                         </span>
                         <button
-                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditingPartId(p.id);
@@ -1633,7 +1633,7 @@ export default function VehiclesPage() {
                 })}
 
                 {filteredParts.length === 0 && (
-                  <div className="py-8 text-center text-xs text-zinc-400">
+                  <div className="py-8 text-center text-xs text-muted-foreground">
                     Bu grupta parça bulunamadı.
                   </div>
                 )}
@@ -1670,27 +1670,27 @@ export default function VehiclesPage() {
 
                 <div className="space-y-2.5">
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-zinc-400">English (EN):</span>
+                    <span className="text-muted-foreground">English (EN):</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {selectedPart.nameEn}
                     </span>
                   </div>
                   {selectedPart.nameCn && (
                     <div className="flex justify-between border-border border-b pb-1.5">
-                      <span className="text-zinc-400">中文 (CN):</span>
+                      <span className="text-muted-foreground">中文 (CN):</span>
                       <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                         {selectedPart.nameCn}
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-zinc-400">OEM No:</span>
+                    <span className="text-muted-foreground">OEM No:</span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
                       {selectedPart.oemNumber || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-zinc-400">Stok Durumu:</span>
+                    <span className="text-muted-foreground">Stok Durumu:</span>
                     <span
                       className={`rounded-md px-2 py-0.5 font-bold ${
                         selectedPart.stockQuantity > 20
@@ -1702,13 +1702,13 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-zinc-400">Birim Fiyat:</span>
+                    <span className="text-muted-foreground">Birim Fiyat:</span>
                     <span className="font-bold text-emerald-600 dark:text-emerald-400">
                       ${selectedPart.unitPrice}
                     </span>
                   </div>
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-zinc-400">Süperseksiyon:</span>
+                    <span className="text-muted-foreground">Süperseksiyon:</span>
                     <span className="text-zinc-600 dark:text-zinc-400">
                       {selectedPart.supersession || "—"}
                     </span>
@@ -1747,7 +1747,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
             ) : (
-              <div className="flex h-full flex-col items-center justify-center py-20 text-center text-xs text-zinc-400">
+              <div className="flex h-full flex-col items-center justify-center py-20 text-center text-xs text-muted-foreground">
                 <Wrench className="mb-2 h-8 w-8 opacity-40" />
                 <span>
                   Detaylarını görmek için sol listeden veya şemadan bir parça
@@ -1768,9 +1768,9 @@ export default function VehiclesPage() {
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-1 flex-wrap items-center gap-2">
               <div className="relative min-w-[240px] max-w-md flex-1">
-                <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDocSearch(e.target.value)}
                   placeholder="Doküman adı, bülten no veya etiket ara..."
                   type="text"
@@ -1855,7 +1855,7 @@ export default function VehiclesPage() {
                       </div>
                       <div className="flex items-center gap-1">
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 opacity-0 transition hover:bg-rose-50 hover:text-rose-600 group-hover:opacity-100 dark:hover:bg-rose-950/40"
+                          className="rounded-lg p-1.5 text-muted-foreground opacity-0 transition hover:bg-rose-50 hover:text-rose-600 group-hover:opacity-100 dark:hover:bg-rose-950/40"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteDocument(doc.id, doc.name);
@@ -1875,7 +1875,7 @@ export default function VehiclesPage() {
                       {doc.name}
                     </h4>
 
-                    <div className="mt-1 flex items-center gap-2 text-2xs text-zinc-400">
+                    <div className="mt-1 flex items-center gap-2 text-2xs text-muted-foreground">
                       <span className="font-semibold text-zinc-600 dark:text-zinc-300">
                         {doc.category || "Genel"}
                       </span>
@@ -1906,7 +1906,7 @@ export default function VehiclesPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400">
+                  <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-muted-foreground">
                     <span>
                       {new Date(doc.createdAt).toLocaleDateString("tr-TR")}
                     </span>
@@ -1916,7 +1916,7 @@ export default function VehiclesPage() {
                     >
                       {doc.fileUrl && (
                         <a
-                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800"
+                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800"
                           download={doc.name}
                           href={doc.fileUrl}
                           rel="noreferrer"
@@ -1942,7 +1942,7 @@ export default function VehiclesPage() {
 
             {filteredDocuments.length === 0 && (
               <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-                <FileText className="mx-auto h-10 w-10 text-zinc-400" />
+                <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
                 <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                   {docSearch || docCategoryFilter || docTypeFilter
                     ? "Aramanıza uygun doküman bulunamadı"
@@ -2019,7 +2019,7 @@ export default function VehiclesPage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -2031,7 +2031,7 @@ export default function VehiclesPage() {
             {/* Quick Specs Banner */}
             <div className="mt-4 grid grid-cols-4 gap-2 rounded-2xl bg-zinc-900 p-3 text-center text-white dark:bg-zinc-800">
               <div>
-                <div className="text-3xs text-zinc-400">Güç</div>
+                <div className="text-3xs text-muted-foreground">Güç</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ power?: string }>(
                     selectedVehicle.engineSpecJson,
@@ -2042,7 +2042,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-3xs text-zinc-400">0-100</div>
+                <div className="text-3xs text-muted-foreground">0-100</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ accel?: string }>(
                     selectedVehicle.performanceJson,
@@ -2051,7 +2051,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-3xs text-zinc-400">Ort. Tüketim</div>
+                <div className="text-3xs text-muted-foreground">Ort. Tüketim</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ combined?: string }>(
                     selectedVehicle.fuelEcoJson,
@@ -2060,7 +2060,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-3xs text-zinc-400">Ref. Fiyat</div>
+                <div className="text-3xs text-muted-foreground">Ref. Fiyat</div>
                 <div className="font-bold text-emerald-400 text-xs">
                   {selectedVehicle.priceUsd
                     ? `$${selectedVehicle.priceUsd.toLocaleString()}`
@@ -2100,25 +2100,25 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "overview" && (
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Marka / Model:</span>
+                    <span className="text-muted-foreground">Marka / Model:</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.brand} {selectedVehicle.model}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Platform:</span>
+                    <span className="text-muted-foreground">Platform:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.platform || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Proje Kodu:</span>
+                    <span className="text-muted-foreground">Proje Kodu:</span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.projectCode || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Pazar & Ülke:</span>
+                    <span className="text-muted-foreground">Pazar & Ülke:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {[selectedVehicle.market, selectedVehicle.country]
                         .filter(Boolean)
@@ -2126,13 +2126,13 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Üretim Tesisi:</span>
+                    <span className="text-muted-foreground">Üretim Tesisi:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.plant || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">VIN Öneki:</span>
+                    <span className="text-muted-foreground">VIN Öneki:</span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.vinPrefix || "—"}
                     </span>
@@ -2143,25 +2143,25 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "specs" && (
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Motor:</span>
+                    <span className="text-muted-foreground">Motor:</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.engine || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Şanzıman:</span>
+                    <span className="text-muted-foreground">Şanzıman:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.transmission || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Çekiş Tipi:</span>
+                    <span className="text-muted-foreground">Çekiş Tipi:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.driveType || "—"}
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Emisyon Standardı:</span>
+                    <span className="text-muted-foreground">Emisyon Standardı:</span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.emission || "—"}
                     </span>
@@ -2181,25 +2181,25 @@ export default function VehiclesPage() {
                     return (
                       <>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-zinc-400">Uzunluk:</span>
+                          <span className="text-muted-foreground">Uzunluk:</span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.length || "—"} mm
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-zinc-400">Genişlik:</span>
+                          <span className="text-muted-foreground">Genişlik:</span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.width || "—"} mm
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-zinc-400">Yükseklik:</span>
+                          <span className="text-muted-foreground">Yükseklik:</span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.height || "—"} mm
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-zinc-400">
+                          <span className="text-muted-foreground">
                             Dingil Mesafesi:
                           </span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2215,7 +2215,7 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "safety" && (
                 <div className="space-y-3">
                   <div className="flex justify-between border-border border-b pb-2">
-                    <span className="text-zinc-400">Hava Yastığı Sayısı:</span>
+                    <span className="text-muted-foreground">Hava Yastığı Sayısı:</span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
                       {parseJson<{ airbags?: number }>(
                         selectedVehicle.safetyJson,
@@ -2226,7 +2226,7 @@ export default function VehiclesPage() {
                   </div>
 
                   <div>
-                    <span className="mb-2 block text-zinc-400">
+                    <span className="mb-2 block text-muted-foreground">
                       ADAS Sürüş Destek Sistemleri:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -2255,7 +2255,7 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "warranty" && (
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">Araç Garantisi:</span>
+                    <span className="text-muted-foreground">Araç Garantisi:</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {parseJson<{ vehicle?: string }>(
                         selectedVehicle.warrantyJson,
@@ -2264,7 +2264,7 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-zinc-400">
+                    <span className="text-muted-foreground">
                       Güç Aktarma Garantisi:
                     </span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2759,7 +2759,7 @@ function CreateEditVehicleModal({
                 </span>
               )}
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Adım {step} / 4: {stepsConfig[step - 1]?.title} —{" "}
               {stepsConfig[step - 1]?.desc}
             </p>
@@ -2767,7 +2767,7 @@ function CreateEditVehicleModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-xl p-2 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2812,7 +2812,7 @@ function CreateEditVehicleModal({
                   >
                     {s.title}
                   </div>
-                  <div className="hidden truncate text-3xs text-zinc-400 sm:block">
+                  <div className="hidden truncate text-3xs text-muted-foreground sm:block">
                     {s.num === 1 && (brand ? `${brand} ${model}` : "Temel")}
                     {s.num === 2 && (engine ? `${engine}` : "Motor")}
                     {s.num === 3 && (power ? `${power}` : "Teknik")}
@@ -3633,13 +3633,13 @@ function CreateEditVehicleModal({
 
                       <div className="grid grid-cols-3 gap-2 rounded-xl bg-white/80 p-3 shadow-2xs dark:bg-zinc-800/80">
                         <div>
-                          <div className="text-3xs text-zinc-400">Güç</div>
+                          <div className="text-3xs text-muted-foreground">Güç</div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {power || "—"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-3xs text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             0-100 km/s
                           </div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
@@ -3647,7 +3647,7 @@ function CreateEditVehicleModal({
                           </div>
                         </div>
                         <div>
-                          <div className="text-3xs text-zinc-400">Çekiş</div>
+                          <div className="text-3xs text-muted-foreground">Çekiş</div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {driveType || "—"}
                           </div>
@@ -3869,14 +3869,14 @@ function CreateEditPartModal({
                 ? "EPC Parça Kartını Düzenle"
                 : "Yeni EPC Parçası Ekle"}
             </DialogTitle>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Çok dilli isimlendirme (TR / EN / CN), OEM no, stok ve şema konumu
             </p>
           </div>
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-xl p-2 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -4349,7 +4349,7 @@ function CreateDocumentModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Teknik Doküman & Arşiv
             </DialogTitle>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Kılavuz, Servis Bülteni (TSB), Homologasyon veya CAD dosyası
               yükleyin
             </p>
@@ -4357,7 +4357,7 @@ function CreateDocumentModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-xl p-2 text-muted-foreground transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -4450,7 +4450,7 @@ function CreateDocumentModal({
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosya Yükleniyor...
                         </span>
-                        <span className="text-2xs text-zinc-400">
+                        <span className="text-2xs text-muted-foreground">
                           Format ve boyut taranıyor
                         </span>
                       </div>
@@ -4462,7 +4462,7 @@ function CreateDocumentModal({
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosyayı buraya sürükleyip bırakın veya seçin
                         </span>
-                        <span className="mt-1 text-2xs text-zinc-400">
+                        <span className="mt-1 text-2xs text-muted-foreground">
                           PDF, CAD (.STEP/.DWG), Excel, Word, Görsel veya ZIP
                           (Maks. 50 MB)
                         </span>
@@ -4485,7 +4485,7 @@ function CreateDocumentModal({
                   <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <ExternalLink className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
+                  <ExternalLink className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
                     className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-zinc-900 focus:border-blue-500 dark:text-zinc-100"
                     onChange={(e) => setFileUrl(e.target.value)}
@@ -4780,7 +4780,7 @@ function DocumentPreviewModal({
                   {document.category}
                 </span>
               </div>
-              <p className="text-2xs text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 {document.fileSize} ·{" "}
                 {new Date(document.createdAt).toLocaleDateString("tr-TR")}{" "}
                 tarihinde yüklendi
@@ -4816,7 +4816,7 @@ function DocumentPreviewModal({
               </>
             )}
             <button
-              className="rounded-xl p-2 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40"
+              className="rounded-xl p-2 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40"
               onClick={() => onDelete(document.id, document.name)}
               title="Dokümanı Sil"
               type="button"
@@ -4826,7 +4826,7 @@ function DocumentPreviewModal({
             <DialogClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-xl p-2 text-muted-foreground transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -4881,7 +4881,7 @@ function DocumentPreviewModal({
                     <span>Dosyayı İndir ({document.fileSize})</span>
                   </a>
                 ) : (
-                  <span className="text-xs text-zinc-400">
+                  <span className="text-xs text-muted-foreground">
                     Fiziksel dosya bağlantısı bulunamadı.
                   </span>
                 )}
@@ -4892,13 +4892,13 @@ function DocumentPreviewModal({
           {/* Metadata Footer */}
           <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:bg-zinc-800/30">
             <div>
-              <span className="block text-3xs text-zinc-400">Kategori</span>
+              <span className="block text-3xs text-muted-foreground">Kategori</span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {document.category}
               </span>
             </div>
             <div>
-              <span className="block text-3xs text-zinc-400">
+              <span className="block text-3xs text-muted-foreground">
                 Dosya Boyutu
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4906,7 +4906,7 @@ function DocumentPreviewModal({
               </span>
             </div>
             <div>
-              <span className="block text-3xs text-zinc-400">
+              <span className="block text-3xs text-muted-foreground">
                 İlişkili Araç
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4914,7 +4914,7 @@ function DocumentPreviewModal({
               </span>
             </div>
             <div>
-              <span className="block text-3xs text-zinc-400">
+              <span className="block text-3xs text-muted-foreground">
                 İlişkili Parça
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4925,7 +4925,7 @@ function DocumentPreviewModal({
 
           {tags.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="mr-1 text-2xs text-zinc-400">Etiketler:</span>
+              <span className="mr-1 text-2xs text-muted-foreground">Etiketler:</span>
               {tags.map((t) => (
                 <span
                   className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"

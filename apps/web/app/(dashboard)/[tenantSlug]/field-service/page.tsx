@@ -389,7 +389,7 @@ export default function FieldServicePage() {
           <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Toplam Servis Kartı</span>
           <div className="mt-1 flex items-baseline justify-between">
             <span className="text-2xl font-black tabular-nums text-zinc-900 dark:text-zinc-50">{totalCount}</span>
-            <Layers className="h-4 w-4 text-zinc-400" />
+            <Layers className="h-4 w-4 text-muted-foreground" />
           </div>
         </div>
 
@@ -423,13 +423,13 @@ export default function FieldServicePage() {
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center gap-3 p-2 rounded-xl border border-border bg-card">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="İş no, başlık, müşteri veya adres ara..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border-0 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border-0 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -456,7 +456,7 @@ export default function FieldServicePage() {
             </div>
           ) : jobs.length === 0 ? (
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
-              <Wrench className="h-8 w-8 mx-auto mb-3 text-zinc-400" />
+              <Wrench className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Kayıtlı Saha Servis Emri Yok</p>
               <p className="text-xs text-zinc-500 mt-1">Saha teknisyenleri için ilk servis görevini oluşturun.</p>
               <Button
@@ -516,7 +516,7 @@ export default function FieldServicePage() {
                           </span>
                           <span>•</span>
                           <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3 text-zinc-400" />
+                            <MapPin className="h-3 w-3 text-muted-foreground" />
                             {job.city ? `${job.district || ""}, ${job.city}` : job.serviceAddress}
                           </span>
                         </div>
@@ -524,7 +524,7 @@ export default function FieldServicePage() {
 
                       <div className="text-right shrink-0">
                         <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center justify-end gap-1">
-                          <User className="h-3.5 w-3.5 text-zinc-400" />
+                          <User className="h-3.5 w-3.5 text-muted-foreground" />
                           {job.assignedTechnicianName || "Atama Bekliyor"}
                         </div>
                         {job.scheduledDate && (
@@ -538,7 +538,7 @@ export default function FieldServicePage() {
 
                     <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-zinc-500">
                       <div className="flex items-center gap-2">
-                        <CheckSquare className="h-3.5 w-3.5 text-zinc-400" />
+                        <CheckSquare className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>
                           Kontrol Listesi: {completedTasks} / {totalTasks}
                         </span>
@@ -546,13 +546,13 @@ export default function FieldServicePage() {
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={(e) => handlePromptDelete(job, e)}
-                          className="p-1 rounded-md text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400 transition-colors"
+                          className="p-1 rounded-md text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400 transition-colors"
                           title="İş Emrini Sil"
                           type="button"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
-                        <ChevronRight className="h-4 w-4 text-zinc-400" />
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </div>
                     </div>
                   </div>
@@ -591,7 +591,7 @@ export default function FieldServicePage() {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={(e) => handlePromptDelete(selectedJob, e)}
-                    className="p-1.5 rounded-lg text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400 transition-colors"
+                    className="p-1.5 rounded-lg text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400 transition-colors"
                     title="İş Emrini Sil"
                     type="button"
                   >
@@ -599,7 +599,7 @@ export default function FieldServicePage() {
                   </button>
                   <button
                     onClick={() => setSelectedJob(null)}
-                    className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
+                    className="p-1.5 rounded-lg text-muted-foreground hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
                     title="Kapat"
                     type="button"
                   >
@@ -614,12 +614,12 @@ export default function FieldServicePage() {
                   {selectedJob.customerName || "Müşteri Bilgisi Yok"}
                 </div>
                 <div className="flex items-start gap-1.5 text-zinc-600 dark:text-zinc-300">
-                  <MapPin className="h-3.5 w-3.5 text-zinc-400 shrink-0 mt-0.5" />
+                  <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
                   <span>{selectedJob.serviceAddress}</span>
                 </div>
                 {selectedJob.contactPhone && (
                   <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
-                    <Phone className="h-3.5 w-3.5 text-zinc-400" />
+                    <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                     <a href={`tel:${selectedJob.contactPhone}`} className="text-blue-600 hover:underline">
                       {selectedJob.contactPhone}
                     </a>
@@ -659,14 +659,14 @@ export default function FieldServicePage() {
                   <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                     Saha Kontrol Adımları
                   </span>
-                  <span className="text-2xs text-zinc-400">
+                  <span className="text-2xs text-muted-foreground">
                     {selectedJob.tasks.filter((t) => t.isCompleted).length}/{selectedJob.tasks.length}
                   </span>
                 </div>
 
                 <div className="space-y-1.5">
                   {selectedJob.tasks.length === 0 ? (
-                    <p className="text-xs text-zinc-400 italic">Tanımlı görev adımı yok.</p>
+                    <p className="text-xs text-muted-foreground italic">Tanımlı görev adımı yok.</p>
                   ) : (
                     selectedJob.tasks.map((task) => (
                       <div
@@ -677,7 +677,7 @@ export default function FieldServicePage() {
                         {task.isCompleted ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
                         ) : (
-                          <Square className="h-4 w-4 text-zinc-400 shrink-0" />
+                          <Square className="h-4 w-4 text-muted-foreground shrink-0" />
                         )}
                         <span className="flex-1">{task.title}</span>
                       </div>
@@ -724,7 +724,7 @@ export default function FieldServicePage() {
             </div>
           ) : (
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
-              <Truck className="h-8 w-8 mx-auto mb-3 text-zinc-400" />
+              <Truck className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Servis Emri Seçiniz</p>
               <p className="text-xs text-zinc-500 mt-1">
                 Detayları, kontrol listesini ve yerinde imza modülünü görüntülemek için soldan bir kart seçin.
@@ -755,7 +755,7 @@ export default function FieldServicePage() {
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
-                <button aria-label="Kapat" type="button" className="text-zinc-400 hover:text-zinc-600">
+                <button aria-label="Kapat" type="button" className="text-muted-foreground hover:text-zinc-600">
                   <X className="h-5 w-5" />
                 </button>
               </DialogClose>
@@ -941,7 +941,7 @@ export default function FieldServicePage() {
                 </p>
               </div>
               <DialogClose asChild>
-                <button aria-label="Kapat" type="button" className="text-zinc-400 hover:text-zinc-600">
+                <button aria-label="Kapat" type="button" className="text-muted-foreground hover:text-zinc-600">
                   <X className="h-4 w-4" />
                 </button>
               </DialogClose>

@@ -284,7 +284,7 @@ export default function NewCampaignPage() {
           const isCurrent = currentStep === s.num;
           return (
             <div
-              className={`rounded-xl border p-2.5 text-center transition-all ${ isCurrent ? "border-blue-600 bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-zinc-400 dark:bg-zinc-900/50" }`}
+              className={`rounded-xl border p-2.5 text-center transition-all ${ isCurrent ? "border-blue-600 bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-900/50" }`}
               key={s.num}
             >
               <div className="flex items-center justify-center gap-1.5 font-semibold text-xs">
@@ -355,7 +355,7 @@ export default function NewCampaignPage() {
                   step={5}
                   value={priority}
                 />
-                <p className="mt-1 text-2xs text-zinc-400">
+                <p className="mt-1 text-2xs text-muted-foreground">
                   Yüksek öncelikli kampanyalar ilk sırada hesaplanır.
                 </p>
               </div>
@@ -747,7 +747,7 @@ export default function NewCampaignPage() {
                   Tanımlı Hedef Kurallar ({targets.length})
                 </span>
                 {targets.length === 0 ? (
-                  <p className="rounded-xl border border-border border-dashed p-4 text-center text-xs text-zinc-400">
+                  <p className="rounded-xl border border-border border-dashed p-4 text-center text-xs text-muted-foreground">
                     Henüz ürün veya kategori seçilmedi.
                   </p>
                 ) : (
@@ -770,13 +770,13 @@ export default function NewCampaignPage() {
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {t.targetName}
                           </span>
-                          <span className="text-zinc-400">
+                          <span className="text-muted-foreground">
                             ({t.targetType})
                           </span>
                         </div>
                         <button
                           aria-label="Hedefi kaldır"
-                          className="rounded p-1 text-zinc-400 hover:text-red-600"
+                          className="rounded p-1 text-muted-foreground hover:text-red-600"
                           onClick={() => removeTarget(idx)}
                           type="button"
                         >
@@ -848,7 +848,7 @@ export default function NewCampaignPage() {
                   type="text"
                   value={initialCouponCode}
                 />
-                <p className="mt-1 text-2xs text-zinc-400">
+                <p className="mt-1 text-2xs text-muted-foreground">
                   Kampanyayı kaydettikten sonra ayrıca &quot;Kupon Üret&quot;
                   butonundan toplu rastgele kodlar da üretebilirsiniz.
                 </p>

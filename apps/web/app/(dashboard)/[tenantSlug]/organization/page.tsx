@@ -794,7 +794,7 @@ function OrgNodeItem({
 
           <div className="flex items-center gap-1">
             <button
-              className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
+              className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
               onClick={(e) => {
                 e.stopPropagation();
                 onAddSubordinate(node.id);
@@ -898,7 +898,7 @@ function DepartmentsTab({
         <div className="relative max-w-sm flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
-            className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Departman adı, kod veya maliyet merkezi ara..."
             type="text"
@@ -935,7 +935,7 @@ function DepartmentsTab({
 
                 <div className="flex items-center gap-1">
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                     onClick={() => onEdit(dept)}
                     title="Düzenle"
                     type="button"
@@ -943,7 +943,7 @@ function DepartmentsTab({
                     <Edit2 className="h-3.5 w-3.5" />
                   </button>
                   <button
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                     onClick={() => onDelete(dept.id)}
                     title="Sil"
                     type="button"
@@ -1072,7 +1072,7 @@ function EmployeesTab({
         <div className="relative min-w-[240px] flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
-            className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="İsim, e-posta, sicil no veya unvan ile ara..."
             type="text"
@@ -1256,7 +1256,7 @@ function EmployeesTab({
                   <TableCell className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                         onClick={() => onView(emp)}
                         title="Profili Gör"
                         type="button"
@@ -1264,7 +1264,7 @@ function EmployeesTab({
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                         onClick={() => onEdit(emp)}
                         title="Düzenle"
                         type="button"
@@ -1272,7 +1272,7 @@ function EmployeesTab({
                         <Edit2 className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                         onClick={() => onDelete(emp.id)}
                         title="Sil"
                         type="button"
@@ -1356,7 +1356,7 @@ function EmployeesTab({
                 <div className="flex items-center gap-1">
                   <button
                     aria-label="Personeli görüntüle"
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                     onClick={() => onView(emp)}
                     type="button"
                   >
@@ -1364,7 +1364,7 @@ function EmployeesTab({
                   </button>
                   <button
                     aria-label="Personeli düzenle"
-                    className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                     onClick={() => onEdit(emp)}
                     type="button"
                   >
@@ -1444,7 +1444,7 @@ function PositionsTab({
                   <div className="flex items-center justify-end gap-1">
                     <button
                       aria-label="Pozisyonu düzenle"
-                      className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                       onClick={() => onEdit(pos)}
                       type="button"
                     >
@@ -1452,7 +1452,7 @@ function PositionsTab({
                     </button>
                     <button
                       aria-label="Pozisyonu sil"
-                      className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                       onClick={() => onDelete(pos.id)}
                       type="button"
                     >
@@ -1550,7 +1550,7 @@ function DepartmentModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -1765,7 +1765,7 @@ function PositionModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2044,7 +2044,7 @@ function EmployeeModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2444,7 +2444,7 @@ function EmployeeDetailDrawer({
               <SheetClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  className="rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -2486,7 +2486,7 @@ function EmployeeDetailDrawer({
 
           {/* Contact Details Card */}
           <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-            <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               İletişim & İK Bilgileri
             </h4>
             <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
@@ -2518,13 +2518,13 @@ function EmployeeDetailDrawer({
 
           {/* Hierarchy & Reporting Tree */}
           <div className="mt-5 space-y-3 text-xs">
-            <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               Hiyerarşi & Raporlama
             </h4>
 
             {/* Manager */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-1.5 font-bold text-3xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="mb-1.5 font-bold text-3xs text-muted-foreground uppercase dark:text-zinc-500">
                 Bağlı Olduğu Yönetici
               </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
@@ -2553,7 +2553,7 @@ function EmployeeDetailDrawer({
 
             {/* Direct Reports */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-2 flex items-center justify-between font-bold text-3xs text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="mb-2 flex items-center justify-between font-bold text-3xs text-muted-foreground uppercase dark:text-zinc-500">
                 <span>
                   Doğrudan Yönettiği Kişiler (
                   {employeeDetail.directReports.length})
@@ -2561,7 +2561,7 @@ function EmployeeDetailDrawer({
               </div>
 
               {employeeDetail.directReports.length === 0 ? (
-                <div className="text-xs text-zinc-400 italic dark:text-zinc-500">
+                <div className="text-xs text-muted-foreground italic dark:text-zinc-500">
                   Doğrudan bağlı çalışan bulunmuyor.
                 </div>
               ) : (

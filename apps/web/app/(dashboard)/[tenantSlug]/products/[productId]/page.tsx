@@ -993,7 +993,7 @@ export default function ProductDetailPage() {
                                   src={variantCover}
                                 />
                               ) : (
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
                                   <Package className="h-4 w-4" />
                                 </div>
                               )}
@@ -1016,7 +1016,7 @@ export default function ProductDetailPage() {
                             <TableCell className="py-3.5 pr-4 pl-2 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
-                                  className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
                                   onClick={() => setEditingVariant(v)}
                                   title="Varyantı Düzenle"
                                   type="button"
@@ -1024,7 +1024,7 @@ export default function ProductDetailPage() {
                                   <Edit className="h-3.5 w-3.5" />
                                 </button>
                                 <button
-                                  className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/50"
+                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/50"
                                   onClick={() => handleDeleteVariant(v.id)}
                                   title="Varyantı Sil"
                                   type="button"
@@ -1254,14 +1254,14 @@ export default function ProductDetailPage() {
                             <div className="mt-1 flex items-center gap-2 font-bold">
                               {hist.oldSellingPrice == null ? null : (
                                 <>
-                                  <span className="text-zinc-400 line-through dark:text-zinc-500">
+                                  <span className="text-muted-foreground line-through dark:text-zinc-500">
                                     ₺
                                     {hist.oldSellingPrice.toLocaleString(
                                       "tr-TR",
                                       { minimumFractionDigits: 2 }
                                     )}
                                   </span>
-                                  <span className="text-zinc-400">→</span>
+                                  <span className="text-muted-foreground">→</span>
                                 </>
                               )}
                               <span className="text-sm text-zinc-900 dark:text-zinc-100">
@@ -1306,13 +1306,13 @@ export default function ProductDetailPage() {
                             <div className="mt-1 flex items-center gap-2 font-bold">
                               {hist.oldCostPrice == null ? null : (
                                 <>
-                                  <span className="text-zinc-400 line-through dark:text-zinc-500">
+                                  <span className="text-muted-foreground line-through dark:text-zinc-500">
                                     ₺
                                     {hist.oldCostPrice.toLocaleString("tr-TR", {
                                       minimumFractionDigits: 2,
                                     })}
                                   </span>
-                                  <span className="text-zinc-400">→</span>
+                                  <span className="text-muted-foreground">→</span>
                                 </>
                               )}
                               <span className="text-sm text-zinc-900 dark:text-zinc-100">
@@ -1479,7 +1479,7 @@ function StockAdjustModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1655,7 +1655,7 @@ function AddVariantModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1848,7 +1848,7 @@ function EditVariantModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -2124,7 +2124,7 @@ function EditProductModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />

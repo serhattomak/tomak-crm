@@ -134,9 +134,9 @@ function VariableChipButton({ onInsert, variable }: VariableChipButtonProps) {
       title={VARIABLE_LABELS[variable]}
       type="button"
     >
-      <span className="text-zinc-400">{"{{"}</span>
+      <span className="text-muted-foreground">{"{{"}</span>
       <span>{variable}</span>
-      <span className="text-zinc-400">{"}}"}</span>
+      <span className="text-muted-foreground">{"}}"}</span>
     </button>
   );
 }
@@ -181,9 +181,9 @@ function ExtraFieldsSection({
           <span>Teklif Özel Alanları (Banka, Teslimat, Şartlar)</span>
         </span>
         {isOpen ? (
-          <ChevronUp className="h-4 w-4 text-zinc-400" />
+          <ChevronUp className="h-4 w-4 text-muted-foreground" />
         ) : (
-          <ChevronDown className="h-4 w-4 text-zinc-400" />
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
         )}
       </button>
 
@@ -597,7 +597,7 @@ export function TemplateModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              className="rounded-lg p-1.5 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-200"
               type="button"
             >
               <XCircle className="h-5 w-5" />

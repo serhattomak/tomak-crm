@@ -397,7 +397,7 @@ export default function CompliancePage() {
         {/* Score Card */}
         <div className="flex items-center justify-between rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div>
-            <span className="mb-1 block font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <span className="mb-1 block font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               UYUM SAĞLIK SKORU
             </span>
             <div className="flex items-baseline gap-1.5">
@@ -442,7 +442,7 @@ export default function CompliancePage() {
         {/* Violations Count */}
         <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div className="mb-1 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
-            <span className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               AKTİF İHLALLER
             </span>
             <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -484,7 +484,7 @@ export default function CompliancePage() {
         {/* Overridden Exceptions */}
         <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div className="mb-1 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
-            <span className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
               ONAYLANAN İSTİSNALAR
             </span>
             <FileCheck className="h-4 w-4 text-blue-500" />
@@ -1120,7 +1120,7 @@ export default function CompliancePage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -1273,7 +1273,7 @@ export default function CompliancePage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  className="rounded-full p-1 text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   type="button"
                 >
                   <X className="h-5 w-5" />

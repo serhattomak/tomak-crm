@@ -102,7 +102,7 @@ export default function WorkspaceSettingsPage() {
             <div className="relative">
               <Building2 className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -132,7 +132,7 @@ export default function WorkspaceSettingsPage() {
               Logo Adresi
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://example.com/logo.png"
               type="url"

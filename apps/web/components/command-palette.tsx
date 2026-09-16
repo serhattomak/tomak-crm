@@ -829,7 +829,7 @@ export function CommandPalette({
         <div className="relative flex items-center border-border border-b px-4 py-3.5">
           <Search className="mr-3 h-5 w-5 shrink-0 text-muted-foreground" />
           <input
-            className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
+            className="w-full bg-transparent font-medium text-sm text-zinc-900 placeholder:text-muted-foreground focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Sayfa, eylem, müşteri, sipariş, ürün veya araç ara..."
@@ -843,14 +843,14 @@ export function CommandPalette({
           {query ? (
             <button
               aria-label="Aramayı temizle"
-              className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              className="rounded-full p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               onClick={() => setQuery("")}
               type="button"
             >
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <kbd className="rounded border border-border bg-zinc-50 px-1.5 py-0.5 font-bold text-3xs text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+            <kbd className="rounded border border-border bg-zinc-50 px-1.5 py-0.5 font-bold text-3xs text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
               ESC
             </kbd>
           )}
@@ -876,7 +876,7 @@ export function CommandPalette({
               {/* Dynamic Vehicle Results */}
               {categorized.vehicles.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Araçlar & Otomotiv
                   </div>
                   {categorized.vehicles.map((item) => {
@@ -898,7 +898,7 @@ export function CommandPalette({
               {/* Dynamic Customer Results */}
               {categorized.customers.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Müşteriler
                   </div>
                   {categorized.customers.map((item) => {
@@ -920,7 +920,7 @@ export function CommandPalette({
               {/* Dynamic Order Results */}
               {categorized.orders.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Siparişler
                   </div>
                   {categorized.orders.map((item) => {
@@ -942,7 +942,7 @@ export function CommandPalette({
               {/* Dynamic Product Results */}
               {categorized.products.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Ürünler & Hizmetler
                   </div>
                   {categorized.products.map((item) => {
@@ -964,7 +964,7 @@ export function CommandPalette({
               {/* Actions */}
               {categorized.actions.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Hızlı İşlemler
                   </div>
                   {categorized.actions.map((item) => {
@@ -986,7 +986,7 @@ export function CommandPalette({
               {/* Navigation */}
               {categorized.navigation.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
                     Sayfalar & Modüller
                   </div>
                   {categorized.navigation.map((item) => {

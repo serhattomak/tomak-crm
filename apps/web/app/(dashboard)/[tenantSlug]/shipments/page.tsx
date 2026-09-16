@@ -630,7 +630,7 @@ export default function ShipmentsPage() {
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Gönderi no, takip no, sipariş, müşteri veya alıcı ara..."
                 type="text"
@@ -639,7 +639,7 @@ export default function ShipmentsPage() {
               {searchQuery && (
                 <button
                   aria-label="Aramayı temizle"
-                  className="absolute top-2.5 right-3 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  className="absolute top-2.5 right-3 text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
                 >
@@ -795,7 +795,7 @@ export default function ShipmentsPage() {
                                     {s.trackingNumber}
                                   </span>
                                   <button
-                                    className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                                    className="text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                                     onClick={() =>
                                       copyToClipboard(
                                         s.trackingNumber!,
@@ -820,7 +820,7 @@ export default function ShipmentsPage() {
                                   )}
                                 </div>
                               ) : (
-                                <span className="text-2xs text-zinc-400 italic dark:text-zinc-500">
+                                <span className="text-2xs text-muted-foreground italic dark:text-zinc-500">
                                   Takip no girilmedi
                                 </span>
                               )}
@@ -940,7 +940,7 @@ export default function ShipmentsPage() {
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="İade kodu, müşteri veya iade sebebi ara..."
                 type="text"
@@ -1036,7 +1036,7 @@ export default function ShipmentsPage() {
                                   {r.returnCode}
                                 </span>
                                 <button
-                                  className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                                  className="text-muted-foreground hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                                   onClick={() =>
                                     copyToClipboard(r.returnCode, "İade Kodu")
                                   }
@@ -1203,7 +1203,7 @@ export default function ShipmentsPage() {
                     {c.trackingUrlTemplate || "Manuel takip bağlantısı"}
                   </span>
                   <button
-                    className="rounded-lg p-1 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+                    className="rounded-lg p-1 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
                     onClick={() => handleDeleteCarrier(c.id, c.name)}
                     title="Kargo Firmasını Sil"
                     type="button"
@@ -1538,7 +1538,7 @@ function CreateShipmentModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -1690,7 +1690,7 @@ function CreateShipmentModal({
                 Açık Adres
               </Label>
               <textarea
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
                 id="new-shipment-recipient-address"
                 onChange={(e) => setRecipientAddress(e.target.value)}
                 placeholder="Mahalle, Cadde, Sokak, No, Daire..."
@@ -1910,7 +1910,7 @@ function UpdateStatusModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -1972,7 +1972,7 @@ function UpdateStatusModal({
               Açıklama / Durum Notu
             </Label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
               id="update-status-description"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Örn: Kurye dağıtıma çıktı, tahmini teslim 14:00..."
@@ -2056,7 +2056,7 @@ function PrintLabelModal({
             <DialogClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                 type="button"
               >
                 <X className="h-4 w-4" />
@@ -2213,7 +2213,7 @@ function ShipmentDetailDrawer({
           <SheetClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2447,7 +2447,7 @@ function CreateReturnModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2631,7 +2631,7 @@ function UpdateReturnStatusModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2664,7 +2664,7 @@ function UpdateReturnStatusModal({
               Kalite Kontrol Notları & Açıklama
             </Label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
               id="update-return-inspection-notes"
               onChange={(e) => setInspectionNotes(e.target.value)}
               placeholder="Ürün ambalajı incelendi, hasar tespit edilmedi, stoka alındı..."
@@ -2776,7 +2776,7 @@ function CreateCarrierModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-4 w-4" />

@@ -67,11 +67,11 @@ function AttachmentItem({ att, index, onRemove }: AttachmentItemProps) {
 
   return (
     <div className="flex items-center gap-1.5 rounded-lg border border-border bg-zinc-50 px-2.5 py-1 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-      <FileText className="h-3.5 w-3.5 text-zinc-400" />
+      <FileText className="h-3.5 w-3.5 text-muted-foreground" />
       <span className="max-w-[140px] truncate">{att.filename}</span>
       <button
         aria-label="Eki kaldır"
-        className="text-zinc-400 hover:text-rose-600"
+        className="text-muted-foreground hover:text-rose-600"
         onClick={handleRemove}
         type="button"
       >
@@ -488,7 +488,7 @@ export function ComposeModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              className="rounded-lg p-1 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -629,7 +629,7 @@ export function ComposeModal({
                 </button>
               </div>
 
-              <span className="font-mono text-2xs text-zinc-400">
+              <span className="font-mono text-2xs text-muted-foreground">
                 {htmlBody.length} karakter
               </span>
             </div>

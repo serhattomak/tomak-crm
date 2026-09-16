@@ -496,7 +496,7 @@ export default function AdminTenantDetailPage() {
                       />
                     </div>
                     <button
-                      className="rounded-xl p-1.5 text-zinc-400 transition hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40"
+                      className="rounded-xl p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40"
                       onClick={() => handleRemoveOverride(item.key)}
                       title="Etiketi Kaldır"
                       type="button"

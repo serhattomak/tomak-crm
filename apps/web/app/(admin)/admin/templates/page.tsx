@@ -203,7 +203,7 @@ export default function AdminTemplatesPage() {
       {/* Templates Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
-          <div className="col-span-full py-12 text-center text-zinc-400">
+          <div className="col-span-full py-12 text-center text-muted-foreground">
             <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
             Şablonlar yükleniyor...
           </div>
@@ -229,7 +229,7 @@ export default function AdminTemplatesPage() {
                         <h3 className="font-bold text-zinc-900 text-sm">
                           {tpl.name}
                         </h3>
-                        <p className="font-mono text-3xs text-zinc-400">
+                        <p className="font-mono text-3xs text-muted-foreground">
                           key: {tpl.key}
                         </p>
                       </div>
@@ -249,7 +249,7 @@ export default function AdminTemplatesPage() {
 
                   {/* Modules in Template */}
                   <div className="space-y-1.5 border-border border-t pt-2">
-                    <span className="font-bold text-3xs text-zinc-400 uppercase tracking-wider">
+                    <span className="font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                       Varsayılan Modüller ({tpl.defaultModules?.length || 0})
                     </span>
                     <div className="flex flex-wrap gap-1">
@@ -267,7 +267,7 @@ export default function AdminTemplatesPage() {
                   {/* Key Label Previews */}
                   {parsedLabels?.modules && (
                     <div className="space-y-1.5 border-border border-t pt-2 text-2xs">
-                      <span className="font-bold text-3xs text-zinc-400 uppercase tracking-wider">
+                      <span className="font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                         Terminoloji Dönüşümleri
                       </span>
                       {Object.entries(parsedLabels.modules).map(
@@ -287,7 +287,7 @@ export default function AdminTemplatesPage() {
                   )}
                 </div>
 
-                <div className="mt-4 border-border border-t pt-3 text-3xs text-zinc-400">
+                <div className="mt-4 border-border border-t pt-3 text-3xs text-muted-foreground">
                   Oluşturulma:{" "}
                   {new Date(tpl.createdAt).toLocaleDateString("tr-TR")}
                 </div>
@@ -331,7 +331,7 @@ export default function AdminTemplatesPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Kapat"
-                  className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700"
+                  className="rounded-xl p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-700"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -433,7 +433,7 @@ export default function AdminTemplatesPage() {
                   <label className="block font-bold text-zinc-700">
                     Terminoloji Sözlüğü (JSON Schema)
                   </label>
-                  <span className="font-mono text-3xs text-zinc-400">
+                  <span className="font-mono text-3xs text-muted-foreground">
                     modules & fields sözlüğü
                   </span>
                 </div>

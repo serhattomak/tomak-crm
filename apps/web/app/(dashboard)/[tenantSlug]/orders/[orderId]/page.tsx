@@ -413,7 +413,7 @@ export default function OrderDetailPage() {
             {/* Paid & Remaining */}
             <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 pt-2 dark:bg-zinc-800/50">
               <div>
-                <span className="font-medium text-3xs text-zinc-400 uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-muted-foreground uppercase dark:text-zinc-500">
                   Tahsil Edilen
                 </span>
                 <div className="font-bold text-emerald-600 text-sm">
@@ -424,7 +424,7 @@ export default function OrderDetailPage() {
                 </div>
               </div>
               <div>
-                <span className="font-medium text-3xs text-zinc-400 uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-muted-foreground uppercase dark:text-zinc-500">
                   Kalan Bakiye
                 </span>
                 <div
@@ -852,7 +852,7 @@ function ChangeStatusModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1030,7 +1030,7 @@ function AddPaymentModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
               <X className="h-5 w-5" />

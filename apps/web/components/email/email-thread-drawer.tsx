@@ -143,14 +143,14 @@ function MessageCardBody({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Paperclip className="h-3.5 w-3.5 text-zinc-400" />
+                <Paperclip className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="line-clamp-1 max-w-[160px] font-medium">
                   {att.filename}
                 </span>
-                <span className="text-3xs text-zinc-400">
+                <span className="text-3xs text-muted-foreground">
                   ({formatBytes(att.sizeBytes)})
                 </span>
-                <Download className="ml-1 h-3.5 w-3.5 text-zinc-400" />
+                <Download className="ml-1 h-3.5 w-3.5 text-muted-foreground" />
               </a>
             ))}
           </div>
@@ -309,12 +309,12 @@ function MessageCard({
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs text-zinc-400">
+          <span className="text-xs text-muted-foreground">
             {formatDateTr(message.createdAt)}
           </span>
           {message.attachments.length > 0 ? (
             <span
-              className="flex items-center gap-1 text-xs text-zinc-400"
+              className="flex items-center gap-1 text-xs text-muted-foreground"
               title={`${message.attachments.length} dosya eki`}
             >
               <Paperclip className="h-3.5 w-3.5" />
@@ -322,9 +322,9 @@ function MessageCard({
             </span>
           ) : null}
           {isExpanded ? (
-            <ChevronUp className="h-4 w-4 text-zinc-400" />
+            <ChevronUp className="h-4 w-4 text-muted-foreground" />
           ) : (
-            <ChevronDown className="h-4 w-4 text-zinc-400" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           )}
         </div>
       </button>
@@ -560,7 +560,7 @@ export function EmailThreadDrawer({
             <SheetClose asChild>
               <button
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                className="rounded-lg p-1.5 text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
                 type="button"
               >
                 <X className="h-5 w-5" />
@@ -573,7 +573,7 @@ export function EmailThreadDrawer({
         <div className="flex-1 space-y-4 overflow-y-auto p-6">
           {isLoading ? (
             <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
-              <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               <span className="text-sm">İletiler yükleniyor...</span>
             </div>
           ) : null}
