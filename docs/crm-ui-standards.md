@@ -24,13 +24,34 @@
   - `bg-background`, `bg-card`, `bg-muted`
   - `text-foreground`, `text-muted-foreground`, `text-primary`
   - `border-border`, `border-input`, `ring-ring`
-- **Durum Renkleri (Status Semantics):**
-  - **Başarılı / Aktif:** `emerald` / `success` token'ları (örn. `Active`, `Paid`)
-  - **Uyarı / Beklemede:** `amber` / `warning` token'ları (örn. `Pending`, `VIP`)
-  - **Bilgi / Potansiyel:** `blue` / `accent` token'ları (örn. `Lead`, `In Progress`)
-  - **Hata / Kaybedildi:** `rose` / `destructive` token'ları (örn. `Churned`, `Urgent`)
-  - **Nötr / Pasif:** `zinc` / `neutral` token'ları (örn. `Draft`, `Closed`)
-  - ⚠️ **`success` ve `warning` token'ları HENÜZ YOK** (2026-09-16 ölçümü: `globals.css`'te `--success*`/`--warning*` tanımı **0**). Bu satırlar **hedef** tarif eder, mevcut API'yi değil: bugün karşılıkları `emerald-*` / `amber-*` skala sınıflarıdır ve bunlar **yasaklı değildir** (renk kuralları yalnız `slate`/`violet`/`fuchsia` ve hex'i yasaklar). Token'ları eklemek ayrı bir iştir → Gelecek Adımlar **#24**. **Yeni kod `bg-success` yazmasın** — var olmayan bir sınıf sessizce hiçbir şey yapmaz.
+- **Durum Renkleri (Status Semantics)** — bugün **skala sınıflarıyla** yazılır, token'la değil:
+  - **Başarılı / Aktif:** `emerald-*` (örn. `Active`, `Paid`)
+  - **Uyarı / Beklemede:** `amber-*` (örn. `Pending`, `VIP`)
+  - **Bilgi / Potansiyel:** `blue-*` / `accent` (örn. `Lead`, `In Progress`)
+  - **Hata / Kaybedildi:** `rose-*` / `destructive` (örn. `Churned`, `Urgent`)
+  - **Nötr / Pasif:** `zinc-*` / `muted` (örn. `Draft`, `Closed`)
+  - ⚠️ **`--success` ve `--warning` token'ları YOK** (2026-09-16 ölçümü: `globals.css`'te 0 tanım). Bu maddeler **hedef** değil, **mevcut durumu** tarif eder: bugün karşılıkları yukarıdaki skala sınıflarıdır ve bunlar **yasaklı değildir**. Token eklemek yeni bir tasarım kararıdır → ADR-0004 §5 prosedürü, Gelecek Adımlar **#24**.
+
+**⚠️ Var olmayan token'a işaret eden sınıf sessizce hiçbir şey yapmaz.** Ne `tsc` ne guard bunu görebilir: `text-<token>` geçerli bir string'tir, üretilen CSS'te yalnızca karşılığı yoktur. **Canlı örnek (2026-09-16, `ce1f77c`):** `--destructive-foreground` `globals.css`'te tanımlı değildi ve `text-destructive-foreground` **tek bir yerde** kullanılıyordu — `hub-rail` bildirim rozeti. Sınıf hiçbir renk üretmediği için metin miras alıyordu ve rozet **31 rotanın tamamında ~1:1 kontrastla okunamaz** durumdaydı; bunu yalnız çalışma-zamanı denetimi gösterdi. Yeni bir token adı yazmadan önce `globals.css`'te **var olduğunu doğrulayın**.
+
+### 1.2.1 Renkli yüzeylerin koyu tema karşılığı
+
+Durum renkleri **çift** yazılır: açık tonu + koyu muadili. Ölçülen konvansiyon (2026-09-16, kod tabanının kendi kullanımından çıkarıldı — uydurulmadı):
+
+| Açık | Koyu muadili |
+| --- | --- |
+| `bg-<c>-50` · `bg-<c>-100` | `dark:bg-<c>-950/60` |
+| `bg-<c>-200` | `dark:bg-<c>-900/60` |
+| `border-<c>-100` | `dark:border-<c>-900/40` |
+| `border-<c>-200` | `dark:border-<c>-800` |
+| `border-<c>-300` | `dark:border-<c>-700` |
+| `text-<c>-600` | `dark:text-<c>-400` |
+| `text-<c>-700` · `-800` · `-900` | `dark:text-<c>-300` |
+| `text-zinc-600` … `text-zinc-900` | `dark:text-zinc-400` … `dark:text-zinc-100` |
+
+> **Yüzeyi düzeltip metnini unutmak işi KÖTÜLEŞTİRİR.** Ölçüldü (`ce1f77c`): tint'li yüzeylere koyu partner eklendiğinde açık yüzey **51 → 10** düştü ama düşük kontrast **47 → 83**'e **çıktı** — çünkü çipin içindeki metin hâlâ koyu vurguydu (`text-blue-700`) ve artık **koyu çip üzerinde** duruyordu. İkisi **birlikte** yazılır; yalnız çalışma-zamanı ölçümü bunu görebilir.
+
+`LIGHT_SURFACE_NO_DARK` bu sınıfın tamamını (tint'ler dâhil) kapsar ve **0'da** durur.
 
 **Renk ailesi göçü (Faz 4, 2026-09-16 — TAMAMLANDI):** yasaklı ailelerin tamamı **0**: `slate-*`→`zinc-*` (399 hit), `violet-*`→`blue-*` (920), `fuchsia-*`→`blue-*` (43), keyfi/SVG/inline hex (14). **`--full` 1438 → 62.** İki kalıcı kural:
 
