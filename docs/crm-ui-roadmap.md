@@ -243,7 +243,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 >
 > **Tarif:** standart **§2.3** (Dialog + Sheet + print) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
-> **⚠️ Bu fazda on dört tuzak ölçülerek doğrulandı:**
+> **⚠️ Bu fazda on beş tuzak ölçülerek doğrulandı:**
 > 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
 > 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
@@ -258,6 +258,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 12. **Sarmalayıcının `overflow-y-auto`'su panel `max-h` + `overflow-hidden` taşıyorsa zaten devrede değildir** — panel kendi çocuklarını kırpıyordur. Göçte "iyileştirme" yapıp `overflow-y-auto` vermek **kısa ekran davranışını sessizce değiştirir**; aslını birebir kurun (bkz. `messages`).
 > 13. **Kapanış bulma sezgiseli "bitişiklik" varsayar** — `tailV2` panel kapanışının **hemen ardından** sarmalayıcı kapanışını arar; araya kardeş bir overlay girerse yanlış çifti sahiplenir (`quotes`'ta oldu; `Dialog` 6 açık / 5 kapalı verdi). **Bitişikliği kardeş overlay bozar** → çok overlay'li dosyalarda denge sayımı **zorunlu**.
 > 14. **Toplu geçişten önce çalışma ağacı TEMİZ olmalı** — Faz 4'e başlarken `git status` **3 kirli dosya** gösterdi ve hiçbiri o oturumda yazılmamıştı. Biri (Popover fix) tam da toplu betiğin dokunacağı dosyadaydı; ayırma yapılmasaydı **iki konu tek commit'te** birleşecek ve ikisi de review edilemez olacaktı. **Kural:** her toplu işlemden önce `git status`; kirliyse önce ayır (sahibi olmadığın değişikliği ilgili dosyadan geri çevir → onu kendi commit'ine al → toplu geçişi yeniden uygula). Sahibi olmadığın bir değişikliği sessizce kendi commit'ine katmak "tek değişken/commit" kuralını bozar.
+> 15. **Guard "temiz" demek "doğru görünüyor" demek DEĞİL — sınıf çakışmalarını göremez.** Faz 5.0'da `messages`'ta 31 satırda token + eski sınıf **aynı** string'deydi (`dark:bg-card dark:bg-zinc-900`). İkisi de aynı özelliği aynı varyantta, aynı özgüllükte yazıyor → **kazanan, stylesheet'te sonra gelen**. Bunu tahmin etmek yerine **derlenmiş CSS'ten ölçtüm**: `.dark:bg-zinc-900` byte **258605**, `.dark:bg-card` **240413** → eski sınıf kazanıyor, token hiç uygulanmamış. **Yöntem:** `apps/web/.next/**/*.css` içinde `IndexOf(".dark\\:X")` karşılaştır (büyük olan kazanır). Guard'ın bu konuda kuralı yok — bu yüzden "PASS" bir görsel doğruluk kanıtı değildir.
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor ama `apps/web` noktalı virgüllü; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor ve 55 satırlık değişikliği **431 satıra** çıkarır. Ayrıntı: Gelecek Adımlar #18.
 >
@@ -448,14 +449,19 @@ Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değ
 - [x] **Print/e-posta istisnası belgelendi:** `email-preview.ts` **hiç** hex/renk-sınıfı eşleşmesi üretmiyor (19 `--email-*` değişkeni, hex yok, `slate`/`violet` yok) → temizliği **yapısal**; allowlist kaydı **gerekmiyor** ve belgelerdeki "kayıtlı" ifadesi düzeltildi. `globals.css` print bloğundaki `#0f172a` **kasıtlı** (tema-bağımsız mürekkep: koyu temada `--foreground` beyaza döner → beyaz üstüne beyaz basılır) → yorumla belgelendi, değiştirilmedi
 - [x] **⚠️ Yan bulgu:** `notification-center` ve `dashboard-share-popover`'da **`PopoverContent`, `Popover.Root`'un dışındaydı** (bu geçişin kendi regression'ı: `b9ec6fa`, `90316df`) → `34c5218` ile düzeltildi; repodaki 4 `Popover` tüketicisi tarandı, başka örnek yok
 
-## [ ] Faz 5 — Tablo & form *görünüm* standardı
+## [~] Faz 5 — Tablo & form *görünüm* standardı — **sürüyor (5.0 ✅ · 5.1 ✅ · 5.2: 2/15 dosya · 5.3 bekliyor)**
 
 **Motor göçü yoktur** — elle yazılmış tablolar/kanban/filtreler kalır, yalnızca görünümleri `@workspace/ui` primitiflerine bağlanır.
 
-- [ ] `Table`, `Badge`, `Button`, `EmptyState`, `Skeleton` kullanımına geçiş
-- [ ] `Input` / `SelectField` / `Combobox` / `DatePicker` / `DateRangePicker` / `NumberInput` / `PhoneInput` standardı (ADR-0002) her ekranda
-- [ ] Native `<select>`, `type=date`, `type=number` → **0**
-- [ ] Kart/panel arka planlarının tek dile inmesi (`bg-card` + `border-border`; `bg-white dark:bg-zinc-900` ve `border-zinc-200` karışımı biter)
+**Ölçülmüş kapsam (2026-09-16):** NATIVE_SELECT **61 / 15 dosya** · INPUT_NUMBER **1** (primitifin içinde) · NATIVE_TABLE **61** (warn) · ARBITRARY_TEXT_SIZE **1241** (warn) · INLINE_STYLE_PROP **31** (warn) · kart yüzeyi **~1972** (`bg-white…dark:bg-zinc-9xx` 666 + `border-zinc-200` 1306, **kuralı yok**).
+
+- [x] **5.0 `messages` çift-token hatası** (`b36d107`) — 31 satırda token + eski sınıf **aynı string'de** (`dark:bg-card dark:bg-zinc-900` vb.). **Derlenmiş CSS'ten ölçüldü:** `.dark:bg-zinc-900` (byte 258605) `.dark:bg-card`'tan (240413) **sonra** geliyor → **eski sınıf kazanıyor**, token hiç uygulanmamış. 56 kopya kaldırıldı (23 kenar + 10 yüzey + 17 metin + 6 muted yüzey). **⚠️ Guard bunu göremez** (kuralı yok) → kanıt: dosyada kalan çift **0** + CSS sıralaması
+- [x] **5.1 INPUT_NUMBER → kayıtlı muafiyet** (`1a5f39d`) — tek hit **`number-input.tsx`'in kendisi**; primitifin içindeki native input **abstraction'dır**, kural implementasyonu tüketiciden ayırt edemez. Allowlist gerekçesiyle (4. kayıt)
+- [ ] **5.2 NATIVE_SELECT 61 → 0** — **2/15 dosya:** `create-deal-modal` **6 select** (`eb84455`) · `pipeline-settings-modal` **1** (`3f92254`). **Kalan 13 dosya / 54 select** (aşağıda). **Karar ölçütü: seçenek SAYISI değil KAYNAĞI** — kapalı enum → `SelectField`; veriye bağlı liste (küçük görünse bile büyür) → `Combobox`. `onChange` artık değeri alır (`(e) => setX(e.target.value)` → `onChange={setX}`); elle boyut (`h-8 border-input bg-background`) **düşer**, yüzey primitifin
+- [ ] **5.2 kalan dosyalar (54 select):** `projects/[projectId]` **25** · `webhooks` 5 · `projects` 4 · `promotions` 4 · `leaves` 3 · `payroll` 2 · `pipeline-filter-bar` 2 · `promotions/[campaignId]/edit` 2 · `campaign-modal` 2 · `promotions/new` 2 · `pipeline-header` 1 · `bulk-coupon-modal` 1 · `tasks-checklist-widget` 1
+- [ ] **5.3 NATIVE_TABLE 61** → `Table` primitifleri (uyarı kuralı, Faz 5 maddesi)
+- [ ] **5.4 Kart yüzeyi tek dile** — **önce guard kuralı, sonra süpürme** (onaylandı). Kural olmadan süpürmek kanıtsız kalır; bu projede ilerlemenin kanıtı **sayacın 0'a düşmesi**
+- [ ] **5.5 ARBITRARY_TEXT_SIZE 1241** · **5.6 INLINE_STYLE_PROP 31** — **hiçbir faza atanmamış iki uyarı kuralı** (planlama boşluğu; ADR-0004'e göre temizlenmeden error'a terfi edemezler, yani Faz 7'nin önkoşulu)
 
 ## [ ] Faz 6 — Cila (motion + a11y + terim sözlüğü)
 
@@ -689,3 +695,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 4.3 | ✅ `register` auth yüzeyi (`fbdf476`) · ARBITRARY_HEX 4→0, SVG_PAINT_HEX 4→0 · `bg-[#070709]`→`bg-zinc-950`, `bg-[#f3f4f7]`→`bg-zinc-100` (**kardeş ekran `login`'den okundu**) · 4 SVG hex'i **kayıtlı istisna** (Google marka rengi) · `--full` 76→**68** |
 | 2026-09-16 | Faz 4.4 | ✅ Widget grafik renkleri (`a08616a`) · INLINE_HEX_STYLE **6→0** (5 düzeltildi + 1 gerekçeli kayıt) · **`--chart-1..5` ilk kez kullanıldı** (#12) · **tüm renk kuralları 0** · `--full` **62** — kalan tamamen Faz 5 |
 | 2026-09-16 | Faz 4 | ✅✅✅ **FAZ 4 TAMAMLANDI.** `--full` **1438 → 62** (1376 renk ihlali çözüldü) · renk ihlali taşıyan dosya **51 → 0** · **Yöntem kalıcılaştı:** guard'ın bildirdiği dosya kümesi + deterministik betik + kanıt olarak kuralın 0'a düşmesi |
+| 2026-09-16 | Faz 5 | 📊 **Kapsam ölçüldü:** NATIVE_SELECT **61 / 15 dosya** · INPUT_NUMBER **1** · NATIVE_TABLE 61 · ARBITRARY_TEXT_SIZE 1241 · INLINE_STYLE_PROP 31 · kart yüzeyi **~1972 (kuralı YOK)**. **İki planlama boşluğu bulundu:** (a) üç uyarı kuralının **sahibi hiçbir fazda yok**, (b) kart yüzeyi standardının **ne bölümü ne ölçümü** var. Kapsam kararı: 5.0–5.3 + kalanlar 5.4/5.5/5.6 olarak kaydedildi; kart yüzeyi için **önce kural sonra süpürme** onaylandı |
+| 2026-09-16 | Faz 5.0 | ✅ **`messages` çift-token hatası** (`b36d107`) — 31 satır, 56 kopya sınıf kaldırıldı. **Kanıt derlenmiş CSS'ten:** `.dark:bg-zinc-900` (258605) `.dark:bg-card`'tan (240413) sonra → **eski sınıf kazanıyordu**, token hiç uygulanmamış. `.dark:border-*`, `muted`, `text-foreground` çiftlerinin **hepsi** aynı yönde ölçüldü. **Yeni tuzak #15:** guard sınıf çakışmasını göremez → "PASS" görsel doğruluk kanıtı değil |
+| 2026-09-16 | Faz 5.1 | ✅ **INPUT_NUMBER → kayıtlı muafiyet** (`1a5f39d`). Tek hit primitifin (`number-input.tsx`) kendisiydi: kural **abstraction'ı tüketiciden ayırt edemiyor**. Gerekçesiyle allowlist'e (4. kayıt). `--full` 62 → **61** |
+| 2026-09-16 | Faz 5.2 | ✅ `create-deal-modal` **6 select** (`eb84455`) + `pipeline-settings-modal` **1** (`3f92254`) → NATIVE_SELECT **61 → 54**. **Karar ölçütü kalıcılaştı: seçeneğin SAYISI değil KAYNAĞI** — kapalı enum → `SelectField`, veriye bağlı liste (küçük görünse bile büyür) → `Combobox`. Sayarak karar vermek küçük tenant'ta yanlış, büyük tenant'ta doğru sonuç verir; bu yanlış türden bir tutarlılık |
