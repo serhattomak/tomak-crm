@@ -43,9 +43,23 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | INLINE_HEX_STYLE | error | **0** (1 recorded) | design tokens / `--chart-*` (Faz 4.4) |
 | ARBITRARY_HEX | error | **0** | design tokens (Faz 4.3) |
 | SVG_PAINT_HEX | error | **0** (8 recorded) | `currentColor` / tokens (brand marks excepted) |
-| ARBITRARY_TEXT_SIZE | warn | 1188 | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale |
+| ARBITRARY_TEXT_SIZE | warn | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
 | NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
-| INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens |
+| INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens (Faz 5.6) |
+
+**Three of the four warn rules now read 0** (`NATIVE_TABLE`, `CARD_SURFACE`,
+`ARBITRARY_TEXT_SIZE`), so their Faz 7 promotion path is open — `INLINE_STYLE_PROP` at 31
+is the last one.
+
+**ARBITRARY_TEXT_SIZE (Faz 5.5)** was the cheapest sweep of the phase because the
+distribution did the work: 674 sites were `text-[11px]` and 451 were `text-[10px]`, and
+both already had a token at exactly that size (`text-2xs` 0.6875rem, `text-3xs`
+0.625rem). 1125 of 1188 — 94.7% — were a pure identity swap. The other 63 needed a
+decision, and it was to pull everything onto the scale with a **10px floor**: 9px to
+`text-3xs` (as Faz 0 already prescribed when it removed 9px from the scale), and 8px and
+7px there too since they sit below the floor. Those 15 sites grow 2–3px, which is the
+right direction — 7px text is not readable, so the floor is an accessibility fix as much
+as a token one.
 | CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner**, see below (Faz 5.4) |
 
 **Faz 4 (colour discipline) and 5.2/5.3 are complete**: all six colour rules read 0,
