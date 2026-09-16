@@ -2,12 +2,14 @@
 
 import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
+import { DatePicker } from "@workspace/ui/components/date-picker";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
 } from "@workspace/ui/components/dialog";
+import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
 import {
@@ -2016,14 +2018,12 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Tahmini Efor (Saat)
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  <NumberInput
                     min={0}
-                    onChange={(e) =>
-                      setDrawerEstimatedHours(Number(e.target.value))
-                    }
-                    step="0.5"
-                    type="number"
+                    onChange={setDrawerEstimatedHours}
+                    precision={1}
+                    showStepper
+                    step={0.5}
                     value={drawerEstimatedHours}
                   />
                 </div>
@@ -2032,14 +2032,12 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Harcanan Efor (Saat)
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  <NumberInput
                     min={0}
-                    onChange={(e) =>
-                      setDrawerLoggedHours(Number(e.target.value))
-                    }
-                    step="0.5"
-                    type="number"
+                    onChange={setDrawerLoggedHours}
+                    precision={1}
+                    showStepper
+                    step={0.5}
                     value={drawerLoggedHours}
                   />
                 </div>
@@ -2048,10 +2046,8 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Bitiş Tarihi
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setDrawerDueDate(e.target.value)}
-                    type="date"
+                  <DatePicker
+                    onChange={setDrawerDueDate}
                     value={drawerDueDate}
                   />
                 </div>
@@ -2441,10 +2437,8 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Başlangıç
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewSprintStartDate(e.target.value)}
-                    type="date"
+                  <DatePicker
+                    onChange={setNewSprintStartDate}
                     value={newSprintStartDate}
                   />
                 </div>
@@ -2453,10 +2447,8 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Bitiş
                   </label>
-                  <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewSprintEndDate(e.target.value)}
-                    type="date"
+                  <DatePicker
+                    onChange={setNewSprintEndDate}
                     value={newSprintEndDate}
                   />
                 </div>
