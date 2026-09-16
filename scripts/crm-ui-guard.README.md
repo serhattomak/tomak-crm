@@ -31,7 +31,8 @@ sweep (ADR-0004 §9). Rules without an explicit `severity` are errors.
 **16 of the 17 rules are `error`; one is `warn`.** The single advisory rule is the
 newest — `LIGHT_SURFACE_NO_DARK`, born advisory in the dark-mode pass for the same
 reason every rule before it was: it has to prove itself clean before it can block a
-build. It reads 0 today, so the promotion is available as soon as that is trusted.
+build. It reads 0 today, so the promotion is available as soon as that is trusted — and
+since 2026-09-16 that zero covers the branch shapes the rule used to be blind to.
 
 ## Current baseline (`--full`, 2026-09-16)
 
@@ -180,10 +181,38 @@ Top offenders in the old baseline (`vehicles` 191, `portal/…/PortalClient` 114
 `projects/[projectId]` 102) were all violet and slate counts; those files no
 longer appear.
 
+## Branch awareness (2026-09-16)
+
+`classExpressions` read a class expression as **one union** of literals. That is right
+for `cn("bg-white", "dark:bg-zinc-900")` — comma-separated arguments all apply — and
+wrong for the branches of a conditional, which are **alternatives**. `cond ? "a" : "b"`
+and `` `base ${cond ? "a" : "b"}` `` both arrived as a single blob, so a `dark:` partner
+in one branch covered a light surface that lived alone in the other.
+
+Swept before changing anything: **12,540 class expressions — 395 with an alternative,
+12,145 without.** Every literal now carries a `scope`: the union of the literals that
+can coexist with it, computed from the branch it sits in at each conditional level. The
+rule searches for the partner in that `scope`. An expression with no conditional has
+one coexistence class, so its `scope` collapses to the old union and its verdict is
+**byte-identical** — measured across all 12,145, not hoped for. That equivalence is what
+makes the change safe to reason about.
+
+What it found: **3** light surfaces in `organization/page.tsx` (the Active/OnLeave
+employee badges, table and card) whose `dark:` partner sat in a sibling branch. They
+were fixed in the same session and `--full` is back to 0 errors · 0 advisory.
+
+Two of them were invisible to the runtime audit as well, and not because it is broken:
+the audited data had **zero employees**, so the badge never rendered. A route-level
+"starved" floor cannot see a *sub-surface* no data reaches. The static rule is
+data-independent; the audit is not, and neither replaces the other.
+
+`cn()` is still one surface. The fixture pair pins it, and so does the
+"4245 candidates / real 30" note in `classExpressions`' own header.
+
 ## Proof (fixtures)
 
 ```sh
-npm run guard:crm-ui:fixtures   # asserts all four properties below at once
+npm run guard:crm-ui:fixtures   # asserts all six properties below at once
 ```
 
 The pair proves two things in each direction, and `crm-ui-guard.fixtures.mjs` asserts all of
@@ -191,7 +220,9 @@ them:
 
 - `clean.tsx` exits **0** — no false positives on `translate-*`, a data-driven `colorHex`,
   a **dynamic** `style` (computed width), the `Table` primitive, an on-scale `duration-150`
-  with `ease-crm`, a `text-2xs` token, or an icon button that already has a name.
+  with `ease-crm`, a `text-2xs` token, an icon button that already has a name, a `cn()`
+  union, a fully paired conditional, or a conditional `dark:` partner on a surface that
+  sits outside the conditional.
 - `dirty.tsx` exits **1**, and produces **every one of the 17 rule ids** — none missing, none
   unknown.
 
@@ -199,6 +230,19 @@ That rule-id assertion is not decoration. `dirty.tsx` claimed "every violation c
 once" while firing for only 9 of 16, and its `INPUT_NUMBER` case never fired at all, because
 its multi-line input put an arrow function before `type=`. The check was "does the file fail",
 and it did — for the other eight rules. An exit code is not coverage.
+
+Two more assertions came with branch awareness, because the rule-id **set** has blind
+spots of its own — the same defect one level down:
+
+- **`clean.tsx` must report NOTHING.** The old check was "exits 0", and an advisory rule
+  never affects the exit code, so a false positive in the advisory layer could not be
+  observed here at all.
+- **`dirty.tsx`'s `LIGHT_SURFACE_NO_DARK` hit count is exact (2).** A set assertion
+  cannot see a rule that keeps firing once while failing to see a whole shape, and
+  `dirty.tsx` already fails for 16 other reasons — so reverted branch-awareness would
+  stay green. The count is what makes the branch case load-bearing: strip it and the
+  count drops to 1. That was verified by removing the case in a scratch copy, not
+  assumed.
 
 ## CI gate note
 

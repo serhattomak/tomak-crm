@@ -158,6 +158,15 @@ near-white page: 1.04:1 on all 31 routes, a false finding. The runtime audit now
 because `from-indigo-50` is not a `bg-` class. Four cards carried a light gradient over
 `bg-card` with no `dark:` stops for that reason.
 
+**A route that renders is not a surface that renders.** The dark-mode audit's
+starved-route floor catches a page that failed to load; it cannot catch a *sub-surface*
+no data reaches. On 2026-09-16 the `organization` route audited 146 elements while the
+employee list was empty, so the Active/OnLeave status badges never mounted — and their
+missing dark surface stayed invisible inside a 31-route sweep that reported success.
+The **static rule** found them, because a class string exists whether or not rows do.
+Neither instrument replaces the other: before trusting either zero, say which one
+depends on data.
+
 ## Verification rules
 
 1. **Every detector gets a positive control.** Inject a known defect; if the detector
