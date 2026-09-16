@@ -10,22 +10,28 @@ A multi-tenant CRM platform (Next.js 16 frontend + .NET 10 API + Supabase).
 
 ## Tooling
 
-This project uses **Ultracite** (Biome under the hood) for formatting and linting.
+This project uses **Ultracite** (Biome under the hood). Biome is the one formatter and
+Ultracite's rule set is the lint configuration.
 
 | Task | Command |
 |---|---|
-| Format & fix | `npm exec -- ultracite fix` |
-| Check only | `npm exec -- ultracite check` |
+| Format | `npm run format` (Biome, root) |
+| Lint check | `npm run check` (Ultracite/Biome, read-only) |
 | Diagnose setup | `npm exec -- ultracite doctor` |
+| ESLint (the CI lint) | `npm run lint` |
 
-Run `npm exec -- ultracite fix` before committing.
+Prettier is gone as of 2026-09-16 (roadmap #18). `.prettierrc` conflicted with the code —
+it said `semi: false` while `apps/web` is written with semicolons — and `apps/web` /
+`packages/ui` each declared `format: prettier --write`, so `npm run format` used to fight
+the tree. `format` is now a single root script that runs where `biome.jsonc` is; **do not**
+run Biome from a package directory, where it finds no config and silently uses its defaults.
 
-> **Known gap (roadmap #18):** `biome.jsonc` extends `ultracite/biome/core` and
-> `ultracite/biome/react` with no `files.includes`, so it now sees all of `apps/`
-> and `packages/`. Those were never run through it — they are Prettier-styled with
-> semicolons while the root `.prettierrc` says `semi: false`. Ultracite is NOT part
-> of any CI gate (`npm run lint` is ESLint via Turbo); wiring it in is a one-time
-> large diff that needs its own commit and review.
+> **Known gap (roadmap #31):** `npm run check` reports **5554** findings and they are
+> **lint rules, not formatting** — the formatter is clean (`npm run format` is a no-op).
+> The largest are `noJsxPropsBind` (1693, adopting it rewrites how every handler is passed)
+> and `useSortedClasses` (1317, mechanical). ~470 are a11y. Ultracite is still NOT part of
+> any CI gate; `npm run lint` is ESLint via Turbo, and the ESLint baseline is 0 errors with
+> 343 warnings. Wiring Ultracite in is a per-rule triage, not a one-time diff.
 
 ## Repository layout
 

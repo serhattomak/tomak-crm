@@ -106,17 +106,20 @@ a bare total (37) would have looked perfectly plausible.
 
 ## Line endings
 
-`core.autocrlf = true` in this repo, with **no `.gitattributes`**. The working tree is
-therefore CRLF while every blob is LF. This is not cosmetic:
+`core.autocrlf = true` **and** (since `f0e594b`) `.gitattributes` with `* text=auto eol=lf`.
+The pin is what the tree depends on — autocrlf alone checks out CRLF while every blob is LF.
+Measured after the pin: **0 CRLF, 483 LF, 0 mixed.**
 
 - `edit` does not match multi-line content in CRLF files. Edit those with a script that
   uses the file's own EOL and refuses to write when the match count is not exactly one.
 - **Comparing a checked-out file against `git show` flags every text file as different.**
   This produced a false "254 files differ" during the repo merge. Compare blob to blob.
-- It inflates `npm run check` (Biome flags every line ending), which is why roadmap #18
-  cannot be sized before the line-ending config is fixed.
-- Within the web app, never run `prettier --write`: the root `.prettierrc` says
-  `semi: false` while the code has semicolons. A 55-line change became 431 lines.
+- It inflated `npm run check` (Biome flags every line ending), which is why roadmap #18 could
+  not be sized first. **Sized 2026-09-16:** the CRLF share was **44 diagnostics, 0.8%**; the
+  rest was real.
+- ~~Never run `prettier --write` in the web app~~ — **resolved 2026-09-16**: Prettier is no
+  longer in this repo. `.prettierrc` said `semi: false` while the code has semicolons, so
+  running it turned a 55-line change into 431 lines. Biome is now the one formatter.
 
 ## Measurement traps
 
@@ -313,8 +316,21 @@ first is recorded under "Tool limits". Present the glob's zero only with a walk 
 - **`$ErrorActionPreference = "Stop"` plus `Write-Error` closes the window on failure**,
   so the error is printed and unreadable. A script that hides its own failure reports
   nothing: capture stdout, stderr and the exit code, log them, and wait before exiting.
-- **Never write repo files with `Set-Content`** (mojibake). Use `edit`/`write`, or a Node
-  script with explicit UTF-8.
+- **Never write files with `Set-Content`** (mojibake). Use `edit`/`write`, or a Node script
+  with explicit UTF-8. This is not repo-specific: `... | Set-Content -Encoding utf8 -NoNewline`
+  in PowerShell 5.1 **double-encoded an already-UTF-8 file**, turning `SONUÇ` into `SONUÃ‡`,
+  on a throwaway script where it was harmless. It would have been silent corruption on a source
+  file, and nothing would have failed.
+- **`-LiteralPath` for any path containing `[` or `]`.** PowerShell reads `[tenantSlug]` as a
+  glob character class, so `Test-Path`/`Select-String -Path` on a route path returns **nothing,
+  without error** — a five-line loop once printed an empty table and looked like "no matches".
+  Use `-LiteralPath`, or glob-free Node.
+- **`execFileSync("npx", …)` raises `ENOENT` on Windows** — `npx` is a `.cmd` shim and
+  `spawn`/`execFile` do not resolve it. Call the tool's real binary, or go through the shell.
+- **Check whether a tool caps its own output before reading a breakdown from it.** Biome's
+  `check` prints 20 diagnostics and then "Diagnostics not shown: 5629". The total on the last
+  line was right; the per-rule table built from the visible ones described 0.3% of the tree and
+  read as though the rest were something else. Re-run with `--max-diagnostics=none`.
 - **Inline `node -e` breaks on quoting here**, repeatedly. Write a script file.
 - **Git writes are never parallel** — `index.lock` collides and a commit's message ends
   up describing a different file than its content. Long messages go in a file with
