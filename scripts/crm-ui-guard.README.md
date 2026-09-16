@@ -13,7 +13,7 @@ scope (`apps/web`, `packages/ui`).
 # from crm-monorepo/
 npm run guard:crm-ui            # THE gate: full CRM sweep (must PASS)
 npm run guard:crm-ui:full       # identical — kept because ADR-0004, the roadmap and CI name it
-npm run guard:crm-ui:fixtures   # proves the fixture pair proves something (16/16 rules)
+npm run guard:crm-ui:fixtures   # proves the fixture pair proves something (17/17 rules)
 node scripts/crm-ui-guard.mjs --help
 node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 ```
@@ -28,14 +28,14 @@ node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 A `warn` rule is promoted to `error` only once that rule is clean in a `--full`
 sweep (ADR-0004 §9). Rules without an explicit `severity` are errors.
 
-**Every rule is `error` now.** The advisory layer is still implemented and still
-documented here, because the next rule should be able to be born advisory and earn
-its promotion — it is simply empty as of Faz 7, when all seven rules that had been
-born advisory were promoted after each one measured clean.
+**16 of the 17 rules are `error`; one is `warn`.** The single advisory rule is the
+newest — `LIGHT_SURFACE_NO_DARK`, born advisory in the dark-mode pass for the same
+reason every rule before it was: it has to prove itself clean before it can block a
+build. It reads 0 today, so the promotion is available as soon as that is trusted.
 
 ## Current baseline (`--full`, 2026-09-16)
 
-192 files scanned. **0 errors · 0 advisory warnings.** (12 hits suppressed by the
+192 files scanned. **0 errors · 0 advisory warnings.** (28 hits suppressed by the
 allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 
 | Rule | Severity | Hits | Use instead |
@@ -56,6 +56,7 @@ allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 | MOTION_DURATION | error | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
 | MOTION_EASE | error | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
 | A11Y_ICON_BUTTON | error | **0** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
+| LIGHT_SURFACE_NO_DARK | warn | **0** | `bg-muted` (light ~zinc-100 / dark ~zinc-800) for surfaces, `bg-border` for 1px rules — a light surface with no `dark:` counterpart keeps its light value in dark mode |
 
 **Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
 20 and 19, and swept to 0 — and `prefers-reduced-motion` went from **zero implementation
@@ -100,7 +101,7 @@ icon cannot tell them apart; the handler can. Labels are entity-qualified for th
 reason — a table of four rows should not read as four identical "Sil"s.
 
 **The sweep is fully clean — 0 errors, 0 warnings, and 0 advisory of any kind.** From the
-Faz 0 baseline of 1458 errors and 1334 advisories, **all 16 rules read zero**. In Faz 7 the
+Faz 0 baseline of 1458 errors and 1334 advisories, **all 17 rules read zero** — including the
 seven advisory rules were promoted to `error`, so the guard no longer has a soft layer to
 hide in. Nothing in this file is hand-maintained: a count is a copy of a measurement, and the
 moment it stops matching the guard it is wrong.
@@ -191,7 +192,7 @@ them:
 - `clean.tsx` exits **0** — no false positives on `translate-*`, a data-driven `colorHex`,
   a **dynamic** `style` (computed width), the `Table` primitive, an on-scale `duration-150`
   with `ease-crm`, a `text-2xs` token, or an icon button that already has a name.
-- `dirty.tsx` exits **1**, and produces **every one of the 16 rule ids** — none missing, none
+- `dirty.tsx` exits **1**, and produces **every one of the 17 rule ids** — none missing, none
   unknown.
 
 That rule-id assertion is not decoration. `dirty.tsx` claimed "every violation class exactly
@@ -218,13 +219,16 @@ typecheck, lint and build; `api` runs the .NET build. Prettier is deliberately a
 `apps/web` is not covered by any formatter, so a format check could not pass.
 
 The allowlist (`crm-ui-guard.allowlist.json`) is for documented, single-rule
-exceptions — prefer fixing over listing. It holds **6 entries**, each with its reason
+exceptions — prefer fixing over listing. It holds **8 entries**, each with its reason
 recorded: the Google "G" brand fills on `login` and `register` (brand guidelines forbid
 tokenizing them); the `NumberInput` and `Table` primitives' own internal
 `<input type="number">` and `<table>` (the guard cannot tell an abstraction from a
 consumer — fixing is impossible by construction); the pipeline stage colour, which is
 persisted user-editable data rather than a styling literal; and the `orders/[orderId]/print`
-table, a print surface whose border grid and inverted header do not follow the theme. Note
+table, a print surface whose border grid and inverted header do not follow the theme; and two
+light-only surfaces exempted from `LIGHT_SURFACE_NO_DARK` — the customer portal (zero `dark:`
+usages in 900+ lines, and it is a document a customer opens from a token link) and the same
+`orders/[orderId]/print` route (paper has no dark mode). Note
 that print and e-mail HTML palettes are **not** listed: they keep their hex by
 construction — those values never land in a position the guard matches — so an exemption
 would be meaningless. (An earlier revision of this file claimed they were listed.)
