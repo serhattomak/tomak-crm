@@ -10,19 +10,32 @@ being incapable of finding anything.
 
 ## Services
 
+Since 2026-09-17 the whole local environment is **one Docker Compose project**
+(`docker-compose.yml`, project `crm-monorepo`). That one project is also what
+Docker Desktop groups as a single entry with a single Start/Stop control.
+`supabase start` is no longer used; see "Supabase is Compose-managed" below.
+
 | Service | Address | Notes |
 |---|---|---|
-| Supabase API | `127.0.0.1:54321` | The middleware falls back here when env is missing |
-| Supabase DB | `127.0.0.1:54322` | `postgres` / `postgres` |
+| Supabase API (Kong) | `127.0.0.1:54321` | The middleware falls back here when env is missing |
+| Supabase DB | `127.0.0.1:54322` | `postgres` / `postgres`; container `crm-supabase-db` |
 | Supabase Studio | `127.0.0.1:54323` | |
 | Mailpit | `127.0.0.1:54324` | |
+| Realtime | `127.0.0.1:54325` | Reachable, but the app notifies over SignalR, not this |
 | .NET API | `localhost:5000` | CRM data; `next.config.ts` proxies `/api/*` and `/hubs/*` |
 | Web | `127.0.0.1:3210` | Playwright's `webServer` builds and starts it |
-| RabbitMQ | `5672` / `15672` | `docker compose up -d` |
-| Redis | `6379` | `docker compose up -d` |
+| RabbitMQ | `5672` / `15672` | same compose project |
+| Redis | `6379` | same compose project |
 
 Ports are not reliable as a liveness check: `Test-NetConnection` on `54321` succeeded
 while the whole stack was stopped. Check containers, not ports.
+
+Also: **a published port is not a served port, and `docker compose ps` is not a
+health check.** Measured 2026-09-17, three separate healthchecks disagreed with
+reality in the same stack — see "Supabase is Compose-managed" below. Run
+`docker compose ps --format "{{.Name}}|{{.Status}}"` and expect `(healthy)`
+everywhere; a bare `Up` on `crm-supabase-rest` is normal (it has no healthcheck).
+
 
 ## Supabase auth schema: two columns, two types
 
@@ -60,16 +73,220 @@ empty storage while the real data sat on disk under the old name.
 
 | What | Where | Why |
 |---|---|---|
-| `project_id = "crm-monorepo"` | `supabase/config.toml` | Container and volume names (`supabase_db_crm-monorepo`) |
-| `name: crm-monorepo` | `docker-compose.yml` | Volume names (`crm-monorepo_rabbitmq_data`) |
+| `project_id = "crm-monorepo"` | `supabase/config.toml` | CLI container/volume names (`supabase_db_crm-monorepo`) |
+| `name: crm-monorepo` | `docker-compose.yml` | Compose project name → volume names (`crm-monorepo_rabbitmq_data`) |
 
-This machine already carries an orphaned `supabase_db_crm` volume from an earlier
-attempt, so the failure mode is not hypothetical. Verify with:
+**The `name:` pin is now load-bearing in a second way.** The compose file mounts
+two volumes by their literal names:
+
+```yaml
+  supabase_db_data:
+    name: supabase_db_crm-monorepo
+  supabase_storage_data:
+    name: supabase_storage_crm-monorepo
+```
+
+Those are the volumes the Supabase CLI created. They are spelled out precisely so
+that the compose stack adopts the CLI's data instead of creating empty twins. The
+267 MB database (42 migrations, 119 `public` tables, the `auth.users` row) lives
+in `supabase_db_crm-monorepo`; `supabase_storage_crm-monorepo` is genuinely empty
+(only an empty `stub/` directory — nothing has ever been uploaded).
+
+This machine used to carry orphaned `supabase_db_crm` and `supabase_storage_crm`
+volumes from an earlier attempt, so the failure mode was not hypothetical. Both
+were inspected and **deleted 2026-09-17** — `supabase_db_crm` turned out to be a
+bare Supabase database with `public_tables = 0` and `auth.users = 0` (the CRM
+migrations had never been applied to it), and `supabase_storage_crm` was empty.
+Nine further orphaned volumes belong to other projects (hrga, n8n, a stray
+`docker_*` set) and were left alone. Verify the live pin with:
 
 ```sh
-docker inspect supabase_db_crm-monorepo --format '{{range .Mounts}}{{.Name}}{{println}}{{end}}'
+docker volume inspect supabase_db_crm-monorepo --format '{{.Name}} {{.Mountpoint}}'
+docker inspect crm-supabase-db --format '{{range .Mounts}}{{.Name}}{{println}}{{end}}'
 # expect: supabase_db_crm-monorepo
 ```
+
+## Supabase is Compose-managed (2026-09-17)
+
+`docker-compose.yml` runs the Supabase services directly:
+
+| Service | Image |
+|---|---|
+| postgres | `public.ecr.aws/supabase/postgres:17.6.1.165` |
+| auth | `public.ecr.aws/supabase/gotrue:v2.195.0` |
+| rest | `public.ecr.aws/supabase/postgrest:v16.1` |
+| storage | `public.ecr.aws/supabase/storage-api:v1.70.3` |
+| realtime | `public.ecr.aws/supabase/realtime:v2.129.3` |
+| meta | `public.ecr.aws/supabase/postgres-meta:v0.97.0` |
+| studio | `public.ecr.aws/supabase/studio:2026.08.10-sha-5b68af1` |
+| kong | `public.ecr.aws/supabase/kong:2.8.1` |
+| mailpit | `public.ecr.aws/supabase/mailpit:v1.30.2` |
+
+Dropped as unused, each checked rather than assumed: `edge-runtime` (no
+`supabase/functions/` directory), `logflare`/analytics + `vector` (nothing reads
+analytics), `supavisor`/pooler (`[db.pooler] enabled = false`).
+
+**Realtime is kept even though nothing uses it.** The web app's realtime is
+**SignalR** (`@microsoft/signalr` → `/hubs/crm` → `CrmHub.cs`), not Supabase
+Realtime. `grep` for `.channel(` / `.subscribe(` / `removeChannel` returns 0.
+
+Storage, by contrast, **is** load-bearing: `SupabaseStorageService.cs`,
+`StorageEndpoints.cs`, `UploadProductImage`, `CvUploadFeatures.cs`, and five
+buckets (`product-images`, `crm-public`, `crm-private`, `email-attachments`,
+`recruitment-cvs`). Any future "trim the stack" pass must keep `storage-api`.
+
+### Four things that were measured, not guessed
+
+1. **Kong does not interpolate env vars in declarative config.** `nereye`'s and
+   W2Wear's `kong.yml` both write `${SUPABASE_ANON_KEY}`; measured here by parsing
+   the file and reading the values back from Kong's Admin API, both `${VAR}` and
+   `${{ env "VAR" }}` survive as **literal text**. Nobody noticed because no route
+   applies the `key-auth` plugin, so those credentials were never validated.
+   `docker/supabase/kong.yml` therefore hardcodes the (public, local-dev) keys.
+
+2. **GoTrue must connect as `supabase_auth_admin`, not `postgres`.** `postgres` is
+   **not** a superuser on this database (`rolsuper = f`) and holds only USAGE on
+   schema `auth`. Running GoTrue as `postgres` dies on its first migration with
+   `permission denied for schema auth (SQLSTATE 42501)`. Likewise storage-api needs
+   `supabase_storage_admin`.
+
+3. **PostgREST must connect as `postgres`, not the conventional `authenticator`.**
+   PostgREST switches roles per request, and here only `postgres` is a member of
+   `anon`/`authenticated`/`service_role` — `pg_has_role('authenticator','anon','USAGE')`
+   is `false`. Using `authenticator` would fail every request at `SET ROLE`.
+
+4. **Three healthchecks lied about healthy services.** All three are cases of a
+   probe that cannot see the thing it claims to check:
+
+   - `meta` — probed with `wget`, which does not exist in that image (exit 127).
+     Fixed by probing with `node`, which does.
+   - `storage` — probed `http://localhost:5000/status`; storage-api binds to
+     `127.0.0.1` only, and inside the container `localhost` resolves to `[::1]`
+     first, so it got `Connection refused`. `127.0.0.1` exits 0, `localhost` exits 1.
+     **W2Wear's compose still has this fault.**
+   - `studio` — the image's own probe fetches `localhost:3000`, but the Next server
+     binds to the container hostname (`HOSTNAME` is *unset* in that container;
+     `require("os").hostname()` is the value that works). The UI answered 200 on
+     `127.0.0.1:54323` from the host the whole time.
+
+   Each was confirmed with a negative control: the corrected probe exits 0 against
+   the real endpoint and non-zero against a dead port.
+
+### Migrations still work
+
+`supabase start/stop/status` are retired (the compose stack owns those ports), but
+the migration tooling is unaffected — it only needs a connection string:
+
+```sh
+npm run db:migrate          # supabase db push  --db-url postgresql://postgres:postgres@127.0.0.1:54322/postgres
+npm run db:migrate:status   # supabase migration list --db-url ...
+npm run db:psql             # docker exec -it crm-supabase-db psql -U postgres -d postgres
+```
+
+Verified 2026-09-17: `migration list --db-url` reports **42 local = 42 remote**,
+matching the 42 files in `supabase/migrations/`, from `20260819000001` to
+`20260910000003`. `db reset`, `migration up` and `gen types` all accept `--db-url`
+on CLI 2.67.1 too.
+
+### Collation version mismatch — found and fixed 2026-09-17
+
+The `postgres` image moved from `17.6.1.064` to `17.6.1.165`, which bundles a
+newer glibc, so every `psql` invocation printed:
+
+```
+WARNING: database "postgres" has a collation version mismatch
+DETAIL: The database was created using collation version 153.120, but the
+        operating system provides version 153.121.
+```
+
+It was a warning, not an error, but it is not cosmetic: the collation *table*
+changed, and indexes on text columns were still sorted by the old one. `REFRESH`
+alone would have recorded the new version while leaving those indexes misordered —
+which is worse than the warning, because the warning at least tells you.
+
+Done instead, in the order the HINT gives (rebuild, then record):
+
+```sql
+REINDEX DATABASE postgres;                       -- 0.3s; 201 collation-sensitive
+                                                 -- indexes over 3.4 MB / 21 MB db
+ALTER DATABASE postgres   REFRESH COLLATION VERSION;
+ALTER DATABASE template1  REFRESH COLLATION VERSION;
+```
+
+Verified: `datcollversion` `153.120 → 153.121` for both `postgres` and `template1`,
+no warning on a plain `psql`, `invalid_indexes = 0`, and the full functional suite
+(8/8) plus row counts unchanged.
+
+Two details worth keeping:
+
+- **`template1` needed `supabase_admin`, not `postgres`** — it failed with
+  `ERROR: must be owner of database template1`. `postgres` is not a superuser on
+  this database (see the role note above), so any database-level command that
+  touches shared objects has to go through `supabase_admin`:
+  `docker exec -e PGPASSWORD=postgres crm-supabase-db psql -U supabase_admin -d postgres -c "…"`
+- **`template0` has no `datcollversion` and that is correct** — it is the read-only
+  pristine template. Do not try to refresh it.
+
+
+
+## Docker build cache
+
+Measured 2026-09-17, starting point: **19.54 GB across 306 records**, the single
+largest reclaimable pool on this machine after images.
+
+**A build cache prune cannot touch images or volumes.** These are three separate
+stores: cache records are the "I already ran this Dockerfile step" memo, nothing
+more. Proven rather than asserted — image list, volume list and per-volume sizes
+were fingerprinted before and after, and a prune of 15.61 GB changed
+`0 images, 0 volumes`. That matters here because two projects must not be
+disturbed, and both are safe by construction:
+
+- **W2Wear's models are not in the build cache.** They live in volumes —
+  `w2wear-ollama-data` (3.2 GB), `w2wear-tryon-cache` (4.6 GB),
+  `w2wear-tryon-models` (1.4 GB), `w2wear-photo-processor-models` (973 MB).
+- **W2Wear's Dockerfiles never download a model at build time.** Checked all three
+  (`catvton`, `photo-processor`, `avatar-generator`): they only `apt-get`, `pip
+  install` and `git clone`. No `snapshot_download`, no `from_pretrained`. So even a
+  cold rebuild cannot re-download a model — it would only re-fetch pip packages.
+- **yorgan-net-cursor is a `dotnet restore` + `dotnet publish`.** Its cold rebuild
+  is minutes, and it downloads no weights.
+
+So the real price of a cache prune is rebuilt layers for whoever next runs
+`docker build` — never a lost image, lost volume, or re-downloaded model. Which of
+those 306 records still matched a current Dockerfile is unknowable; a record's
+`Last used` only advances when a build actually matches it, so an 8-month-old
+`Last used` is at least *unused*, not necessarily *invalid*.
+
+### The trap: filters that silently do nothing
+
+**Do not trust `--filter until=` or `--max-used-space=` to bound a cache prune.**
+
+| Command | Reported |
+|---|---|
+| `docker builder prune --filter until=4320h -f` | `Total: 0B` |
+| `docker builder prune --max-used-space=19GB -f --verbose` | `Total: 0B` |
+| `docker buildx prune -f` | `Total: 15.61GB` |
+
+Three filtered invocations reported **0B** against a 19.54 GB cache; the unfiltered
+`docker buildx prune` then removed 15.61 GB. The two that returned nothing both used
+`docker builder`; the one that worked used `docker buildx` — that correlation is the
+likely cause but is **untested**, and cannot be tested while the remaining cache is
+0 B reclaimable. Re-check when cache accumulates before relying on either form.
+
+The failure direction is the dangerous one: a no-op prune **looks like a successful
+targeted sweep** ("nothing needed removing"), which is this file's whole theme.
+
+### Attribution, and what is left
+
+`docker system df -v --format "{{json .BuildCache}}"` carries a `Description` field
+naming the source — e.g. `pulled from mcr.microsoft.com/dotnet/sdk:10.0@sha256:…`.
+That is the only way to attribute a cache record to a project; `buildx du --verbose`
+does not expose it. Use it before any future cache decision.
+
+After the prune: **306 → 53 records, 19.54 GB → 3.933 GB, reclaimable 0 B.** The
+remainder is BuildKit's *Shared* cache — layers the existing images still reference,
+so it is unreclaimable while those images exist. There is nothing further to win here
+until images are deleted.
 
 ## Tool limits
 
@@ -77,12 +294,31 @@ docker inspect supabase_db_crm-monorepo --format '{{range .Mounts}}{{.Name}}{{pr
   and `supabase db advisors` needs 2.81.3+, so **neither exists here**. Use the
   container:
   ```sh
-  docker exec supabase_db_crm-monorepo psql -U postgres -d postgres -tAc "select 1"
+  docker exec crm-supabase-db psql -U postgres -d postgres -tAc "select 1"
   ```
-- **No `psql` on PATH.** Docker is the way in.
-- **`supabase status` proves the config parses, not that the stack works.** Its
-  `No such container: supabase_db_crm-monorepo` is evidence that `project_id` resolved
-  correctly — which is useful, but it is not a running stack.
+- **No `psql` on PATH.** Docker is the way in. `npm run db:psql` opens a shell.
+- **A `node -e` one-liner cannot be passed through PowerShell here.** Measured
+  repeatedly on 2026-09-17: nested double quotes survive as `Syntax error: "("
+  unexpected`, and a file written from PowerShell arrives with a CR that `sh`
+  reports as `sh: 2: : not found`. Write a real script file and pipe it —
+  `Get-Content -Raw script.sh | docker exec -i <container> sh` — or `docker cp`
+  the file in and run it. This applies to healthcheck authoring too: validate the
+  probe by running it, then let Docker reproduce it.
+- **`docker compose up -d` writes its progress to stderr, and `2>&1` in PowerShell
+  turns that into `NativeCommandError` — which makes the reported exit code lie.**
+  Measured 2026-09-17: `docker compose up -d` echoed "exit 1" three times while
+  every container was healthy and nothing had restarted. The real code, with
+  stderr suppressed, is **0** — and `docker compose up -d --wait` is also 0. Never
+  conclude a compose command failed from the exit status alone; check
+  `--wait` and `docker inspect --format '{{.RestartCount}}'` as well.
+- **`supabase status` is retired here** — the stack is Compose-managed, so it no
+  longer describes anything. `docker compose ps` is the status command now.
+- **Do not read `docker compose ps` as proof a service works.** Three healthchecks
+  in this stack reported `(unhealthy)` for services that were serving traffic.
+- **Dotted label keys break `--format` templates.** `docker inspect --format
+  '{{index .Config.Labels "com.docker.compose.project"}}'` fails with
+  `function "com" not defined`. Read `{{json .Config.Labels}}` and parse it
+  (Node is easiest) instead.
 - **`git subtree` is available** at `C:/Program Files/Git/mingw64/libexec/git-core/git-subtree`.
   `git subtree --help` prints nothing (no man page), which looks like absence and is not.
 - **`glob` reported "No files found" for files that provably existed**, confirmed by a
