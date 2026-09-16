@@ -44,6 +44,8 @@ test-results/
 playwright-report/
 blob-report/
 .playwright/
+# Saved signed-in session — contains a real auth token, never tracked
+.auth/
 
 # ============================================================================
 # Next.js & Web
