@@ -12,7 +12,7 @@ scope (`apps/web`, `packages/ui`).
 ```sh
 # from crm-monorepo/
 npm run guard:crm-ui            # scoped CI gate: Batch 1–3 touched files (must PASS)
-npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently PASS — 0 errors, 1320 advisory)
+npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently PASS — 0 errors, 106 advisory)
 node scripts/crm-ui-guard.mjs --help
 node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 ```
@@ -30,13 +30,14 @@ original 9 rules are unchanged by the advisory layer.
 
 ## Current baseline (`--full`, 2026-09-16)
 
-189 files scanned. **0 errors · 1320 advisory warnings.** (10 hits suppressed by the
+189 files scanned. **0 errors · 106 advisory warnings.** (12 hits suppressed by the
 allowlist.) **No blocking violation remains anywhere in CRM scope.**
 
 | Rule | Severity | Hits | Use instead |
 | --- | --- | --- | --- |
 | NATIVE_SELECT | error | **0** | `SelectField` (closed enum) / `Combobox` (data-bound) — source rule, `crm-ui-standards.md` §2.5.1 |
 | INPUT_NUMBER | error | **0** (1 recorded) | `NumberInput` |
+| INPUT_DATE | error | **0** | `DatePicker` (clearable, YYYY-MM-DD, TR locale) / `DateRangePicker` |
 | VIOLET | error | **0** | `blue-*` scale, tone for tone (Faz 4.1) |
 | SLATE | error | **0** | `zinc-*` (Faz 4.0) |
 | FUCHSIA | error | **0** | `blue-*` scale, tone for tone (Faz 4.2) |
@@ -46,6 +47,9 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | ARBITRARY_TEXT_SIZE | warn | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
 | NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
 | INLINE_STYLE_PROP | warn | **0** | Tailwind classes + semantic tokens (Faz 5.6) |
+| CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner** (Faz 5.4) |
+| MOTION_DURATION | warn | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
+| MOTION_EASE | warn | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
 | A11Y_ICON_BUTTON | warn | **106** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
 
 **Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
@@ -65,9 +69,15 @@ for whoever sweeps it: the labels must be written in the project's Turkish vocab
 the glossary (Faz 6.3) belongs *before* the sweep, not after — otherwise 106 labels get
 written twice.
 
-**The full sweep is clean — 0 errors and 0 warnings.** From the Faz 0 baseline of 1458
-errors and 1334 advisories, every rule in this guard now reads zero, which is the
-precondition ADR-0004 §9 attached to promoting the warn rules to error in Faz 7.
+**The sweep is clean at the error level — 0 errors, and 6 of the 7 warn rules read
+zero.** From the Faz 0 baseline of 1458 errors and 1334 advisories, every rule in this
+guard now reads zero except `A11Y_ICON_BUTTON`, which is the newest warn rule and stands
+at 106. ADR-0004 §9 promotes a warn rule to error only when **that rule** is clean in a
+`--full` sweep, so six rules are eligible and `A11Y_ICON_BUTTON` is not until it is
+swept. This paragraph previously claimed "0 errors and 0 warnings" and "every rule reads
+zero" — true when it was written at the close of Faz 6.0, and falsified by the next
+commit, which added the a11y rule. A count in this file is a copy of a measurement, never
+a maintained estimate.
 
 **INLINE_STYLE_PROP (Faz 5.6)** needed the rule narrowed rather than the code changed.
 It flagged every `style={{}}` while §1.4 bans inline style for **static** values only and
@@ -97,7 +107,6 @@ decision, and it was to pull everything onto the scale with a **10px floor**: 9p
 7px there too since they sit below the floor. Those 15 sites grow 2–3px, which is the
 right direction — 7px text is not readable, so the floor is an accessibility fix as much
 as a token one.
-| CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner**, see below (Faz 5.4) |
 
 **Faz 4 (colour discipline) and 5.2/5.3 are complete**: all six colour rules read 0,
 `NATIVE_SELECT` 61 → 0 across 13 files, `NATIVE_TABLE` 61 → 0 across 28. `--full` has
@@ -168,14 +177,16 @@ deliberately narrower than a full sweep, and it is the gate that has actually ca
 regressions; removing it early would trade a proven gate for an unproven one.
 
 The allowlist (`crm-ui-guard.allowlist.json`) is for documented, single-rule
-exceptions — prefer fixing over listing. It holds 4 entries, each with its reason
+exceptions — prefer fixing over listing. It holds **6 entries**, each with its reason
 recorded: the Google "G" brand fills on `login` and `register` (brand guidelines forbid
-tokenizing them), the `NumberInput` primitive's own internal `<input type="number">`
-(the guard cannot tell an abstraction from a consumer), and the pipeline stage colour,
-which is persisted user-editable data rather than a styling literal. Note that print and
-e-mail HTML palettes are **not** listed: they keep their hex by construction — those
-values never land in a position the guard matches — so an exemption would be
-meaningless. (An earlier revision of this file claimed they were listed.)
+tokenizing them); the `NumberInput` and `Table` primitives' own internal
+`<input type="number">` and `<table>` (the guard cannot tell an abstraction from a
+consumer — fixing is impossible by construction); the pipeline stage colour, which is
+persisted user-editable data rather than a styling literal; and the `orders/[orderId]/print`
+table, a print surface whose border grid and inverted header do not follow the theme. Note
+that print and e-mail HTML palettes are **not** listed: they keep their hex by
+construction — those values never land in a position the guard matches — so an exemption
+would be meaningless. (An earlier revision of this file claimed they were listed.)
 
 ## Rules → fix map
 
