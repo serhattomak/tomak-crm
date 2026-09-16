@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
   DialogClose,
@@ -64,6 +65,20 @@ export default function ProjectDetailPage() {
   // Drag & Drop State
   const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    description: "",
+    onConfirm: () => {},
+    open: false,
+    title: "",
+  });
   const [dragOverSprintId, setDragOverSprintId] = useState<
     string | null | "backlog"
   >(null);
@@ -338,33 +353,40 @@ export default function ProjectDetailPage() {
   };
 
   // Delete Item
-  const handleDeleteItem = async (itemId: string) => {
+  const handleDeleteItem = (itemId: string) => {
     if (!activeTenant) {
       return;
     }
-    if (
-      !confirm(
-        "Bu iş maddesini kalıcı olarak silmek istediğinize emin misiniz?"
-      )
-    ) {
-      return;
-    }
 
-    // Optimistic Delete
-    setItems((prev) => prev.filter((i) => i.id !== itemId));
-    if (selectedItem?.id === itemId) {
-      setSelectedItem(null);
-    }
+    setConfirmDialog({
+      confirmText: "İş Maddesini Sil",
+      description:
+        "Bu iş maddesini kalıcı olarak silmek istediğinize emin misiniz?",
+      onConfirm: async () => {
+        // Optimistic Delete
+        setItems((prev) => prev.filter((i) => i.id !== itemId));
+        if (selectedItem?.id === itemId) {
+          setSelectedItem(null);
+        }
 
-    try {
-      const res = await ApiClient.deleteBacklogItem(itemId, activeTenant.id);
-      if (res.success) {
-        showToast("İş maddesi silindi.");
-      }
-    } catch {
-      showToast("Silme işlemi başarısız oldu.");
-      loadProjectData();
-    }
+        try {
+          const res = await ApiClient.deleteBacklogItem(
+            itemId,
+            activeTenant.id
+          );
+          if (res.success) {
+            showToast("İş maddesi silindi.");
+          }
+        } catch {
+          showToast("Silme işlemi başarısız oldu.");
+          loadProjectData();
+        }
+        setConfirmDialog((prev) => ({ ...prev, open: false }));
+      },
+      open: true,
+      title: "İş Maddesini Sil",
+      variant: "destructive",
+    });
   };
 
   // Handle Item Creation
@@ -2591,6 +2613,17 @@ export default function ProjectDetailPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </PageContainer>
   );
 }
