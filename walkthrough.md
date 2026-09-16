@@ -8,8 +8,8 @@ Kullanıcının `/grill-me` talebi doğrultusunda, Teklifler sayfasında yer ala
 
 | Dosya | Durum | Açıklama |
 |---|---|---|
-| [`components/email/template-modal.tsx`](file:///d:/serhatdev/crm/crm-monorepo/apps/web/components/email/template-modal.tsx) | [NEW] | İki panelli canlı önizleme modalı. Sol panelde form alanları (ad, konu, Handlebars HTML editörü, imleç konumuna tıklanabilir değişken çipleri, varsayılan şablon seçimi ve daraltılabilir teklif özel alanları), sağ panelde anlık sandbox `iframe` önizlemesi ve "HTML Kopyala" butonu. |
-| [`app/(dashboard)/[tenantSlug]/email/page.tsx`](file:///d:/serhatdev/crm/crm-monorepo/apps/web/app/%28dashboard%29/%5BtenantSlug%5D/email/page.tsx) | [MODIFY] | "Şablonlar" sekmesi başlığına `PermissionGate` korumalı **"Yeni Şablon Ekle"** butonu; `TemplateCard` kartlarına **"Düzenle"** ve güvenli (onay mekanizmalı) **"Sil"** aksiyonları eklendi. `TemplateModal` entegrasyonu tamamlandı. |
+| [`components/email/template-modal.tsx`](file:///d:/serhatdev/crm/apps/web/components/email/template-modal.tsx) | [NEW] | İki panelli canlı önizleme modalı. Sol panelde form alanları (ad, konu, Handlebars HTML editörü, imleç konumuna tıklanabilir değişken çipleri, varsayılan şablon seçimi ve daraltılabilir teklif özel alanları), sağ panelde anlık sandbox `iframe` önizlemesi ve "HTML Kopyala" butonu. |
+| [`app/(dashboard)/[tenantSlug]/email/page.tsx`](file:///d:/serhatdev/crm/apps/web/app/%28dashboard%29/%5BtenantSlug%5D/email/page.tsx) | [MODIFY] | "Şablonlar" sekmesi başlığına `PermissionGate` korumalı **"Yeni Şablon Ekle"** butonu; `TemplateCard` kartlarına **"Düzenle"** ve güvenli (onay mekanizmalı) **"Sil"** aksiyonları eklendi. `TemplateModal` entegrasyonu tamamlandı. |
 
 ---
 
@@ -33,7 +33,7 @@ Kullanıcının `/grill-me` talebi doğrultusunda, Teklifler sayfasında yer ala
 
 - **Kök Neden:** Sandboxed `iframe` bileşenleri izole DOM bağlamında çalıştığı ve CRM teması `next-themes` tarafından `<html>` sınıfı (`.dark`) ile yönetildiği için, iframe içi gövde tarayıcı varsayılan siyah metin rengini (`#000000` / `#18181b`) alıyordu. Koyu modda ebeveyn konteyner `dark:bg-zinc-950` olduğundan, şeffaf iframe üzerinde siyah metin görünmez hale geliyordu.
 - **Çözüm:**
-  - [`lib/email-preview.ts`](file:///d:/serhatdev/crm/crm-monorepo/apps/web/lib/email-preview.ts): Sandboxed iframe'ler için güvenli HTML sarmalayıcısı (`renderEmailPreviewHtml`) oluşturuldu. Koyu modda `background: #09090b !important; color: #f4f4f5 !important;`, açık modda ise `background: #ffffff !important; color: #18181b !important;` zorunlu kılındı. Ayrıca `p, span, div, li, td, th, h1-h6 { color: inherit; }` ile unstyled HTML etiketlerinin metinlerinin her zaman okunabilirliği garanti altına alındı.
+  - [`lib/email-preview.ts`](file:///d:/serhatdev/crm/apps/web/lib/email-preview.ts): Sandboxed iframe'ler için güvenli HTML sarmalayıcısı (`renderEmailPreviewHtml`) oluşturuldu. Koyu modda `background: #09090b !important; color: #f4f4f5 !important;`, açık modda ise `background: #ffffff !important; color: #18181b !important;` zorunlu kılındı. Ayrıca `p, span, div, li, td, th, h1-h6 { color: inherit; }` ile unstyled HTML etiketlerinin metinlerinin her zaman okunabilirliği garanti altına alındı.
   - **Görünüm Seçici (Toggle):** `TemplateModal` ve `TemplatePreviewModal` bileşenlerine **"Kağıt Görünümü (Açık)"** / **"Koyu Görünüm"** butonu eklendi. Kullanıcı isterse e-postanın alıcıda (kağıt üzerinde) nasıl görüneceğini tek tıkla test edebilir.
   - İlgili tüm bileşenler (`template-modal.tsx`, `email/page.tsx`, `compose-modal.tsx`, `email-thread-drawer.tsx`) bu merkezi yapıya bağlandı.
 

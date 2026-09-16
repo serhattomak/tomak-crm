@@ -44,7 +44,7 @@ Bu çözüm;
 ## Implementation Decisions
 
 ### 1. Architectural Placement & Modularity
-- A new standalone backend module `CRM.Modules.Payroll` will be created in `crm-monorepo/apps/api/src/Modules/CRM.Modules.Payroll` following the monorepo's CQRS, EF Core, and FastEndpoints/IEndpoint architecture.
+- A new standalone backend module `CRM.Modules.Payroll` will be created in `apps/api/src/Modules/CRM.Modules.Payroll` following the monorepo's CQRS, EF Core, and FastEndpoints/IEndpoint architecture.
 - Full tenant isolation using `ITenantScopedEntity` across all payroll entities.
 - Clean separation between core calculation engine (`IPayrollCalculationEngine`), timesheet aggregation, and workflow state machine (Draft -> Calculated -> Approved -> Locked).
 

@@ -11,7 +11,7 @@ Bu dosya Faz 1 geliştirmelerini alt iş paketlerine (task) böler ve paralel ç
   - `contract_templates` (id, tenant_id, name, description, content_html, is_default, is_active, created_at).
   - `customer_portal_access` (id, tenant_id, customer_id, email, access_token, token_expires_at, is_active, last_login_at).
   - RLS Tenant Isolation politikaları ve Permissions seed (`Contracts.View`, `Contracts.Create`, `Contracts.Manage`, `Contracts.Delete`).
-- **Çıktı Dosyası:** `crm-monorepo/supabase/migrations/20260910000001_contracts_and_portal.sql`
+- **Çıktı Dosyası:** `supabase/migrations/20260910000001_contracts_and_portal.sql`
 
 ---
 

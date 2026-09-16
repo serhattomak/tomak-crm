@@ -27,6 +27,21 @@ Run `npm exec -- ultracite fix` before committing.
 > of any CI gate (`npm run lint` is ESLint via Turbo); wiring it in is a one-time
 > large diff that needs its own commit and review.
 
+## Repository layout
+
+This was two repositories until 2026-09-16: an outer one holding `docs/`, AGENTS.md
+and the formatter config, and an inner `crm-monorepo/` holding the application — which
+the outer `.gitignore` excluded. They are one repository now, rooted here.
+
+**Documents written before that date say `crm-monorepo/...`. Read that prefix as the
+repository root.** The ADRs and the roadmap's Progress Log are kept verbatim: their
+stale paths are the evidence for why the merge happened, and rewriting a dated record
+so it looks current destroys the record.
+
+Two names still say `crm-monorepo` on purpose, because renaming them would orphan live
+data — the Supabase `project_id` in `supabase/config.toml`, and the compose `name` in
+`docker-compose.yml`. Both pin the identity the folder name used to provide.
+
 ## Coding Standards
 
 - [TypeScript conventions](docs/agents/ts-conventions.md) — type safety, async, error handling

@@ -104,7 +104,7 @@
 
 | # | Spesifikasyon Maddesi | Karşılanma Durumu | Kanıt / Dosya |
 |---|---|---|---|
-| 1 | Migration `20260903000003_email_module.sql` | ✅ TAMAMLANDI | `crm-monorepo/supabase/migrations/20260903000003_email_module.sql` |
+| 1 | Migration `20260903000003_email_module.sql` | ✅ TAMAMLANDI | `supabase/migrations/20260903000003_email_module.sql` |
 | 2 | `CRM.Modules.Email` & 14 API Endpoint | ✅ TAMAMLANDI | `EmailModuleExtensions.cs`, `AccountsController.cs`, `MessagesController.cs` |
 | 3 | IMAP Eşitleme Servisi (`EmailSyncJob`) | ✅ TAMAMLANDI | `EmailSyncJob.cs`, `SmtpEmailService.cs` |
 | 4 | SMTP Gönderim & Resend Fallback | ✅ TAMAMLANDI | `SmtpEmailService.cs` |

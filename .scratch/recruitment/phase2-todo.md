@@ -60,7 +60,7 @@ Faz 1'de temeller (ilanlar, aday havuzu, başvurular, hibrit kanban) kuruldu. Fa
   - Detay: ADR-0001'de defer edildi — Faz 1'de drawer + query param (`?applicationId=`) yeterli görüldü.
   - Faz 2'de: doğrudan link (`/acme/recruitment/applications/uuid`) → SSR fetch + 404 handling + breadcrumb + `Back to Kanban` link.
   - Paylaşılabilir URL, e-posta bildirimlerinden tıklanabilir.
-  - Next 16.3.3: `params` async (`await params`), `searchParams` async — `crm-monorepo/AGENTS.md` uyumu.
+  - Next 16.3.3: `params` async (`await params`), `searchParams` async — `AGENTS.md` uyumu.
 - [ ] Alternatif: `?tab=applications&applicationId=` deep-link'i koru, yeni route ekle — ikisi coexist edebilir
 - [ ] SEO: `noindex` (dashboard içi)
 

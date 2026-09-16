@@ -10,7 +10,7 @@ scope (`apps/web`, `packages/ui`).
 ## Run
 
 ```sh
-# from crm-monorepo/
+# from the repository root
 npm run guard:crm-ui            # THE gate: full CRM sweep (must PASS)
 npm run guard:crm-ui:full       # identical — kept because ADR-0004, the roadmap and CI name it
 npm run guard:crm-ui:fixtures   # proves the fixture pair proves something (17/17 rules)

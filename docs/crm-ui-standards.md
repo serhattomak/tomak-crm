@@ -1,7 +1,7 @@
 # CRM UI/UX & Bileşen Mimarisi Standartları
 
 > **Durum:** ✅ Aktif / **TEK KANONİK STANDART**  
-> **Kapsam:** CRM Platformu (`crm-monorepo/apps/web`, `crm-monorepo/packages/ui`) — `apps/web` içindeki **52 sayfanın tamamı**  
+> **Kapsam:** CRM Platformu (`apps/web`, `packages/ui`) — `apps/web` içindeki **52 sayfanın tamamı**  
 > **Temel Felsefe:** Linear & Stripe ilhamlı temiz kurumsal zanaat (craft), yüksek veri yoğunluğu, sıfır AI-slop dekorasyon.  
 > **Karar kaydı:** [`adr/0004-crm-design-system-enforcement.md`](adr/0004-crm-design-system-enforcement.md) · **Yol haritası:** [`crm-ui-roadmap.md`](crm-ui-roadmap.md)
 
@@ -100,7 +100,7 @@ Durum renkleri **çift** yazılır: açık tonu + koyu muadili. Ölçülen konva
 | `slate-*`, `violet-*`, `fuchsia-*` | `zinc-*` + `blue-500` skalası |
 | Keyfi hex (`bg-[#…]`, `fill="#…"`, `color: "#…"`) | Semantic token + `dark:` varyantları |
 
-**Muafiyetler yalnızca** `crm-monorepo/scripts/crm-ui-guard.allowlist.json` içinde, gerekçesiyle kayıtlıdır. Sessiz istisna yoktur. Bilinen ve belgeli istisna: e-posta / print HTML şablonlarındaki hex paleti (e-posta istemcileri `oklch`/CSS değişkeni desteklemez — teknik zorunluluk).
+**Muafiyetler yalnızca** `scripts/crm-ui-guard.allowlist.json` içinde, gerekçesiyle kayıtlıdır. Sessiz istisna yoktur. Bilinen ve belgeli istisna: e-posta / print HTML şablonlarındaki hex paleti (e-posta istemcileri `oklch`/CSS değişkeni desteklemez — teknik zorunluluk).
 
 ### 1.5 Motion
 
@@ -308,7 +308,7 @@ Tüm CRM arayüzlerinde native HTML etiketleri (`<table/>`, `<div>` kart taklitl
 Yeni primitif **yalnızca** `shadcn` CLI ile eklenir (stil `radix-luma`), ardından house stiline uyarlanır. CLI iki tuzağı vardır — Faz 1'de birebir karşılaşılmıştır:
 
 ```sh
-# DOĞRU kullanım (repo kökü: crm-monorepo/)
+# DOĞRU kullanım (repo kökü: depo kökü)
 npx shadcn add <bilesen> --cwd packages\ui --dry-run      # 1) önce önizle
 npx shadcn add <bilesen> --cwd packages\ui -y             # 2) sonra yaz
 ```

@@ -63,7 +63,7 @@ Bu çözüm;
 ## Implementation Decisions
 
 ### 1. Architectural Placement & Modularity
-- A new standalone backend module `CRM.Modules.Attendance` will be created in `crm-monorepo/apps/api/src/Modules/CRM.Modules.Attendance` following CQRS, EF Core, and FastEndpoints/IEndpoint architecture.
+- A new standalone backend module `CRM.Modules.Attendance` will be created in `apps/api/src/Modules/CRM.Modules.Attendance` following CQRS, EF Core, and FastEndpoints/IEndpoint architecture.
 - Full multi-tenant isolation with `ITenantScopedEntity` on all attendance entities.
 - Seamless integration with `CRM.Modules.Organization` (Departments, Teams, Employees), `CRM.Modules.Leaves` (approved leaves auto-reflecting on attendance schedule), and `CRM.Modules.Payroll` (direct timesheet push to Puantaj).
 
