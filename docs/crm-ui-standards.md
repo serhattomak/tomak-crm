@@ -107,8 +107,8 @@ Tüm CRM arayüzlerinde native HTML etiketleri (`<table/>`, `<div>` kart taklitl
 | `EmptyState` | `empty-state.tsx` | Veri bulunamadı veya ilk kayıt ekleme durumu (`icon`, `title`, `description`, `action`) |
 | `Input` & `Label` | `input.tsx`, `label.tsx` | Form giriş alanları ve etiketleri |
 | `Checkbox` | `checkbox.tsx` | Çoklu seçim ve onay kutuları |
-| `SelectField` / `Select` | `select.tsx` | ≤7 sabit seçenek (`SelectField`) veya düşük seviye `Select` |
-| `Combobox` | `combobox.tsx` | >7 seçenek / arama gerektiren seçim |
+| `SelectField` / `Select` | `select.tsx` | **Kapalı enum** (`SelectField`) veya düşük seviye `Select` — kaynak ölçütü §2.5.1 |
+| `Combobox` | `combobox.tsx` | **Veriye bağlı liste** / arama gerektiren seçim — kaynak ölçütü §2.5.1 |
 | `NumberInput` | `number-input.tsx` | Para (`precision=2`, `suffix=" ₺"`) ve adet (`precision=0`, stepper) |
 | `PhoneInput` | `phone-input.tsx` | Telefon (+ `formatPhoneNumber`, `validatePhoneNumber`) |
 | `DatePicker` / `DateRangePicker` | `date-picker.tsx` | Tarih ve aralık (`YYYY-MM-DD`, TR locale) |
@@ -353,6 +353,126 @@ Bu **yaklaşımdır, kanıt değil**: tetikleyici başlıktan uzaklaşırsa pane
 **Kapsam dışı — overlay olmayan yüzen yüzeyler:** listesi §2.3'te (`bulk-action-bar`, sürükleme tutamacı, sticky başlık, dekoratif kart blur'u). §2.4 de yalnızca **tetikleyici + panel** çiftlerine uygulanır.
 
 > **Üç overlay primitifi tek standartta:** `DialogContent`, `SheetContent`, `PopoverContent`, `AlertDialogContent` → hepsi `rounded-xl`. Bir primitif `rounded-3xl` ile yazılırsa (§1.1 dışı) **önce primitif düzeltilir, sonra tüketiciler ona taşınır** — aksi halde ihlal çağrı yerlerine yayılır (bkz. §2.3 bulgu 1 ve `db8cf6e`).
+
+### 2.5 Form & Tablo Görünüm Göçü (Faz 5)
+
+**Motor göçü yoktur.** Elle yazılmış tablolar, kanban panoları ve filtre çubukları olduğu yerde kalır; yalnızca **görünümleri** `@workspace/ui` primitiflerine bağlanır (ADR-0004 §2). Bu bölüm iki göçün tarifidir: native `<select>` (§2.5.1) ve native `<table>` (§2.5.2).
+
+#### 2.5.1 `<select>` → `SelectField` / `Combobox`
+
+**Karar kuralı — seçeneğin SAYISI değil, KAYNAĞI.**
+
+> **Bu kural ADR-0002'nin "≤7 sabit seçenek" eşiğini revize eder.** ADR-0002 eşiği seçenek **sayısı** olarak verir; 2026-09-16'da (Faz 5.2) alınan karar ölçütü **kaynaktır** (kullanıcı onaylı). Sayarak karar vermek *yanlış türden* bir tutarlılık üretir: 4 çalışanlı bir tenant'ta `SelectField` "doğru", 40 çalışanlı olanda aynı seçici "yanlış" olur — oysa seçicinin ne olduğu hiç değişmemiştir. Sayı eşiği ADR-0002'de **tarihsel** olarak kayıtlıdır; bağlayıcı olan aşağıdaki tablodur.
+
+| Seçeneğin kaynağı | Primitif | Neden |
+| --- | --- | --- |
+| **Kapalı enum** — kodda yazılı sabit liste (`Status`, `Priority`, modül sabiti dizisi) | `SelectField` | Küme kapalı ve küçük; arama gereksiz |
+| **Veriye bağlı liste** — API'den/state'ten gelen dizi (`employees`, `campaigns`, `products`, `endpoints`, `runs`, `sprints`) | `Combobox` | Bugün küçük görünse bile **büyür**; arama ve ölçek primitifin işi |
+| **Aksiyon tetikleyici** — değer tutmaz, seçimi bir eyleme yollar | ikisinden biri + `value=""` | Aşağıya bak |
+
+**Ortak adımlar (her iki primitif):**
+
+1. **`onChange` artık değeri alır:** `onChange={(e) => setX(e.target.value)}` → `onChange={setX}`.
+2. **Yüzey sınıfları düşer** — `border`, `bg-*`, `rounded-*`, `text-zinc-*`, `focus:*`, `dark:*` yazılmaz; primitiften gelir. Elle yazılmış kabuk/boyut sınıfları (`h-8 border-input bg-background`) da gider.
+3. **`aria-label` korunur.** Satır-içi seçicinin görünür etiketi yoksa **tek** erişilebilir adı odur; düşürmek adı sessizce siler. Her iki primitif de geçirir (`SelectField` `7974b93`, `Combobox` `71c24fc` — ikisi de göç başlamadan **önce** eklendi).
+4. **`disabled` / `required` okunarak doğrulanır, varsayılmaz.** `disabled` her ikisinde prop'tur. **`required` hiçbirinde yoktur:** native doğrulamaya güvenen form göçte sessizleşir. Önce `handleSubmit` içinde JS guard'ı **ara** (`if (!x)`) — varsa native `required` fazlalıktır ve düşebilir; yoksa doğrulama başka yere taşınmalıdır.
+
+**Boş seçenek tuzağı — iki primitifte iki farklı yarım.** `<option value="">Tümü</option>` deseni (filtreyi temizleyen seçenek) iki primitifte **birebir aynı** kurulmaz:
+
+| | `SelectField` | `Combobox` |
+| --- | --- | --- |
+| Boş seçenek | **`SelectItem` olarak yazılmaz** — Radix boş string'li öğede **hata atar** | `options` içinde `value: ""` ile **kalır** |
+| Boş hâlin görünen etiketi | `placeholder` | `placeholder` |
+
+Her ikisinde de **`placeholder`, boş seçeneğin etiketiyle birebir aynı olmalıdır** ("Tüm Durumlar", "Atanmamış", "İlişkisiz (Dahili)", "Tüm Kampanyalar", "Tüm Departmanlar"). Yarım bırakılırsa ya kullanıcı alanı **temizleyemez** ya temiz hâl "Seçiniz..." gösterir — ikisi de göçün sessiz regresyonudur.
+
+```tsx
+{/* Combobox — boş seçenek listede KALIR ve placeholder aynı etiketi taşır */}
+<Combobox
+  onChange={setAssigneeId}
+  options={[
+    { label: "Atanmamış", value: "" },
+    ...employees.map((e) => ({ label: e.fullName, value: e.id })),
+  ]}
+  placeholder="Atanmamış"
+  value={assigneeId}
+/>
+
+{/* SelectField — boş ÖĞE YOK; etiket placeholder'a taşınır */}
+<SelectField
+  onChange={setStatusFilter}
+  options={[
+    { label: "Aktif", value: "Active" },
+    { label: "Tamamlandı", value: "Completed" },
+  ]}
+  placeholder="Tüm Durumlar"
+  value={statusFilter}
+/>
+```
+
+**Kompakt ayak izi — yoğun satırlarda.** Filtre çubukları ile backlog/kart satırlarındaki seçiciler primitifin `h-9` tabanına **çıkmaz**; yoğunluğu bozar. Yerleşim `triggerClassName` ile verilir — bu prop **tam olarak bu kaçış kapısıdır ve yüzey primitifte kalır**:
+
+```tsx
+<SelectField triggerClassName="h-6 px-2 font-bold text-3xs" … />
+```
+
+- Boyut `h-8` / `h-7` / `h-6` ile yazılır; `triggerClassName` tabandan **sonra** birleştiği için kazanır.
+- Tipografi **`text-3xs`** (10px) token'ıdır. **`text-[10px]` / `text-[9px]` yazılmaz:** §1.3 9px'i ölçekten çıkarmıştır ve keyfi değer `ARBITRARY_TEXT_SIZE` sayacını büyütür. Göçte eski `text-[9px]`, `text-3xs`'e **yükselir** — 1px görünür fark, karşılığında standart-dışı bir değer ölür.
+- `className` değil **`triggerClassName`** tercih edilir: yalnızca tetikleyiciyi hedefler, popup'ı değil.
+
+**Sayısal seçenekler — tek saf-olmayan yeniden adlandırma.** Story-point gibi state'te **sayı** tutan seçiciler `value={0}` biçiminde sayısal öğe değeri kullanır. İki primitif de **string** konuşur:
+
+| | Önce | Sonra |
+| --- | --- | --- |
+| Seçenek değeri | `value={0}` | `value: "0"` |
+| Handler | `storyPoints: Number(e.target.value)` | `onChange={(v) => …({ storyPoints: Number(v) })}` |
+| `value` prop | `value={item.storyPoints}` | `value={String(item.storyPoints)}` |
+
+`Number()` dönüşümü **kaybolmaz, yer değiştirir** — silinirse state'e string yazılır ve sessiz tip kayması başlar.
+
+**Veriye bağlı renk `triggerClassName`'e taşınır, silinmez.** Bazı seçicilerin sınıf dizesi **renk kodlaması** taşır (ör. `getPriorityBadge(item.priority)` önceliği *anlatır*, süslemez). "Yüzey sınıfları düşer" kuralı bunları **kapsamaz**: düşürmek kodlamayı silerdir, göç etmez. Desen:
+
+```tsx
+{/* Badge rengi veriye bağlı ve önceliği kodluyor — yüzey sınıfları gibi düşürülmez. */}
+<SelectField triggerClassName={`h-6 px-2 font-bold text-3xs ${getPriorityBadge(item.priority)}`} … />
+```
+
+Birleştirme sırası (`cn(triggerClassName, className)` → `cn(base, className)`) tüketici sınıfını kazandırır. ⚠️ **Bu satır bir incelemede "artık yüzey sınıfı" sanılıp temizlenmemelidir** — bu yüzden gerekçe **çağrı yerinde yorum olarak** durur, yalnızca commit mesajında değil.
+
+**Aksiyon tetikleyiciler — değer tutmayan seçiciler.** Bazı seçiciler bir değeri saklamaz; seçimi bir eyleme yollar ve kendini sıfırlar (ürün/kategori ekleme, "Sprinte Taşı"). Elle yazımda bu `e.target.value = ""` ile yapılır. Göçte **kontrollü `value=""`** davranışı birebir üretir:
+
+```tsx
+<Combobox
+  onChange={addProductTarget}
+  options={products.map((p) => ({ label: `${p.name} (₺${p.sellingPrice})`, value: p.id }))}
+  placeholder="Ürün seçerek ekle..."
+  value=""
+/>
+```
+
+Her seçimden sonra `value` boş kalır → kontrol placeholder'a döner, liste değişmez. Eski `e.target.value = ""` satırı **düşer** (artık iş kontrollü state'in).
+
+#### 2.5.2 `<table>` → `Table` primitifleri
+
+Motor değişmez: satır üretimi, sıralama, sanallaştırma ve veri döngüleri olduğu gibi kalır; yalnızca **etiketler** değişir.
+
+| Native | Primitif |
+| --- | --- |
+| `<table>` | `Table` |
+| `<thead>` / `<tbody>` / `<tfoot>` | `TableHeader` / `TableBody` / `TableFooter` |
+| `<tr>` / `<th>` / `<td>` | `TableRow` / `TableHead` / `TableCell` |
+| `<caption>` | `TableCaption` |
+
+- Her primitif `data-slot` taşır; print kuralı ve kapsam ölçümleri ona dayanır.
+- Tablonun **dış kabuğu kalır** — `overflow-x-auto` sarmalayıcı ve `min-w-[Npx]` primitife devredilmez, kaydırma sahibi tüketicidir.
+- Hücre içi yüzey sınıfları (`px-4 py-3 text-xs`, `border-b`) primitife gider; hücreye **özgü** olanlar (ör. `text-right`, `w-[120px]`) `className` ile kalır.
+
+#### 2.5.3 Kapsam disiplini ve kanıt
+
+- **Kural yoksa ölçüm de yoktur.** Kart yüzeyi (5.4) gibi kuralsız bir borç **önce guard kuralı** yazılarak ölçülür, sonra süpürülür; kural olmadan ilerleme **kanıtsızdır**.
+- Bu göçte dosyadaki `ARBITRARY_TEXT_SIZE` / `INLINE_STYLE_PROP` / kart yüzeyi ihlalleri **ayrı süpürme** değildir (5.4-5.6'nın işi). Dokunulan satırda **zaten düşen** keyfi tipografi istisnadır, konu değil.
+- **Guard PASS'ı görsel doğruluk kanıtı değildir.** Guard'ın sınıf çakışması kuralı **yoktur**; iki utility aynı özelliği aynı varyantta yazıyorsa kazanan, **derlenmiş stylesheet'te sonra gelendir** (Faz 5.0'da 31 satırda token hiç uygulanmıyordu). Şüphede ölçüm `apps/web/.next/**/*.css` içinde `IndexOf(".dark\\:X")` ile yapılır — büyük olan kazanır.
+- **Belge sayacı ölçümden gelir.** Yol haritası ve `crm-ui-guard.README.md` sayıları `--full`'dan **kopyalanır**; elle yazılmaz. Bu dosyalarda bir sayı üç yerde farklıysa üçü de yanlıştır.
 
 ---
 

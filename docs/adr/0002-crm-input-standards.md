@@ -19,8 +19,8 @@ Store tarafı light-only mercan sözleşmesiyle (`--store-*`, `data-store-theme`
 | Metin / e-posta / şifre | `Input` (`input.tsx`, `h-9`, `blue-500` ring, `dark:bg-zinc-900`) | — |
 | Sayı — para | `NumberInput` `precision={2}` + `suffix=" ₺"`, stepper kapalı, boş → `null`, clamp | — |
 | Sayı — adet | `NumberInput` `precision={0}`, stepper açık | — |
-| Sabit liste **≤7** seçenek | `SelectField` (`select.tsx`, `options: {label,value,disabled}[]`) | — |
-| Dinamik liste / **>7** seçenek | `Combobox` (`combobox.tsx`) | Arama gerektiren her şey |
+| **Kapalı enum** — kodda yazılı sabit liste | `SelectField` (`select.tsx`, `options: {label,value,disabled}[]`) | ⚠️ Eşik **revize edildi** — aşağıdaki nota bakın |
+| **Veriye bağlı liste** — API/state'ten gelen dizi | `Combobox` (`combobox.tsx`) | Arama gerektiren her şey |
 | Tarih | `DatePicker` (`date-picker.tsx`, `YYYY-MM-DD`, TR locale, `clearable` default açık) | Native `type=date` yasak |
 | Tarih aralığı | `DateRangePicker` (`startDate`/`endDate`) — ilk kullanım: izin aralığı (`attendance`) | — |
 | Telefon | `PhoneInput` — `apps/web`'den **`packages/ui`'ye taşındı**, Input diliyle (`h-9`, `blue-500`, `dark:bg-zinc-900`) | `apps/web`'de kopya bırakılmaz |
@@ -41,7 +41,7 @@ const [price, setPrice] = useState<number | null>(null);
 const [qty, setQty] = useState<number | null>(1);
 <NumberInput value={qty} onChange={setQty} precision={0} showStepper min={1} />;
 
-// ≤7 sabit → SelectField | >7/dinamik → Combobox
+// kapalı enum → SelectField | veriye bağlı liste → Combobox (kaynak ölçütü: crm-ui-standards.md §2.5.1)
 <SelectField value={status} onChange={setStatus} placeholder="Durum seç" options={[
   { label: "Aktif", value: "active" },
   { label: "Pasif", value: "inactive", disabled: true },
@@ -82,7 +82,8 @@ const [qty, setQty] = useState<number | null>(1);
 ### Olumsuz / Mitigasyon
 
 - **Legacy sayfalar henüz migrate değil** (`leaves`, `projects`…): full sweep temizlenene dek gate sadece scoped. Mitigasyon — `guard:crm-ui:full` ile takip, sayfa sayfa migrate.
-- **`≤7` eşiği keyfî:** 7–10 arası gri alan Combobox'a yönlendirilir (arama her zaman daha güvenli). İtiraz varsa yeni ADR ile revize edilir.
+- ⚠️ **`≤7` sayı eşiği REVİZE EDİLDİ (2026-09-16, Faz 5.2).** Bu ADR eşiği seçenek **sayısı** olarak veriyordu ve §85 zaten keyfî olduğunu kabul ediyordu (7–10 gri alanı Combobox'a yönlendiriyordu — yani "veriye bağlıysa Combobox" sezgisine yaslanıyordu). Faz 5.2'de ölçüt **kaynaktır** ve kanonik kaydı `crm-ui-standards.md` **§2.5.1**'dedir: kapalı enum → `SelectField`, veriye bağlı liste → `Combobox`. Sayı eşiği kaldırıldı çünkü *yanlış türden* tutarlılık üretiyor: 4 çalışanlı tenant'ta "doğru", 40 çalışanlıda aynı seçici "yanlış" olurdu. Aradaki gri alan kalmadı.
+  > **Süreç notu:** §85 "itiraz varsa yeni ADR ile revize edilir" diyordu. Bu revizyon **yeni ADR açılmadan**, kanonik standartta kapatıldı — gerekçe: değişiklik yeni bir karar değil, §85'in kendi mitigasyonunun genelleştirilmesidir. Yine de bu, ADR-0002'nin tablosunun artık **tarihsel** olduğu anlamına gelir; bağlayıcı olan §2.5.1'dir. Ayrı bir ADR istenirse konu açıktır.
 - **`email-preview.ts` token map'i kırılgan:** `isDark` dalı test ile korunmalı; e-posta HTML'i inline style ürettiğinden token değişimi manuel senkron ister.
 
 ### Done (her batch)
