@@ -243,7 +243,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 >
 > **Tarif:** standart **§2.3** (Dialog + Sheet + print) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
 >
-> **⚠️ Bu fazda on üç tuzak ölçülerek doğrulandı:**
+> **⚠️ Bu fazda on dört tuzak ölçülerek doğrulandı:**
 > 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
 > 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
 > 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
@@ -257,6 +257,7 @@ Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-
 > 11. **Ham `fixed inset-0` sayısı overlay sayısı DEĞİLDİR — fazladan sayar.** Bazı dosyalar backdrop'u sarmalayıcının **kardeşi** olarak ayrı bir `div` yapar (`messages`, `quotes`), bazıları sarmalayıcının kendisini backdrop yapar (`shipments`, `recruitment`), bazılarında ise drawer **kendi** backdrop'unu taşır (`organization`). Ölçülen fark: `organization` 7→**5**, `messages` 8→**4**, `quotes` 11→**7**. **Sayıyla değil, okuyarak karar verin.**
 > 12. **Sarmalayıcının `overflow-y-auto`'su panel `max-h` + `overflow-hidden` taşıyorsa zaten devrede değildir** — panel kendi çocuklarını kırpıyordur. Göçte "iyileştirme" yapıp `overflow-y-auto` vermek **kısa ekran davranışını sessizce değiştirir**; aslını birebir kurun (bkz. `messages`).
 > 13. **Kapanış bulma sezgiseli "bitişiklik" varsayar** — `tailV2` panel kapanışının **hemen ardından** sarmalayıcı kapanışını arar; araya kardeş bir overlay girerse yanlış çifti sahiplenir (`quotes`'ta oldu; `Dialog` 6 açık / 5 kapalı verdi). **Bitişikliği kardeş overlay bozar** → çok overlay'li dosyalarda denge sayımı **zorunlu**.
+> 14. **Toplu geçişten önce çalışma ağacı TEMİZ olmalı** — Faz 4'e başlarken `git status` **3 kirli dosya** gösterdi ve hiçbiri o oturumda yazılmamıştı. Biri (Popover fix) tam da toplu betiğin dokunacağı dosyadaydı; ayırma yapılmasaydı **iki konu tek commit'te** birleşecek ve ikisi de review edilemez olacaktı. **Kural:** her toplu işlemden önce `git status`; kirliyse önce ayır (sahibi olmadığın değişikliği ilgili dosyadan geri çevir → onu kendi commit'ine al → toplu geçişi yeniden uygula). Sahibi olmadığın bir değişikliği sessizce kendi commit'ine katmak "tek değişken/commit" kuralını bozar.
 >
 > **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor ama `apps/web` noktalı virgüllü; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor ve 55 satırlık değişikliği **431 satıra** çıkarır. Ayrıntı: Gelecek Adımlar #18.
 >
@@ -431,14 +432,21 @@ Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değ
 - [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
 - [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
 
-## [ ] Faz 4 — Renk disiplini (yüzey yüzey)
+## [x] Faz 4 — Renk disiplini (yüzey yüzey) — **TAMAMLANDI (2026-09-16)**
 
-- [ ] Auth + admin + portal yüzeyleri (`slate-*` + hex yoğunluğu burada)
-- [ ] Dashboard: customer-detail, recruitment, roles, settings, contracts, finance, invoices, messages (`violet`/`fuchsia` → `blue`)
-- [ ] `slate-*` → `zinc-*`, `violet`/`fuchsia`/… → `blue-500` skalası
-- [ ] Keyfi hex + inline `style` → semantic token
-- [ ] Widget'lardaki sabit hex → `--chart-*` tokenları
-- [ ] Print/e-posta HTML string'leri: **allowlist'te açıkça kayıtlı** istisna (e-posta istemcileri `oklch`/CSS değişkeni desteklemez)
+**Ölçüm:** `--full` **1438 → 62**. Renk kurallarının **tamamı 0**: SLATE 399→0 · VIOLET 920→0 · FUCHSIA 43→0 · ARBITRARY_HEX 4→0 · SVG_PAINT_HEX 4→0 · INLINE_HEX_STYLE 6→0. Renk ihlali taşıyan dosya **51 → 0**. Kalan 62 = Faz 5 (NATIVE_SELECT 61 + INPUT_NUMBER 1).
+
+**Karar (kullanıcı onayı, 2026-09-16):** eşleme **ton birebir** — `violet-600 → blue-600`, tek kademeye indirme **değil**. Gerekçe: kontrast oranları ve `dark:` eşleri birebir korunur, diff mekanik kalır.
+
+- [x] `slate-*` → `zinc-*` — **399 hit / 21 dosya** (`44fe52c`)
+- [x] `violet-*` → `blue-*` — **920 hit / 32 dosya** (`a32e90b`; en yoğun `vehicles` 191, `projects/[projectId]` 77, `recruitment` 75)
+- [x] `fuchsia-*` → `blue-*` — **43 hit / 10 dosya** (`d6495a1`)
+- [x] **Auth yüzeyi** `register` (`fbdf476`): 4 keyfi hex → `bg-zinc-950` / `bg-zinc-100` — **kardeş ekrandan okundu**, `login` zaten tam olarak bunları kullanıyor; 4 SVG hex'i **Google "G" marka rengi** → gerekçesiyle **allowlist kaydı** (ADR-0004: istisna sessiz olamaz)
+- [x] **Widget grafik renkleri** → `--chart-*` (`a08616a`, Gelecek Adımlar #12): `lead-sources-widget`'ta 5 hex, **ton koruyan** eşleme (yeşil→`chart-2`, lead→`chart-1`, amber→`chart-3`, kurumsal→`chart-5`, bireysel→`chart-4`); sıralı 1..5 **daha kolay olurdu ve yanlış şeyi anlatırdı**; bonus: token'lar tema-duyarlı olduğu için legend artık dark mode'a uyuyor. **Inline `style` kalktı**
+- [x] `pipeline-settings-modal` aşama rengi: stil **değil**, **kalıcı + kullanıcı-düzenlenebilir veri** (bir görünüm sınıf, iki görünüm ham hex + alfa soneki olarak tüketiyor) → gerekçesiyle allowlist + **Gelecek Adımlar #25**
+- [x] **Yöntem (kalıcılaştırıldı):** guard'ın **kendi bildirdiği dosya kümesi** üzerinde deterministik betik; her adımın kanıtı **kuralın 0'a düşmesi**. Hex/keyfi değerler betiğin kapsamı dışında, elle işlendi
+- [x] **Print/e-posta istisnası belgelendi:** `email-preview.ts` **hiç** hex/renk-sınıfı eşleşmesi üretmiyor (19 `--email-*` değişkeni, hex yok, `slate`/`violet` yok) → temizliği **yapısal**; allowlist kaydı **gerekmiyor** ve belgelerdeki "kayıtlı" ifadesi düzeltildi. `globals.css` print bloğundaki `#0f172a` **kasıtlı** (tema-bağımsız mürekkep: koyu temada `--foreground` beyaza döner → beyaz üstüne beyaz basılır) → yorumla belgelendi, değiştirilmedi
+- [x] **⚠️ Yan bulgu:** `notification-center` ve `dashboard-share-popover`'da **`PopoverContent`, `Popover.Root`'un dışındaydı** (bu geçişin kendi regression'ı: `b9ec6fa`, `90316df`) → `34c5218` ile düzeltildi; repodaki 4 `Popover` tüketicisi tarandı, başka örnek yok
 
 ## [ ] Faz 5 — Tablo & form *görünüm* standardı
 
@@ -515,6 +523,8 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **beş yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`), `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`) ve `quotes` "Teklif Belgesi Önizleme" modalı (`handlePrint`; 2026-09-16, `28d8d6e`). Son ikisinde **`print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması. Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
 22. **`overlayClassName` boşluğu** - dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor (bulgu 12'nin kökü). Global print kuralı vakayı çözdü; başka bir ihtiyaç doğarsa (farklı blur/opaklık) API açılmalı. Tek tüketici için eklenmedi
 23. **Native `alert()` → `toast`** — **10 çağrı / 4 dosya** (2026-09-16 ölçümü, Faz 3.3'te bulundu): `(auth)/login` (1), `calendar` (2), `vehicles` (6), `components/tenant-switcher` (1). Bunlar onay değil **doğrulama/hata mesajı**; native `alert()` thread'i bloklar, temayı yok sayar ve erişilebilir değil. Muadili `toast` (sonner bu dosyaların çoğunda zaten import edilmiş) veya form-içi hata metni. **Native `confirm(` artık 0** (Faz 3.3), dolayısıyla bu, o ailenin kalan tek üyesi
+24. **`--success` / `--warning` token'ları YOK** — §1.2 "`emerald`/`success`" ve "`amber`/`warning`" token'larına atıf yapıyor ama `globals.css`'te bu token'lar tanımlı değil (grep: 0 eşleşme). Bugün `emerald-*`/`amber-*` kullanılıyor ve **yasaklı değil** (renk kuralları yalnız `slate`/`violet`/`fuchsia`/hex'i yasaklar), yani acil bir ihlal yok. Faz 4'te **bilinçli olarak ertelendi**: token eklemek ADR-0004 §5'in kendi prosedürüne tabi ve yeni bir tasarım kararı gerektirir. §1.2'deki atıf **"aspirational"** olarak işaretlendi
+25. **Pipeline aşama rengi bir **veri sözleşmesi**, stil değil** — `pipeline-settings-modal`'daki `color` alanı (varsayılan `#3B82F6`) kalıcı ve **kullanıcı tarafından metin olarak düzenlenebilir**; `page.tsx:499` onu **Tailwind sınıfı** olarak, `pipeline-kanban-board:57` **ham hex** olarak, `pipeline-table-view:67-73` **hex + alfa soneki** (`${color}15`) olarak tüketiyor. Tek bir geçerli muadil değer yok. Doğru çözüm alanı bir **token sözlüğüne** (ör. `colorKey: "chart-1"`) bağlamak — API + veri göçü işi. Şimdilik gerekçesiyle allowlist'te (`INLINE_HEX_STYLE`)
 
 ---
 
@@ -671,3 +681,11 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Faz 3.3 | ✅ **5 native `confirm()` → `ConfirmDialog`** (`26e2d85` automations · `b5dfc28` calendar · `341b2e7` customers/[customerId] · `7ef72b9` projects/[projectId] · `fb9cec2` webhooks). Hepsi repodaki yerleşik `confirmDialog` state deseniyle; **onay metinleri birebir korundu**. `projects/[projectId]`: **optimistic delete sırası korundu** (`loadProjectData()` yalnız `catch`'te). `customers/[customerId]`: `useCallback` imzası/bağımlılıkları **aynı**, yalnız `async` düştü. `webhooks`: `Promise<void>` → `void` (çağrı yeri dönüşü kullanmıyor) |
 | 2026-09-16 | Faz 3.3 | 📊 **Ölçülmüş doğrulama:** `apps/web`'te `fixed inset-0` **108 → 0** · native `confirm(` **5 → 0** · typecheck 2/2 · build 2/2 · scoped **PASS** · `--full` **1438** (sabit). **🆕 Bulgu:** native **`alert()` 10 çağrı / 4 dosya** (login 1, calendar 2, vehicles 6, tenant-switcher 1) → **Gelecek Adımlar #23** |
 | 2026-09-16 | Faz 3 | ✅✅✅ **FAZ 3 TAMAMLANDI.** 3.1 (37 birim) · 3.2 (34/34 dosya) · 3.3 (5/5 dosya + primitif). Faz 3 bulgusu 6 ve 12 kapandı; elle yazım overlay katmanı **uygulamada kalmadı** (muaf yüzeyler hariç, §2.3 listesi) |
+| 2026-09-16 | Faz 4 | 📊 **Kapsam ölçüldü:** renk kuralları **1376 ihlal / 51 dosya** (VIOLET 920 · SLATE 399 · FUCHSIA 43 · INLINE_HEX_STYLE 6 · ARBITRARY_HEX 4 · SVG_PAINT_HEX 4). Kalan 62 Faz 5'in (NATIVE_SELECT 61 + INPUT_NUMBER 1). **Üç karar onaylandı:** ton birebir eşleme · `--success`/`--warning` token'ları **ertelendi** (#24) · print hex'i **belgele+kaydet** |
+| 2026-09-16 | Faz 4 | ⚠️ **Yan bulgu (kendi regression'ım):** çalışma ağacında **bana ait olmayan** 3 kirli dosya bulundu. İkisi `PopoverContent`'i `Popover.Root`'un **dışına** koyan `b9ec6fa`/`90316df` commit'lerimin düzeltmesiydi → **`34c5218`** ile ayrı commit'lendi (renk yarısı geri çevrilip önce fix). Üçüncüsü (`theme-provider.tsx`, alakasız SSR script düzeltmesi) **bilinçli olarak dokunulmadı**. Repodaki **4 `Popover` tüketicisi tarandı**, başka örnek yok |
+| 2026-09-16 | Faz 4.0 | ✅ `slate-*` → `zinc-*` · **399 hit / 21 dosya** (`44fe52c`) · SLATE **399→0** · `--full` 1438→**1039** (tam 399) · renk dosyası 51→40 |
+| 2026-09-16 | Faz 4.1 | ✅ `violet-*` → `blue-*` · **920 hit / 32 dosya** (`a32e90b`) · VIOLET **920→0** · `--full` 1039→**119** · renk dosyası 40→13. **30 Hallmark banner'ı "Zinc/Violet" olarak kaldı** — betik yalnız `violet-<ton>` eşleştiriyor, düzyazıya dokunmuyor (#16'nın işi) |
+| 2026-09-16 | Faz 4.2 | ✅ `fuchsia-*` → `blue-*` · **43 hit / 10 dosya** (`d6495a1`) · FUCHSIA **43→0** · `--full` 119→**76** · renk dosyası 13→**3** |
+| 2026-09-16 | Faz 4.3 | ✅ `register` auth yüzeyi (`fbdf476`) · ARBITRARY_HEX 4→0, SVG_PAINT_HEX 4→0 · `bg-[#070709]`→`bg-zinc-950`, `bg-[#f3f4f7]`→`bg-zinc-100` (**kardeş ekran `login`'den okundu**) · 4 SVG hex'i **kayıtlı istisna** (Google marka rengi) · `--full` 76→**68** |
+| 2026-09-16 | Faz 4.4 | ✅ Widget grafik renkleri (`a08616a`) · INLINE_HEX_STYLE **6→0** (5 düzeltildi + 1 gerekçeli kayıt) · **`--chart-1..5` ilk kez kullanıldı** (#12) · **tüm renk kuralları 0** · `--full` **62** — kalan tamamen Faz 5 |
+| 2026-09-16 | Faz 4 | ✅✅✅ **FAZ 4 TAMAMLANDI.** `--full` **1438 → 62** (1376 renk ihlali çözüldü) · renk ihlali taşıyan dosya **51 → 0** · **Yöntem kalıcılaştı:** guard'ın bildirdiği dosya kümesi + deterministik betik + kanıt olarak kuralın 0'a düşmesi |

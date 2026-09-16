@@ -30,6 +30,14 @@
   - **Bilgi / Potansiyel:** `blue` / `accent` token'ları (örn. `Lead`, `In Progress`)
   - **Hata / Kaybedildi:** `rose` / `destructive` token'ları (örn. `Churned`, `Urgent`)
   - **Nötr / Pasif:** `zinc` / `neutral` token'ları (örn. `Draft`, `Closed`)
+  - ⚠️ **`success` ve `warning` token'ları HENÜZ YOK** (2026-09-16 ölçümü: `globals.css`'te `--success*`/`--warning*` tanımı **0**). Bu satırlar **hedef** tarif eder, mevcut API'yi değil: bugün karşılıkları `emerald-*` / `amber-*` skala sınıflarıdır ve bunlar **yasaklı değildir** (renk kuralları yalnız `slate`/`violet`/`fuchsia` ve hex'i yasaklar). Token'ları eklemek ayrı bir iştir → Gelecek Adımlar **#24**. **Yeni kod `bg-success` yazmasın** — var olmayan bir sınıf sessizce hiçbir şey yapmaz.
+
+**Renk ailesi göçü (Faz 4, 2026-09-16 — TAMAMLANDI):** yasaklı ailelerin tamamı **0**: `slate-*`→`zinc-*` (399 hit), `violet-*`→`blue-*` (920), `fuchsia-*`→`blue-*` (43), keyfi/SVG/inline hex (14). **`--full` 1438 → 62.** İki kalıcı kural:
+
+1. **Eşleme ton birebirdir** (`violet-600 → blue-600`), tek kademeye indirilmez: kontrast oranları ve `dark:` eşleri birebir korunur, diff mekanik kalır.
+2. **Grafik renkleri `--chart-1..5` token'larıdır** (`bg-chart-*`), ham hex değil — ve eşleme **ton koruyarak** yapılır (yeşil `chart-2`'de kalır), çünkü legend'da renk **anlam taşır**. Token'lar tema-duyarlı olduğu için legend dark mode'a kendiliğinden uyar.
+
+**⚠️ İstisna sessiz olamaz.** Bir değer marka kuralı ya da **veri sözleşmesi** olduğu için token'lanamıyorsa, `scripts/crm-ui-guard.allowlist.json`'a **gerekçesiyle** yazılır (ADR-0004 §L142). Örnekler: `(auth)/login` + `(auth)/register` Google "G" marka renkleri · `pipeline-settings-modal` aşama rengi (kalıcı, kullanıcı-düzenlenebilir veri → #25). **İstisnanın doğru muadili yoksa allowlist; varsa düzelt.**
 
 ### 1.3 Veri Yoğunluğu & Tipografi
 - İş yazılımlarında (B2B CRM) ekran alanı değerlidir. Aşırı devasa dolgular (`p-8`, `p-12`) yerine kompakt ve okunabilir hiyerarşi (`p-3.5`, `p-4`) kullanılır.
@@ -250,6 +258,8 @@ onInteractOutside={(event) => {
 [data-slot="alert-dialog-overlay"],
 [data-slot$="-backdrop"] { display: none !important; }
 ```
+
+**⚠️ Print bloğundaki sabit `#0f172a` kasıtlıdır — token'lamayın.** Bu, `@media print` içindeki mürekkep rengidir ve **temadan bağımsız olmak zorundadır**: koyu temada `--foreground` beyaza döner, dolayısıyla token kullanmak **beyaz üstüne beyaz** bastırır. Faz 4'te (2026-09-16) kanonik token dosyasındaki bu tek off-palette hex **bilinçli olarak korundu** ve buraya kaydedildi; "her hex token olmalı" kuralının **gerçek istisnası** budur. Aynı mantık SVG marka renkleri ve veri sözleşmesi olan renkler için de geçerlidir (allowlist).
 
 **Neden global:** primitifler overlay'i portal içinde **içeriğin kardeşi** olarak render ediyor; `SheetContent` yalnızca panel için `className` alır → çağrı yerinden backdrop'a print sınıfı verilemez. Tek yerde yapmak hem tüm overlay'leri kapsar hem de elle yazılmış backdrop'ları (`fixed inset-0 bg-black/40`) temizler — bu dosya `print-color-adjust: exact` zorladığı için onlar **şu an basılıyordu**.
 
