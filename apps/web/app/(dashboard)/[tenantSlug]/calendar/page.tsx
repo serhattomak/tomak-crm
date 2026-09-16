@@ -2,6 +2,7 @@
 
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import {
   Dialog,
@@ -154,6 +155,20 @@ export default function CalendarHubPage() {
 
   // Modals & Panels
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    description: "",
+    onConfirm: () => {},
+    open: false,
+    title: "",
+  });
   const [isCallLoggerOpen, setIsCallLoggerOpen] = useState(false);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<ActivityDto | null>(
@@ -501,25 +516,31 @@ export default function CalendarHubPage() {
     }
   };
 
-  const handleDeleteActivity = async (id: string) => {
-    if (
-      !confirm("Bu randevu veya aktiviteyi silmek istediğinize emin misiniz?")
-    ) {
-      return;
-    }
-    try {
-      const res = await ApiClient.deleteActivity(
-        id,
-        activeTenant?.slug || tenantSlug
-      );
-      if (res.success) {
-        showToast("Aktivite başarıyla silindi.");
-        setSelectedActivity(null);
-        fetchActivities();
-      }
-    } catch {
-      showToast("Silme işlemi başarısız.");
-    }
+  const handleDeleteActivity = (id: string) => {
+    setConfirmDialog({
+      confirmText: "Aktiviteyi Sil",
+      description:
+        "Bu randevu veya aktiviteyi silmek istediğinize emin misiniz?",
+      onConfirm: async () => {
+        try {
+          const res = await ApiClient.deleteActivity(
+            id,
+            activeTenant?.slug || tenantSlug
+          );
+          if (res.success) {
+            showToast("Aktivite başarıyla silindi.");
+            setSelectedActivity(null);
+            fetchActivities();
+          }
+        } catch {
+          showToast("Silme işlemi başarısız.");
+        }
+        setConfirmDialog((prev) => ({ ...prev, open: false }));
+      },
+      open: true,
+      title: "Aktiviteyi Sil",
+      variant: "destructive",
+    });
   };
 
   // Submit New / Edit Activity
@@ -2204,6 +2225,17 @@ export default function CalendarHubPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </PageContainer>
   );
 }
