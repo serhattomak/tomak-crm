@@ -465,9 +465,21 @@ Motor değişmez: satır üretimi, sıralama, sanallaştırma ve veri döngüler
 | `<tr>` / `<th>` / `<td>` | `TableRow` / `TableHead` / `TableCell` |
 | `<caption>` | `TableCaption` |
 
+**Adımlar (her tablo için aynı):**
+
+1. **Primitifleri import et.** Etiketleri birebir değiştir; veri döngüsü, `key`, koşullar, `colSpan`/`rowSpan` **olduğu gibi** kalır.
+2. **Yüzey sınıfları düşer.** Primitif zaten verir: `Table` → `w-full caption-bottom text-xs`, `TableHeader` → `bg-muted/40` + `[&_tr]:border-b`, `TableRow` → `border-b` + `hover:bg-muted/40`, `TableHead` → `h-9 px-3 text-left text-2xs uppercase`, `TableCell` → `p-3`. Çağrı yerindeki `border-b`, `bg-zinc-50`, `text-xs`, `font-medium uppercase`, `px-4 py-3` gibi kopyalar **yazılmaz**.
+3. **Hücreye özgü olanlar `className` ile kalır:** genişlik (`w-[120px]`), hizalama (`text-right`, `text-center`), `font-mono`, `whitespace-nowrap`, `tabular-nums`, renk kodlaması taşıyan rozet sınıfları.
+4. **Koşullu/template-literal sınıflar silinmez, taşınır:** `className={cn("px-4", isActive && "bg-blue-50")}` → primitifin `className`'ine. Veriye bağlı renk burada da geçerlidir (§2.5.1'in badge kuralı).
+5. **`<tr>` üzerindeki `hover:` / `data-[state]` kalıbı primitiften gelir** — çağrı yerindeki elle yazılmış kopya düşer.
+6. **Açılış/kapanış SAYILIR** (Faz 3'ün en pahalı alışkanlığı, 5 kez `TS17002`). Bu faz mekanik olarak öncekilerden yoğun: **~1194 etiket / 29 dosya**. Dosya başına `tsc`; `quote`/`payroll`/`vehicles` gibi dev dosyalarda tablolar **tek tek** ele alınır, hepsi bir `edit`'te değil.
+
 - Her primitif `data-slot` taşır; print kuralı ve kapsam ölçümleri ona dayanır.
-- Tablonun **dış kabuğu kalır** — `overflow-x-auto` sarmalayıcı ve `min-w-[Npx]` primitife devredilmez, kaydırma sahibi tüketicidir.
-- Hücre içi yüzey sınıfları (`px-4 py-3 text-xs`, `border-b`) primitife gider; hücreye **özgü** olanlar (ör. `text-right`, `w-[120px]`) `className` ile kalır.
+- 🔴 **Kaydırma sahibi primitiftir — ilk yazımda yanlış kaydedildi.** `Table`, kendi sarmalayıcısını üretir: `<div className="relative w-full overflow-auto">`. Yani çağrı yerindeki `overflow-x-auto` sarmalayıcısı **devredilmez, yok sayılır**: içteki `w-full` olduğu için dışta taşma oluşmaz ve dıştaki `overflow-x-auto` fiilen **no-op** olur. Ölçüm: 29 dosyada **38 sarmalayıcı** var (hepsi tablo değil — sekme çubukları, `<pre>`, kanban da bu sınıfı taşır).
+  > **Göçte dış sarmalayıcı SİLİNMEZ.** Bir kısmı yalnız `overflow-x-auto` değil, `rounded-2xl border … bg-white` **taşıyor** — yüzeyin sahibi onlar. `overflow-x-auto`'yu tek başına temizlemek ek bir değişken ekler ve iç içe kaydırma *davranışını* değiştirmez. Kalır, not düşülür.
+- `min-w-[Npx]` (tablonun kendisinde) **kalır** — yatay kaydırmayı tetikleyen odur, primitifin işi değildir.
+- Hücre içi yüzey sınıfları (`px-4 py-3 text-xs`, `border-b`) primitife gider; hücreye **özgü** olanlar (ör. `text-right`, `w-[120px]`) `className` ile kalır. Primitifin `TableCell` varsayılanı `p-3`, `TableHead` varsayılanı `h-9 px-3`'tür; çağrı yerinin `className`'i **sonra** birleştiği için onu ezer.
+- ⚠️ **`NATIVE_TABLE` kuralı primitifin kendi `<table>`'ını da sayar.** `packages/ui/src/components/table.tsx` allowlist'te **kayıtlıdır** — 5.1'in `number-input.tsx` kaydıyla aynı sınıf. Kayıt olmasaydı kural asla 0'a inemez ve Faz 7'de `error`'a terfi edemezdi (`ARBITRARY_TEXT_SIZE`, `NATIVE_TABLE`, `INLINE_STYLE_PROP` üçü de **kayıtsız tek bir hit yüzünden** terfi edemez).
 
 #### 2.5.3 Kapsam disiplini ve kanıt
 
