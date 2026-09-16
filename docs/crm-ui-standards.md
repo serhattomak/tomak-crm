@@ -490,6 +490,32 @@ Motor değişmez: satır üretimi, sıralama, sanallaştırma ve veri döngüler
 - **Guard PASS'ı görsel doğruluk kanıtı değildir.** Guard'ın sınıf çakışması kuralı **yoktur**; iki utility aynı özelliği aynı varyantta yazıyorsa kazanan, **derlenmiş stylesheet'te sonra gelendir** (Faz 5.0'da 31 satırda token hiç uygulanmıyordu). Şüphede ölçüm `apps/web/.next/**/*.css` içinde `IndexOf(".dark\\:X")` ile yapılır — büyük olan kazanır.
 - **Belge sayacı ölçümden gelir.** Yol haritası ve `crm-ui-guard.README.md` sayıları `--full`'dan **kopyalanır**; elle yazılmaz. Bu dosyalarda bir sayı üç yerde farklıysa üçü de yanlıştır.
 
+#### 2.5.4 Kart yüzeyi → semantic token (Faz 5.4)
+
+**Sıra bağlayıcıdır (kullanıcı onaylı):** **kural → sonra süpürme.** Kuralsız süpürme kanıtsız kalır; bu projede ilerlemenin kanıtı **sayacın 0'a düşmesi**. Kural `CARD_SURFACE` (`crm-ui-guard.mjs`, `severity: "warn"`).
+
+**Kural dardır ve kasıtlıdır: yalnız EŞLİ idiom.**
+
+| İhlal | Yerine |
+| --- | --- |
+| `bg-white` + aynı dizede `dark:bg-zinc-800\|900\|950` | `bg-card` |
+| `border-zinc-100\|200\|300` (+ `/NN` opaklık) + aynı dizede `dark:border-zinc-700\|800\|900` | `border-border` |
+
+Tek başına `bg-white` **ihlal değildir** — sabit açık yüzey (print, kasıtlı) olabilir. Eşli olan **kanıtlı** temalı yüzeydir: `dark:` partneri varsa o yüzey temayı takip etmek ister.
+
+**🔴 Dönüşümde `dark:` partnerleri SİLİNİR — bu, işin en kolay yanlış yapılan kısmı.** Kalan bir `dark:bg-zinc-900`, `bg-card` ile **aynı özelliği, aynı varyantta, aynı özgüllükte** yazar; kazanan derlenmiş stylesheet'te **sonra gelendir** → **token hiç uygulanmaz.** Bu bir teori değil: Faz 5.0'da `messages`'ta **31 satırda** tam olarak bu ölçüldü. Silme **pozisyoneldir**: her light sınıftan sonra gelen **ilk** dark partner.
+
+**Ton birebir (Faz 4'ün kararıyla aynı sınıf):** `--card` açık `oklch(1 0 0)` = **saf beyaz**, koyu `0.18` ≈ `zinc-900` (`0.19`); `--border` açık `0.91` ≈ `zinc-200`, koyu `0.28` ≈ `zinc-800`. Yani **görünürde hiçbir şey oynamaz** — değişen, rengin artık temadan gelmesidir.
+
+**Kapsam dışı (bilinçli):** metin renkleri (`text-zinc-900` / `dark:text-zinc-100`) bu fazın değişkeni **değildir**; yüzey + kenarlık dönüşür, tipografi/foreground ayrı bir karardır.
+
+**Eşsiz yüzeyler triyajdır, tokenizasyon değil.** Ölçüm: toplam sert yüzey **2425** (799 `bg-white` + 1626 border), kuralın yakaladığı eşli **2240**. Fark **185**, yani `dark:` partneri **hiç olmayan** yüzeyler. Bunlar token bekleyen iş değil, **dark-mode hata adayıdır** — süpürmede ayrıca bakılır; bir kısmı meşru (print, sabit yüzey) olabilir.
+
+**Ölçüm iki yöntemle doğrulanır:** kuralın kendi sayacı **ve** bağımsız satır-tabanlı yürüyüş. (Faz 5.4'te ilk kapsam ölçümü iki regex'in farklı pencereleri yüzünden `bg-white`'ı **çift saydı**: 552 "eşli" + 505 "eşsiz" = 1057, gerçek **799**. Sayı üç yere yazılmadan önce ikinci yöntemle doğrulanmalı.)
+
+**Kalan iş:** `apps/web`'te **2240 site** (726 `bg-white` + 1514 border). Primitif katmanı **zaten temiz** (`packages/ui` bu kural için 0) — önce o düzeltildi (`beb9cc6`), çünkü otorite bileşenlerde ateşleyen bir kural **yerleşik yanlış pozitifle** başlar (Faz 3 bulguları 1 ve 7, 5.2 `aria-label`, 5.3 `table.tsx` — aynı sınıfın beşinci tekrarı).
+
+
 ---
 
 ## 3. Sayfa ve Bileşen Ayrıştırma Mimarisi (Architecture & Decomposition)
