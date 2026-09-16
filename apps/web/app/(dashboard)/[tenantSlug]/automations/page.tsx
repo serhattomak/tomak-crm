@@ -441,7 +441,7 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-gradient-to-br bg-card from-indigo-50/50 via-white to-blue-50/50 p-4 shadow-xs">
+        <div className="rounded-2xl border border-border bg-gradient-to-br bg-card from-indigo-50/50 via-white to-blue-50/50 p-4 shadow-xs dark:from-indigo-950/20 dark:via-zinc-900 dark:to-blue-950/20">
           <div className="mb-2 flex items-center justify-between font-semibold text-indigo-700 text-xs">
             <span>TASARRUF EDİLEN SÜRE</span>
             <Clock className="h-4 w-4 text-indigo-500" />

@@ -461,7 +461,7 @@ export default function CompliancePage() {
         </div>
 
         {/* Financial Risk Exposure */}
-        <div className="rounded-3xl border border-border bg-gradient-to-br bg-card from-red-50/40 via-white to-amber-50/40 p-5 shadow-xs">
+        <div className="rounded-3xl border border-border bg-gradient-to-br bg-card from-red-50/40 via-white to-amber-50/40 p-5 shadow-xs dark:from-red-950/20 dark:via-zinc-900 dark:to-amber-950/20">
           <div className="mb-1 flex items-center justify-between font-semibold text-red-600 text-xs">
             <span className="font-bold text-2xs text-red-500 uppercase tracking-wider">
               CEZA RİSK MARUZİYETİ
