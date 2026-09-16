@@ -45,11 +45,30 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | SVG_PAINT_HEX | error | **0** (8 recorded) | `currentColor` / tokens (brand marks excepted) |
 | ARBITRARY_TEXT_SIZE | warn | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
 | NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
-| INLINE_STYLE_PROP | warn | 31 | Tailwind classes + semantic tokens (Faz 5.6) |
+| INLINE_STYLE_PROP | warn | **0** | Tailwind classes + semantic tokens (Faz 5.6) |
 
-**Three of the four warn rules now read 0** (`NATIVE_TABLE`, `CARD_SURFACE`,
-`ARBITRARY_TEXT_SIZE`), so their Faz 7 promotion path is open — `INLINE_STYLE_PROP` at 31
-is the last one.
+**The full sweep is clean — 0 errors and 0 warnings.** From the Faz 0 baseline of 1458
+errors and 1334 advisories, every rule in this guard now reads zero, which is the
+precondition ADR-0004 §9 attached to promoting the warn rules to error in Faz 7.
+
+**INLINE_STYLE_PROP (Faz 5.6)** needed the rule narrowed rather than the code changed.
+It flagged every `style={{}}` while §1.4 bans inline style for **static** values only and
+says in the same sentence that `style` remains correct for unmeasurable dynamic ones. So
+the rule was wider than its own standard — the same defect as CARD_SURFACE flagging
+frosted glass, and it fails the same way: the counter never reaches zero and the pull is
+to widen the migration until it does.
+
+The triage of all 31: **19 legitimate dynamic** (progress percentages, `scale()` transforms,
+node positions), **9 database-driven colours** (`tpl.colorHex`, `stage.colorHex || "#3B82F6"`)
+which deferred item 25 already records as a data contract, **1** the `Progress` primitive's
+own implementation, and **3 genuinely static**. The narrowed pattern flags a block only when
+every value is a plain quoted literal — no `${`, no member access, no fallback — which is a
+shape test, and applied to all 31 it leaves exactly those three.
+
+The three became `min-w-[800px]`, `max-h-[560px] min-h-[320px]`, and an arbitrary
+`background-image` + `background-size` for the organisation canvas's dot grid. All four
+arbitrary values were confirmed in the compiled CSS, not assumed, because the syntax for a
+gradient containing a CSS variable and a size hint has to survive underscore conversion.
 
 **ARBITRARY_TEXT_SIZE (Faz 5.5)** was the cheapest sweep of the phase because the
 distribution did the work: 674 sites were `text-[11px]` and 451 were `text-[10px]`, and
