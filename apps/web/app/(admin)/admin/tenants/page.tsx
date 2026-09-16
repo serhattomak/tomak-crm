@@ -8,7 +8,14 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Building2,
@@ -247,12 +254,20 @@ function AdminTenantsContent() {
           <Table>
             <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/60">
               <TableRow>
-                <TableHead className="px-5 py-3.5 h-auto">Firma / Çalışma Alanı</TableHead>
-                <TableHead className="px-5 py-3.5 h-auto">Sektör Şablonu</TableHead>
-                <TableHead className="px-5 py-3.5 h-auto">Aktif Modüller</TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">
+                  Firma / Çalışma Alanı
+                </TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">
+                  Sektör Şablonu
+                </TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">
+                  Aktif Modüller
+                </TableHead>
                 <TableHead className="px-5 py-3.5 h-auto">Üyeler</TableHead>
                 <TableHead className="px-5 py-3.5 h-auto">Durum</TableHead>
-                <TableHead className="px-5 py-3.5 text-right h-auto">İşlemler</TableHead>
+                <TableHead className="px-5 py-3.5 text-right h-auto">
+                  İşlemler
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y divide-zinc-100 text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
@@ -512,7 +527,7 @@ function AdminTenantsContent() {
                     const checked = formData.enabledModules.includes(mod.key);
                     return (
                       <label
-                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 transition ${ checked ? "border-blue-200 bg-blue-50 font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800" }`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 transition ${checked ? "border-blue-200 bg-blue-50 font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800"}`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
                       >

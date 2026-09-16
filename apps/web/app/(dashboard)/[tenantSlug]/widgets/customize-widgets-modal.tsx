@@ -94,9 +94,7 @@ export function CustomizeWidgetsModal({
           <BarChart3 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         );
       case "Gauge":
-        return (
-          <Gauge className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-        );
+        return <Gauge className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
       case "Filter":
         return (
           <Filter className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
@@ -247,7 +245,7 @@ export function CustomizeWidgetsModal({
 
             return (
               <div
-                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${ isActive ? "border-primary/40 bg-primary/5" : "border-border/70 bg-card hover:border-border" }`}
+                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${isActive ? "border-primary/40 bg-primary/5" : "border-border/70 bg-card hover:border-border"}`}
                 key={widget.id}
               >
                 <div className="flex min-w-0 items-start gap-2.5">

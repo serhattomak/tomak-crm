@@ -71,8 +71,18 @@ export function ContractSignModal({
     setIsDrawing(true);
     setHasSignature(true);
     const rect = canvas.getBoundingClientRect();
-    const clientX = "touches" in e && e.touches.length > 0 ? (e.touches[0]?.clientX ?? 0) : ("clientX" in e ? e.clientX : 0);
-    const clientY = "touches" in e && e.touches.length > 0 ? (e.touches[0]?.clientY ?? 0) : ("clientY" in e ? e.clientY : 0);
+    const clientX =
+      "touches" in e && e.touches.length > 0
+        ? (e.touches[0]?.clientX ?? 0)
+        : "clientX" in e
+          ? e.clientX
+          : 0;
+    const clientY =
+      "touches" in e && e.touches.length > 0
+        ? (e.touches[0]?.clientY ?? 0)
+        : "clientY" in e
+          ? e.clientY
+          : 0;
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
@@ -96,8 +106,18 @@ export function ContractSignModal({
     }
 
     const rect = canvas.getBoundingClientRect();
-    const clientX = "touches" in e && e.touches.length > 0 ? (e.touches[0]?.clientX ?? 0) : ("clientX" in e ? e.clientX : 0);
-    const clientY = "touches" in e && e.touches.length > 0 ? (e.touches[0]?.clientY ?? 0) : ("clientY" in e ? e.clientY : 0);
+    const clientX =
+      "touches" in e && e.touches.length > 0
+        ? (e.touches[0]?.clientX ?? 0)
+        : "clientX" in e
+          ? e.clientX
+          : 0;
+    const clientY =
+      "touches" in e && e.touches.length > 0
+        ? (e.touches[0]?.clientY ?? 0)
+        : "clientY" in e
+          ? e.clientY
+          : 0;
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 

@@ -368,14 +368,14 @@ function NotificationTabs({
   return (
     <div className="flex items-center gap-1 border-border border-b bg-zinc-50/70 px-3 py-1.5 dark:bg-zinc-800/40">
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
         onClick={onSelectAll}
         type="button"
       >
         Tümü ({totalCount})
       </button>
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
         onClick={onSelectUnread}
         type="button"
       >

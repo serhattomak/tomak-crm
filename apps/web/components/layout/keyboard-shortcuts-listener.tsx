@@ -6,7 +6,9 @@ import { useEffect } from "react";
 interface KeyboardShortcutsListenerProps {
   tenantSlug: string;
   isCommandPaletteOpen: boolean;
-  setIsCommandPaletteOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
+  setIsCommandPaletteOpen: (
+    open: boolean | ((prev: boolean) => boolean)
+  ) => void;
   isShortcutsHelpOpen: boolean;
   setIsShortcutsHelpOpen: (open: boolean) => void;
   isMobileDrawerOpen: boolean;

@@ -1114,7 +1114,7 @@ export default function MessagesPage() {
                           {/* Floating Micro Action Toolbar */}
                           {!isEditing && (
                             <div
-                              className={`absolute -top-7 z-10 hidden items-center gap-0.5 rounded-lg border border-border bg-card p-0.5 shadow-md group-hover/bubble:flex dark:border-border dark:bg-card ${ isMe ? "right-0" : "left-0" }`}
+                              className={`absolute -top-7 z-10 hidden items-center gap-0.5 rounded-lg border border-border bg-card p-0.5 shadow-md group-hover/bubble:flex dark:border-border dark:bg-card ${isMe ? "right-0" : "left-0"}`}
                             >
                               <button
                                 className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
@@ -1155,7 +1155,7 @@ export default function MessagesPage() {
 
                           {/* Message Bubble */}
                           <div
-                            className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${ isMe ? "rounded-br-xs bg-blue-600 text-white" : "rounded-bl-xs border border-border bg-card text-zinc-900 dark:border-border dark:bg-card dark:text-foreground" }`}
+                            className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${isMe ? "rounded-br-xs bg-blue-600 text-white" : "rounded-bl-xs border border-border bg-card text-zinc-900 dark:border-border dark:bg-card dark:text-foreground"}`}
                           >
                             {isEditing ? (
                               <div className="min-w-[240px] space-y-2">
@@ -1207,7 +1207,7 @@ export default function MessagesPage() {
                             {/* Render Embedded Entity Card if any */}
                             {msg.entityEmbeds?.map((embed) => (
                               <div
-                                className={`mt-2.5 rounded-xl border p-3 transition-all ${ isMe ? "border-blue-500 bg-blue-700/80 text-white" : "border-border bg-zinc-50 text-zinc-900 dark:text-zinc-100 dark:border-border dark:bg-muted/60 dark:text-foreground" }`}
+                                className={`mt-2.5 rounded-xl border p-3 transition-all ${isMe ? "border-blue-500 bg-blue-700/80 text-white" : "border-border bg-zinc-50 text-zinc-900 dark:text-zinc-100 dark:border-border dark:bg-muted/60 dark:text-foreground"}`}
                                 key={embed.id}
                               >
                                 <div className="flex items-start justify-between gap-2">
@@ -1460,21 +1460,21 @@ export default function MessagesPage() {
             {/* Type Selector Tabs */}
             <div className="my-3 flex shrink-0 rounded-xl bg-muted p-1">
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Customer" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Customer" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Customer")}
                 type="button"
               >
                 Müşteriler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Order" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Order" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Order")}
                 type="button"
               >
                 Siparişler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Product" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Product" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Product")}
                 type="button"
               >
@@ -1963,4 +1963,3 @@ export default function MessagesPage() {
     </PageContainer>
   );
 }
-

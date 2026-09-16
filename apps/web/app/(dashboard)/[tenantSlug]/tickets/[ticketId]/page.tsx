@@ -611,10 +611,10 @@ export default function TicketDetailPage() {
                       )}
 
                       <div
-                        className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${ isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white" }`}
+                        className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white"}`}
                       >
                         <div
-                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${ isCustomer ? "border-border text-muted-foreground" : "border-blue-500/80 text-blue-100" }`}
+                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${isCustomer ? "border-border text-muted-foreground" : "border-blue-500/80 text-blue-100"}`}
                         >
                           <span className="font-semibold">{m.senderName}</span>
                           <span>
@@ -632,7 +632,7 @@ export default function TicketDetailPage() {
                         {/* Embed Cards if attached */}
                         {m.entityEmbeds?.map((e) => (
                           <div
-                            className={`mt-2.5 flex items-center gap-2 rounded-xl p-2.5 ${ isCustomer ? "border border-border bg-zinc-50 dark:bg-zinc-800/50" : "border border-blue-400/40 bg-blue-700/60" }`}
+                            className={`mt-2.5 flex items-center gap-2 rounded-xl p-2.5 ${isCustomer ? "border border-border bg-zinc-50 dark:bg-zinc-800/50" : "border border-blue-400/40 bg-blue-700/60"}`}
                             key={e.id}
                           >
                             <Package className="h-4 w-4 shrink-0" />
@@ -665,7 +665,7 @@ export default function TicketDetailPage() {
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5">
                   <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-0.5 text-xs dark:bg-zinc-800">
                     <button
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${ messageMode === "public" ? "bg-card text-blue-700 shadow-xs" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1 font-semibold transition-all ${messageMode === "public" ? "bg-card text-blue-700 shadow-xs" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                       onClick={() => setMessageMode("public")}
                       type="button"
                     >
@@ -724,7 +724,7 @@ export default function TicketDetailPage() {
 
                 <form className="space-y-2" onSubmit={handleSendMessage}>
                   <textarea
-                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 dark:border-amber-700 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
+                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${messageMode === "internal" ? "border-amber-300 dark:border-amber-700 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100"}`}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder={
                       messageMode === "internal"
@@ -1023,9 +1023,7 @@ export default function TicketDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground">
-                Kargo kaydı yok.
-              </p>
+              <p className="text-xs text-muted-foreground">Kargo kaydı yok.</p>
             )}
           </div>
         </div>
@@ -1168,7 +1166,9 @@ export default function TicketDetailPage() {
                 </div>
               ))}
               {cannedResponses.length === 0 && (
-                <p className="text-xs text-muted-foreground">Henüz şablon yok.</p>
+                <p className="text-xs text-muted-foreground">
+                  Henüz şablon yok.
+                </p>
               )}
             </div>
             <div className="mt-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">

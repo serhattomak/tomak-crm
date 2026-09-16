@@ -571,7 +571,7 @@ export function CampaignModal({
                       type="button"
                     >
                       <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${ isStackable ? "translate-x-5" : "translate-x-0" }`}
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${isStackable ? "translate-x-5" : "translate-x-0"}`}
                       />
                     </button>
                   </div>
@@ -618,7 +618,7 @@ export function CampaignModal({
                       const isSelected = type === t.id;
                       return (
                         <button
-                          className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${ isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300" }`}
+                          className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300"}`}
                           key={t.id}
                           onClick={() => setType(t.id)}
                           type="button"
@@ -800,7 +800,7 @@ export function CampaignModal({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${ scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                       onClick={() => setScopeMode("all")}
                       type="button"
                     >
@@ -813,7 +813,7 @@ export function CampaignModal({
                     </button>
 
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${ scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                       onClick={() => setScopeMode("custom")}
                       type="button"
                     >
@@ -922,7 +922,7 @@ export function CampaignModal({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${ triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                       onClick={() => setTriggerType("Automatic")}
                       type="button"
                     >
@@ -936,7 +936,7 @@ export function CampaignModal({
                     </button>
 
                     <button
-                      className={`rounded-xl border p-3.5 text-left transition-all ${ triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+                      className={`rounded-xl border p-3.5 text-left transition-all ${triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                       onClick={() => setTriggerType("CouponCode")}
                       type="button"
                     >

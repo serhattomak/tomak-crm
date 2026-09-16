@@ -105,8 +105,8 @@ export default function RegisterPage() {
               İnşa Edin
             </h2>
             <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
-              Çok kiracılı çalışma alanınızı oluşturun ve ekibinizin tüm
-              gücünü ortaya çıkarın.
+              Çok kiracılı çalışma alanınızı oluşturun ve ekibinizin tüm gücünü
+              ortaya çıkarın.
             </p>
           </div>
         </div>
@@ -155,7 +155,10 @@ export default function RegisterPage() {
               onSubmit={handleRegister}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-full-name">
+                <label
+                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  htmlFor="register-full-name"
+                >
                   Ad Soyad
                 </label>
                 <input
@@ -170,7 +173,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-email">
+                <label
+                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  htmlFor="register-email"
+                >
                   E-posta
                 </label>
                 <input
@@ -185,7 +191,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-password">
+                <label
+                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  htmlFor="register-password"
+                >
                   Şifre
                 </label>
                 <div className="relative">

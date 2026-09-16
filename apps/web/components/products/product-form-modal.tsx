@@ -540,7 +540,10 @@ export function ProductImagesField({
           onClick={() => fileInputRef.current?.click()}
           type="button"
         >
-          <Upload aria-hidden="true" className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+          <Upload
+            aria-hidden="true"
+            className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400"
+          />
           <span>Dosya Yükle</span>
         </button>
         <input

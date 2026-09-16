@@ -2,7 +2,14 @@
 "use client";
 
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   AlertCircle,
   ArrowUpRight,
@@ -268,7 +275,7 @@ export default function AnalyticsPage() {
               ] as const
             ).map((t) => (
               <button
-                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${ timeRange === t.key ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${timeRange === t.key ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
                 key={t.key}
                 onClick={() => setTimeRange(t.key)}
                 type="button"
@@ -710,12 +717,24 @@ export default function AnalyticsPage() {
             <Table>
               <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                 <TableRow>
-                  <TableHead className="py-3 pr-4 pl-4 h-auto">Ürün Adı</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Tip / Kategori</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">Maliyet</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">Satış Fiyatı</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">Brüt Marj</TableHead>
-                  <TableHead className="py-3 pr-4 pl-4 text-center h-auto">Stok Durumu</TableHead>
+                  <TableHead className="py-3 pr-4 pl-4 h-auto">
+                    Ürün Adı
+                  </TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Tip / Kategori
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    Maliyet
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    Satış Fiyatı
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    Brüt Marj
+                  </TableHead>
+                  <TableHead className="py-3 pr-4 pl-4 text-center h-auto">
+                    Stok Durumu
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">

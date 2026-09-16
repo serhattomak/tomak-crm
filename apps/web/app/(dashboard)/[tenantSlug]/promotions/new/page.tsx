@@ -284,7 +284,7 @@ export default function NewCampaignPage() {
           const isCurrent = currentStep === s.num;
           return (
             <div
-              className={`rounded-xl border p-2.5 text-center transition-all ${ isCurrent ? "border-blue-600 bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-900/50" }`}
+              className={`rounded-xl border p-2.5 text-center transition-all ${isCurrent ? "border-blue-600 bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-900/50"}`}
               key={s.num}
             >
               <div className="flex items-center justify-center gap-1.5 font-semibold text-xs">
@@ -421,7 +421,7 @@ export default function NewCampaignPage() {
                 type="button"
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${ isStackable ? "translate-x-5" : "translate-x-0" }`}
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${isStackable ? "translate-x-5" : "translate-x-0"}`}
                 />
               </button>
             </div>
@@ -475,7 +475,7 @@ export default function NewCampaignPage() {
               const isSelected = type === t.id;
               return (
                 <button
-                  className={`flex flex-col items-start rounded-xl border p-4 text-left transition-all ${ isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300" }`}
+                  className={`flex flex-col items-start rounded-xl border p-4 text-left transition-all ${isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300"}`}
                   key={t.id}
                   onClick={() => setType(t.id)}
                   type="button"
@@ -663,7 +663,7 @@ export default function NewCampaignPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${ scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setScopeMode("all")}
               type="button"
             >
@@ -676,7 +676,7 @@ export default function NewCampaignPage() {
             </button>
 
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${ scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setScopeMode("custom")}
               type="button"
             >
@@ -802,7 +802,7 @@ export default function NewCampaignPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${ triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setTriggerType("Automatic")}
               type="button"
             >
@@ -817,7 +817,7 @@ export default function NewCampaignPage() {
             </button>
 
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${ triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setTriggerType("CouponCode")}
               type="button"
             >
@@ -906,7 +906,9 @@ export default function NewCampaignPage() {
                 {name}
               </div>
               {code && (
-                <div className="font-mono text-muted-foreground">Kod: {code}</div>
+                <div className="font-mono text-muted-foreground">
+                  Kod: {code}
+                </div>
               )}
               <div className="text-muted-foreground">
                 Tarih:{" "}

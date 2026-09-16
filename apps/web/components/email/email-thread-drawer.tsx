@@ -112,7 +112,7 @@ function MessageCardBody({
 
       {/* Sandboxed HTML render via iframe srcDoc */}
       <div
-        className={`rounded-lg border p-3 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
+        className={`rounded-lg border p-3 transition-colors ${isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900"}`}
       >
         {message.htmlBody ? (
           <iframe
@@ -264,7 +264,7 @@ function MessageCard({
 
   return (
     <div
-      className={`rounded-xl border transition-all ${ isOutbound ? "border-sky-200/80 bg-sky-50/30 dark:border-sky-900/30 dark:bg-sky-950/20" : "border-border bg-card" } shadow-2xs`}
+      className={`rounded-xl border transition-all ${isOutbound ? "border-sky-200/80 bg-sky-50/30 dark:border-sky-900/30 dark:bg-sky-950/20" : "border-border bg-card"} shadow-2xs`}
     >
       {/* Message Header / Accordion trigger */}
       <button

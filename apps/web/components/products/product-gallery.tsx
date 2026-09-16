@@ -179,7 +179,7 @@ export function ProductGallery({
             <div
               aria-label={imageAlt(productName, index)}
               aria-selected={isActive}
-              className={`group relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border bg-card transition-all ${ isActive ? "border-blue-600 ring-2 ring-blue-600/30" : "border-border hover:border-zinc-300 dark:hover:border-zinc-700" } ${isDragging ? "opacity-50" : ""}`}
+              className={`group relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border bg-card transition-all ${isActive ? "border-blue-600 ring-2 ring-blue-600/30" : "border-border hover:border-zinc-300 dark:hover:border-zinc-700"} ${isDragging ? "opacity-50" : ""}`}
               draggable={editable}
               key={`${src}-${index}`}
               onClick={() => setActiveIndex(index)}

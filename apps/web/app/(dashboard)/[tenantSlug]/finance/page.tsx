@@ -10,7 +10,14 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -143,7 +150,9 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-2xs text-muted-foreground">{trend}</span>
+          <span className="font-medium text-2xs text-muted-foreground">
+            {trend}
+          </span>
         ) : null}
       </div>
     </div>
@@ -264,7 +273,10 @@ function CariTableBody({
   if (isCariLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-muted-foreground" colSpan={7}>
+        <TableCell
+          className="py-8 text-center text-muted-foreground"
+          colSpan={7}
+        >
           Cari hesaplar yükleniyor...
         </TableCell>
       </TableRow>
@@ -274,7 +286,10 @@ function CariTableBody({
   if (cariList.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-12 text-center text-muted-foreground" colSpan={7}>
+        <TableCell
+          className="py-12 text-center text-muted-foreground"
+          colSpan={7}
+        >
           <Users2 className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Kayıtlı cari hesap bulunamadı.
         </TableCell>
@@ -390,7 +405,10 @@ function StatementTableBody({
   if (isStatementLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
+        <TableCell
+          className="py-8 text-center text-muted-foreground"
+          colSpan={5}
+        >
           Ekstre yükleniyor...
         </TableCell>
       </TableRow>
@@ -400,7 +418,10 @@ function StatementTableBody({
   if (statementTx.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
+        <TableCell
+          className="py-8 text-center text-muted-foreground"
+          colSpan={5}
+        >
           Bu cari hesaba ait hareket bulunamadı.
         </TableCell>
       </TableRow>
@@ -807,13 +828,25 @@ export default function FinancePage() {
               <Table className="font-sans">
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
-                    <TableHead className="py-3 pr-3 pl-4 h-auto">Cari Kart & Kod</TableHead>
+                    <TableHead className="py-3 pr-3 pl-4 h-auto">
+                      Cari Kart & Kod
+                    </TableHead>
                     <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
-                    <TableHead className="px-3 py-3 h-auto">VKN / TCKN</TableHead>
-                    <TableHead className="px-3 py-3 text-right h-auto">Toplam Borç</TableHead>
-                    <TableHead className="px-3 py-3 text-right h-auto">Toplam Alacak</TableHead>
-                    <TableHead className="px-3 py-3 text-right h-auto">Net Bakiye</TableHead>
-                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Aksiyonlar</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">
+                      VKN / TCKN
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">
+                      Toplam Borç
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">
+                      Toplam Alacak
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">
+                      Net Bakiye
+                    </TableHead>
+                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
+                      Aksiyonlar
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -863,12 +896,22 @@ export default function FinancePage() {
               <Table className="font-sans">
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
-                    <TableHead className="py-3 pr-3 pl-4 h-auto">Tarih & Evrak</TableHead>
-                    <TableHead className="px-3 py-3 h-auto">Hesap (Kasa/Banka)</TableHead>
-                    <TableHead className="px-3 py-3 h-auto">İşlem Türü</TableHead>
-                    <TableHead className="px-3 py-3 h-auto">İlişkili Cari</TableHead>
+                    <TableHead className="py-3 pr-3 pl-4 h-auto">
+                      Tarih & Evrak
+                    </TableHead>
+                    <TableHead className="px-3 py-3 h-auto">
+                      Hesap (Kasa/Banka)
+                    </TableHead>
+                    <TableHead className="px-3 py-3 h-auto">
+                      İşlem Türü
+                    </TableHead>
+                    <TableHead className="px-3 py-3 h-auto">
+                      İlişkili Cari
+                    </TableHead>
                     <TableHead className="px-3 py-3 h-auto">Açıklama</TableHead>
-                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Tutar</TableHead>
+                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
+                      Tutar
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -1006,10 +1049,18 @@ export default function FinancePage() {
                   <TableHeader>
                     <TableRow className="border-border font-semibold text-muted-foreground">
                       <TableHead className="py-2 h-auto">Tarih</TableHead>
-                      <TableHead className="py-2 h-auto">İşlem / Evrak</TableHead>
-                      <TableHead className="py-2 text-right h-auto">Borç</TableHead>
-                      <TableHead className="py-2 text-right h-auto">Alacak</TableHead>
-                      <TableHead className="py-2 text-right h-auto">Bakiye</TableHead>
+                      <TableHead className="py-2 h-auto">
+                        İşlem / Evrak
+                      </TableHead>
+                      <TableHead className="py-2 text-right h-auto">
+                        Borç
+                      </TableHead>
+                      <TableHead className="py-2 text-right h-auto">
+                        Alacak
+                      </TableHead>
+                      <TableHead className="py-2 text-right h-auto">
+                        Bakiye
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
@@ -1733,14 +1784,14 @@ function CreateTransactionModal({
             </span>
             <div className="grid grid-cols-2 gap-2">
               <button
-                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Collection" ? "bg-emerald-700 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
+                className={`rounded-xl py-2 font-bold text-xs transition-all ${type === "Collection" ? "bg-emerald-700 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"}`}
                 onClick={handleSelectCollection}
                 type="button"
               >
                 + Tahsilat (Giriş)
               </button>
               <button
-                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Payment" ? "bg-rose-600 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
+                className={`rounded-xl py-2 font-bold text-xs transition-all ${type === "Payment" ? "bg-rose-600 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"}`}
                 onClick={handleSelectPayment}
                 type="button"
               >

@@ -119,7 +119,7 @@ export function ComplianceInlineCard({
 
             {metrics.providedBreakMinutes !== undefined && (
               <span
-                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-2xs shadow-2xs ${ metrics.requiredBreakMinutes && metrics.providedBreakMinutes < metrics.requiredBreakMinutes ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200" }`}
+                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-2xs shadow-2xs ${metrics.requiredBreakMinutes && metrics.providedBreakMinutes < metrics.requiredBreakMinutes ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"}`}
               >
                 <Coffee className="h-3 w-3 text-amber-700 dark:text-amber-400" />
                 Mola: <strong>{metrics.providedBreakMinutes} dk</strong>
@@ -148,7 +148,7 @@ export function ComplianceInlineCard({
 
             {metrics.projectedWeeklyHours !== undefined && (
               <span
-                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-2xs shadow-2xs ${ metrics.projectedWeeklyHours > 45 ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200" }`}
+                className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-2xs shadow-2xs ${metrics.projectedWeeklyHours > 45 ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"}`}
               >
                 Haftalık Toplam:{" "}
                 <strong>{metrics.projectedWeeklyHours.toFixed(1)} saat</strong>

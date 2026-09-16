@@ -54,9 +54,7 @@ export function InvoiceDocument({ invoice }: { invoice: InvoiceDetailDto }) {
       <div className="flex items-start justify-between border-border border-b pb-6">
         <div>
           <span className="font-extrabold text-blue-600 text-xl tracking-tight dark:text-blue-400">
-            {invoice.type === "Sales"
-              ? "SATIŞ FATURASI"
-              : "ALIŞ FATURASI"}
+            {invoice.type === "Sales" ? "SATIŞ FATURASI" : "ALIŞ FATURASI"}
           </span>
           <div className="mt-1 font-bold font-mono text-base text-zinc-900 dark:text-zinc-100">
             {invoice.invoiceNumber}
@@ -129,7 +127,9 @@ export function InvoiceDocument({ invoice }: { invoice: InvoiceDetailDto }) {
             <TableRow className="border-border font-semibold text-muted-foreground">
               <TableHead className="py-2 h-auto">Ürün / Hizmet</TableHead>
               <TableHead className="py-2 text-right h-auto">Miktar</TableHead>
-              <TableHead className="py-2 text-right h-auto">Birim Fiyat</TableHead>
+              <TableHead className="py-2 text-right h-auto">
+                Birim Fiyat
+              </TableHead>
               <TableHead className="py-2 text-right h-auto">KDV %</TableHead>
               <TableHead className="py-2 text-right h-auto">Toplam</TableHead>
             </TableRow>

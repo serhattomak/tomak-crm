@@ -11,7 +11,14 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -415,11 +422,17 @@ export default function ProductDetailPage() {
     switch (type) {
       case "In":
       case "Return":
-        return <ArrowDownRight className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />;
+        return (
+          <ArrowDownRight className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
+        );
       case "Out":
-        return <ArrowUpRight className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />;
+        return (
+          <ArrowUpRight className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+        );
       case "Adjustment":
-        return <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />;
+        return (
+          <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+        );
       default:
         return (
           <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
@@ -724,9 +737,7 @@ export default function ProductDetailPage() {
             <div className="space-y-2 text-zinc-600 dark:text-zinc-400">
               {product.barcode && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    Barkod (EAN):
-                  </span>
+                  <span className="text-muted-foreground">Barkod (EAN):</span>
                   <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                     {product.barcode}
                   </span>
@@ -743,9 +754,7 @@ export default function ProductDetailPage() {
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-muted-foreground">
-                  Ölçü Birimi:
-                </span>
+                <span className="text-muted-foreground">Ölçü Birimi:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   {product.unit}
                 </span>
@@ -770,7 +779,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             {tabs.map((tab) => (
               <button
-                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 type="button"
@@ -964,12 +973,24 @@ export default function ProductDetailPage() {
                   <Table>
                     <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                       <TableRow>
-                        <TableHead className="w-12 px-3 py-3 h-auto">Görsel</TableHead>
-                        <TableHead className="px-4 py-3 h-auto">Varyant Adı</TableHead>
-                        <TableHead className="px-4 py-3 h-auto">SKU / Barkod</TableHead>
-                        <TableHead className="px-4 py-3 text-right h-auto">Ek Fiyat (+₺)</TableHead>
-                        <TableHead className="px-4 py-3 text-right h-auto">Varyant Stoğu</TableHead>
-                        <TableHead className="py-3 pr-4 pl-2 text-right h-auto">İşlem</TableHead>
+                        <TableHead className="w-12 px-3 py-3 h-auto">
+                          Görsel
+                        </TableHead>
+                        <TableHead className="px-4 py-3 h-auto">
+                          Varyant Adı
+                        </TableHead>
+                        <TableHead className="px-4 py-3 h-auto">
+                          SKU / Barkod
+                        </TableHead>
+                        <TableHead className="px-4 py-3 text-right h-auto">
+                          Ek Fiyat (+₺)
+                        </TableHead>
+                        <TableHead className="px-4 py-3 text-right h-auto">
+                          Varyant Stoğu
+                        </TableHead>
+                        <TableHead className="py-3 pr-4 pl-2 text-right h-auto">
+                          İşlem
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1261,7 +1282,9 @@ export default function ProductDetailPage() {
                                       { minimumFractionDigits: 2 }
                                     )}
                                   </span>
-                                  <span className="text-muted-foreground">→</span>
+                                  <span className="text-muted-foreground">
+                                    →
+                                  </span>
                                 </>
                               )}
                               <span className="text-sm text-zinc-900 dark:text-zinc-100">
@@ -1312,7 +1335,9 @@ export default function ProductDetailPage() {
                                       minimumFractionDigits: 2,
                                     })}
                                   </span>
-                                  <span className="text-muted-foreground">→</span>
+                                  <span className="text-muted-foreground">
+                                    →
+                                  </span>
                                 </>
                               )}
                               <span className="text-sm text-zinc-900 dark:text-zinc-100">

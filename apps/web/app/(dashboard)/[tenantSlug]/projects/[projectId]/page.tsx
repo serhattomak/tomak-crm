@@ -872,7 +872,7 @@ export default function ProjectDetailPage() {
           {/* Active Sprint Section */}
           {activeSprint && (
             <div
-              className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === activeSprint.id ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40" : "border-emerald-200/80 bg-card dark:border-emerald-900/60" }`}
+              className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === activeSprint.id ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40" : "border-emerald-200/80 bg-card dark:border-emerald-900/60"}`}
               onDragLeave={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                   setDragOverSprintId(null);
@@ -1005,7 +1005,9 @@ export default function ProjectDetailPage() {
                         <Combobox
                           aria-label="Atanan Temsilci"
                           onChange={(value) => {
-                            const emp = employees.find((emp) => emp.id === value);
+                            const emp = employees.find(
+                              (emp) => emp.id === value
+                            );
                             handleQuickUpdateItem(item.id, {
                               assignedUserAvatar: emp?.avatarUrl || undefined,
                               assignedUserId: value || undefined,
@@ -1114,7 +1116,7 @@ export default function ProjectDetailPage() {
 
             return (
               <div
-                className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === sprint.id ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+                className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === sprint.id ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                 key={sprint.id}
                 onDragLeave={(e) => {
                   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
@@ -1215,7 +1217,9 @@ export default function ProjectDetailPage() {
                         <Combobox
                           aria-label="Atanan Temsilci"
                           onChange={(value) => {
-                            const emp = employees.find((emp) => emp.id === value);
+                            const emp = employees.find(
+                              (emp) => emp.id === value
+                            );
                             handleQuickUpdateItem(item.id, {
                               assignedUserAvatar: emp?.avatarUrl || undefined,
                               assignedUserId: value || undefined,
@@ -1289,7 +1293,7 @@ export default function ProjectDetailPage() {
 
           {/* Backlog Pool Section */}
           <div
-            className={`rounded-2xl border p-5 shadow-2xs transition-all ${ dragOverSprintId === "backlog" ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card" }`}
+            className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === "backlog" ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
             onDragLeave={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                 setDragOverSprintId(null);
@@ -1510,7 +1514,7 @@ export default function ProjectDetailPage() {
 
                   return (
                     <div
-                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${ isOver ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40" : "border-border bg-zinc-50/70 dark:bg-zinc-900/50" }`}
+                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${isOver ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40" : "border-border bg-zinc-50/70 dark:bg-zinc-900/50"}`}
                       key={colStatus}
                       onDragLeave={(e) => {
                         if (
@@ -1550,7 +1554,7 @@ export default function ProjectDetailPage() {
 
                           return (
                             <div
-                              className={`group rounded-xl border bg-card p-3.5 shadow-2xs transition-all ${ isDragging ? "scale-95 cursor-grabbing border-blue-500 border-dashed opacity-30 shadow-none" : "cursor-grab border-border hover:border-blue-300 hover:shadow-md active:cursor-grabbing dark:hover:border-blue-700" }`}
+                              className={`group rounded-xl border bg-card p-3.5 shadow-2xs transition-all ${isDragging ? "scale-95 cursor-grabbing border-blue-500 border-dashed opacity-30 shadow-none" : "cursor-grab border-border hover:border-blue-300 hover:shadow-md active:cursor-grabbing dark:hover:border-blue-700"}`}
                               draggable
                               key={item.id}
                               onClick={() => setSelectedItem(item)}
@@ -1630,12 +1634,13 @@ export default function ProjectDetailPage() {
                                 <Combobox
                                   aria-label="Atanan"
                                   onChange={(value) => {
-                                    const emp = employees.find((emp) => emp.id === value);
+                                    const emp = employees.find(
+                                      (emp) => emp.id === value
+                                    );
                                     handleQuickUpdateItem(item.id, {
                                       assignedUserAvatar:
                                         emp?.avatarUrl || undefined,
-                                      assignedUserId:
-                                        value || undefined,
+                                      assignedUserId: value || undefined,
                                       assignedUserName:
                                         emp?.fullName || undefined,
                                     });
@@ -2128,7 +2133,7 @@ export default function ProjectDetailPage() {
                     key={subtask.id}
                   >
                     <button
-                      className={`flex h-4 w-4 items-center justify-center rounded-md border ${ subtask.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border dark:border-zinc-600" }`}
+                      className={`flex h-4 w-4 items-center justify-center rounded-md border ${subtask.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border dark:border-zinc-600"}`}
                       onClick={() => handleToggleSubtask(subtask.id)}
                       type="button"
                     >

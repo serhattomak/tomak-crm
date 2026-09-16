@@ -73,7 +73,8 @@ export default function WorkspaceSettingsPage() {
           Sistem Ayarları
         </h1>
         <p className="mt-1 text-xs text-muted-foreground">
-          Bu çalışma alanının temel bilgilerini ve marka tercihlerini güncelleyin.
+          Bu çalışma alanının temel bilgilerini ve marka tercihlerini
+          güncelleyin.
         </p>
       </div>
 
@@ -122,8 +123,8 @@ export default function WorkspaceSettingsPage() {
               value={activeTenant?.slug || ""}
             />
             <p className="mt-1 text-2xs text-muted-foreground">
-              Kısa ad kalıcıdır; URL yollarında kullanılır ve
-              sonradan değiştirilemez.
+              Kısa ad kalıcıdır; URL yollarında kullanılır ve sonradan
+              değiştirilemez.
             </p>
           </div>
 

@@ -60,7 +60,9 @@ export default function RootPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-muted text-zinc-600 dark:bg-zinc-950 dark:text-zinc-400">
         <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500 dark:text-blue-400" />
-        <p className="font-semibold text-xs">Çalışma alanlarınız yükleniyor...</p>
+        <p className="font-semibold text-xs">
+          Çalışma alanlarınız yükleniyor...
+        </p>
       </div>
     );
   }

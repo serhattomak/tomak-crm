@@ -10,7 +10,15 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Activity,
   AlertCircle,
@@ -564,9 +572,7 @@ export default function WebhooksPage() {
             <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {deliveriesTotal}
             </span>
-            <span className="text-xs text-muted-foreground">
-              deneme
-            </span>
+            <span className="text-xs text-muted-foreground">deneme</span>
           </div>
           <div className="mt-2 text-2xs text-muted-foreground">
             {failedDeliveries > 0 ? (
@@ -617,14 +623,14 @@ export default function WebhooksPage() {
       <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white/90 p-2 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all duration-150 ${ activeTab === "endpoints" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all duration-150 ${activeTab === "endpoints" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("endpoints")}
             type="button"
           >
             Endpointler ({endpointsTotal})
           </button>
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all duration-150 ${ activeTab === "deliveries" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all duration-150 ${activeTab === "deliveries" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("deliveries")}
             type="button"
           >
@@ -783,9 +789,15 @@ export default function WebhooksPage() {
                   </TableCaption>
                   <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                     <TableRow>
-                      <TableHead className="px-4 py-3 font-semibold h-auto">İsim</TableHead>
-                      <TableHead className="px-4 py-3 font-semibold h-auto">URL</TableHead>
-                      <TableHead className="px-4 py-3 font-semibold h-auto">Olaylar</TableHead>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">
+                        İsim
+                      </TableHead>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">
+                        URL
+                      </TableHead>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">
+                        Olaylar
+                      </TableHead>
                       <TableHead className="px-4 py-3 text-center font-semibold h-auto">
                         Durum
                       </TableHead>
@@ -847,7 +859,9 @@ export default function WebhooksPage() {
                         <TableCell className="px-4 py-3">
                           <div className="flex max-w-[280px] flex-wrap gap-1">
                             {ep.events.length === 0 ? (
-                              <span className="text-xs text-muted-foreground">—</span>
+                              <span className="text-xs text-muted-foreground">
+                                —
+                              </span>
                             ) : (
                               ep.events.map((ev) => getEventBadge(ev))
                             )}
@@ -869,7 +883,7 @@ export default function WebhooksPage() {
                             type="button"
                           >
                             <span
-                              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-crm-in-out ${ ep.isActive ? "translate-x-4" : "translate-x-0" }`}
+                              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-crm-in-out ${ep.isActive ? "translate-x-4" : "translate-x-0"}`}
                             />
                           </button>
                         </TableCell>
@@ -923,9 +937,7 @@ export default function WebhooksPage() {
                 Toplam {endpointsTotal} • Sayfa {endpointPage} /{" "}
                 {endpointsTotalPages}
               </span>
-              <span className="font-mono text-2xs">
-                pageSize {PAGE_SIZE}
-              </span>
+              <span className="font-mono text-2xs">pageSize {PAGE_SIZE}</span>
             </div>
           )}
         </div>
@@ -1048,10 +1060,18 @@ export default function WebhooksPage() {
                   </TableCaption>
                   <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                     <TableRow>
-                      <TableHead className="px-3 py-3 font-semibold h-auto">Endpoint</TableHead>
-                      <TableHead className="px-3 py-3 font-semibold h-auto">Olay</TableHead>
-                      <TableHead className="px-3 py-3 font-semibold h-auto">Payload</TableHead>
-                      <TableHead className="px-3 py-3 font-semibold h-auto">Durum</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
+                        Endpoint
+                      </TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
+                        Olay
+                      </TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
+                        Payload
+                      </TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
+                        Durum
+                      </TableHead>
                       <TableHead className="px-3 py-3 text-center font-semibold h-auto">
                         Deneme
                       </TableHead>
@@ -1061,7 +1081,9 @@ export default function WebhooksPage() {
                       <TableHead className="px-3 py-3 text-right font-semibold h-auto">
                         Süre
                       </TableHead>
-                      <TableHead className="px-3 py-3 font-semibold h-auto">Tarih</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
+                        Tarih
+                      </TableHead>
                       <TableHead className="px-3 py-3 font-semibold h-auto">
                         Sonraki Deneme
                       </TableHead>
@@ -1107,7 +1129,9 @@ export default function WebhooksPage() {
                         <TableCell className="px-3 py-3 text-center">
                           {d.responseCode === null ||
                           d.responseCode === undefined ? (
-                            <span className="text-xs text-muted-foreground">—</span>
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
                           ) : (
                             <span
                               className={`rounded px-1.5 py-0.5 font-mono text-xs ${

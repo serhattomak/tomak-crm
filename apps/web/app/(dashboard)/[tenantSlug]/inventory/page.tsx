@@ -10,7 +10,14 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -752,9 +759,13 @@ function WarehouseTabContent({
                 <TableHead className="p-3 h-auto">Ürün / Varyant</TableHead>
                 <TableHead className="p-3 h-auto">SKU / Barkod</TableHead>
                 <TableHead className="p-3 h-auto">Raf / Göz Konumu</TableHead>
-                <TableHead className="p-3 text-right h-auto">Toplam Stok</TableHead>
+                <TableHead className="p-3 text-right h-auto">
+                  Toplam Stok
+                </TableHead>
                 <TableHead className="p-3 text-right h-auto">Rezerve</TableHead>
-                <TableHead className="p-3 text-right h-auto">Kullanılabilir</TableHead>
+                <TableHead className="p-3 text-right h-auto">
+                  Kullanılabilir
+                </TableHead>
                 <TableHead className="p-3 text-center h-auto">Durum</TableHead>
               </TableRow>
             </TableHeader>
@@ -821,9 +832,13 @@ function TransferTabContent({
           <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
             <TableRow>
               <TableHead className="p-3 h-auto">Transfer No</TableHead>
-              <TableHead className="p-3 h-auto">Güzergah (Kaynak → Hedef)</TableHead>
+              <TableHead className="p-3 h-auto">
+                Güzergah (Kaynak → Hedef)
+              </TableHead>
               <TableHead className="p-3 h-auto">Tarih</TableHead>
-              <TableHead className="p-3 text-center h-auto">Kalem / Adet</TableHead>
+              <TableHead className="p-3 text-center h-auto">
+                Kalem / Adet
+              </TableHead>
               <TableHead className="p-3 text-center h-auto">Durum</TableHead>
               <TableHead className="p-3 text-right h-auto">Aksiyon</TableHead>
             </TableRow>
@@ -884,8 +899,12 @@ function CountTabContent({
               <TableHead className="p-3 h-auto">Sayım Fişi</TableHead>
               <TableHead className="p-3 h-auto">Depo</TableHead>
               <TableHead className="p-3 h-auto">Başlangıç Tarihi</TableHead>
-              <TableHead className="p-3 text-center h-auto">Kalem Sayısı</TableHead>
-              <TableHead className="p-3 text-center h-auto">Toplam Sapma / Fark</TableHead>
+              <TableHead className="p-3 text-center h-auto">
+                Kalem Sayısı
+              </TableHead>
+              <TableHead className="p-3 text-center h-auto">
+                Toplam Sapma / Fark
+              </TableHead>
               <TableHead className="p-3 text-center h-auto">Durum</TableHead>
               <TableHead className="p-3 text-right h-auto">Aksiyon</TableHead>
             </TableRow>
@@ -927,7 +946,7 @@ function WarehouseItemCard({
 
   return (
     <button
-      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${ isSelected ? "border-primary/60 bg-primary/5 shadow-sm" : "border-border bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" }`}
+      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${isSelected ? "border-primary/60 bg-primary/5 shadow-sm" : "border-border bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"}`}
       onClick={handleClick}
       type="button"
     >
@@ -2180,7 +2199,9 @@ function TransferDetailDrawer({
                   <TableRow>
                     <TableHead className="p-2.5 h-auto">Ürün</TableHead>
                     <TableHead className="p-2.5 h-auto">SKU</TableHead>
-                    <TableHead className="p-2.5 text-right h-auto">Sevk Adedi</TableHead>
+                    <TableHead className="p-2.5 text-right h-auto">
+                      Sevk Adedi
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -2430,9 +2451,15 @@ function StockCountAuditDrawer({
               <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="p-2.5 h-auto">Ürün Adı</TableHead>
-                  <TableHead className="p-2.5 text-right h-auto">Sistem Stoğu</TableHead>
-                  <TableHead className="w-28 p-2.5 text-right h-auto">Sayılan Miktar</TableHead>
-                  <TableHead className="p-2.5 text-right h-auto">Fark (Sapma)</TableHead>
+                  <TableHead className="p-2.5 text-right h-auto">
+                    Sistem Stoğu
+                  </TableHead>
+                  <TableHead className="w-28 p-2.5 text-right h-auto">
+                    Sayılan Miktar
+                  </TableHead>
+                  <TableHead className="p-2.5 text-right h-auto">
+                    Fark (Sapma)
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">

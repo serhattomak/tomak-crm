@@ -11,7 +11,14 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -574,7 +581,7 @@ export default function OrdersPage() {
           {/* View Switcher */}
           <div className="flex items-center rounded-xl bg-zinc-100 p-0.5 dark:bg-zinc-800">
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
@@ -582,7 +589,7 @@ export default function OrdersPage() {
               <TableIcon className="h-4 w-4" />
             </button>
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               onClick={() => handleViewMode("kanban")}
               title="Kanban Pipeline Görünümü"
               type="button"
@@ -641,14 +648,26 @@ export default function OrdersPage() {
                       onCheckedChange={toggleSelectAll}
                     />
                   </TableHead>
-                  <TableHead className="py-3.5 pr-4 pl-2 h-auto">Sipariş No &amp; Tarih</TableHead>
+                  <TableHead className="py-3.5 pr-4 pl-2 h-auto">
+                    Sipariş No &amp; Tarih
+                  </TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
-                  <TableHead className="px-4 py-3.5 h-auto">Ödeme Durumu</TableHead>
-                  <TableHead className="px-4 py-3.5 text-center h-auto">Kalem</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">Toplam Tutar</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">Tahsil Edilen</TableHead>
-                  <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">İşlemler</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    Ödeme Durumu
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-center h-auto">
+                    Kalem
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    Toplam Tutar
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    Tahsil Edilen
+                  </TableHead>
+                  <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">
+                    İşlemler
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1326,13 +1345,27 @@ function CreateOrderWizardModal({
                 <Table>
                   <TableHeader className="bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                     <TableRow>
-                      <TableHead className="px-3 py-2.5 h-auto">Kalem Adı</TableHead>
-                      <TableHead className="px-3 py-2.5 text-center h-auto">Miktar</TableHead>
-                      <TableHead className="px-3 py-2.5 text-right h-auto">Birim Fiyat</TableHead>
-                      <TableHead className="px-3 py-2.5 text-center h-auto">KDV %</TableHead>
-                      <TableHead className="px-3 py-2.5 text-center h-auto">İndirim %</TableHead>
-                      <TableHead className="px-3 py-2.5 text-right h-auto">Toplam</TableHead>
-                      <TableHead className="px-3 py-2.5 text-center h-auto">Sil</TableHead>
+                      <TableHead className="px-3 py-2.5 h-auto">
+                        Kalem Adı
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">
+                        Miktar
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-right h-auto">
+                        Birim Fiyat
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">
+                        KDV %
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">
+                        İndirim %
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-right h-auto">
+                        Toplam
+                      </TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">
+                        Sil
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">

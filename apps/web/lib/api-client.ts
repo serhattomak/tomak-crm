@@ -6114,7 +6114,11 @@ export class ApiClient {
     id: string,
     tenantSlug?: string
   ): Promise<ApiResponse<{ ettn: string; status: string; xmlLength: number }>> {
-    return await ApiClient.request<{ ettn: string; status: string; xmlLength: number }>(
+    return await ApiClient.request<{
+      ettn: string;
+      status: string;
+      xmlLength: number;
+    }>(
       `/api/invoicing/invoices/${id}/generate-ubl`,
       { method: "POST" },
       tenantSlug
@@ -6123,7 +6127,12 @@ export class ApiClient {
 
   // WhatsApp Cloud API
   static async getWhatsAppMessages(
-    params: { phoneNumber?: string; customerId?: string; page?: number; pageSize?: number } = {},
+    params: {
+      phoneNumber?: string;
+      customerId?: string;
+      page?: number;
+      pageSize?: number;
+    } = {},
     tenantSlug?: string
   ): Promise<ApiResponse<PagedResult<WhatsAppMessageDto>>> {
     const q = new URLSearchParams();
@@ -6222,7 +6231,13 @@ export class ApiClient {
 
   static async checkinFieldJob(
     id: string,
-    payload: { technicianId: string; checkinType: "Arrival" | "Departure"; latitude?: number; longitude?: number; deviceInfo?: string },
+    payload: {
+      technicianId: string;
+      checkinType: "Arrival" | "Departure";
+      latitude?: number;
+      longitude?: number;
+      deviceInfo?: string;
+    },
     tenantSlug?: string
   ): Promise<ApiResponse<FieldJobCheckinDto>> {
     return await ApiClient.request<FieldJobCheckinDto>(
@@ -6242,7 +6257,12 @@ export class ApiClient {
       resolutionNotes?: string;
       customerSignatureData?: string;
       customerSignedName?: string;
-      parts?: { productId?: string; productName: string; unitPrice: number; quantity: number }[];
+      parts?: {
+        productId?: string;
+        productName: string;
+        unitPrice: number;
+        quantity: number;
+      }[];
     },
     tenantSlug?: string
   ): Promise<ApiResponse<FieldJobDto>> {
@@ -10995,8 +11015,22 @@ export interface FieldJobDto {
   jobNumber: string;
   title: string;
   description?: string;
-  serviceType: "Installation" | "Maintenance" | "Repair" | "Survey" | "Inspection" | "Emergency" | string;
-  status: "Draft" | "Scheduled" | "Dispatched" | "InProgress" | "Completed" | "Cancelled" | string;
+  serviceType:
+    | "Installation"
+    | "Maintenance"
+    | "Repair"
+    | "Survey"
+    | "Inspection"
+    | "Emergency"
+    | string;
+  status:
+    | "Draft"
+    | "Scheduled"
+    | "Dispatched"
+    | "InProgress"
+    | "Completed"
+    | "Cancelled"
+    | string;
   priority: "Low" | "Normal" | "High" | "Urgent" | string;
   customerId?: string;
   customerName?: string;
@@ -11083,4 +11117,3 @@ export interface CreateFieldJobPayload {
   scheduledEndTime?: string;
   tasks?: { title: string; description?: string }[];
 }
-

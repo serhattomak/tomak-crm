@@ -11,7 +11,14 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   ArrowRight,
   Briefcase,
@@ -488,11 +495,17 @@ export default function ProjectsPage() {
                   <TableHead className="px-4 py-3 h-auto">Anahtar</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Proje Adı</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Müşteri</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Lider / Sorumlu</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Lider / Sorumlu
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">İş Maddeleri</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    İş Maddeleri
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Bütçe</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">Aksiyon</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    Aksiyon
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -708,10 +721,7 @@ export default function ProjectsPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Başlangıç Tarihi
                   </label>
-                  <DatePicker
-                    onChange={setStartDate}
-                    value={startDate}
-                  />
+                  <DatePicker onChange={setStartDate} value={startDate} />
                 </div>
 
                 <div className="space-y-1">

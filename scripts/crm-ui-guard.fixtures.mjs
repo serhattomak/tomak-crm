@@ -55,7 +55,10 @@ function reportedRules(out) {
  */
 function ruleHitCounts(out) {
   return new Map(
-    [...out.matchAll(/\[([A-Z0-9_]+)\] (\d+) hit\(s\)/g)].map((m) => [m[1], Number(m[2])])
+    [...out.matchAll(/\[([A-Z0-9_]+)\] (\d+) hit\(s\)/g)].map((m) => [
+      m[1],
+      Number(m[2]),
+    ])
   );
 }
 

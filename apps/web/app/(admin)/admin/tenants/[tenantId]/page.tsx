@@ -318,7 +318,7 @@ export default function AdminTenantDetailPage() {
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((mod) => (
               <div
-                className={`rounded-2xl border p-4.5 transition-all ${ mod.isEnabled ? "border-blue-200/80 bg-card shadow-xs dark:border-blue-800" : "border-border bg-zinc-50/40 opacity-70 dark:bg-zinc-800/30" }`}
+                className={`rounded-2xl border p-4.5 transition-all ${mod.isEnabled ? "border-blue-200/80 bg-card shadow-xs dark:border-blue-800" : "border-border bg-zinc-50/40 opacity-70 dark:bg-zinc-800/30"}`}
                 key={mod.moduleKey}
               >
                 <div className="flex items-center justify-between">
@@ -441,9 +441,14 @@ export default function AdminTenantDetailPage() {
             </div>
             <p className="text-2xs text-muted-foreground">
               Örnekler:{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">products.name</code>
+              <code className="font-semibold text-blue-600 dark:text-blue-400">
+                products.name
+              </code>
               ,{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">products.sku</code>,{" "}
+              <code className="font-semibold text-blue-600 dark:text-blue-400">
+                products.sku
+              </code>
+              ,{" "}
               <code className="font-semibold text-blue-600 dark:text-blue-400">
                 products.brand
               </code>
@@ -478,9 +483,7 @@ export default function AdminTenantDetailPage() {
                       <span className="font-mono font-semibold text-blue-700">
                         {item.key}
                       </span>
-                      <span className="text-muted-foreground">
-                        ➔
-                      </span>
+                      <span className="text-muted-foreground">➔</span>
                       <input
                         className="rounded-xl border border-border bg-zinc-50/50 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
                         onChange={(e) => {

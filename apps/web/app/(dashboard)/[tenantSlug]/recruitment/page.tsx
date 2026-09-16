@@ -25,7 +25,14 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -688,7 +695,7 @@ function RecruitmentPageContent() {
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             aria-current={activeTab === "ilanlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ilanlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "ilanlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("ilanlar")}
             type="button"
           >
@@ -698,7 +705,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "adaylar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "adaylar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "adaylar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("adaylar")}
             type="button"
           >
@@ -708,7 +715,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "basvurular" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "basvurular" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "basvurular" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("basvurular")}
             type="button"
           >
@@ -718,7 +725,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "ayarlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ayarlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "ayarlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("ayarlar")}
             type="button"
           >
@@ -827,14 +834,24 @@ function RecruitmentPageContent() {
                       <Table>
                         <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                           <TableRow>
-                            <TableHead className="px-6 py-3.5 h-auto">İlan Başlığı</TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">Departman</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              İlan Başlığı
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Departman
+                            </TableHead>
                             <TableHead className="px-6 py-3.5 text-center h-auto">
                               Kontenjan
                             </TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">Durum / Yayın</TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">Kapanış</TableHead>
-                            <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Durum / Yayın
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Kapanış
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 text-right h-auto">
+                              İşlemler
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1039,11 +1056,21 @@ function RecruitmentPageContent() {
                       <Table>
                         <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                           <TableRow>
-                            <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">E-posta / Telefon</TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">Kaynak</TableHead>
-                            <TableHead className="px-6 py-3.5 h-auto">Etiketler</TableHead>
-                            <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Aday
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              E-posta / Telefon
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Kaynak
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">
+                              Etiketler
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 text-right h-auto">
+                              İşlemler
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1399,10 +1426,18 @@ function RecruitmentPageContent() {
                         <Table>
                           <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                             <TableRow>
-                              <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
-                              <TableHead className="px-6 py-3.5 h-auto">İlan</TableHead>
-                              <TableHead className="px-6 py-3.5 h-auto">Aşama</TableHead>
-                              <TableHead className="px-6 py-3.5 text-center h-auto">Puan</TableHead>
+                              <TableHead className="px-6 py-3.5 h-auto">
+                                Aday
+                              </TableHead>
+                              <TableHead className="px-6 py-3.5 h-auto">
+                                İlan
+                              </TableHead>
+                              <TableHead className="px-6 py-3.5 h-auto">
+                                Aşama
+                              </TableHead>
+                              <TableHead className="px-6 py-3.5 text-center h-auto">
+                                Puan
+                              </TableHead>
                               <TableHead className="px-6 py-3.5 text-right h-auto">
                                 İşlemler
                               </TableHead>
@@ -1571,12 +1606,24 @@ function RecruitmentPageContent() {
                       <TableHeader className="bg-zinc-50 font-bold text-muted-foreground dark:bg-zinc-800/50">
                         <TableRow>
                           <TableHead className="px-3 py-3 h-auto">#</TableHead>
-                          <TableHead className="px-3 py-3 h-auto">Aşama</TableHead>
-                          <TableHead className="px-3 py-3 h-auto">Slug</TableHead>
-                          <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
-                          <TableHead className="px-3 py-3 h-auto">Durum</TableHead>
-                          <TableHead className="px-3 py-3 text-center h-auto">Başvuru</TableHead>
-                          <TableHead className="px-3 py-3 text-right h-auto">İşlemler</TableHead>
+                          <TableHead className="px-3 py-3 h-auto">
+                            Aşama
+                          </TableHead>
+                          <TableHead className="px-3 py-3 h-auto">
+                            Slug
+                          </TableHead>
+                          <TableHead className="px-3 py-3 h-auto">
+                            Tür
+                          </TableHead>
+                          <TableHead className="px-3 py-3 h-auto">
+                            Durum
+                          </TableHead>
+                          <TableHead className="px-3 py-3 text-center h-auto">
+                            Başvuru
+                          </TableHead>
+                          <TableHead className="px-3 py-3 text-right h-auto">
+                            İşlemler
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -3143,9 +3190,7 @@ function ApplicationDetailDrawer({
                 </span>
               </div>
             ) : (
-              <span className="text-xs text-muted-foreground">
-                Atanmamış
-              </span>
+              <span className="text-xs text-muted-foreground">Atanmamış</span>
             )}
             {application.headcountWarning && (
               <p className="mt-2 text-amber-700 dark:text-amber-400 text-xs">

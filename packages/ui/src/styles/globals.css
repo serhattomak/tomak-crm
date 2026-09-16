@@ -57,7 +57,12 @@
      namespace, so durations stay bare values (duration-150/200/250) - see
      crm-ui-standards.md sec.1.5. Only easings are tokenized. */
   --ease-crm: cubic-bezier(0.32, 0.72, 0, 1); /* swift-out - overlays, sheets */
-  --ease-crm-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* symmetric - size/position */
+  --ease-crm-in-out: cubic-bezier(
+    0.4,
+    0,
+    0.2,
+    1
+  ); /* symmetric - size/position */
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
 }

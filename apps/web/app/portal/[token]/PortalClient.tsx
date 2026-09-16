@@ -6,7 +6,14 @@ import {
   DialogContent,
   DialogTitle,
 } from "@workspace/ui/components/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
@@ -632,12 +639,24 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50 font-bold text-2xs text-zinc-600">
                     <TableHead className="px-4 py-3 h-auto">#</TableHead>
-                    <TableHead className="px-4 py-3 h-auto">Ürün / Hizmet Açıklaması</TableHead>
-                    <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
-                    <TableHead className="px-3 py-3 text-right h-auto">Birim Fiyat</TableHead>
-                    <TableHead className="px-3 py-3 text-center h-auto">İskonto</TableHead>
-                    <TableHead className="px-3 py-3 text-center h-auto">KDV</TableHead>
-                    <TableHead className="px-4 py-3 text-right h-auto">Toplam Tutar</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">
+                      Ürün / Hizmet Açıklaması
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">
+                      Miktar
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">
+                      Birim Fiyat
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">
+                      İskonto
+                    </TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">
+                      KDV
+                    </TableHead>
+                    <TableHead className="px-4 py-3 text-right h-auto">
+                      Toplam Tutar
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700">

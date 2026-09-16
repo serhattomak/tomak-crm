@@ -115,7 +115,7 @@ export function TemplatePreview({
           <div className="flex items-center gap-1 rounded-lg border border-border bg-zinc-50 p-1 dark:bg-zinc-800/50">
             {ZOOM_OPTIONS.map((level) => (
               <button
-                className={`rounded-md px-2.5 py-1 font-bold text-2xs transition ${ zoom === level ? "bg-card text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100" : "text-muted-foreground hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200" }`}
+                className={`rounded-md px-2.5 py-1 font-bold text-2xs transition ${zoom === level ? "bg-card text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100" : "text-muted-foreground hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"}`}
                 key={level}
                 onClick={() => onZoomChange(level)}
                 type="button"

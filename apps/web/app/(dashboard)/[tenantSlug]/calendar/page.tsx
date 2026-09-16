@@ -826,21 +826,21 @@ export default function CalendarHubPage() {
           {/* View Mode Switcher */}
           <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-1 dark:bg-zinc-800/80">
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "month" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${viewMode === "month" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("month")}
               type="button"
             >
               Ay
             </button>
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "week" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${viewMode === "week" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("week")}
               type="button"
             >
               Hafta
             </button>
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "agenda" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${viewMode === "agenda" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("agenda")}
               type="button"
             >
@@ -1006,7 +1006,7 @@ export default function CalendarHubPage() {
 
               return (
                 <div
-                  className={`group relative flex flex-col overflow-hidden p-1.5 transition-colors sm:p-2 ${ cell.isCurrentMonth ? "bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" : "bg-zinc-50/40 text-muted-foreground dark:bg-zinc-950/40" }`}
+                  className={`group relative flex flex-col overflow-hidden p-1.5 transition-colors sm:p-2 ${cell.isCurrentMonth ? "bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40" : "bg-zinc-50/40 text-muted-foreground dark:bg-zinc-950/40"}`}
                   key={cell.dateStr || idx}
                 >
                   <div className="mb-1 flex items-center justify-between">
@@ -1217,7 +1217,7 @@ export default function CalendarHubPage() {
 
               return (
                 <div
-                  className={`flex flex-col items-start justify-between gap-3 rounded-xl border p-3.5 transition-colors sm:flex-row sm:items-center ${ isDone ? "border-border bg-zinc-50/80 opacity-70 dark:bg-zinc-900/40" : "border-border bg-card hover:border-blue-300 dark:hover:border-blue-700" }`}
+                  className={`flex flex-col items-start justify-between gap-3 rounded-xl border p-3.5 transition-colors sm:flex-row sm:items-center ${isDone ? "border-border bg-zinc-50/80 opacity-70 dark:bg-zinc-900/40" : "border-border bg-card hover:border-blue-300 dark:hover:border-blue-700"}`}
                   key={act.id}
                 >
                   <div className="flex items-start gap-3">
@@ -1384,7 +1384,7 @@ export default function CalendarHubPage() {
                     { id: "Visit", label: "Ziyaret" },
                   ].map((t) => (
                     <button
-                      className={`rounded-xl border px-2 py-2 text-center font-bold text-xs transition-all ${ activityForm.type === t.id ? "border-blue-500 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800" }`}
+                      className={`rounded-xl border px-2 py-2 text-center font-bold text-xs transition-all ${activityForm.type === t.id ? "border-blue-500 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800"}`}
                       key={t.id}
                       onClick={() =>
                         setActivityForm({ ...activityForm, type: t.id })
@@ -1676,7 +1676,7 @@ export default function CalendarHubPage() {
                 </Label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 font-bold text-xs transition-all ${ callForm.direction === "Outgoing" ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-xs dark:border-emerald-500 dark:bg-emerald-950/60 dark:text-emerald-300" : "border-border text-zinc-600 dark:text-zinc-400" }`}
+                    className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 font-bold text-xs transition-all ${callForm.direction === "Outgoing" ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-xs dark:border-emerald-500 dark:bg-emerald-950/60 dark:text-emerald-300" : "border-border text-zinc-600 dark:text-zinc-400"}`}
                     onClick={() =>
                       setCallForm({ ...callForm, direction: "Outgoing" })
                     }
@@ -1686,7 +1686,7 @@ export default function CalendarHubPage() {
                     Giden Arama (Biz Aradık)
                   </button>
                   <button
-                    className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 font-bold text-xs transition-all ${ callForm.direction === "Incoming" ? "border-blue-500 bg-blue-50 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 dark:text-zinc-400" }`}
+                    className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 font-bold text-xs transition-all ${callForm.direction === "Incoming" ? "border-blue-500 bg-blue-50 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 dark:text-zinc-400"}`}
                     onClick={() =>
                       setCallForm({ ...callForm, direction: "Incoming" })
                     }

@@ -26,7 +26,14 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -689,15 +696,25 @@ export default function QuotesPage() {
                         onCheckedChange={toggleSelectAll}
                       />
                     </TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Teklif No &amp; Revizyon</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Teklif No &amp; Revizyon
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">
                       Teklif Başlığı &amp; Müşteri
                     </TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Tutar &amp; İskonto</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Geçerlilik</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Temsilci</TableHead>
-                    <TableHead className="px-4 py-3.5 text-right h-auto">Aksiyonlar</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Tutar &amp; İskonto
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Geçerlilik
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Temsilci
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">
+                      Aksiyonlar
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
@@ -1601,12 +1618,24 @@ function CreateQuoteModal({
                     <TableHead className="min-w-[200px] px-3 py-2.5 h-auto">
                       Ürün / Hizmet Adı
                     </TableHead>
-                    <TableHead className="w-20 px-2 py-2.5 h-auto">Miktar</TableHead>
-                    <TableHead className="w-24 px-2 py-2.5 h-auto">Birim</TableHead>
-                    <TableHead className="w-28 px-2 py-2.5 h-auto">Birim Fiyat</TableHead>
-                    <TableHead className="w-20 px-2 py-2.5 h-auto">İskonto %</TableHead>
-                    <TableHead className="w-20 px-2 py-2.5 h-auto">KDV %</TableHead>
-                    <TableHead className="w-28 px-2 py-2.5 text-right h-auto">Tutar</TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">
+                      Miktar
+                    </TableHead>
+                    <TableHead className="w-24 px-2 py-2.5 h-auto">
+                      Birim
+                    </TableHead>
+                    <TableHead className="w-28 px-2 py-2.5 h-auto">
+                      Birim Fiyat
+                    </TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">
+                      İskonto %
+                    </TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">
+                      KDV %
+                    </TableHead>
+                    <TableHead className="w-28 px-2 py-2.5 text-right h-auto">
+                      Tutar
+                    </TableHead>
                     <TableHead className="w-10 px-2 py-2.5 text-center h-auto" />
                   </TableRow>
                 </TableHeader>
@@ -1823,14 +1852,14 @@ function CreateQuoteModal({
                 <div className="flex items-center gap-3">
                   <div className="flex rounded-xl bg-muted p-0.5 font-semibold text-xs">
                     <button
-                      className={`rounded-lg px-3 py-1 transition ${ discountType === "Percentage" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs" : "text-zinc-600 dark:text-zinc-400" }`}
+                      className={`rounded-lg px-3 py-1 transition ${discountType === "Percentage" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs" : "text-zinc-600 dark:text-zinc-400"}`}
                       onClick={() => setDiscountType("Percentage")}
                       type="button"
                     >
                       Oran (%)
                     </button>
                     <button
-                      className={`rounded-lg px-3 py-1 transition ${ discountType === "Amount" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs" : "text-zinc-600 dark:text-zinc-400" }`}
+                      className={`rounded-lg px-3 py-1 transition ${discountType === "Amount" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs" : "text-zinc-600 dark:text-zinc-400"}`}
                       onClick={() => setDiscountType("Amount")}
                       type="button"
                     >
@@ -2827,12 +2856,24 @@ function QuoteDetailDrawer({
                   <Table className="border-collapse">
                     <TableHeader>
                       <TableRow className="border-border bg-zinc-50/70 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/40">
-                        <TableHead className="px-3 py-2.5 h-auto">Ürün / Hizmet</TableHead>
-                        <TableHead className="px-2 py-2.5 text-center h-auto">Miktar</TableHead>
-                        <TableHead className="px-2 py-2.5 text-right h-auto">Birim Fiyat</TableHead>
-                        <TableHead className="px-2 py-2.5 text-center h-auto">İskonto</TableHead>
-                        <TableHead className="px-2 py-2.5 text-center h-auto">KDV</TableHead>
-                        <TableHead className="px-3 py-2.5 text-right h-auto">Toplam</TableHead>
+                        <TableHead className="px-3 py-2.5 h-auto">
+                          Ürün / Hizmet
+                        </TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">
+                          Miktar
+                        </TableHead>
+                        <TableHead className="px-2 py-2.5 text-right h-auto">
+                          Birim Fiyat
+                        </TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">
+                          İskonto
+                        </TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">
+                          KDV
+                        </TableHead>
+                        <TableHead className="px-3 py-2.5 text-right h-auto">
+                          Toplam
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
@@ -2997,7 +3038,7 @@ function QuoteDetailDrawer({
                   const isCurrent = rev.id === quote.id;
                   return (
                     <div
-                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${ isCurrent ? "border-blue-300 dark:border-blue-700 bg-blue-50/70 ring-2 ring-blue-500/20" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50" }`}
+                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${isCurrent ? "border-blue-300 dark:border-blue-700 bg-blue-50/70 ring-2 ring-blue-500/20" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50"}`}
                       key={rev.id}
                     >
                       <div className="flex items-center gap-3">
@@ -3974,7 +4015,7 @@ function QuoteTemplatesModal({
                     const isActive = t.id === editingId;
                     return (
                       <button
-                        className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-left shadow-2xs transition ${ isActive ? "border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100" : "border-border bg-card text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
+                        className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-left shadow-2xs transition ${isActive ? "border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100" : "border-border bg-card text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"}`}
                         key={t.id}
                         onClick={() => handleEdit(t)}
                         type="button"
@@ -5112,12 +5153,24 @@ function QuotePrintModal({
                 <Table className="border-collapse text-3xs">
                   <TableHeader>
                     <TableRow className="bg-zinc-900 font-bold text-3xs text-white uppercase tracking-wider">
-                      <TableHead className="w-7 px-2.5 py-2 text-center h-auto">#</TableHead>
-                      <TableHead className="px-2.5 py-2 h-auto">Ürün / Hizmet Açıklaması</TableHead>
-                      <TableHead className="w-14 px-2 py-2 text-center h-auto">Miktar</TableHead>
-                      <TableHead className="w-20 px-2 py-2 text-right h-auto">Birim Fiyat</TableHead>
-                      <TableHead className="w-12 px-2 py-2 text-center h-auto">İskonto</TableHead>
-                      <TableHead className="w-10 px-2 py-2 text-center h-auto">KDV</TableHead>
+                      <TableHead className="w-7 px-2.5 py-2 text-center h-auto">
+                        #
+                      </TableHead>
+                      <TableHead className="px-2.5 py-2 h-auto">
+                        Ürün / Hizmet Açıklaması
+                      </TableHead>
+                      <TableHead className="w-14 px-2 py-2 text-center h-auto">
+                        Miktar
+                      </TableHead>
+                      <TableHead className="w-20 px-2 py-2 text-right h-auto">
+                        Birim Fiyat
+                      </TableHead>
+                      <TableHead className="w-12 px-2 py-2 text-center h-auto">
+                        İskonto
+                      </TableHead>
+                      <TableHead className="w-10 px-2 py-2 text-center h-auto">
+                        KDV
+                      </TableHead>
                       <TableHead className="w-24 px-2.5 py-2 text-right h-auto">
                         Toplam Tutar
                       </TableHead>
@@ -5192,14 +5245,20 @@ function QuotePrintModal({
                     <TableHeader>
                       <TableRow className="border-border font-bold text-muted-foreground">
                         <TableHead className="pb-1">Oran</TableHead>
-                        <TableHead className="pb-1 text-right">Matrah</TableHead>
-                        <TableHead className="pb-1 text-right">KDV Tutarı</TableHead>
+                        <TableHead className="pb-1 text-right">
+                          Matrah
+                        </TableHead>
+                        <TableHead className="pb-1 text-right">
+                          KDV Tutarı
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                       {taxBreakdown.map((t) => (
                         <TableRow key={t.rate}>
-                          <TableCell className="py-0.5 font-bold">%{t.rate}</TableCell>
+                          <TableCell className="py-0.5 font-bold">
+                            %{t.rate}
+                          </TableCell>
                           <TableCell className="py-0.5 text-right">
                             {formatCurrency(t.baseAmount, quote.currency)}
                           </TableCell>

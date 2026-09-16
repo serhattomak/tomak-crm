@@ -79,9 +79,7 @@ export function Checkbox({
           </label>
         ) : null}
         {description ? (
-          <p className="text-2xs text-muted-foreground">
-            {description}
-          </p>
+          <p className="text-2xs text-muted-foreground">{description}</p>
         ) : null}
       </div>
     </div>

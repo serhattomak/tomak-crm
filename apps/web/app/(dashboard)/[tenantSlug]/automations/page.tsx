@@ -9,7 +9,14 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -416,9 +423,7 @@ export default function AutomationsPage() {
             <span className="font-bold text-2xl text-blue-600 dark:text-blue-400">
               {stats?.executionsToday ?? 0}
             </span>
-            <span className="text-xs text-muted-foreground">
-              tetikleme
-            </span>
+            <span className="text-xs text-muted-foreground">tetikleme</span>
           </div>
           <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
             <span>Toplam {stats?.totalExecutionsAllTime ?? 0} işlem</span>
@@ -464,19 +469,19 @@ export default function AutomationsPage() {
         {/* Main Tabs */}
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "workflows" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${activeTab === "workflows" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("workflows")}
           >
             İş Akışlarım ({workflows.length})
           </button>
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "executions" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${activeTab === "executions" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("executions")}
           >
             Çalışma Günlüğü & Denetim ({executions.length})
           </button>
           <button
-            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${ activeTab === "templates" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all ${activeTab === "templates" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("templates")}
           >
             Hazır Tarifler ({templates.length})
@@ -582,7 +587,7 @@ export default function AutomationsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {workflows.map((wf) => (
                 <div
-                  className={`group relative flex cursor-pointer flex-col justify-between rounded-2xl border bg-card p-5 transition-all duration-200 hover:shadow-md ${ wf.isActive ? "border-border hover:border-blue-300" : "border-border bg-zinc-50 opacity-80 dark:bg-zinc-800/50" }`}
+                  className={`group relative flex cursor-pointer flex-col justify-between rounded-2xl border bg-card p-5 transition-all duration-200 hover:shadow-md ${wf.isActive ? "border-border hover:border-blue-300" : "border-border bg-zinc-50 opacity-80 dark:bg-zinc-800/50"}`}
                   key={wf.id}
                   onClick={() =>
                     router.push(`/${tenantSlug}/automations/${wf.id}`)
@@ -630,7 +635,7 @@ export default function AutomationsPage() {
                         onClick={(e) => handleToggle(wf, e)}
                       >
                         <span
-                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-200 ease-crm-in-out ${ wf.isActive ? "translate-x-5" : "translate-x-0" }`}
+                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-200 ease-crm-in-out ${wf.isActive ? "translate-x-5" : "translate-x-0"}`}
                         />
                       </div>
                     </div>
@@ -739,9 +744,13 @@ export default function AutomationsPage() {
             <Table className="text-zinc-600 dark:text-zinc-400">
               <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
-                  <TableHead className="px-4 py-3 h-auto">Tarih / Saat</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Tarih / Saat
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Akış Adı</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Tetikleyici Kaynağı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Tetikleyici Kaynağı
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Varlık</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Aksiyonlar</TableHead>
@@ -782,9 +791,7 @@ export default function AutomationsPage() {
                             {exec.entityType} ({exec.entityId?.substring(0, 8)})
                           </span>
                         ) : (
-                          <span className="text-muted-foreground">
-                            -
-                          </span>
+                          <span className="text-muted-foreground">-</span>
                         )}
                       </TableCell>
                       <TableCell className="px-4 py-3">
@@ -859,17 +866,13 @@ export default function AutomationsPage() {
 
                 <div className="mb-4 space-y-1.5 rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Tetikleyici:
-                    </span>
+                    <span className="text-muted-foreground">Tetikleyici:</span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {getTriggerLabel(tmpl.triggerType)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Aksiyonlar:
-                    </span>
+                    <span className="text-muted-foreground">Aksiyonlar:</span>
                     <span className="font-semibold text-blue-600 dark:text-blue-400">
                       {tmpl.actions.length} Adım
                     </span>

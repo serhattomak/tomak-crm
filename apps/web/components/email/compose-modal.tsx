@@ -613,14 +613,14 @@ export function ComposeModal({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1 rounded-lg border border-border bg-zinc-50 p-0.5 text-xs dark:bg-zinc-900">
                 <button
-                  className={`rounded-md px-3 py-1 font-medium transition ${ activeView === "edit" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                  className={`rounded-md px-3 py-1 font-medium transition ${activeView === "edit" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                   onClick={handleSetEditView}
                   type="button"
                 >
                   HTML / Metin Düzenleyici
                 </button>
                 <button
-                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-medium transition ${ activeView === "preview" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-medium transition ${activeView === "preview" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                   onClick={handleSetPreviewView}
                   type="button"
                 >
@@ -650,7 +650,7 @@ export function ComposeModal({
               </div>
             ) : (
               <div
-                className={`min-h-[220px] rounded-xl border p-2 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
+                className={`min-h-[220px] rounded-xl border p-2 transition-colors ${isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900"}`}
               >
                 <iframe
                   className="min-h-[200px] w-full border-0"

@@ -147,7 +147,10 @@ export default function LoginPage() {
 
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200" htmlFor="login-email">
+                <label
+                  className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200"
+                  htmlFor="login-email"
+                >
                   E-posta
                 </label>
                 <input
@@ -162,7 +165,10 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200" htmlFor="login-password">
+                <label
+                  className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200"
+                  htmlFor="login-password"
+                >
                   Şifre
                 </label>
                 <div className="relative">

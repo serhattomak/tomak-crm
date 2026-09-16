@@ -268,7 +268,7 @@ export function DealDetailDrawer({
                   const isCurrent = deal.stageId === stage.id;
                   return (
                     <button
-                      className={`flex flex-col justify-between rounded-md p-2 text-left font-medium text-xs transition-colors ${ isCurrent ? "bg-primary text-primary-foreground shadow-xs" : "border border-border/70 bg-card text-foreground hover:bg-accent" }`}
+                      className={`flex flex-col justify-between rounded-md p-2 text-left font-medium text-xs transition-colors ${isCurrent ? "bg-primary text-primary-foreground shadow-xs" : "border border-border/70 bg-card text-foreground hover:bg-accent"}`}
                       key={stage.id}
                       onClick={() => handleStageChange(stage.id)}
                       type="button"

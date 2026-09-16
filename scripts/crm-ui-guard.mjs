@@ -120,7 +120,9 @@ const RULES = [
     tag: {
       name: "input",
       test: (open) =>
-        /\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/.test(open),
+        /\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/.test(
+          open
+        ),
     },
   },
   {
@@ -501,20 +503,48 @@ function tokenizeTemplate(src, i, to, tokens) {
       continue;
     }
     if (c === "`") {
-      tokens.push({ contentFrom: chunk, contentTo: j, from: chunk, kind: "str", template: true, to: j });
+      tokens.push({
+        contentFrom: chunk,
+        contentTo: j,
+        from: chunk,
+        kind: "str",
+        template: true,
+        to: j,
+      });
       return j + 1;
     }
     if (c === "$" && src[j + 1] === "{") {
-      tokens.push({ contentFrom: chunk, contentTo: j, from: chunk, kind: "str", template: true, to: j });
+      tokens.push({
+        contentFrom: chunk,
+        contentTo: j,
+        from: chunk,
+        kind: "str",
+        template: true,
+        to: j,
+      });
       const close = matchingDelimiter(src, j + 1, to);
-      tokens.push({ from: j + 1, innerFrom: j + 2, innerTo: close, kind: "group", open: "{", to: close + 1 });
+      tokens.push({
+        from: j + 1,
+        innerFrom: j + 2,
+        innerTo: close,
+        kind: "group",
+        open: "{",
+        to: close + 1,
+      });
       j = close + 1;
       chunk = j;
       continue;
     }
     j++;
   }
-  tokens.push({ contentFrom: chunk, contentTo: to, from: chunk, kind: "str", template: true, to });
+  tokens.push({
+    contentFrom: chunk,
+    contentTo: to,
+    from: chunk,
+    kind: "str",
+    template: true,
+    to,
+  });
   return to;
 }
 
@@ -536,13 +566,26 @@ function tokenizeClassExpression(src, from, to) {
     const c = src[i];
     if (c === '"' || c === "'") {
       const end = skipQuotedString(src, i, to);
-      tokens.push({ contentFrom: i + 1, contentTo: Math.min(end - 1, to), from: i, kind: "str", to: end });
+      tokens.push({
+        contentFrom: i + 1,
+        contentTo: Math.min(end - 1, to),
+        from: i,
+        kind: "str",
+        to: end,
+      });
       i = end;
     } else if (c === "`") {
       i = tokenizeTemplate(src, i, to, tokens);
     } else if (c === "(" || c === "[" || c === "{") {
       const close = matchingDelimiter(src, i, to);
-      tokens.push({ from: i, innerFrom: i + 1, innerTo: close, kind: "group", open: c, to: close + 1 });
+      tokens.push({
+        from: i,
+        innerFrom: i + 1,
+        innerTo: close,
+        kind: "group",
+        open: c,
+        to: close + 1,
+      });
       i = close + 1;
     } else if (c === ")" || c === "]" || c === "}") {
       tokens.push({ from: i, kind: "code", to: i + 1 });
@@ -568,7 +611,8 @@ function tokenizeClassExpression(src, from, to) {
  * @returns {{ questionTok: number, questionChar: number, colonTok: number, colonChar: number } | null}
  */
 function findConditionalAt(src, tokens) {
-  const isQuestion = (j) => src[j] === "?" && src[j + 1] !== "." && src[j + 1] !== "?";
+  const isQuestion = (j) =>
+    src[j] === "?" && src[j + 1] !== "." && src[j + 1] !== "?";
   for (let t = 0; t < tokens.length; t++) {
     const tok = tokens[t];
     if (tok.kind !== "code") continue;
@@ -584,7 +628,12 @@ function findConditionalAt(src, tokens) {
           else if (src[m] === ":") {
             depth--;
             if (depth === 0) {
-              return { colonChar: m, colonTok: u, questionChar: k, questionTok: t };
+              return {
+                colonChar: m,
+                colonTok: u,
+                questionChar: k,
+                questionTok: t,
+              };
             }
           } else if (src[m] === "," && depth === 1) {
             return null;
@@ -637,7 +686,8 @@ function assignExpressionPaths(src, tokens, path, literals, depth = 0) {
     for (const tok of tokens) {
       if (tok.kind === "str") {
         const text = src.slice(tok.contentFrom, tok.contentTo);
-        if (text.length > 0) literals.push({ base: tok.contentFrom, path, text });
+        if (text.length > 0)
+          literals.push({ base: tok.contentFrom, path, text });
       } else if (tok.kind === "group") {
         assignExpressionPaths(
           src,
@@ -661,9 +711,13 @@ function assignExpressionPaths(src, tokens, path, literals, depth = 0) {
   if (beforeTail) before.push(beforeTail);
 
   const yes = [];
-  const yesHead = code(cond.questionChar + 1, sameToken ? cond.colonChar : qTok.to);
+  const yesHead = code(
+    cond.questionChar + 1,
+    sameToken ? cond.colonChar : qTok.to
+  );
   if (yesHead) yes.push(yesHead);
-  if (!sameToken) yes.push(...tokens.slice(cond.questionTok + 1, cond.colonTok));
+  if (!sameToken)
+    yes.push(...tokens.slice(cond.questionTok + 1, cond.colonTok));
   const yesTail = sameToken ? null : code(cTok.from, cond.colonChar);
   if (yesTail) yes.push(yesTail);
 
@@ -736,7 +790,8 @@ function classExpressions(src) {
         i++;
       }
       const text = src.slice(start, i);
-      if (text.length > 0) literals.push({ base: start, path: [], scope: text, text });
+      if (text.length > 0)
+        literals.push({ base: start, path: [], scope: text, text });
     } else if (src[i] === "{") {
       const open = i;
       let depth = 0;
@@ -755,7 +810,12 @@ function classExpressions(src) {
         }
         i++;
       }
-      assignExpressionPaths(src, tokenizeClassExpression(src, open + 1, i), [], literals);
+      assignExpressionPaths(
+        src,
+        tokenizeClassExpression(src, open + 1, i),
+        [],
+        literals
+      );
       for (const literal of literals) {
         literal.scope = sharedScope(literal, literals);
       }
@@ -986,9 +1046,7 @@ function main(argv) {
 
   console.log(
     `\ncrm-ui-guard: ${errors.length} error(s) in ${files.length} file(s)` +
-      (warnings.length > 0
-        ? ` · ${warnings.length} advisory warning(s)`
-        : "") +
+      (warnings.length > 0 ? ` · ${warnings.length} advisory warning(s)` : "") +
       (suppressed > 0 ? ` (${suppressed} suppressed by allowlist)` : "") +
       (errors.length > 0
         ? " — FAIL (no auto-fix; fix by hand per ADR-0002)"

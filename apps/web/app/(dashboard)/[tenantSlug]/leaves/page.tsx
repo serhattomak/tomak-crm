@@ -18,7 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Calendar as CalendarIcon,
@@ -529,7 +536,7 @@ export default function LeavesPage() {
       {/* 3. Navigation Tabs Bar */}
       <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
           onClick={() => setActiveTab("calendar")}
           type="button"
         >
@@ -538,7 +545,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "pending" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "pending" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
           onClick={() => setActiveTab("pending")}
           type="button"
         >
@@ -552,7 +559,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "all" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "all" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
           onClick={() => setActiveTab("all")}
           type="button"
         >
@@ -561,7 +568,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "my" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "my" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
           onClick={() => setActiveTab("my")}
           type="button"
         >
@@ -674,7 +681,7 @@ export default function LeavesPage() {
 
                   return (
                     <div
-                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${ isToday ? "border-blue-500 bg-blue-50/20 dark:bg-blue-950/60 ring-1 ring-blue-500" : "border-border bg-card" }`}
+                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${isToday ? "border-blue-500 bg-blue-50/20 dark:bg-blue-950/60 ring-1 ring-blue-500" : "border-border bg-card"}`}
                       key={idx}
                     >
                       <div className="flex items-center justify-between">
@@ -884,13 +891,25 @@ export default function LeavesPage() {
               <Table>
                 <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                   <TableRow>
-                    <TableHead className="py-3.5 pr-4 pl-6 h-auto">Çalışan</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">İzin Türü</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Tarih Aralığı</TableHead>
-                    <TableHead className="px-4 py-3.5 text-center h-auto">Toplam Gün</TableHead>
+                    <TableHead className="py-3.5 pr-4 pl-6 h-auto">
+                      Çalışan
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      İzin Türü
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Tarih Aralığı
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 text-center h-auto">
+                      Toplam Gün
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Onaylayan</TableHead>
-                    <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">İşlemler</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Onaylayan
+                    </TableHead>
+                    <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">
+                      İşlemler
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1007,11 +1026,19 @@ export default function LeavesPage() {
               <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">İzin Türü</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Tarih Aralığı</TableHead>
-                  <TableHead className="px-4 py-3 text-center h-auto">Toplam Gün</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Tarih Aralığı
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-center h-auto">
+                    Toplam Gün
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Sebep / Gerekçe</TableHead>
-                  <TableHead className="py-3 pr-4 pl-3 text-right h-auto">İptal</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Sebep / Gerekçe
+                  </TableHead>
+                  <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
+                    İptal
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">

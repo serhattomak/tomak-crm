@@ -22,7 +22,7 @@ import {
   X,
   Loader2,
   RefreshCw,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
@@ -40,7 +40,7 @@ import {
   type FieldJobDto,
   type CreateFieldJobPayload,
   type TenantUserDto,
-  type CustomerListDto
+  type CustomerListDto,
 } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
@@ -85,8 +85,8 @@ export default function FieldServicePage() {
     tasks: [
       { title: "Sistem ön kontrolü ve fiziki inceleme" },
       { title: "Montaj veya tamir işlemlerinin gerçekleştirilmesi" },
-      { title: "Fonksiyonel test ve müşteri kabul onayı" }
-    ]
+      { title: "Fonksiyonel test ve müşteri kabul onayı" },
+    ],
   });
 
   // Mobile Technician Signature & Check-in
@@ -103,11 +103,15 @@ export default function FieldServicePage() {
       const res = await ApiClient.getFieldJobs(
         {
           status: statusFilter === "all" ? undefined : statusFilter,
-          search: searchQuery || undefined
+          search: searchQuery || undefined,
         },
         tenantSlug
       );
-      const jobsList = Array.isArray(res.data) ? res.data : (Array.isArray(res as unknown) ? (res as unknown as FieldJobDto[]) : []);
+      const jobsList = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res as unknown)
+          ? (res as unknown as FieldJobDto[])
+          : [];
       setJobs(jobsList);
       if (selectedJob) {
         const updated = jobsList.find((j) => j.id === selectedJob.id);
@@ -130,9 +134,10 @@ export default function FieldServicePage() {
       try {
         const [custRes, teamRes] = await Promise.all([
           ApiClient.getCustomers(activeTenant.id, { page: 1, pageSize: 50 }),
-          ApiClient.getTenantUsers(activeTenant.id)
+          ApiClient.getTenantUsers(activeTenant.id),
         ]);
-        if (custRes.success && custRes.data) setCustomers(custRes.data.items || []);
+        if (custRes.success && custRes.data)
+          setCustomers(custRes.data.items || []);
         if (teamRes.success && teamRes.data) setTeamUsers(teamRes.data);
       } catch {
         // silent
@@ -165,13 +170,15 @@ export default function FieldServicePage() {
         assignedTechnicianId: formData.assignedTechnicianId || undefined,
         assignedTechnicianName: formData.assignedTechnicianName || undefined,
         scheduledDate: formData.scheduledDate,
-        tasks: formData.tasks.filter((t) => t.title.trim().length > 0)
+        tasks: formData.tasks.filter((t) => t.title.trim().length > 0),
       };
 
       const res = await ApiClient.createFieldJob(payload, tenantSlug);
       const jobData = res.data || (res as unknown as FieldJobDto);
       if (jobData?.jobNumber || res.success) {
-        toast.success(`Servis Emri #${jobData?.jobNumber || ""} başarıyla oluşturuldu`);
+        toast.success(
+          `Servis Emri #${jobData?.jobNumber || ""} başarıyla oluşturuldu`
+        );
         setIsCreateOpen(false);
         fetchJobs();
       } else {
@@ -216,14 +223,20 @@ export default function FieldServicePage() {
   const handleToggleTask = async (taskId: string) => {
     if (!selectedJob) return;
     try {
-      const res = await ApiClient.toggleFieldJobTask(selectedJob.id, taskId, tenantSlug);
+      const res = await ApiClient.toggleFieldJobTask(
+        selectedJob.id,
+        taskId,
+        tenantSlug
+      );
       if (res.success && res.data) {
         const isCompleted = res.data.isCompleted;
         setSelectedJob((prev) => {
           if (!prev) return null;
           return {
             ...prev,
-            tasks: prev.tasks.map((t) => (t.id === taskId ? { ...t, isCompleted } : t))
+            tasks: prev.tasks.map((t) =>
+              t.id === taskId ? { ...t, isCompleted } : t
+            ),
           };
         });
         toast.success(isCompleted ? "Görev tamamlandı" : "Görev geri alındı");
@@ -246,16 +259,23 @@ export default function FieldServicePage() {
           const res = await ApiClient.checkinFieldJob(
             selectedJob.id,
             {
-              technicianId: profile?.id || activeTenant?.id || "00000000-0000-0000-0000-000000000000",
+              technicianId:
+                profile?.id ||
+                activeTenant?.id ||
+                "00000000-0000-0000-0000-000000000000",
               checkinType: type,
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude,
-              deviceInfo: navigator.userAgent.slice(0, 100)
+              deviceInfo: navigator.userAgent.slice(0, 100),
             },
             tenantSlug
           );
           if (res.success) {
-            toast.success(type === "Arrival" ? "Saha varış check-in kaydedildi" : "Ayrılış check-in kaydedildi");
+            toast.success(
+              type === "Arrival"
+                ? "Saha varış check-in kaydedildi"
+                : "Ayrılış check-in kaydedildi"
+            );
             fetchJobs();
           }
         } catch {
@@ -268,28 +288,44 @@ export default function FieldServicePage() {
     );
   };
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const startDrawing = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     setIsDrawing(true);
     const rect = canvas.getBoundingClientRect();
-    const x = "touches" in e ? (e.touches[0]?.clientX ?? 0) - rect.left : e.clientX - rect.left;
-    const y = "touches" in e ? (e.touches[0]?.clientY ?? 0) - rect.top : e.clientY - rect.top;
+    const x =
+      "touches" in e
+        ? (e.touches[0]?.clientX ?? 0) - rect.left
+        : e.clientX - rect.left;
+    const y =
+      "touches" in e
+        ? (e.touches[0]?.clientY ?? 0) - rect.top
+        : e.clientY - rect.top;
     ctx.beginPath();
     ctx.moveTo(x, y);
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const draw = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const rect = canvas.getBoundingClientRect();
-    const x = "touches" in e ? (e.touches[0]?.clientX ?? 0) - rect.left : e.clientX - rect.left;
-    const y = "touches" in e ? (e.touches[0]?.clientY ?? 0) - rect.top : e.clientY - rect.top;
+    const x =
+      "touches" in e
+        ? (e.touches[0]?.clientX ?? 0) - rect.left
+        : e.clientX - rect.left;
+    const y =
+      "touches" in e
+        ? (e.touches[0]?.clientY ?? 0) - rect.top
+        : e.clientY - rect.top;
     ctx.lineTo(x, y);
     ctx.strokeStyle = "#09090b";
     ctx.lineWidth = 2.5;
@@ -321,9 +357,11 @@ export default function FieldServicePage() {
       const res = await ApiClient.completeFieldJob(
         selectedJob.id,
         {
-          resolutionNotes: resolutionNotes || "İşlem tamamlandı, sistem çalışır vaziyette teslim edildi.",
+          resolutionNotes:
+            resolutionNotes ||
+            "İşlem tamamlandı, sistem çalışır vaziyette teslim edildi.",
           customerSignatureData: sigData,
-          customerSignedName: signerName.trim()
+          customerSignedName: signerName.trim(),
         },
         tenantSlug
       );
@@ -356,7 +394,8 @@ export default function FieldServicePage() {
             Saha Servis & Mobil Teknisyen Yönetimi
           </h1>
           <p className="text-sm text-muted-foreground">
-            Saha ekiplerine iş emri atayın, rota ve GPS check-in&apos;lerini takip edin, yerinde dijital teslim imzasını alın.
+            Saha ekiplerine iş emri atayın, rota ve GPS check-in&apos;lerini
+            takip edin, yerinde dijital teslim imzasını alın.
           </p>
         </div>
 
@@ -368,7 +407,9 @@ export default function FieldServicePage() {
             disabled={loading}
             className="h-9 gap-1.5 text-xs text-zinc-700 dark:text-zinc-300"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`}
+            />
             Yenile
           </Button>
 
@@ -386,33 +427,49 @@ export default function FieldServicePage() {
       {/* KPI Bento Ribbon */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
-          <span className="text-xs font-semibold text-muted-foreground">Toplam Servis Kartı</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Toplam Servis Kartı
+          </span>
           <div className="mt-1 flex items-baseline justify-between">
-            <span className="text-2xl font-black tabular-nums text-zinc-900 dark:text-zinc-50">{totalCount}</span>
+            <span className="text-2xl font-black tabular-nums text-zinc-900 dark:text-zinc-50">
+              {totalCount}
+            </span>
             <Layers className="h-4 w-4 text-muted-foreground" />
           </div>
         </div>
 
         <div className="p-4 rounded-xl border border-blue-200/80 dark:border-blue-900/50 bg-blue-50/40 dark:bg-blue-950/20 shadow-2xs">
-          <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">Planlanan / Randevulu</span>
+          <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+            Planlanan / Randevulu
+          </span>
           <div className="mt-1 flex items-baseline justify-between">
-            <span className="text-2xl font-black tabular-nums text-blue-950 dark:text-blue-200">{scheduledCount}</span>
+            <span className="text-2xl font-black tabular-nums text-blue-950 dark:text-blue-200">
+              {scheduledCount}
+            </span>
             <Calendar className="h-4 w-4 text-blue-500" />
           </div>
         </div>
 
         <div className="p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 bg-amber-50/40 dark:bg-amber-950/20 shadow-2xs">
-          <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 dark:text-amber-300">Sahada Devam Eden</span>
+          <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 dark:text-amber-300">
+            Sahada Devam Eden
+          </span>
           <div className="mt-1 flex items-baseline justify-between">
-            <span className="text-2xl font-black tabular-nums text-amber-950 dark:text-amber-200">{inProgressCount}</span>
+            <span className="text-2xl font-black tabular-nums text-amber-950 dark:text-amber-200">
+              {inProgressCount}
+            </span>
             <Clock className="h-4 w-4 text-amber-500" />
           </div>
         </div>
 
         <div className="p-4 rounded-xl border border-emerald-200/80 dark:border-emerald-900/50 bg-emerald-50/40 dark:bg-emerald-950/20 shadow-2xs">
-          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Tamamlandı & İmzalandı</span>
+          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+            Tamamlandı & İmzalandı
+          </span>
           <div className="mt-1 flex items-baseline justify-between">
-            <span className="text-2xl font-black tabular-nums text-emerald-950 dark:text-emerald-200">{completedCount}</span>
+            <span className="text-2xl font-black tabular-nums text-emerald-950 dark:text-emerald-200">
+              {completedCount}
+            </span>
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
           </div>
         </div>
@@ -457,8 +514,12 @@ export default function FieldServicePage() {
           ) : jobs.length === 0 ? (
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
               <Wrench className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
-              <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Kayıtlı Saha Servis Emri Yok</p>
-              <p className="text-xs text-muted-foreground mt-1">Saha teknisyenleri için ilk servis görevini oluşturun.</p>
+              <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                Kayıtlı Saha Servis Emri Yok
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Saha teknisyenleri için ilk servis görevini oluşturun.
+              </p>
               <Button
                 size="sm"
                 onClick={() => setIsCreateOpen(true)}
@@ -471,14 +532,16 @@ export default function FieldServicePage() {
             <div className="space-y-3">
               {jobs.map((job) => {
                 const isSelected = selectedJob?.id === job.id;
-                const completedTasks = job.tasks.filter((t) => t.isCompleted).length;
+                const completedTasks = job.tasks.filter(
+                  (t) => t.isCompleted
+                ).length;
                 const totalTasks = job.tasks.length;
 
                 return (
                   <div
                     key={job.id}
                     onClick={() => setSelectedJob(job)}
-                    className={`p-4 rounded-xl border transition-all cursor-pointer ${ isSelected ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/20 shadow-xs" : "border-border bg-card hover:border-zinc-300 dark:hover:border-zinc-700" }`}
+                    className={`p-4 rounded-xl border transition-all cursor-pointer ${isSelected ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/20 shadow-xs" : "border-border bg-card hover:border-zinc-300 dark:hover:border-zinc-700"}`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1 flex-1">
@@ -491,15 +554,15 @@ export default function FieldServicePage() {
                               job.status === "Completed"
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                                 : job.status === "InProgress"
-                                ? "bg-amber-100 text-amber-700 dark:text-amber-400 dark:bg-amber-950/60 dark:text-amber-300"
-                                : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
+                                  ? "bg-amber-100 text-amber-700 dark:text-amber-400 dark:bg-amber-950/60 dark:text-amber-300"
+                                  : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
                             }`}
                           >
                             {job.status === "Completed"
                               ? "Tamamlandı"
                               : job.status === "InProgress"
-                              ? "Sahada İşlemde"
-                              : "Planlandı"}
+                                ? "Sahada İşlemde"
+                                : "Planlandı"}
                           </span>
                           <span className="text-3xs px-1.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                             {job.serviceType}
@@ -517,7 +580,9 @@ export default function FieldServicePage() {
                           <span>•</span>
                           <span className="flex items-center gap-1">
                             <MapPin className="h-3 w-3 text-muted-foreground" />
-                            {job.city ? `${job.district || ""}, ${job.city}` : job.serviceAddress}
+                            {job.city
+                              ? `${job.district || ""}, ${job.city}`
+                              : job.serviceAddress}
                           </span>
                         </div>
                       </div>
@@ -530,7 +595,9 @@ export default function FieldServicePage() {
                         {job.scheduledDate && (
                           <div className="text-2xs text-muted-foreground mt-0.5 flex items-center justify-end gap-1">
                             <Calendar className="h-3 w-3" />
-                            {new Date(job.scheduledDate).toLocaleDateString("tr-TR")}
+                            {new Date(job.scheduledDate).toLocaleDateString(
+                              "tr-TR"
+                            )}
                           </div>
                         )}
                       </div>
@@ -576,8 +643,8 @@ export default function FieldServicePage() {
                         selectedJob.status === "Completed"
                           ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                           : selectedJob.status === "InProgress"
-                          ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                          : "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                            : "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
                       }`}
                     >
                       {selectedJob.status}
@@ -620,7 +687,10 @@ export default function FieldServicePage() {
                 {selectedJob.contactPhone && (
                   <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
                     <Phone className="h-3.5 w-3.5 text-muted-foreground" />
-                    <a href={`tel:${selectedJob.contactPhone}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+                    <a
+                      href={`tel:${selectedJob.contactPhone}`}
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
                       {selectedJob.contactPhone}
                     </a>
                   </div>
@@ -660,19 +730,22 @@ export default function FieldServicePage() {
                     Saha Kontrol Adımları
                   </span>
                   <span className="text-2xs text-muted-foreground">
-                    {selectedJob.tasks.filter((t) => t.isCompleted).length}/{selectedJob.tasks.length}
+                    {selectedJob.tasks.filter((t) => t.isCompleted).length}/
+                    {selectedJob.tasks.length}
                   </span>
                 </div>
 
                 <div className="space-y-1.5">
                   {selectedJob.tasks.length === 0 ? (
-                    <p className="text-xs text-muted-foreground italic">Tanımlı görev adımı yok.</p>
+                    <p className="text-xs text-muted-foreground italic">
+                      Tanımlı görev adımı yok.
+                    </p>
                   ) : (
                     selectedJob.tasks.map((task) => (
                       <div
                         key={task.id}
                         onClick={() => handleToggleTask(task.id)}
-                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${ task.isCompleted ? "border-emerald-200/80 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300" }`}
+                        className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${task.isCompleted ? "border-emerald-200/80 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300"}`}
                       >
                         {task.isCompleted ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-300 shrink-0" />
@@ -693,7 +766,10 @@ export default function FieldServicePage() {
                     Yerinde Teslim Edildi ve İmzalandı
                   </div>
                   <div className="text-2xs text-emerald-700 dark:text-emerald-400">
-                    İmzalayan: <strong>{selectedJob.customerSignedName || "Müşteri"}</strong>
+                    İmzalayan:{" "}
+                    <strong>
+                      {selectedJob.customerSignedName || "Müşteri"}
+                    </strong>
                   </div>
                   {selectedJob.customerSignatureData && (
                     <div className="mt-2 bg-card p-2 rounded-lg border border-emerald-200 dark:border-emerald-800">
@@ -725,9 +801,12 @@ export default function FieldServicePage() {
           ) : (
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
               <Truck className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
-              <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Servis Emri Seçiniz</p>
+              <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                Servis Emri Seçiniz
+              </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Detayları, kontrol listesini ve yerinde imza modülünü görüntülemek için soldan bir kart seçin.
+                Detayları, kontrol listesini ve yerinde imza modülünü
+                görüntülemek için soldan bir kart seçin.
               </p>
             </div>
           )}
@@ -755,7 +834,11 @@ export default function FieldServicePage() {
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
-                <button aria-label="Kapat" type="button" className="text-muted-foreground hover:text-zinc-600">
+                <button
+                  aria-label="Kapat"
+                  type="button"
+                  className="text-muted-foreground hover:text-zinc-600"
+                >
                   <X className="h-5 w-5" />
                 </button>
               </DialogClose>
@@ -771,17 +854,23 @@ export default function FieldServicePage() {
                   required
                   placeholder="örn: Fiber Optik Switch Montajı veya Arıza Tespiti"
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Servis Tipi</label>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Servis Tipi
+                  </label>
                   <SelectField
                     value={formData.serviceType}
-                    onChange={(val) => setFormData({ ...formData, serviceType: val })}
+                    onChange={(val) =>
+                      setFormData({ ...formData, serviceType: val })
+                    }
                     options={[
                       { label: "Montaj & Kurulum", value: "Installation" },
                       { label: "Periyodik Bakım", value: "Maintenance" },
@@ -794,10 +883,14 @@ export default function FieldServicePage() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Öncelik</label>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Öncelik
+                  </label>
                   <SelectField
                     value={formData.priority}
-                    onChange={(val) => setFormData({ ...formData, priority: val })}
+                    onChange={(val) =>
+                      setFormData({ ...formData, priority: val })
+                    }
                     options={[
                       { label: "Düşük", value: "Low" },
                       { label: "Normal", value: "Normal" },
@@ -811,7 +904,9 @@ export default function FieldServicePage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Müşteri</label>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Müşteri
+                  </label>
                   <SelectField
                     value={formData.customerId}
                     onChange={(val) => {
@@ -868,37 +963,55 @@ export default function FieldServicePage() {
                   rows={2}
                   placeholder="Açık adres veya tesis konumu..."
                   value={formData.serviceAddress}
-                  onChange={(e) => setFormData({ ...formData, serviceAddress: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, serviceAddress: e.target.value })
+                  }
                   className="w-full p-2.5 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">İletişim Kişisi</label>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    İletişim Kişisi
+                  </label>
                   <input
                     type="text"
                     placeholder="Ad Soyad"
                     value={formData.contactPerson}
-                    onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        contactPerson: e.target.value,
+                      })
+                    }
                     className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Telefon</label>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Telefon
+                  </label>
                   <input
                     type="text"
                     placeholder="05XX XXX XX XX"
                     value={formData.contactPhone}
-                    onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, contactPhone: e.target.value })
+                    }
                     className="w-full h-9 px-3 rounded-lg border border-border bg-zinc-50 dark:bg-zinc-800"
                   />
                 </div>
               </div>
 
               <div className="flex justify-end gap-2 pt-3 border-t border-border">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateOpen(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsCreateOpen(false)}
+                >
                   İptal
                 </Button>
                 <Button
@@ -907,7 +1020,11 @@ export default function FieldServicePage() {
                   disabled={submitting}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                 >
-                  {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Servis Emrini Aç"}
+                  {submitting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Servis Emrini Aç"
+                  )}
                 </Button>
               </div>
             </form>
@@ -941,7 +1058,11 @@ export default function FieldServicePage() {
                 </p>
               </div>
               <DialogClose asChild>
-                <button aria-label="Kapat" type="button" className="text-muted-foreground hover:text-zinc-600">
+                <button
+                  aria-label="Kapat"
+                  type="button"
+                  className="text-muted-foreground hover:text-zinc-600"
+                >
                   <X className="h-4 w-4" />
                 </button>
               </DialogClose>
@@ -1008,7 +1129,12 @@ export default function FieldServicePage() {
               </div>
 
               <div className="flex justify-end gap-2 pt-3 border-t border-border">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsSignModalOpen(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsSignModalOpen(false)}
+                >
                   Vazgeç
                 </Button>
                 <Button
@@ -1018,7 +1144,11 @@ export default function FieldServicePage() {
                   onClick={handleCompleteWithSign}
                   className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
                 >
-                  {completing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Onayla ve Tamamla"}
+                  {completing ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Onayla ve Tamamla"
+                  )}
                 </Button>
               </div>
             </div>

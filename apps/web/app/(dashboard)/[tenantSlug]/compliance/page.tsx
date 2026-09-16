@@ -9,7 +9,14 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -474,7 +481,9 @@ export default function CompliancePage() {
                 "tr-TR"
               )}
             </span>
-            <span className="font-bold text-red-600 dark:text-red-400 text-xs">TL</span>
+            <span className="font-bold text-red-600 dark:text-red-400 text-xs">
+              TL
+            </span>
           </div>
           <span className="mt-1 block text-2xs text-muted-foreground">
             Müfettiş denetimi olası ceza tutarı
@@ -493,9 +502,7 @@ export default function CompliancePage() {
             <span className="font-extrabold text-3xl text-blue-600 dark:text-blue-400">
               {scoreData?.overriddenViolationsCount ?? 0}
             </span>
-            <span className="text-xs text-muted-foreground">
-              kayıt
-            </span>
+            <span className="text-xs text-muted-foreground">kayıt</span>
           </div>
           <span className="mt-1 block font-medium text-blue-600 dark:text-blue-400 text-xs">
             Gerekçeli yönetici onayı
@@ -507,19 +514,19 @@ export default function CompliancePage() {
       <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-2 shadow-xs md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${ activeTab === "rules" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${activeTab === "rules" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("rules")}
           >
             Mevzuat Kütüphanesi & Kurallar ({rules.length})
           </button>
           <button
-            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${ activeTab === "violations" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${activeTab === "violations" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("violations")}
           >
             İhlal & Denetim Günlüğü ({violations.length})
           </button>
           <button
-            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${ activeTab === "simulator" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${activeTab === "simulator" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => setActiveTab("simulator")}
           >
             Canlı Mevzuat Simülatörü
@@ -682,11 +689,17 @@ export default function CompliancePage() {
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">Tarih</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Personel</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Yasal Madde</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Yasal Madde
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Modül</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">İhlal Detayı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    İhlal Detayı
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">İşlem</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    İşlem
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -794,13 +807,13 @@ export default function CompliancePage() {
 
             <div className="grid grid-cols-2 gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
               <button
-                className={`rounded-lg py-1.5 font-bold text-xs transition-all ${ simulatorMode === "shift" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                className={`rounded-lg py-1.5 font-bold text-xs transition-all ${simulatorMode === "shift" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                 onClick={() => setSimulatorMode("shift")}
               >
                 Vardiya / Çalışma (4857)
               </button>
               <button
-                className={`rounded-lg py-1.5 font-bold text-xs transition-all ${ simulatorMode === "leave" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                className={`rounded-lg py-1.5 font-bold text-xs transition-all ${simulatorMode === "leave" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                 onClick={() => setSimulatorMode("leave")}
               >
                 İzin Hak Ediş (Md. 53)
@@ -1139,7 +1152,7 @@ export default function CompliancePage() {
                 </label>
                 <div className="space-y-2">
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50 dark:bg-red-950/60" : "border-border hover:border-zinc-300" }`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50 dark:bg-red-950/60" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("HardBlock")}
                   >
                     <input
@@ -1161,7 +1174,7 @@ export default function CompliancePage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/60" : "border-border hover:border-zinc-300" }`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/60" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("SoftWarning")}
                   >
                     <input
@@ -1183,7 +1196,7 @@ export default function CompliancePage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${ editEnforcement === "Disabled" ? "border-zinc-400 bg-zinc-100 dark:bg-zinc-800" : "border-border hover:border-zinc-300" }`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "Disabled" ? "border-zinc-400 bg-zinc-100 dark:bg-zinc-800" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("Disabled")}
                   >
                     <input

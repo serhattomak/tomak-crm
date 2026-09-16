@@ -18,7 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -347,9 +354,7 @@ export default function OrderDetailPage() {
 
             <div className="space-y-2 border-border border-b pb-3">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">
-                  Ara Toplam:
-                </span>
+                <span className="text-muted-foreground">Ara Toplam:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   ₺
                   {order.subtotal.toLocaleString("tr-TR", {
@@ -371,9 +376,7 @@ export default function OrderDetailPage() {
               )}
 
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">
-                  Hesaplanan KDV:
-                </span>
+                <span className="text-muted-foreground">Hesaplanan KDV:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   ₺
                   {order.taxAmount.toLocaleString("tr-TR", {
@@ -526,21 +529,21 @@ export default function OrderDetailPage() {
           {/* Pill Tabs */}
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "items" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "items" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setActiveTab("items")}
               type="button"
             >
               Sipariş Kalemleri ({order.items.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "payments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "payments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setActiveTab("payments")}
               type="button"
             >
               Tahsilat & Ödemeler ({order.payments.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "timeline" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "timeline" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setActiveTab("timeline")}
               type="button"
             >
@@ -559,11 +562,21 @@ export default function OrderDetailPage() {
                 <Table>
                   <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                     <TableRow>
-                      <TableHead className="px-3.5 py-3 h-auto">Kalem / Ürün</TableHead>
-                      <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
-                      <TableHead className="px-3 py-3 text-right h-auto">Birim Fiyat</TableHead>
-                      <TableHead className="px-3 py-3 text-center h-auto">KDV</TableHead>
-                      <TableHead className="px-3 py-3 text-center h-auto">İndirim</TableHead>
+                      <TableHead className="px-3.5 py-3 h-auto">
+                        Kalem / Ürün
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">
+                        Miktar
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-right h-auto">
+                        Birim Fiyat
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">
+                        KDV
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">
+                        İndirim
+                      </TableHead>
                       <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
                         Toplam Tutar
                       </TableHead>

@@ -26,7 +26,14 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -315,7 +322,7 @@ function OrganizationPageContent() {
       <div className="flex items-center justify-between border-border border-b pb-3">
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("chart")}
             type="button"
           >
@@ -324,7 +331,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "departments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "departments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("departments")}
             type="button"
           >
@@ -333,7 +340,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "employees" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "employees" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("employees")}
             type="button"
           >
@@ -342,7 +349,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "positions" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "positions" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("positions")}
             type="button"
           >
@@ -807,7 +814,7 @@ function OrgNodeItem({
 
             {hasChildren && (
               <button
-                className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${ isCollapsed ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-950/40 dark:text-blue-400" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
+                className={`flex h-6 w-6 items-center justify-center rounded-lg border font-bold text-xs transition-colors ${isCollapsed ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-950/40 dark:text-blue-400" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsCollapsed(!isCollapsed);
@@ -956,9 +963,7 @@ function DepartmentsTab({
               {/* Description & Parent */}
               {dept.parentName && (
                 <div className="mt-3 flex items-center gap-1 font-medium text-2xs text-muted-foreground">
-                  <span className="text-muted-foreground">
-                    Üst Departman:
-                  </span>
+                  <span className="text-muted-foreground">Üst Departman:</span>
                   <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                     {dept.parentName}
                   </span>
@@ -1175,11 +1180,19 @@ function EmployeesTab({
             <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
               <TableRow>
                 <TableHead className="px-6 py-3.5 h-auto">Çalışan</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Departman & Pozisyon</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Yönetici (Reports To)</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Çalışma Şekli</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">
+                  Departman & Pozisyon
+                </TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">
+                  Yönetici (Reports To)
+                </TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">
+                  Çalışma Şekli
+                </TableHead>
                 <TableHead className="px-6 py-3.5 h-auto">Durum</TableHead>
-                <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+                <TableHead className="px-6 py-3.5 text-right h-auto">
+                  İşlemler
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1400,12 +1413,22 @@ function PositionsTab({
         <Table>
           <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
             <TableRow>
-              <TableHead className="px-6 py-3.5 h-auto">Pozisyon / Ünvan</TableHead>
-              <TableHead className="px-6 py-3.5 h-auto">Kariyer Kademesi</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">
+                Pozisyon / Ünvan
+              </TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">
+                Kariyer Kademesi
+              </TableHead>
               <TableHead className="px-6 py-3.5 h-auto">Departman</TableHead>
-              <TableHead className="px-6 py-3.5 h-auto">Maaş Bandı Aralığı</TableHead>
-              <TableHead className="px-6 py-3.5 h-auto">Aktif Personel</TableHead>
-              <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">
+                Maaş Bandı Aralığı
+              </TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">
+                Aktif Personel
+              </TableHead>
+              <TableHead className="px-6 py-3.5 text-right h-auto">
+                İşlemler
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">

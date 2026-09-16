@@ -248,7 +248,7 @@ export default function RolesManagementPage() {
                 const isSelected = selectedRole?.id === role.id;
                 return (
                   <div
-                    className={`cursor-pointer rounded-xl border p-3 transition-all ${ isSelected ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60" : "border-border bg-card text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50" }`}
+                    className={`cursor-pointer rounded-xl border p-3 transition-all ${isSelected ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60" : "border-border bg-card text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"}`}
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
                   >
@@ -324,7 +324,7 @@ export default function RolesManagementPage() {
                         const isChecked = selectedPermIds.has(perm.id);
                         return (
                           <label
-                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${ isChecked ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60 dark:text-zinc-100" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50" }`}
+                            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${isChecked ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:border-blue-800 dark:bg-blue-950/60 dark:text-zinc-100" : "border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"}`}
                             key={perm.id}
                           >
                             <input
@@ -379,8 +379,7 @@ export default function RolesManagementPage() {
             </div>
           ) : (
             <div className="p-12 text-center text-xs text-muted-foreground">
-              Soldaki panelden bir rol seçip yetki matrisini
-              yapılandırın.
+              Soldaki panelden bir rol seçip yetki matrisini yapılandırın.
             </div>
           )}
         </div>

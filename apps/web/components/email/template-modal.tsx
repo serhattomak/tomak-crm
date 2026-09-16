@@ -345,7 +345,7 @@ function TemplateLivePreview({
       </div>
 
       <div
-        className={`flex-1 overflow-hidden rounded-xl border transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950" : "border-border bg-card" }`}
+        className={`flex-1 overflow-hidden rounded-xl border transition-colors ${isDark ? "border-zinc-800 bg-zinc-950" : "border-border bg-card"}`}
       >
         <iframe
           className="h-full min-h-[380px] w-full border-0"

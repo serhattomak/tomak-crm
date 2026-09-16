@@ -17,7 +17,14 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   CheckCircle2,
@@ -71,7 +78,11 @@ export default function ContractsPage() {
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
 
   // Delete modal states
-  const [contractToDelete, setContractToDelete] = useState<{ id: string; title: string; contractNumber: string } | null>(null);
+  const [contractToDelete, setContractToDelete] = useState<{
+    id: string;
+    title: string;
+    contractNumber: string;
+  } | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeletingContract, setIsDeletingContract] = useState(false);
 
@@ -115,10 +126,10 @@ export default function ContractsPage() {
   const loadCustomers = useCallback(async () => {
     if (!activeTenant?.id) return;
     try {
-      const res = await ApiClient.getCustomers(
-        activeTenant.id,
-        { page: 1, pageSize: 100 }
-      );
+      const res = await ApiClient.getCustomers(activeTenant.id, {
+        page: 1,
+        pageSize: 100,
+      });
       if (res.data?.items) {
         setCustomers(res.data.items);
       }
@@ -189,7 +200,11 @@ export default function ContractsPage() {
     }
   };
 
-  const handlePromptDelete = (contract: { id: string; title: string; contractNumber: string }) => {
+  const handlePromptDelete = (contract: {
+    id: string;
+    title: string;
+    contractNumber: string;
+  }) => {
     setContractToDelete(contract);
     setIsDeleteDialogOpen(true);
   };
@@ -366,11 +381,21 @@ export default function ContractsPage() {
         <Table>
           <TableHeader className="border-border bg-zinc-50/75 text-muted-foreground dark:bg-zinc-900/80">
             <TableRow>
-              <TableHead className="py-3 pr-4 pl-5 font-semibold h-auto">Sözleşme No</TableHead>
-              <TableHead className="px-4 py-3 font-semibold h-auto">Başlık & Müşteri</TableHead>
-              <TableHead className="px-4 py-3 font-semibold h-auto">Durum</TableHead>
-              <TableHead className="px-4 py-3 text-right font-semibold h-auto">Tutar</TableHead>
-              <TableHead className="px-4 py-3 font-semibold h-auto">İmza Durumu</TableHead>
+              <TableHead className="py-3 pr-4 pl-5 font-semibold h-auto">
+                Sözleşme No
+              </TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">
+                Başlık & Müşteri
+              </TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">
+                Durum
+              </TableHead>
+              <TableHead className="px-4 py-3 text-right font-semibold h-auto">
+                Tutar
+              </TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">
+                İmza Durumu
+              </TableHead>
               <TableHead className="py-3 pr-5 pl-4 text-right font-semibold h-auto">
                 Aksiyonlar
               </TableHead>
@@ -379,14 +404,20 @@ export default function ContractsPage() {
           <TableBody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
             {isLoading ? (
               <TableRow>
-                <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
+                <TableCell
+                  className="py-12 text-center text-muted-foreground"
+                  colSpan={6}
+                >
                   <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-500" />
                   <span className="mt-2 block">Yükleniyor...</span>
                 </TableCell>
               </TableRow>
             ) : contracts.length === 0 ? (
               <TableRow>
-                <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
+                <TableCell
+                  className="py-12 text-center text-muted-foreground"
+                  colSpan={6}
+                >
                   Kayıtlı sözleşme bulunamadı.
                 </TableCell>
               </TableRow>
@@ -437,7 +468,9 @@ export default function ContractsPage() {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-muted-foreground">İmza Bekliyor</span>
+                      <span className="text-muted-foreground">
+                        İmza Bekliyor
+                      </span>
                     )}
                   </TableCell>
                   <TableCell className="py-3 pr-5 pl-4 text-right">
@@ -468,7 +501,13 @@ export default function ContractsPage() {
 
                       <button
                         className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
-                        onClick={() => handlePromptDelete({ id: c.id, title: c.title, contractNumber: c.contractNumber })}
+                        onClick={() =>
+                          handlePromptDelete({
+                            id: c.id,
+                            title: c.title,
+                            contractNumber: c.contractNumber,
+                          })
+                        }
                         title="Sil"
                         type="button"
                       >

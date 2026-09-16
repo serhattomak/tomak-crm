@@ -47,7 +47,8 @@ export function WhatsAppChatDrawer({
   const [messages, setMessages] = useState<WhatsAppMessageDto[]>([]);
   const [customers, setCustomers] = useState<CustomerListDto[]>([]);
   const [selectedPhone, setSelectedPhone] = useState<string>("");
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerListDto | null>(null);
+  const [selectedCustomer, setSelectedCustomer] =
+    useState<CustomerListDto | null>(null);
   const [inputText, setInputText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +71,10 @@ export function WhatsAppChatDrawer({
   const loadCustomers = useCallback(async () => {
     if (!activeTenantId) return;
     try {
-      const res = await ApiClient.getCustomers(activeTenantId, { page: 1, pageSize: 50 });
+      const res = await ApiClient.getCustomers(activeTenantId, {
+        page: 1,
+        pageSize: 50,
+      });
       if (res.data?.items) {
         setCustomers(res.data.items.filter((c) => !!c.phone));
       }
@@ -92,7 +96,9 @@ export function WhatsAppChatDrawer({
   ).map((phone) => {
     const phoneMsgs = messages.filter((m) => m.phoneNumber === phone);
     const lastMsg = phoneMsgs[0]; // descending
-    const cust = customers.find((c) => c.phone?.replace(/\D/g, "") === phone.replace(/\D/g, ""));
+    const cust = customers.find(
+      (c) => c.phone?.replace(/\D/g, "") === phone.replace(/\D/g, "")
+    );
     return {
       customer: cust,
       lastMsg,
@@ -168,7 +174,9 @@ export function WhatsAppChatDrawer({
               title="Yenile"
               type="button"
             >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+              />
             </button>
           </div>
 
@@ -212,17 +220,23 @@ export function WhatsAppChatDrawer({
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="truncate font-semibold text-xs">{conv.title}</span>
+                        <span className="truncate font-semibold text-xs">
+                          {conv.title}
+                        </span>
                         {conv.lastMsg && (
                           <span className="text-3xs text-muted-foreground">
-                            {new Date(conv.lastMsg.createdAt).toLocaleTimeString([], {
+                            {new Date(
+                              conv.lastMsg.createdAt
+                            ).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}
                           </span>
                         )}
                       </div>
-                      <p className="truncate font-mono text-3xs text-muted-foreground">{conv.phone}</p>
+                      <p className="truncate font-mono text-3xs text-muted-foreground">
+                        {conv.phone}
+                      </p>
                       <p className="mt-0.5 truncate text-2xs text-muted-foreground">
                         {conv.lastMsg?.messageText || "—"}
                       </p>
@@ -278,12 +292,14 @@ export function WhatsAppChatDrawer({
                     key={m.id}
                   >
                     <div
-                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${ isOutbound ? "bg-emerald-700 text-white" : "border border-border bg-card text-zinc-900 dark:text-zinc-100" }`}
+                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${isOutbound ? "bg-emerald-700 text-white" : "border border-border bg-card text-zinc-900 dark:text-zinc-100"}`}
                     >
                       <p className="leading-relaxed">{m.messageText}</p>
                       <div
                         className={`mt-1 flex items-center justify-end gap-1 text-3xs ${
-                          isOutbound ? "text-emerald-200" : "text-muted-foreground"
+                          isOutbound
+                            ? "text-emerald-200"
+                            : "text-muted-foreground"
                         }`}
                       >
                         <span>
@@ -303,7 +319,10 @@ export function WhatsAppChatDrawer({
 
           {/* Input Box */}
           {selectedPhone && (
-            <form className="border-border border-t p-4" onSubmit={handleSendMessage}>
+            <form
+              className="border-border border-t p-4"
+              onSubmit={handleSendMessage}
+            >
               <div className="flex gap-2">
                 <input
                   className="h-10 flex-1 rounded-xl border border-border bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-emerald-500 focus:bg-white dark:bg-zinc-900 dark:text-zinc-100"

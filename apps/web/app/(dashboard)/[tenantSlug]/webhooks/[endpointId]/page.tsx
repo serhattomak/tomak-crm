@@ -7,7 +7,14 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   AlertCircle,
   ArrowLeft,
@@ -508,7 +515,7 @@ export default function WebhookBuilderPage() {
               type="button"
             >
               <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-crm ${ isActive ? "translate-x-5" : "translate-x-0" }`}
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-crm ${isActive ? "translate-x-5" : "translate-x-0"}`}
               />
             </button>
           </div>
@@ -588,7 +595,7 @@ export default function WebhookBuilderPage() {
                   İsim <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100"}`}
                   id="webhook-name"
                   maxLength={255}
                   onChange={(e) => setName(e.target.value)}
@@ -617,10 +624,11 @@ export default function WebhookBuilderPage() {
                   className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
                   htmlFor="webhook-url"
                 >
-                  Hedef URL <span className="text-red-600 dark:text-red-400">*</span>
+                  Hedef URL{" "}
+                  <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <input
-                  className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100"}`}
                   id="webhook-url"
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://example.com/hook"
@@ -645,7 +653,7 @@ export default function WebhookBuilderPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !descriptionIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
+                  className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${hasAttemptedSave && !descriptionIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100"}`}
                   id="webhook-description"
                   maxLength={1000}
                   onChange={(e) => setDescription(e.target.value)}
@@ -678,7 +686,8 @@ export default function WebhookBuilderPage() {
                 </div>
                 <div>
                   <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                    Olaylar <span className="text-red-600 dark:text-red-400">*</span>
+                    Olaylar{" "}
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </h2>
                   <p className="text-2xs text-muted-foreground">
                     En az bir olay seçin
@@ -708,7 +717,7 @@ export default function WebhookBuilderPage() {
                 const checked = events.includes(ev);
                 return (
                   <label
-                    className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2.5 transition-colors ${ checked ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-800/60" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/40" }`}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2.5 transition-colors ${checked ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-800/60" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/40"}`}
                     key={ev}
                   >
                     <input
@@ -982,11 +991,21 @@ export default function WebhookBuilderPage() {
               <Table>
                 <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                   <TableRow>
-                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Olay</TableHead>
-                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Durum</TableHead>
-                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Deneme</TableHead>
-                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Tarih</TableHead>
-                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Yanıt</TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">
+                      Olay
+                    </TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">
+                      Durum
+                    </TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">
+                      Deneme
+                    </TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">
+                      Tarih
+                    </TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">
+                      Yanıt
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -998,7 +1017,9 @@ export default function WebhookBuilderPage() {
                       <TableCell className="px-4 py-3 font-medium font-mono text-zinc-800 dark:text-zinc-200">
                         {d.eventType}
                       </TableCell>
-                      <TableCell className="px-4 py-3">{getStatusBadge(d.status)}</TableCell>
+                      <TableCell className="px-4 py-3">
+                        {getStatusBadge(d.status)}
+                      </TableCell>
                       <TableCell className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
                         {d.attemptCount}
                       </TableCell>
@@ -1017,9 +1038,7 @@ export default function WebhookBuilderPage() {
                             {d.responseCode}
                           </span>
                         ) : (
-                          <span className="text-muted-foreground">
-                            —
-                          </span>
+                          <span className="text-muted-foreground">—</span>
                         )}
                       </TableCell>
                     </TableRow>

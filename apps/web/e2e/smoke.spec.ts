@@ -23,7 +23,9 @@ test("login renders with named fields", async ({ page }) => {
   );
   await expect(page.getByLabel("E-posta")).toBeVisible();
   await expect(page.getByLabel("Şifre")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Giriş Yap", exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Giriş Yap", exact: true })
+  ).toBeVisible();
 });
 
 test("register renders with named fields", async ({ page }) => {

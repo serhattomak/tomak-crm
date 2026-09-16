@@ -375,7 +375,7 @@ export default function EditCampaignPage() {
                 type="button"
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${ isStackable ? "translate-x-5" : "translate-x-0" }`}
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow-md ring-0 transition duration-200 ease-crm-in-out ${isStackable ? "translate-x-5" : "translate-x-0"}`}
                 />
               </button>
             </div>

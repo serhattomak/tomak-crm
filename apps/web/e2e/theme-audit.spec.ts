@@ -216,7 +216,9 @@ function auditPage(
           node = node.parentElement;
         }
         const body = parse(getComputedStyle(document.body).backgroundColor);
-        return body ? { color: body } : { color: { a: 1, b: 255, g: 255, r: 255 } };
+        return body
+          ? { color: body }
+          : { color: { a: 1, b: 255, g: 255, r: 255 } };
       };
 
       for (const el of document.body.querySelectorAll("*")) {
@@ -225,7 +227,11 @@ function auditPage(
           continue;
         }
         const cs = getComputedStyle(el);
-        if (cs.visibility === "hidden" || cs.display === "none" || cs.opacity === "0") {
+        if (
+          cs.visibility === "hidden" ||
+          cs.display === "none" ||
+          cs.opacity === "0"
+        ) {
           continue;
         }
         audited += 1;
@@ -249,7 +255,8 @@ function auditPage(
         // Contrast, only for elements that hold text DIRECTLY, so a container
         // is not measured once per descendant.
         const hasDirectText = [...el.childNodes].some(
-          (node) => node.nodeType === 3 && (node.textContent ?? "").trim().length > 0
+          (node) =>
+            node.nodeType === 3 && (node.textContent ?? "").trim().length > 0
         );
         if (!hasDirectText) {
           continue;
@@ -291,7 +298,9 @@ function auditPage(
   );
 }
 
-test("audit every reachable screen in the project's theme", async ({ page }) => {
+test("audit every reachable screen in the project's theme", async ({
+  page,
+}) => {
   // 31 routes, each with a paint settle — well past the default per-test budget.
   test.setTimeout(600_000);
 
@@ -369,7 +378,9 @@ test("audit every reachable screen in the project's theme", async ({ page }) => 
   );
   if (checkSurfaces) {
     expect(
-      control.lightSurfaces.some((f) => f.cls.includes("__audit_control_light")),
+      control.lightSurfaces.some((f) =>
+        f.cls.includes("__audit_control_light")
+      ),
       "the detector failed to flag a known white box — its zero findings mean nothing"
     ).toBe(true);
   }
@@ -384,17 +395,20 @@ test("audit every reachable screen in the project's theme", async ({ page }) => 
 
   // ---- the routes --------------------------------------------------------
   const routes = ["", ...dashboardRoutes().map((name) => `/${name}`)];
-  console.log(`${theme}-mode audit: ${routes.length} route(s) from the app structure`);
+  console.log(
+    `${theme}-mode audit: ${routes.length} route(s) from the app structure`
+  );
 
   const report: RouteAudit[] = [];
   for (const route of routes) {
     await gotoSettled(page, `/${slug}${route}`);
-    const { audited, lightSurfaces, lowContrast, unmeasurable } = await auditPage(
-      page,
-      LIGHT_BACKGROUND_LUMINANCE,
-      MIN_CONTRAST,
-      checkSurfaces
-    );
+    const { audited, lightSurfaces, lowContrast, unmeasurable } =
+      await auditPage(
+        page,
+        LIGHT_BACKGROUND_LUMINANCE,
+        MIN_CONTRAST,
+        checkSurfaces
+      );
     report.push({
       audited,
       contrast: lowContrast,
@@ -418,7 +432,12 @@ test("audit every reachable screen in the project's theme", async ({ page }) => 
    * nine nodes of one kind under-reported and the total read like a fact when it
    * was a ceiling. `test-results/` is gitignored, so this never dirties the tree.
    */
-  const artifactPath = resolve(HERE, "..", "test-results", `${theme}-mode-audit.json`);
+  const artifactPath = resolve(
+    HERE,
+    "..",
+    "test-results",
+    `${theme}-mode-audit.json`
+  );
   mkdirSync(dirname(artifactPath), { recursive: true });
   writeFileSync(
     artifactPath,
@@ -431,11 +450,17 @@ test("audit every reachable screen in the project's theme", async ({ page }) => 
         theme,
         routes: report,
         starvedRouteFloor: STARVED_ROUTE_FLOOR,
-        starvedRoutes: starved.map((r) => ({ audited: r.audited, route: r.route })),
+        starvedRoutes: starved.map((r) => ({
+          audited: r.audited,
+          route: r.route,
+        })),
         totals: {
           lightSurfaces: totalLight,
           lowContrast: totalContrast,
-          unmeasurableElements: report.reduce((n, r) => n + r.unmeasurable.length, 0),
+          unmeasurableElements: report.reduce(
+            (n, r) => n + r.unmeasurable.length,
+            0
+          ),
           routes: routes.length,
           routesWithFindings: withFindings,
         },

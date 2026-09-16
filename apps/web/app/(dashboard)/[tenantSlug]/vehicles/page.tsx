@@ -9,7 +9,14 @@ import {
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -794,7 +801,7 @@ export default function VehiclesPage() {
 
             <div className="flex items-center gap-1 self-end sm:self-auto">
               <button
-                className={`rounded-xl p-2 transition ${ catalogViewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50" }`}
+                className={`rounded-xl p-2 transition ${catalogViewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50"}`}
                 onClick={() => setCatalogViewMode("grid")}
                 title="Kart Görünümü"
                 type="button"
@@ -802,7 +809,7 @@ export default function VehiclesPage() {
                 <LayoutGrid className="h-4 w-4" />
               </button>
               <button
-                className={`rounded-xl p-2 transition ${ catalogViewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50" }`}
+                className={`rounded-xl p-2 transition ${catalogViewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50"}`}
                 onClick={() => setCatalogViewMode("table")}
                 title="Tablo Görünümü"
                 type="button"
@@ -894,7 +901,9 @@ export default function VehiclesPage() {
                       {/* Specs Mini Grid */}
                       <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-zinc-50/70 p-2.5 text-center dark:bg-zinc-800/40">
                         <div>
-                          <div className="text-3xs text-muted-foreground">Güç</div>
+                          <div className="text-3xs text-muted-foreground">
+                            Güç
+                          </div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                             {engineSpec.power || v.engine || "—"}
                           </div>
@@ -923,7 +932,7 @@ export default function VehiclesPage() {
                     {/* Bottom Actions */}
                     <div className="mt-5 flex items-center justify-between border-border border-t pt-3">
                       <button
-                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${ isCompared ? "border-blue-600 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800" }`}
+                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${isCompared ? "border-blue-600 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300" : "border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"}`}
                         onClick={() => toggleCompare(v.id)}
                         type="button"
                       >
@@ -995,14 +1004,24 @@ export default function VehiclesPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50/70 font-semibold text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <TableHead className="py-3 pr-4 pl-5 h-auto">Araç & Model</TableHead>
+                    <TableHead className="py-3 pr-4 pl-5 h-auto">
+                      Araç & Model
+                    </TableHead>
                     <TableHead className="px-4 py-3 h-auto">Segment</TableHead>
-                    <TableHead className="px-4 py-3 h-auto">Model Yılı</TableHead>
-                    <TableHead className="px-4 py-3 h-auto">Motor & Yakıt</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">
+                      Model Yılı
+                    </TableHead>
+                    <TableHead className="px-4 py-3 h-auto">
+                      Motor & Yakıt
+                    </TableHead>
                     <TableHead className="px-4 py-3 h-auto">Pazar</TableHead>
-                    <TableHead className="px-4 py-3 h-auto">Ref. Fiyat (USD)</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">
+                      Ref. Fiyat (USD)
+                    </TableHead>
                     <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
-                    <TableHead className="py-3 pr-5 pl-4 text-right h-auto">İşlemler</TableHead>
+                    <TableHead className="py-3 pr-5 pl-4 text-right h-auto">
+                      İşlemler
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1709,7 +1728,9 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between border-border border-b pb-1.5">
-                    <span className="text-muted-foreground">Süperseksiyon:</span>
+                    <span className="text-muted-foreground">
+                      Süperseksiyon:
+                    </span>
                     <span className="text-zinc-600 dark:text-zinc-400">
                       {selectedPart.supersession || "—"}
                     </span>
@@ -1791,7 +1812,7 @@ export default function VehiclesPage() {
                   "Garanti",
                 ].map((cat) => (
                   <button
-                    className={`rounded-xl px-2.5 py-1.5 font-semibold text-xs transition ${ docCategoryFilter === cat ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
+                    className={`rounded-xl px-2.5 py-1.5 font-semibold text-xs transition ${docCategoryFilter === cat ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-600 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-700"}`}
                     key={cat || "all"}
                     onClick={() => setDocCategoryFilter(cat)}
                     type="button"
@@ -2052,7 +2073,9 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-3xs text-muted-foreground">Ort. Tüketim</div>
+                <div className="text-3xs text-muted-foreground">
+                  Ort. Tüketim
+                </div>
                 <div className="font-bold text-xs">
                   {parseJson<{ combined?: string }>(
                     selectedVehicle.fuelEcoJson,
@@ -2101,7 +2124,9 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "overview" && (
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
-                    <span className="text-muted-foreground">Marka / Model:</span>
+                    <span className="text-muted-foreground">
+                      Marka / Model:
+                    </span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.brand} {selectedVehicle.model}
                     </span>
@@ -2127,7 +2152,9 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-muted-foreground">Üretim Tesisi:</span>
+                    <span className="text-muted-foreground">
+                      Üretim Tesisi:
+                    </span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.plant || "—"}
                     </span>
@@ -2162,7 +2189,9 @@ export default function VehiclesPage() {
                     </span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-muted-foreground">Emisyon Standardı:</span>
+                    <span className="text-muted-foreground">
+                      Emisyon Standardı:
+                    </span>
                     <span className="text-zinc-800 dark:text-zinc-200">
                       {selectedVehicle.emission || "—"}
                     </span>
@@ -2182,19 +2211,25 @@ export default function VehiclesPage() {
                     return (
                       <>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-muted-foreground">Uzunluk:</span>
+                          <span className="text-muted-foreground">
+                            Uzunluk:
+                          </span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.length || "—"} mm
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-muted-foreground">Genişlik:</span>
+                          <span className="text-muted-foreground">
+                            Genişlik:
+                          </span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.width || "—"} mm
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5">
-                          <span className="text-muted-foreground">Yükseklik:</span>
+                          <span className="text-muted-foreground">
+                            Yükseklik:
+                          </span>
                           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {dims.height || "—"} mm
                           </span>
@@ -2216,7 +2251,9 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "safety" && (
                 <div className="space-y-3">
                   <div className="flex justify-between border-border border-b pb-2">
-                    <span className="text-muted-foreground">Hava Yastığı Sayısı:</span>
+                    <span className="text-muted-foreground">
+                      Hava Yastığı Sayısı:
+                    </span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
                       {parseJson<{ airbags?: number }>(
                         selectedVehicle.safetyJson,
@@ -2256,7 +2293,9 @@ export default function VehiclesPage() {
               {vehicleDetailTab === "warranty" && (
                 <div className="space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
                   <div className="flex justify-between py-1.5">
-                    <span className="text-muted-foreground">Araç Garantisi:</span>
+                    <span className="text-muted-foreground">
+                      Araç Garantisi:
+                    </span>
                     <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {parseJson<{ vehicle?: string }>(
                         selectedVehicle.warrantyJson,
@@ -2783,7 +2822,7 @@ function CreateEditVehicleModal({
             const isCurrent = step === s.num;
             return (
               <button
-                className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${ isCurrent ? "bg-card shadow-xs ring-1 ring-blue-500/20" : isDone ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60" : "opacity-40" }`}
+                className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${isCurrent ? "bg-card shadow-xs ring-1 ring-blue-500/20" : isDone ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60" : "opacity-40"}`}
                 key={s.num}
                 onClick={() => {
                   if (s.num === 1 || isStep1Valid) {
@@ -3634,7 +3673,9 @@ function CreateEditVehicleModal({
 
                       <div className="grid grid-cols-3 gap-2 rounded-xl bg-white/80 p-3 shadow-2xs dark:bg-zinc-800/80">
                         <div>
-                          <div className="text-3xs text-muted-foreground">Güç</div>
+                          <div className="text-3xs text-muted-foreground">
+                            Güç
+                          </div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {power || "—"}
                           </div>
@@ -3648,7 +3689,9 @@ function CreateEditVehicleModal({
                           </div>
                         </div>
                         <div>
-                          <div className="text-3xs text-muted-foreground">Çekiş</div>
+                          <div className="text-3xs text-muted-foreground">
+                            Çekiş
+                          </div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {driveType || "—"}
                           </div>
@@ -4370,7 +4413,7 @@ function CreateDocumentModal({
         <div className="flex border-border border-b bg-zinc-50/70 p-2 dark:bg-zinc-900/50">
           <div className="grid w-full grid-cols-2 gap-1 rounded-2xl bg-zinc-200/60 p-1 dark:bg-zinc-800">
             <button
-              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${ mode === "upload" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${mode === "upload" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
               onClick={() => setMode("upload")}
               type="button"
             >
@@ -4378,7 +4421,7 @@ function CreateDocumentModal({
               <span>Dosya Yükle (Drag & Drop)</span>
             </button>
             <button
-              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${ mode === "url" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+              className={`flex items-center justify-center gap-2 rounded-xl py-2 font-bold text-xs transition ${mode === "url" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
               onClick={() => setMode("url")}
               type="button"
             >
@@ -4436,7 +4479,7 @@ function CreateDocumentModal({
                   </div>
                 ) : (
                   <div
-                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${ isDragging ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30" : "border-border bg-zinc-50/60 hover:border-blue-400 hover:bg-zinc-50 dark:bg-zinc-800/40 dark:hover:border-blue-500" }`}
+                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${isDragging ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30" : "border-border bg-zinc-50/60 hover:border-blue-400 hover:bg-zinc-50 dark:bg-zinc-800/40 dark:hover:border-blue-500"}`}
                     onClick={() => fileInputRef.current?.click()}
                     onDragLeave={() => setIsDragging(false)}
                     onDragOver={(e) => {
@@ -4649,7 +4692,7 @@ function CreateDocumentModal({
                   const isSelected = selectedTags.includes(tag);
                   return (
                     <button
-                      className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition ${ isSelected ? "bg-blue-600 text-white shadow-2xs" : "border border-border bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
+                      className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition ${isSelected ? "bg-blue-600 text-white shadow-2xs" : "border border-border bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"}`}
                       key={tag}
                       onClick={() => handleToggleTag(tag)}
                       type="button"
@@ -4893,7 +4936,9 @@ function DocumentPreviewModal({
           {/* Metadata Footer */}
           <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:bg-zinc-800/30">
             <div>
-              <span className="block text-3xs text-muted-foreground">Kategori</span>
+              <span className="block text-3xs text-muted-foreground">
+                Kategori
+              </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {document.category}
               </span>
@@ -4926,7 +4971,9 @@ function DocumentPreviewModal({
 
           {tags.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="mr-1 text-2xs text-muted-foreground">Etiketler:</span>
+              <span className="mr-1 text-2xs text-muted-foreground">
+                Etiketler:
+              </span>
               {tags.map((t) => (
                 <span
                   className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"

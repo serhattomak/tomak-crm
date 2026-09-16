@@ -12,7 +12,14 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -713,7 +720,7 @@ export default function ProductsPage() {
           {/* View Switcher */}
           <div className="flex items-center rounded-xl bg-zinc-100 p-0.5 dark:bg-zinc-800">
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               onClick={() => handleViewMode("table")}
               title="Tablo Görünümü"
               type="button"
@@ -721,7 +728,7 @@ export default function ProductsPage() {
               <TableIcon className="h-4 w-4" />
             </button>
             <button
-              className={`rounded-lg p-1.5 transition-all ${ viewMode === "grid" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300" }`}
+              className={`rounded-lg p-1.5 transition-all ${viewMode === "grid" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"}`}
               onClick={() => handleViewMode("grid")}
               title="Görsel Kart Görünümü"
               type="button"
@@ -780,14 +787,30 @@ export default function ProductsPage() {
                       onCheckedChange={toggleSelectAll}
                     />
                   </TableHead>
-                  <TableHead className="py-3.5 pr-4 pl-2 h-auto">Ürün / Hizmet</TableHead>
-                  <TableHead className="px-4 py-3.5 h-auto">Kategori &amp; Marka</TableHead>
-                  <TableHead className="px-4 py-3.5 h-auto">Tip &amp; Durum</TableHead>
-                  <TableHead className="px-4 py-3.5 h-auto">Stok Durumu</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">Maliyet</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">Satış Fiyatı</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">Kar Marjı</TableHead>
-                  <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">İşlemler</TableHead>
+                  <TableHead className="py-3.5 pr-4 pl-2 h-auto">
+                    Ürün / Hizmet
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    Kategori &amp; Marka
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    Tip &amp; Durum
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    Stok Durumu
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    Maliyet
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    Satış Fiyatı
+                  </TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    Kar Marjı
+                  </TableHead>
+                  <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">
+                    İşlemler
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1530,7 +1553,7 @@ function CreateProductModal({
           {/* Type Switcher */}
           <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-100 p-1 sm:grid-cols-4 dark:bg-zinc-800">
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Physical" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${formData.type === "Physical" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1543,7 +1566,7 @@ function CreateProductModal({
               Fiziksel Ürün
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Service" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${formData.type === "Service" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1556,7 +1579,7 @@ function CreateProductModal({
               Hizmet / Servis
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Digital" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${formData.type === "Digital" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1569,7 +1592,7 @@ function CreateProductModal({
               Dijital Ürün
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Subscription" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${formData.type === "Subscription" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() =>
                 setFormData({
                   ...formData,

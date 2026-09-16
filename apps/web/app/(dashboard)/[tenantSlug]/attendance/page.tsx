@@ -17,7 +17,14 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { TimePicker } from "@workspace/ui/components/time-picker";
@@ -977,35 +984,35 @@ export default function AttendancePage() {
         <div className="flex flex-col gap-4 border-border border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-1 rounded-xl bg-muted/60 p-1">
             <button
-              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${ activeTab === "monitor" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground" }`}
+              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${activeTab === "monitor" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setActiveTab("monitor")}
             >
               <Users className="mr-1.5 h-3.5 w-3.5" />
               Canlı PDKS Monitörü
             </button>
             <button
-              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${ activeTab === "shifts" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground" }`}
+              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${activeTab === "shifts" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setActiveTab("shifts")}
             >
               <CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
               Vardiya Planlama
             </button>
             <button
-              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${ activeTab === "records" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground" }`}
+              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${activeTab === "records" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setActiveTab("records")}
             >
               <Layers className="mr-1.5 h-3.5 w-3.5" />
               Devam & Giriş-Çıkış Kütüğü
             </button>
             <button
-              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${ activeTab === "corrections" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground" }`}
+              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${activeTab === "corrections" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setActiveTab("corrections")}
             >
               <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
               Düzeltme Talepleri
             </button>
             <button
-              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${ activeTab === "devices" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground" }`}
+              className={`flex items-center rounded-lg px-3 py-1.5 font-semibold text-xs transition-colors ${activeTab === "devices" ? "bg-card text-foreground shadow-xs dark:bg-card" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setActiveTab("devices")}
             >
               <Settings className="mr-1.5 h-3.5 w-3.5" />
@@ -1364,7 +1371,7 @@ export default function AttendancePage() {
                           wd.toDateString() === new Date().toDateString();
                         return (
                           <TableHead
-                            className={`border-border border-r p-3 text-center font-semibold ${ isToday ? "bg-blue-50/60 text-blue-600 dark:text-blue-400 dark:bg-blue-950/30" : "" }`}
+                            className={`border-border border-r p-3 text-center font-semibold ${isToday ? "bg-blue-50/60 text-blue-600 dark:text-blue-400 dark:bg-blue-950/30" : ""}`}
                             key={wd.toISOString()}
                           >
                             <div>
@@ -1600,10 +1607,16 @@ export default function AttendancePage() {
                   <TableRow>
                     <TableHead className="p-4 h-auto">Tarih</TableHead>
                     <TableHead className="p-4 h-auto">Personel</TableHead>
-                    <TableHead className="p-4 h-auto">İstenen Giriş / Çıkış</TableHead>
-                    <TableHead className="p-4 h-auto">Mazeret / Gerekçe</TableHead>
+                    <TableHead className="p-4 h-auto">
+                      İstenen Giriş / Çıkış
+                    </TableHead>
+                    <TableHead className="p-4 h-auto">
+                      Mazeret / Gerekçe
+                    </TableHead>
                     <TableHead className="p-4 h-auto">Durum</TableHead>
-                    <TableHead className="p-4 text-right h-auto">İşlemler</TableHead>
+                    <TableHead className="p-4 text-right h-auto">
+                      İşlemler
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-border">

@@ -288,12 +288,12 @@ export function TasksChecklistWidget() {
               <div className="max-h-60 space-y-1.5 overflow-y-auto pr-1">
                 {filteredTasks.map((task) => (
                   <div
-                    className={`group flex items-center justify-between gap-3 rounded-lg border p-2.5 transition-all ${ task.isCompleted ? "border-border/50 bg-muted/30 opacity-60" : "border-border/80 bg-card hover:border-border hover:bg-muted/40" }`}
+                    className={`group flex items-center justify-between gap-3 rounded-lg border p-2.5 transition-all ${task.isCompleted ? "border-border/50 bg-muted/30 opacity-60" : "border-border/80 bg-card hover:border-border hover:bg-muted/40"}`}
                     key={task.id}
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <button
-                        className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${ task.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border bg-background hover:border-emerald-500" }`}
+                        className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${task.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border bg-background hover:border-emerald-500"}`}
                         onClick={() => toggleTask(task.id, task.isCompleted)}
                         type="button"
                       >

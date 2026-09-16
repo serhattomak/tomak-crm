@@ -17,7 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowRightLeft,
@@ -828,11 +835,17 @@ export default function PayrollPage() {
                   <TableHead className="px-4 py-3 h-auto">Dönem</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Başlık</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Personel</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">Toplam Brüt</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    Toplam Brüt
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Ödenen Net</TableHead>
-                  <TableHead className="px-4 py-3 h-auto">İşveren Maliyeti</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">
+                    İşveren Maliyeti
+                  </TableHead>
                   <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
-                  <TableHead className="px-4 py-3 text-right h-auto">İşlemler</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">
+                    İşlemler
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1060,18 +1073,42 @@ export default function PayrollPage() {
                 <TableRow>
                   <TableHead className="px-3 py-2.5 h-auto">Personel</TableHead>
                   <TableHead className="px-2 py-2.5 h-auto">Sözleşme</TableHead>
-                  <TableHead className="px-2 py-2.5 text-center h-auto">Çalışılan</TableHead>
-                  <TableHead className="px-2 py-2.5 text-center h-auto">İzin/Rapor</TableHead>
-                  <TableHead className="px-2 py-2.5 text-center h-auto">Ücretsiz İzin</TableHead>
-                  <TableHead className="px-2 py-2.5 text-center h-auto">Ödenen Gün</TableHead>
-                  <TableHead className="px-2 py-2.5 text-center h-auto">Fazla Mesai</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">Brüt Kazanç</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">SGK Matrahı</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">Gelir Vergisi</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">7349 İstisna</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">Ödenecek Net</TableHead>
-                  <TableHead className="px-3 py-2.5 h-auto">İşveren Maliyeti</TableHead>
-                  <TableHead className="px-3 py-2.5 text-right h-auto">İşlem</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">
+                    Çalışılan
+                  </TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">
+                    İzin/Rapor
+                  </TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">
+                    Ücretsiz İzin
+                  </TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">
+                    Ödenen Gün
+                  </TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">
+                    Fazla Mesai
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    Brüt Kazanç
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    SGK Matrahı
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    Gelir Vergisi
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    7349 İstisna
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    Ödenecek Net
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">
+                    İşveren Maliyeti
+                  </TableHead>
+                  <TableHead className="px-3 py-2.5 text-right h-auto">
+                    İşlem
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1118,9 +1155,7 @@ export default function PayrollPage() {
                           {emp.unpaidLeaveDays} g
                         </span>
                       ) : (
-                        <span className="text-muted-foreground">
-                          0 g
-                        </span>
+                        <span className="text-muted-foreground">0 g</span>
                       )}
                     </TableCell>
                     <TableCell className="px-2 py-3 text-center font-bold text-zinc-900 dark:text-zinc-100">
@@ -1132,9 +1167,7 @@ export default function PayrollPage() {
                           {emp.overtimeHours} sa
                         </span>
                       ) : (
-                        <span className="text-muted-foreground">
-                          -
-                        </span>
+                        <span className="text-muted-foreground">-</span>
                       )}
                     </TableCell>
                     <TableCell className="px-3 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
@@ -1288,9 +1321,7 @@ export default function PayrollPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      IBAN:
-                    </span>
+                    <span className="text-muted-foreground">IBAN:</span>
                     <span className="font-mono text-2xs">
                       {payslipData.iban || "TR00 0000 0000 0000 0000 0000 00"}
                     </span>
@@ -1299,9 +1330,7 @@ export default function PayrollPage() {
 
                 <div className="space-y-1">
                   <div className="flex justify-between border-border border-b pb-1">
-                    <span className="text-muted-foreground">
-                      Departman:
-                    </span>
+                    <span className="text-muted-foreground">Departman:</span>
                     <span className="font-semibold">
                       {payslipData.departmentName || "Genel"}
                     </span>
@@ -1324,9 +1353,7 @@ export default function PayrollPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      Gün Dağılımı:
-                    </span>
+                    <span className="text-muted-foreground">Gün Dağılımı:</span>
                     <span className="font-medium">
                       {payslipData.workedDays} Gün Çal. +{" "}
                       {payslipData.weekendDays} HT = {payslipData.totalPaidDays}{" "}
@@ -1647,16 +1674,36 @@ export default function PayrollPage() {
                 <TableHeader className="border-border bg-zinc-50 font-bold text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <TableRow>
                     <TableHead className="px-3 py-2.5 h-auto">No</TableHead>
-                    <TableHead className="px-3 py-2.5 h-auto">TC Kimlik</TableHead>
-                    <TableHead className="px-3 py-2.5 h-auto">Personel</TableHead>
-                    <TableHead className="px-3 py-2.5 h-auto">Departman</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">Brüt Toplam</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">SGK Matrah</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">SGK İşçi (%14)</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">GV Matrahı</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">Ödenen GV</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">Ödenen DV</TableHead>
-                    <TableHead className="px-3 py-2.5 text-right h-auto">Kesintiler</TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">
+                      TC Kimlik
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">
+                      Personel
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">
+                      Departman
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      Brüt Toplam
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      SGK Matrah
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      SGK İşçi (%14)
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      GV Matrahı
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      Ödenen GV
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      Ödenen DV
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">
+                      Kesintiler
+                    </TableHead>
                     <TableHead className="px-3 py-2.5 text-right font-black text-emerald-700 h-auto">
                       Ödenecek Net
                     </TableHead>
@@ -1714,7 +1761,10 @@ export default function PayrollPage() {
                   ))}
                   {/* Totals Summary Row */}
                   <TableRow className="border-border border-t-2 bg-zinc-100 font-bold text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
-                    <TableCell className="px-3 py-3 text-right uppercase" colSpan={4}>
+                    <TableCell
+                      className="px-3 py-3 text-right uppercase"
+                      colSpan={4}
+                    >
                       GENEL TOPLAM ({icmalData.totalEmployees} Personel):
                     </TableCell>
                     <TableCell className="px-3 py-3 text-right">
@@ -1767,7 +1817,7 @@ export default function PayrollPage() {
               </label>
               <div className="mt-1.5 grid grid-cols-2 gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
                 <button
-                  className={`rounded-lg py-1.5 font-bold text-xs transition-all ${ simForm.contractSalaryType === "Gross" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                  className={`rounded-lg py-1.5 font-bold text-xs transition-all ${simForm.contractSalaryType === "Gross" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                   onClick={() =>
                     setSimForm((prev) => ({
                       ...prev,
@@ -1779,7 +1829,7 @@ export default function PayrollPage() {
                   Brüt'ten Net'e
                 </button>
                 <button
-                  className={`rounded-lg py-1.5 font-bold text-xs transition-all ${ simForm.contractSalaryType === "Net" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                  className={`rounded-lg py-1.5 font-bold text-xs transition-all ${simForm.contractSalaryType === "Net" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
                   onClick={() =>
                     setSimForm((prev) => ({
                       ...prev,
@@ -2154,13 +2204,19 @@ export default function PayrollPage() {
                       <TableHeader className="bg-zinc-100 font-bold text-zinc-600 dark:bg-zinc-800/75 dark:text-zinc-400">
                         <TableRow>
                           <TableHead className="p-2.5 h-auto">Dilim</TableHead>
-                          <TableHead className="p-2.5 h-auto">Matrah Üst Sınırı</TableHead>
-                          <TableHead className="p-2.5 text-right h-auto">Vergi Oranı</TableHead>
+                          <TableHead className="p-2.5 h-auto">
+                            Matrah Üst Sınırı
+                          </TableHead>
+                          <TableHead className="p-2.5 text-right h-auto">
+                            Vergi Oranı
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                         <TableRow>
-                          <TableCell className="p-2.5 font-medium">1. Dilim</TableCell>
+                          <TableCell className="p-2.5 font-medium">
+                            1. Dilim
+                          </TableCell>
                           <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket1Limit)}'ye
                             kadar
@@ -2170,7 +2226,9 @@ export default function PayrollPage() {
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="p-2.5 font-medium">2. Dilim</TableCell>
+                          <TableCell className="p-2.5 font-medium">
+                            2. Dilim
+                          </TableCell>
                           <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket2Limit)}'ye
                             kadar
@@ -2180,7 +2238,9 @@ export default function PayrollPage() {
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="p-2.5 font-medium">3. Dilim</TableCell>
+                          <TableCell className="p-2.5 font-medium">
+                            3. Dilim
+                          </TableCell>
                           <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket3Limit)}'ye
                             kadar
@@ -2190,7 +2250,9 @@ export default function PayrollPage() {
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="p-2.5 font-medium">4. Dilim</TableCell>
+                          <TableCell className="p-2.5 font-medium">
+                            4. Dilim
+                          </TableCell>
                           <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket4Limit)}'ye
                             kadar
@@ -2200,7 +2262,9 @@ export default function PayrollPage() {
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="p-2.5 font-medium">5. Dilim</TableCell>
+                          <TableCell className="p-2.5 font-medium">
+                            5. Dilim
+                          </TableCell>
                           <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket4Limit)} üzeri
                           </TableCell>

@@ -410,7 +410,7 @@ export default function AdminTemplatesPage() {
                     );
                     return (
                       <label
-                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 text-2xs transition ${ checked ? "border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 font-medium text-blue-800 dark:text-blue-300" : "border-border bg-card text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50" }`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 text-2xs transition ${checked ? "border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 font-medium text-blue-800 dark:text-blue-300" : "border-border bg-card text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50"}`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
                       >

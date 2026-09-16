@@ -70,9 +70,7 @@ export function CustomerStatsBanner({
           <Badge size="sm" variant="success">
             %{activeRate} Aktiflik
           </Badge>
-          <span className="text-2xs text-muted-foreground">
-            oranı sağlandı
-          </span>
+          <span className="text-2xs text-muted-foreground">oranı sağlandı</span>
         </div>
       </Card>
 
@@ -99,9 +97,7 @@ export function CustomerStatsBanner({
           <Badge size="sm" variant="accent">
             Dönüşüm Bekleyen
           </Badge>
-          <span className="text-2xs text-muted-foreground">
-            aday müşteri
-          </span>
+          <span className="text-2xs text-muted-foreground">aday müşteri</span>
         </div>
       </Card>
 

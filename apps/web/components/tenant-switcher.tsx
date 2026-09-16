@@ -69,7 +69,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
     <Popover onOpenChange={handleOpenChange} open={isOpen}>
       <PopoverTrigger asChild>
         <button
-          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-250 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${ isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2" }`}
+          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-250 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2"}`}
           title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
           type="button"
         >

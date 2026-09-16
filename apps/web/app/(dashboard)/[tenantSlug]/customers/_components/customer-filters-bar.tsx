@@ -149,7 +149,7 @@ export function CustomerFiltersBar({
         {/* View Mode Toggle */}
         <div className="flex items-center rounded-md border border-border/80 bg-muted/60 p-0.5">
           <button
-            className={`rounded p-1 transition-all ${ viewMode === "table" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground" }`}
+            className={`rounded p-1 transition-all ${viewMode === "table" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onViewModeChange("table")}
             title="Tablo Görünümü"
             type="button"
@@ -157,7 +157,7 @@ export function CustomerFiltersBar({
             <TableIcon className="h-3.5 w-3.5" />
           </button>
           <button
-            className={`rounded p-1 transition-all ${ viewMode === "grid" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground" }`}
+            className={`rounded p-1 transition-all ${viewMode === "grid" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onViewModeChange("grid")}
             title="Kart Görünümü"
             type="button"

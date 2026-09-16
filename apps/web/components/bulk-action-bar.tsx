@@ -57,7 +57,7 @@ export function BulkActionBar({
       <div className="flex items-center gap-2">
         {actions.map((action) => (
           <button
-            className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-semibold text-xs transition-all ${ action.variant === "danger" ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-900/60" : "border-border bg-zinc-50 text-zinc-700 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" } disabled:cursor-not-allowed disabled:opacity-50`}
+            className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-semibold text-xs transition-all ${action.variant === "danger" ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-900/60" : "border-border bg-zinc-50 text-zinc-700 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"} disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={action.disabled}
             key={action.label}
             onClick={action.onClick}

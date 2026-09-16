@@ -10,7 +10,14 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -77,7 +84,9 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-2xs text-muted-foreground">{trend}</span>
+          <span className="font-medium text-2xs text-muted-foreground">
+            {trend}
+          </span>
         ) : null}
       </div>
     </div>
@@ -305,7 +314,10 @@ function InvoiceTableBody({
   if (isLoading) {
     return (
       <TableRow>
-        <TableCell className="py-8 text-center text-muted-foreground" colSpan={6}>
+        <TableCell
+          className="py-8 text-center text-muted-foreground"
+          colSpan={6}
+        >
           Faturalar yükleniyor...
         </TableCell>
       </TableRow>
@@ -315,7 +327,10 @@ function InvoiceTableBody({
   if (invoices.length === 0) {
     return (
       <TableRow>
-        <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
+        <TableCell
+          className="py-12 text-center text-muted-foreground"
+          colSpan={6}
+        >
           <Receipt className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Henüz kayıtlı fatura bulunmuyor.
         </TableCell>
@@ -400,7 +415,9 @@ function InvoiceDetailDrawer({
 
         <div className="flex-1 overflow-y-auto p-6">
           {isLoading || !invoice ? (
-            <div className="py-12 text-center text-muted-foreground">Yükleniyor...</div>
+            <div className="py-12 text-center text-muted-foreground">
+              Yükleniyor...
+            </div>
           ) : (
             <InvoiceDocument invoice={invoice} />
           )}
@@ -646,12 +663,20 @@ export default function InvoicesPage() {
           <Table className="font-sans">
             <TableHeader>
               <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
-                <TableHead className="py-3 pr-3 pl-4 h-auto">Fatura No & Tarih</TableHead>
+                <TableHead className="py-3 pr-3 pl-4 h-auto">
+                  Fatura No & Tarih
+                </TableHead>
                 <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
-                <TableHead className="px-3 py-3 h-auto">Cari Hesap (Ünvan)</TableHead>
-                <TableHead className="px-3 py-3 text-right h-auto">Tutar & KDV</TableHead>
+                <TableHead className="px-3 py-3 h-auto">
+                  Cari Hesap (Ünvan)
+                </TableHead>
+                <TableHead className="px-3 py-3 text-right h-auto">
+                  Tutar & KDV
+                </TableHead>
                 <TableHead className="px-3 py-3 h-auto">Durum</TableHead>
-                <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Aksiyon</TableHead>
+                <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
+                  Aksiyon
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">

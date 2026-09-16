@@ -35,7 +35,7 @@ export function DashboardTabsBar({
       <div className="flex w-fit items-center gap-1 rounded-lg bg-muted/60 p-1">
         {tabs.map((tab) => (
           <button
-            className={`rounded-md px-3 py-1 font-medium text-xs transition-all ${ activeTab === tab.id ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground" }`}
+            className={`rounded-md px-3 py-1 font-medium text-xs transition-all ${activeTab === tab.id ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
             key={tab.id}
             onClick={() => onSelectTab(tab.id)}
             type="button"

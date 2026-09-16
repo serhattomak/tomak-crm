@@ -15,7 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
@@ -360,7 +367,7 @@ export default function TicketsDashboardPage() {
           {/* View Switcher */}
           <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-1 shadow-2xs dark:bg-zinc-800/80">
             <button
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${ viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
             >
@@ -368,7 +375,7 @@ export default function TicketsDashboardPage() {
               <span>Tablo</span>
             </button>
             <button
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${ viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium text-xs transition-all ${viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("kanban")}
               type="button"
             >
@@ -432,7 +439,9 @@ export default function TicketsDashboardPage() {
             <span className="font-bold text-2xl text-amber-700 dark:text-amber-400 tracking-tight">
               {stats?.pendingCustomerTickets ?? 0}
             </span>
-            <span className="text-amber-700 dark:text-amber-400 text-xs">müşteri aksiyonu</span>
+            <span className="text-amber-700 dark:text-amber-400 text-xs">
+              müşteri aksiyonu
+            </span>
           </div>
         </div>
 
@@ -508,7 +517,7 @@ export default function TicketsDashboardPage() {
               <span>{q.label}</span>
               {q.count !== undefined && q.count > 0 && (
                 <span
-                  className={`rounded-full px-1.5 py-0.2 font-bold text-3xs ${ activeQueue === q.id ? "bg-card text-white" : q.badgeColor || "bg-muted text-zinc-700 dark:text-zinc-300" }`}
+                  className={`rounded-full px-1.5 py-0.2 font-bold text-3xs ${activeQueue === q.id ? "bg-card text-white" : q.badgeColor || "bg-muted text-zinc-700 dark:text-zinc-300"}`}
                 >
                   {q.count}
                 </span>
@@ -622,14 +631,20 @@ export default function TicketsDashboardPage() {
             <Table>
               <TableHeader className="border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableRow>
-                  <TableHead className="px-4 py-3.5 h-auto">Talep No & Konu</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    Talep No & Konu
+                  </TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Öncelik</TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Atanan</TableHead>
-                  <TableHead className="px-4 py-3.5 h-auto">SLA Durumu</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">
+                    SLA Durumu
+                  </TableHead>
                   <TableHead className="px-4 py-3.5 h-auto">Mesajlar</TableHead>
-                  <TableHead className="px-4 py-3.5 text-right h-auto">İşlem</TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">
+                    İşlem
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -674,7 +689,9 @@ export default function TicketsDashboardPage() {
                       )}
                     </TableCell>
 
-                    <TableCell className="px-4 py-3.5">{getStatusBadge(t.status)}</TableCell>
+                    <TableCell className="px-4 py-3.5">
+                      {getStatusBadge(t.status)}
+                    </TableCell>
 
                     <TableCell className="px-4 py-3.5">
                       {getPriorityBadge(t.priority)}
@@ -711,9 +728,7 @@ export default function TicketsDashboardPage() {
                           )}
                         </span>
                       ) : (
-                        <span className="text-xs text-muted-foreground">
-                          -
-                        </span>
+                        <span className="text-xs text-muted-foreground">-</span>
                       )}
                     </TableCell>
 

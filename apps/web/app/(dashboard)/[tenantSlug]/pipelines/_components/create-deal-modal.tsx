@@ -235,7 +235,10 @@ export function CreateDealModal({
                   label: "⚡ Otomatik Dağıtım (Round-Robin / Yük Dengesi)",
                   value: "auto",
                 },
-                { label: "Açık Havuzda Bırak (Atanmamış)", value: "unassigned" },
+                {
+                  label: "Açık Havuzda Bırak (Atanmamış)",
+                  value: "unassigned",
+                },
                 ...employees.map((emp) => ({
                   label: `${emp.fullName} (${emp.departmentName || "Genel"})`,
                   value: emp.userId || emp.id,

@@ -116,7 +116,9 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalTenants ?? 0)}
             </span>
-            <span className="font-medium text-blue-600 dark:text-blue-400 text-xs">Tenant</span>
+            <span className="font-medium text-blue-600 dark:text-blue-400 text-xs">
+              Tenant
+            </span>
           </div>
         </div>
 
@@ -271,9 +273,7 @@ export default function AdminDashboardPage() {
 
         {/* Industry Distribution Widget (1 Column) */}
         <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
-          <h2 className="font-bold text-base text-zinc-900">
-            Sektör Dağılımı
-          </h2>
+          <h2 className="font-bold text-base text-zinc-900">Sektör Dağılımı</h2>
           <p className="mt-0.5 text-muted-foreground text-xs">
             Firmaların sektörel şablon dağılımı
           </p>

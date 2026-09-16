@@ -11,7 +11,14 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -694,13 +701,25 @@ export default function ShipmentsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50 font-semibold text-muted-foreground dark:bg-zinc-800/50">
-                    <TableHead className="px-4 py-3.5 h-auto">Gönderi No / Tarih</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Sipariş & Müşteri</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Taşıyıcı & Takip No</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Paket & Desi</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Alıcı & Adres</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Gönderi No / Tarih
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Sipariş & Müşteri
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Taşıyıcı & Takip No
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Paket & Desi
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Alıcı & Adres
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
-                    <TableHead className="px-4 py-3.5 text-right h-auto">Eylemler</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">
+                      Eylemler
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -986,13 +1005,25 @@ export default function ShipmentsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50 font-semibold text-muted-foreground dark:bg-zinc-800/50">
-                    <TableHead className="px-4 py-3.5 h-auto">İade Kodu / Tarih</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">İade Sebebi</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Taşıyıcı & Takip No</TableHead>
-                    <TableHead className="px-4 py-3.5 h-auto">Kontrol & Notlar</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      İade Kodu / Tarih
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Müşteri
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      İade Sebebi
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Taşıyıcı & Takip No
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
+                      Kontrol & Notlar
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
-                    <TableHead className="px-4 py-3.5 text-right h-auto">Eylemler</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">
+                      Eylemler
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -1180,9 +1211,7 @@ export default function ShipmentsPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">
-                        Şube Kodu:
-                      </span>
+                      <span className="text-muted-foreground">Şube Kodu:</span>
                       <span className="font-medium">
                         {c.branchCode || "Merkez"}
                       </span>
@@ -2226,25 +2255,19 @@ function ShipmentDetailDrawer({
           {/* Quick Info Grid */}
           <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50 dark:bg-zinc-900/60">
             <div>
-              <span className="text-2xs text-muted-foreground">
-                Müşteri
-              </span>
+              <span className="text-2xs text-muted-foreground">Müşteri</span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
                 {shipment.customerName}
               </span>
             </div>
             <div>
-              <span className="text-2xs text-muted-foreground">
-                Taşıyıcı
-              </span>
+              <span className="text-2xs text-muted-foreground">Taşıyıcı</span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
                 {shipment.carrierName || "Belirtilmedi"}
               </span>
             </div>
             <div>
-              <span className="text-2xs text-muted-foreground">
-                Takip No
-              </span>
+              <span className="text-2xs text-muted-foreground">Takip No</span>
               <span className="block font-mono font-semibold text-blue-600 dark:text-blue-400">
                 {shipment.trackingNumber || "Yok"}
               </span>

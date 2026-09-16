@@ -191,9 +191,7 @@ export function Combobox({
             <span
               className={cn(
                 "truncate",
-                selectedOption
-                  ? null
-                  : "font-normal text-muted-foreground"
+                selectedOption ? null : "font-normal text-muted-foreground"
               )}
             >
               {displayLabel}

@@ -9,7 +9,14 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   CheckCircle2,
   ChevronLeft,
@@ -615,7 +622,9 @@ function MessagesTableView({
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           İleti bulunamadı
         </p>
-        <p className="mt-1 max-w-sm text-xs text-muted-foreground">{emptyMessage}</p>
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
+          {emptyMessage}
+        </p>
         {accounts.length === 0 ? (
           <button
             className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
@@ -638,13 +647,23 @@ function MessagesTableView({
             <TableHead className="px-4 py-3 font-medium h-auto">
               {activeTab === "inbox" ? "Gönderen" : "Alıcı"}
             </TableHead>
-            <TableHead className="px-4 py-3 font-medium h-auto">Konu & Özet</TableHead>
-            <TableHead className="px-4 py-3 font-medium h-auto">Hesap</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              Konu & Özet
+            </TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              Hesap
+            </TableHead>
             {activeTab === "sent" ? (
-              <TableHead className="px-4 py-3 font-medium h-auto">Durum</TableHead>
+              <TableHead className="px-4 py-3 font-medium h-auto">
+                Durum
+              </TableHead>
             ) : null}
-            <TableHead className="px-4 py-3 text-right font-medium h-auto">Tarih</TableHead>
-            <TableHead className="px-4 py-3 text-right font-medium h-auto">İşlemler</TableHead>
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">
+              Tarih
+            </TableHead>
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">
+              İşlemler
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -724,11 +743,21 @@ function AccountsTableView({
       <Table>
         <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
           <TableRow>
-            <TableHead className="px-4 py-3 font-medium h-auto">E-posta & Açıklama</TableHead>
-            <TableHead className="px-4 py-3 font-medium h-auto">Sağlayıcı</TableHead>
-            <TableHead className="px-4 py-3 font-medium h-auto">Sunucu Yapılandırması</TableHead>
-            <TableHead className="px-4 py-3 font-medium h-auto">Durum</TableHead>
-            <TableHead className="px-4 py-3 text-right font-medium h-auto">İşlemler</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              E-posta & Açıklama
+            </TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              Sağlayıcı
+            </TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              Sunucu Yapılandırması
+            </TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">
+              Durum
+            </TableHead>
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">
+              İşlemler
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
@@ -989,7 +1018,9 @@ function MessagesFilterBar({
         ) : null}
       </div>
 
-      <span className="text-xs text-muted-foreground">Toplam {totalCount} ileti</span>
+      <span className="text-xs text-muted-foreground">
+        Toplam {totalCount} ileti
+      </span>
     </div>
   );
 }
@@ -1083,7 +1114,7 @@ function TemplatePreviewModal({
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <div
-            className={`rounded-xl border p-2 transition-colors ${ isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900" }`}
+            className={`rounded-xl border p-2 transition-colors ${isDark ? "border-zinc-800 bg-zinc-950 text-zinc-100" : "border-border bg-card text-zinc-900"}`}
           >
             <iframe
               className="min-h-[350px] w-full border-0"

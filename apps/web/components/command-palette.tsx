@@ -1104,7 +1104,7 @@ function PaletteRow({
       <div className="ml-2 flex shrink-0 items-center gap-1.5">
         {item.badge && (
           <kbd
-            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-3xs shadow-2xs ${ isSelected ? "border-blue-200 bg-card text-blue-800 dark:border-blue-700 dark:text-blue-300" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800" }`}
+            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-3xs shadow-2xs ${isSelected ? "border-blue-200 bg-card text-blue-800 dark:border-blue-700 dark:text-blue-300" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800"}`}
           >
             {item.badge}
           </kbd>

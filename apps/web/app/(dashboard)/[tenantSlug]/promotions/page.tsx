@@ -5,7 +5,14 @@ import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table";
 import {
   AlertCircle,
   BarChart3,
@@ -629,14 +636,24 @@ export default function PromotionsPage() {
               <Table>
                 <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-950/50">
                   <TableRow>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya Adı</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür & Değer</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tetikleyici</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Geçerlilik</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Kampanya Adı
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Tür & Değer
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Tetikleyici
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Geçerlilik
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">
                       Kural & Öncelik
                     </TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kullanım</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Kullanım
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 text-center font-semibold h-auto">
                       Durum
                     </TableHead>
@@ -746,7 +763,7 @@ export default function PromotionsPage() {
                           type="button"
                         >
                           <span
-                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow-lg ring-0 transition duration-200 ease-crm-in-out ${ camp.isActive ? "translate-x-4" : "translate-x-0" }`}
+                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow-lg ring-0 transition duration-200 ease-crm-in-out ${camp.isActive ? "translate-x-4" : "translate-x-0"}`}
                           />
                         </button>
                       </TableCell>
@@ -855,14 +872,24 @@ export default function PromotionsPage() {
               <Table>
                 <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-950/50">
                   <TableRow>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kupon Kodu</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Kupon Kodu
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Kampanya
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Tür
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">
                       Kullanım Durumu
                     </TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Son Kullanma</TableHead>
-                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Batch ID</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Son Kullanma
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
+                      Batch ID
+                    </TableHead>
                     <TableHead className="px-4 py-3.5 text-right font-semibold h-auto">
                       İşlemler
                     </TableHead>
