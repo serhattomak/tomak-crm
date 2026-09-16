@@ -1821,7 +1821,7 @@ function CreateQuoteModal({
                   Genel Teklif İskontosu
                 </h4>
                 <div className="flex items-center gap-3">
-                  <div className="flex rounded-xl bg-zinc-200 p-0.5 font-semibold text-xs">
+                  <div className="flex rounded-xl bg-muted p-0.5 font-semibold text-xs">
                     <button
                       className={`rounded-lg px-3 py-1 transition ${ discountType === "Percentage" ? "bg-card text-blue-600 shadow-xs" : "text-zinc-600 dark:text-zinc-400" }`}
                       onClick={() => setDiscountType("Percentage")}

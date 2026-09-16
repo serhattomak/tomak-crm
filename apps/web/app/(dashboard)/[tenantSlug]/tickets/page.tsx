@@ -508,7 +508,7 @@ export default function TicketsDashboardPage() {
               <span>{q.label}</span>
               {q.count !== undefined && q.count > 0 && (
                 <span
-                  className={`rounded-full px-1.5 py-0.2 font-bold text-3xs ${ activeQueue === q.id ? "bg-card text-white" : q.badgeColor || "bg-zinc-200 text-zinc-700 dark:text-zinc-300" }`}
+                  className={`rounded-full px-1.5 py-0.2 font-bold text-3xs ${ activeQueue === q.id ? "bg-card text-white" : q.badgeColor || "bg-muted text-zinc-700 dark:text-zinc-300" }`}
                 >
                   {q.count}
                 </span>

@@ -1733,7 +1733,7 @@ function CreateProductModal({
                     ? "bg-emerald-100 text-emerald-800"
                     : calculatedMargin > 0
                       ? "bg-blue-100 text-blue-800"
-                      : "bg-zinc-200 text-zinc-700 dark:text-zinc-300"
+                      : "bg-muted text-zinc-700 dark:text-zinc-300"
                 }`}
               >
                 Tahmini Kar Marjı: %{calculatedMargin}
@@ -2322,7 +2322,7 @@ function CategoryManagerModal({
                       <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {root.name}
                       </span>
-                      <span className="rounded-md bg-zinc-200/70 px-1.5 py-0.5 font-bold text-3xs text-zinc-600 dark:text-zinc-400">
+                      <span className="rounded-md bg-muted/70 px-1.5 py-0.5 font-bold text-3xs text-zinc-600 dark:text-zinc-400">
                         {root.productsCount} Ürün
                       </span>
                     </div>

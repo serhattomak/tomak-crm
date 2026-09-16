@@ -397,7 +397,7 @@ export default function TicketDetailPage() {
             <span className="hidden sm:inline">Tüm Talepler</span>
           </Button>
 
-          <div className="h-6 w-px bg-zinc-200" />
+          <div className="h-6 w-px bg-border" />
 
           <div>
             <div className="flex items-center gap-2">
@@ -559,7 +559,7 @@ export default function TicketDetailPage() {
                   if (isSystem) {
                     return (
                       <div className="my-2 flex justify-center" key={m.id}>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200/70 px-3 py-1 text-2xs text-zinc-600 shadow-2xs dark:text-zinc-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted/70 px-3 py-1 text-2xs text-zinc-600 shadow-2xs dark:text-zinc-400">
                           <Info className="h-3 w-3" />
                           {m.content}
                         </span>
@@ -605,7 +605,7 @@ export default function TicketDetailPage() {
                       key={m.id}
                     >
                       {isCustomer && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-200 font-bold text-xs text-zinc-700 dark:text-zinc-300">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted font-bold text-xs text-zinc-700 dark:text-zinc-300">
                           {m.senderName.charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -943,7 +943,7 @@ export default function TicketDetailPage() {
                         {ord.orderNumber}
                       </span>
                       <span
-                        className={`rounded-md px-1.5 py-0.5 font-bold text-3xs ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-zinc-100 text-zinc-700"}`}
+                        className={`rounded-md px-1.5 py-0.5 font-bold text-3xs ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-muted text-zinc-700"}`}
                       >
                         {ord.status}
                       </span>
@@ -1015,7 +1015,7 @@ export default function TicketDetailPage() {
                       </div>
                     </div>
                     <span
-                      className={`rounded-md px-2 py-0.5 font-bold text-3xs ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-zinc-100 text-zinc-700"}`}
+                      className={`rounded-md px-2 py-0.5 font-bold text-3xs ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-muted text-zinc-700"}`}
                     >
                       {sh.status}
                     </span>

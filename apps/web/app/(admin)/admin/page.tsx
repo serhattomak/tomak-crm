@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Tenants */}
-        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kayıtlı Firma
@@ -121,7 +121,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Active Companies */}
-        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Aktif Abonelik
@@ -141,7 +141,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Total Members */}
-        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
@@ -161,7 +161,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Sektör Şablonları */}
-        <div className="rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Sektör Şablonu
@@ -256,7 +256,7 @@ export default function AdminDashboardPage() {
                       </p>
                     </div>
                     <Link
-                      className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
+                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
                       href={`/admin/tenants/${tenant.id}`}
                       title="Yönet"
                     >
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
                         {item.count} firma ({percentage}%)
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-blue-600 transition-all duration-250"
                         style={{ width: `${percentage}%` }}

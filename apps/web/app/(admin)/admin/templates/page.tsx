@@ -235,7 +235,7 @@ export default function AdminTemplatesPage() {
                       </div>
                     </div>
                     <button
-                      className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
+                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
                       onClick={() => handleOpenEdit(tpl)}
                       title="Şablonu Düzenle"
                     >
@@ -255,7 +255,7 @@ export default function AdminTemplatesPage() {
                     <div className="flex flex-wrap gap-1">
                       {tpl.defaultModules?.map((m) => (
                         <span
-                          className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-3xs text-zinc-700"
+                          className="rounded-md bg-muted px-2 py-0.5 font-medium text-3xs text-zinc-700"
                           key={m}
                         >
                           {m}
@@ -403,7 +403,7 @@ export default function AdminTemplatesPage() {
                   Varsayılan Aktif Modüller (
                   {editTemplate.defaultModules.length} seçildi)
                 </label>
-                <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-zinc-50 p-2 sm:grid-cols-3">
+                <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-muted p-2 sm:grid-cols-3">
                   {ALL_MODULES.map((mod) => {
                     const checked = editTemplate.defaultModules.includes(
                       mod.key
