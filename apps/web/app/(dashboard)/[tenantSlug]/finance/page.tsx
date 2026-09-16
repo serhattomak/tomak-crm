@@ -40,7 +40,7 @@ import {
   Wallet,
   X,
 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -55,6 +55,7 @@ import {
   type FinancialTransactionDto,
   type TransferBetweenAccountsPayload,
 } from "@/lib/api-client";
+import { CariStatement } from "./_components/cari-statement";
 
 // --- Helper Functions for Formatting ---
 
@@ -393,88 +394,13 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
 
 // --- Statement Table Body ---
 
-interface StatementTableBodyProps {
-  isStatementLoading: boolean;
-  statementTx: CariTransactionDto[];
-}
-
-function StatementTableBody({
-  isStatementLoading,
-  statementTx,
-}: StatementTableBodyProps) {
-  if (isStatementLoading) {
-    return (
-      <TableRow>
-        <TableCell
-          className="py-8 text-center text-muted-foreground"
-          colSpan={5}
-        >
-          Ekstre yükleniyor...
-        </TableCell>
-      </TableRow>
-    );
-  }
-
-  if (statementTx.length === 0) {
-    return (
-      <TableRow>
-        <TableCell
-          className="py-8 text-center text-muted-foreground"
-          colSpan={5}
-        >
-          Bu cari hesaba ait hareket bulunamadı.
-        </TableCell>
-      </TableRow>
-    );
-  }
-
-  return (
-    <>
-      {statementTx.map((tx) => (
-        <TableRow key={tx.id}>
-          <TableCell className="py-2 font-mono text-muted-foreground">
-            {new Date(tx.transactionDate).toLocaleDateString("tr-TR")}
-          </TableCell>
-          <TableCell className="py-2">
-            <div className="font-medium text-zinc-800 dark:text-zinc-200">
-              {tx.description}
-            </div>
-            {tx.documentNumber ? (
-              <div className="font-mono text-3xs text-muted-foreground">
-                {tx.documentNumber}
-              </div>
-            ) : null}
-          </TableCell>
-          <TableCell className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
-            {tx.debit > 0
-              ? tx.debit.toLocaleString("tr-TR", {
-                  minimumFractionDigits: 2,
-                })
-              : "—"}
-          </TableCell>
-          <TableCell className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
-            {tx.credit > 0
-              ? tx.credit.toLocaleString("tr-TR", {
-                  minimumFractionDigits: 2,
-                })
-              : "—"}
-          </TableCell>
-          <TableCell className="py-2 text-right font-bold font-mono text-zinc-900 dark:text-zinc-100">
-            {tx.balanceAfter.toLocaleString("tr-TR", {
-              minimumFractionDigits: 2,
-            })}
-          </TableCell>
-        </TableRow>
-      ))}
-    </>
-  );
-}
 
 // --- Main Page Component ---
 
 export default function FinancePage() {
   const params = useParams();
   const tenantSlug = (params.tenantSlug as string) || "";
+  const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<
     "cari" | "accounts" | "transactions"
@@ -621,8 +547,11 @@ export default function FinancePage() {
   }, []);
 
   const handlePrintStatement = useCallback(() => {
-    window.print();
-  }, []);
+    if (!selectedCariForStatement) {
+      return;
+    }
+    router.push(`/${tenantSlug}/finance/cari/${selectedCariForStatement.id}/print`);
+  }, [router, selectedCariForStatement, tenantSlug]);
 
   const handleTabCari = useCallback(() => setActiveTab("cari"), []);
   const handleTabAccounts = useCallback(() => setActiveTab("accounts"), []);
@@ -988,10 +917,10 @@ export default function FinancePage() {
         >
           <SheetContent
             aria-describedby={undefined}
-            className="data-[side=right]:w-full max-w-2xl overflow-hidden print:max-w-none print:shadow-none data-[side=right]:sm:max-w-2xl"
+            className="data-[side=right]:w-full max-w-2xl overflow-hidden print:hidden data-[side=right]:sm:max-w-2xl"
             side="right"
           >
-            <div className="flex items-center justify-between border-border border-b p-4 print:hidden">
+            <div className="flex items-center justify-between border-border border-b p-4">
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -1019,58 +948,11 @@ export default function FinancePage() {
             </div>
 
             <div className="flex-1 space-y-6 overflow-y-auto p-6">
-              {/* Account Overview Header */}
-              <div className="flex items-start justify-between border-border border-b pb-4">
-                <div>
-                  <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                    {selectedCariForStatement?.title}
-                  </h3>
-                  <div className="font-mono text-xs text-muted-foreground">
-                    Cari Kodu: {selectedCariForStatement?.code} • VKN:{" "}
-                    {selectedCariForStatement?.taxNumber || "—"}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="block font-medium text-2xs text-muted-foreground uppercase tracking-wider">
-                    Güncel Bakiye
-                  </span>
-                  <span className="font-bold font-mono text-lg text-blue-600 dark:text-blue-400">
-                    {selectedCariForStatement?.balance.toLocaleString("tr-TR", {
-                      minimumFractionDigits: 2,
-                    })}{" "}
-                    {selectedCariForStatement?.currency}
-                  </span>
-                </div>
-              </div>
-
-              {/* Transactions Table */}
-              <div>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-border font-semibold text-muted-foreground">
-                      <TableHead className="py-2 h-auto">Tarih</TableHead>
-                      <TableHead className="py-2 h-auto">
-                        İşlem / Evrak
-                      </TableHead>
-                      <TableHead className="py-2 text-right h-auto">
-                        Borç
-                      </TableHead>
-                      <TableHead className="py-2 text-right h-auto">
-                        Alacak
-                      </TableHead>
-                      <TableHead className="py-2 text-right h-auto">
-                        Bakiye
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
-                    <StatementTableBody
-                      isStatementLoading={isStatementLoading}
-                      statementTx={statementTx}
-                    />
-                  </TableBody>
-                </Table>
-              </div>
+              <CariStatement
+                cari={selectedCariForStatement}
+                isLoading={isStatementLoading}
+                statementTx={statementTx}
+              />
             </div>
           </SheetContent>
         </Sheet>
