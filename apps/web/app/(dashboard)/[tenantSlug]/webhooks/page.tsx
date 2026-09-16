@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
@@ -8,6 +9,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   Activity,
   AlertCircle,
@@ -678,32 +680,29 @@ export default function WebhooksPage() {
                 />
               </div>
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setEventFilter(e.target.value)}
+              <SelectField
+                aria-label="Olay filtresi"
+                onChange={setEventFilter}
+                options={[
+                  { label: "Tüm Olaylar", value: "" },
+                  ...WEBHOOK_EVENTS.map((ev) => ({ label: ev, value: ev })),
+                ]}
+                placeholder="Tüm Olaylar"
                 value={eventFilter}
-              >
-                <option value="">Tüm Olaylar</option>
-                {WEBHOOK_EVENTS.map((ev) => (
-                  <option key={ev} value={ev}>
-                    {ev}
-                  </option>
-                ))}
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) =>
-                  setIsActiveFilter(
-                    e.target.value as "all" | "active" | "inactive"
-                  )
+              <SelectField
+                aria-label="Aktiflik filtresi"
+                onChange={(value) =>
+                  setIsActiveFilter(value as "all" | "active" | "inactive")
                 }
+                options={[
+                  { label: "Tüm Durumlar", value: "all" },
+                  { label: "Sadece Aktif", value: "active" },
+                  { label: "Sadece Pasif", value: "inactive" },
+                ]}
                 value={isActiveFilter}
-              >
-                <option value="all">Tüm Durumlar</option>
-                <option value="active">Sadece Aktif</option>
-                <option value="inactive">Sadece Pasif</option>
-              </select>
+              />
             </div>
 
             <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
@@ -947,42 +946,40 @@ export default function WebhooksPage() {
           {/* Deliveries Filters */}
           <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200/80 bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:border-zinc-800/90 dark:bg-zinc-900/90">
             <div className="flex flex-1 flex-col gap-2.5 md:flex-row md:items-center">
-              <select
-                className="min-w-[180px] rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setDeliveryEndpointFilter(e.target.value)}
+              <Combobox
+                aria-label="Endpoint filtresi"
+                onChange={setDeliveryEndpointFilter}
+                options={[
+                  { label: "Tüm Endpointler", value: "" },
+                  ...endpoints.map((ep) => ({ label: ep.name, value: ep.id })),
+                ]}
+                placeholder="Tüm Endpointler"
+                triggerClassName="min-w-[180px]"
                 value={deliveryEndpointFilter}
-              >
-                <option value="">Tüm Endpointler</option>
-                {endpoints.map((ep) => (
-                  <option key={ep.id} value={ep.id}>
-                    {ep.name}
-                  </option>
-                ))}
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setDeliveryStatusFilter(e.target.value)}
+              <SelectField
+                aria-label="Teslim durumu filtresi"
+                onChange={setDeliveryStatusFilter}
+                options={[
+                  { label: "Success", value: "Success" },
+                  { label: "Failed", value: "Failed" },
+                  { label: "Retrying", value: "Retrying" },
+                ]}
+                placeholder="Tüm Durumlar"
                 value={deliveryStatusFilter}
-              >
-                <option value="">Tüm Durumlar</option>
-                <option value="Success">Success</option>
-                <option value="Failed">Failed</option>
-                <option value="Retrying">Retrying</option>
-              </select>
+              />
 
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                onChange={(e) => setDeliveryEventFilter(e.target.value)}
+              <SelectField
+                aria-label="Teslim olay tipi filtresi"
+                onChange={setDeliveryEventFilter}
+                options={[
+                  { label: "Tüm Olay Tipleri", value: "" },
+                  ...WEBHOOK_EVENTS.map((ev) => ({ label: ev, value: ev })),
+                ]}
+                placeholder="Tüm Olay Tipleri"
                 value={deliveryEventFilter}
-              >
-                <option value="">Tüm Olay Tipleri</option>
-                {WEBHOOK_EVENTS.map((ev) => (
-                  <option key={ev} value={ev}>
-                    {ev}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
