@@ -1,8 +1,9 @@
-/* Hallmark · component: pipeline-filter-bar · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { Combobox } from "@workspace/ui/components/combobox";
 import { Input } from "@workspace/ui/components/input";
+import { SelectField } from "@workspace/ui/components/select";
 import { Flame, Search, UserCheck, Users, X } from "lucide-react";
 import type { EmployeeDto } from "@/lib/api-client";
 
@@ -110,31 +111,36 @@ export function PipelineFilterBar({
           </div>
 
           {/* Priority filter */}
-          <select
-            className="h-8 rounded-md border border-input bg-background px-2.5 font-medium text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-            onChange={(e) => onChangePriorityFilter(e.target.value)}
+          <SelectField
+            aria-label="Öncelik filtresi"
+            onChange={onChangePriorityFilter}
+            options={[
+              { label: "Öncelik: Tümü", value: "all" },
+              { label: "Acil", value: "Urgent" },
+              { label: "Yüksek", value: "High" },
+              { label: "Orta", value: "Medium" },
+              { label: "Düşük", value: "Low" },
+            ]}
+            placeholder="Öncelik: Tümü"
+            triggerClassName="h-8 px-2.5 font-medium"
             value={priorityFilter}
-          >
-            <option value="all">Öncelik: Tümü</option>
-            <option value="Urgent">Acil</option>
-            <option value="High">Yüksek</option>
-            <option value="Medium">Orta</option>
-            <option value="Low">Düşük</option>
-          </select>
+          />
 
           {/* User filter */}
-          <select
-            className="h-8 rounded-md border border-input bg-background px-2.5 font-medium text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-            onChange={(e) => onChangeUserFilter(e.target.value)}
+          <Combobox
+            aria-label="Temsilci filtresi"
+            onChange={onChangeUserFilter}
+            options={[
+              { label: "Temsilci: Tümü", value: "all" },
+              ...employees.map((emp) => ({
+                label: emp.fullName,
+                value: emp.userId || emp.id,
+              })),
+            ]}
+            placeholder="Temsilci: Tümü"
+            triggerClassName="h-8 px-2.5 font-medium"
             value={userFilter}
-          >
-            <option value="all">Temsilci: Tümü</option>
-            {employees.map((emp) => (
-              <option key={emp.id} value={emp.userId || emp.id}>
-                {emp.fullName}
-              </option>
-            ))}
-          </select>
+          />
         </div>
       </div>
     </div>
