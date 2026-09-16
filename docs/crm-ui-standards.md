@@ -420,6 +420,8 @@ Her ikisinde de **`placeholder`, boş seçeneğin etiketiyle birebir aynı olmal
 - Tipografi **`text-3xs`** (10px) token'ıdır. **`text-[10px]` / `text-[9px]` yazılmaz:** §1.3 9px'i ölçekten çıkarmıştır ve keyfi değer `ARBITRARY_TEXT_SIZE` sayacını büyütür. Göçte eski `text-[9px]`, `text-3xs`'e **yükselir** — 1px görünür fark, karşılığında standart-dışı bir değer ölür.
 - `className` değil **`triggerClassName`** tercih edilir: yalnızca tetikleyiciyi hedefler, popup'ı değil.
 
+> **Doğrulandı, varsayılmadı — gerçek `tailwind-merge` ile ölçüldü.** `text-2xs` / `text-3xs` **3.6**'da **font-size** grubunda sınıflandırılıyor: `text-xs`'i **doğru eziyor** ve `text-zinc-900`'ü **silmiyor**; `h-6` de `h-9`'u eziyor. Bu ölçüm gerekliydi çünkü alternatif senaryo sessiz ve pahalı olurdu: bilinmeyen bir `text-*` token'ı text-**color** sanılsaydı, kompakt seçiciler hem `text-xs` (12px) kalır hem de **metin rengini kaybederdi** — guard bunu göremez (§2.5.3). Aynı ölçümde dinamik badge renginin `text-zinc-900`'ü **beklendiği gibi değiştirdiği** de görüldü (veriye bağlı renk deseni).
+
 **Sayısal seçenekler — tek saf-olmayan yeniden adlandırma.** Story-point gibi state'te **sayı** tutan seçiciler `value={0}` biçiminde sayısal öğe değeri kullanır. İki primitif de **string** konuşur:
 
 | | Önce | Sonra |
