@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -716,22 +717,23 @@ export default function NewCampaignPage() {
                   <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Ürün Ekle
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        addProductTarget(e.target.value, "Include");
-                        e.target.value = "";
+                  <Combobox
+                    aria-label="Ürün ekle"
+                    onChange={(value) => {
+                      if (value) {
+                        addProductTarget(value, "Include");
                       }
                     }}
-                  >
-                    <option value="">Ürün seçerek dahil et...</option>
-                    {products.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name} (₺{p.sellingPrice})
-                      </option>
-                    ))}
-                  </select>
+                    options={[
+                      { label: "Ürün seçerek dahil et...", value: "" },
+                      ...products.map((p) => ({
+                        label: `${p.name} (₺${p.sellingPrice})`,
+                        value: p.id,
+                      })),
+                    ]}
+                    placeholder="Ürün seçerek dahil et..."
+                    value=""
+                  />
                 </div>
 
                 {/* Add Category Target */}
@@ -739,22 +741,23 @@ export default function NewCampaignPage() {
                   <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                     Kategori Ekle
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        addCategoryTarget(e.target.value, "Include");
-                        e.target.value = "";
+                  <Combobox
+                    aria-label="Kategori ekle"
+                    onChange={(value) => {
+                      if (value) {
+                        addCategoryTarget(value, "Include");
                       }
                     }}
-                  >
-                    <option value="">Kategori seçerek dahil et...</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
+                    options={[
+                      { label: "Kategori seçerek dahil et...", value: "" },
+                      ...categories.map((c) => ({
+                        label: c.name,
+                        value: c.id,
+                      })),
+                    ]}
+                    placeholder="Kategori seçerek dahil et..."
+                    value=""
+                  />
                 </div>
               </div>
 
