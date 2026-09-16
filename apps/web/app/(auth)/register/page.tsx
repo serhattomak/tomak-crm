@@ -155,11 +155,12 @@ export default function RegisterPage() {
               onSubmit={handleRegister}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-full-name">
                   Ad Soyad
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  id="register-full-name"
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Ahmet Yılmaz"
                   required
@@ -169,11 +170,12 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-email">
                   E-posta
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  id="register-email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="E-postanızı girin"
                   required
@@ -183,12 +185,13 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs" htmlFor="register-password">
                   Şifre
                 </label>
                 <div className="relative">
                   <input
                     className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                    id="register-password"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="En az 6 karakter"
                     required
@@ -216,7 +219,7 @@ export default function RegisterPage() {
                   type="submit"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Sign Up
+                  Kayıt Ol
                 </button>
 
                 <button

@@ -152,7 +152,7 @@ export default function WorkspaceSettingsPage() {
                 ) : (
                   <Check className="h-3.5 w-3.5" />
                 )}
-                Save Changes
+                Kaydet
               </button>
             </div>
           </PermissionGate>

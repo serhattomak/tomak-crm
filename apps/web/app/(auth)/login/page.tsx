@@ -146,11 +146,12 @@ export default function LoginPage() {
 
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200" htmlFor="login-email">
                   E-posta
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+                  id="login-email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="E-postanızı girin"
                   required
@@ -160,12 +161,13 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
+                <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200" htmlFor="login-password">
                   Şifre
                 </label>
                 <div className="relative">
                   <input
                     className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
+                    id="login-password"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Şifrenizi girin"
                     required
@@ -217,7 +219,7 @@ export default function LoginPage() {
                   type="submit"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Sign In
+                  Giriş Yap
                 </button>
 
                 <button
