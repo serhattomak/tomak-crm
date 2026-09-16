@@ -12,14 +12,20 @@
  *   - `slate-*`                    → `zinc-*` (dark-mode readable)
  *   - `violet-*` / `fuchsia-*`     → `blue-500` scale (CRM accent)
  *
- * Advisory rules (severity: "warn" — reported, NOT blocking; exit code unaffected).
- * They exist so the migration in ADR-0004 / docs/crm-ui-roadmap.md can be tracked:
+ * Severity: EVERY rule below is blocking. Rules without an explicit `severity`
+ * field are errors (ADR-0004 §9.1); the `warn` layer still exists in the code and
+ * is documented in ADR-0004 §9, but it is currently empty.
+ *
+ * Seven rules were born advisory so the migration could be tracked without a red
+ * gate, and each was promoted to `error` once a `--full` sweep came back clean for
+ * that rule (ADR-0004 §9.3, Faz 7, 2026-09-16):
  *   - arbitrary text size `text-[13px]` / `text-[9px]` / … → `text-2xs` (11px),
  *                                      `text-3xs` (10px) or the Tailwind scale
  *   - native `<table>`             → @workspace/ui Table primitives
  *   - inline `style={{ … }}`        → Tailwind classes + semantic tokens
- * A warn rule is promoted to "error" (blocking) only once that rule is clean in a
- * `--full` sweep — see ADR-0004 §9. Rules without an explicit `severity` are errors.
+ *   - hardcoded card surface        → `bg-card` / `border-border`
+ *   - off-scale motion duration / non-token easing → §1.5 values and `ease-crm`
+ *   - icon-only button with no accessible name → `aria-label`
  *
  * Explicit exceptions (never scanned, never changed by this guard):
  *   - Store: `apps/ecommerce/**` is NOT in scope (light-only store contract).
@@ -176,18 +182,15 @@ const RULES = [
     hint: "arbitrary text size — use text-2xs (11px) / text-3xs (10px) or the Tailwind scale (text-xs, text-sm, …)",
     id: "ARBITRARY_TEXT_SIZE",
     pattern: /text-\[[0-9]*\.?[0-9]+(?:px|rem|em)\]/g,
-    severity: "warn",
   },
   {
     hint: "native <table> — use @workspace/ui Table primitives (TableHeader, TableRow, TableCell, …)",
     id: "NATIVE_TABLE",
     pattern: /<table(?=[\s>])/g,
-    severity: "warn",
   },
   {
     hint: "icon-only button with no accessible name — add aria-label (or visible text). A button whose only child is an icon is announced as nothing, and it is the most common a11y gap in this codebase",
     id: "A11Y_ICON_BUTTON",
-    severity: "warn",
     tag: {
       name: "button",
       test: (open, body) =>
@@ -200,27 +203,23 @@ const RULES = [
     id: "MOTION_DURATION",
     pattern:
       /(?<![A-Za-z-])duration-(?:(?!150(?![0-9])|200(?![0-9])|250(?![0-9]))[0-9]+|\[[^\]]+\])/g,
-    severity: "warn",
   },
   {
     hint: "non-token easing — use ease-crm (swift-out, overlays) or ease-crm-in-out (symmetric size/position) per 1.5",
     id: "MOTION_EASE",
     pattern: /(?<![A-Za-z-])ease-(?!crm\b)[a-z-]+/g,
-    severity: "warn",
   },
   {
     hint: "static inline style object — use Tailwind classes + semantic tokens. Only STATIC-shaped blocks are flagged: values are plain quoted literals with no template interpolation, member access or fallback. style={{}} remains correct for unmeasurable dynamic values (1.4), so a percentage, a transform or a DB-driven colourHex is not a violation",
     id: "INLINE_STYLE_PROP",
     pattern:
       /style=\{\{(?=[^{}]*?:\s*["'][^"'$]*["'])(?![^{}]*\$\{)(?![^{}]*[.?|])/g,
-    severity: "warn",
   },
   {
     hint: "hardcoded card surface — use bg-card / border-border. The dark: partner must go with it: it sets the same property in the same variant, so the legacy class wins in the compiled CSS and the token never applies (Faz 5.0). Translucent bg-white/90 with backdrop-blur is NOT flagged — that frosted surface is deliberate",
     id: "CARD_SURFACE",
     pattern:
       /(?<![A-Za-z:/-])(?:bg-white(?![\/A-Za-z0-9-])(?=[^"'\n]*dark:bg-zinc-(?:800|900|950))|border-zinc-(?:100|200|300)(?:\/\d+)?(?=[^"'\n]*dark:border-zinc-(?:700|800|900)))/g,
-    severity: "warn",
   },
 ];
 
