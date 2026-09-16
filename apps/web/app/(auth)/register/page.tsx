@@ -62,7 +62,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070709] p-3 sm:p-6">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 p-3 sm:p-6">
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
@@ -159,7 +159,7 @@ export default function RegisterPage() {
                   Full Name
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
                   required
@@ -173,7 +173,7 @@ export default function RegisterPage() {
                   Email
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -188,7 +188,7 @@ export default function RegisterPage() {
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Minimum 6 characters"
                     required

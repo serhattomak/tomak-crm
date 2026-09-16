@@ -5,6 +5,11 @@
       "file": "apps/web/app/(auth)/login/page.tsx",
       "reason": "Google G logo official brand fill colors — must not be tokenized per brand guidelines",
       "rule": "SVG_PAINT_HEX"
+    },
+    {
+      "file": "apps/web/app/(auth)/register/page.tsx",
+      "reason": "Google G logo official brand fill colors — must not be tokenized per brand guidelines",
+      "rule": "SVG_PAINT_HEX"
     }
   ]
 }
