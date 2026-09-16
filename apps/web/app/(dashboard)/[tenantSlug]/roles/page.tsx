@@ -198,7 +198,7 @@ export default function RolesManagementPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
-            <Shield className="h-6 w-6 text-fuchsia-500" />
+            <Shield className="h-6 w-6 text-blue-500" />
             Roles & Permissions Matrix
           </h1>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
@@ -240,7 +240,7 @@ export default function RolesManagementPage() {
 
           {isLoading ? (
             <div className="p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
-              <Loader2 className="mx-auto h-4 w-4 animate-spin text-fuchsia-500" />
+              <Loader2 className="mx-auto h-4 w-4 animate-spin text-blue-500" />
             </div>
           ) : (
             <div className="space-y-1.5">
@@ -250,7 +250,7 @@ export default function RolesManagementPage() {
                   <div
                     className={`cursor-pointer rounded-xl border p-3 transition-all ${
                       isSelected
-                        ? "border-fuchsia-200 bg-fuchsia-50/70 text-fuchsia-950 shadow-2xs"
+                        ? "border-blue-200 bg-blue-50/70 text-blue-950 shadow-2xs"
                         : "border-zinc-100 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                     }`}
                     key={role.id}
@@ -318,8 +318,8 @@ export default function RolesManagementPage() {
               <div className="max-h-[460px] space-y-6 overflow-y-auto pr-2">
                 {permissionGroups.map((group) => (
                   <div className="space-y-3" key={group.module}>
-                    <div className="flex items-center gap-1.5 font-bold text-[11px] text-fuchsia-600 uppercase tracking-wider">
-                      <span className="h-1.5 w-1.5 rounded-full bg-fuchsia-500" />
+                    <div className="flex items-center gap-1.5 font-bold text-[11px] text-blue-600 uppercase tracking-wider">
+                      <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                       {group.module} Module
                     </div>
 
@@ -330,14 +330,14 @@ export default function RolesManagementPage() {
                           <label
                             className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${
                               isChecked
-                                ? "border-fuchsia-200 bg-fuchsia-50/50 text-zinc-900 shadow-2xs dark:text-zinc-100"
+                                ? "border-blue-200 bg-blue-50/50 text-zinc-900 shadow-2xs dark:text-zinc-100"
                                 : "border-zinc-100 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                             }`}
                             key={perm.id}
                           >
                             <input
                               checked={isChecked}
-                              className="mt-0.5 rounded border-zinc-300 text-fuchsia-600 focus:ring-fuchsia-500 dark:border-zinc-700"
+                              className="mt-0.5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700"
                               onChange={() => togglePermission(perm.id)}
                               type="checkbox"
                             />
@@ -345,7 +345,7 @@ export default function RolesManagementPage() {
                               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                                 {perm.name}
                               </div>
-                              <div className="font-mono text-[10px] text-fuchsia-600/90">
+                              <div className="font-mono text-[10px] text-blue-600/90">
                                 {perm.code}
                               </div>
                               {perm.description && (
@@ -411,7 +411,7 @@ export default function RolesManagementPage() {
           >
             <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-                <Shield className="h-4 w-4 text-fuchsia-500" />
+                <Shield className="h-4 w-4 text-blue-500" />
                 Create Custom Role
               </DialogTitle>
               <DialogClose asChild>
@@ -434,7 +434,7 @@ export default function RolesManagementPage() {
                   Role Name
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-fuchsia-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleName(e.target.value)}
                   placeholder="e.g. Sales Manager"
                   required
@@ -448,7 +448,7 @@ export default function RolesManagementPage() {
                   Description
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-fuchsia-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleDesc(e.target.value)}
                   placeholder="Responsibilities and access scope..."
                   rows={3}

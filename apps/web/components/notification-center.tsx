@@ -57,7 +57,7 @@ function getCategoryIcon(category: RealtimeNotification["category"]) {
   switch (category) {
     case "quote":
       return (
-        <FileSpreadsheet className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+        <FileSpreadsheet className="h-4 w-4 text-blue-600 dark:text-blue-400" />
       );
     case "order":
       return (
@@ -83,7 +83,7 @@ function getCategoryIcon(category: RealtimeNotification["category"]) {
 function getCategoryBg(category: RealtimeNotification["category"]) {
   switch (category) {
     case "quote":
-      return "bg-fuchsia-50 dark:bg-fuchsia-950/50 border-fuchsia-100 dark:border-fuchsia-900/40";
+      return "bg-blue-50 dark:bg-blue-950/50 border-blue-100 dark:border-blue-900/40";
     case "order":
       return "bg-emerald-50 dark:bg-emerald-950/50 border-emerald-100 dark:border-emerald-900/40";
     case "shipment":

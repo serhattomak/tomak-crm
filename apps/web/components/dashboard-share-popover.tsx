@@ -268,7 +268,7 @@ export function DashboardSharePopover({
               onClick={handlePrint}
               type="button"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/60 dark:text-fuchsia-300">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
                 <Printer className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">

@@ -79,7 +79,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "proposal",
-    color: "from-fuchsia-600 to-pink-600 text-white",
+    color: "from-blue-600 to-pink-600 text-white",
     defaultEnabled: true,
     description: "PDF şablonuyla teklif oluştur",
     icon: FileSpreadsheet,

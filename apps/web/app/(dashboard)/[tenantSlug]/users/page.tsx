@@ -118,7 +118,7 @@ export default function UsersManagementPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
-            <Users className="h-6 w-6 text-fuchsia-500" />
+            <Users className="h-6 w-6 text-blue-500" />
             Team Members
           </h1>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
@@ -156,7 +156,7 @@ export default function UsersManagementPage() {
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
-            <Loader2 className="h-4 w-4 animate-spin text-fuchsia-500" />
+            <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
             Loading team members...
           </div>
         ) : (
@@ -178,7 +178,7 @@ export default function UsersManagementPage() {
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-fuchsia-100 font-bold text-fuchsia-700 text-xs">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs">
                         {(user.fullName || user.email).charAt(0).toUpperCase()}
                       </div>
                       <span className="font-semibold text-zinc-900 dark:text-zinc-100">

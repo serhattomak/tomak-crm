@@ -45,7 +45,7 @@ export function PipelineFunnelWidget({
     "bg-blue-500",
     "bg-indigo-500",
     "bg-blue-500",
-    "bg-fuchsia-500",
+    "bg-blue-500",
     "bg-emerald-500",
     "bg-amber-500",
   ];

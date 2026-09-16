@@ -42,7 +42,7 @@ import { usePermissions } from "@/lib/permissions/permission-context";
 const AVATAR_BG_COLORS = [
   "bg-zinc-900 text-white",
   "bg-indigo-600 text-white",
-  "bg-fuchsia-600 text-white",
+  "bg-blue-600 text-white",
   "bg-emerald-600 text-white",
   "bg-blue-600 text-white",
   "bg-blue-600 text-white",

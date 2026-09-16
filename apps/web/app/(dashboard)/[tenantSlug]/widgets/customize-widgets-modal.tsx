@@ -95,7 +95,7 @@ export function CustomizeWidgetsModal({
         );
       case "Gauge":
         return (
-          <Gauge className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+          <Gauge className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         );
       case "Filter":
         return (
