@@ -69,14 +69,14 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight md:text-3xl">
+            <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight md:text-3xl">
               Merkezi Yönetim Konsolu
             </h1>
             <span className="rounded-md border border-blue-200/60 bg-blue-50 px-2 py-0.5 font-bold text-blue-600 text-xs">
               Super Admin
             </span>
           </div>
-          <p className="mt-1 text-slate-500 text-sm">
+          <p className="mt-1 text-zinc-500 text-sm">
             Tüm firmaların lisans, sektör şablonu ve aktif modül durumlarını tek
             merkezden denetleyin.
           </p>
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
             <span>Yeni Firma Kaydet</span>
           </Link>
           <Link
-            className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-700 text-xs shadow-2xs transition hover:bg-slate-50"
+            className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 font-semibold text-zinc-700 text-xs shadow-2xs transition hover:bg-zinc-50"
             href="/admin/templates"
           >
             <Sparkles className="h-4 w-4 text-amber-500" />
@@ -103,9 +103,9 @@ export default function AdminDashboardPage() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Tenants */}
-        <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
+        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kayıtlı Firma
             </span>
             <div className="rounded-xl border border-blue-100 bg-blue-50 p-2 text-blue-600">
@@ -113,7 +113,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-slate-900">
+            <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalTenants ?? 0)}
             </span>
             <span className="font-medium text-blue-600 text-xs">Tenant</span>
@@ -121,9 +121,9 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Active Companies */}
-        <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
+        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Aktif Abonelik
             </span>
             <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-2 text-emerald-600">
@@ -134,16 +134,16 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-emerald-600">
               {loading ? "-" : (stats?.activeTenants ?? 0)}
             </span>
-            <span className="text-slate-500 text-xs">
+            <span className="text-zinc-500 text-xs">
               / {stats?.suspendedTenants ?? 0} askıda
             </span>
           </div>
         </div>
 
         {/* Total Members */}
-        <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
+        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
             </span>
             <div className="rounded-xl border border-purple-100 bg-purple-50 p-2 text-purple-600">
@@ -151,7 +151,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-slate-900">
+            <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalMembers ?? 0)}
             </span>
             <span className="font-medium text-purple-600 text-xs">
@@ -161,9 +161,9 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Sektör Şablonları */}
-        <div className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 shadow-2xs transition-all hover:border-slate-300">
+        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-slate-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
               Sektör Şablonu
             </span>
             <div className="rounded-xl border border-amber-100 bg-amber-50 p-2 text-amber-600">
@@ -174,7 +174,7 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-amber-600">
               {loading ? "-" : (stats?.totalTemplates ?? 0)}
             </span>
-            <span className="text-slate-500 text-xs">Hazır Dikey</span>
+            <span className="text-zinc-500 text-xs">Hazır Dikey</span>
           </div>
         </div>
       </div>
@@ -182,13 +182,13 @@ export default function AdminDashboardPage() {
       {/* Main Row: Recent Tenants & Industry Distribution */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Recent Tenants Table (2 Columns) */}
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xs lg:col-span-2">
-          <div className="flex items-center justify-between border-slate-100 border-b pb-4">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs lg:col-span-2">
+          <div className="flex items-center justify-between border-zinc-100 border-b pb-4">
             <div>
-              <h2 className="font-bold text-base text-slate-900">
+              <h2 className="font-bold text-base text-zinc-900">
                 Son Eklenen Firmalar
               </h2>
-              <p className="mt-0.5 text-slate-500 text-xs">
+              <p className="mt-0.5 text-zinc-500 text-xs">
                 Sisteme kayıtlı işletmeler ve modül durumları
               </p>
             </div>
@@ -201,9 +201,9 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
 
-          <div className="mt-2 divide-y divide-slate-100">
+          <div className="mt-2 divide-y divide-zinc-100">
             {recentTenants.length === 0 ? (
-              <div className="py-8 text-center text-slate-400 text-xs">
+              <div className="py-8 text-center text-zinc-400 text-xs">
                 {loading ? "Yükleniyor..." : "Henüz kayıtlı firma bulunamadı."}
               </div>
             ) : (
@@ -219,7 +219,7 @@ export default function AdminDashboardPage() {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <Link
-                          className="truncate font-semibold text-slate-900 text-sm hover:text-blue-600"
+                          className="truncate font-semibold text-zinc-900 text-sm hover:text-blue-600"
                           href={`/admin/tenants/${tenant.id}`}
                         >
                           {tenant.name}
@@ -234,7 +234,7 @@ export default function AdminDashboardPage() {
                           </span>
                         )}
                       </div>
-                      <p className="mt-0.5 flex items-center gap-2 text-slate-500 text-xs">
+                      <p className="mt-0.5 flex items-center gap-2 text-zinc-500 text-xs">
                         <span>slug: {tenant.slug}</span>
                         <span>•</span>
                         <span className="font-medium text-amber-600">
@@ -248,15 +248,15 @@ export default function AdminDashboardPage() {
 
                   <div className="flex items-center gap-3">
                     <div className="hidden text-right sm:block">
-                      <p className="font-semibold text-slate-700 text-xs">
+                      <p className="font-semibold text-zinc-700 text-xs">
                         {tenant.enabledModuleCount} Modül
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-zinc-400">
                         {tenant.memberCount} Üye
                       </p>
                     </div>
                     <Link
-                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                      className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
                       href={`/admin/tenants/${tenant.id}`}
                       title="Yönet"
                     >
@@ -270,11 +270,11 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Industry Distribution Widget (1 Column) */}
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xs">
-          <h2 className="font-bold text-base text-slate-900">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs">
+          <h2 className="font-bold text-base text-zinc-900">
             Sektör Dağılımı
           </h2>
-          <p className="mt-0.5 text-slate-500 text-xs">
+          <p className="mt-0.5 text-zinc-500 text-xs">
             Firmaların sektörel şablon dağılımı
           </p>
 
@@ -289,14 +289,14 @@ export default function AdminDashboardPage() {
                 return (
                   <div className="space-y-1.5" key={item.industry}>
                     <div className="flex justify-between text-xs">
-                      <span className="font-medium text-slate-700 capitalize">
+                      <span className="font-medium text-zinc-700 capitalize">
                         {item.industry}
                       </span>
-                      <span className="text-slate-500">
+                      <span className="text-zinc-500">
                         {item.count} firma ({percentage}%)
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
                       <div
                         className="h-full rounded-full bg-blue-600 transition-all duration-500"
                         style={{ width: `${percentage}%` }}
@@ -306,18 +306,18 @@ export default function AdminDashboardPage() {
                 );
               })
             ) : (
-              <div className="py-6 text-center text-slate-400 text-xs">
+              <div className="py-6 text-center text-zinc-400 text-xs">
                 {loading ? "Yükleniyor..." : "Veri bulunamadı."}
               </div>
             )}
           </div>
 
-          <div className="mt-8 rounded-xl border border-blue-100 bg-blue-50/50 p-4 text-slate-700 text-xs">
+          <div className="mt-8 rounded-xl border border-blue-100 bg-blue-50/50 p-4 text-zinc-700 text-xs">
             <div className="mb-1 flex items-center gap-2 font-bold text-blue-700">
               <Shield className="h-4 w-4" />
               <span>Modüler Satış Prensibi</span>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
+            <p className="text-[11px] text-zinc-600 leading-relaxed">
               Her firma için aktif modülleri ve özel terminolojiyi Firma Detay
               sayfasından anlık değiştirebilirsiniz. Değişiklikler Redis
               üzerinden sıfır gecikmeyle yansır.

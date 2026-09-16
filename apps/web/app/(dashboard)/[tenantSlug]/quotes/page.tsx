@@ -632,7 +632,7 @@ export default function QuotesPage() {
                             }
                             return (
                               <>
-                                <span className="text-slate-300">•</span>
+                                <span className="text-zinc-300">•</span>
                                 <span>
                                   SKT:{" "}
                                   {new Date(
@@ -1793,7 +1793,7 @@ function CreateQuoteModal({
                         {/* Remove */}
                         <td className="px-2 py-2.5 text-center">
                           <button
-                            className="rounded-md p-1 text-slate-300 transition hover:text-rose-600 disabled:opacity-30"
+                            className="rounded-md p-1 text-zinc-300 transition hover:text-rose-600 disabled:opacity-30"
                             disabled={items.length <= 1}
                             onClick={() => handleRemoveItem(idx)}
                             type="button"
@@ -1818,7 +1818,7 @@ function CreateQuoteModal({
                   Genel Teklif İskontosu
                 </h4>
                 <div className="flex items-center gap-3">
-                  <div className="flex rounded-xl bg-slate-200 p-0.5 font-semibold text-xs">
+                  <div className="flex rounded-xl bg-zinc-200 p-0.5 font-semibold text-xs">
                     <button
                       className={`rounded-lg px-3 py-1 transition ${
                         discountType === "Percentage"
@@ -5005,7 +5005,7 @@ function QuotePrintModal({
         </div>
 
         {/* Modal Scrollable Canvas Body */}
-        <div className="flex flex-1 items-start justify-center overflow-x-auto overflow-y-auto bg-muted/40 p-4 sm:p-6 dark:bg-slate-950/80">
+        <div className="flex flex-1 items-start justify-center overflow-x-auto overflow-y-auto bg-muted/40 p-4 sm:p-6 dark:bg-zinc-950/80">
           {isLoading || !quote ? (
             <div className="flex flex-col items-center justify-center py-24 text-muted-foreground">
               <RefreshCw className="mb-3 h-8 w-8 animate-spin text-primary" />
@@ -5023,7 +5023,7 @@ function QuotePrintModal({
               }}
             >
               {/* 1. Header & Branding */}
-              <div className="flex items-start justify-between gap-4 border-slate-900 border-b-2 pb-4">
+              <div className="flex items-start justify-between gap-4 border-zinc-900 border-b-2 pb-4">
                 <div className="max-w-sm space-y-1">
                   <div className="flex items-center gap-2.5">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-black text-primary-foreground text-sm shadow-xs">
@@ -5122,7 +5122,7 @@ function QuotePrintModal({
               <div className="overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700">
                 <table className="w-full border-collapse text-left text-[10px]">
                   <thead>
-                    <tr className="bg-slate-900 font-bold text-[9px] text-white uppercase tracking-wider">
+                    <tr className="bg-zinc-900 font-bold text-[9px] text-white uppercase tracking-wider">
                       <th className="w-7 px-2.5 py-2 text-center">#</th>
                       <th className="px-2.5 py-2">Ürün / Hizmet Açıklaması</th>
                       <th className="w-14 px-2 py-2 text-center">Miktar</th>
@@ -5224,7 +5224,7 @@ function QuotePrintModal({
                 </div>
 
                 {/* Right: Totals Box */}
-                <div className="space-y-1 rounded-xl border-2 border-slate-900 bg-zinc-50 p-3 text-[11px] dark:bg-zinc-800/50">
+                <div className="space-y-1 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-3 text-[11px] dark:bg-zinc-800/50">
                   <div className="flex justify-between font-medium text-zinc-600 dark:text-zinc-400">
                     <span>Ara Toplam (KDV Hariç):</span>
                     <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -5248,7 +5248,7 @@ function QuotePrintModal({
                     </span>
                   </div>
 
-                  <div className="flex items-baseline justify-between border-slate-900 border-t-2 pt-1.5">
+                  <div className="flex items-baseline justify-between border-zinc-900 border-t-2 pt-1.5">
                     <span className="font-black text-[11px] text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       GENEL TOPLAM:
                     </span>

@@ -149,7 +149,7 @@ export function DashboardSharePopover({
           <button
             className={
               buttonClassName ||
-              "flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 shadow-2xs transition-all hover:bg-slate-100 hover:text-slate-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
+              "flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 shadow-2xs transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
             }
             title="Panoyu Paylaş ve Dışa Aktar"
             type="button"
@@ -167,22 +167,22 @@ export function DashboardSharePopover({
           sideOffset={10}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
+          <div className="flex items-center justify-between border-zinc-100 border-b px-4 py-3 dark:border-border">
             <div className="flex items-center gap-2">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Share2 className="h-4 w-4" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-xs dark:text-foreground">
+                <h3 className="font-bold text-zinc-900 text-xs dark:text-foreground">
                   Panoyu Paylaş
                 </h3>
-                <p className="text-[10px] text-slate-500 dark:text-muted-foreground">
+                <p className="text-[10px] text-zinc-500 dark:text-muted-foreground">
                   Görünümü paylaş veya rapor olarak indir
                 </p>
               </div>
             </div>
             <button
-              className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-muted"
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
               onClick={() => setIsOpen(false)}
               type="button"
             >
@@ -191,13 +191,13 @@ export function DashboardSharePopover({
           </div>
 
           {/* Quick URL Copy Bar */}
-          <div className="border-slate-100 border-b bg-slate-50/70 p-3 dark:border-border dark:bg-muted/30">
-            <label className="mb-1.5 block font-semibold text-[10px] text-slate-500 dark:text-muted-foreground">
+          <div className="border-zinc-100 border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/30">
+            <label className="mb-1.5 block font-semibold text-[10px] text-zinc-500 dark:text-muted-foreground">
               Mevcut Görünüm Bağlantısı ({activeTab})
             </label>
             <div className="flex items-center gap-1.5">
               <input
-                className="w-full truncate rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] text-slate-600 focus:outline-none dark:border-border dark:bg-card dark:text-slate-300"
+                className="w-full truncate rounded-xl border border-zinc-200 bg-white px-2.5 py-1.5 text-[11px] text-zinc-600 focus:outline-none dark:border-border dark:bg-card dark:text-zinc-300"
                 readOnly
                 value={getShareableUrl()}
               />
@@ -225,7 +225,7 @@ export function DashboardSharePopover({
             {/* Native Mobile / Device Share */}
             {canShare && (
               <button
-                className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-slate-700 text-xs transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-muted/50"
+                className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-zinc-700 text-xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/50"
                 onClick={handleNativeShare}
                 type="button"
               >
@@ -233,10 +233,10 @@ export function DashboardSharePopover({
                   <Smartphone className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold text-slate-900 dark:text-foreground">
+                  <div className="font-bold text-zinc-900 dark:text-foreground">
                     Cihazla Paylaş
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-zinc-500">
                     WhatsApp, e-posta veya diğer uygulamalarla
                   </div>
                 </div>
@@ -245,7 +245,7 @@ export function DashboardSharePopover({
 
             {/* Broadcast to Team Chat */}
             <button
-              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-slate-700 text-xs transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-muted/50"
+              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-zinc-700 text-xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/50"
               onClick={handleSendToChat}
               type="button"
             >
@@ -253,10 +253,10 @@ export function DashboardSharePopover({
                 <MessageSquare className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="font-bold text-slate-900 dark:text-foreground">
+                <div className="font-bold text-zinc-900 dark:text-foreground">
                   Ekip Sohbetine Gönder
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-zinc-500">
                   Özet kartı olarak canlı mesajlaşma kanalına ilet
                 </div>
               </div>
@@ -264,7 +264,7 @@ export function DashboardSharePopover({
 
             {/* Print / PDF Export */}
             <button
-              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-slate-700 text-xs transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-muted/50"
+              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-zinc-700 text-xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/50"
               onClick={handlePrint}
               type="button"
             >
@@ -272,10 +272,10 @@ export function DashboardSharePopover({
                 <Printer className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="font-bold text-slate-900 dark:text-foreground">
+                <div className="font-bold text-zinc-900 dark:text-foreground">
                   PDF / Yazdır
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-zinc-500">
                   Temiz sayfa düzeninde yazıcı veya PDF çıktısı al
                 </div>
               </div>
@@ -283,7 +283,7 @@ export function DashboardSharePopover({
 
             {/* CSV Data Export */}
             <button
-              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-slate-700 text-xs transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-muted/50"
+              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left font-medium text-zinc-700 text-xs transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/50"
               onClick={handleExportCsv}
               type="button"
             >
@@ -291,10 +291,10 @@ export function DashboardSharePopover({
                 <Download className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="font-bold text-slate-900 dark:text-foreground">
+                <div className="font-bold text-zinc-900 dark:text-foreground">
                   CSV Olarak İndir
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-zinc-500">
                   Mevcut sekmedeki KPI metriklerini Excel/CSV formatında indir
                 </div>
               </div>

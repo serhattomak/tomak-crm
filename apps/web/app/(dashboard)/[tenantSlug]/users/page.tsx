@@ -128,7 +128,7 @@ export default function UsersManagementPage() {
 
         <PermissionGate permission="Users.Invite">
           <button
-            className="flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+            className="flex items-center gap-2 rounded-xl bg-zinc-950 px-4 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800"
             onClick={() => {
               setIsInviteOpen(true);
               setStatusMessage(null);

@@ -595,7 +595,7 @@ export default function MessagesPage() {
     const displayInfo = getChannelDisplayInfo(channel);
 
     let activeClasses =
-      "text-zinc-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-muted/40";
+      "text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/40";
     if (isSelected) {
       activeClasses = isDirect
         ? "border border-violet-200 bg-violet-50/90 text-violet-950 shadow-2xs dark:border-violet-900/60 dark:bg-violet-950/50 dark:text-violet-100"
@@ -671,7 +671,7 @@ export default function MessagesPage() {
   return (
     <PageContainer
       bleed
-      className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-slate-50 dark:bg-background"
+      className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-zinc-50 dark:bg-background"
     >
       {/* Top Header Bar (Hidden on mobile if a chat is active) */}
       <div
@@ -862,7 +862,7 @@ export default function MessagesPage() {
               <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                 {/* Mobile Back Button */}
                 <button
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 shadow-2xs transition hover:bg-slate-200 active:scale-95 md:hidden dark:bg-zinc-800 dark:text-zinc-300"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 shadow-2xs transition hover:bg-zinc-200 active:scale-95 md:hidden dark:bg-zinc-800 dark:text-zinc-300"
                   onClick={() => setSelectedChannel(null)}
                   title="Listeye Dön"
                   type="button"
@@ -958,7 +958,7 @@ export default function MessagesPage() {
                   if (isSystem) {
                     return (
                       <div className="my-2 flex justify-center" key={msg.id}>
-                        <span className="rounded-full bg-slate-200/80 px-3 py-1 font-medium text-[11px] text-slate-600 dark:bg-muted dark:text-slate-300">
+                        <span className="rounded-full bg-zinc-200/80 px-3 py-1 font-medium text-[11px] text-zinc-600 dark:bg-muted dark:text-zinc-300">
                           {msg.content}
                         </span>
                       </div>
@@ -1084,7 +1084,7 @@ export default function MessagesPage() {
                       key={msg.id}
                     >
                       {!isMe && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-slate-200 font-bold text-xs text-zinc-700 dark:bg-muted dark:text-foreground dark:text-zinc-300">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-200 font-bold text-xs text-zinc-700 dark:bg-muted dark:text-foreground dark:text-zinc-300">
                           {msg.senderName.slice(0, 1).toUpperCase()}
                         </div>
                       )}
@@ -1093,7 +1093,7 @@ export default function MessagesPage() {
                         className={`flex max-w-lg flex-col ${isMe ? "items-end" : "items-start"}`}
                       >
                         <div className="mb-1 flex items-center gap-2">
-                          <span className="font-semibold text-[11px] text-slate-600 dark:text-zinc-400">
+                          <span className="font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
                             {msg.senderName}
                           </span>
                           <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
@@ -1119,7 +1119,7 @@ export default function MessagesPage() {
                               }`}
                             >
                               <button
-                                className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100 hover:text-slate-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                                className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
                                 onClick={() => handleCopyMessage(msg)}
                                 title="Mesajı Kopyala"
                                 type="button"
@@ -1160,7 +1160,7 @@ export default function MessagesPage() {
                             className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${
                               isMe
                                 ? "rounded-br-xs bg-blue-600 text-white"
-                                : "rounded-bl-xs border border-zinc-200 bg-white text-slate-900 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-foreground"
+                                : "rounded-bl-xs border border-zinc-200 bg-white text-zinc-900 dark:border-border dark:border-zinc-800 dark:bg-card dark:bg-zinc-900 dark:text-foreground"
                             }`}
                           >
                             {isEditing ? (
@@ -1216,7 +1216,7 @@ export default function MessagesPage() {
                                 className={`mt-2.5 rounded-xl border p-3 transition-all ${
                                   isMe
                                     ? "border-blue-500 bg-blue-700/80 text-white"
-                                    : "border-zinc-200 bg-zinc-50 text-slate-900 dark:border-border dark:border-zinc-800 dark:bg-muted/60 dark:bg-zinc-800/50 dark:text-foreground"
+                                    : "border-zinc-200 bg-zinc-50 text-zinc-900 dark:border-border dark:border-zinc-800 dark:bg-muted/60 dark:bg-zinc-800/50 dark:text-foreground"
                                 }`}
                                 key={embed.id}
                               >
@@ -1329,7 +1329,7 @@ export default function MessagesPage() {
                 <div className="flex shrink-0 items-center gap-1">
                   {/* Entity Embed Button */}
                   <Button
-                    className="h-7 gap-1.5 px-2 text-[11px] text-zinc-600 hover:text-blue-600 sm:h-8 sm:px-3 sm:text-xs dark:text-slate-400 dark:text-zinc-400 dark:hover:text-foreground"
+                    className="h-7 gap-1.5 px-2 text-[11px] text-zinc-600 hover:text-blue-600 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
                     onClick={() => setIsEntityPickerOpen(true)}
                     size="sm"
                     type="button"
@@ -1341,7 +1341,7 @@ export default function MessagesPage() {
 
                   {/* Canned Responses Trigger */}
                   <Button
-                    className="h-7 gap-1.5 px-2 text-[11px] text-zinc-600 hover:text-emerald-600 sm:h-8 sm:px-3 sm:text-xs dark:text-slate-400 dark:text-zinc-400 dark:hover:text-foreground"
+                    className="h-7 gap-1.5 px-2 text-[11px] text-zinc-600 hover:text-emerald-600 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
                     onClick={() => setIsCannedResponsesOpen(true)}
                     size="sm"
                     type="button"
@@ -1417,7 +1417,7 @@ export default function MessagesPage() {
         ) : (
           <div className="hidden flex-1 items-center justify-center bg-zinc-50 md:flex dark:bg-background dark:bg-zinc-800/50">
             <div className="text-center">
-              <MessagesSquare className="mx-auto h-12 w-12 text-slate-300 dark:text-zinc-400 dark:text-zinc-600" />
+              <MessagesSquare className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-400 dark:text-zinc-600" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-foreground dark:text-zinc-200">
                 Bir Sohbet Seçin
               </h3>
@@ -1457,7 +1457,7 @@ export default function MessagesPage() {
               </div>
               <DialogClose asChild>
                 <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1658,7 +1658,7 @@ export default function MessagesPage() {
               </div>
               <DialogClose asChild>
                 <button
-                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                  className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1683,7 +1683,7 @@ export default function MessagesPage() {
                       <span className="font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
                         {item.title}
                       </span>
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.2 font-mono text-[10px] text-slate-600 dark:bg-muted dark:bg-zinc-800 dark:text-slate-300">
+                      <span className="rounded bg-zinc-100 px-1.5 py-0.2 font-mono text-[10px] text-zinc-600 dark:bg-muted dark:bg-zinc-800 dark:text-zinc-300">
                         /{item.shortcut}
                       </span>
                     </div>
@@ -1726,7 +1726,7 @@ export default function MessagesPage() {
                 </DialogTitle>
                 <DialogClose asChild>
                   <button
-                    className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-slate-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                    className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -1737,7 +1737,7 @@ export default function MessagesPage() {
               <div className="space-y-4 py-4">
                 <div className="space-y-1.5">
                   <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
+                    className="font-semibold text-xs text-zinc-700 dark:text-zinc-300 dark:text-zinc-300"
                     htmlFor="channel-name"
                   >
                     Kanal Adı *
@@ -1761,7 +1761,7 @@ export default function MessagesPage() {
 
                 <div className="space-y-1.5">
                   <label
-                    className="font-semibold text-xs text-zinc-700 dark:text-slate-300 dark:text-zinc-300"
+                    className="font-semibold text-xs text-zinc-700 dark:text-zinc-300 dark:text-zinc-300"
                     htmlFor="channel-desc"
                   >
                     Açıklama
@@ -1788,7 +1788,7 @@ export default function MessagesPage() {
                     type="checkbox"
                   />
                   <label
-                    className="cursor-pointer text-xs text-zinc-600 dark:text-slate-300 dark:text-zinc-400"
+                    className="cursor-pointer text-xs text-zinc-600 dark:text-zinc-300 dark:text-zinc-400"
                     htmlFor="is-private"
                   >
                     Özel Kanal (Sadece davet edilen üyeler erişebilir)

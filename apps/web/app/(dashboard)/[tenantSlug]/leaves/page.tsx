@@ -775,7 +775,7 @@ export default function LeavesPage() {
                         {leave.employeeName}
                       </span>
                       {leave.departmentName && (
-                        <span className="rounded-md bg-slate-200 px-2 py-0.5 font-medium text-[10px] text-zinc-700 dark:text-zinc-300">
+                        <span className="rounded-md bg-zinc-200 px-2 py-0.5 font-medium text-[10px] text-zinc-700 dark:text-zinc-300">
                           {leave.departmentName}
                         </span>
                       )}

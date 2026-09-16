@@ -143,7 +143,7 @@ export default function WorkspaceSettingsPage() {
           <PermissionGate permission="Tenants.Update">
             <div className="flex justify-end border-zinc-100 border-t pt-3 dark:border-zinc-800">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-5 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800 disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-xl bg-zinc-950 px-5 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800 disabled:opacity-50"
                 disabled={isSaving}
                 type="submit"
               >

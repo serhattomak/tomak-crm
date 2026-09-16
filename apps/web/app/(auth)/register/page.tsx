@@ -112,10 +112,10 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side: Form Container */}
-        <div className="flex flex-col justify-between bg-white px-6 py-8 text-slate-900 sm:px-12 sm:py-10 lg:col-span-6">
+        <div className="flex flex-col justify-between bg-white px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6">
           {/* Brand Logo Header */}
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-white shadow-sm">
               <svg
                 className="h-3.5 w-3.5"
                 fill="none"
@@ -127,7 +127,7 @@ export default function RegisterPage() {
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="font-semibold text-base text-slate-900 tracking-tight">
+            <span className="font-semibold text-base text-zinc-900 tracking-tight">
               Cogie
             </span>
           </div>
@@ -135,10 +135,10 @@ export default function RegisterPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-5">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-normal font-serif text-3xl text-slate-900 tracking-tight sm:text-4xl">
+              <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl">
                 Create Account
               </h1>
-              <p className="font-normal text-slate-500 text-xs">
+              <p className="font-normal text-zinc-500 text-xs">
                 Enter your details to create your workspace
               </p>
             </div>
@@ -155,11 +155,11 @@ export default function RegisterPage() {
               onSubmit={handleRegister}
             >
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
                   Full Name
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
                   required
@@ -169,11 +169,11 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
                   Email
                 </label>
                 <input
-                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                  className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
@@ -183,12 +183,12 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block font-semibold text-slate-800 text-xs">
+                <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-slate-900 text-xs outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900 sm:text-sm"
+                    className="w-full rounded-xl border-0 bg-[#f3f4f7] px-4 py-3 pr-10 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Minimum 6 characters"
                     required
@@ -196,7 +196,7 @@ export default function RegisterPage() {
                     value={password}
                   />
                   <button
-                    className="absolute top-3.5 right-3 text-slate-400 hover:text-slate-600"
+                    className="absolute top-3.5 right-3 text-zinc-400 hover:text-zinc-600"
                     onClick={() => setShowPassword(!showPassword)}
                     type="button"
                   >
@@ -220,7 +220,7 @@ export default function RegisterPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 font-medium text-slate-700 text-xs shadow-sm transition-all hover:bg-slate-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white py-3 font-medium text-zinc-700 text-xs shadow-sm transition-all hover:bg-zinc-50 sm:text-sm"
                   onClick={handleGoogleLogin}
                   type="button"
                 >
@@ -249,10 +249,10 @@ export default function RegisterPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-slate-500 text-xs">
+          <div className="mt-8 text-center text-zinc-500 text-xs">
             Already have an account?{" "}
             <Link
-              className="font-semibold text-slate-900 hover:underline"
+              className="font-semibold text-zinc-900 hover:underline"
               href="/login"
             >
               Sign In

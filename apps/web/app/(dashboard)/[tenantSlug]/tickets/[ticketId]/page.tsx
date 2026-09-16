@@ -397,7 +397,7 @@ export default function TicketDetailPage() {
             <span className="hidden sm:inline">Tüm Talepler</span>
           </Button>
 
-          <div className="h-6 w-px bg-slate-200" />
+          <div className="h-6 w-px bg-zinc-200" />
 
           <div>
             <div className="flex items-center gap-2">
@@ -499,7 +499,7 @@ export default function TicketDetailPage() {
             <button
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "conversation"
-                  ? "bg-slate-900 text-white shadow-2xs"
+                  ? "bg-zinc-900 text-white shadow-2xs"
                   : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               }`}
               onClick={() => setActiveTab("conversation")}
@@ -512,7 +512,7 @@ export default function TicketDetailPage() {
             <button
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "activities"
-                  ? "bg-slate-900 text-white shadow-2xs"
+                  ? "bg-zinc-900 text-white shadow-2xs"
                   : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               }`}
               onClick={() => setActiveTab("activities")}
@@ -559,7 +559,7 @@ export default function TicketDetailPage() {
                   if (isSystem) {
                     return (
                       <div className="my-2 flex justify-center" key={m.id}>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-200/70 px-3 py-1 text-[11px] text-zinc-600 shadow-2xs dark:text-zinc-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200/70 px-3 py-1 text-[11px] text-zinc-600 shadow-2xs dark:text-zinc-400">
                           <Info className="h-3 w-3" />
                           {m.content}
                         </span>
@@ -605,7 +605,7 @@ export default function TicketDetailPage() {
                       key={m.id}
                     >
                       {isCustomer && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 font-bold text-xs text-zinc-700 dark:text-zinc-300">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-200 font-bold text-xs text-zinc-700 dark:text-zinc-300">
                           {m.senderName.charAt(0).toUpperCase()}
                         </div>
                       )}

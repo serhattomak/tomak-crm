@@ -505,8 +505,8 @@ export default function TicketsDashboardPage() {
             <button
               className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-medium transition-all ${
                 activeQueue === q.id
-                  ? "bg-slate-900 text-white shadow-2xs"
-                  : "bg-zinc-100 text-zinc-600 hover:bg-slate-200/70 hover:text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  ? "bg-zinc-900 text-white shadow-2xs"
+                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70 hover:text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:text-zinc-100"
               }`}
               key={q.id}
               onClick={() => setActiveQueue(q.id)}
@@ -519,7 +519,7 @@ export default function TicketsDashboardPage() {
                     activeQueue === q.id
                       ? "bg-white text-white dark:bg-zinc-900/20"
                       : q.badgeColor ||
-                        "bg-slate-200 text-zinc-700 dark:text-zinc-300"
+                        "bg-zinc-200 text-zinc-700 dark:text-zinc-300"
                   }`}
                 >
                   {q.count}

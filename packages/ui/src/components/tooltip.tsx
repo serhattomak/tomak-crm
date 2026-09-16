@@ -40,7 +40,7 @@ function TooltipContent({
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         className={cn(
-          "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 animate-in overflow-hidden rounded-xl border border-slate-800/20 bg-slate-900 px-3 py-1.5 font-medium text-white text-xs shadow-md data-[state=closed]:animate-out dark:border-slate-700/60 dark:bg-slate-800",
+          "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 animate-in overflow-hidden rounded-xl border border-zinc-800/20 bg-zinc-900 px-3 py-1.5 font-medium text-white text-xs shadow-md data-[state=closed]:animate-out dark:border-zinc-700/60 dark:bg-zinc-800",
           className
         )}
         sideOffset={sideOffset}
@@ -49,7 +49,7 @@ function TooltipContent({
         <div className="flex items-center gap-2">
           <span>{children}</span>
           {shortcut && (
-            <kbd className="rounded border border-slate-700/60 bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-300 dark:border-slate-600 dark:bg-slate-700">
+            <kbd className="rounded border border-zinc-700/60 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-300 dark:border-zinc-600 dark:bg-zinc-700">
               {shortcut}
             </kbd>
           )}

@@ -209,7 +209,7 @@ export default function RolesManagementPage() {
 
         <PermissionGate permission="Roles.Create">
           <button
-            className="flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800"
+            className="flex items-center gap-2 rounded-xl bg-zinc-950 px-4 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800"
             onClick={() => setIsCreateOpen(true)}
           >
             <Plus className="h-4 w-4" />
@@ -371,7 +371,7 @@ export default function RolesManagementPage() {
 
                 <PermissionGate permission="Roles.Update">
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-5 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-slate-800 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-zinc-950 px-5 py-2.5 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800 disabled:opacity-50"
                     disabled={isSaving}
                     onClick={handleSavePermissions}
                   >
@@ -465,7 +465,7 @@ export default function RolesManagementPage() {
                   Cancel
                 </button>
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white text-xs hover:bg-slate-800 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-zinc-950 px-4 py-2 font-semibold text-white text-xs hover:bg-zinc-800 disabled:opacity-50"
                   disabled={isCreating}
                   type="submit"
                 >

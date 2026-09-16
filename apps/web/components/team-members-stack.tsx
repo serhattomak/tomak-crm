@@ -40,7 +40,7 @@ import { ApiClient, type RoleDto, type TenantUserDto } from "@/lib/api-client";
 import { usePermissions } from "@/lib/permissions/permission-context";
 
 const AVATAR_BG_COLORS = [
-  "bg-slate-900 text-white",
+  "bg-zinc-900 text-white",
   "bg-indigo-600 text-white",
   "bg-fuchsia-600 text-white",
   "bg-emerald-600 text-white",
@@ -227,7 +227,7 @@ export function TeamMembersStack({
               })}
 
               {remainingCount > 0 && (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 font-bold text-[10px] text-slate-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-zinc-100 font-bold text-[10px] text-zinc-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
                   +{remainingCount}
                 </div>
               )}
@@ -243,16 +243,16 @@ export function TeamMembersStack({
             sideOffset={10}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-slate-100 border-b px-4 py-3 dark:border-border">
+            <div className="flex items-center justify-between border-zinc-100 border-b px-4 py-3 dark:border-border">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
                   <Users className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-xs dark:text-foreground">
+                  <h3 className="font-bold text-zinc-900 text-xs dark:text-foreground">
                     Ekip Üyeleri
                   </h3>
-                  <p className="text-[10px] text-slate-500 dark:text-muted-foreground">
+                  <p className="text-[10px] text-zinc-500 dark:text-muted-foreground">
                     Toplam {users.length} aktif kullanıcı
                   </p>
                 </div>
@@ -277,7 +277,7 @@ export function TeamMembersStack({
                 </Button>
 
                 <button
-                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-muted"
+                  className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
                   onClick={() => setIsOpen(false)}
                   type="button"
                 >
@@ -287,11 +287,11 @@ export function TeamMembersStack({
             </div>
 
             {/* Search Input */}
-            <div className="border-slate-100 border-b bg-slate-50/70 p-3 dark:border-border dark:bg-muted/40">
+            <div className="border-zinc-100 border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/40">
               <div className="relative">
-                <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-slate-400" />
+                <Search className="absolute top-2.5 left-2.5 h-3.5 w-3.5 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-slate-200 bg-white py-1.5 pr-3 pl-8 text-slate-900 text-xs focus:border-blue-500 focus:outline-none dark:border-border dark:bg-card dark:text-foreground"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pr-3 pl-8 text-zinc-900 text-xs focus:border-blue-500 focus:outline-none dark:border-border dark:bg-card dark:text-foreground"
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="İsim, e-posta veya role göre ara..."
                   value={searchQuery}
@@ -300,19 +300,19 @@ export function TeamMembersStack({
             </div>
 
             {/* Members List Stream */}
-            <div className="max-h-[340px] divide-y divide-slate-100 overflow-y-auto dark:divide-border/50">
+            <div className="max-h-[340px] divide-y divide-zinc-100 overflow-y-auto dark:divide-border/50">
               {loading ? (
-                <div className="py-8 text-center text-slate-400 text-xs">
+                <div className="py-8 text-center text-zinc-400 text-xs">
                   <Loader2 className="mx-auto mb-2 h-5 w-5 animate-spin text-blue-600" />
                   Üyeler yükleniyor...
                 </div>
               ) : filteredUsers.length === 0 ? (
                 <div className="px-4 py-8 text-center">
-                  <Users className="mx-auto h-8 w-8 text-slate-300 dark:text-slate-600" />
-                  <p className="mt-2 font-semibold text-slate-700 text-xs dark:text-slate-300">
+                  <Users className="mx-auto h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+                  <p className="mt-2 font-semibold text-zinc-700 text-xs dark:text-zinc-300">
                     Kullanıcı bulunamadı
                   </p>
-                  <p className="mt-1 text-[11px] text-slate-400">
+                  <p className="mt-1 text-[11px] text-zinc-400">
                     Aramanıza uygun üye eşleşmedi.
                   </p>
                 </div>
@@ -325,7 +325,7 @@ export function TeamMembersStack({
 
                   return (
                     <div
-                      className="group flex items-center justify-between p-3 transition-colors hover:bg-slate-50/80 dark:hover:bg-muted/30"
+                      className="group flex items-center justify-between p-3 transition-colors hover:bg-zinc-50/80 dark:hover:bg-muted/30"
                       key={user.id || idx}
                     >
                       <div className="flex min-w-0 items-center gap-3 pr-2">
@@ -339,7 +339,7 @@ export function TeamMembersStack({
                           <span
                             className={`absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-card ${
                               user.isActive === false
-                                ? "bg-slate-300"
+                                ? "bg-zinc-300"
                                 : "bg-emerald-500"
                             }`}
                             title={user.isActive === false ? "Pasif" : "Aktif"}
@@ -349,11 +349,11 @@ export function TeamMembersStack({
                         {/* Name & Email */}
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="truncate font-bold text-slate-900 text-xs dark:text-foreground">
+                            <span className="truncate font-bold text-zinc-900 text-xs dark:text-foreground">
                               {user.fullName || user.email.split("@")[0]}
                             </span>
                           </div>
-                          <div className="truncate text-[11px] text-slate-500 dark:text-muted-foreground">
+                          <div className="truncate text-[11px] text-zinc-500 dark:text-muted-foreground">
                             {user.email}
                           </div>
 
@@ -362,7 +362,7 @@ export function TeamMembersStack({
                             <div className="mt-1 flex flex-wrap gap-1">
                               {user.roles.map((role) => (
                                 <span
-                                  className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-1.5 py-0.2 font-semibold text-[9px] text-slate-700 dark:bg-muted dark:text-slate-300"
+                                  className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-0.2 font-semibold text-[9px] text-zinc-700 dark:bg-muted dark:text-zinc-300"
                                   key={role.id}
                                   role="status"
                                 >
@@ -384,7 +384,7 @@ export function TeamMembersStack({
                       {/* Quick Actions */}
                       <div className="flex shrink-0 items-center gap-1">
                         <button
-                          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-muted dark:hover:text-foreground"
+                          className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-muted dark:hover:text-foreground"
                           onClick={(e) => copyEmailToClipboard(user.email, e)}
                           title="E-posta Kopyala"
                           type="button"
@@ -397,7 +397,7 @@ export function TeamMembersStack({
                         </button>
 
                         <button
-                          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
+                          className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400"
                           onClick={(e) => navigateToChat(user.fullName, e)}
                           title="Mesaj Gönder"
                           type="button"
@@ -412,7 +412,7 @@ export function TeamMembersStack({
             </div>
 
             {/* Footer: Manage Users Link */}
-            <div className="border-slate-100 border-t bg-slate-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
+            <div className="border-zinc-100 border-t bg-zinc-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
               <button
                 className="inline-flex items-center gap-1 font-semibold text-[11px] text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
                 onClick={() => {
@@ -651,23 +651,23 @@ export function InviteMemberModal({
         className="flex max-h-[92vh] w-full flex-col gap-0 overflow-y-auto p-5 sm:max-w-md sm:p-6"
         showCloseButton={false}
       >
-        <div className="flex shrink-0 items-center justify-between border-slate-100 border-b pb-3.5 dark:border-border">
+        <div className="flex shrink-0 items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-border">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <DialogTitle className="font-bold text-slate-900 text-sm sm:text-base dark:text-foreground">
+              <DialogTitle className="font-bold text-zinc-900 text-sm sm:text-base dark:text-foreground">
                 Ekip Arkadaşı Davet Et
               </DialogTitle>
-              <p className="text-[11px] text-slate-500 dark:text-muted-foreground">
+              <p className="text-[11px] text-zinc-500 dark:text-muted-foreground">
                 Çalışma alanınıza yeni bir kullanıcı ekleyin
               </p>
             </div>
           </div>
           <DialogClose asChild>
             <button
-              className="shrink-0 rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-muted"
+              className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -679,15 +679,15 @@ export function InviteMemberModal({
           {/* Email input */}
           <div className="space-y-1.5">
             <label
-              className="font-semibold text-slate-700 text-xs dark:text-slate-300"
+              className="font-semibold text-zinc-700 text-xs dark:text-zinc-300"
               htmlFor="invite-email"
             >
               E-posta Adresi *
             </label>
             <div className="relative">
-              <Mail className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
+              <Mail className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3 pl-9 text-slate-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-zinc-900 text-xs focus:border-blue-500 focus:bg-white focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 id="invite-email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ornek@sirketiniz.com"
@@ -700,17 +700,17 @@ export function InviteMemberModal({
 
           {/* Role Selection */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 text-xs dark:text-slate-300">
+            <label className="font-semibold text-zinc-700 text-xs dark:text-zinc-300">
               Kullanıcı Rolü *
             </label>
             {loadingRoles ? (
-              <div className="flex h-9 items-center justify-center rounded-xl border border-slate-200 text-slate-400 text-xs">
+              <div className="flex h-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-400 text-xs">
                 <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> Rol
                 listesi alınıyor...
               </div>
             ) : (
               <Select onValueChange={setRoleId} value={roleId}>
-                <SelectTrigger className="w-full rounded-xl bg-slate-50 text-xs dark:bg-muted/50">
+                <SelectTrigger className="w-full rounded-xl bg-zinc-50 text-xs dark:bg-muted/50">
                   <SelectValue placeholder="Rol Seçiniz" />
                 </SelectTrigger>
                 <SelectContent>
@@ -735,7 +735,7 @@ export function InviteMemberModal({
             </p>
           </div>
 
-          <div className="flex shrink-0 items-center justify-end gap-2 border-slate-100 border-t pt-3 dark:border-border">
+          <div className="flex shrink-0 items-center justify-end gap-2 border-zinc-100 border-t pt-3 dark:border-border">
             <Button
               disabled={isSubmitting}
               onClick={onClose}

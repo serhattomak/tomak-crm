@@ -998,7 +998,7 @@ export default function PayrollPage() {
                 Seçili Dönem:
               </div>
               <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-slate-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
                 onChange={(e) => setSelectedRunId(e.target.value)}
                 value={selectedRunId}
               >
@@ -1233,7 +1233,7 @@ export default function PayrollPage() {
           {payslipData ? (
             <div className="overflow-hidden rounded-2xl border border-zinc-300 bg-white p-6 font-sans text-zinc-900 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 print:border-none print:p-0 print:shadow-none">
               {/* Document Header */}
-              <div className="flex items-center justify-between border-slate-900 border-b-2 pb-4">
+              <div className="flex items-center justify-between border-zinc-900 border-b-2 pb-4">
                 <div>
                   <h2 className="font-black text-base uppercase tracking-tight">
                     {activeTenant?.name || "ŞİRKET ADI"}
@@ -1584,7 +1584,7 @@ export default function PayrollPage() {
 
               {/* Legal Signature Box */}
               <div className="mt-8 grid grid-cols-2 gap-8 text-center text-xs">
-                <div className="border-slate-400 border-t pt-2">
+                <div className="border-zinc-400 border-t pt-2">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
                     İŞVEREN / YETKİLİ KAŞE VE İMZA
                   </div>
@@ -1593,7 +1593,7 @@ export default function PayrollPage() {
                   </div>
                 </div>
 
-                <div className="border-slate-400 border-t pt-2">
+                <div className="border-zinc-400 border-t pt-2">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
                     PERSONEL İMZA
                   </div>
