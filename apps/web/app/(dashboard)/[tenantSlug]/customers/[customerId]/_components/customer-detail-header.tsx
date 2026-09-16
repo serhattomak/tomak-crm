@@ -36,7 +36,7 @@ export function CustomerDetailHeader({
       case "Active":
         return { label: "Aktif", variant: "success" };
       case "Lead":
-        return { label: "Potansiyel (Lead)", variant: "accent" };
+        return { label: "Potansiyel Müşteri", variant: "accent" };
       case "Passive":
         return { label: "Pasif", variant: "neutral" };
       case "Churned":

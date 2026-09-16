@@ -91,7 +91,7 @@ export function CustomerTableView({
       case "Active":
         return { label: "Aktif Müşteri", variant: "success" };
       case "Lead":
-        return { label: "Potansiyel (Lead)", variant: "accent" };
+        return { label: "Potansiyel Müşteri", variant: "accent" };
       case "Passive":
         return { label: "Pasif", variant: "neutral" };
       case "Churned":
@@ -130,7 +130,7 @@ export function CustomerTableView({
               />
             </TableHead>
             <TableHead className="pr-4 pl-2">Müşteri / Şirket</TableHead>
-            <TableHead className="px-3">Statü & Segment</TableHead>
+            <TableHead className="px-3">Durum & Segment</TableHead>
             <TableHead className="px-3">İletişim</TableHead>
             <TableHead className="px-3">Konum</TableHead>
             <TableHead className="px-3">Temsilci</TableHead>

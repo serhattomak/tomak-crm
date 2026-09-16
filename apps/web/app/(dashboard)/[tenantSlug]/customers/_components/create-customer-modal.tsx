@@ -244,7 +244,7 @@ export function CreateCustomerModal({
               </div>
 
               <div>
-                <Label className="mb-1">Statü</Label>
+                <Label className="mb-1">Durum</Label>
                 <Select
                   onValueChange={(val) =>
                     setFormData({ ...formData, status: val })
@@ -255,7 +255,7 @@ export function CreateCustomerModal({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Lead">Potansiyel (Lead)</SelectItem>
+                    <SelectItem value="Lead">Potansiyel Müşteri</SelectItem>
                     <SelectItem value="Active">Aktif Müşteri</SelectItem>
                     <SelectItem value="Passive">Pasif</SelectItem>
                     <SelectItem value="Churned">Kaybedildi</SelectItem>

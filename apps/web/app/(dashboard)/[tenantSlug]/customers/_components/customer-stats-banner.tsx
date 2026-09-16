@@ -81,7 +81,7 @@ export function CustomerStatsBanner({
         <div className="flex items-start justify-between gap-2">
           <div className="space-y-1">
             <span className="font-medium text-muted-foreground text-xs">
-              Potansiyel (Lead)
+              Potansiyel Müşteri
             </span>
             <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
               {loading ? (

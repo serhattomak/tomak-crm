@@ -88,12 +88,12 @@ export function CustomerFiltersBar({
             value={statusFilter || "all"}
           >
             <SelectTrigger className="h-9 text-xs">
-              <SelectValue placeholder="Tüm Statüler" />
+              <SelectValue placeholder="Tüm Durumlar" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tüm Statüler</SelectItem>
+              <SelectItem value="all">Tüm Durumlar</SelectItem>
               <SelectItem value="Active">Aktif</SelectItem>
-              <SelectItem value="Lead">Potansiyel (Lead)</SelectItem>
+              <SelectItem value="Lead">Potansiyel Müşteri</SelectItem>
               <SelectItem value="Passive">Pasif</SelectItem>
               <SelectItem value="Churned">Kaybedildi</SelectItem>
             </SelectContent>
