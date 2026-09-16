@@ -649,6 +649,49 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
    izinli hedef print korumasını düşürür. Radius bir **görsel tercih** olarak kalır; madde "kasıtlı ertelendi"
    diye kaydedilir. Print çelişkisi ayrı maddeye ayrıldı → **#30**
 21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **beş yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`), `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`) ve `quotes` "Teklif Belgesi Önizleme" modalı (`handlePrint`; 2026-09-16, `28d8d6e`). Son ikisinde **`print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması. Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
+   **📏 ÖLÇÜM + KARAR + PİLOT (2026-09-16).** Maddenin "beş yüzey"i doğru ama eksik.
+   Ölçüm: **13 `window.print()` çağrısı / 12 dosya**. Maddenin 5'i (invoices · contracts · finance ·
+   shipments · quotes) yerinde; **7 yüzey daha var**: `_components/dashboard-tabs-bar` · `analytics` ·
+   `payroll` · `vehicles` · `components/dashboard-share-popover` · `orders/[orderId]/print` ·
+   `portal` (muaf). **Üç birbiriyle uyumsuz desen var ve paylaşılan print modülü yok:**
+   **(A)** açık overlay'i bas (10 dosya — maddenin "kırılgan" dediği yol), **(B)** gizli 0×0 iframe +
+   üretilen HTML (`printQuoteDocument` + `renderQuotePrintHtml`, yalnız `quotes`, ikisi de ~5000 satırlık
+   sayfanın içinde, 506 satır elle yazılmış HTML; iframe yoksa `window.print()`'e düşer), **(C)** ayrı
+   print rotası (yalnız `orders/[orderId]/print`, 424 satır, API'den yükler, **normal akış**).
+   Global `@media print` zaten sahipleniyor: `@page A4/12mm` · `print-color-adjust: exact` · overflow
+   reset · backdrop gizleme (`[data-slot=*-overlay]`) · kart kırılma koruması (#30).
+   **KARAR (kullanıcı): kanonik desen (C), doğrulama elle önizleme (kullanıcı yapar), önce tek pilot.**
+   Gerekçe: (C), içeriği **normal akışta** tutan tek desen — maddenin overlay yoluna getirdiği eleştiri
+   (sayfa başına tekrar, kırılım kontrolü yok) tam olarak rotanın ortadan kaldırdığı şey. Precedent vardı.
+   **✅ PİLOT YAPILDI — `invoices` (`15d9332`):** belge gövdesi (182 satır) `_components/invoice-document.tsx`'e
+   çıkarıldı → **drawer önizlemesi ile print rotası AYNI gövdeyi render ediyor** (ekranda görünen ile basılan
+   ayrışamaz; desenin asıl faydası bu). `invoices/[invoiceId]/print` eklendi (mevcut `ApiClient.getInvoiceDetail`
+   yetti, API değişmedi). Drawer'ın `Yazdır`'ı `window.print()` → `router.push`. **A yaması emekliye ayrıldı**
+   (`print:max-w-none print:shadow-none` + header'daki `print:hidden` gitti; yerine SheetContent'e `print:hidden`
+   — çünkü print'i artık rota sahipleniyor, kaçak bir Ctrl+P yarım drawer basmamalı).
+   **Çıkarma elle değil script'le yapıldı ve script kendi işini iddia ediyor:** kaldırılan dilim ile yeni
+   component'in gövdesi **satır satır birebir** (sabit 8 boşluk kaydırma) + JSX etiket dengesi. 182 satırı elle
+   yeniden girintilemek tam da sessiz içerik değişikliğinin saklanacağı yerdir ve ne `tsc` ne guard sınıf
+   dizesini okur.
+   ⚠️ **Precedent'ten bilerek kopyalanmayan:** `orders/[orderId]/print` içindeki satır-içi `<style>` bloğu.
+   `@page`, `body` zemini ve overlay gizleme artık global blokta; araç çubuğu derlenmiş stil sayfasında zaten
+   var olan `print:hidden`'ı kullanıyor.
+   ⚠️ **`PermissionGate` konmadı:** `apps/web`'te `Invoices.*` diye bir izin **yok** (grep 0) ve invoices
+   liste sayfasının kendisi de kapılı değil. `permission="Invoices.View"` uydurmak rotayı herkes için kalıcı
+   olarak reddettirirdi.
+   ⚠️ **Kendi yanlış bulgum, kayda geçti:** önce `orders/[orderId]/print`'teki `no-print`'in **tanımsız**
+   olduğunu bildirdim (hiçbir stil sayfasında yok). **Tanımlı** — aynı dosyanın içindeki bir `<style>`
+   template literal'inde. CSS dosyalarına bakan bir grep, JS'te yaşayan bir tanım için **kendinden emin bir
+   sıfır** verir. (Bu oturumun 4. kör dedektörü.)
+   **🔴 DOĞRULANMADI ve bu açıkça kayıtlı:** yukarıdakilerin hiçbiri **basılan çıktının doğru olduğunu**
+   kanıtlamıyor; hiçbir statik araç print sonucunu göremez. Maddenin kendi şartı olan **elle önizleme
+   yapılmadı.** Kullanıcı önizleme kontrol listesi: (a) `/[tenantSlug]/invoices` → fatura aç → **Yazdır**
+   `/invoices/<id>/print`'e gidiyor mu, (b) önizlemede sayfa **A4 + 12mm** mi, (c) drawer/backdrop/kapat
+   düğmesi **hiç** basılıyor mu, (d) kalem tablosu sayfa kırılımında bölünüyor mu, (e) **her iki temada**
+   (açık+koyu) okunur mu — belge `dark:` sınıflarını paylaştığı için koyu temada kağıt görünümü ayrı bir
+   sorudur ve **ölçülmedi**.
+   **Sonraki adım:** önizleme geçerse kalan 4 belge yüzeyine (contracts · finance · quotes · shipments;
+   shipments'ta `@page size: A6`) aynı reçeteyi uygula; `quotes` ayrıca **B desenini siler** (506 satır).
 22. **`overlayClassName` boşluğu** - dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor (bulgu 12'nin kökü). Global print kuralı vakayı çözdü; başka bir ihtiyaç doğarsa (farklı blur/opaklık) API açılmalı. Tek tüketici için eklenmedi
 23. **Native `alert()` → `toast`** — **10 çağrı / 4 dosya** (2026-09-16 ölçümü, Faz 3.3'te bulundu): `(auth)/login` (1), `calendar` (2), `vehicles` (6), `components/tenant-switcher` (1). Bunlar onay değil **doğrulama/hata mesajı**; native `alert()` thread'i bloklar, temayı yok sayar ve erişilebilir değil. Muadili `toast` (sonner bu dosyaların çoğunda zaten import edilmiş) veya form-içi hata metni. **Native `confirm(` artık 0** (Faz 3.3), dolayısıyla bu, o ailenin kalan tek üyesi.
    **✅ KAPANDI (2026-09-16).** 10 çağrının hepsi sonner `toast.error`/`toast.info`'a taşındı;
@@ -955,3 +998,4 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | Guard | ✅ **Bulunan 3 rozet düzeltildi** (`organization/page.tsx`, kullanıcı onayıyla): Active/OnLeave tablo rozetleri + kart rozeti → `bg-<c>-50`'ye `dark:bg-<c>-950/60` eklendi. **Kanonik desen uydurulmadı, ölçüldü:** repoda 60+ yerde ve `users/page.tsx`'teki kardeş rozette zaten var. Diff tam **3 satır**; sınıf sırası kardeşiyle birebir. Guard **3 advisory → 0** (yine PASS) · **iki temalı denetim değişmedi** (dark 8/40 · light 0/51 · 39 ölçülemez) — çünkü rozetler o veride hiç render edilmiyor. *Statik kural veriden bağımsız; denetim değil* |
 | 2026-09-16 | #23 | ✅ **Native `alert()` → sonner**, **10 çağrı / 4 dosya** + **yeni** `app/(auth)/layout.tsx` (`Toaster`). **Plan üç kez ölçümle düzeltildi:** "sonner zaten import edilmiş" yanlış (4 dosyada **0**); `(auth)/layout.tsx` **hiç yoktu** (yeni dosya yazıldı, `environment.md` de düzeltildi); ve **asıl düzeltme** — `calendar`/`vehicles`'in yerel `showToast`'ı bu 8 çağrı için **görünmez olurdu**: 6 `vehicles` çağrısı `VehiclesPage` dışında (3 kardeş modalda) ve 10 çağrının hepsi `<Dialog>` açıkken ateşliyor; toast `z-50` + portallanmış `z-50` Dialog → modal üstünü örter. Sonner toaster **999999999** → üstte. `alert(` **10→0** (pozitif kontrollü) · Toaster **2→3** · `showToast` **25→25** dokunulmadı · guard PASS (195 dosya) · fixtures 17/17 · typecheck 2/2 · lint 0 error/342 · build 2/2 |
 | 2026-09-16 | #20 | 📏 **Triyaj yapıldı, süpürme YAPILMADI (bilinçli).** Envanter üç yöntemle düzeltildi: `2xl` **445** · `3xl` **86** · `4xl` 0 · 🆕 **`rounded-[28px]` 4** (envanterde hiç yoktu, guard'da radius kuralı yok). Maddenin 146/459'u **bayat ve yeniden üretilemez** — Faz 3.1/3.2 tek pencerede 18×2xl + 35×3xl sildi (`1c601be` 463/121 → `28d8d6e` 445/86); borç ödenmiş, madde güncellenmemiş. **Premis çürüdü: çip yok** (224 çip dizesinde 2xl/3xl = **0**). "Borç" zayıf: kart yüzeylerinde `xl` %39 vs `2xl` %33 → süpürme ~215 dizede **restyle** olurdu, mekanik temizlik değil; alt sınıflarda konsensüs sıfır (karolar %41/%38). **Kararı kilitleyen:** §1.1 konteynerlere `rounded-lg`'yi izin veriyor ama print kart-seçicisi `lg`'yi saymıyor → izinli hedef print korumasını **sessizce** düşürür; guard/tsc/sınıf-diff'i bunu göremez. Yeni madde **#30** (print kuralını `data-*`'a taşı — `Card` primitifi bugün kuralın dışında: 17 dosya / 38 `<Card>`) |
+| 2026-09-16 | #21 | 📏 **Ölçüm maddeyi düzeltti: "beş yüzey" → 13 `window.print()` / 12 dosya** (+7 listelenmemiş yüzey). **Üç uyumsuz desen, paylaşılan print modülü yok:** A açık overlay'i bas (10 dosya) · B gizli iframe + elle yazılmış HTML (`quotes`, 506 satır) · C ayrı print rotası (`orders`, normal akış). **Kullanıcı kararı: C kanonik · doğrulama elle önizleme · önce pilot.** ✅ **Pilot `invoices` (`15d9332`):** belge gövdesi (182 satır) `_components/invoice-document.tsx`'e çıkarıldı → **drawer ve rota aynı gövdeyi paylaşıyor**; `invoices/[invoiceId]/print` eklendi; `Yazdır` artık `router.push`; A yaması emekliye ayrıldı. Çıkarma script'le + **satır satır birebir** iddiasıyla (elle 182 satır girintilemek sessiz içerik değişikliğinin saklanacağı yer). **Doğrulandı:** sayfa print etmiyor (1→0), belge tek tanım/iki tüketici, `print:hidden` (precedent'in `no-print`'i değil), badge 1→1, `window.print()` dosya 12→12 · guard PASS 197 dosya · fixtures 17/17 · typecheck 2/2 · build 2/2 (rota kayıtlı) · lint 0 error (342→343 uyarı: rotanın `useEffect`'i, repodaki aynı desen). **🔴 Elle önizleme YAPILMADI** — print çıktısını hiçbir statik araç göremez; koyu tema kağıt görünümü de ölçülmedi. ⚠️ Ayrıca **kendi yanlış bulgum** kayda geçti: `orders`'taki `no-print`'i "tanımsız" bildirdim — tanımı **aynı dosyanın `<style>` template literal'inde**; CSS'e bakan grep JS'teki tanım için kendinden emin sıfır verir |
