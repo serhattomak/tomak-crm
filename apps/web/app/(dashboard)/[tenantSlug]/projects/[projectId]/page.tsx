@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   Sheet,
   SheetClose,
@@ -1881,71 +1882,69 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Durum
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    onChange={(e) => setDrawerStatus(e.target.value)}
+                  <SelectField
+                    onChange={setDrawerStatus}
+                    options={[
+                      { label: "Backlog", value: "Backlog" },
+                      { label: "To Do", value: "Todo" },
+                      { label: "In Progress", value: "InProgress" },
+                      { label: "In Review", value: "InReview" },
+                      { label: "Done", value: "Done" },
+                    ]}
                     value={drawerStatus}
-                  >
-                    <option value="Backlog">Backlog</option>
-                    <option value="Todo">To Do</option>
-                    <option value="InProgress">In Progress</option>
-                    <option value="InReview">In Review</option>
-                    <option value="Done">Done</option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Öncelik
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    onChange={(e) => setDrawerPriority(e.target.value)}
+                  <SelectField
+                    onChange={setDrawerPriority}
+                    options={[
+                      { label: "Düşük", value: "Low" },
+                      { label: "Normal", value: "Medium" },
+                      { label: "Yüksek", value: "High" },
+                      { label: "Acil", value: "Urgent" },
+                    ]}
                     value={drawerPriority}
-                  >
-                    <option value="Low">Düşük</option>
-                    <option value="Medium">Normal</option>
-                    <option value="High">Yüksek</option>
-                    <option value="Urgent">Acil</option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Story Points
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-bold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    onChange={(e) =>
-                      setDrawerStoryPoints(Number(e.target.value))
-                    }
-                    value={drawerStoryPoints}
-                  >
-                    <option value={0}>0 SP</option>
-                    <option value={1}>1 SP</option>
-                    <option value={2}>2 SP</option>
-                    <option value={3}>3 SP</option>
-                    <option value={5}>5 SP</option>
-                    <option value={8}>8 SP</option>
-                    <option value={13}>13 SP</option>
-                  </select>
+                  <SelectField
+                    onChange={(value) => setDrawerStoryPoints(Number(value))}
+                    options={[
+                      { label: "0 SP", value: "0" },
+                      { label: "1 SP", value: "1" },
+                      { label: "2 SP", value: "2" },
+                      { label: "3 SP", value: "3" },
+                      { label: "5 SP", value: "5" },
+                      { label: "8 SP", value: "8" },
+                      { label: "13 SP", value: "13" },
+                    ]}
+                    value={String(drawerStoryPoints)}
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
                     Tür
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    onChange={(e) => setDrawerType(e.target.value)}
+                  <SelectField
+                    onChange={setDrawerType}
+                    options={[
+                      { label: "Task", value: "Task" },
+                      { label: "Story", value: "Story" },
+                      { label: "Bug", value: "Bug" },
+                      { label: "Feature", value: "Feature" },
+                      { label: "Geliştirme", value: "Improvement" },
+                    ]}
                     value={drawerType}
-                  >
-                    <option value="Task">Task</option>
-                    <option value="Story">Story</option>
-                    <option value="Bug">Bug</option>
-                    <option value="Feature">Feature</option>
-                    <option value="Improvement">Geliştirme</option>
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -2273,54 +2272,52 @@ export default function ProjectDetailPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Tür
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewItemType(e.target.value)}
+                  <SelectField
+                    onChange={setNewItemType}
+                    options={[
+                      { label: "Task (Görev)", value: "Task" },
+                      { label: "Story (Hikaye)", value: "Story" },
+                      { label: "Bug (Hata)", value: "Bug" },
+                      { label: "Feature (Özellik)", value: "Feature" },
+                      { label: "Geliştirme", value: "Improvement" },
+                    ]}
                     value={newItemType}
-                  >
-                    <option value="Task">Task (Görev)</option>
-                    <option value="Story">Story (Hikaye)</option>
-                    <option value="Bug">Bug (Hata)</option>
-                    <option value="Feature">Feature (Özellik)</option>
-                    <option value="Improvement">Geliştirme</option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Öncelik
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setNewItemPriority(e.target.value)}
+                  <SelectField
+                    onChange={setNewItemPriority}
+                    options={[
+                      { label: "Düşük", value: "Low" },
+                      { label: "Normal", value: "Medium" },
+                      { label: "Yüksek", value: "High" },
+                      { label: "Acil", value: "Urgent" },
+                    ]}
                     value={newItemPriority}
-                  >
-                    <option value="Low">Düşük</option>
-                    <option value="Medium">Normal</option>
-                    <option value="High">Yüksek</option>
-                    <option value="Urgent">Acil</option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Story Points
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) =>
-                      setNewItemStoryPoints(Number(e.target.value))
-                    }
-                    value={newItemStoryPoints}
-                  >
-                    <option value={0}>0 (Belirsiz)</option>
-                    <option value={1}>1 SP</option>
-                    <option value={2}>2 SP</option>
-                    <option value={3}>3 SP</option>
-                    <option value={5}>5 SP</option>
-                    <option value={8}>8 SP</option>
-                    <option value={13}>13 SP</option>
-                  </select>
+                  <SelectField
+                    onChange={(value) => setNewItemStoryPoints(Number(value))}
+                    options={[
+                      { label: "0 (Belirsiz)", value: "0" },
+                      { label: "1 SP", value: "1" },
+                      { label: "2 SP", value: "2" },
+                      { label: "3 SP", value: "3" },
+                      { label: "5 SP", value: "5" },
+                      { label: "8 SP", value: "8" },
+                      { label: "13 SP", value: "13" },
+                    ]}
+                    value={String(newItemStoryPoints)}
+                  />
                 </div>
               </div>
 
