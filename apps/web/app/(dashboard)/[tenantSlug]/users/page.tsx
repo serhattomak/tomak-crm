@@ -224,7 +224,7 @@ export default function UsersManagementPage() {
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         user.isActive
-                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 text-emerald-700 dark:text-emerald-300"
+                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                           : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
