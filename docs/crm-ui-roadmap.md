@@ -19,7 +19,21 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 > Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
 > `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → `1443` → **−2** Faz 3.2 (`tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60`) → `1441` → **−3** Faz 3.2 sonu (`quotes`'un elle yazılmış yüzeyi primitife geçince kapsam dışı ihlalleri de götürdü) → `1438` (Faz 3 sonu) → **−399** Faz 4.0 `slate→zinc` → `1039` → **−920** Faz 4.1 `violet→blue` → `119` → **−43** Faz 4.2 `fuchsia→blue` → `76` → **−8** Faz 4.3 auth hex → `68` → **−6** Faz 4.4 widget grafik renkleri → `62` → **−1** Faz 5.1 `INPUT_NUMBER` kayıtlı muafiyet → `61` → **−61** Faz 5.2 `NATIVE_SELECT` göçü, 13 dosya/61 site → **`0`** ✅
 >
-> **Kalan sayı tamamen uyarı katmanındadır:** ~~`ARBITRARY_TEXT_SIZE`~~ **0** ✅ · `INLINE_STYLE_PROP` **31** · ~~`CARD_SURFACE`~~ **0** ✅ · ~~`NATIVE_TABLE`~~ **0** ✅ · ~~`NATIVE_SELECT`~~ **0** ✅. **Dört uyarı kuralından üçü 0** — Faz 7'nin `error`'a terfi yolu açık. Sıradaki iş **5.6** (`INLINE_STYLE_PROP` 31, fazın son süpürmesi) → 185 eşsiz yüzeyin dark-mode triyajı → Faz 6 → Faz 7. Tarif: `crm-ui-standards.md` **§2.5**.
+> ### 🎉 FAZ 5 TAMAMLANDI — `--full` **0 error · 0 warning · 189 dosya · PASS**
+>
+> Faz 0 tabanı **1458 error + 1334 advisory**'ydi; **1458 → 0**. Guard'daki **her kural 0**, yani ADR-0004 §9'un uyarıların `error`'a terfi için koyduğu **ön koşul sağlandı** — bu **Faz 7**'nin işi.
+>
+> | Alt-faz | Sayaç | Sonuç |
+> |---|---|---|
+> | 5.0 `messages` çift-token | 56 kopya sınıf | ✅ |
+> | 5.1 `INPUT_NUMBER` | 1 → kayıtlı muafiyet | ✅ |
+> | 5.2 `NATIVE_SELECT` | **61 → 0** (13 dosya) | ✅ |
+> | 5.3 `NATIVE_TABLE` | **61 → 0** (28 dosya / 60 tablo) | ✅ |
+> | 5.4 `CARD_SURFACE` | **2240 → 0** (85 dosya / 1912 dize) | ✅ |
+> | 5.5 `ARBITRARY_TEXT_SIZE` | **1188 → 0** (101 dosya) | ✅ |
+> | 5.6 `INLINE_STYLE_PROP` | **31 → 0** (3 dönüşüm + kural daraltma) | ✅ |
+>
+> **Kalan işler (Faz 5 kapsamı dışında, kayıtlı):** **185 eşsiz yüzeyin dark-mode triyajı** (5.4) · **60 tablonun** ve 85 dosyanın kart yüzeylerinin **elle görsel denetimi** · Ayarlar'da eklenen `h-auto` sınıf sırası (kozmetik) · §2.5.4'ün "kural yoksa ölçüm de yok" kuralı artık **karşılandı**.
 >
 > `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**: panel gidince panelin renk sınıfları da gidiyor.
 
@@ -510,7 +524,11 @@ Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değ
   - ⏳ **Elle duman testi:** 85 dosyada kart yüzeyleri token'a geçti; **koyu temada zemin/kenarlık tonu** ve buzlu cam panellerin (`bg-white/90` — **dokunulmadı**) görünümü ekran ekran bakılmalı
 - [x] **5.5 `ARBITRARY_TEXT_SIZE` 1188 → 0** (`02b9027`, **101 dosya**, 1188 ekleme / 1188 silme). **Karar (kullanıcı onaylı): hepsi ölçeğe, TABAN 10px.** Eşleme: `11px → text-2xs` (674, **birebir** 0.6875rem) · `10px → text-3xs` (451, **birebir** 0.625rem) · `9px → text-3xs` (47, Faz 0 kararı) · `8px` (14) ve `7px` (1) → `text-3xs` (**ölçeğin tabanının altındaydı**, +2/+3px — 7px okunamıyor, taban aynı zamanda **a11y düzeltmesi**) · `11.5px → text-2xs`. **İşin %94.7'si saf kimlik değişimi.** Mekanik olarak 5.3/5.4'ten basit: saf token ikamesi, className cerrahisi yok. Script **eşlenmeyen değerde yazmayı reddediyor** — önceki üç süpürmenin dersi tek satırda: sessizce atlanan değer hata olarak görünmez, sonra "sayaç neden 0'a inmiyor" arayışı olarak görünür
 - [x] **Ölçülen kanıt:** `apps/web` + `packages/ui`'de kalan keyfi tipografi **0** · `--full` **0 error · 31 advisory** · typecheck 2/2 · build 2/2 · scoped PASS. **Dört uyarı kuralından üçü artık 0** (`NATIVE_TABLE`, `CARD_SURFACE`, `ARBITRARY_TEXT_SIZE`) → Faz 7 terfi yolu açık
-- [ ] **5.6 `INLINE_STYLE_PROP` 31** — fazın **son süpürmesi**
+- [x] **5.6 `INLINE_STYLE_PROP` 31 → 0** (`54f5e48`). **Triyaj, süpürme değil:** 31 hit'in **19'u meşru dinamik** (yüzde, `scale()`, konum) · **9'u veriye bağlı renk** (`tpl.colorHex`, `stage.colorHex || "#3B82F6"` — **Gelecek Adımlar #25** veri sözleşmesi) · **1'i `Progress` primitifinin kendisi** · **3'ü gerçekten statik**.
+  - 🔴 **Kural standarttan GENİŞTİ.** §1.4 inline `style`'ı **yalnız statik değerler** için yasaklıyor ve aynı cümlede dinamik değerler için **meşru** sayıyor; kural ise `style={{`'nın her hâline ateşliyordu. `CARD_SURFACE`'in buzlu cam hatasının **aynısı** — ve **aynı şekilde başarısız olur**: sayaç 0'a inmez, cazip çözüm göçü genişletmek olur.
+  - **Daraltılmış desen** yalnız **her değeri saf tırnaklı-literal** olan blokları flagler (`${` yok · üye erişimi yok · `||` yok). Bu bir **şekil testi**, tahmin değil: `stage.colorHex || "#3B82F6"` (`||` ve `.` içerir) ve `${...}` taşıyan bloklar kapsam dışı. 31'in tamamına uygulandığında **tam 3** kalıyor.
+  - **3 dönüşüm:** `min-w-[800px]` · `max-h-[560px] min-h-[320px]` · `organization` canvas'ının nokta ızgarası → arbitrary `background-image` + `background-size`. **Dördü de derlenmiş CSS'te doğrulandı** (CSS değişkenli gradient + size hint, alt çizgi dönüşümünden sağ çıkmalı).
+- [x] 🎉 **FAZ 5 TAMAMLANDI — guard TAMAMEN TEMİZ: 0 error · 0 warning · 189 dosya.** Faz 0 tabanı **1458 error + 1334 advisory**'ydi. **Bu guard'daki her kural artık 0** → ADR-0004 §9'un `error`'a terfi için koyduğu **ön koşul sağlandı** (Faz 7)
 
 ## [ ] Faz 6 — Cila (motion + a11y + terim sözlüğü)
 
