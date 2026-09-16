@@ -68,7 +68,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
     <Popover onOpenChange={handleOpenChange} open={isOpen}>
       <PopoverTrigger asChild>
         <button
-          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-300 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${ isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2" }`}
+          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-250 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${ isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2" }`}
           title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
           type="button"
         >
@@ -77,7 +77,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               {initials.charAt(0)}
             </div>
             <div
-              className={`min-w-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`min-w-0 overflow-hidden transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isCollapsed
                   ? "pointer-events-none max-w-0 -translate-x-2 opacity-0"
                   : "max-w-xs translate-x-0 opacity-100"
@@ -92,7 +92,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             </div>
           </div>
           <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-all duration-300 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
+            className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-all duration-250 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
               isOpen ? "rotate-180" : ""
             } ${isCollapsed ? "hidden opacity-0" : "opacity-100"}`}
           />

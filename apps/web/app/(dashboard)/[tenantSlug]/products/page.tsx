@@ -1331,7 +1331,7 @@ function ProductGridCover({
     >
       <Image
         alt={`${product.name} ürün görseli`}
-        className={`object-cover transition-opacity duration-300 ${
+        className={`object-cover transition-opacity duration-250 ${
           second ? "group-hover/cover:opacity-0" : ""
         }`}
         fill
@@ -1343,7 +1343,7 @@ function ProductGridCover({
         <Image
           alt=""
           aria-hidden="true"
-          className="object-cover opacity-0 transition-opacity duration-300 group-hover/cover:opacity-100"
+          className="object-cover opacity-0 transition-opacity duration-250 group-hover/cover:opacity-100"
           fill
           sizes={GRID_COVER_SIZES}
           src={second}

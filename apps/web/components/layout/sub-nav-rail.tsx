@@ -51,7 +51,7 @@ export function SubNavRail({
 
   return (
     <div
-      className={`flex flex-col justify-between overflow-hidden rounded-r-lg bg-card p-3 transition-all duration-250 ease-out ${ isSidebarCollapsed ? "pointer-events-none w-0 border-none p-0 opacity-0" : "w-[225px] opacity-100" }`}
+      className={`flex flex-col justify-between overflow-hidden rounded-r-lg bg-card p-3 transition-all duration-250 ease-crm ${ isSidebarCollapsed ? "pointer-events-none w-0 border-none p-0 opacity-0" : "w-[225px] opacity-100" }`}
     >
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Hub Header & Collapse Button */}

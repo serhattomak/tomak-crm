@@ -175,7 +175,7 @@ export function PipelineFunnelWidget({
                   {/* Progress bar representing funnel width */}
                   <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
                     <div
-                      className={`h-full rounded-full ${stage.color} transition-all duration-500`}
+                      className={`h-full rounded-full ${stage.color} transition-all duration-250`}
                       style={{ width: stage.conversion }}
                     />
                   </div>

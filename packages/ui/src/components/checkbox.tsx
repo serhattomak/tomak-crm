@@ -47,7 +47,7 @@ export function Checkbox({
     >
       <CheckboxPrimitive.Indicator
         className={cn(
-          "zoom-in-75 flex animate-in items-center justify-center text-current duration-100"
+          "zoom-in-75 flex animate-in items-center justify-center text-current duration-150"
         )}
       >
         {checked === "indeterminate" ? (

@@ -5004,7 +5004,7 @@ function QuotePrintModal({
               style={{
                 transform: `scale(${zoom / 100})`,
                 transformOrigin: "top center",
-                transition: "transform 0.15s ease-out",
+                transition: "transform 0.15s cubic-bezier(0.32, 0.72, 0, 1)",
               }}
             >
               {/* 1. Header & Branding */}

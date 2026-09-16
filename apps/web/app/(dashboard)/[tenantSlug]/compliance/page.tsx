@@ -421,7 +421,7 @@ export default function CompliancePage() {
                 strokeWidth="5"
               />
               <circle
-                className="text-emerald-500 transition-all duration-1000"
+                className="text-emerald-500 transition-all duration-150"
                 cx="28"
                 cy="28"
                 fill="transparent"

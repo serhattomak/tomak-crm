@@ -187,7 +187,7 @@ export function TasksChecklistWidget() {
           {tasks.length > 0 && (
             <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-300"
+                className="h-full rounded-full bg-emerald-500 transition-all duration-250"
                 style={{ width: `${progressPct}%` }}
               />
             </div>

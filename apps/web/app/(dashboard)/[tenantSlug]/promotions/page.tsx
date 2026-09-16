@@ -736,7 +736,7 @@ export default function PromotionsPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3.5 text-center">
                         <button
-                          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-crm-in-out focus:outline-none ${
                             camp.isActive
                               ? "bg-emerald-500"
                               : "bg-zinc-300 dark:bg-zinc-700"
@@ -745,7 +745,7 @@ export default function PromotionsPage() {
                           type="button"
                         >
                           <span
-                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow-lg ring-0 transition duration-200 ease-in-out ${ camp.isActive ? "translate-x-4" : "translate-x-0" }`}
+                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-card shadow-lg ring-0 transition duration-200 ease-crm-in-out ${ camp.isActive ? "translate-x-4" : "translate-x-0" }`}
                           />
                         </button>
                       </TableCell>

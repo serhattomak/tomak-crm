@@ -298,7 +298,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
                       <div
-                        className="h-full rounded-full bg-blue-600 transition-all duration-500"
+                        className="h-full rounded-full bg-blue-600 transition-all duration-250"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

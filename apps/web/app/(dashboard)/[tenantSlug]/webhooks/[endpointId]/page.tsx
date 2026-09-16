@@ -498,7 +498,7 @@ export default function WebhookBuilderPage() {
             </span>
             <button
               aria-label="isActive toggle"
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-150 ease-out ${
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-150 ease-crm ${
                 isActive
                   ? "bg-zinc-900 dark:bg-zinc-100"
                   : "bg-zinc-300 dark:bg-zinc-700"
@@ -507,7 +507,7 @@ export default function WebhookBuilderPage() {
               type="button"
             >
               <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-out ${ isActive ? "translate-x-5" : "translate-x-0" }`}
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition duration-150 ease-crm ${ isActive ? "translate-x-5" : "translate-x-0" }`}
               />
             </button>
           </div>
