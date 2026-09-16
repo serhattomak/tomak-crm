@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { CheckCircle2 } from "lucide-react";
@@ -44,6 +45,20 @@ export default function CustomerDetailPage() {
 
   // Modals
   const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    confirmText?: string;
+    variant?: "destructive" | "warning" | "default";
+    onConfirm: () => void | Promise<void>;
+  }>({
+    description: "",
+    onConfirm: () => {},
+    open: false,
+    title: "",
+  });
   const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
   const [activityModalType, setActivityModalType] = useState<string>("Call");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -185,27 +200,34 @@ export default function CustomerDetailPage() {
   );
 
   const handleDeleteContact = useCallback(
-    async (contactId: string) => {
+    (contactId: string) => {
       if (!(activeTenant && customer)) {
         return;
       }
-      if (!confirm("Bu yetkili kişiyi silmek istediğinize emin misiniz?")) {
-        return;
-      }
 
-      try {
-        const res = await ApiClient.deleteCustomerContact(
-          customer.id,
-          contactId,
-          activeTenant.id
-        );
-        if (res.success) {
-          showToast("Yetkili kişi silindi.");
-          loadData();
-        }
-      } catch {
-        showToast("Yetkili silinirken hata oluştu.");
-      }
+      setConfirmDialog({
+        confirmText: "Yetkiliyi Sil",
+        description: "Bu yetkili kişiyi silmek istediğinize emin misiniz?",
+        onConfirm: async () => {
+          try {
+            const res = await ApiClient.deleteCustomerContact(
+              customer.id,
+              contactId,
+              activeTenant.id
+            );
+            if (res.success) {
+              showToast("Yetkili kişi silindi.");
+              loadData();
+            }
+          } catch {
+            showToast("Yetkili silinirken hata oluştu.");
+          }
+          setConfirmDialog((prev) => ({ ...prev, open: false }));
+        },
+        open: true,
+        title: "Yetkiliyi Sil",
+        variant: "destructive",
+      });
     },
     [activeTenant, customer, loadData, showToast]
   );
@@ -337,6 +359,17 @@ export default function CustomerDetailPage() {
           tenantId={activeTenant?.id || ""}
         />
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        confirmText={confirmDialog.confirmText}
+        description={confirmDialog.description}
+        onConfirm={confirmDialog.onConfirm}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        open={confirmDialog.open}
+        title={confirmDialog.title}
+        variant={confirmDialog.variant}
+      />
     </PageContainer>
   );
 }
