@@ -89,6 +89,21 @@ docker inspect supabase_db_crm-monorepo --format '{{range .Mounts}}{{.Name}}{{pr
   positive control (`**/theme-audit.spec.ts` vs. `node -e` walking the same tree). Treat
   any "not found" from a search tool as unverified until a second method agrees.
 
+**A directory walk that climbs the wrong number of levels reads other projects.** A sizing
+script of 2026-09-16 resolved the repo root by joining `..` four times from
+`.tmp/sessions/<slug>/`; the correct number is three. It therefore walked `D:\serhatdev` and
+scanned **13,067 files across five unrelated projects** — `imanvakti-expo`, `joint/jointvault`,
+`yorgan-monorepo`, `YorganWeb`.
+
+It only read, so nothing was damaged. It would have been a write had the same root fed a
+sweep, and the sweep would have looked correct: the guard's own filters (extension, skip
+dirs) pass on any project.
+
+Two rules follow. **Assert the root before walking** — check that `package.json` and the
+expected workspace directory are there, and fail loudly otherwise. And **print the
+by-directory breakdown of anything you count**: the six-line table is what exposed this, and
+a bare total (37) would have looked perfectly plausible.
+
 ## Line endings
 
 `core.autocrlf = true` in this repo, with **no `.gitattributes`**. The working tree is
