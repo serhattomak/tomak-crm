@@ -1,4 +1,3 @@
-/* Hallmark · component: tasks-checklist · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
@@ -11,6 +10,7 @@ import {
   CardTitle,
 } from "@workspace/ui/components/card";
 import { EmptyState } from "@workspace/ui/components/empty-state";
+import { SelectField } from "@workspace/ui/components/select";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { Check, CheckSquare, Clock, Plus, Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -211,20 +211,21 @@ export function TasksChecklistWidget() {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <select
-                className="rounded-lg border border-border/80 bg-background px-2 py-1.5 font-medium text-[11px] text-foreground focus:border-primary focus:outline-none"
-                onChange={(e) =>
+              <SelectField
+                onChange={(value) =>
                   setNewTaskPriority(
-                    e.target.value as "low" | "medium" | "high" | "urgent"
+                    value as "low" | "medium" | "high" | "urgent"
                   )
                 }
+                options={[
+                  { label: "Normal", value: "medium" },
+                  { label: "Yüksek", value: "high" },
+                  { label: "Acil", value: "urgent" },
+                  { label: "Düşük", value: "low" },
+                ]}
+                triggerClassName="h-7 px-2 font-medium text-2xs"
                 value={newTaskPriority}
-              >
-                <option value="medium">Normal</option>
-                <option value="high">Yüksek</option>
-                <option value="urgent">Acil</option>
-                <option value="low">Düşük</option>
-              </select>
+              />
 
               <Button
                 className="h-8 gap-1 px-3 text-xs"
