@@ -308,6 +308,21 @@ first is recorded under "Tool limits". Present the glob's zero only with a walk 
 9. **A measurement method answers only the question it asks.** `git grep -c` counts LINES,
    so a 545-occurrence change looked like 536; a substring count of `text-zinc-400` also
    matched inside `dark:text-zinc-400`, doubling the real total. State the unit.
+10. **After a mechanical transform, run the formatter and assert it is a no-op.** Four commits
+   of print-route work used slice-and-shift scripts and checked guard, fixtures, typecheck,
+   lint and build each time — **none of which include Biome**. The drift sat unnoticed until an
+   unrelated sweep happened to run `npm run format` and Biome reported "Fixed 6 files".
+   Shifting a block eight spaces left changes which lines fit, so the formatter reflows the JSX
+   the script produced. One line, and it belongs beside the other gates.
+11. **A script that writes is not a script that verifies.** A rewiring script removed a
+   function with naive brace counting, which stops at the `}` of a destructuring pattern in
+   `function F({ a, b }: Props) {` and leaves the body orphaned; it wrote the file anyway. What
+   caught it was a **residual count** — the function still appeared once — and a removal size
+   that contradicted the expected 76 lines. Restore first, then fix the tool, then re-run.
+12. **Refuse-to-guess beats best-effort in a sweep.** The Hallmark removal required each file
+   to pass four preconditions and would have *skipped and reported* any that failed rather than
+   half-edit it. All 28 passed, so the strictness cost nothing; had one not, the alternative
+   was a silent partial delete next to real code.
 
 ## Shell
 
