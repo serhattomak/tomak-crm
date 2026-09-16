@@ -72,12 +72,11 @@ redis_data/
 # is what gets committed, never this file. Supabase runs supabase/seed.sql after all
 # migrations, on `supabase start` and on every `supabase db reset`.
 supabase/seed.sql
-# Supabase CLI scratch. These two were committed before these ignore rules
-# existed IN THIS REPO — the rules that did exist were in the other repo's
-# .gitignore, which does not apply here. Note that an ignore rule never untracks
-# a tracked file; `git rm --cached` in the same commit is what does that.
-supabase/.branches/
-supabase/.temp/
+# Supabase CLI scratch (`supabase/.branches`, `supabase/.temp`) is ignored by
+# `supabase/.gitignore`, which the CLI generates and which owns the CLI's own
+# artifacts. Those two files used to be tracked because the only rules lived in
+# the OTHER repo's .gitignore, which does not apply here; an ignore rule never
+# untracks a tracked file, so `git rm --cached` did that part.
 
 # ============================================================================
 # Environment & Secrets
