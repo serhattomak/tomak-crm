@@ -8,6 +8,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 A multi-tenant CRM platform (Next.js 16 frontend + .NET 10 API + Supabase).
 
+> **Where the work stands:** `docs/crm-ui-roadmap.md` opens with **"📍 NEREDE KALDIK — buradan
+> başla"** — what closed, what is blocked and why, what is waiting on a human decision, and
+> what can be picked up without one. Read that section before starting anything in the UI
+> programme; the rest of that file is the detailed record and the ~270-row progress log.
+
 ## Tooling
 
 This project uses **Ultracite** (Biome under the hood). Biome is the one formatter and

@@ -8,6 +8,104 @@ Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulan
 
 ---
 
+## 📍 NEREDE KALDIK — buradan başla
+
+> **Son güncelleme: 2026-09-16.** Bu bölüm aşağıdaki ~1050 satırın (ve 269 satırlık İlerleme
+> Günlüğü'nün) özetidir. Devam etmek için günlüğe inmene gerek yok.
+
+**Program A (Faz 0–7) TAMAMEN KAPANDI** — sekiz fazın hepsi `[x]`. **Program B** iptal edildi,
+**Program C** ertelendi. Açık iş yalnız **Gelecek Adımlar** listesindedir (#1–#32).
+
+### 🔴 PUSH EDİLMEDİ
+`origin/master` = `525ac9d`. Yerel `master` **33 commit ileri**; bu oturumun payı **19 commit**
+(`b812bd4` … `3b6624c`). Ağaç temiz, tüm kapılar yeşil. **Push kararı verilmedi.**
+
+### ✅ Bu oturumda kapananlar
+
+| # | Sonuç | Commit |
+|---|---|---|
+| **#23** | 10 `alert()` → sonner + **yeni** `(auth)/layout.tsx` (eksik `Toaster` mount'u) | `b812bd4` `f7fdf87` |
+| **#20** | Triyaj yapıldı; **süpürme bilinçli YAPILMADI** — premis çürüdü (çip yok, `2xl` konsensüs değil, izinli hedef print korumasını düşürüyordu) | `b92eafe` |
+| **#30 ad.1** | Print kart kuralı radius sınıfı yerine `[data-slot="card"]`'a bağlandı | `973750f` `b262c1e` |
+| **#21 · 4/5** | `invoices` · `quotes` (**B deseni silindi**, −915 satır) · `shipments` (**A6**) · `finance` | `15d9332` … `6a77063` |
+| **#18** | Biome tek biçimlendirici; Prettier emekliye ayrıldı (95 dosya, tam 95 teşhis düştü) | `ecf0c1d` `21f2039` `3267ac3` |
+| **#17** | `packages/ui` biçim normalizasyonu — aynı geçişte kapandı | `21f2039` |
+| **#16** | 28 Hallmark imzası silindi — premis çürüdü: **mekanikti** | `ddd6bcb` |
+| — | Script çıkarımlarının bıraktığı biçim sapması düzeltildi | `31585c4` |
+
+### 🔴 ÖNCE BUNLAR — senden bekleyen, başkası yapamaz
+
+**1. #21'in elle print önizlemesi** — maddenin *kendi şartı*: "Elle print önizlemesiyle doğrulanmalı."
+Dört rota hazır; hiçbirinin basılı çıktısı **görülmedi**:
+
+| Rota | Nereden |
+|---|---|
+| `/invoices/<id>/print` | `/…/invoices` → fatura aç → **Yazdır** |
+| `/quotes/<id>/print` | `/…/quotes` → teklif aç → **Teklif Belgesi Önizleme** → **Yazdır** |
+| `/shipments/<id>/print` | `/…/shipments` → etiket önizlemesi → **Yazdır (A6/Termal)** |
+| `/finance/cari/<cariId>/print` | `/…/finance` → cari ekstre → **Yazdır** |
+
+Her biri için: **(a)** rota açılıyor mu · **(b)** drawer/backdrop/kapat düğmesi **hiç** basılıyor mu ·
+**(c)** `@page` doğru mu (A4/12mm — `shipments` **A6**, kenar **4mm ilk tahmin**) ·
+**(d)** tablo sayfa kırılımında bölünüyor mu · **(e)** **her iki temada** okunur mu.
+> (e) ölçülmedi: belgeler `dark:` sınıflarını paylaşıyor ve rotalar **bilerek** beyaza zorlamıyor
+> (zorlamak `dark:` metin renklerini beyaz zeminde bırakırdı). **Statik araçlar print sonucunu göremez.**
+
+**2. #32 kararı** — `contracts` print yüzeyini açan şey. Belgesi enjekte HTML ve stili **ölü**
+(`@tailwindcss/typography` kurulu değil; derlenmiş CSS'te `.prose` kuralı **0**; preflight
+başlıkları/marjları sıfırlıyor → metin düz bir yığın). Üç seçenek **ölçülmüş** halde:
+- **(a)** typography kur → yeni bağımlılık (ADR-0004 prosedürü) + `prose-slate` **guard'ın göremediği** bir slate paleti doğurur
+- **(b)** enjekte HTML'i kapsayıcıda arbitrary variant'larla stillendir, `prose` sınıflarını sil → guard görür, yeni bağımlılık yok
+- **(c)** olduğu gibi bırak
+
+### ⏳ Açık maddeler
+
+| # | Ne | Ne bekliyor |
+|---|---|---|
+| 1 | Monolit sayfa ayrıştırması (9 dosya, ~2.300–5.000 satır) | kendi başına proje |
+| 2 | Görsel regresyon altyapısı (Playwright screenshot + Storybook) | kendi başına proje |
+| 3 | Tam a11y denetimi (52 ekran) | kendi başına proje · **#31'in ~470 a11y bulgusuyla birleştirilmeli** |
+| 5 | Mikro kopya tam geçişi (52 ekran) | — |
+| 6 | `email-preview.ts` çift paletinin tek çeviriciye indirgenmesi | — |
+| 8 | `design.md` / `docs/design-system.md` stub'larının kaldırılması | dış referans teyidi |
+| 11 | Z-index ölçeği (`z-[60]`, `z-[70]`, `z-60`) | — |
+| 13 | `accordion` + `calendar` primitifleri | gerçek tüketici doğması |
+| 14 | `apps/web/components/` kökündeki 14 widget'ın gözden geçirilmesi | — |
+| 15 | `lucide-react ^1.32.0` pin doğrulaması | — |
+| 21 | **4/5 bitti** — kalan: önizleme + `contracts` | yukarıdaki 1 ve 2 |
+| 22 | `overlayClassName` boşluğu (4 overlay primitifi) | somut ihtiyaç doğması |
+| 24 | `--success` / `--warning` token'ları | ADR-0004 §5 · **tasarım kararı** |
+| 25 | Pipeline renk alanı = **veri sözleşmesi** | API + veri göçü |
+| **30** | **ad.1 bitti** — ad.2: radius köprüsünü emekliye ayırmak | önizleme + "kart nedir" triyajı |
+| **31** | **Lint borcu: 5546 teşhis** — kural-kural triyaj | kararlar (aşağı bak) |
+| **32** | `contracts` + ölü `prose` | yukarıdaki karar 2 |
+
+### 🛠️ Bağımsız ilerlenebilecekler (karar gerektirmez)
+
+1. **#31 — triyaj tablosu** (kural kural *uygula / kapat / daralt*). Ölçülmüş hali hazır: `noJsxPropsBind` **1693** (0 mekanik — **mimari karar**, ~1693 handler `useCallback`) · `useSortedClasses` **1317** (1303 mekanik) · `noLeakedRender` 390 · `useAwait` 301 · `noLabelWithoutControl` 297 (a11y) · `noNestedTernary` 164 · `format` 95 · … · **mekanik 1699 / elle 3949**. `ultracite` **hiçbir CI kapısında değil**; `npm run lint` = ESLint (0 error / 347 uyarı).
+2. **#30 ad.2** — elle yazılmış kartları `data-print-block` ile işaretleyip radius listesini **en son** emekliye ayırmak (ters sıra ~541 yüzeyi korumasız bırakır). Önizleme sonrası.
+3. **Ekran-çıktısı ailesi (5 yüzey)** — `dashboard-share-popover` · `analytics` · `payroll` · `vehicles` · `dashboard-tabs-bar`. Maddenin kapsamı **dışında bırakıldı ve karara bağlanmadı**: "bu ekranı bas" ayrı bir soru (belge değil).
+4. **#25** — pipeline renk alanını token sözlüğüne bağlamak (`colorKey: "chart-1"`), şu an gerekçesiyle allowlist'te.
+5. **Kalan print yüzeyleri** — önizleme geçerse reçete hazır: belge component'i → ayrı rota → buton `router.push` → A-yamasını emekliye ayır.
+
+### 🗂️ Kanıt nerede
+
+| Nerede | Ne | Kalıcı mı |
+|---|---|---|
+| **Bu dosya** | kararlar, ölçümler, gerekçeler, sayılar | ✅ sürüm kontrolünde |
+| `docs/agents/environment.md` | ölçüm ve tool tuzakları (+ bu oturumda 3 kural) | ✅ |
+| `docs/crm-ui-standards.md` | §1.1 print notu, §2.1 primitif checklist'i | ✅ |
+| `AGENTS.md` | tooling (Biome tek biçimlendirici), bilinen boşluk → #31 | ✅ |
+| `.tmp/sessions/2026-09-16-*/` | 5 oturum · 67 dosya: `context.md` + script'ler + artefaktlar | ⚠️ **`.gitignore`'da** |
+
+> ⚠️ **`.tmp/` gitignore'da — bu kayıtlar sürüm kontrolünde DEĞİL.** Yerelde duruyorlar, ama bir
+> klonda veya `git clean -fdx` sonrası **gelmezler**. Kararlar ve sayılar yukarıdaki kural
+> dokümanlara işlendi, yani *bilgi* kalıcı; script'ler ise yeniden üretilebilir. Kanıtı da
+> kalıcı kılmak istersen `.tmp/sessions/` seçili klasörlerini repo içine taşımak gerekir —
+> **bu senin kararın** (bugüne kadar konvansiyon `.tmp`'yi geçici tutmak oldu).
+
+---
+
 ## Ölçülen Taban (2026-09-15, Faz 0 sonrası)
 
 Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilgili sayıyı düşürmelidir.
