@@ -19,7 +19,7 @@ Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilg
 > Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
 > `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → `1443` → **−2** Faz 3.2 (`tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60`) → `1441` → **−3** Faz 3.2 sonu (`quotes`'un elle yazılmış yüzeyi primitife geçince kapsam dışı ihlalleri de götürdü) → `1438` (Faz 3 sonu) → **−399** Faz 4.0 `slate→zinc` → `1039` → **−920** Faz 4.1 `violet→blue` → `119` → **−43** Faz 4.2 `fuchsia→blue` → `76` → **−8** Faz 4.3 auth hex → `68` → **−6** Faz 4.4 widget grafik renkleri → `62` → **−1** Faz 5.1 `INPUT_NUMBER` kayıtlı muafiyet → `61` → **−61** Faz 5.2 `NATIVE_SELECT` göçü, 13 dosya/61 site → **`0`** ✅
 >
-> **Kalan sayı tamamen uyarı katmanındadır:** `ARBITRARY_TEXT_SIZE` **1188** · `INLINE_STYLE_PROP` **31** · ~~`CARD_SURFACE`~~ **0** ✅ · ~~`NATIVE_TABLE`~~ **0** ✅. Yani `--full` **kırıcı hata üretmiyor**, ve **iki uyarı kuralı artık 0**; sıradaki iş 5.5 (`ARBITRARY_TEXT_SIZE` 1188) → 5.6 (`INLINE_STYLE_PROP` 31) → 5.4'ün kalanı (185 eşsiz yüzeyin dark-mode triyajı). Tarif: `crm-ui-standards.md` **§2.5**.
+> **Kalan sayı tamamen uyarı katmanındadır:** ~~`ARBITRARY_TEXT_SIZE`~~ **0** ✅ · `INLINE_STYLE_PROP` **31** · ~~`CARD_SURFACE`~~ **0** ✅ · ~~`NATIVE_TABLE`~~ **0** ✅ · ~~`NATIVE_SELECT`~~ **0** ✅. **Dört uyarı kuralından üçü 0** — Faz 7'nin `error`'a terfi yolu açık. Sıradaki iş **5.6** (`INLINE_STYLE_PROP` 31, fazın son süpürmesi) → 185 eşsiz yüzeyin dark-mode triyajı → Faz 6 → Faz 7. Tarif: `crm-ui-standards.md` **§2.5**.
 >
 > `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**: panel gidince panelin renk sınıfları da gidiyor.
 
@@ -454,7 +454,7 @@ Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değ
 - [x] **Print/e-posta istisnası belgelendi:** `email-preview.ts` **hiç** hex/renk-sınıfı eşleşmesi üretmiyor (19 `--email-*` değişkeni, hex yok, `slate`/`violet` yok) → temizliği **yapısal**; allowlist kaydı **gerekmiyor** ve belgelerdeki "kayıtlı" ifadesi düzeltildi. `globals.css` print bloğundaki `#0f172a` **kasıtlı** (tema-bağımsız mürekkep: koyu temada `--foreground` beyaza döner → beyaz üstüne beyaz basılır) → yorumla belgelendi, değiştirilmedi
 - [x] **⚠️ Yan bulgu:** `notification-center` ve `dashboard-share-popover`'da **`PopoverContent`, `Popover.Root`'un dışındaydı** (bu geçişin kendi regression'ı: `b9ec6fa`, `90316df`) → `34c5218` ile düzeltildi; repodaki 4 `Popover` tüketicisi tarandı, başka örnek yok
 
-## [~] Faz 5 — Tablo & form *görünüm* standardı — **sürüyor (5.0 ✅ · 5.1 ✅ · 5.2 ✅ 61/61 · 5.3 ✅ 60/60 · 5.4: primitif+kural ✅, süpürme bekliyor · 5.5/5.6 bekliyor)**
+## [~] Faz 5 — Tablo & form *görünüm* standardı — **sürüyor (5.0 ✅ · 5.1 ✅ · 5.2 ✅ 61/61 · 5.3 ✅ 60/60 · 5.4 ✅ 2240/2240 · 5.5 ✅ 1188/1188 · 5.6: 31 bekliyor)**
 
 **Motor göçü yoktur** — elle yazılmış tablolar/kanban/filtreler kalır, yalnızca görünümleri `@workspace/ui` primitiflerine bağlanır.
 
@@ -508,7 +508,9 @@ Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değ
   - ⚠️ **Dört sessiz araç hatası** (§2.5.4'e yazıldı): `className={cn("…")}` biçimi · sayacın o dala bağlı olmaması · template içindeki iç string'ler (124 site) · opaklık sonekli `dark:` partneri (59 string — **fazın yok etmek için var olduğu kusurun ta kendisi**). **En kötüsü:** üç yerde `className="[object Object]"`; **`tsc` de guard da geçti**, diff okunarak yakalandı → script artık yazmayı reddediyor
   - [ ] **185 eşsiz yüzeyin triyajı** — `dark:` partneri hiç yok; token bekleyen iş değil, **dark-mode hata adayı**. Kural bunları yakalamaz (eşli değiller)
   - ⏳ **Elle duman testi:** 85 dosyada kart yüzeyleri token'a geçti; **koyu temada zemin/kenarlık tonu** ve buzlu cam panellerin (`bg-white/90` — **dokunulmadı**) görünümü ekran ekran bakılmalı
-- [ ] **5.5 ARBITRARY_TEXT_SIZE 1241** · **5.6 INLINE_STYLE_PROP 31** — **hiçbir faza atanmamış iki uyarı kuralı** (planlama boşluğu; ADR-0004'e göre temizlenmeden error'a terfi edemezler, yani Faz 7'nin önkoşulu)
+- [x] **5.5 `ARBITRARY_TEXT_SIZE` 1188 → 0** (`02b9027`, **101 dosya**, 1188 ekleme / 1188 silme). **Karar (kullanıcı onaylı): hepsi ölçeğe, TABAN 10px.** Eşleme: `11px → text-2xs` (674, **birebir** 0.6875rem) · `10px → text-3xs` (451, **birebir** 0.625rem) · `9px → text-3xs` (47, Faz 0 kararı) · `8px` (14) ve `7px` (1) → `text-3xs` (**ölçeğin tabanının altındaydı**, +2/+3px — 7px okunamıyor, taban aynı zamanda **a11y düzeltmesi**) · `11.5px → text-2xs`. **İşin %94.7'si saf kimlik değişimi.** Mekanik olarak 5.3/5.4'ten basit: saf token ikamesi, className cerrahisi yok. Script **eşlenmeyen değerde yazmayı reddediyor** — önceki üç süpürmenin dersi tek satırda: sessizce atlanan değer hata olarak görünmez, sonra "sayaç neden 0'a inmiyor" arayışı olarak görünür
+- [x] **Ölçülen kanıt:** `apps/web` + `packages/ui`'de kalan keyfi tipografi **0** · `--full` **0 error · 31 advisory** · typecheck 2/2 · build 2/2 · scoped PASS. **Dört uyarı kuralından üçü artık 0** (`NATIVE_TABLE`, `CARD_SURFACE`, `ARBITRARY_TEXT_SIZE`) → Faz 7 terfi yolu açık
+- [ ] **5.6 `INLINE_STYLE_PROP` 31** — fazın **son süpürmesi**
 
 ## [ ] Faz 6 — Cila (motion + a11y + terim sözlüğü)
 
