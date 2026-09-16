@@ -20,6 +20,11 @@
       "file": "apps/web/app/(dashboard)/[tenantSlug]/pipelines/_components/pipeline-settings-modal.tsx",
       "reason": "Stage color default is persisted data, not a styling literal: the field is user-editable text, consumed as a Tailwind class by the pipeline board and as a raw hex (with alpha suffixes) by the kanban and table views. Constraining it to a token vocabulary is a data-contract change, tracked as deferred item 25",
       "rule": "INLINE_HEX_STYLE"
+    },
+    {
+      "file": "packages/ui/src/components/table.tsx",
+      "reason": "This file IS the canonical Table primitive; the ban exists so consumers do not hand-roll a table. The primitive's own internal <table> is the abstraction, not a violation, and the guard cannot tell implementation from consumer. Fixing is impossible by construction. Same class of entry as number-input.tsx",
+      "rule": "NATIVE_TABLE"
     }
   ]
 }
