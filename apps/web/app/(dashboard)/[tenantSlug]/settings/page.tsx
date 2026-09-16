@@ -70,10 +70,10 @@ export default function WorkspaceSettingsPage() {
       <div>
         <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
           <Settings className="h-6 w-6 text-blue-500" />
-          Workspace Settings
+          Sistem Ayarları
         </h1>
         <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-          Update basic details and branding preferences for this workspace.
+          Bu çalışma alanının temel bilgilerini ve marka tercihlerini güncelleyin.
         </p>
       </div>
 
@@ -97,7 +97,7 @@ export default function WorkspaceSettingsPage() {
         >
           <div>
             <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-              Workspace Name
+              Çalışma Alanı Adı
             </label>
             <div className="relative">
               <Building2 className="absolute top-3 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
@@ -113,7 +113,7 @@ export default function WorkspaceSettingsPage() {
 
           <div>
             <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-              Workspace Slug
+              Çalışma Alanı Kısa Adı
             </label>
             <input
               className="w-full cursor-not-allowed rounded-xl border border-border bg-zinc-100 px-3 py-2.5 font-mono text-xs text-zinc-500 dark:bg-zinc-800/70 dark:text-zinc-400"
@@ -122,14 +122,14 @@ export default function WorkspaceSettingsPage() {
               value={activeTenant?.slug || ""}
             />
             <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
-              Slug is permanent and used in URL paths and database partition
-              keys.
+              Kısa ad kalıcıdır; URL yollarında kullanılır ve
+              sonradan değiştirilemez.
             </p>
           </div>
 
           <div>
             <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-              Logo URL
+              Logo Adresi
             </label>
             <input
               className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"

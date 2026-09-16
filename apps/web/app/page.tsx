@@ -60,7 +60,7 @@ export default function RootPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-muted text-zinc-600 dark:bg-zinc-950 dark:text-zinc-400">
         <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500 dark:text-blue-400" />
-        <p className="font-semibold text-xs">Loading your workspaces...</p>
+        <p className="font-semibold text-xs">Çalışma alanlarınız yükleniyor...</p>
       </div>
     );
   }
@@ -75,17 +75,17 @@ export default function RootPage() {
             </div>
             <div>
               <h1 className="font-bold text-lg text-zinc-900 tracking-tight dark:text-zinc-100">
-                Create a Workspace
+                Çalışma Alanı Oluştur
               </h1>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                You don&apos;t have any active workspace yet.
+                Henüz aktif bir çalışma alanınız yok.
               </p>
             </div>
           </div>
           <button
             className="rounded-xl p-2 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleLogout}
-            title="Logout"
+            title="Çıkış Yap"
           >
             <LogOut className="h-4 w-4" />
           </button>
@@ -104,13 +104,13 @@ export default function RootPage() {
         >
           <div>
             <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-              Workspace Name
+              Çalışma Alanı Adı
             </label>
             <input
               autoFocus
               className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2.5 text-xs text-zinc-900 transition-all placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-blue-400 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
               onChange={(e) => setNewTenantName(e.target.value)}
-              placeholder="e.g. Acme Corp"
+              placeholder="Örn: Acme A.Ş."
               required
               type="text"
               value={newTenantName}

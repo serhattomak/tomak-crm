@@ -120,10 +120,10 @@ export default function UsersManagementPage() {
         <div>
           <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             <Users className="h-6 w-6 text-blue-500" />
-            Team Members
+            Kullanıcı Yönetimi
           </h1>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            Manage workspace members and their access roles.
+            Çalışma alanı kullanıcılarını ve erişim rollerini yönetin.
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export default function UsersManagementPage() {
             }}
           >
             <UserPlus className="h-4 w-4" />
-            Invite Member
+            Kullanıcı Davet Et
           </button>
         </PermissionGate>
       </div>
@@ -158,17 +158,17 @@ export default function UsersManagementPage() {
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-zinc-400 dark:text-zinc-500">
             <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
-            Loading team members...
+            Kullanıcılar yükleniyor...
           </div>
         ) : (
           <Table>
             <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
               <TableRow>
-                <TableHead className="px-6 py-3.5 h-auto">User</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Email</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Assigned Role</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Status</TableHead>
-                <TableHead className="px-6 py-3.5 h-auto">Joined</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Kullanıcı</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">E-posta</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Atanan Rol</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Durum</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Katılım</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -259,7 +259,7 @@ export default function UsersManagementPage() {
             <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <UserPlus className="h-4 w-4 text-indigo-500" />
-                Invite New Member
+                Yeni Kullanıcı Davet Et
               </DialogTitle>
               <DialogClose asChild>
                 <button
@@ -278,12 +278,12 @@ export default function UsersManagementPage() {
             >
               <div>
                 <Label className="mb-1.5" required>
-                  Email Address
+                  E-posta Adresi
                 </Label>
                 <Input
                   leftIcon={<Mail />}
                   onChange={(e) => setInviteEmail(e.target.value)}
-                  placeholder="teammate@company.com"
+                  placeholder="ahmet@sirket.com"
                   required
                   type="email"
                   value={inviteEmail}
@@ -291,7 +291,7 @@ export default function UsersManagementPage() {
               </div>
 
               <div>
-                <Label className="mb-1.5">Initial Role</Label>
+                <Label className="mb-1.5">Başlangıç Rolü</Label>
                 <Select onValueChange={setInviteRoleId} value={inviteRoleId}>
                   <SelectTrigger>
                     <SelectValue placeholder="Rol Seçiniz" />
@@ -312,7 +312,7 @@ export default function UsersManagementPage() {
                   onClick={() => setIsInviteOpen(false)}
                   type="button"
                 >
-                  Cancel
+                  Vazgeç
                 </button>
                 <button
                   className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"

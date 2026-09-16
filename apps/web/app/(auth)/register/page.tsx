@@ -66,7 +66,7 @@ export default function RegisterPage() {
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
-          alt="Ambient Background"
+          alt="Ortam Arka Planı"
           className="scale-125 object-cover blur-3xl"
           fill
           priority
@@ -79,7 +79,7 @@ export default function RegisterPage() {
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
-            alt="Editorial Wave Art"
+            alt="Editoryal Dalga Görseli"
             className="object-cover"
             fill
             priority
@@ -90,7 +90,7 @@ export default function RegisterPage() {
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
             <span className="font-bold text-2xs text-white/90 uppercase tracking-[0.25em]">
-              START YOUR JOURNEY
+              YOLCULUĞUNUZA BAŞLAYIN
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />
           </div>
@@ -98,15 +98,15 @@ export default function RegisterPage() {
           {/* Bottom Quote & Typography */}
           <div className="relative z-10 max-w-sm space-y-4">
             <h2 className="font-normal font-serif text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl">
-              Build
+              Sıra Dışı
               <br />
-              Something
+              Bir Şey
               <br />
-              Remarkable
+              İnşa Edin
             </h2>
             <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
-              Create your multi-tenant workspace and unleash the full power of
-              your team.
+              Çok kiracılı çalışma alanınızı oluşturun ve ekibinizin tüm
+              gücünü ortaya çıkarın.
             </p>
           </div>
         </div>
@@ -136,10 +136,10 @@ export default function RegisterPage() {
           <div className="mx-auto w-full max-w-sm space-y-5">
             <div className="space-y-1.5 text-center">
               <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl">
-                Create Account
+                Hesap Oluştur
               </h1>
               <p className="font-normal text-zinc-500 text-xs">
-                Enter your details to create your workspace
+                Çalışma alanınızı oluşturmak için bilgilerinizi girin
               </p>
             </div>
 
@@ -156,12 +156,12 @@ export default function RegisterPage() {
             >
               <div>
                 <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
-                  Full Name
+                  Ad Soyad
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="John Doe"
+                  placeholder="Ahmet Yılmaz"
                   required
                   type="text"
                   value={fullName}
@@ -170,12 +170,12 @@ export default function RegisterPage() {
 
               <div>
                 <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
-                  Email
+                  E-posta
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="E-postanızı girin"
                   required
                   type="email"
                   value={email}
@@ -184,13 +184,13 @@ export default function RegisterPage() {
 
               <div>
                 <label className="mb-1.5 block font-semibold text-zinc-800 text-xs">
-                  Password
+                  Şifre
                 </label>
                 <div className="relative">
                   <input
                     className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-zinc-900 text-xs outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-900 sm:text-sm"
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Minimum 6 characters"
+                    placeholder="En az 6 karakter"
                     required
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -242,7 +242,7 @@ export default function RegisterPage() {
                       fill="#EA4335"
                     />
                   </svg>
-                  Sign Up with Google
+                  Google ile Kayıt Ol
                 </button>
               </div>
             </form>
@@ -255,7 +255,7 @@ export default function RegisterPage() {
               className="font-semibold text-zinc-900 hover:underline"
               href="/login"
             >
-              Sign In
+              Giriş Yap
             </Link>
           </div>
         </div>

@@ -199,11 +199,11 @@ export default function RolesManagementPage() {
         <div>
           <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             <Shield className="h-6 w-6 text-blue-500" />
-            Roles & Permissions Matrix
+            Roller & Yetkiler
           </h1>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            Configure fine-grained PBAC / RBAC permission policies. Changes
-            automatically update Redis cache.
+            Rollerin yetki politikalarını ayrıntılı biçimde yapılandırın.
+            Değişiklikler kaydedildiğinde anında geçerli olur.
           </p>
         </div>
 
@@ -213,7 +213,7 @@ export default function RolesManagementPage() {
             onClick={() => setIsCreateOpen(true)}
           >
             <Plus className="h-4 w-4" />
-            New Role
+            Yeni Rol
           </button>
         </PermissionGate>
       </div>
@@ -256,7 +256,7 @@ export default function RolesManagementPage() {
                       <span className="flex items-center gap-1.5 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                         {role.name}
                         {role.isDefault && (
-                          <span title="System default role">
+                          <span title="Sistem varsayılan rolü">
                             <Lock className="h-3 w-3 text-amber-500" />
                           </span>
                         )}
@@ -288,7 +288,7 @@ export default function RolesManagementPage() {
                     {selectedRole.name}
                     {selectedRole.isDefault && (
                       <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-3xs text-amber-700">
-                        System Default
+                        Sistem Varsayılanı
                       </span>
                     )}
                   </h2>
@@ -302,7 +302,7 @@ export default function RolesManagementPage() {
                     <button
                       className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                       onClick={() => handleDeleteRole(selectedRole.id)}
-                      title="Delete Role"
+                      title="Rolü Sil"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -379,8 +379,8 @@ export default function RolesManagementPage() {
             </div>
           ) : (
             <div className="p-12 text-center text-xs text-zinc-400 dark:text-zinc-500">
-              Select a role from the left panel to configure its permission
-              matrix.
+              Soldaki panelden bir rol seçip yetki matrisini
+              yapılandırın.
             </div>
           )}
         </div>
@@ -404,7 +404,7 @@ export default function RolesManagementPage() {
             <div className="flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                 <Shield className="h-4 w-4 text-blue-500" />
-                Create Custom Role
+                Özel Rol Oluştur
               </DialogTitle>
               <DialogClose asChild>
                 <button
@@ -423,12 +423,12 @@ export default function RolesManagementPage() {
             >
               <div>
                 <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-                  Role Name
+                  Rol Adı
                 </label>
                 <input
                   className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleName(e.target.value)}
-                  placeholder="e.g. Sales Manager"
+                  placeholder="Örn: Satış Yöneticisi"
                   required
                   type="text"
                   value={newRoleName}
@@ -437,12 +437,12 @@ export default function RolesManagementPage() {
 
               <div>
                 <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-                  Description
+                  Açıklama
                 </label>
                 <textarea
                   className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleDesc(e.target.value)}
-                  placeholder="Responsibilities and access scope..."
+                  placeholder="Sorumluluklar ve erişim kapsamı..."
                   rows={3}
                   value={newRoleDesc}
                 />
@@ -454,7 +454,7 @@ export default function RolesManagementPage() {
                   onClick={() => setIsCreateOpen(false)}
                   type="button"
                 >
-                  Cancel
+                  Vazgeç
                 </button>
                 <button
                   className="flex items-center gap-1.5 rounded-xl bg-zinc-950 px-4 py-2 font-semibold text-white text-xs hover:bg-zinc-800 disabled:opacity-50"

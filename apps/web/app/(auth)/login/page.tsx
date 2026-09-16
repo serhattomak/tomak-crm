@@ -61,7 +61,7 @@ export default function LoginPage() {
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
-          alt="Ambient Background"
+          alt="Ortam Arka Planı"
           className="scale-125 object-cover blur-3xl"
           fill
           priority
@@ -74,7 +74,7 @@ export default function LoginPage() {
         {/* Left Side: Editorial Art Card */}
         <div className="relative hidden min-h-[640px] flex-col justify-between overflow-hidden rounded-[28px] bg-black p-10 text-white lg:col-span-6 lg:flex">
           <Image
-            alt="Editorial Wave Art"
+            alt="Editoryal Dalga Görseli"
             className="object-cover"
             fill
             priority
@@ -85,7 +85,7 @@ export default function LoginPage() {
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
             <span className="font-bold text-2xs text-white/90 uppercase tracking-[0.25em]">
-              A WISE QUOTE
+              BİR BİLGELİK SÖZÜ
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />
           </div>
@@ -93,15 +93,15 @@ export default function LoginPage() {
           {/* Bottom Quote & Typography */}
           <div className="relative z-10 max-w-sm space-y-4">
             <h2 className="font-normal font-serif text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl">
-              Get
+              İstediğin
               <br />
-              Everything
+              Her Şeyi
               <br />
-              You Want
+              Elde Et
             </h2>
             <p className="font-light text-white/80 text-xs leading-relaxed sm:text-sm">
-              You can get everything you want if you work hard, trust the
-              process, and stick to the plan.
+              Çok çalışır, sürece güvenir ve plana sadık kalırsan istediğin her
+              şeye ulaşırsın.
             </p>
           </div>
         </div>
@@ -131,10 +131,10 @@ export default function LoginPage() {
           <div className="mx-auto w-full max-w-sm space-y-6">
             <div className="space-y-1.5 text-center">
               <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl dark:text-zinc-100">
-                Welcome Back
+                Tekrar Hoş Geldiniz
               </h1>
               <p className="font-normal text-xs text-zinc-500 dark:text-zinc-400">
-                Enter your email and password to access your account
+                Hesabınıza erişmek için e-posta ve şifrenizi girin
               </p>
             </div>
 
@@ -147,12 +147,12 @@ export default function LoginPage() {
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
                 <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-                  Email
+                  E-posta
                 </label>
                 <input
                   className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="E-postanızı girin"
                   required
                   type="email"
                   value={email}
@@ -161,13 +161,13 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-1.5 block font-semibold text-xs text-zinc-800 dark:text-zinc-200">
-                  Password
+                  Şifre
                 </label>
                 <div className="relative">
                   <input
                     className="w-full rounded-xl border-0 bg-zinc-100 px-4 py-3 pr-10 text-xs text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-blue-500 sm:text-sm dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900 dark:placeholder:text-zinc-500"
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder="Şifrenizi girin"
                     required
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -194,7 +194,7 @@ export default function LoginPage() {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     type="checkbox"
                   />
-                  Remember me
+                  Beni hatırla
                 </label>
                 <a
                   className="font-normal text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
@@ -206,7 +206,7 @@ export default function LoginPage() {
                     );
                   }}
                 >
-                  Forgot Password
+                  Şifremi Unuttum
                 </a>
               </div>
 
@@ -243,7 +243,7 @@ export default function LoginPage() {
                       fill="#EA4335"
                     />
                   </svg>
-                  Sign In with Google
+                  Google ile Giriş Yap
                 </button>
               </div>
             </form>
@@ -256,7 +256,7 @@ export default function LoginPage() {
               className="font-semibold text-zinc-900 hover:underline dark:text-zinc-100"
               href="/register"
             >
-              Sign Up
+              Kayıt Ol
             </Link>
           </div>
         </div>
