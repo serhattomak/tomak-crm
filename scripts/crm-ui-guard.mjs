@@ -98,6 +98,10 @@ const SKIP_DIRS = new Set([
  *   used instead of `pattern` for anything that has to look *inside* an
  *   element's attributes. `pattern`-based tag rules must never reach an
  *   attribute with `[^>]*`: see `scanTags`.
+ * @property {{ find: (whole: string, literal: string) => { offset: number, token: string } | null }} [className]
+ *   used instead of `pattern` for rules about utility classes. The unit is the
+ *   whole class expression, so a counterpart in a neighbouring `cn()` argument
+ *   counts: see `classExpressions`.
  *
  * NOTE: SLATE uses a `(?<![A-Za-z])` lookbehind so `translate-x-*`
  * utilities never match.
@@ -202,6 +206,21 @@ const RULES = [
     id: "INLINE_STYLE_PROP",
     pattern:
       /style=\{\{(?=[^{}]*?:\s*["'][^"'$]*["'])(?![^{}]*\$\{)(?![^{}]*[.?|])/g,
+  },
+  {
+    hint: "light surface with no dark: counterpart anywhere in the class expression — in dark mode it keeps its light value. Use the token instead: bg-muted (light ~zinc-100, dark ~zinc-800) for surfaces, or bg-border for 1px rules. A white ring on a coloured surface and a translucent white art divider are NOT flagged — white is correct there",
+    id: "LIGHT_SURFACE_NO_DARK",
+    severity: "warn",
+    className: {
+      find: (whole, literal) => {
+        const re = /(?<![A-Za-z:\-])(bg-(?:white|zinc-(?:50|100|200))|border-zinc-(?:100|200|300))(?![A-Za-z0-9\-\/])/g;
+        const m = re.exec(literal);
+        if (!m) return null;
+        const prop = m[1].split("-")[0];
+        if (new RegExp(`dark:(?:[a-z-]+:)*${prop}-`).test(whole)) return null;
+        return { offset: m.index, token: m[1] };
+      },
+    },
   },
   {
     hint: "hardcoded card surface — use bg-card / border-border. The dark: partner must go with it: it sets the same property in the same variant, so the legacy class wins in the compiled CSS and the token never applies (Faz 5.0). Translucent bg-white/90 with backdrop-blur is NOT flagged — that frosted surface is deliberate",
@@ -334,6 +353,66 @@ function scanTags(content, name) {
 }
 
 /**
+ * Every `className` expression in a file, as `{ index, literals, whole }`.
+ *
+ * Tailwind resolves a class *expression*, not one string at a time — so
+ * `cn("bg-white", "dark:bg-zinc-900")` is one themed surface, not a missing
+ * partner. Checking literal by literal reported 4245 candidates where the truth
+ * was 30; the expression is the unit, and this is where that is enforced.
+ *
+ * Returns `literals` with absolute offsets and `whole` (all literals joined),
+ * so a rule can look for a counterpart anywhere in the expression.
+ *
+ * @param {string} src
+ * @returns {{ index: number, whole: string, literals: { base: number, text: string }[] }[]}
+ */
+function classExpressions(src) {
+  const groups = [];
+  const re = /className\s*=\s*/g;
+  /** @type {RegExpExecArray | null} */
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    let i = m.index + m[0].length;
+    if (src[i] === '"' || src[i] === "'" || src[i] === "`") {
+      const q = src[i];
+      const start = ++i;
+      while (i < src.length && src[i] !== q) {
+        if (src[i] === "\\") i++;
+        i++;
+      }
+      const text = src.slice(start, i);
+      groups.push({ index: m.index, literals: [{ base: start, text }], whole: text });
+      continue;
+    }
+    if (src[i] !== "{") continue;
+    const open = i;
+    let depth = 0;
+    while (i < src.length) {
+      const c = src[i];
+      if (c === "{") depth++;
+      else if (c === "}") { depth--; if (depth === 0) break; }
+      else if (c === '"' || c === "'" || c === "`") {
+        const q = c; i++;
+        while (i < src.length && src[i] !== q) { if (src[i] === "\\") i++; i++; }
+      }
+      i++;
+    }
+    const inner = src.slice(open + 1, i);
+    const lre = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g;
+    /** @type {{ base: number, text: string }[]} */
+    const literals = [];
+    /** @type {RegExpExecArray | null} */
+    let lm;
+    while ((lm = lre.exec(inner)) !== null) {
+      const lit = lm[1] ?? lm[2] ?? lm[3] ?? "";
+      literals.push({ base: open + 1 + lm.index + 1, text: lit });
+    }
+    groups.push({ index: m.index, literals, whole: literals.map((x) => x.text).join(" ") });
+  }
+  return groups;
+}
+
+/**
  * @param {string} rel
  * @param {string} ruleId
  * @param {AllowEntry[]} allowlist
@@ -363,6 +442,15 @@ function scanFile(abs, allowlist) {
       for (const el of scanTags(content, rule.tag.name)) {
         if (rule.tag.test(el.open, el.body)) {
           hitIndexes.push(el.index);
+        }
+      }
+    } else if (rule.className) {
+      for (const group of classExpressions(content)) {
+        for (const literal of group.literals) {
+          const hit = rule.className.find(group.whole, literal.text);
+          if (hit) {
+            hitIndexes.push(literal.base + hit.offset);
+          }
         }
       }
     } else if (rule.pattern) {

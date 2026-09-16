@@ -69,6 +69,8 @@ export function DirtyFixture() {
       {/* INLINE_STYLE_PROP — STATIC shape; no hex, so INLINE_HEX_STYLE stays
           a separate rule */}
       <span style={{ borderColor: "var(--border)" }} />
+      {/* LIGHT_SURFACE_NO_DARK — a light surface with no dark: partner at all */}
+      <div className="bg-zinc-50 p-4" />
       {/* CARD_SURFACE — the paired hardcoded idiom */}
       <div className="bg-white p-4 dark:bg-zinc-900" />
     </div>

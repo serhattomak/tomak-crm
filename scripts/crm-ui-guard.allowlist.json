@@ -30,6 +30,16 @@
       "file": "apps/web/app/(dashboard)/[tenantSlug]/orders/[orderId]/print/page.tsx",
       "reason": "Print surface (already a documented page-shell exemption in crm-ui-standards.md 2.2). Its table carries a deliberately print-designed contract - a full border grid (border-collapse border border-zinc-300) and an inverted header (bg-zinc-900 text-white) that does not follow the theme. The Table primitive would layer its theme-token surfaces and row borders onto that grid, and its wrapper div is 'relative w-full overflow-auto' with no way to override it from the call site, which can clip printed content since paper cannot scroll. Exempting is the honest option; migrating would trade a known print layout for an unverifiable one. Same primitive-API gap as the overlayClassName note in 2.3",
       "rule": "NATIVE_TABLE"
+    },
+    {
+      "file": "apps/web/app/portal/[token]/PortalClient.tsx",
+      "reason": "Light-only by design. It is a public, document-like surface a customer opens from a token link: `dark:` appears ZERO times in 900+ lines while 14 surfaces are styled, and the file carries `print:` rules. Themable it is not, and adding `dark:` partners to a document surface would be the wrong migration — the equivalent of the print-palette exemption. Measured: 14 of the 30 remaining candidates.",
+      "rule": "LIGHT_SURFACE_NO_DARK"
+    },
+    {
+      "file": "apps/web/app/(dashboard)/[tenantSlug]/orders/[orderId]/print/page.tsx",
+      "reason": "A real print route, not a screen. Paper has no dark mode, so its light surfaces are the point; the repo already exempts this page for NATIVE_TABLE on the same reasoning. Measured: 6 of the 30 remaining candidates.",
+      "rule": "LIGHT_SURFACE_NO_DARK"
     }
   ]
 }
