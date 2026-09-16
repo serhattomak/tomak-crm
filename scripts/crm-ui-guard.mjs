@@ -104,7 +104,7 @@ const RULES = [
     pattern: /<select(?=[\s>])/g,
   },
   {
-    hint: '<input type="number"> — use NumberInput from packages/ui (para: precision=2 suffix ₺; adet: precision=0 stepper)',
+    hint: '<input type="number"> — use NumberInput from packages/ui (para: precision=2 + suffix set to the field\'s own currency, not a hardcoded ₺; adet: precision=0 + showStepper)',
     id: "INPUT_NUMBER",
     tag: {
       name: "input",

@@ -11,8 +11,9 @@ scope (`apps/web`, `packages/ui`).
 
 ```sh
 # from crm-monorepo/
-npm run guard:crm-ui            # scoped CI gate: Batch 1–3 touched files (must PASS)
-npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently PASS — 0 errors, 0 advisory)
+npm run guard:crm-ui            # THE gate: full CRM sweep (must PASS)
+npm run guard:crm-ui:full       # identical — kept because ADR-0004, the roadmap and CI name it
+npm run guard:crm-ui:fixtures   # proves the fixture pair proves something (16/16 rules)
 node scripts/crm-ui-guard.mjs --help
 node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 ```
@@ -25,8 +26,12 @@ node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 | `warn` | Advisory. Printed under `--- advisory: … ---`, **never** affects the exit code. |
 
 A `warn` rule is promoted to `error` only once that rule is clean in a `--full`
-sweep (ADR-0004 §9). Rules without an explicit `severity` are errors — the
-original 9 rules are unchanged by the advisory layer.
+sweep (ADR-0004 §9). Rules without an explicit `severity` are errors.
+
+**Every rule is `error` now.** The advisory layer is still implemented and still
+documented here, because the next rule should be able to be born advisory and earn
+its promotion — it is simply empty as of Faz 7, when all seven rules that had been
+born advisory were promoted after each one measured clean.
 
 ## Current baseline (`--full`, 2026-09-16)
 
@@ -44,13 +49,13 @@ allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 | INLINE_HEX_STYLE | error | **0** (1 recorded) | design tokens / `--chart-*` (Faz 4.4) |
 | ARBITRARY_HEX | error | **0** | design tokens (Faz 4.3) |
 | SVG_PAINT_HEX | error | **0** (8 recorded) | `currentColor` / tokens (brand marks excepted) |
-| ARBITRARY_TEXT_SIZE | warn | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
-| NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
-| INLINE_STYLE_PROP | warn | **0** | Tailwind classes + semantic tokens (Faz 5.6) |
-| CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner** (Faz 5.4) |
-| MOTION_DURATION | warn | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
-| MOTION_EASE | warn | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
-| A11Y_ICON_BUTTON | warn | **0** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
+| ARBITRARY_TEXT_SIZE | error | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
+| NATIVE_TABLE | error | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
+| INLINE_STYLE_PROP | error | **0** | Tailwind classes + semantic tokens (Faz 5.6) |
+| CARD_SURFACE | error | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner** (Faz 5.4) |
+| MOTION_DURATION | error | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
+| MOTION_EASE | error | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
+| A11Y_ICON_BUTTON | error | **0** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
 
 **Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
 20 and 19, and swept to 0 — and `prefers-reduced-motion` went from **zero implementation
@@ -63,27 +68,42 @@ variant must be remembered on every new animation, and the one that gets forgott
 one that hurts. Durations collapse to 0.01ms rather than 0 so `transitionend` and
 `animationend` still fire and nothing waiting on them hangs.
 
-**A11Y_ICON_BUTTON (Faz 6.1)** was the largest single accessibility gap in the codebase:
-106 icon-only buttons with no accessible name. It measured 106, and then the distribution
-turned out to be the whole story — **95 of the 106 are a single `X` inside a
-`DialogClose`/`SheetClose`**, so the sweep was 92% one word. Three were inside `packages/ui`
-primitives and were fixed first (the sixth time that ordering has mattered here); the other
-103 followed. The labels are written in the project's Turkish vocabulary, which is why the
-glossary (Faz 6.3) had to come *before* the sweep rather than after — otherwise 106 labels
-would have been written twice.
+**A11Y_ICON_BUTTON (Faz 6.1)** was the largest single accessibility gap in the codebase.
+It first measured **106**, and the distribution was the whole story: **95 of those 106 were a
+single `X` inside a `DialogClose`/`SheetClose`**, so that sweep was 92% one word. Three sat
+inside `packages/ui` primitives and were fixed first (the sixth time that ordering has
+mattered here); the other 103 followed. Labels are written in the project's Turkish
+vocabulary, which is why the glossary (Faz 6.3) had to come *before* the sweep.
 
-The triage is worth keeping: `Kapat` 95 · `Kaldır` 2 · `Önceki ay` 1 · `Sonraki ay` 1 ·
-`Önceki sayfa` 1 · `Düzenle` 1 · `Düzenlemeyi iptal et` 1 · `Yenile` 1. The `X` buttons are
-`Kapat` and not `Sil` because they sit inside a close wrapper — the action is closing a
-dialog, not deleting a record. Only the two `Kaldır` sites remove anything, and those were
-separated by their **handler**, not their icon: three different actions share the same `X`
-glyph. Icon names would have mislabelled them.
+**The real number was 137, not 106.** In Faz 7 the rule was found to be reading tags with
+`[^>]*`, which cannot cross a `>` — and `onClick={() => f()}` supplies one. So 31 further
+icon-only buttons were invisible, and "106 → 0" was recorded while 31 violations were still
+in the tree. With a brace-aware scan the rule reports 31, and they are now labelled. The
+record above is corrected rather than rewritten away, because the mistake is the useful part:
+an advisory rule cannot fail the gate, so a rule that silently stops matching reads as
+progress.
 
-**The sweep is fully clean — 0 errors and 0 warnings.** From the Faz 0 baseline of 1458
-errors and 1334 advisories, **all 16 rules now read zero**, so ADR-0004 §9's promotion
-precondition is met for all 7 warning rules (the paragraph here previously said six, when
-`A11Y_ICON_BUTTON` was still standing at 106). Nothing in this file is hand-maintained: a
-count is a copy of a measurement, and the moment it stops matching the guard it is wrong.
+The full label triage: `Kapat` 95 · `Satırı kaldır` 3 · `Hedefi kaldır` 3 ·
+`Aramayı temizle` 4 · `Geri` 2 · `Kapat` (popover) 3 · `Kopyala` 2 · `Kaldır` 2 ·
+`Önceki ay` 1 · `Sonraki ay` 1 · `Önceki sayfa` 1 · `Sonraki sayfa` 1 · `Düzenle` 1 ·
+`Düzenlemeyi iptal et` 1 · `Yenile` 2 · `Adayı düzenle/sil` · `İlanı sil` ·
+`Aşamayı düzenle` · `Pozisyonu düzenle/sil` · `Personeli görüntüle/düzenle` ·
+`Ürünü kaldır` · `Karşılaştırmadan çıkar` · `Dahili not modunu kapat` ·
+`Tablo/Kart görünümü`.
+
+Two rules govern the wording. The `X` buttons are `Kapat`, not `Sil`, because they sit
+inside a close wrapper — the action is closing a dialog, not deleting a record. And `Kaldır`
+vs `Sil` follows §1.6: removing a row from a form is `Kaldır`, deleting a stored record is
+`Sil`, which is why `handleRemoveItem` becomes "Satırı kaldır" while
+`handleDeleteCandidate` becomes "Adayı sil" even though both render a `Trash2` icon. The
+icon cannot tell them apart; the handler can. Labels are entity-qualified for the same
+reason — a table of four rows should not read as four identical "Sil"s.
+
+**The sweep is fully clean — 0 errors, 0 warnings, and 0 advisory of any kind.** From the
+Faz 0 baseline of 1458 errors and 1334 advisories, **all 16 rules read zero**. In Faz 7 the
+seven advisory rules were promoted to `error`, so the guard no longer has a soft layer to
+hide in. Nothing in this file is hand-maintained: a count is a copy of a measurement, and the
+moment it stops matching the guard it is wrong.
 
 **INLINE_STYLE_PROP (Faz 5.6)** needed the rule narrowed rather than the code changed.
 It flagged every `style={{}}` while §1.4 bans inline style for **static** values only and
@@ -162,25 +182,40 @@ longer appear.
 ## Proof (fixtures)
 
 ```sh
-node scripts/crm-ui-guard.mjs scripts/crm-ui-guard.fixtures/dirty.tsx  # expect exit 1
-node scripts/crm-ui-guard.mjs scripts/crm-ui-guard.fixtures/clean.tsx  # expect exit 0 (PASS)
+npm run guard:crm-ui:fixtures   # asserts all four properties below at once
 ```
 
-`clean.tsx` also proves no false positives on `translate-x-*`,
-data-driven `colorHex: "#…"`, or `var(--…)` style values.
+The pair proves two things in each direction, and `crm-ui-guard.fixtures.mjs` asserts all of
+them:
+
+- `clean.tsx` exits **0** — no false positives on `translate-*`, a data-driven `colorHex`,
+  a **dynamic** `style` (computed width), the `Table` primitive, an on-scale `duration-150`
+  with `ease-crm`, a `text-2xs` token, or an icon button that already has a name.
+- `dirty.tsx` exits **1**, and produces **every one of the 16 rule ids** — none missing, none
+  unknown.
+
+That rule-id assertion is not decoration. `dirty.tsx` claimed "every violation class exactly
+once" while firing for only 9 of 16, and its `INPUT_NUMBER` case never fired at all, because
+its multi-line input put an arrow function before `type=`. The check was "does the file fail",
+and it did — for the other eight rules. An exit code is not coverage.
 
 ## CI gate note
 
-`guard:crm-ui` (scoped) is the **live regression gate**: every file in scope was
-migrated to `packages/ui` standards, so any hit is a regression → STOP the
-batch, fix by hand per ADR-0002, no auto-fix, no bulk-sed.
+`guard:crm-ui` is **the** regression gate, and it scans all of CRM scope: any hit is a
+regression → STOP the batch, fix by hand per ADR-0002, no auto-fix, no bulk-sed.
 
-`guard:crm-ui:full` is the migration tracker. **As of 2026-09-16 it reports 0 errors
-for the first time** (from 1458 at the Faz 0 baseline), which is the condition
-ADR-0004 §9 attached to retiring the scoped `SCOPE` list — but the retirement itself is
-a **Faz 7** action, so both gates still run and `SCOPE` stays in place. It is
-deliberately narrower than a full sweep, and it is the gate that has actually caught
-regressions; removing it early would trade a proven gate for an unproven one.
+**There is no scoped mode any more.** The 18-file `SCOPE` list that used to be the gate was
+retired in Faz 7 (ADR-0004 §9.5) once a full sweep reached 0 errors and 0 warnings, so
+`guard:crm-ui` and `guard:crm-ui:full` run the same scan. The list served its purpose: for
+most of Program A the full sweep was `FAIL`, and a gate that fails on every run is not a
+gate. But it was narrower than the truth by construction, and the last thing it did was hide
+its own retirement criterion behind a rule that could not see.
+
+**CI now holds all of this** (Faz 7, `.github/workflows/ci.yml`): the guard and the fixture
+check run in their own job *without* `npm ci`, because the guard has zero dependencies — a
+design-system regression reports in seconds, before the install finishes. `web` runs
+typecheck, lint and build; `api` runs the .NET build. Prettier is deliberately absent:
+`apps/web` is not covered by any formatter, so a format check could not pass.
 
 The allowlist (`crm-ui-guard.allowlist.json`) is for documented, single-rule
 exceptions — prefer fixing over listing. It holds **6 entries**, each with its reason
@@ -199,11 +234,11 @@ would be meaningless. (An earlier revision of this file claimed they were listed
 | Rule | Use instead |
 | --- | --- |
 | NATIVE_SELECT | `SelectField` (closed enum) / `Combobox` (data-bound list) — source decides, not count; §2.5.1 |
-| INPUT_NUMBER | `NumberInput` (para `precision=2 suffix ₺`, adet `precision=0` stepper) |
+| INPUT_NUMBER | `NumberInput` (para `precision=2` + `suffix` — pass the field's own currency, e.g. `suffix={currency}`; a hardcoded ₺ lies the moment a project is priced in USD. adet `precision=0` + `showStepper`) |
 | INPUT_DATE | `DatePicker` (clearable, YYYY-MM-DD, TR) / `DateRangePicker` |
 | ARBITRARY_HEX / INLINE_HEX_STYLE / SVG_PAINT_HEX | design tokens (`bg-muted`, `text-zinc-*`, `dark:` variants) |
 | SLATE | `zinc-*` |
 | VIOLET / FUCHSIA | `blue-500` scale |
-| ARBITRARY_TEXT_SIZE *(advisory)* | `text-2xs` / `text-3xs` / Tailwind scale |
-| NATIVE_TABLE *(advisory)* | `@workspace/ui` `Table` primitives |
-| INLINE_STYLE_PROP *(advisory)* | Tailwind classes + semantic tokens |
+| ARBITRARY_TEXT_SIZE | `text-2xs` / `text-3xs` / Tailwind scale |
+| NATIVE_TABLE | `@workspace/ui` `Table` primitives |
+| INLINE_STYLE_PROP | Tailwind classes + semantic tokens |
