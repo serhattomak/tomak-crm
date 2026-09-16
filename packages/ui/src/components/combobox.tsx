@@ -178,7 +178,7 @@ export function Combobox({
           aria-expanded={open}
           aria-label={ariaLabel}
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-semibold text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             triggerClassName
           )}
           role="combobox"
@@ -220,13 +220,13 @@ export function Combobox({
         <PopoverPrimitive.Content
           align="start"
           className={cn(
-            "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] animate-in overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-1.5 text-zinc-900 shadow-lg backdrop-blur-md data-[state=closed]:animate-out dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+            "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] animate-in overflow-hidden rounded-2xl border border-border bg-card p-1.5 text-zinc-900 shadow-lg backdrop-blur-md data-[state=closed]:animate-out dark:text-zinc-100",
             className
           )}
           sideOffset={4}
         >
           {/* Search Box */}
-          <div className="relative mb-1 flex items-center border-zinc-100 border-b px-2 pb-1.5 dark:border-zinc-800">
+          <div className="relative mb-1 flex items-center border-border border-b px-2 pb-1.5">
             <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400 dark:text-zinc-500" />
             <input
               autoFocus

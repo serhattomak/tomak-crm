@@ -118,11 +118,11 @@ export function NumberInput({
   const container = (
     <div
       className={cn(
-        "group relative flex items-center overflow-hidden rounded-xl border bg-white shadow-2xs transition-all focus-within:ring-2",
+        "group relative flex items-center overflow-hidden rounded-xl border bg-card shadow-2xs transition-all focus-within:ring-2",
         heightClass,
         hasError
           ? "border-red-500 focus-within:border-red-500 focus-within:ring-red-500/20 dark:border-red-500/80"
-          : "border-zinc-200 focus-within:border-blue-500 focus-within:ring-blue-500/20 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700",
+          : "border-border focus-within:border-blue-500 focus-within:ring-blue-500/20 hover:border-zinc-300 dark:bg-zinc-900 dark:hover:border-zinc-700",
         disabled && "cursor-not-allowed opacity-50",
         className
       )}
@@ -159,7 +159,7 @@ export function NumberInput({
       )}
 
       {showStepper && !disabled && (
-        <div className="flex h-full items-center border-zinc-200 border-l dark:border-zinc-800">
+        <div className="flex h-full items-center border-border border-l">
           <button
             aria-label="Decrease value"
             className="flex h-full w-6 items-center justify-center text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
@@ -171,7 +171,7 @@ export function NumberInput({
           </button>
           <button
             aria-label="Increase value"
-            className="flex h-full w-6 items-center justify-center border-zinc-200 border-l text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:border-zinc-800 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            className="flex h-full w-6 items-center justify-center border-border border-l text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 active:bg-zinc-200 dark:text-zinc-500 dark:active:bg-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             onClick={handleIncrement}
             tabIndex={-1}
             type="button"

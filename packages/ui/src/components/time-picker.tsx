@@ -112,7 +112,7 @@ export function TimePicker({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400",
             "hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
@@ -151,11 +151,11 @@ export function TimePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-64 animate-in overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-64 animate-in overflow-hidden rounded-2xl border border-border bg-card p-3 text-zinc-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out dark:text-zinc-100"
           sideOffset={4}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2 mb-2">
+          <div className="flex items-center justify-between border-b border-border pb-2 mb-2">
             <div className="flex items-center gap-1.5 font-bold text-xs text-zinc-800 dark:text-zinc-200">
               <Clock className="h-3.5 w-3.5 text-blue-600" />
               <span>Saat Seçimi</span>
@@ -170,7 +170,7 @@ export function TimePicker({
           </div>
 
           {/* Dual Scroll Columns: Saat & Dakika */}
-          <div className="grid grid-cols-2 gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
+          <div className="grid grid-cols-2 gap-2 border-b border-border pb-2.5">
             {/* Hours */}
             <div>
               <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
@@ -240,7 +240,7 @@ export function TimePicker({
                       "px-2 py-0.5 text-2xs font-mono rounded-md border transition-all",
                       isSelected
                         ? "bg-blue-50 border-blue-500 text-blue-700 font-bold dark:bg-blue-950/60 dark:border-blue-400 dark:text-blue-300"
-                        : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                        : "border-border text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     )}
                     key={preset}
                     onClick={() => {

@@ -173,7 +173,7 @@ export function DatePicker({
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             className
           )}
           type="button"
@@ -206,11 +206,11 @@ export function DatePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-72 animate-in overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 w-72 animate-in overflow-hidden rounded-2xl border border-border bg-card p-3 text-zinc-900 shadow-xl backdrop-blur-md data-[state=closed]:animate-out dark:text-zinc-100"
           sideOffset={4}
         >
           {/* Header Month / Year Navigation */}
-          <div className="flex items-center justify-between border-zinc-100 border-b pb-2 dark:border-zinc-800">
+          <div className="flex items-center justify-between border-border border-b pb-2">
             <button
               className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:hover:text-zinc-400"
               onClick={handlePrevMonth}
@@ -270,7 +270,7 @@ export function DatePicker({
           </div>
 
           {/* Quick Preset Footers */}
-          <div className="mt-2 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-2xs dark:border-zinc-800">
+          <div className="mt-2 flex items-center justify-between border-border border-t pt-2.5 text-2xs">
             <button
               className="font-bold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
               onClick={handleSetToday}
@@ -365,7 +365,7 @@ export function DateRangePicker({
       <PopoverPrimitive.Trigger asChild>
         <button
           className={cn(
-            "flex h-9 items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700",
+            "flex h-9 items-center justify-between gap-2 rounded-xl border border-border bg-card px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700",
             className
           )}
           type="button"
@@ -378,7 +378,7 @@ export function DateRangePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
-          className="z-50 w-64 overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="z-50 w-64 overflow-hidden rounded-2xl border border-border bg-card p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:text-zinc-100"
           sideOffset={4}
         >
           <div className="mb-2 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">

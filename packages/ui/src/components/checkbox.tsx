@@ -30,7 +30,7 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       checked={checked}
       className={cn(
-        "peer size-4 shrink-0 rounded-md border border-zinc-300 bg-white outline-none transition-all",
+        "peer size-4 shrink-0 rounded-md border border-border bg-card outline-none transition-all",
         "hover:border-zinc-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20",
         "data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white",
         "data-[state=indeterminate]:border-blue-600 data-[state=indeterminate]:bg-blue-600 data-[state=indeterminate]:text-white",
