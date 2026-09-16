@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import {
   Dialog,
@@ -997,17 +998,16 @@ export default function PayrollPage() {
               <div className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
                 Seçili Dönem:
               </div>
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-bold text-xs text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
-                onChange={(e) => setSelectedRunId(e.target.value)}
+              <Combobox
+                aria-label="Bordro dönemi"
+                onChange={setSelectedRunId}
+                options={runs.map((r) => ({
+                  label: `${MONTH_NAMES[r.month - 1]} ${r.year} - ${r.title} (${r.status})`,
+                  value: r.id,
+                }))}
+                triggerClassName="h-8 font-bold"
                 value={selectedRunId}
-              >
-                {runs.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {MONTH_NAMES[r.month - 1]} {r.year} - {r.title} ({r.status})
-                  </option>
-                ))}
-              </select>
+              />
 
               {selectedRun && (
                 <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -1201,21 +1201,20 @@ export default function PayrollPage() {
               <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                 Personel Pusulası:
               </span>
-              <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 font-bold text-xs text-zinc-900 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    handleSelectPayslip(e.target.value);
+              <Combobox
+                aria-label="Personel pusulası"
+                onChange={(value) => {
+                  if (value) {
+                    handleSelectPayslip(value);
                   }
                 }}
+                options={(selectedRun?.employees ?? []).map((e) => ({
+                  label: `${e.employeeName} (${e.jobTitle || "Personel"})`,
+                  value: e.id,
+                }))}
+                triggerClassName="h-8 font-bold"
                 value={payslipData?.id || ""}
-              >
-                {selectedRun?.employees.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.employeeName} ({e.jobTitle || "Personel"})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <div className="flex items-center gap-2">
