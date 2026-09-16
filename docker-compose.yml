@@ -1,3 +1,11 @@
+# The compose project name is derived from the DIRECTORY name unless it is set
+# here. This repo used to live in `crm-monorepo/` and its volumes are named after
+# that (`crm-monorepo_rabbitmq_data`, `crm-monorepo_redis_data`). The repo is being
+# hoisted to the workspace root, which renames the folder — without this line,
+# `docker compose up` would create a second, empty set of volumes and the existing
+# data would look lost. Same failure mode as `project_id` in `supabase/config.toml`.
+name: crm-monorepo
+
 services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
