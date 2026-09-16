@@ -16,6 +16,7 @@
 - **Kartlar & Konteynerler:** `rounded-lg` (8px) veya `rounded-xl` (12px). Bubbly, oyuncak görünümlü `rounded-4xl` hap formları kesinlikle yasaktır.
 - **Butonlar & Girdiler:** `rounded-lg` (8px) / `rounded-md` (6px).
 - **Rozetler (Badges):** `rounded-md` (6px).
+- **⚠️ Print'te "kart" ayrı bir sorudur:** `@media print` bloğu (`packages/ui/src/styles/globals.css`) kartı **radius sınıfıyla** tanımlıyor (`.rounded-2xl/.rounded-3xl/.rounded-xl` → `break-inside: avoid`). Yani yukarıda **izinli olan `rounded-lg`** print korumasını **almaz** — standart doğru, print kuralı yanlış. Düzeltme sıradaki işler **#30**'da (`Card` primitifinin `data-slot="card"`'ı üzerinden). **Bir radius sınıfına print anlamı yüklemeyin.**
 - **Ayrım Çizgileri:** Saydam 1px ince kenarlıklar (`border-border/80` veya `border-border/60`).
 
 ### 1.2 Anti-AI-Slop & Renk Disiplini
