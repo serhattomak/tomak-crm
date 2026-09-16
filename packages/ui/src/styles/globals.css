@@ -199,3 +199,22 @@
     display: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   prefers-reduced-motion — standart 1.5 bunu ZORUNLU kilar.
+   Global olmasi bilincli: bilesen basina `motion-reduce:` varyanti her yeni
+   animasyonda hatirlanmak zorundadir ve UNUTULAN tanesi zarar verir. Bu kural
+   hepsini kapsar, sonradan eklenen motion dahil.
+   Sureler 0 degil 0.01ms'e iner: boylece transitionend / animationend olaylari
+   yine tetiklenir ve onlari bekleyen JS askida kalmaz.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

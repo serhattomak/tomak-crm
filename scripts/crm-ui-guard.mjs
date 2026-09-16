@@ -167,6 +167,19 @@ const RULES = [
     severity: "warn",
   },
   {
+    hint: "off-scale motion duration — use duration-150 (hover/press/colour), 200 (overlay default) or 250 (wide surfaces) per 1.5",
+    id: "MOTION_DURATION",
+    pattern:
+      /(?<![A-Za-z-])duration-(?:(?!150(?![0-9])|200(?![0-9])|250(?![0-9]))[0-9]+|\[[^\]]+\])/g,
+    severity: "warn",
+  },
+  {
+    hint: "non-token easing — use ease-crm (swift-out, overlays) or ease-crm-in-out (symmetric size/position) per 1.5",
+    id: "MOTION_EASE",
+    pattern: /(?<![A-Za-z-])ease-(?!crm\b)[a-z-]+/g,
+    severity: "warn",
+  },
+  {
     hint: "static inline style object — use Tailwind classes + semantic tokens. Only STATIC-shaped blocks are flagged: values are plain quoted literals with no template interpolation, member access or fallback. style={{}} remains correct for unmeasurable dynamic values (1.4), so a percentage, a transform or a DB-driven colourHex is not a violation",
     id: "INLINE_STYLE_PROP",
     pattern:
