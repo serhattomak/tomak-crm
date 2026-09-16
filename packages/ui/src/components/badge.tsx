@@ -3,16 +3,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 font-medium text-[11px] leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 font-medium text-2xs leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     defaultVariants: {
       variant: "default",
     },
     variants: {
       size: {
-        default: "px-2 py-0.5 text-[11px]",
+        default: "px-2 py-0.5 text-2xs",
         lg: "px-2.5 py-1 text-xs",
-        sm: "px-1.5 py-0.2 text-[10px]",
+        sm: "px-1.5 py-0.2 text-3xs",
       },
       variant: {
         accent:

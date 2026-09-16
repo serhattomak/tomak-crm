@@ -49,7 +49,7 @@ function TooltipContent({
         <div className="flex items-center gap-2">
           <span>{children}</span>
           {shortcut && (
-            <kbd className="rounded border border-zinc-700/60 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-300 dark:border-zinc-600 dark:bg-zinc-700">
+            <kbd className="rounded border border-zinc-700/60 bg-zinc-800 px-1.5 py-0.5 font-mono text-3xs text-zinc-300 dark:border-zinc-600 dark:bg-zinc-700">
               {shortcut}
             </kbd>
           )}

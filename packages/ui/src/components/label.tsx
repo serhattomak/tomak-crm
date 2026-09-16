@@ -20,7 +20,7 @@ export function Label({
   return (
     <LabelPrimitive.Root
       className={cn(
-        "flex select-none items-center gap-1 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400",
+        "flex select-none items-center gap-1 font-semibold text-2xs text-zinc-600 dark:text-zinc-400",
         className
       )}
       ref={ref}

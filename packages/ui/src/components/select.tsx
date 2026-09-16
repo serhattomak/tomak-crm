@@ -109,7 +109,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       className={cn(
-        "px-2.5 py-1.5 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500",
+        "px-2.5 py-1.5 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500",
         className
       )}
       {...props}

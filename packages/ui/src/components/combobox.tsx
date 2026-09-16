@@ -69,7 +69,7 @@ function OptionRow({
           {option.description ? (
             <span
               className={cn(
-                "block font-normal text-[10px]",
+                "block font-normal text-3xs",
                 isSelected
                   ? "text-blue-600/80 dark:text-blue-300/80"
                   : "text-zinc-400 dark:text-zinc-500"
@@ -85,7 +85,7 @@ function OptionRow({
         {option.badge ? (
           <span
             className={cn(
-              "rounded-md px-1.5 py-0.5 font-bold text-[10px]",
+              "rounded-md px-1.5 py-0.5 font-bold text-3xs",
               isSelected
                 ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                 : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"

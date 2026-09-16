@@ -42,7 +42,7 @@ export function Textarea({
   return (
     <div className="w-full">
       {baseTextarea}
-      <p className="mt-1 font-medium text-[11px] text-red-500 dark:text-red-400">
+      <p className="mt-1 font-medium text-2xs text-red-500 dark:text-red-400">
         {error}
       </p>
     </div>

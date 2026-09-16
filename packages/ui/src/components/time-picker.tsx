@@ -161,7 +161,7 @@ export function TimePicker({
               <span>Saat Seçimi</span>
             </div>
             <button
-              className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
+              className="text-2xs font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
               onClick={handleSetNow}
               type="button"
             >
@@ -173,7 +173,7 @@ export function TimePicker({
           <div className="grid grid-cols-2 gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
             {/* Hours */}
             <div>
-              <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
+              <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
                 Saat
               </div>
               <div className="h-44 overflow-y-auto space-y-0.5 pr-1 no-scrollbar rounded-xl bg-zinc-50/70 dark:bg-zinc-800/40 p-1">
@@ -200,7 +200,7 @@ export function TimePicker({
 
             {/* Minutes */}
             <div>
-              <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
+              <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider text-center mb-1">
                 Dakika
               </div>
               <div className="h-44 overflow-y-auto space-y-0.5 pr-1 no-scrollbar rounded-xl bg-zinc-50/70 dark:bg-zinc-800/40 p-1">
@@ -228,7 +228,7 @@ export function TimePicker({
 
           {/* Quick Preset Chips */}
           <div className="pt-2">
-            <div className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1.5">
+            <div className="text-3xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1.5">
               Hızlı Seçenekler
             </div>
             <div className="flex flex-wrap gap-1">
@@ -237,7 +237,7 @@ export function TimePicker({
                 return (
                   <button
                     className={cn(
-                      "px-2 py-0.5 text-[11px] font-mono rounded-md border transition-all",
+                      "px-2 py-0.5 text-2xs font-mono rounded-md border transition-all",
                       isSelected
                         ? "bg-blue-50 border-blue-500 text-blue-700 font-bold dark:bg-blue-950/60 dark:border-blue-400 dark:text-blue-300"
                         : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"

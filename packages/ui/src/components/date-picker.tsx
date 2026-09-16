@@ -233,7 +233,7 @@ export function DatePicker({
           </div>
 
           {/* Days of week */}
-          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-[10px] text-zinc-400 dark:text-zinc-500">
+          <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center font-bold text-3xs text-zinc-400 dark:text-zinc-500">
             {TURKISH_DAYS_SHORT.map((day) => (
               <div key={day}>{day}</div>
             ))}
@@ -270,7 +270,7 @@ export function DatePicker({
           </div>
 
           {/* Quick Preset Footers */}
-          <div className="mt-2 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-[11px] dark:border-zinc-800">
+          <div className="mt-2 flex items-center justify-between border-zinc-100 border-t pt-2.5 text-2xs dark:border-zinc-800">
             <button
               className="font-bold text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
               onClick={handleSetToday}
@@ -381,7 +381,7 @@ export function DateRangePicker({
           className="z-50 w-64 overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
           sideOffset={4}
         >
-          <div className="mb-2 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Hızlı Tarih Filtreleri
           </div>
           <div className="space-y-1 font-semibold text-xs">
