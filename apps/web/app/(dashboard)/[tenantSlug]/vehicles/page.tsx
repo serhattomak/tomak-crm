@@ -9,6 +9,7 @@ import {
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -1002,22 +1003,22 @@ export default function VehiclesPage() {
           {/* Table View */}
           {catalogViewMode === "table" && (
             <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200 border-b bg-zinc-50/70 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <th className="py-3 pr-4 pl-5">Araç & Model</th>
-                    <th className="px-4 py-3">Segment</th>
-                    <th className="px-4 py-3">Model Yılı</th>
-                    <th className="px-4 py-3">Motor & Yakıt</th>
-                    <th className="px-4 py-3">Pazar</th>
-                    <th className="px-4 py-3">Ref. Fiyat (USD)</th>
-                    <th className="px-4 py-3">Durum</th>
-                    <th className="py-3 pr-5 pl-4 text-right">İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-zinc-200 bg-zinc-50/70 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableHead className="py-3 pr-4 pl-5 h-auto">Araç & Model</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Segment</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Model Yılı</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Motor & Yakıt</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Pazar</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Ref. Fiyat (USD)</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                    <TableHead className="py-3 pr-5 pl-4 text-right h-auto">İşlemler</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {filteredVehicles.map((v) => (
-                    <tr
+                    <TableRow
                       className="cursor-pointer transition hover:bg-zinc-50/70 dark:hover:bg-zinc-800/60"
                       key={v.id}
                       onClick={() => {
@@ -1025,7 +1026,7 @@ export default function VehiclesPage() {
                         setVehicleDetailTab("overview");
                       }}
                     >
-                      <td className="py-3 pr-4 pl-5">
+                      <TableCell className="py-3 pr-4 pl-5">
                         <div className="flex items-center gap-3">
                           <span className="text-xl">{v.icon}</span>
                           <div>
@@ -1039,14 +1040,14 @@ export default function VehiclesPage() {
                             )}
                           </div>
                         </div>
-                      </td>
-                      <td className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
                         {v.segment || "—"}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
                         {v.modelYear || "—"}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                           {v.engine || "—"}
                         </div>
@@ -1057,21 +1058,21 @@ export default function VehiclesPage() {
                               .join(" · ")}
                           </div>
                         )}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
                         {v.market || "—"}
-                      </td>
-                      <td className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span
                           className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(v.status)}`}
                         >
                           {getStatusLabel(v.status)}
                         </span>
-                      </td>
-                      <td
+                      </TableCell>
+                      <TableCell
                         className="py-3 pr-5 pl-4 text-right"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -1109,11 +1110,11 @@ export default function VehiclesPage() {
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </div>
@@ -1192,15 +1193,15 @@ export default function VehiclesPage() {
             </div>
           ) : (
             <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200 border-b bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-800/50">
-                    <th className="w-56 py-4 pr-4 pl-5 font-bold text-zinc-700 uppercase tracking-wider dark:text-zinc-300">
+              <Table className="border-collapse">
+                <TableHeader>
+                  <TableRow className="border-zinc-200 bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-800/50">
+                    <TableHead className="w-56 py-4 pr-4 pl-5 font-bold text-zinc-700 uppercase tracking-wider dark:text-zinc-300 h-auto">
                       Özellik Grubu
-                    </th>
+                    </TableHead>
                     {comparedVehicles.map((v) => (
-                      <th
-                        className="min-w-[180px] px-4 py-4 font-bold text-zinc-900 dark:text-zinc-100"
+                      <TableHead
+                        className="min-w-[180px] px-4 py-4 font-bold text-zinc-900 dark:text-zinc-100 h-auto"
                         key={v.id}
                       >
                         <div className="flex items-center gap-2">
@@ -1216,52 +1217,52 @@ export default function VehiclesPage() {
                             )}
                           </div>
                         </div>
-                      </th>
+                      </TableHead>
                     ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {/* Category: GENEL & KASA */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
-                    <td
+                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                    <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
                     >
                       1. Genel Bilgiler & Kasa
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Segment
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
                         key={v.id}
                       >
                         {v.segment || "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Model Yılı
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
                         key={v.id}
                       >
                         {v.modelYear || "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Kasa Tipi / Kapı
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
                         key={v.id}
                       >
@@ -1269,145 +1270,145 @@ export default function VehiclesPage() {
                         {v.doors || v.seats
                           ? ` (${[v.doors ? `${v.doors} Kapı` : null, v.seats ? `${v.seats} Koltuk` : null].filter(Boolean).join(" / ")})`
                           : ""}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Pazar & Ülke
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
                         key={v.id}
                       >
                         {[v.market, v.country].filter(Boolean).join(" · ") ||
                           "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
+                  </TableRow>
 
                   {/* Category: MOTOR & PERFORMANS */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
-                    <td
+                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                    <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
                     >
                       2. Motor & Güç Aktarımı
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Motor & Yakıt
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
                         key={v.id}
                       >
                         {v.engine || v.fuel
                           ? `${v.engine || "—"}${v.fuel ? ` (${v.fuel})` : ""}`
                           : "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Şanzıman & Çekiş
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
                         key={v.id}
                       >
                         {[v.transmission, v.driveType]
                           .filter(Boolean)
                           .join(" · ") || "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Maksimum Güç
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => {
                       const spec = parseJson<{ power?: string }>(
                         v.engineSpecJson,
                         {}
                       );
                       return (
-                        <td
+                        <TableCell
                           className="px-4 py-2.5 font-bold text-blue-700 dark:text-blue-300"
                           key={v.id}
                         >
                           {spec.power || v.engine || "—"}
-                        </td>
+                        </TableCell>
                       );
                     })}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       0-100 km/s Hızlanma
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => {
                       const perf = parseJson<{ accel?: string }>(
                         v.performanceJson,
                         {}
                       );
                       return (
-                        <td
+                        <TableCell
                           className="px-4 py-2.5 font-semibold text-zinc-800 dark:text-zinc-200"
                           key={v.id}
                         >
                           {perf.accel || "—"}
-                        </td>
+                        </TableCell>
                       );
                     })}
-                  </tr>
+                  </TableRow>
 
                   {/* Category: FİYAT & GARANTİ */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
-                    <td
+                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                    <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
                     >
                       3. Fiyatlandırma & Garanti
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Referans Fiyat (USD)
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => (
-                      <td
+                      <TableCell
                         className="px-4 py-2.5 font-bold text-emerald-600 dark:text-emerald-400"
                         key={v.id}
                       >
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
                       Araç Garantisi
-                    </td>
+                    </TableCell>
                     {comparedVehicles.map((v) => {
                       const w = parseJson<{ vehicle?: string }>(
                         v.warrantyJson,
                         {}
                       );
                       return (
-                        <td
+                        <TableCell
                           className="px-4 py-2.5 text-zinc-700 dark:text-zinc-300"
                           key={v.id}
                         >
                           {w.vehicle || "3 Yıl / 100.000 km"}
-                        </td>
+                        </TableCell>
                       );
                     })}
-                  </tr>
-                </tbody>
-              </table>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
           )}
         </div>

@@ -11,6 +11,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -689,22 +690,22 @@ export default function ShipmentsPage() {
           {/* Shipments Table */}
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200 border-b bg-zinc-50 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <th className="px-4 py-3.5">Gönderi No / Tarih</th>
-                    <th className="px-4 py-3.5">Sipariş & Müşteri</th>
-                    <th className="px-4 py-3.5">Taşıyıcı & Takip No</th>
-                    <th className="px-4 py-3.5">Paket & Desi</th>
-                    <th className="px-4 py-3.5">Alıcı & Adres</th>
-                    <th className="px-4 py-3.5">Durum</th>
-                    <th className="px-4 py-3.5 text-right">Eylemler</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableHead className="px-4 py-3.5 h-auto">Gönderi No / Tarih</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Sipariş & Müşteri</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Taşıyıcı & Takip No</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Paket & Desi</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Alıcı & Adres</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">Eylemler</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {isLoading ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
@@ -712,11 +713,11 @@ export default function ShipmentsPage() {
                           <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
                           <span>Kargo gönderileri yükleniyor...</span>
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : filteredShipments.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
@@ -730,20 +731,20 @@ export default function ShipmentsPage() {
                             oluşturabilirsiniz.
                           </p>
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     filteredShipments.map((s) => {
                       const statusConf = getShipmentStatusConfig(s.status);
                       const StatusIcon = statusConf.icon;
 
                       return (
-                        <tr
+                        <TableRow
                           className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                           key={s.id}
                         >
                           {/* 1. Shipment Number & Date */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col">
                               <span className="font-bold text-zinc-900 dark:text-zinc-100">
                                 {s.shipmentNumber}
@@ -761,10 +762,10 @@ export default function ShipmentsPage() {
                                 )}
                               </span>
                             </div>
-                          </td>
+                          </TableCell>
 
                           {/* 2. Order & Customer */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col">
                               <span className="font-medium text-zinc-900 dark:text-zinc-100">
                                 {s.customerName}
@@ -779,10 +780,10 @@ export default function ShipmentsPage() {
                                 </span>
                               )}
                             </div>
-                          </td>
+                          </TableCell>
 
                           {/* 3. Carrier & Tracking */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col gap-1">
                               <span className="font-medium text-xs text-zinc-800 dark:text-zinc-200">
                                 {s.carrierName || "Belirtilmedi"}
@@ -823,10 +824,10 @@ export default function ShipmentsPage() {
                                 </span>
                               )}
                             </div>
-                          </td>
+                          </TableCell>
 
                           {/* 4. Package & Desi */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col text-[11px] text-zinc-600 dark:text-zinc-300">
                               <span>
                                 {s.packageCount} Koli / Paket (
@@ -836,10 +837,10 @@ export default function ShipmentsPage() {
                                 {s.totalWeightKg} kg • {s.totalDesi} Desi
                               </span>
                             </div>
-                          </td>
+                          </TableCell>
 
                           {/* 5. Recipient & Address */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex max-w-[200px] flex-col">
                               <span className="font-medium text-zinc-900 dark:text-zinc-100">
                                 {s.recipientName}
@@ -853,20 +854,20 @@ export default function ShipmentsPage() {
                                   : s.recipientAddress}
                               </span>
                             </div>
-                          </td>
+                          </TableCell>
 
                           {/* 6. Status Badge */}
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <span
                               className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-[11px] ${statusConf.bg} ${statusConf.text} ${statusConf.border}`}
                             >
                               <StatusIcon className="h-3 w-3" />
                               {statusConf.label}
                             </span>
-                          </td>
+                          </TableCell>
 
                           {/* 7. Actions */}
-                          <td className="px-4 py-3.5 text-right">
+                          <TableCell className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               {/* View Details */}
                               <button
@@ -919,13 +920,13 @@ export default function ShipmentsPage() {
                                 <Trash2 className="h-3.5 w-3.5" />
                               </button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>
@@ -981,31 +982,31 @@ export default function ShipmentsPage() {
           {/* Returns Table */}
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200 border-b bg-zinc-50 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <th className="px-4 py-3.5">İade Kodu / Tarih</th>
-                    <th className="px-4 py-3.5">Müşteri</th>
-                    <th className="px-4 py-3.5">İade Sebebi</th>
-                    <th className="px-4 py-3.5">Taşıyıcı & Takip No</th>
-                    <th className="px-4 py-3.5">Kontrol & Notlar</th>
-                    <th className="px-4 py-3.5">Durum</th>
-                    <th className="px-4 py-3.5 text-right">Eylemler</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableHead className="px-4 py-3.5 h-auto">İade Kodu / Tarih</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">İade Sebebi</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Taşıyıcı & Takip No</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Kontrol & Notlar</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">Eylemler</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {isLoading ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
                         <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600" />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : filteredReturns.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
@@ -1015,19 +1016,19 @@ export default function ShipmentsPage() {
                             Kayıtlı iade kargo talebi bulunamadı.
                           </p>
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     filteredReturns.map((r) => {
                       const retConf = getReturnStatusConfig(r.status);
                       const RetIcon = retConf.icon;
 
                       return (
-                        <tr
+                        <TableRow
                           className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                           key={r.id}
                         >
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col">
                               <div className="flex items-center gap-1.5">
                                 <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100">
@@ -1050,41 +1051,41 @@ export default function ShipmentsPage() {
                                 )}
                               </span>
                             </div>
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
+                          <TableCell className="px-4 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
                             {r.customerName}
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5 text-zinc-700 dark:text-zinc-300">
+                          <TableCell className="px-4 py-3.5 text-zinc-700 dark:text-zinc-300">
                             {r.reason}
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <div className="flex flex-col text-[11px]">
                               <span>{r.carrierName || "Taşıyıcı Yok"}</span>
                               <span className="font-mono text-zinc-400 dark:text-zinc-500">
                                 {r.trackingNumber || "Takip No Yok"}
                               </span>
                             </div>
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <span className="text-[11px] text-zinc-500 italic dark:text-zinc-400">
                               {r.inspectionNotes || "Henüz kontrol edilmedi"}
                             </span>
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5">
+                          <TableCell className="px-4 py-3.5">
                             <span
                               className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-[11px] ${retConf.bg} ${retConf.text} ${retConf.border}`}
                             >
                               <RetIcon className="h-3 w-3" />
                               {retConf.label}
                             </span>
-                          </td>
+                          </TableCell>
 
-                          <td className="px-4 py-3.5 text-right">
+                          <TableCell className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
                                 className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
@@ -1109,13 +1110,13 @@ export default function ShipmentsPage() {
                                 <Trash2 className="h-3.5 w-3.5" />
                               </button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>

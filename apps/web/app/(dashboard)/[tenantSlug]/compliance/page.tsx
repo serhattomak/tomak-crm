@@ -9,6 +9,7 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -688,62 +689,62 @@ export default function CompliancePage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-zinc-600 dark:text-zinc-400">
-              <thead className="border-zinc-200 border-b bg-zinc-50 font-bold text-[11px] text-zinc-500 uppercase dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr>
-                  <th className="px-4 py-3">Tarih</th>
-                  <th className="px-4 py-3">Personel</th>
-                  <th className="px-4 py-3">Yasal Madde</th>
-                  <th className="px-4 py-3">Modül</th>
-                  <th className="px-4 py-3">İhlal Detayı</th>
-                  <th className="px-4 py-3">Durum</th>
-                  <th className="px-4 py-3 text-right">İşlem</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table className="text-zinc-600 dark:text-zinc-400">
+              <TableHeader className="border-zinc-200 bg-zinc-50 font-bold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="px-4 py-3 h-auto">Tarih</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Personel</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Yasal Madde</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Modül</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">İhlal Detayı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">İşlem</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {violations.length === 0 ? (
-                  <tr>
-                    <td
+                  <TableRow>
+                    <TableCell
                       className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                       colSpan={7}
                     >
                       Kayıtlı herhangi bir mevzuat ihlali bulunmuyor. Tüm
                       işlemler yasal sınırlara uygun!
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   violations.map((v) => (
-                    <tr
+                    <TableRow
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                       key={v.id}
                     >
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
                         {new Date(v.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(v.createdAt).toLocaleTimeString("tr-TR", {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 font-bold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-bold text-zinc-900 dark:text-zinc-100">
                         {v.employeeName}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold font-mono text-[11px] text-amber-800">
                           {v.lawReference}
                         </span>
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {v.moduleSource}
                         </span>
-                      </td>
-                      <td
+                      </TableCell>
+                      <TableCell
                         className="max-w-xs truncate px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300"
                         title={v.details}
                       >
                         {v.details}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap px-4 py-3">
                         {v.status === "Overridden" ? (
                           <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-bold text-[11px] text-blue-700">
                             <FileCheck className="h-3 w-3" /> Onaylandı
@@ -754,8 +755,8 @@ export default function CompliancePage() {
                             <AlertTriangle className="h-3 w-3" /> Aktif İhlal
                           </span>
                         )}
-                      </td>
-                      <td className="px-4 py-3 text-right">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-right">
                         {v.status === "Active" ? (
                           <button
                             className="rounded-lg bg-amber-600 px-2.5 py-1 font-bold text-[11px] text-white shadow-2xs hover:bg-amber-700"
@@ -774,12 +775,12 @@ export default function CompliancePage() {
                             Onaylandı
                           </span>
                         )}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}

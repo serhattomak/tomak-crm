@@ -10,6 +10,7 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -745,28 +746,28 @@ function WarehouseTabContent({
           </div>
         </div>
         <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
-          <table className="w-full text-left text-xs">
-            <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-              <tr>
-                <th className="p-3">Ürün / Varyant</th>
-                <th className="p-3">SKU / Barkod</th>
-                <th className="p-3">Raf / Göz Konumu</th>
-                <th className="p-3 text-right">Toplam Stok</th>
-                <th className="p-3 text-right">Rezerve</th>
-                <th className="p-3 text-right">Kullanılabilir</th>
-                <th className="p-3 text-center">Durum</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+          <Table>
+            <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableRow>
+                <TableHead className="p-3 h-auto">Ürün / Varyant</TableHead>
+                <TableHead className="p-3 h-auto">SKU / Barkod</TableHead>
+                <TableHead className="p-3 h-auto">Raf / Göz Konumu</TableHead>
+                <TableHead className="p-3 text-right h-auto">Toplam Stok</TableHead>
+                <TableHead className="p-3 text-right h-auto">Rezerve</TableHead>
+                <TableHead className="p-3 text-right h-auto">Kullanılabilir</TableHead>
+                <TableHead className="p-3 text-center h-auto">Durum</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
               {filteredStocks.length === 0 ? (
-                <tr>
-                  <td
+                <TableRow>
+                  <TableCell
                     className="p-8 text-center text-muted-foreground"
                     colSpan={7}
                   >
                     Bu depoda kayıtlı stok bulunmuyor.
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ) : null}
               {filteredStocks.map((stock) => (
                 <WarehouseStockRow
@@ -780,8 +781,8 @@ function WarehouseTabContent({
                   stock={stock}
                 />
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
@@ -816,27 +817,27 @@ function TransferTabContent({
         </p>
       </div>
       <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
-        <table className="w-full text-left text-xs">
-          <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-            <tr>
-              <th className="p-3">Transfer No</th>
-              <th className="p-3">Güzergah (Kaynak → Hedef)</th>
-              <th className="p-3">Tarih</th>
-              <th className="p-3 text-center">Kalem / Adet</th>
-              <th className="p-3 text-center">Durum</th>
-              <th className="p-3 text-right">Aksiyon</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+        <Table>
+          <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <TableRow>
+              <TableHead className="p-3 h-auto">Transfer No</TableHead>
+              <TableHead className="p-3 h-auto">Güzergah (Kaynak → Hedef)</TableHead>
+              <TableHead className="p-3 h-auto">Tarih</TableHead>
+              <TableHead className="p-3 text-center h-auto">Kalem / Adet</TableHead>
+              <TableHead className="p-3 text-center h-auto">Durum</TableHead>
+              <TableHead className="p-3 text-right h-auto">Aksiyon</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
             {transfers.length === 0 ? (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   className="p-8 text-center text-muted-foreground"
                   colSpan={6}
                 >
                   Kayıtlı transfer fişi bulunmuyor.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : null}
             {transfers.map((t) => (
               <StockTransferRow
@@ -849,8 +850,8 @@ function TransferTabContent({
                 transfer={t}
               />
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
@@ -877,34 +878,34 @@ function CountTabContent({
         </p>
       </div>
       <div className="overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
-        <table className="w-full text-left text-xs">
-          <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-            <tr>
-              <th className="p-3">Sayım Fişi</th>
-              <th className="p-3">Depo</th>
-              <th className="p-3">Başlangıç Tarihi</th>
-              <th className="p-3 text-center">Kalem Sayısı</th>
-              <th className="p-3 text-center">Toplam Sapma / Fark</th>
-              <th className="p-3 text-center">Durum</th>
-              <th className="p-3 text-right">Aksiyon</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+        <Table>
+          <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <TableRow>
+              <TableHead className="p-3 h-auto">Sayım Fişi</TableHead>
+              <TableHead className="p-3 h-auto">Depo</TableHead>
+              <TableHead className="p-3 h-auto">Başlangıç Tarihi</TableHead>
+              <TableHead className="p-3 text-center h-auto">Kalem Sayısı</TableHead>
+              <TableHead className="p-3 text-center h-auto">Toplam Sapma / Fark</TableHead>
+              <TableHead className="p-3 text-center h-auto">Durum</TableHead>
+              <TableHead className="p-3 text-right h-auto">Aksiyon</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
             {counts.length === 0 ? (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   className="p-8 text-center text-muted-foreground"
                   colSpan={7}
                 >
                   Kayıtlı stok sayım fişi bulunmuyor.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : null}
             {counts.map((c) => (
               <StockCountRow count={c} key={c.id} onOpenDetail={onOpenDetail} />
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
@@ -1000,20 +1001,20 @@ function WarehouseStockRow({
   }, [onEdit, stock]);
 
   return (
-    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
-      <td className="p-3 font-medium text-foreground">
+    <TableRow className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
+      <TableCell className="p-3 font-medium text-foreground">
         {stock.productName}
         {stock.variantName ? (
           <span className="block text-[11px] text-muted-foreground">
             Varyant: {stock.variantName}
           </span>
         ) : null}
-      </td>
-      <td className="p-3 font-mono text-muted-foreground">
+      </TableCell>
+      <TableCell className="p-3 font-mono text-muted-foreground">
         <div>{stock.productSKU || "-"}</div>
         <div className="text-[10px]">{stock.productBarcode || ""}</div>
-      </td>
-      <td className="p-3">
+      </TableCell>
+      <TableCell className="p-3">
         {isEditing ? (
           <div className="flex items-center gap-1.5">
             <input
@@ -1052,14 +1053,14 @@ function WarehouseStockRow({
             </button>
           </div>
         )}
-      </td>
-      <td className="p-3 text-right font-medium">
+      </TableCell>
+      <TableCell className="p-3 text-right font-medium">
         {Number(stock.quantity).toLocaleString("tr-TR")}
-      </td>
-      <td className="p-3 text-right text-muted-foreground">
+      </TableCell>
+      <TableCell className="p-3 text-right text-muted-foreground">
         {Number(stock.reservedQuantity).toLocaleString("tr-TR")}
-      </td>
-      <td className="p-3 text-right font-bold">
+      </TableCell>
+      <TableCell className="p-3 text-right font-bold">
         <span
           className={
             isLow
@@ -1070,16 +1071,16 @@ function WarehouseStockRow({
           {isLow ? <AlertTriangle className="h-3.5 w-3.5" /> : null}
           {Number(stock.availableQuantity).toLocaleString("tr-TR")}
         </span>
-      </td>
-      <td className="p-3 text-center">
+      </TableCell>
+      <TableCell className="p-3 text-center">
         <span className="text-[11px] text-muted-foreground">
           {Number(stock.sellingPrice).toLocaleString("tr-TR", {
             currency: stock.currency || "TRY",
             style: "currency",
           })}
         </span>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -1116,8 +1117,8 @@ function StockTransferRow({
   }, [onCancel, transfer.id]);
 
   return (
-    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
-      <td className="p-3 font-bold font-mono text-foreground">
+    <TableRow className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
+      <TableCell className="p-3 font-bold font-mono text-foreground">
         <button
           className="text-left text-primary hover:underline"
           onClick={handleOpenClick}
@@ -1125,8 +1126,8 @@ function StockTransferRow({
         >
           {transfer.transferNumber}
         </button>
-      </td>
-      <td className="p-3 font-medium">
+      </TableCell>
+      <TableCell className="p-3 font-medium">
         <div className="flex items-center gap-2">
           <span>{transfer.sourceWarehouseName}</span>
           <ArrowRight className="h-3 w-3 text-muted-foreground" />
@@ -1134,20 +1135,20 @@ function StockTransferRow({
             {transfer.targetWarehouseName}
           </span>
         </div>
-      </td>
-      <td className="p-3 text-muted-foreground">
+      </TableCell>
+      <TableCell className="p-3 text-muted-foreground">
         {new Date(transfer.transferDate).toLocaleDateString("tr-TR")}
-      </td>
-      <td className="p-3 text-center">
+      </TableCell>
+      <TableCell className="p-3 text-center">
         <span className="font-semibold">{transfer.totalItemCount} Kalem</span>
         <span className="block text-[10px] text-muted-foreground">
           ({Number(transfer.totalQuantity).toLocaleString("tr-TR")} Adet)
         </span>
-      </td>
-      <td className="p-3 text-center">
+      </TableCell>
+      <TableCell className="p-3 text-center">
         <TransferStatusBadge status={transfer.status} />
-      </td>
-      <td className="space-x-1.5 p-3 text-right">
+      </TableCell>
+      <TableCell className="space-x-1.5 p-3 text-right">
         <button
           className="rounded-lg border border-zinc-200 px-2.5 py-1 font-medium text-xs text-zinc-600 transition hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           onClick={handleOpenClick}
@@ -1185,8 +1186,8 @@ function StockTransferRow({
             İptal
           </button>
         ) : null}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -1204,8 +1205,8 @@ function StockCountRow({
   }, [onOpenDetail, count.id]);
 
   return (
-    <tr className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
-      <td className="p-3 font-bold font-mono text-foreground">
+    <TableRow className="transition hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
+      <TableCell className="p-3 font-bold font-mono text-foreground">
         <button
           className="text-left text-primary hover:underline"
           onClick={handleOpenClick}
@@ -1213,15 +1214,15 @@ function StockCountRow({
         >
           {count.countNumber}
         </button>
-      </td>
-      <td className="p-3 font-medium">{count.warehouseName}</td>
-      <td className="p-3 text-muted-foreground">
+      </TableCell>
+      <TableCell className="p-3 font-medium">{count.warehouseName}</TableCell>
+      <TableCell className="p-3 text-muted-foreground">
         {new Date(count.countDate).toLocaleDateString("tr-TR")}
-      </td>
-      <td className="p-3 text-center font-medium">
+      </TableCell>
+      <TableCell className="p-3 text-center font-medium">
         {count.totalItemsCount} Kalem
-      </td>
-      <td className="p-3 text-center">
+      </TableCell>
+      <TableCell className="p-3 text-center">
         <span
           className={`font-semibold ${
             hasDiscrepancy
@@ -1232,11 +1233,11 @@ function StockCountRow({
           {Number(count.totalDiscrepancy || 0).toLocaleString("tr-TR")} Adet
           Sapma
         </span>
-      </td>
-      <td className="p-3 text-center">
+      </TableCell>
+      <TableCell className="p-3 text-center">
         <CountStatusBadge status={count.status} />
-      </td>
-      <td className="p-3 text-right">
+      </TableCell>
+      <TableCell className="p-3 text-right">
         <button
           className="rounded bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs transition hover:bg-primary/90"
           onClick={handleOpenClick}
@@ -1244,8 +1245,8 @@ function StockCountRow({
         >
           {count.status === "Completed" ? "İncele" : "Sayıma Devam Et"}
         </button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -2171,33 +2172,33 @@ function TransferDetailDrawer({
               Transfer Kalemleri ({transfer.items.length})
             </h3>
             <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
-              <table className="w-full text-left">
-                <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                  <tr>
-                    <th className="p-2.5">Ürün</th>
-                    <th className="p-2.5">SKU</th>
-                    <th className="p-2.5 text-right">Sevk Adedi</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <Table>
+                <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow>
+                    <TableHead className="p-2.5 h-auto">Ürün</TableHead>
+                    <TableHead className="p-2.5 h-auto">SKU</TableHead>
+                    <TableHead className="p-2.5 text-right h-auto">Sevk Adedi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                   {transfer.items.map((item) => (
-                    <tr
+                    <TableRow
                       className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                       key={item.id}
                     >
-                      <td className="p-2.5 font-medium text-foreground">
+                      <TableCell className="p-2.5 font-medium text-foreground">
                         {item.productName}
-                      </td>
-                      <td className="p-2.5 font-mono text-muted-foreground">
+                      </TableCell>
+                      <TableCell className="p-2.5 font-mono text-muted-foreground">
                         {item.productSKU || "-"}
-                      </td>
-                      <td className="p-2.5 text-right font-bold">
+                      </TableCell>
+                      <TableCell className="p-2.5 text-right font-bold">
                         {Number(item.quantity).toLocaleString("tr-TR")}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
 
@@ -2421,16 +2422,16 @@ function StockCountAuditDrawer({
           )}
 
           <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
-            <table className="w-full text-left">
-              <thead className="border-zinc-200/80 border-b bg-zinc-50/80 font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr>
-                  <th className="p-2.5">Ürün Adı</th>
-                  <th className="p-2.5 text-right">Sistem Stoğu</th>
-                  <th className="w-28 p-2.5 text-right">Sayılan Miktar</th>
-                  <th className="p-2.5 text-right">Fark (Sapma)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <Table>
+              <TableHeader className="border-zinc-200/80 bg-zinc-50/80 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="p-2.5 h-auto">Ürün Adı</TableHead>
+                  <TableHead className="p-2.5 text-right h-auto">Sistem Stoğu</TableHead>
+                  <TableHead className="w-28 p-2.5 text-right h-auto">Sayılan Miktar</TableHead>
+                  <TableHead className="p-2.5 text-right h-auto">Fark (Sapma)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                 {items.map((it, idx) => (
                   <CountAuditRow
                     index={idx}
@@ -2440,8 +2441,8 @@ function StockCountAuditDrawer({
                     onCountChange={handleItemCountChange}
                   />
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
           <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-800/50">
             <span className="text-muted-foreground">Toplam Sayım Sapması:</span>
@@ -2506,19 +2507,19 @@ function CountAuditRow({
   );
 
   return (
-    <tr className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
-      <td className="p-2.5 font-medium text-foreground">
+    <TableRow className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40">
+      <TableCell className="p-2.5 font-medium text-foreground">
         {item.productName}
         {item.sku ? (
           <span className="block text-[10px] text-muted-foreground">
             {item.sku}
           </span>
         ) : null}
-      </td>
-      <td className="p-2.5 text-right font-mono text-muted-foreground">
+      </TableCell>
+      <TableCell className="p-2.5 text-right font-mono text-muted-foreground">
         {Number(item.systemQty).toLocaleString("tr-TR")}
-      </td>
-      <td className="p-2.5 text-right">
+      </TableCell>
+      <TableCell className="p-2.5 text-right">
         {isCompleted ? (
           <span className="font-bold">{item.countedQty}</span>
         ) : (
@@ -2530,13 +2531,13 @@ function CountAuditRow({
             value={item.countedQty}
           />
         )}
-      </td>
-      <td className="p-2.5 text-right font-bold">
+      </TableCell>
+      <TableCell className="p-2.5 text-right font-bold">
         <span className={getRowDifferenceColor(diff)}>
           {diff > 0 ? `+${diff}` : String(diff)}
         </span>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 

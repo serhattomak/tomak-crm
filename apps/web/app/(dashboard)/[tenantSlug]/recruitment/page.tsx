@@ -25,6 +25,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -839,26 +840,26 @@ function RecruitmentPageContent() {
                 ) : (
                   <>
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs">
-                        <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-                          <tr>
-                            <th className="px-6 py-3.5">İlan Başlığı</th>
-                            <th className="px-6 py-3.5">Departman</th>
-                            <th className="px-6 py-3.5 text-center">
+                      <Table>
+                        <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                          <TableRow>
+                            <TableHead className="px-6 py-3.5 h-auto">İlan Başlığı</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">Departman</TableHead>
+                            <TableHead className="px-6 py-3.5 text-center h-auto">
                               Kontenjan
-                            </th>
-                            <th className="px-6 py-3.5">Durum / Yayın</th>
-                            <th className="px-6 py-3.5">Kapanış</th>
-                            <th className="px-6 py-3.5 text-right">İşlemler</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                            </TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">Durum / Yayın</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">Kapanış</TableHead>
+                            <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                           {pagedRequisitions.map((req) => (
-                            <tr
+                            <TableRow
                               className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                               key={req.id}
                             >
-                              <td className="px-6 py-4">
+                              <TableCell className="px-6 py-4">
                                 <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                   {req.title}
                                 </div>
@@ -883,8 +884,8 @@ function RecruitmentPageContent() {
                                     {req.headcountWarning}
                                   </p>
                                 )}
-                              </td>
-                              <td className="px-6 py-4">
+                              </TableCell>
+                              <TableCell className="px-6 py-4">
                                 <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                   {req.departmentName || "—"}
                                 </div>
@@ -892,8 +893,8 @@ function RecruitmentPageContent() {
                                   {req.jobPositionTitle ||
                                     "Pozisyon belirtilmedi"}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 text-center">
+                              </TableCell>
+                              <TableCell className="px-6 py-4 text-center">
                                 <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2.5 py-1 font-bold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                   <Users className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
                                   {req.hiredCount}/{req.headcount}
@@ -901,8 +902,8 @@ function RecruitmentPageContent() {
                                 <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
                                   {req.applicationCount} başvuru
                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
+                              </TableCell>
+                              <TableCell className="px-6 py-4">
                                 <span
                                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-[10px] ${getStatusBadge(req.status)}`}
                                 >
@@ -922,13 +923,13 @@ function RecruitmentPageContent() {
                                     </span>
                                   )}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 font-medium text-xs text-zinc-700 dark:text-zinc-300">
+                              </TableCell>
+                              <TableCell className="px-6 py-4 font-medium text-xs text-zinc-700 dark:text-zinc-300">
                                 {req.closingDate
                                   ? formatDate(req.closingDate)
                                   : "—"}
-                              </td>
-                              <td className="px-6 py-4 text-right">
+                              </TableCell>
+                              <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
                                     className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
@@ -970,11 +971,11 @@ function RecruitmentPageContent() {
                                     <Trash2 className="h-3.5 w-3.5" />
                                   </button>
                                 </div>
-                              </td>
-                            </tr>
+                              </TableCell>
+                            </TableRow>
                           ))}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     </div>
                     <Pagination
                       currentPage={reqPage}
@@ -1050,23 +1051,23 @@ function RecruitmentPageContent() {
                 ) : (
                   <>
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs">
-                        <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-                          <tr>
-                            <th className="px-6 py-3.5">Aday</th>
-                            <th className="px-6 py-3.5">E-posta / Telefon</th>
-                            <th className="px-6 py-3.5">Kaynak</th>
-                            <th className="px-6 py-3.5">Etiketler</th>
-                            <th className="px-6 py-3.5 text-right">İşlemler</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                      <Table>
+                        <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                          <TableRow>
+                            <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">E-posta / Telefon</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">Kaynak</TableHead>
+                            <TableHead className="px-6 py-3.5 h-auto">Etiketler</TableHead>
+                            <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                           {pagedCandidates.map((c) => (
-                            <tr
+                            <TableRow
                               className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                               key={c.id}
                             >
-                              <td className="px-6 py-4">
+                              <TableCell className="px-6 py-4">
                                 <div className="flex items-center gap-3">
                                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 font-extrabold text-white text-xs shadow-xs">
                                     {c.firstName.charAt(0).toUpperCase()}
@@ -1081,24 +1082,24 @@ function RecruitmentPageContent() {
                                     </div>
                                   </div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
+                              </TableCell>
+                              <TableCell className="px-6 py-4">
                                 <div className="font-medium font-mono text-[11px] text-zinc-800 dark:text-zinc-200">
                                   {c.email}
                                 </div>
                                 <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                                   {c.phone || "Telefon yok"}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
+                              </TableCell>
+                              <TableCell className="px-6 py-4">
                                 <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                   {c.source}
                                 </span>
                                 <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
                                   {c.consentGiven ? "KVKK ✓" : "Onay yok"}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
+                              </TableCell>
+                              <TableCell className="px-6 py-4">
                                 {c.tags && c.tags.length > 0 ? (
                                   <div className="flex flex-wrap gap-1">
                                     {c.tags.slice(0, 3).map((tag) => (
@@ -1121,8 +1122,8 @@ function RecruitmentPageContent() {
                                     —
                                   </span>
                                 )}
-                              </td>
-                              <td className="px-6 py-4 text-right">
+                              </TableCell>
+                              <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
                                     className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
@@ -1146,11 +1147,11 @@ function RecruitmentPageContent() {
                                     <Trash2 className="h-3.5 w-3.5" />
                                   </button>
                                 </div>
-                              </td>
-                            </tr>
+                              </TableCell>
+                            </TableRow>
                           ))}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     </div>
                     <Pagination
                       currentPage={candPage}
@@ -1411,33 +1412,33 @@ function RecruitmentPageContent() {
                   ) : (
                     <>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs">
-                          <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-                            <tr>
-                              <th className="px-6 py-3.5">Aday</th>
-                              <th className="px-6 py-3.5">İlan</th>
-                              <th className="px-6 py-3.5">Aşama</th>
-                              <th className="px-6 py-3.5 text-center">Puan</th>
-                              <th className="px-6 py-3.5 text-right">
+                        <Table>
+                          <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                            <TableRow>
+                              <TableHead className="px-6 py-3.5 h-auto">Aday</TableHead>
+                              <TableHead className="px-6 py-3.5 h-auto">İlan</TableHead>
+                              <TableHead className="px-6 py-3.5 h-auto">Aşama</TableHead>
+                              <TableHead className="px-6 py-3.5 text-center h-auto">Puan</TableHead>
+                              <TableHead className="px-6 py-3.5 text-right h-auto">
                                 İşlemler
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                             {pagedApplications.map((app) => (
-                              <tr
+                              <TableRow
                                 className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                                 key={app.id}
                               >
-                                <td className="px-6 py-4">
+                                <TableCell className="px-6 py-4">
                                   <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                     {app.candidateName}
                                   </div>
                                   <div className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                                     {app.candidateEmail}
                                   </div>
-                                </td>
-                                <td className="px-6 py-4">
+                                </TableCell>
+                                <TableCell className="px-6 py-4">
                                   <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                     {app.requisitionTitle}
                                   </div>
@@ -1449,8 +1450,8 @@ function RecruitmentPageContent() {
                                       {app.headcountWarning}
                                     </p>
                                   )}
-                                </td>
-                                <td className="px-6 py-4">
+                                </TableCell>
+                                <TableCell className="px-6 py-4">
                                   {app.stageName ? (
                                     <span
                                       className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-bold text-[11px]"
@@ -1478,8 +1479,8 @@ function RecruitmentPageContent() {
                                   <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
                                     {app.status}
                                   </div>
-                                </td>
-                                <td className="px-6 py-4 text-center">
+                                </TableCell>
+                                <TableCell className="px-6 py-4 text-center">
                                   {app.score !== undefined &&
                                   app.score !== null ? (
                                     <span className="rounded-lg bg-blue-50 px-2.5 py-1 font-bold text-blue-700 text-xs">
@@ -1490,8 +1491,8 @@ function RecruitmentPageContent() {
                                       —
                                     </span>
                                   )}
-                                </td>
-                                <td className="px-6 py-4 text-right">
+                                </TableCell>
+                                <TableCell className="px-6 py-4 text-right">
                                   <div className="flex items-center justify-end gap-1">
                                     <button
                                       className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
@@ -1528,11 +1529,11 @@ function RecruitmentPageContent() {
                                       </SelectContent>
                                     </Select>
                                   </div>
-                                </td>
-                              </tr>
+                                </TableCell>
+                              </TableRow>
                             ))}
-                          </tbody>
-                        </table>
+                          </TableBody>
+                        </Table>
                       </div>
                       <Pagination
                         currentPage={appPage}
@@ -1582,25 +1583,25 @@ function RecruitmentPageContent() {
                   </div>
                 ) : (
                   <div className="mt-4 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-zinc-50 font-bold text-[11px] text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
-                        <tr>
-                          <th className="px-3 py-3">#</th>
-                          <th className="px-3 py-3">Aşama</th>
-                          <th className="px-3 py-3">Slug</th>
-                          <th className="px-3 py-3">Tür</th>
-                          <th className="px-3 py-3">Durum</th>
-                          <th className="px-3 py-3 text-center">Başvuru</th>
-                          <th className="px-3 py-3 text-right">İşlemler</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                    <Table>
+                      <TableHeader className="bg-zinc-50 font-bold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                        <TableRow>
+                          <TableHead className="px-3 py-3 h-auto">#</TableHead>
+                          <TableHead className="px-3 py-3 h-auto">Aşama</TableHead>
+                          <TableHead className="px-3 py-3 h-auto">Slug</TableHead>
+                          <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
+                          <TableHead className="px-3 py-3 h-auto">Durum</TableHead>
+                          <TableHead className="px-3 py-3 text-center h-auto">Başvuru</TableHead>
+                          <TableHead className="px-3 py-3 text-right h-auto">İşlemler</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                         {sortedStages.map((s, idx) => (
-                          <tr
+                          <TableRow
                             className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                             key={s.id}
                           >
-                            <td className="px-3 py-3">
+                            <TableCell className="px-3 py-3">
                               <div className="flex items-center gap-1">
                                 <span className="font-mono text-zinc-500 dark:text-zinc-400">
                                   {s.sortOrder}
@@ -1630,8 +1631,8 @@ function RecruitmentPageContent() {
                                   </button>
                                 </div>
                               </div>
-                            </td>
-                            <td className="px-3 py-3">
+                            </TableCell>
+                            <TableCell className="px-3 py-3">
                               <div className="flex items-center gap-2">
                                 <span
                                   className="h-3 w-3 rounded-full border border-white shadow-xs"
@@ -1646,16 +1647,16 @@ function RecruitmentPageContent() {
                                   </span>
                                 )}
                               </div>
-                            </td>
-                            <td className="px-3 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                            </TableCell>
+                            <TableCell className="px-3 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                               {s.slug}
-                            </td>
-                            <td className="px-3 py-3">
+                            </TableCell>
+                            <TableCell className="px-3 py-3">
                               <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                 {s.stageType}
                               </span>
-                            </td>
-                            <td className="px-3 py-3">
+                            </TableCell>
+                            <TableCell className="px-3 py-3">
                               <button
                                 aria-label={
                                   s.isActive ? "Pasif et" : "Aktif et"
@@ -1671,11 +1672,11 @@ function RecruitmentPageContent() {
                               <span className="ml-2 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
                                 {s.isActive ? "Aktif" : "Pasif"}
                               </span>
-                            </td>
-                            <td className="px-3 py-3 text-center font-semibold text-zinc-700 dark:text-zinc-300">
+                            </TableCell>
+                            <TableCell className="px-3 py-3 text-center font-semibold text-zinc-700 dark:text-zinc-300">
                               {s.applicationCount}
-                            </td>
-                            <td className="px-3 py-3 text-right">
+                            </TableCell>
+                            <TableCell className="px-3 py-3 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
                                   className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
@@ -1698,11 +1699,11 @@ function RecruitmentPageContent() {
                                   <Trash2 className="h-3.5 w-3.5" />
                                 </button>
                               </div>
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         ))}
-                      </tbody>
-                    </table>
+                      </TableBody>
+                    </Table>
                   </div>
                 )}
 

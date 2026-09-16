@@ -26,6 +26,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Briefcase,
@@ -1195,24 +1196,24 @@ function EmployeesTab({
         </div>
       ) : viewMode === "table" ? (
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
-          <table className="w-full text-left text-xs">
-            <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-              <tr>
-                <th className="px-6 py-3.5">Çalışan</th>
-                <th className="px-6 py-3.5">Departman & Pozisyon</th>
-                <th className="px-6 py-3.5">Yönetici (Reports To)</th>
-                <th className="px-6 py-3.5">Çalışma Şekli</th>
-                <th className="px-6 py-3.5">Durum</th>
-                <th className="px-6 py-3.5 text-right">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+          <Table>
+            <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+              <TableRow>
+                <TableHead className="px-6 py-3.5 h-auto">Çalışan</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Departman & Pozisyon</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Yönetici (Reports To)</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Çalışma Şekli</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Durum</TableHead>
+                <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {employees.map((emp) => (
-                <tr
+                <TableRow
                   className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                   key={emp.id}
                 >
-                  <td className="px-6 py-4">
+                  <TableCell className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {emp.avatarUrl ? (
                         <img
@@ -1234,16 +1235,16 @@ function EmployeesTab({
                         </div>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4">
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
                     <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {emp.title || "—"}
                     </div>
                     <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                       {emp.departmentName || "Genel"}
                     </div>
-                  </td>
-                  <td className="px-6 py-4 font-medium text-zinc-700 dark:text-zinc-300">
+                  </TableCell>
+                  <TableCell className="px-6 py-4 font-medium text-zinc-700 dark:text-zinc-300">
                     {emp.managerName ? (
                       <span className="flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
@@ -1254,13 +1255,13 @@ function EmployeesTab({
                         Üst Yönetici Yok
                       </span>
                     )}
-                  </td>
-                  <td className="px-6 py-4">
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
                     <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                       {emp.employmentType}
                     </span>
-                  </td>
-                  <td className="px-6 py-4">
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
                         emp.status === "Active"
@@ -1276,8 +1277,8 @@ function EmployeesTab({
                           ? "İzinde"
                           : emp.status}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
                         className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
@@ -1304,11 +1305,11 @@ function EmployeesTab({
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1419,24 +1420,24 @@ function PositionsTab({
   return (
     <div className="space-y-4">
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
-        <table className="w-full text-left text-xs">
-          <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-            <tr>
-              <th className="px-6 py-3.5">Pozisyon / Ünvan</th>
-              <th className="px-6 py-3.5">Kariyer Kademesi</th>
-              <th className="px-6 py-3.5">Departman</th>
-              <th className="px-6 py-3.5">Maaş Bandı Aralığı</th>
-              <th className="px-6 py-3.5">Aktif Personel</th>
-              <th className="px-6 py-3.5 text-right">İşlemler</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+        <Table>
+          <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+            <TableRow>
+              <TableHead className="px-6 py-3.5 h-auto">Pozisyon / Ünvan</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">Kariyer Kademesi</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">Departman</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">Maaş Bandı Aralığı</TableHead>
+              <TableHead className="px-6 py-3.5 h-auto">Aktif Personel</TableHead>
+              <TableHead className="px-6 py-3.5 text-right h-auto">İşlemler</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
             {positions.map((pos) => (
-              <tr
+              <TableRow
                 className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                 key={pos.id}
               >
-                <td className="px-6 py-4">
+                <TableCell className="px-6 py-4">
                   <div className="font-bold text-zinc-900 dark:text-zinc-100">
                     {pos.title}
                   </div>
@@ -1445,24 +1446,24 @@ function PositionsTab({
                       {pos.jobDescription}
                     </div>
                   )}
-                </td>
-                <td className="px-6 py-4">
+                </TableCell>
+                <TableCell className="px-6 py-4">
                   <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                     {pos.level}
                   </span>
-                </td>
-                <td className="px-6 py-4 font-semibold text-zinc-700 dark:text-zinc-300">
+                </TableCell>
+                <TableCell className="px-6 py-4 font-semibold text-zinc-700 dark:text-zinc-300">
                   {pos.departmentName || "Tüm Departmanlar"}
-                </td>
-                <td className="px-6 py-4 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+                </TableCell>
+                <TableCell className="px-6 py-4 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
                   {pos.minSalary || pos.maxSalary
                     ? `$${pos.minSalary?.toLocaleString() || "0"} – $${pos.maxSalary?.toLocaleString() || "Max"}`
                     : "—"}
-                </td>
-                <td className="px-6 py-4 font-semibold text-zinc-800 dark:text-zinc-200">
+                </TableCell>
+                <TableCell className="px-6 py-4 font-semibold text-zinc-800 dark:text-zinc-200">
                   {pos.employeeCount} Kişi
-                </td>
-                <td className="px-6 py-4 text-right">
+                </TableCell>
+                <TableCell className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
                       className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
@@ -1479,11 +1480,11 @@ function PositionsTab({
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

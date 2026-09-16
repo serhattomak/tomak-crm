@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@workspace/ui/components/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
@@ -365,19 +366,19 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
       .map(
         (item, idx) =>
           `
-      <tr style="${item.isOptional ? "background-color: #fefce8;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
-        <td style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</td>
-        <td style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
+      <TableRow style="${item.isOptional ? "background-color: #fefce8;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
+        <TableCell style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</TableCell>
+        <TableCell style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
           <div style="font-weight: 700; color: #0f172a;">${item.productName}</div>
           ${item.sku ? `<div style="font-size: 9px; color: #64748b; font-family: monospace;">SKU: ${item.sku}</div>` : ""}
           ${item.description ? `<div style="font-size: 10px; color: #475569; margin-top: 2px;">${item.description}</div>` : ""}
-        </td>
-        <td style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${item.quantity} ${item.unit}</td>
-        <td style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0;">${formatCur(item.unitPrice)}</td>
-        <td style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</td>
-        <td style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0;">%${item.taxRate}</td>
-        <td style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${formatCur(item.totalPrice)}</td>
-      </tr>
+        </TableCell>
+        <TableCell style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${item.quantity} ${item.unit}</TableCell>
+        <TableCell style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0;">${formatCur(item.unitPrice)}</TableCell>
+        <TableCell style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</TableCell>
+        <TableCell style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0;">%${item.taxRate}</TableCell>
+        <TableCell style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${formatCur(item.totalPrice)}</TableCell>
+      </TableRow>
     `
       )
       .join("");
@@ -436,20 +437,20 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </div>
           </div>
 
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th style="width: 25px; text-align: center;">#</th>
-                <th>Ürün / Hizmet Açıklaması</th>
-                <th style="width: 70px; text-align: center;">Miktar</th>
-                <th style="width: 90px; text-align: right;">Birim Fiyat</th>
-                <th style="width: 55px; text-align: center;">İskonto</th>
-                <th style="width: 45px; text-align: center;">KDV</th>
-                <th style="width: 100px; text-align: right;">Toplam</th>
-              </tr>
-            </thead>
-            <tbody>${itemsHtml}</tbody>
-          </table>
+          <Table class="items-table">
+            <TableHeader>
+              <TableRow>
+                <TableHead style="width: 25px; text-align: center;">#</TableHead>
+                <TableHead>Ürün / Hizmet Açıklaması</TableHead>
+                <TableHead style="width: 70px; text-align: center;">Miktar</TableHead>
+                <TableHead style="width: 90px; text-align: right;">Birim Fiyat</TableHead>
+                <TableHead style="width: 55px; text-align: center;">İskonto</TableHead>
+                <TableHead style="width: 45px; text-align: center;">KDV</TableHead>
+                <TableHead style="width: 100px; text-align: right;">Toplam</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>${itemsHtml}</TableBody>
+          </Table>
 
           <div class="totals-card">
             <div class="totals-row"><span>Ara Toplam:</span><b>${formatCur(quote.subtotal)}</b></div>
@@ -627,30 +628,30 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </h3>
 
             <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200 border-b bg-zinc-50 font-bold text-[11px] text-zinc-600">
-                    <th className="px-4 py-3">#</th>
-                    <th className="px-4 py-3">Ürün / Hizmet Açıklaması</th>
-                    <th className="px-3 py-3 text-center">Miktar</th>
-                    <th className="px-3 py-3 text-right">Birim Fiyat</th>
-                    <th className="px-3 py-3 text-center">İskonto</th>
-                    <th className="px-3 py-3 text-center">KDV</th>
-                    <th className="px-4 py-3 text-right">Toplam Tutar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700">
+              <Table className="border-collapse">
+                <TableHeader>
+                  <TableRow className="border-zinc-200 bg-zinc-50 font-bold text-[11px] text-zinc-600">
+                    <TableHead className="px-4 py-3 h-auto">#</TableHead>
+                    <TableHead className="px-4 py-3 h-auto">Ürün / Hizmet Açıklaması</TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">Birim Fiyat</TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">İskonto</TableHead>
+                    <TableHead className="px-3 py-3 text-center h-auto">KDV</TableHead>
+                    <TableHead className="px-4 py-3 text-right h-auto">Toplam Tutar</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700">
                   {quote.items.map((item, idx) => (
-                    <tr
+                    <TableRow
                       className={
                         item.isOptional ? "bg-zinc-50/50 opacity-70" : ""
                       }
                       key={item.id}
                     >
-                      <td className="px-4 py-3 font-bold text-zinc-400">
+                      <TableCell className="px-4 py-3 font-bold text-zinc-400">
                         {idx + 1}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span className="block font-bold text-zinc-900">
                           {item.productName}
                         </span>
@@ -664,26 +665,26 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                             Opsiyonel Hizmet
                           </span>
                         )}
-                      </td>
-                      <td className="px-3 py-3 text-center font-bold">
+                      </TableCell>
+                      <TableCell className="px-3 py-3 text-center font-bold">
                         {item.quantity} {item.unit}
-                      </td>
-                      <td className="px-3 py-3 text-right font-medium">
+                      </TableCell>
+                      <TableCell className="px-3 py-3 text-right font-medium">
                         {formatCurrency(item.unitPrice, quote.currency)}
-                      </td>
-                      <td className="px-3 py-3 text-center font-bold text-rose-600">
+                      </TableCell>
+                      <TableCell className="px-3 py-3 text-center font-bold text-rose-600">
                         {item.discountRate > 0 ? `%${item.discountRate}` : "-"}
-                      </td>
-                      <td className="px-3 py-3 text-center text-zinc-500">
+                      </TableCell>
+                      <TableCell className="px-3 py-3 text-center text-zinc-500">
                         %{item.taxRate}
-                      </td>
-                      <td className="px-4 py-3 text-right font-extrabold text-zinc-900">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-right font-extrabold text-zinc-900">
                         {formatCurrency(item.totalPrice, quote.currency)}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
 

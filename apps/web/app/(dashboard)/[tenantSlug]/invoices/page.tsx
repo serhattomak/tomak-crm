@@ -10,6 +10,7 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -148,11 +149,11 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
   const isSales = invoice.type === "Sales";
 
   return (
-    <tr
-      className="cursor-pointer border-zinc-100 border-b transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+    <TableRow
+      className="cursor-pointer border-zinc-100 transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
       onClick={handleSelect}
     >
-      <td className="py-3.5 pr-3 pl-4">
+      <TableCell className="py-3.5 pr-3 pl-4">
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {invoice.invoiceNumber}
         </div>
@@ -160,8 +161,8 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           {invoice.profile} •{" "}
           {new Date(invoice.issueDate).toLocaleDateString("tr-TR")}
         </div>
-      </td>
-      <td className="px-3 py-3.5">
+      </TableCell>
+      <TableCell className="px-3 py-3.5">
         <span
           className={`inline-flex rounded-md px-2 py-0.5 font-semibold text-xs ${
             isSales
@@ -171,8 +172,8 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
         >
           {isSales ? "Satış" : "Alış"}
         </span>
-      </td>
-      <td className="px-3 py-3.5">
+      </TableCell>
+      <TableCell className="px-3 py-3.5">
         <div className="font-medium text-sm text-zinc-800 dark:text-zinc-200">
           {invoice.cariTitle}
         </div>
@@ -181,8 +182,8 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
             VKN/TCKN: {invoice.cariTaxNumber}
           </div>
         ) : null}
-      </td>
-      <td className="px-3 py-3.5 text-right">
+      </TableCell>
+      <TableCell className="px-3 py-3.5 text-right">
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {invoice.grandTotal.toLocaleString("tr-TR", {
             maximumFractionDigits: 2,
@@ -197,11 +198,11 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           })}{" "}
           {invoice.currency}
         </div>
-      </td>
-      <td className="px-3 py-3.5">
+      </TableCell>
+      <TableCell className="px-3 py-3.5">
         <InvoiceStatusBadge status={invoice.status} />
-      </td>
-      <td className="py-3.5 pr-4 pl-3 text-right">
+      </TableCell>
+      <TableCell className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1">
           <a
             className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 font-mono text-[11px] text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300"
@@ -233,8 +234,8 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
             </button>
           )}
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -337,22 +338,22 @@ function InvoiceTableBody({
 }: TableContentProps) {
   if (isLoading) {
     return (
-      <tr>
-        <td className="py-8 text-center text-zinc-400" colSpan={6}>
+      <TableRow>
+        <TableCell className="py-8 text-center text-zinc-400" colSpan={6}>
           Faturalar yükleniyor...
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
   if (invoices.length === 0) {
     return (
-      <tr>
-        <td className="py-12 text-center text-zinc-400" colSpan={6}>
+      <TableRow>
+        <TableCell className="py-12 text-center text-zinc-400" colSpan={6}>
           <Receipt className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Henüz kayıtlı fatura bulunmuyor.
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
@@ -508,20 +509,20 @@ function InvoiceDetailDrawer({
               </div>
 
               <div>
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="border-zinc-200 border-b font-semibold text-zinc-400 dark:border-zinc-800">
-                      <th className="py-2">Ürün / Hizmet</th>
-                      <th className="py-2 text-right">Miktar</th>
-                      <th className="py-2 text-right">Birim Fiyat</th>
-                      <th className="py-2 text-right">KDV %</th>
-                      <th className="py-2 text-right">Toplam</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-zinc-200 font-semibold text-zinc-400 dark:border-zinc-800">
+                      <TableHead className="py-2 h-auto">Ürün / Hizmet</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Miktar</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Birim Fiyat</TableHead>
+                      <TableHead className="py-2 text-right h-auto">KDV %</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Toplam</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
                     {invoice.items.map((item) => (
-                      <tr key={item.id}>
-                        <td className="py-2.5">
+                      <TableRow key={item.id}>
+                        <TableCell className="py-2.5">
                           <div className="font-medium text-zinc-800 dark:text-zinc-200">
                             {item.productName}
                           </div>
@@ -535,29 +536,29 @@ function InvoiceDetailDrawer({
                               Tevkifat: {item.withholdingRate}
                             </div>
                           ) : null}
-                        </td>
-                        <td className="py-2.5 text-right font-mono">
+                        </TableCell>
+                        <TableCell className="py-2.5 text-right font-mono">
                           {item.quantity} {item.unit}
-                        </td>
-                        <td className="py-2.5 text-right font-mono">
+                        </TableCell>
+                        <TableCell className="py-2.5 text-right font-mono">
                           {item.unitPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}{" "}
                           {invoice.currency}
-                        </td>
-                        <td className="py-2.5 text-right font-mono">
+                        </TableCell>
+                        <TableCell className="py-2.5 text-right font-mono">
                           %{item.taxRate}
-                        </td>
-                        <td className="py-2.5 text-right font-bold font-mono">
+                        </TableCell>
+                        <TableCell className="py-2.5 text-right font-bold font-mono">
                           {item.totalPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}{" "}
                           {invoice.currency}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
 
               <div className="flex justify-end border-zinc-200 border-t pt-4 dark:border-zinc-800">
@@ -852,18 +853,18 @@ export default function InvoicesPage() {
       {/* 4. Invoices Table */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
         <div className="overflow-x-auto">
-          <table className="w-full text-left font-sans text-xs">
-            <thead>
-              <tr className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <th className="py-3 pr-3 pl-4">Fatura No & Tarih</th>
-                <th className="px-3 py-3">Tür</th>
-                <th className="px-3 py-3">Cari Hesap (Ünvan)</th>
-                <th className="px-3 py-3 text-right">Tutar & KDV</th>
-                <th className="px-3 py-3">Durum</th>
-                <th className="py-3 pr-4 pl-3 text-right">Aksiyon</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+          <Table className="font-sans">
+            <TableHeader>
+              <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableHead className="py-3 pr-3 pl-4 h-auto">Fatura No & Tarih</TableHead>
+                <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
+                <TableHead className="px-3 py-3 h-auto">Cari Hesap (Ünvan)</TableHead>
+                <TableHead className="px-3 py-3 text-right h-auto">Tutar & KDV</TableHead>
+                <TableHead className="px-3 py-3 h-auto">Durum</TableHead>
+                <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Aksiyon</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
               <InvoiceTableBody
                 invoices={invoices}
                 isLoading={isLoading}
@@ -871,8 +872,8 @@ export default function InvoicesPage() {
                 onIssue={handleIssueInvoice}
                 onSelect={handleSelectInvoice}
               />
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
 

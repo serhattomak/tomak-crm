@@ -17,6 +17,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   CheckCircle2,
@@ -362,51 +363,51 @@ export default function ContractsPage() {
 
       {/* 4. Contracts Table (Workbench Table Invariant) */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900/60">
-        <table className="w-full text-left text-xs">
-          <thead className="border-zinc-200/80 border-b bg-zinc-50/75 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-400">
-            <tr>
-              <th className="py-3 pr-4 pl-5 font-semibold">Sözleşme No</th>
-              <th className="px-4 py-3 font-semibold">Başlık & Müşteri</th>
-              <th className="px-4 py-3 font-semibold">Durum</th>
-              <th className="px-4 py-3 text-right font-semibold">Tutar</th>
-              <th className="px-4 py-3 font-semibold">İmza Durumu</th>
-              <th className="py-3 pr-5 pl-4 text-right font-semibold">
+        <Table>
+          <TableHeader className="border-zinc-200/80 bg-zinc-50/75 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-400">
+            <TableRow>
+              <TableHead className="py-3 pr-4 pl-5 font-semibold h-auto">Sözleşme No</TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">Başlık & Müşteri</TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">Durum</TableHead>
+              <TableHead className="px-4 py-3 text-right font-semibold h-auto">Tutar</TableHead>
+              <TableHead className="px-4 py-3 font-semibold h-auto">İmza Durumu</TableHead>
+              <TableHead className="py-3 pr-5 pl-4 text-right font-semibold h-auto">
                 Aksiyonlar
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
             {isLoading ? (
-              <tr>
-                <td className="py-12 text-center text-zinc-500" colSpan={6}>
+              <TableRow>
+                <TableCell className="py-12 text-center text-zinc-500" colSpan={6}>
                   <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-500" />
                   <span className="mt-2 block">Yükleniyor...</span>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : contracts.length === 0 ? (
-              <tr>
-                <td className="py-12 text-center text-zinc-500" colSpan={6}>
+              <TableRow>
+                <TableCell className="py-12 text-center text-zinc-500" colSpan={6}>
                   Kayıtlı sözleşme bulunamadı.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               contracts.map((c) => (
-                <tr
+                <TableRow
                   className="transition hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40"
                   key={c.id}
                 >
-                  <td className="py-3 pr-4 pl-5 font-medium font-mono text-zinc-900 dark:text-zinc-100">
+                  <TableCell className="py-3 pr-4 pl-5 font-medium font-mono text-zinc-900 dark:text-zinc-100">
                     {c.contractNumber}
-                  </td>
-                  <td className="px-4 py-3">
+                  </TableCell>
+                  <TableCell className="px-4 py-3">
                     <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                       {c.title}
                     </div>
                     <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                       {c.customerName || "—"}
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
+                  </TableCell>
+                  <TableCell className="px-4 py-3">
                     <span
                       className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium text-[11px] ${
                         c.status === "Signed" || c.status === "Active"
@@ -422,11 +423,11 @@ export default function ContractsPage() {
                           ? "Taslak"
                           : c.status}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-right font-semibold text-zinc-900 tabular-nums dark:text-zinc-100">
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-right font-semibold text-zinc-900 tabular-nums dark:text-zinc-100">
                     {formatCurrency(c.totalAmount, c.currency)}
-                  </td>
-                  <td className="px-4 py-3">
+                  </TableCell>
+                  <TableCell className="px-4 py-3">
                     {c.signedAt ? (
                       <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                         <CheckCircle2 className="h-3.5 w-3.5" />
@@ -438,8 +439,8 @@ export default function ContractsPage() {
                     ) : (
                       <span className="text-zinc-400">İmza Bekliyor</span>
                     )}
-                  </td>
-                  <td className="py-3 pr-5 pl-4 text-right">
+                  </TableCell>
+                  <TableCell className="py-3 pr-5 pl-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
                       {c.publicToken && (
                         <button
@@ -474,12 +475,12 @@ export default function ContractsPage() {
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* 5. Create Contract Modal */}

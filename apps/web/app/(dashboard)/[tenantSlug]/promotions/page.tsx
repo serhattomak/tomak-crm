@@ -5,6 +5,7 @@ import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   AlertCircle,
   BarChart3,
@@ -624,32 +625,32 @@ export default function PromotionsPage() {
                 </button>
               </div>
             ) : (
-              <table className="w-full text-left text-xs">
-                <thead className="border-zinc-100 border-b bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
-                  <tr>
-                    <th className="px-4 py-3.5 font-semibold">Kampanya Adı</th>
-                    <th className="px-4 py-3.5 font-semibold">Tür & Değer</th>
-                    <th className="px-4 py-3.5 font-semibold">Tetikleyici</th>
-                    <th className="px-4 py-3.5 font-semibold">Geçerlilik</th>
-                    <th className="px-4 py-3.5 font-semibold">
+              <Table>
+                <TableHeader className="border-zinc-100 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
+                  <TableRow>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya Adı</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür & Değer</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tetikleyici</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Geçerlilik</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
                       Kural & Öncelik
-                    </th>
-                    <th className="px-4 py-3.5 font-semibold">Kullanım</th>
-                    <th className="px-4 py-3.5 text-center font-semibold">
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kullanım</TableHead>
+                    <TableHead className="px-4 py-3.5 text-center font-semibold h-auto">
                       Durum
-                    </th>
-                    <th className="px-4 py-3.5 text-right font-semibold">
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 text-right font-semibold h-auto">
                       İşlemler
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {campaigns.map((camp) => (
-                    <tr
+                    <TableRow
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                       key={camp.id}
                     >
-                      <td className="px-4 py-3.5">
+                      <TableCell className="px-4 py-3.5">
                         <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                           {camp.name}
                         </div>
@@ -658,8 +659,8 @@ export default function PromotionsPage() {
                             {camp.description}
                           </div>
                         )}
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <div className="flex flex-col gap-1">
                           <div>{getTypeBadge(camp.type)}</div>
                           <span className="font-semibold text-zinc-900 dark:text-zinc-100">
@@ -673,8 +674,8 @@ export default function PromotionsPage() {
                             {camp.type === "FreeShipping" && "Ücretsiz Kargo"}
                           </span>
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         {camp.triggerType === "Automatic" ? (
                           <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                             <Zap className="h-3 w-3 text-amber-500" /> Otomatik
@@ -684,8 +685,8 @@ export default function PromotionsPage() {
                             <Ticket className="h-3 w-3" /> Kupon Kodu
                           </span>
                         )}
-                      </td>
-                      <td className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3.5 w-3.5 text-zinc-400" />
                           <span>
@@ -704,8 +705,8 @@ export default function PromotionsPage() {
                             </>
                           )}
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <div className="flex flex-wrap gap-1">
                           <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                             Öncelik: {camp.priority}
@@ -721,8 +722,8 @@ export default function PromotionsPage() {
                             </span>
                           )}
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                           {camp.currentUsageCount}
                           {camp.totalUsageLimit && (
@@ -732,8 +733,8 @@ export default function PromotionsPage() {
                             </span>
                           )}
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5 text-center">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-center">
                         <button
                           className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                             camp.isActive
@@ -749,8 +750,8 @@ export default function PromotionsPage() {
                             }`}
                           />
                         </button>
-                      </td>
-                      <td className="px-4 py-3.5 text-right">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
@@ -774,11 +775,11 @@ export default function PromotionsPage() {
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             )}
           </div>
         </div>
@@ -852,29 +853,29 @@ export default function PromotionsPage() {
                 </button>
               </div>
             ) : (
-              <table className="w-full text-left text-xs">
-                <thead className="border-zinc-100 border-b bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
-                  <tr>
-                    <th className="px-4 py-3.5 font-semibold">Kupon Kodu</th>
-                    <th className="px-4 py-3.5 font-semibold">Kampanya</th>
-                    <th className="px-4 py-3.5 font-semibold">Tür</th>
-                    <th className="px-4 py-3.5 font-semibold">
+              <Table>
+                <TableHeader className="border-zinc-100 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50">
+                  <TableRow>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kupon Kodu</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">
                       Kullanım Durumu
-                    </th>
-                    <th className="px-4 py-3.5 font-semibold">Son Kullanma</th>
-                    <th className="px-4 py-3.5 font-semibold">Batch ID</th>
-                    <th className="px-4 py-3.5 text-right font-semibold">
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Son Kullanma</TableHead>
+                    <TableHead className="px-4 py-3.5 font-semibold h-auto">Batch ID</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right font-semibold h-auto">
                       İşlemler
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {coupons.map((coup) => (
-                    <tr
+                    <TableRow
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                       key={coup.id}
                     >
-                      <td className="px-4 py-3.5">
+                      <TableCell className="px-4 py-3.5">
                         <div className="flex items-center gap-2">
                           <code className="rounded bg-zinc-100 px-2 py-1 font-bold font-mono text-blue-700 dark:bg-zinc-800 dark:text-blue-300">
                             {coup.code}
@@ -892,18 +893,18 @@ export default function PromotionsPage() {
                             )}
                           </button>
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
                         {coup.campaignName || "Genel Kampanya"}
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {coup.type === "SingleUse"
                             ? "Tek Kullanımlık"
                             : "Standart / Çoklu"}
                         </span>
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <div className="flex items-center gap-2">
                           <div className="h-1.5 w-16 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                             <div
@@ -917,16 +918,16 @@ export default function PromotionsPage() {
                             {coup.usedCount} / {coup.maxUses}
                           </span>
                         </div>
-                      </td>
-                      <td className="px-4 py-3.5 text-zinc-500">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-zinc-500">
                         {coup.expiresAt
                           ? new Date(coup.expiresAt).toLocaleDateString("tr-TR")
                           : "Süresiz"}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-[11px] text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-mono text-[11px] text-zinc-400">
                         {coup.batchId || "-"}
-                      </td>
-                      <td className="px-4 py-3.5 text-right">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right">
                         <button
                           className="rounded-lg p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
                           onClick={() => handleDeleteCoupon(coup.id, coup.code)}
@@ -935,11 +936,11 @@ export default function PromotionsPage() {
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             )}
           </div>
         </div>

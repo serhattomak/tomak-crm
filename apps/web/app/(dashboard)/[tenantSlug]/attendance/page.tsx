@@ -17,6 +17,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { TimePicker } from "@workspace/ui/components/time-picker";
@@ -1190,35 +1191,35 @@ export default function AttendancePage() {
 
             {/* Live Table */}
             <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-xs dark:bg-card">
-              <table className="w-full text-left text-sm">
-                <thead className="border-border border-b bg-muted/40 font-semibold text-muted-foreground text-xs uppercase">
-                  <tr>
-                    <th className="p-4">Personel</th>
-                    <th className="p-4">Departman</th>
-                    <th className="p-4">Vardiya</th>
-                    <th className="p-4">İlk Giriş</th>
-                    <th className="p-4">Net Çalışma</th>
-                    <th className="p-4">Mola Süresi</th>
-                    <th className="p-4">Canlı Durum</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
+              <Table className="text-sm">
+                <TableHeader className="border-border bg-muted/40 text-muted-foreground">
+                  <TableRow>
+                    <TableHead className="p-4 h-auto">Personel</TableHead>
+                    <TableHead className="p-4 h-auto">Departman</TableHead>
+                    <TableHead className="p-4 h-auto">Vardiya</TableHead>
+                    <TableHead className="p-4 h-auto">İlk Giriş</TableHead>
+                    <TableHead className="p-4 h-auto">Net Çalışma</TableHead>
+                    <TableHead className="p-4 h-auto">Mola Süresi</TableHead>
+                    <TableHead className="p-4 h-auto">Canlı Durum</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-border">
                   {filteredLiveEmployees.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
                         Kayıt bulunamadı.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     filteredLiveEmployees.map((emp) => (
-                      <tr
+                      <TableRow
                         className="transition-colors hover:bg-muted/30"
                         key={emp.employeeId}
                       >
-                        <td className="p-4">
+                        <TableCell className="p-4">
                           <div className="flex items-center gap-3">
                             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700 text-sm dark:bg-blue-900/40 dark:text-blue-300">
                               {emp.employeeName.charAt(0)}
@@ -1232,25 +1233,25 @@ export default function AttendancePage() {
                               </div>
                             </div>
                           </div>
-                        </td>
-                        <td className="p-4 text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-foreground text-sm">
                           {emp.departmentName || "Genel"}
-                        </td>
-                        <td className="p-4">
+                        </TableCell>
+                        <TableCell className="p-4">
                           <span className="inline-flex rounded-full border border-border bg-muted px-2.5 py-0.5 font-medium text-xs">
                             {emp.shiftName || "Normal Vardiya"}
                           </span>
-                        </td>
-                        <td className="p-4 font-medium text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 font-medium text-foreground text-sm">
                           {formatTime(emp.clockInTime)}
-                        </td>
-                        <td className="p-4 font-medium text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 font-medium text-foreground text-sm">
                           {formatMinutes(emp.workedMinutesSoFar)}
-                        </td>
-                        <td className="p-4 text-muted-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-muted-foreground text-sm">
                           {formatMinutes(emp.breakMinutesSoFar)}
-                        </td>
-                        <td className="p-4">
+                        </TableCell>
+                        <TableCell className="p-4">
                           {emp.currentState === "Working" && (
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 text-xs dark:bg-emerald-950/60 dark:text-emerald-300">
                               <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
@@ -1281,12 +1282,12 @@ export default function AttendancePage() {
                               Tamamlandı
                             </span>
                           )}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         )}
@@ -1372,17 +1373,17 @@ export default function AttendancePage() {
             {/* Weekly Interactive Grid */}
             <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-xs dark:bg-card">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[800px] border-collapse text-sm">
-                  <thead>
-                    <tr className="border-border border-b bg-muted/40">
-                      <th className="w-48 border-border border-r p-3 text-left font-semibold">
+                <Table className="min-w-[800px] border-collapse text-sm">
+                  <TableHeader>
+                    <TableRow className="border-border bg-muted/40">
+                      <TableHead className="w-48 border-border border-r p-3 text-left font-semibold h-auto">
                         Personel
-                      </th>
+                      </TableHead>
                       {weekDays.map((wd) => {
                         const isToday =
                           wd.toDateString() === new Date().toDateString();
                         return (
-                          <th
+                          <TableHead
                             className={`border-border border-r p-3 text-center font-semibold ${
                               isToday
                                 ? "bg-blue-50/60 text-blue-600 dark:bg-blue-950/30"
@@ -1398,32 +1399,32 @@ export default function AttendancePage() {
                             <div className="font-normal text-muted-foreground text-xs">
                               {wd.getDate()}
                             </div>
-                          </th>
+                          </TableHead>
                         );
                       })}
-                    </tr>
-                  </thead>
-                  <tbody>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {employees.map((emp) => (
-                      <tr
-                        className="border-border border-b hover:bg-muted/20"
+                      <TableRow
+                        className="border-border hover:bg-muted/20"
                         key={emp.id}
                       >
-                        <td className="border-border border-r p-3 font-medium text-foreground">
+                        <TableCell className="border-border border-r p-3 font-medium text-foreground">
                           <div>
                             {emp.firstName} {emp.lastName}
                           </div>
                           <div className="text-muted-foreground text-xs">
                             {emp.departmentName || "Genel"}
                           </div>
-                        </td>
+                        </TableCell>
                         {weekDays.map((wd) => {
                           const dateStr = wd.toISOString().split("T")[0];
                           const sch = schedules.find(
                             (s) => s.employeeId === emp.id && s.date === dateStr
                           );
                           return (
-                            <td
+                            <TableCell
                               className="border-border border-r p-2 text-center align-middle"
                               key={dateStr}
                             >
@@ -1446,13 +1447,13 @@ export default function AttendancePage() {
                                   -
                                 </span>
                               )}
-                            </td>
+                            </TableCell>
                           );
                         })}
-                      </tr>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           </div>
@@ -1506,55 +1507,55 @@ export default function AttendancePage() {
 
             {/* Records Table */}
             <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-xs dark:bg-card">
-              <table className="w-full text-left text-sm">
-                <thead className="border-border border-b bg-muted/40 font-semibold text-muted-foreground text-xs uppercase">
-                  <tr>
-                    <th className="p-4">Tarih</th>
-                    <th className="p-4">Personel</th>
-                    <th className="p-4">Departman</th>
-                    <th className="p-4">İlk Giriş</th>
-                    <th className="p-4">Son Çıkış</th>
-                    <th className="p-4">Net Çalışma</th>
-                    <th className="p-4">Mola</th>
-                    <th className="p-4">Fazla Mesai</th>
-                    <th className="p-4">Durum</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
+              <Table className="text-sm">
+                <TableHeader className="border-border bg-muted/40 text-muted-foreground">
+                  <TableRow>
+                    <TableHead className="p-4 h-auto">Tarih</TableHead>
+                    <TableHead className="p-4 h-auto">Personel</TableHead>
+                    <TableHead className="p-4 h-auto">Departman</TableHead>
+                    <TableHead className="p-4 h-auto">İlk Giriş</TableHead>
+                    <TableHead className="p-4 h-auto">Son Çıkış</TableHead>
+                    <TableHead className="p-4 h-auto">Net Çalışma</TableHead>
+                    <TableHead className="p-4 h-auto">Mola</TableHead>
+                    <TableHead className="p-4 h-auto">Fazla Mesai</TableHead>
+                    <TableHead className="p-4 h-auto">Durum</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-border">
                   {records.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-muted-foreground"
                         colSpan={9}
                       >
                         Kayıt bulunamadı.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     records.map((r) => (
-                      <tr className="hover:bg-muted/30" key={r.id}>
-                        <td className="p-4 font-medium text-foreground text-sm">
+                      <TableRow className="hover:bg-muted/30" key={r.id}>
+                        <TableCell className="p-4 font-medium text-foreground text-sm">
                           {r.date}
-                        </td>
-                        <td className="p-4 font-semibold text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 font-semibold text-foreground text-sm">
                           {r.employeeName}
-                        </td>
-                        <td className="p-4 text-muted-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-muted-foreground text-sm">
                           {r.departmentName || "Genel"}
-                        </td>
-                        <td className="p-4 text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-foreground text-sm">
                           {formatTime(r.firstClockIn)}
-                        </td>
-                        <td className="p-4 text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-foreground text-sm">
                           {formatTime(r.lastClockOut)}
-                        </td>
-                        <td className="p-4 font-medium text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 font-medium text-foreground text-sm">
                           {formatMinutes(r.totalWorkedMinutes)}
-                        </td>
-                        <td className="p-4 text-muted-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-muted-foreground text-sm">
                           {formatMinutes(r.totalBreakMinutes)}
-                        </td>
-                        <td className="p-4">
+                        </TableCell>
+                        <TableCell className="p-4">
                           {r.overtimeMinutes > 0 ? (
                             <span className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-600 text-xs">
                               +{formatMinutes(r.overtimeMinutes)} (1.5x)
@@ -1568,8 +1569,8 @@ export default function AttendancePage() {
                               -
                             </span>
                           )}
-                        </td>
-                        <td className="p-4">
+                        </TableCell>
+                        <TableCell className="p-4">
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                               r.status === "Present"
@@ -1585,12 +1586,12 @@ export default function AttendancePage() {
                                 ? `Geç (${r.lateMinutes} dk)`
                                 : r.status}
                           </span>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         )}
@@ -1618,44 +1619,44 @@ export default function AttendancePage() {
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-xs dark:bg-card">
-              <table className="w-full text-left text-sm">
-                <thead className="border-border border-b bg-muted/40 font-semibold text-muted-foreground text-xs uppercase">
-                  <tr>
-                    <th className="p-4">Tarih</th>
-                    <th className="p-4">Personel</th>
-                    <th className="p-4">İstenen Giriş / Çıkış</th>
-                    <th className="p-4">Mazeret / Gerekçe</th>
-                    <th className="p-4">Durum</th>
-                    <th className="p-4 text-right">İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
+              <Table className="text-sm">
+                <TableHeader className="border-border bg-muted/40 text-muted-foreground">
+                  <TableRow>
+                    <TableHead className="p-4 h-auto">Tarih</TableHead>
+                    <TableHead className="p-4 h-auto">Personel</TableHead>
+                    <TableHead className="p-4 h-auto">İstenen Giriş / Çıkış</TableHead>
+                    <TableHead className="p-4 h-auto">Mazeret / Gerekçe</TableHead>
+                    <TableHead className="p-4 h-auto">Durum</TableHead>
+                    <TableHead className="p-4 text-right h-auto">İşlemler</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-border">
                   {corrections.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-muted-foreground"
                         colSpan={6}
                       >
                         Bekleyen düzeltme talebi bulunmuyor.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     corrections.map((c) => (
-                      <tr key={c.id}>
-                        <td className="p-4 font-medium text-foreground text-sm">
+                      <TableRow key={c.id}>
+                        <TableCell className="p-4 font-medium text-foreground text-sm">
                           {c.date}
-                        </td>
-                        <td className="p-4 font-semibold text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 font-semibold text-foreground text-sm">
                           {c.employeeName}
-                        </td>
-                        <td className="p-4 text-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="p-4 text-foreground text-sm">
                           {formatTime(c.requestedClockIn)} -{" "}
                           {formatTime(c.requestedClockOut)}
-                        </td>
-                        <td className="max-w-xs truncate p-4 text-muted-foreground text-sm">
+                        </TableCell>
+                        <TableCell className="max-w-xs truncate p-4 text-muted-foreground text-sm">
                           {c.reason}
-                        </td>
-                        <td className="p-4">
+                        </TableCell>
+                        <TableCell className="p-4">
                           <span
                             className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                               c.status === "Approved"
@@ -1671,8 +1672,8 @@ export default function AttendancePage() {
                                 ? "Reddedildi"
                                 : "Bekliyor"}
                           </span>
-                        </td>
-                        <td className="p-4 text-right">
+                        </TableCell>
+                        <TableCell className="p-4 text-right">
                           {c.status === "Pending" && (
                             <div className="flex items-center justify-end gap-2">
                               <Button
@@ -1725,12 +1726,12 @@ export default function AttendancePage() {
                               </Button>
                             </div>
                           )}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         )}

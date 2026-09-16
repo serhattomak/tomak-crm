@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -753,47 +754,47 @@ export default function AutomationsPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-zinc-600 dark:text-zinc-400">
-              <thead className="border-zinc-200 border-b bg-zinc-50 font-semibold text-zinc-500 uppercase dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr>
-                  <th className="px-4 py-3">Tarih / Saat</th>
-                  <th className="px-4 py-3">Akış Adı</th>
-                  <th className="px-4 py-3">Tetikleyici Kaynağı</th>
-                  <th className="px-4 py-3">Varlık</th>
-                  <th className="px-4 py-3">Durum</th>
-                  <th className="px-4 py-3">Aksiyonlar</th>
-                  <th className="px-4 py-3">Süre</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table className="text-zinc-600 dark:text-zinc-400">
+              <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="px-4 py-3 h-auto">Tarih / Saat</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Akış Adı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Tetikleyici Kaynağı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Varlık</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Aksiyonlar</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Süre</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {executions.length === 0 ? (
-                  <tr>
-                    <td
+                  <TableRow>
+                    <TableCell
                       className="py-8 text-center text-zinc-400 dark:text-zinc-500"
                       colSpan={7}
                     >
                       Henüz çalışma kaydı bulunmuyor.
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   executions.map((exec) => (
-                    <tr
+                    <TableRow
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                       key={exec.id}
                     >
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
                         {new Date(exec.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(exec.createdAt).toLocaleTimeString("tr-TR")}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 font-bold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-bold text-zinc-900 dark:text-zinc-100">
                         {exec.workflowName}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {exec.triggerSource}
                         </span>
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         {exec.entityType ? (
                           <span className="font-medium text-zinc-700 dark:text-zinc-300">
                             {exec.entityType} ({exec.entityId?.substring(0, 8)})
@@ -803,8 +804,8 @@ export default function AutomationsPage() {
                             -
                           </span>
                         )}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         {exec.status === "Success" ? (
                           <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-[11px] text-emerald-700">
                             <CheckCircle2 className="h-3 w-3 text-emerald-600" />
@@ -821,20 +822,20 @@ export default function AutomationsPage() {
                             Hata
                           </span>
                         )}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                           {exec.actionsExecutedCount} adım
                         </span>
-                      </td>
-                      <td className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
                         {exec.executionDurationMs} ms
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}

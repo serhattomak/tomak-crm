@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   AlertCircle,
@@ -631,29 +632,29 @@ export default function TicketsDashboardPage() {
         /* TABLE VIEW */
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-200/80 border-b bg-zinc-50 font-semibold text-zinc-600 dark:border-zinc-800/90 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr>
-                  <th className="px-4 py-3.5">Talep No & Konu</th>
-                  <th className="px-4 py-3.5">Müşteri</th>
-                  <th className="px-4 py-3.5">Durum</th>
-                  <th className="px-4 py-3.5">Öncelik</th>
-                  <th className="px-4 py-3.5">Atanan</th>
-                  <th className="px-4 py-3.5">SLA Durumu</th>
-                  <th className="px-4 py-3.5">Mesajlar</th>
-                  <th className="px-4 py-3.5 text-right">İşlem</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table>
+              <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-600 dark:border-zinc-800/90 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="px-4 py-3.5 h-auto">Talep No & Konu</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Öncelik</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Atanan</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">SLA Durumu</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Mesajlar</TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">İşlem</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {tickets.map((t) => (
-                  <tr
+                  <TableRow
                     className="group cursor-pointer transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                     key={t.id}
                     onClick={() =>
                       router.push(`/${tenantSlug}/tickets/${t.id}`)
                     }
                   >
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-blue-600 text-xs group-hover:underline">
@@ -673,9 +674,9 @@ export default function TicketsDashboardPage() {
                           {t.subject}
                         </p>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       <div className="font-medium text-zinc-800 dark:text-zinc-200">
                         {t.customerName}
                       </div>
@@ -684,15 +685,15 @@ export default function TicketsDashboardPage() {
                           {t.customerEmail}
                         </div>
                       )}
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5">{getStatusBadge(t.status)}</td>
+                    <TableCell className="px-4 py-3.5">{getStatusBadge(t.status)}</TableCell>
 
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       {getPriorityBadge(t.priority)}
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       <div className="flex items-center gap-1.5">
                         <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                           {t.assignedUserName
@@ -703,9 +704,9 @@ export default function TicketsDashboardPage() {
                           {t.assignedUserName || "Atanmamış"}
                         </span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       {t.isSlaBreached ? (
                         <span className="inline-flex items-center gap-1 rounded-md bg-red-50 px-2 py-0.5 font-bold text-[11px] text-red-600">
                           <Flame className="h-3 w-3 animate-pulse" />
@@ -727,16 +728,16 @@ export default function TicketsDashboardPage() {
                           -
                         </span>
                       )}
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5">
+                    <TableCell className="px-4 py-3.5">
                       <div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
                         <MessageSquare className="h-3.5 w-3.5" />
                         <span>{t.messageCount}</span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-3.5 text-right">
+                    <TableCell className="px-4 py-3.5 text-right">
                       <Link
                         className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-zinc-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-zinc-800 dark:text-zinc-400"
                         href={`/${tenantSlug}/tickets/${t.id}`}
@@ -745,11 +746,11 @@ export default function TicketsDashboardPage() {
                         <span>Detay</span>
                         <ExternalLink className="h-3 w-3" />
                       </Link>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       ) : (

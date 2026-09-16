@@ -11,6 +11,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -637,30 +638,30 @@ export default function OrdersPage() {
         /* Table View */
         <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
-                <tr>
-                  <th className="w-10 py-3.5 pr-2 pl-4">
+            <Table>
+              <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="w-10 py-3.5 pr-2 pl-4 h-auto">
                     <Checkbox
                       aria-label="Tümünü seç"
                       checked={allSelected}
                       data-indeterminate={someSelected}
                       onCheckedChange={toggleSelectAll}
                     />
-                  </th>
-                  <th className="py-3.5 pr-4 pl-2">Sipariş No &amp; Tarih</th>
-                  <th className="px-4 py-3.5">Müşteri</th>
-                  <th className="px-4 py-3.5">Durum</th>
-                  <th className="px-4 py-3.5">Ödeme Durumu</th>
-                  <th className="px-4 py-3.5 text-center">Kalem</th>
-                  <th className="px-4 py-3.5 text-right">Toplam Tutar</th>
-                  <th className="px-4 py-3.5 text-right">Tahsil Edilen</th>
-                  <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  </TableHead>
+                  <TableHead className="py-3.5 pr-4 pl-2 h-auto">Sipariş No &amp; Tarih</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3.5 h-auto">Ödeme Durumu</TableHead>
+                  <TableHead className="px-4 py-3.5 text-center h-auto">Kalem</TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">Toplam Tutar</TableHead>
+                  <TableHead className="px-4 py-3.5 text-right h-auto">Tahsil Edilen</TableHead>
+                  <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">İşlemler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {orders.map((o) => (
-                  <tr
+                  <TableRow
                     className={`group transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50 ${
                       selectedIds.has(o.id)
                         ? "bg-blue-50/60 dark:bg-blue-950/20"
@@ -668,15 +669,15 @@ export default function OrdersPage() {
                     }`}
                     key={o.id}
                   >
-                    <td className="w-10 py-4 pr-2 pl-4">
+                    <TableCell className="w-10 py-4 pr-2 pl-4">
                       <Checkbox
                         aria-label={`${o.orderNumber} seç`}
                         checked={selectedIds.has(o.id)}
                         onCheckedChange={() => toggleSelectOne(o.id)}
                         onClick={(e) => e.stopPropagation()}
                       />
-                    </td>
-                    <td className="py-4 pr-4 pl-2">
+                    </TableCell>
+                    <TableCell className="py-4 pr-4 pl-2">
                       <Link
                         className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
                         href={`/${tenantSlug}/orders/${o.id}`}
@@ -686,9 +687,9 @@ export default function OrdersPage() {
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4">
+                    <TableCell className="px-4 py-4">
                       <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {o.customerName}
                       </div>
@@ -697,9 +698,9 @@ export default function OrdersPage() {
                           Fat: {o.invoiceNumber}
                         </div>
                       )}
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4">
+                    <TableCell className="px-4 py-4">
                       <span
                         className={`inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-[10px] ${getStatusBadge(
                           o.status
@@ -707,9 +708,9 @@ export default function OrdersPage() {
                       >
                         {getStatusLabel(o.status)}
                       </span>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4">
+                    <TableCell className="px-4 py-4">
                       <span
                         className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getPaymentBadge(
                           o.paymentStatus
@@ -717,13 +718,13 @@ export default function OrdersPage() {
                       >
                         {getPaymentLabel(o.paymentStatus)}
                       </span>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4 text-center font-bold text-zinc-700 dark:text-zinc-300">
+                    <TableCell className="px-4 py-4 text-center font-bold text-zinc-700 dark:text-zinc-300">
                       {o.itemsCount} Kalem
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4 text-right">
+                    <TableCell className="px-4 py-4 text-right">
                       <div className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
                         ₺
                         {o.totalAmount.toLocaleString("tr-TR", {
@@ -733,9 +734,9 @@ export default function OrdersPage() {
                       <div className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
                         KDV Dahil
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="px-4 py-4 text-right">
+                    <TableCell className="px-4 py-4 text-right">
                       <div className="font-bold text-emerald-600 text-xs">
                         ₺
                         {o.paidAmount.toLocaleString("tr-TR", {
@@ -750,9 +751,9 @@ export default function OrdersPage() {
                           })}
                         </div>
                       )}
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 pr-6 pl-4 text-right">
+                    <TableCell className="py-4 pr-6 pl-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link
                           className="flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
@@ -772,11 +773,11 @@ export default function OrdersPage() {
                           </button>
                         </PermissionGate>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       ) : (
@@ -1329,19 +1330,19 @@ function CreateOrderWizardModal({
               </div>
             ) : (
               <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
-                <table className="w-full text-left text-xs">
-                  <thead className="border-b bg-zinc-50 font-medium text-[11px] text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <tr>
-                      <th className="px-3 py-2.5">Kalem Adı</th>
-                      <th className="px-3 py-2.5 text-center">Miktar</th>
-                      <th className="px-3 py-2.5 text-right">Birim Fiyat</th>
-                      <th className="px-3 py-2.5 text-center">KDV %</th>
-                      <th className="px-3 py-2.5 text-center">İndirim %</th>
-                      <th className="px-3 py-2.5 text-right">Toplam</th>
-                      <th className="px-3 py-2.5 text-center">Sil</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                <Table>
+                  <TableHeader className="bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableRow>
+                      <TableHead className="px-3 py-2.5 h-auto">Kalem Adı</TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">Miktar</TableHead>
+                      <TableHead className="px-3 py-2.5 text-right h-auto">Birim Fiyat</TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">KDV %</TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">İndirim %</TableHead>
+                      <TableHead className="px-3 py-2.5 text-right h-auto">Toplam</TableHead>
+                      <TableHead className="px-3 py-2.5 text-center h-auto">Sil</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {items.map((item, idx) => {
                       const raw = item.unitPrice * item.quantity;
                       const disc = item.discountRate
@@ -1354,11 +1355,11 @@ function CreateOrderWizardModal({
                       const lineTotal = taxable + tax;
 
                       return (
-                        <tr
+                        <TableRow
                           className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                           key={idx}
                         >
-                          <td className="px-3 py-2.5">
+                          <TableCell className="px-3 py-2.5">
                             <span className="font-bold text-zinc-900 dark:text-zinc-100">
                               {item.productName}
                             </span>
@@ -1367,8 +1368,8 @@ function CreateOrderWizardModal({
                                 ({item.sku})
                               </span>
                             )}
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-center">
                             <NumberInput
                               className="w-20 text-center"
                               inputSize="sm"
@@ -1384,17 +1385,17 @@ function CreateOrderWizardModal({
                               step={1}
                               value={item.quantity}
                             />
-                          </td>
-                          <td className="px-3 py-2.5 text-right font-medium text-zinc-800 dark:text-zinc-200">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-right font-medium text-zinc-800 dark:text-zinc-200">
                             ₺
                             {item.unitPrice.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
                             })}
-                          </td>
-                          <td className="px-3 py-2.5 text-center text-zinc-600 dark:text-zinc-400">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-center text-zinc-600 dark:text-zinc-400">
                             %{item.taxRate}
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-center">
                             <NumberInput
                               className="w-16 text-center"
                               inputSize="sm"
@@ -1411,14 +1412,14 @@ function CreateOrderWizardModal({
                               suffix="%"
                               value={item.discountRate || 0}
                             />
-                          </td>
-                          <td className="px-3 py-2.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                             ₺
                             {lineTotal.toLocaleString("tr-TR", {
                               minimumFractionDigits: 2,
                             })}
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-center">
                             <button
                               className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
                               onClick={() => handleRemoveItem(idx)}
@@ -1426,12 +1427,12 @@ function CreateOrderWizardModal({
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </button>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </div>

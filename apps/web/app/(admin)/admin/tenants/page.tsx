@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Building2,
@@ -243,45 +244,45 @@ function AdminTenantsContent() {
       {/* Tenants Table */}
       <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="border-zinc-200/80 border-b bg-zinc-50/70 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400">
-              <tr>
-                <th className="px-5 py-3.5">Firma / Çalışma Alanı</th>
-                <th className="px-5 py-3.5">Sektör Şablonu</th>
-                <th className="px-5 py-3.5">Aktif Modüller</th>
-                <th className="px-5 py-3.5">Üyeler</th>
-                <th className="px-5 py-3.5">Durum</th>
-                <th className="px-5 py-3.5 text-right">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
+          <Table>
+            <TableHeader className="border-zinc-200/80 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400">
+              <TableRow>
+                <TableHead className="px-5 py-3.5 h-auto">Firma / Çalışma Alanı</TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">Sektör Şablonu</TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">Aktif Modüller</TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">Üyeler</TableHead>
+                <TableHead className="px-5 py-3.5 h-auto">Durum</TableHead>
+                <TableHead className="px-5 py-3.5 text-right h-auto">İşlemler</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="divide-y divide-zinc-100 text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
               {loading ? (
-                <tr>
-                  <td
+                <TableRow>
+                  <TableCell
                     className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                     colSpan={6}
                   >
                     <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
                     Firmalar yükleniyor...
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ) : filteredTenants.length === 0 ? (
-                <tr>
-                  <td
+                <TableRow>
+                  <TableCell
                     className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                     colSpan={6}
                   >
                     Kayıtlı firma bulunamadı.
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ) : (
                 filteredTenants.map((tenant) => (
-                  <tr
+                  <TableRow
                     className="transition hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40"
                     key={tenant.id}
                   >
                     {/* Name & Slug */}
-                    <td className="px-5 py-4">
+                    <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 font-bold text-blue-600 text-xs">
                           {tenant.name.substring(0, 2).toUpperCase()}
@@ -298,20 +299,20 @@ function AdminTenantsContent() {
                           </p>
                         </div>
                       </div>
-                    </td>
+                    </TableCell>
 
                     {/* Template */}
-                    <td className="px-5 py-4">
+                    <TableCell className="px-5 py-4">
                       <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/60 bg-amber-50 px-2.5 py-1 font-semibold text-amber-700 text-xs dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
                         <Sparkles className="h-3 w-3 text-amber-500" />
                         {tenant.industryTemplateName ??
                           tenant.industry ??
                           "Genel"}
                       </span>
-                    </td>
+                    </TableCell>
 
                     {/* Modules */}
-                    <td className="px-5 py-4">
+                    <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
                         <Layers className="h-3.5 w-3.5 text-blue-600" />
                         <span>
@@ -319,15 +320,15 @@ function AdminTenantsContent() {
                           aktif
                         </span>
                       </div>
-                    </td>
+                    </TableCell>
 
                     {/* Members */}
-                    <td className="px-5 py-4 text-zinc-500 dark:text-zinc-400">
+                    <TableCell className="px-5 py-4 text-zinc-500 dark:text-zinc-400">
                       {tenant.memberCount} kullanıcı
-                    </td>
+                    </TableCell>
 
                     {/* Status */}
-                    <td className="px-5 py-4">
+                    <TableCell className="px-5 py-4">
                       {tenant.isActive ? (
                         <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200/60 bg-emerald-50 px-2.5 py-0.5 font-bold text-[11px] text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
                           <CheckCircle2 className="h-3 w-3" />
@@ -339,10 +340,10 @@ function AdminTenantsContent() {
                           Askıda
                         </span>
                       )}
-                    </td>
+                    </TableCell>
 
                     {/* Actions */}
-                    <td className="px-5 py-4 text-right">
+                    <TableCell className="px-5 py-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           className={`rounded-xl p-2 transition ${
@@ -377,12 +378,12 @@ function AdminTenantsContent() {
                           <ExternalLink className="h-4 w-4" />
                         </Link>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))
               )}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
 

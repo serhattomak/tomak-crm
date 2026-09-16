@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -567,26 +568,26 @@ export default function OrderDetailPage() {
               </h4>
 
               <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                <table className="w-full text-left text-xs">
-                  <thead className="border-zinc-200 border-b bg-zinc-50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <tr>
-                      <th className="px-3.5 py-3">Kalem / Ürün</th>
-                      <th className="px-3 py-3 text-center">Miktar</th>
-                      <th className="px-3 py-3 text-right">Birim Fiyat</th>
-                      <th className="px-3 py-3 text-center">KDV</th>
-                      <th className="px-3 py-3 text-center">İndirim</th>
-                      <th className="py-3 pr-4 pl-3 text-right">
+                <Table>
+                  <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableRow>
+                      <TableHead className="px-3.5 py-3 h-auto">Kalem / Ürün</TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
+                      <TableHead className="px-3 py-3 text-right h-auto">Birim Fiyat</TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">KDV</TableHead>
+                      <TableHead className="px-3 py-3 text-center h-auto">İndirim</TableHead>
+                      <TableHead className="py-3 pr-4 pl-3 text-right h-auto">
                         Toplam Tutar
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {order.items.map((item) => (
-                      <tr
+                      <TableRow
                         className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                         key={item.id}
                       >
-                        <td className="px-3.5 py-3.5">
+                        <TableCell className="px-3.5 py-3.5">
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {item.productName}
                           </div>
@@ -600,34 +601,34 @@ export default function OrderDetailPage() {
                               {item.optionsOrNotes}
                             </div>
                           )}
-                        </td>
-                        <td className="px-3 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
                           {item.quantity} {item.unit}
-                        </td>
-                        <td className="px-3 py-3.5 text-right font-medium text-zinc-700 dark:text-zinc-300">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 text-right font-medium text-zinc-700 dark:text-zinc-300">
                           ₺
                           {item.unitPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}
-                        </td>
-                        <td className="px-3 py-3.5 text-center text-zinc-600 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 text-center text-zinc-600 dark:text-zinc-400">
                           %{item.taxRate}
-                        </td>
-                        <td className="px-3 py-3.5 text-center font-medium text-rose-600">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 text-center font-medium text-rose-600">
                           {item.discountRate > 0
                             ? `-%${item.discountRate}`
                             : "—"}
-                        </td>
-                        <td className="py-3.5 pr-4 pl-3 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="py-3.5 pr-4 pl-3 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                           ₺
                           {item.totalPrice.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           )}

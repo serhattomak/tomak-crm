@@ -10,6 +10,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Activity,
   AlertCircle,
@@ -783,31 +784,31 @@ export default function WebhooksPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <caption className="sr-only">
+                <Table className="text-sm">
+                  <TableCaption className="sr-only">
                     Webhook endpoint listesi — isim, URL, olaylar, durum ve
                     aksiyonlar
-                  </caption>
-                  <thead className="border-zinc-200 border-b bg-zinc-50/70 font-medium text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <tr>
-                      <th className="px-4 py-3 font-semibold">İsim</th>
-                      <th className="px-4 py-3 font-semibold">URL</th>
-                      <th className="px-4 py-3 font-semibold">Olaylar</th>
-                      <th className="px-4 py-3 text-center font-semibold">
+                  </TableCaption>
+                  <TableHeader className="border-zinc-200 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                    <TableRow>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">İsim</TableHead>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">URL</TableHead>
+                      <TableHead className="px-4 py-3 font-semibold h-auto">Olaylar</TableHead>
+                      <TableHead className="px-4 py-3 text-center font-semibold h-auto">
                         Durum
-                      </th>
-                      <th className="px-4 py-3 text-right font-semibold">
+                      </TableHead>
+                      <TableHead className="px-4 py-3 text-right font-semibold h-auto">
                         Aksiyonlar
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {endpoints.map((ep) => (
-                      <tr
+                      <TableRow
                         className="transition-colors duration-150 hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                         key={ep.id}
                       >
-                        <td className="px-4 py-3">
+                        <TableCell className="px-4 py-3">
                           <div className="font-medium text-zinc-900 dark:text-zinc-100">
                             {ep.name}
                           </div>
@@ -816,8 +817,8 @@ export default function WebhooksPage() {
                               {ep.description}
                             </div>
                           ) : null}
-                        </td>
-                        <td className="px-4 py-3">
+                        </TableCell>
+                        <TableCell className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <a
                               className="max-w-[260px] truncate font-mono text-xs text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
@@ -850,8 +851,8 @@ export default function WebhooksPage() {
                               <ExternalLink className="h-3.5 w-3.5" />
                             </a>
                           </div>
-                        </td>
-                        <td className="px-4 py-3">
+                        </TableCell>
+                        <TableCell className="px-4 py-3">
                           <div className="flex max-w-[280px] flex-wrap gap-1">
                             {ep.events.length === 0 ? (
                               <span className="text-xs text-zinc-400">—</span>
@@ -859,8 +860,8 @@ export default function WebhooksPage() {
                               ep.events.map((ev) => getEventBadge(ev))
                             )}
                           </div>
-                        </td>
-                        <td className="px-4 py-3 text-center">
+                        </TableCell>
+                        <TableCell className="px-4 py-3 text-center">
                           <button
                             aria-label={
                               ep.isActive ? "Pasife al" : "Aktifleştir"
@@ -881,8 +882,8 @@ export default function WebhooksPage() {
                               }`}
                             />
                           </button>
-                        </td>
-                        <td className="px-4 py-3 text-right">
+                        </TableCell>
+                        <TableCell className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
                               className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-medium text-xs text-zinc-700 transition-colors duration-150 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -916,11 +917,11 @@ export default function WebhooksPage() {
                               <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </div>
@@ -1050,52 +1051,52 @@ export default function WebhooksPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <caption className="sr-only">
+                <Table className="text-sm">
+                  <TableCaption className="sr-only">
                     Webhook teslimat günlüğü — endpoint, olay, durum, deneme
                     sayısı ve yanıt
-                  </caption>
-                  <thead className="border-zinc-200 border-b bg-zinc-50/70 font-medium text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <tr>
-                      <th className="px-3 py-3 font-semibold">Endpoint</th>
-                      <th className="px-3 py-3 font-semibold">Olay</th>
-                      <th className="px-3 py-3 font-semibold">Payload</th>
-                      <th className="px-3 py-3 font-semibold">Durum</th>
-                      <th className="px-3 py-3 text-center font-semibold">
+                  </TableCaption>
+                  <TableHeader className="border-zinc-200 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                    <TableRow>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">Endpoint</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">Olay</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">Payload</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">Durum</TableHead>
+                      <TableHead className="px-3 py-3 text-center font-semibold h-auto">
                         Deneme
-                      </th>
-                      <th className="px-3 py-3 text-center font-semibold">
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-center font-semibold h-auto">
                         Kod
-                      </th>
-                      <th className="px-3 py-3 text-right font-semibold">
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-right font-semibold h-auto">
                         Süre
-                      </th>
-                      <th className="px-3 py-3 font-semibold">Tarih</th>
-                      <th className="px-3 py-3 font-semibold">
+                      </TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">Tarih</TableHead>
+                      <TableHead className="px-3 py-3 font-semibold h-auto">
                         Sonraki Deneme
-                      </th>
-                      <th className="px-3 py-3 text-right font-semibold">
+                      </TableHead>
+                      <TableHead className="px-3 py-3 text-right font-semibold h-auto">
                         Aksiyon
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                     {deliveries.map((d) => (
-                      <tr
+                      <TableRow
                         className="transition-colors duration-150 hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                         key={d.id}
                       >
-                        <td className="px-3 py-3">
+                        <TableCell className="px-3 py-3">
                           <span className="font-medium text-zinc-900 dark:text-zinc-100">
                             {d.endpointName || d.endpointId.slice(0, 8)}
                           </span>
-                        </td>
-                        <td className="px-3 py-3">
+                        </TableCell>
+                        <TableCell className="px-3 py-3">
                           <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
                             {d.eventType}
                           </span>
-                        </td>
-                        <td className="max-w-[220px] px-3 py-3">
+                        </TableCell>
+                        <TableCell className="max-w-[220px] px-3 py-3">
                           <span
                             className="block truncate font-mono text-xs text-zinc-600 dark:text-zinc-400"
                             title={
@@ -1106,14 +1107,14 @@ export default function WebhooksPage() {
                           >
                             {payloadPreview(d.payload)}
                           </span>
-                        </td>
-                        <td className="px-3 py-3">
+                        </TableCell>
+                        <TableCell className="px-3 py-3">
                           {getDeliveryStatusBadge(d.status)}
-                        </td>
-                        <td className="px-3 py-3 text-center font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-center font-mono text-xs text-zinc-700 dark:text-zinc-300">
                           {d.attemptCount}
-                        </td>
-                        <td className="px-3 py-3 text-center">
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-center">
                           {d.responseCode === null ||
                           d.responseCode === undefined ? (
                             <span className="text-xs text-zinc-400">—</span>
@@ -1128,19 +1129,19 @@ export default function WebhooksPage() {
                               {d.responseCode}
                             </span>
                           )}
-                        </td>
-                        <td className="px-3 py-3 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
                           {d.durationMs === null || d.durationMs === undefined
                             ? "—"
                             : `${d.durationMs} ms`}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
                           {formatDateTr(d.createdAt)}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
                           {formatDateTr(d.nextRetryAt)}
-                        </td>
-                        <td className="px-3 py-3 text-right">
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-right">
                           {(d.status === "Failed" ||
                             d.status === "Retrying") && (
                             <button
@@ -1157,11 +1158,11 @@ export default function WebhooksPage() {
                               Yeniden Dene
                             </button>
                           )}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </div>

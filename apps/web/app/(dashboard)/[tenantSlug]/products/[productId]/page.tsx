@@ -11,6 +11,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Select,
   SelectContent,
@@ -964,18 +965,18 @@ export default function ProductDetailPage() {
                 </div>
               ) : (
                 <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
-                  <table className="w-full text-left text-xs">
-                    <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
-                      <tr>
-                        <th className="w-12 px-3 py-3">Görsel</th>
-                        <th className="px-4 py-3">Varyant Adı</th>
-                        <th className="px-4 py-3">SKU / Barkod</th>
-                        <th className="px-4 py-3 text-right">Ek Fiyat (+₺)</th>
-                        <th className="px-4 py-3 text-right">Varyant Stoğu</th>
-                        <th className="py-3 pr-4 pl-2 text-right">İşlem</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  <Table>
+                    <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                      <TableRow>
+                        <TableHead className="w-12 px-3 py-3 h-auto">Görsel</TableHead>
+                        <TableHead className="px-4 py-3 h-auto">Varyant Adı</TableHead>
+                        <TableHead className="px-4 py-3 h-auto">SKU / Barkod</TableHead>
+                        <TableHead className="px-4 py-3 text-right h-auto">Ek Fiyat (+₺)</TableHead>
+                        <TableHead className="px-4 py-3 text-right h-auto">Varyant Stoğu</TableHead>
+                        <TableHead className="py-3 pr-4 pl-2 text-right h-auto">İşlem</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                       {product.variants.map((v) => {
                         const variantCover =
                           v.images && v.images.length > 0
@@ -984,11 +985,11 @@ export default function ProductDetailPage() {
                               ? product.images[0]
                               : null;
                         return (
-                          <tr
+                          <TableRow
                             className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                             key={v.id}
                           >
-                            <td className="w-12 px-3 py-3">
+                            <TableCell className="w-12 px-3 py-3">
                               {variantCover ? (
                                 <img
                                   alt={v.name}
@@ -1000,23 +1001,23 @@ export default function ProductDetailPage() {
                                   <Package className="h-4 w-4" />
                                 </div>
                               )}
-                            </td>
-                            <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
+                            </TableCell>
+                            <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                               {v.name}
-                            </td>
-                            <td className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                            </TableCell>
+                            <TableCell className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
                               {v.sku || v.barcode || "—"}
-                            </td>
-                            <td className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
+                            </TableCell>
+                            <TableCell className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
                               +₺
                               {v.additionalPrice.toLocaleString("tr-TR", {
                                 minimumFractionDigits: 2,
                               })}
-                            </td>
-                            <td className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                            </TableCell>
+                            <TableCell className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                               {v.stockQuantity} {product.unit}
-                            </td>
-                            <td className="py-3.5 pr-4 pl-2 text-right">
+                            </TableCell>
+                            <TableCell className="py-3.5 pr-4 pl-2 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
                                   className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
@@ -1035,12 +1036,12 @@ export default function ProductDetailPage() {
                                   <Trash2 className="h-3.5 w-3.5" />
                                 </button>
                               </div>
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         );
                       })}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
               )}
             </div>

@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   AlertCircle,
   ArrowLeft,
@@ -993,33 +994,33 @@ export default function WebhookBuilderPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-zinc-200 border-b bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
-                  <tr>
-                    <th className="px-4 py-2.5 font-semibold">Olay</th>
-                    <th className="px-4 py-2.5 font-semibold">Durum</th>
-                    <th className="px-4 py-2.5 font-semibold">Deneme</th>
-                    <th className="px-4 py-2.5 font-semibold">Tarih</th>
-                    <th className="px-4 py-2.5 font-semibold">Yanıt</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <Table>
+                <TableHeader className="border-zinc-200 bg-zinc-50/70 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <TableRow>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Olay</TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Durum</TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Deneme</TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Tarih</TableHead>
+                    <TableHead className="px-4 py-2.5 font-semibold h-auto">Yanıt</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {deliveries.map((d) => (
-                    <tr
+                    <TableRow
                       className="hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30"
                       key={d.id}
                     >
-                      <td className="px-4 py-3 font-medium font-mono text-zinc-800 dark:text-zinc-200">
+                      <TableCell className="px-4 py-3 font-medium font-mono text-zinc-800 dark:text-zinc-200">
                         {d.eventType}
-                      </td>
-                      <td className="px-4 py-3">{getStatusBadge(d.status)}</td>
-                      <td className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">{getStatusBadge(d.status)}</TableCell>
+                      <TableCell className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
                         {d.attemptCount}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
                         {formatDate(d.createdAt)}
-                      </td>
-                      <td className="px-4 py-3">
+                      </TableCell>
+                      <TableCell className="px-4 py-3">
                         {d.responseCode ? (
                           <span
                             className={`rounded-md px-2 py-0.5 font-mono font-semibold text-[11px] ${
@@ -1035,11 +1036,11 @@ export default function WebhookBuilderPage() {
                             —
                           </span>
                         )}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </div>

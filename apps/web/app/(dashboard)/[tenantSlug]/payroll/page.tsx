@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   ArrowRightLeft,
@@ -821,20 +822,20 @@ export default function PayrollPage() {
       {activeTab === "runs" && (
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-                <tr>
-                  <th className="px-4 py-3">Dönem</th>
-                  <th className="px-4 py-3">Başlık</th>
-                  <th className="px-4 py-3">Personel</th>
-                  <th className="px-4 py-3">Toplam Brüt</th>
-                  <th className="px-4 py-3">Ödenen Net</th>
-                  <th className="px-4 py-3">İşveren Maliyeti</th>
-                  <th className="px-4 py-3">Durum</th>
-                  <th className="px-4 py-3 text-right">İşlemler</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table>
+              <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                <TableRow>
+                  <TableHead className="px-4 py-3 h-auto">Dönem</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Başlık</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Personel</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Toplam Brüt</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Ödenen Net</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">İşveren Maliyeti</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">İşlemler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {runs.map((run) => {
                   const isSelected = selectedRunId === run.id;
                   const statusColors: Record<string, string> = {
@@ -856,7 +857,7 @@ export default function PayrollPage() {
                   };
 
                   return (
-                    <tr
+                    <TableRow
                       className={`transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${
                         isSelected
                           ? "bg-zinc-50 font-medium dark:bg-zinc-800/50"
@@ -864,28 +865,28 @@ export default function PayrollPage() {
                       }`}
                       key={run.id}
                     >
-                      <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
+                      <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                         {MONTH_NAMES[run.month - 1]} {run.year}
-                      </td>
-                      <td className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
                         {run.title}
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           <Users className="h-3 w-3" />
                           {run.totalEmployees}
                         </span>
-                      </td>
-                      <td className="px-4 py-3.5 font-semibold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-semibold text-zinc-900 dark:text-zinc-100">
                         {formatCurrency(run.totalGross)}
-                      </td>
-                      <td className="px-4 py-3.5 font-bold text-emerald-600">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-bold text-emerald-600">
                         {formatCurrency(run.totalNet)}
-                      </td>
-                      <td className="px-4 py-3.5 font-semibold text-purple-700">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-semibold text-purple-700">
                         {formatCurrency(run.totalEmployerCost)}
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <span
                           className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-bold text-[10px] ${
                             statusColors[run.status] ||
@@ -900,8 +901,8 @@ export default function PayrollPage() {
                           )}
                           {statusLabels[run.status] || run.status}
                         </span>
-                      </td>
-                      <td className="px-4 py-3.5 text-right">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
@@ -968,23 +969,23 @@ export default function PayrollPage() {
                             </PermissionGate>
                           )}
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
                 {runs.length === 0 && (
-                  <tr>
-                    <td
+                  <TableRow>
+                    <TableCell
                       className="py-12 text-center text-zinc-400 dark:text-zinc-500"
                       colSpan={8}
                     >
                       Henüz oluşturulmuş bir bordro dönemi bulunmuyor. "Yeni
                       Dönem Bordrosu" butonuna basarak başlayabilirsiniz.
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}
@@ -1054,32 +1055,32 @@ export default function PayrollPage() {
 
           {/* Interactive Puantaj Table */}
           <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
-            <table className="w-full min-w-[1000px] text-left text-xs">
-              <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[10px] text-zinc-600 uppercase dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-                <tr>
-                  <th className="px-3 py-2.5">Personel</th>
-                  <th className="px-2 py-2.5">Sözleşme</th>
-                  <th className="px-2 py-2.5 text-center">Çalışılan</th>
-                  <th className="px-2 py-2.5 text-center">İzin/Rapor</th>
-                  <th className="px-2 py-2.5 text-center">Ücretsiz İzin</th>
-                  <th className="px-2 py-2.5 text-center">Ödenen Gün</th>
-                  <th className="px-2 py-2.5 text-center">Fazla Mesai</th>
-                  <th className="px-3 py-2.5">Brüt Kazanç</th>
-                  <th className="px-3 py-2.5">SGK Matrahı</th>
-                  <th className="px-3 py-2.5">Gelir Vergisi</th>
-                  <th className="px-3 py-2.5">7349 İstisna</th>
-                  <th className="px-3 py-2.5">Ödenecek Net</th>
-                  <th className="px-3 py-2.5">İşveren Maliyeti</th>
-                  <th className="px-3 py-2.5 text-right">İşlem</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table className="min-w-[1000px]">
+              <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+                <TableRow>
+                  <TableHead className="px-3 py-2.5 h-auto">Personel</TableHead>
+                  <TableHead className="px-2 py-2.5 h-auto">Sözleşme</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">Çalışılan</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">İzin/Rapor</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">Ücretsiz İzin</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">Ödenen Gün</TableHead>
+                  <TableHead className="px-2 py-2.5 text-center h-auto">Fazla Mesai</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">Brüt Kazanç</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">SGK Matrahı</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">Gelir Vergisi</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">7349 İstisna</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">Ödenecek Net</TableHead>
+                  <TableHead className="px-3 py-2.5 h-auto">İşveren Maliyeti</TableHead>
+                  <TableHead className="px-3 py-2.5 text-right h-auto">İşlem</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {filteredEmployees.map((emp) => (
-                  <tr
+                  <TableRow
                     className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                     key={emp.id}
                   >
-                    <td className="px-3 py-3">
+                    <TableCell className="px-3 py-3">
                       <div className="font-bold text-zinc-900 dark:text-zinc-100">
                         {emp.employeeName}
                       </div>
@@ -1087,8 +1088,8 @@ export default function PayrollPage() {
                         {emp.jobTitle || "Personel"} •{" "}
                         {emp.departmentName || "Genel"}
                       </div>
-                    </td>
-                    <td className="px-2 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
                       {emp.contractSalaryType === "Net" ? (
                         <span className="rounded bg-blue-50 px-1.5 py-0.5 font-bold text-[10px] text-blue-700">
                           Net: {formatCurrency(emp.baseSalary)}
@@ -1098,11 +1099,11 @@ export default function PayrollPage() {
                           Brüt: {formatCurrency(emp.baseSalary)}
                         </span>
                       )}
-                    </td>
-                    <td className="px-2 py-3 text-center font-medium text-zinc-700 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 text-center font-medium text-zinc-700 dark:text-zinc-300">
                       {emp.workedDays} g
-                    </td>
-                    <td className="px-2 py-3 text-center text-zinc-600 dark:text-zinc-400">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 text-center text-zinc-600 dark:text-zinc-400">
                       {emp.paidLeaveDays + emp.sickLeaveDays > 0 ? (
                         <span className="font-semibold text-amber-600">
                           {emp.paidLeaveDays + emp.sickLeaveDays} g
@@ -1110,8 +1111,8 @@ export default function PayrollPage() {
                       ) : (
                         "0 g"
                       )}
-                    </td>
-                    <td className="px-2 py-3 text-center">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 text-center">
                       {emp.unpaidLeaveDays > 0 ? (
                         <span className="rounded bg-red-50 px-1.5 py-0.5 font-bold text-red-600">
                           {emp.unpaidLeaveDays} g
@@ -1121,11 +1122,11 @@ export default function PayrollPage() {
                           0 g
                         </span>
                       )}
-                    </td>
-                    <td className="px-2 py-3 text-center font-bold text-zinc-900 dark:text-zinc-100">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 text-center font-bold text-zinc-900 dark:text-zinc-100">
                       {emp.totalPaidDays} g
-                    </td>
-                    <td className="px-2 py-3 text-center">
+                    </TableCell>
+                    <TableCell className="px-2 py-3 text-center">
                       {emp.overtimeHours > 0 ? (
                         <span className="font-bold text-indigo-600">
                           {emp.overtimeHours} sa
@@ -1135,30 +1136,30 @@ export default function PayrollPage() {
                           -
                         </span>
                       )}
-                    </td>
-                    <td className="px-3 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
                       {formatCurrency(emp.totalGross)}
-                    </td>
-                    <td className="px-3 py-3 text-zinc-600 dark:text-zinc-400">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-zinc-600 dark:text-zinc-400">
                       {formatCurrency(emp.sgkBase)}
-                    </td>
-                    <td className="px-3 py-3 font-medium text-zinc-800 dark:text-zinc-200">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 font-medium text-zinc-800 dark:text-zinc-200">
                       {formatCurrency(emp.payableIncomeTax)}
-                    </td>
-                    <td className="px-3 py-3 font-medium text-[11px] text-emerald-600">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 font-medium text-[11px] text-emerald-600">
                       +
                       {formatCurrency(
                         emp.minWageIncomeTaxExemption +
                           emp.minWageStampExemption
                       )}
-                    </td>
-                    <td className="px-3 py-3 font-bold text-emerald-600">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 font-bold text-emerald-600">
                       {formatCurrency(emp.payableNetSalary)}
-                    </td>
-                    <td className="px-3 py-3 font-semibold text-purple-700">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 font-semibold text-purple-700">
                       {formatCurrency(emp.totalEmployerCost)}
-                    </td>
-                    <td className="px-3 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
@@ -1174,21 +1175,21 @@ export default function PayrollPage() {
                           Pusula
                         </button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
                 {filteredEmployees.length === 0 && (
-                  <tr>
-                    <td
+                  <TableRow>
+                    <TableCell
                       className="py-8 text-center text-zinc-400 dark:text-zinc-500"
                       colSpan={14}
                     >
                       Kayıt bulunamadı.
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}
@@ -1642,104 +1643,104 @@ export default function PayrollPage() {
 
           {icmalData && (
             <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800/90 dark:bg-zinc-900">
-              <table className="w-full min-w-[1200px] text-left text-[11px]">
-                <thead className="border-zinc-200 border-b bg-zinc-50 font-bold text-zinc-600 uppercase dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                  <tr>
-                    <th className="px-3 py-2.5">No</th>
-                    <th className="px-3 py-2.5">TC Kimlik</th>
-                    <th className="px-3 py-2.5">Personel</th>
-                    <th className="px-3 py-2.5">Departman</th>
-                    <th className="px-3 py-2.5 text-right">Brüt Toplam</th>
-                    <th className="px-3 py-2.5 text-right">SGK Matrah</th>
-                    <th className="px-3 py-2.5 text-right">SGK İşçi (%14)</th>
-                    <th className="px-3 py-2.5 text-right">GV Matrahı</th>
-                    <th className="px-3 py-2.5 text-right">Ödenen GV</th>
-                    <th className="px-3 py-2.5 text-right">Ödenen DV</th>
-                    <th className="px-3 py-2.5 text-right">Kesintiler</th>
-                    <th className="px-3 py-2.5 text-right font-black text-emerald-700">
+              <Table className="min-w-[1200px] text-[11px]">
+                <TableHeader className="border-zinc-200 bg-zinc-50 font-bold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow>
+                    <TableHead className="px-3 py-2.5 h-auto">No</TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">TC Kimlik</TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">Personel</TableHead>
+                    <TableHead className="px-3 py-2.5 h-auto">Departman</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">Brüt Toplam</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">SGK Matrah</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">SGK İşçi (%14)</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">GV Matrahı</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">Ödenen GV</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">Ödenen DV</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right h-auto">Kesintiler</TableHead>
+                    <TableHead className="px-3 py-2.5 text-right font-black text-emerald-700 h-auto">
                       Ödenecek Net
-                    </th>
-                    <th className="px-3 py-2.5 text-right font-black text-purple-700">
+                    </TableHead>
+                    <TableHead className="px-3 py-2.5 text-right font-black text-purple-700 h-auto">
                       İşveren Maliyeti
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 font-medium dark:divide-zinc-800">
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 font-medium dark:divide-zinc-800">
                   {icmalData.rows.map((row, idx) => (
-                    <tr
+                    <TableRow
                       className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                       key={idx}
                     >
-                      <td className="px-3 py-2.5 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="px-3 py-2.5 font-mono text-zinc-500 dark:text-zinc-400">
                         {row.employeeNumber}
-                      </td>
-                      <td className="px-3 py-2.5 font-mono text-zinc-500 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 font-mono text-zinc-500 dark:text-zinc-400">
                         {row.tcIdentityNumber}
-                      </td>
-                      <td className="px-3 py-2.5 font-bold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 font-bold text-zinc-900 dark:text-zinc-100">
                         {row.employeeName}
-                      </td>
-                      <td className="px-3 py-2.5 text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-zinc-600 dark:text-zinc-400">
                         {row.departmentName}
-                      </td>
-                      <td className="px-3 py-2.5 text-right font-semibold">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right font-semibold">
                         {formatCurrency(row.totalGross)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
                         {formatCurrency(row.sgkBase)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
                         {formatCurrency(row.sgkEmployeeDeduction)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
                         {formatCurrency(row.currentIncomeTaxBase)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
                         {formatCurrency(row.payableIncomeTax)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-zinc-600 dark:text-zinc-400">
                         {formatCurrency(row.payableStampTax)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right text-red-600">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right text-red-600">
                         {formatCurrency(row.totalDeductions)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right font-bold text-emerald-700">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right font-bold text-emerald-700">
                         {formatCurrency(row.payableNetSalary)}
-                      </td>
-                      <td className="px-3 py-2.5 text-right font-bold text-purple-700">
+                      </TableCell>
+                      <TableCell className="px-3 py-2.5 text-right font-bold text-purple-700">
                         {formatCurrency(row.totalEmployerCost)}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
                   {/* Totals Summary Row */}
-                  <tr className="border-zinc-300 border-t-2 bg-zinc-100 font-bold text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100">
-                    <td className="px-3 py-3 text-right uppercase" colSpan={4}>
+                  <TableRow className="border-zinc-300 border-t-2 bg-zinc-100 font-bold text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100">
+                    <TableCell className="px-3 py-3 text-right uppercase" colSpan={4}>
                       GENEL TOPLAM ({icmalData.totalEmployees} Personel):
-                    </td>
-                    <td className="px-3 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">
                       {formatCurrency(icmalData.totalGross)}
-                    </td>
-                    <td className="px-3 py-3 text-right">-</td>
-                    <td className="px-3 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">-</TableCell>
+                    <TableCell className="px-3 py-3 text-right">
                       {formatCurrency(icmalData.totalSgkEmployee)}
-                    </td>
-                    <td className="px-3 py-3 text-right">-</td>
-                    <td className="px-3 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">-</TableCell>
+                    <TableCell className="px-3 py-3 text-right">
                       {formatCurrency(icmalData.totalIncomeTax)}
-                    </td>
-                    <td className="px-3 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">
                       {formatCurrency(icmalData.totalStampTax)}
-                    </td>
-                    <td className="px-3 py-3 text-right">-</td>
-                    <td className="px-3 py-3 text-right font-black text-emerald-700">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right">-</TableCell>
+                    <TableCell className="px-3 py-3 text-right font-black text-emerald-700">
                       {formatCurrency(icmalData.totalNet)}
-                    </td>
-                    <td className="px-3 py-3 text-right font-black text-purple-700">
+                    </TableCell>
+                    <TableCell className="px-3 py-3 text-right font-black text-purple-700">
                       {formatCurrency(icmalData.totalEmployerCost)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
           )}
         </div>
@@ -2157,66 +2158,66 @@ export default function PayrollPage() {
                     Ücret Gelir Vergisi Dilimleri (193 Sayılı GVK Md.103)
                   </h3>
                   <div className="overflow-hidden rounded-xl border border-zinc-200 text-xs dark:border-zinc-800">
-                    <table className="w-full text-left">
-                      <thead className="bg-zinc-100 font-bold text-[11px] text-zinc-600 dark:bg-zinc-800/75 dark:text-zinc-400">
-                        <tr>
-                          <th className="p-2.5">Dilim</th>
-                          <th className="p-2.5">Matrah Üst Sınırı</th>
-                          <th className="p-2.5 text-right">Vergi Oranı</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                        <tr>
-                          <td className="p-2.5 font-medium">1. Dilim</td>
-                          <td className="p-2.5">
+                    <Table>
+                      <TableHeader className="bg-zinc-100 font-bold text-zinc-600 dark:bg-zinc-800/75 dark:text-zinc-400">
+                        <TableRow>
+                          <TableHead className="p-2.5 h-auto">Dilim</TableHead>
+                          <TableHead className="p-2.5 h-auto">Matrah Üst Sınırı</TableHead>
+                          <TableHead className="p-2.5 text-right h-auto">Vergi Oranı</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                        <TableRow>
+                          <TableCell className="p-2.5 font-medium">1. Dilim</TableCell>
+                          <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket1Limit)}'ye
                             kadar
-                          </td>
-                          <td className="p-2.5 text-right font-bold text-indigo-600">
+                          </TableCell>
+                          <TableCell className="p-2.5 text-right font-bold text-indigo-600">
                             %{(parameters.taxBracket1Rate * 100).toFixed(0)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-2.5 font-medium">2. Dilim</td>
-                          <td className="p-2.5">
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="p-2.5 font-medium">2. Dilim</TableCell>
+                          <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket2Limit)}'ye
                             kadar
-                          </td>
-                          <td className="p-2.5 text-right font-bold text-indigo-600">
+                          </TableCell>
+                          <TableCell className="p-2.5 text-right font-bold text-indigo-600">
                             %{(parameters.taxBracket2Rate * 100).toFixed(0)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-2.5 font-medium">3. Dilim</td>
-                          <td className="p-2.5">
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="p-2.5 font-medium">3. Dilim</TableCell>
+                          <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket3Limit)}'ye
                             kadar
-                          </td>
-                          <td className="p-2.5 text-right font-bold text-indigo-600">
+                          </TableCell>
+                          <TableCell className="p-2.5 text-right font-bold text-indigo-600">
                             %{(parameters.taxBracket3Rate * 100).toFixed(0)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-2.5 font-medium">4. Dilim</td>
-                          <td className="p-2.5">
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="p-2.5 font-medium">4. Dilim</TableCell>
+                          <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket4Limit)}'ye
                             kadar
-                          </td>
-                          <td className="p-2.5 text-right font-bold text-indigo-600">
+                          </TableCell>
+                          <TableCell className="p-2.5 text-right font-bold text-indigo-600">
                             %{(parameters.taxBracket4Rate * 100).toFixed(0)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-2.5 font-medium">5. Dilim</td>
-                          <td className="p-2.5">
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="p-2.5 font-medium">5. Dilim</TableCell>
+                          <TableCell className="p-2.5">
                             {formatCurrency(parameters.taxBracket4Limit)} üzeri
-                          </td>
-                          <td className="p-2.5 text-right font-bold text-indigo-600">
+                          </TableCell>
+                          <TableCell className="p-2.5 text-right font-bold text-indigo-600">
                             %{(parameters.taxBracket5Rate * 100).toFixed(0)}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
 

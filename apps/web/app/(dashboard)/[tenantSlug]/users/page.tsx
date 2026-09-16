@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Loader2, Mail, UserPlus, Users, X } from "lucide-react";
 import type React from "react";
@@ -160,23 +161,23 @@ export default function UsersManagementPage() {
             Loading team members...
           </div>
         ) : (
-          <table className="w-full text-left text-xs">
-            <thead className="border-zinc-200/80 border-b bg-zinc-50/90 font-semibold text-[11px] text-zinc-600 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
-              <tr>
-                <th className="px-6 py-3.5">User</th>
-                <th className="px-6 py-3.5">Email</th>
-                <th className="px-6 py-3.5">Assigned Role</th>
-                <th className="px-6 py-3.5">Status</th>
-                <th className="px-6 py-3.5">Joined</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+          <Table>
+            <TableHeader className="border-zinc-200/80 bg-zinc-50/90 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+              <TableRow>
+                <TableHead className="px-6 py-3.5 h-auto">User</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Email</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Assigned Role</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Status</TableHead>
+                <TableHead className="px-6 py-3.5 h-auto">Joined</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {users.map((user) => (
-                <tr
+                <TableRow
                   className="transition-colors hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                   key={user.id}
                 >
-                  <td className="px-6 py-4">
+                  <TableCell className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs">
                         {(user.fullName || user.email).charAt(0).toUpperCase()}
@@ -185,11 +186,11 @@ export default function UsersManagementPage() {
                         {user.fullName || "—"}
                       </span>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 font-mono text-zinc-500 dark:text-zinc-400">
+                  </TableCell>
+                  <TableCell className="px-6 py-4 font-mono text-zinc-500 dark:text-zinc-400">
                     {user.email}
-                  </td>
-                  <td className="px-6 py-4">
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
                     <PermissionGate
                       fallback={
                         <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-medium text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -218,8 +219,8 @@ export default function UsersManagementPage() {
                         </SelectContent>
                       </Select>
                     </PermissionGate>
-                  </td>
-                  <td className="px-6 py-4">
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
                         user.isActive
@@ -229,14 +230,14 @@ export default function UsersManagementPage() {
                     >
                       {user.isActive ? "Active" : "Inactive"}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-zinc-400 dark:text-zinc-500">
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-zinc-400 dark:text-zinc-500">
                     {new Date(user.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
       </div>
 

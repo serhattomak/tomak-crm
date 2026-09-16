@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   CheckCircle2,
   ChevronLeft,
@@ -207,13 +208,13 @@ function MessageRow({
   );
 
   return (
-    <tr
+    <TableRow
       className={`cursor-pointer transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
         isUnread ? "bg-sky-50/20 font-semibold dark:bg-sky-950/10" : ""
       }`}
       onClick={handleRowClick}
     >
-      <td className="whitespace-nowrap px-4 py-3">
+      <TableCell className="whitespace-nowrap px-4 py-3">
         <div className="flex items-center gap-2">
           {isUnread ? (
             <span className="h-2 w-2 shrink-0 rounded-full bg-sky-600" />
@@ -224,9 +225,9 @@ function MessageRow({
               : msg.toAddresses.join(", ") || "-"}
           </span>
         </div>
-      </td>
+      </TableCell>
 
-      <td className="max-w-md px-4 py-3">
+      <TableCell className="max-w-md px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 text-zinc-900 dark:text-zinc-100">
             {msg.subject || "(Konusuz)"}
@@ -238,14 +239,14 @@ function MessageRow({
         <p className="line-clamp-1 font-normal text-[11px] text-zinc-500 dark:text-zinc-400">
           {msg.textBody || msg.htmlBody?.replace(/<[^>]+>/g, " ") || "-"}
         </p>
-      </td>
+      </TableCell>
 
-      <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
         {boundAccount}
-      </td>
+      </TableCell>
 
       {activeTab === "sent" ? (
-        <td className="whitespace-nowrap px-4 py-3">
+        <TableCell className="whitespace-nowrap px-4 py-3">
           {msg.status === "Sent" ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-medium text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
               <CheckCircle2 className="h-3 w-3" />
@@ -257,14 +258,14 @@ function MessageRow({
               Başarısız
             </span>
           )}
-        </td>
+        </TableCell>
       ) : null}
 
-      <td className="whitespace-nowrap px-4 py-3 text-right font-mono text-[11px] text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 text-right font-mono text-[11px] text-zinc-400">
         {formatDateTr(msg.createdAt)}
-      </td>
+      </TableCell>
 
-      <td className="whitespace-nowrap px-4 py-3 text-right">
+      <TableCell className="whitespace-nowrap px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-1">
           {activeTab === "drafts" && onEditDraft ? (
             <button
@@ -285,8 +286,8 @@ function MessageRow({
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -325,8 +326,8 @@ function AccountRow({
   }, [onDelete, account]);
 
   return (
-    <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
-      <td className="px-4 py-3">
+    <TableRow className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+      <TableCell className="px-4 py-3">
         <div className="font-medium text-zinc-900 dark:text-zinc-100">
           {account.email}
         </div>
@@ -335,15 +336,15 @@ function AccountRow({
             {account.description}
           </div>
         ) : null}
-      </td>
+      </TableCell>
 
-      <td className="px-4 py-3">
+      <TableCell className="px-4 py-3">
         <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-medium font-mono text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
           {account.provider}
         </span>
-      </td>
+      </TableCell>
 
-      <td className="px-4 py-3 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+      <TableCell className="px-4 py-3 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
         {account.provider === "generic_imap" ? (
           <div>
             <div>
@@ -356,9 +357,9 @@ function AccountRow({
         ) : (
           <span>Resend API Token ({account.secretMasked || "****"})</span>
         )}
-      </td>
+      </TableCell>
 
-      <td className="px-4 py-3">
+      <TableCell className="px-4 py-3">
         <button
           className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-medium text-[10px] transition ${
             account.isActive
@@ -375,9 +376,9 @@ function AccountRow({
           />
           {account.isActive ? "Aktif" : "Devre Dışı"}
         </button>
-      </td>
+      </TableCell>
 
-      <td className="px-4 py-3 text-right">
+      <TableCell className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <button
             className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
@@ -406,8 +407,8 @@ function AccountRow({
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -631,22 +632,22 @@ function MessagesTableView({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left text-xs">
-        <thead className="border-zinc-200/80 border-b bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
-          <tr>
-            <th className="px-4 py-3 font-medium">
+      <Table>
+        <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableRow>
+            <TableHead className="px-4 py-3 font-medium h-auto">
               {activeTab === "inbox" ? "Gönderen" : "Alıcı"}
-            </th>
-            <th className="px-4 py-3 font-medium">Konu & Özet</th>
-            <th className="px-4 py-3 font-medium">Hesap</th>
+            </TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">Konu & Özet</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">Hesap</TableHead>
             {activeTab === "sent" ? (
-              <th className="px-4 py-3 font-medium">Durum</th>
+              <TableHead className="px-4 py-3 font-medium h-auto">Durum</TableHead>
             ) : null}
-            <th className="px-4 py-3 text-right font-medium">Tarih</th>
-            <th className="px-4 py-3 text-right font-medium">İşlemler</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">Tarih</TableHead>
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">İşlemler</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
           {messages.map((msg) => (
             <MessageRow
               accounts={accounts}
@@ -658,8 +659,8 @@ function MessagesTableView({
               onOpenThread={onOpenThread}
             />
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }
@@ -720,17 +721,17 @@ function AccountsTableView({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left text-xs">
-        <thead className="border-zinc-200/80 border-b bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
-          <tr>
-            <th className="px-4 py-3 font-medium">E-posta & Açıklama</th>
-            <th className="px-4 py-3 font-medium">Sağlayıcı</th>
-            <th className="px-4 py-3 font-medium">Sunucu Yapılandırması</th>
-            <th className="px-4 py-3 font-medium">Durum</th>
-            <th className="px-4 py-3 text-right font-medium">İşlemler</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+      <Table>
+        <TableHeader className="border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableRow>
+            <TableHead className="px-4 py-3 font-medium h-auto">E-posta & Açıklama</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">Sağlayıcı</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">Sunucu Yapılandırması</TableHead>
+            <TableHead className="px-4 py-3 font-medium h-auto">Durum</TableHead>
+            <TableHead className="px-4 py-3 text-right font-medium h-auto">İşlemler</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
           {accounts.map((acc) => (
             <AccountRow
               account={acc}
@@ -741,8 +742,8 @@ function AccountsTableView({
               onToggle={onToggleAccount}
             />
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

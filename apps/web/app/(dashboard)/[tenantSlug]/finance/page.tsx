@@ -10,6 +10,7 @@ import {
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   Sheet,
   SheetClose,
@@ -174,19 +175,19 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
   const isCreditor = cari.balance < 0;
 
   return (
-    <tr
-      className="cursor-pointer border-zinc-100 border-b transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+    <TableRow
+      className="cursor-pointer border-zinc-100 transition-colors hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
       onClick={handleStatement}
     >
-      <td className="py-3.5 pr-3 pl-4">
+      <TableCell className="py-3.5 pr-3 pl-4">
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {cari.title}
         </div>
         <div className="font-mono text-[11px] text-zinc-400">
           {cari.code} • {cari.city || "Şehir Belirtilmemiş"}
         </div>
-      </td>
-      <td className="px-3 py-3.5">
+      </TableCell>
+      <TableCell className="px-3 py-3.5">
         <span
           className={`inline-flex rounded-md px-2 py-0.5 font-semibold text-xs ${getCariTypeClass(
             cari.type
@@ -194,20 +195,20 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
         >
           {getCariTypeLabel(cari.type)}
         </span>
-      </td>
-      <td className="px-3 py-3.5 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+      </TableCell>
+      <TableCell className="px-3 py-3.5 font-mono text-xs text-zinc-600 dark:text-zinc-400">
         {cari.taxNumber || "—"}
         {cari.taxOffice ? ` (${cari.taxOffice} VD)` : null}
-      </td>
-      <td className="px-3 py-3.5 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
+      </TableCell>
+      <TableCell className="px-3 py-3.5 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
         {cari.totalDebit.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}{" "}
         {cari.currency}
-      </td>
-      <td className="px-3 py-3.5 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
+      </TableCell>
+      <TableCell className="px-3 py-3.5 text-right font-mono text-xs text-zinc-600 dark:text-zinc-400">
         {cari.totalCredit.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}{" "}
         {cari.currency}
-      </td>
-      <td className="px-3 py-3.5 text-right">
+      </TableCell>
+      <TableCell className="px-3 py-3.5 text-right">
         <div
           className={`font-bold font-mono text-sm ${getBalanceColor(
             isDebtor,
@@ -222,8 +223,8 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
             {getBalanceSuffix(isDebtor, isCreditor)}
           </span>
         </div>
-      </td>
-      <td className="py-3.5 pr-4 pl-3 text-right">
+      </TableCell>
+      <TableCell className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <button
             className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 shadow-2xs hover:bg-zinc-50 active:scale-95 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
@@ -242,8 +243,8 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
             Ekstre
           </button>
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -262,22 +263,22 @@ function CariTableBody({
 }: CariTableBodyProps) {
   if (isCariLoading) {
     return (
-      <tr>
-        <td className="py-8 text-center text-zinc-400" colSpan={7}>
+      <TableRow>
+        <TableCell className="py-8 text-center text-zinc-400" colSpan={7}>
           Cari hesaplar yükleniyor...
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
   if (cariList.length === 0) {
     return (
-      <tr>
-        <td className="py-12 text-center text-zinc-400" colSpan={7}>
+      <TableRow>
+        <TableCell className="py-12 text-center text-zinc-400" colSpan={7}>
           <Users2 className="mx-auto mb-2 h-8 w-8 opacity-40" />
           Kayıtlı cari hesap bulunamadı.
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
@@ -388,32 +389,32 @@ function StatementTableBody({
 }: StatementTableBodyProps) {
   if (isStatementLoading) {
     return (
-      <tr>
-        <td className="py-8 text-center text-zinc-400" colSpan={5}>
+      <TableRow>
+        <TableCell className="py-8 text-center text-zinc-400" colSpan={5}>
           Ekstre yükleniyor...
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
   if (statementTx.length === 0) {
     return (
-      <tr>
-        <td className="py-8 text-center text-zinc-400" colSpan={5}>
+      <TableRow>
+        <TableCell className="py-8 text-center text-zinc-400" colSpan={5}>
           Bu cari hesaba ait hareket bulunamadı.
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
   return (
     <>
       {statementTx.map((tx) => (
-        <tr key={tx.id}>
-          <td className="py-2 font-mono text-zinc-500 dark:text-zinc-400">
+        <TableRow key={tx.id}>
+          <TableCell className="py-2 font-mono text-zinc-500 dark:text-zinc-400">
             {new Date(tx.transactionDate).toLocaleDateString("tr-TR")}
-          </td>
-          <td className="py-2">
+          </TableCell>
+          <TableCell className="py-2">
             <div className="font-medium text-zinc-800 dark:text-zinc-200">
               {tx.description}
             </div>
@@ -422,27 +423,27 @@ function StatementTableBody({
                 {tx.documentNumber}
               </div>
             ) : null}
-          </td>
-          <td className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
+          </TableCell>
+          <TableCell className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
             {tx.debit > 0
               ? tx.debit.toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
                 })
               : "—"}
-          </td>
-          <td className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
+          </TableCell>
+          <TableCell className="py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">
             {tx.credit > 0
               ? tx.credit.toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
                 })
               : "—"}
-          </td>
-          <td className="py-2 text-right font-bold font-mono text-zinc-900 dark:text-zinc-100">
+          </TableCell>
+          <TableCell className="py-2 text-right font-bold font-mono text-zinc-900 dark:text-zinc-100">
             {tx.balanceAfter.toLocaleString("tr-TR", {
               minimumFractionDigits: 2,
             })}
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       ))}
     </>
   );
@@ -803,27 +804,27 @@ export default function FinancePage() {
 
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
             <div className="overflow-x-auto">
-              <table className="w-full text-left font-sans text-xs">
-                <thead>
-                  <tr className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <th className="py-3 pr-3 pl-4">Cari Kart & Kod</th>
-                    <th className="px-3 py-3">Tür</th>
-                    <th className="px-3 py-3">VKN / TCKN</th>
-                    <th className="px-3 py-3 text-right">Toplam Borç</th>
-                    <th className="px-3 py-3 text-right">Toplam Alacak</th>
-                    <th className="px-3 py-3 text-right">Net Bakiye</th>
-                    <th className="py-3 pr-4 pl-3 text-right">Aksiyonlar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <Table className="font-sans">
+                <TableHeader>
+                  <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableHead className="py-3 pr-3 pl-4 h-auto">Cari Kart & Kod</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">VKN / TCKN</TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">Toplam Borç</TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">Toplam Alacak</TableHead>
+                    <TableHead className="px-3 py-3 text-right h-auto">Net Bakiye</TableHead>
+                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Aksiyonlar</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                   <CariTableBody
                     cariList={cariList}
                     isCariLoading={isCariLoading}
                     onOpenStatement={handleOpenStatement}
                     onQuickTx={handleQuickTx}
                   />
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>
@@ -859,35 +860,35 @@ export default function FinancePage() {
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/80 dark:bg-zinc-900">
             <div className="overflow-x-auto">
-              <table className="w-full text-left font-sans text-xs">
-                <thead>
-                  <tr className="border-zinc-200/80 border-b bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                    <th className="py-3 pr-3 pl-4">Tarih & Evrak</th>
-                    <th className="px-3 py-3">Hesap (Kasa/Banka)</th>
-                    <th className="px-3 py-3">İşlem Türü</th>
-                    <th className="px-3 py-3">İlişkili Cari</th>
-                    <th className="px-3 py-3">Açıklama</th>
-                    <th className="py-3 pr-4 pl-3 text-right">Tutar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <Table className="font-sans">
+                <TableHeader>
+                  <TableRow className="border-zinc-200/80 bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                    <TableHead className="py-3 pr-3 pl-4 h-auto">Tarih & Evrak</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">Hesap (Kasa/Banka)</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">İşlem Türü</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">İlişkili Cari</TableHead>
+                    <TableHead className="px-3 py-3 h-auto">Açıklama</TableHead>
+                    <TableHead className="py-3 pr-4 pl-3 text-right h-auto">Tutar</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                   {transactions.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-12 text-center text-zinc-400"
                         colSpan={6}
                       >
                         <Receipt className="mx-auto mb-2 h-8 w-8 opacity-40" />
                         Henüz finansal fiş veya hareket kaydı bulunmuyor.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     transactions.map((tx) => (
-                      <tr
-                        className="border-zinc-100 border-b hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
+                      <TableRow
+                        className="border-zinc-100 hover:bg-zinc-50/80 dark:border-zinc-800/60 dark:hover:bg-zinc-800/40"
                         key={tx.id}
                       >
-                        <td className="py-3.5 pr-3 pl-4 font-mono text-zinc-700 dark:text-zinc-300">
+                        <TableCell className="py-3.5 pr-3 pl-4 font-mono text-zinc-700 dark:text-zinc-300">
                           <div>
                             {new Date(tx.transactionDate).toLocaleDateString(
                               "tr-TR"
@@ -896,11 +897,11 @@ export default function FinancePage() {
                           <div className="text-[10px] text-zinc-400">
                             {tx.documentNumber || "—"}
                           </div>
-                        </td>
-                        <td className="px-3 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 font-medium text-zinc-900 dark:text-zinc-100">
                           {tx.financialAccountName}
-                        </td>
-                        <td className="px-3 py-3.5">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5">
                           <span
                             className={`inline-flex rounded-md px-2 py-0.5 font-semibold text-xs ${getTxBadgeClass(
                               tx.type
@@ -908,25 +909,25 @@ export default function FinancePage() {
                           >
                             {getTxLabel(tx.type)}
                           </span>
-                        </td>
-                        <td className="px-3 py-3.5 font-medium text-zinc-800 dark:text-zinc-200">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 font-medium text-zinc-800 dark:text-zinc-200">
                           {tx.cariTitle || "—"}
-                        </td>
-                        <td className="px-3 py-3.5 text-zinc-600 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="px-3 py-3.5 text-zinc-600 dark:text-zinc-400">
                           {tx.description}
-                        </td>
-                        <td className="py-3.5 pr-4 pl-3 text-right font-bold font-mono text-sm text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="py-3.5 pr-4 pl-3 text-right font-bold font-mono text-sm text-zinc-900 dark:text-zinc-100">
                           {tx.type === "Collection" ? "+" : "-"}
                           {tx.amount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
                           })}{" "}
                           {tx.currency}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>
@@ -1000,23 +1001,23 @@ export default function FinancePage() {
 
               {/* Transactions Table */}
               <div>
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="border-zinc-200 border-b font-semibold text-zinc-400 dark:border-zinc-800">
-                      <th className="py-2">Tarih</th>
-                      <th className="py-2">İşlem / Evrak</th>
-                      <th className="py-2 text-right">Borç</th>
-                      <th className="py-2 text-right">Alacak</th>
-                      <th className="py-2 text-right">Bakiye</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-zinc-200 font-semibold text-zinc-400 dark:border-zinc-800">
+                      <TableHead className="py-2 h-auto">Tarih</TableHead>
+                      <TableHead className="py-2 h-auto">İşlem / Evrak</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Borç</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Alacak</TableHead>
+                      <TableHead className="py-2 text-right h-auto">Bakiye</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/40">
                     <StatementTableBody
                       isStatementLoading={isStatementLoading}
                       statementTx={statementTx}
                     />
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           </SheetContent>

@@ -2,6 +2,7 @@
 "use client";
 
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   AlertCircle,
   ArrowUpRight,
@@ -710,18 +711,18 @@ export default function AnalyticsPage() {
           </div>
 
           <div className="mt-5 overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
-                <tr>
-                  <th className="py-3 pr-4 pl-4">Ürün Adı</th>
-                  <th className="px-4 py-3">Tip / Kategori</th>
-                  <th className="px-4 py-3 text-right">Maliyet</th>
-                  <th className="px-4 py-3 text-right">Satış Fiyatı</th>
-                  <th className="px-4 py-3 text-right">Brüt Marj</th>
-                  <th className="py-3 pr-4 pl-4 text-center">Stok Durumu</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table>
+              <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="py-3 pr-4 pl-4 h-auto">Ürün Adı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Tip / Kategori</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">Maliyet</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">Satış Fiyatı</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">Brüt Marj</TableHead>
+                  <TableHead className="py-3 pr-4 pl-4 text-center h-auto">Stok Durumu</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {topProducts.slice(0, 6).map((product) => {
                   const margin =
                     product.sellingPrice > 0
@@ -733,23 +734,23 @@ export default function AnalyticsPage() {
                       : 0;
 
                   return (
-                    <tr
+                    <TableRow
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                       key={product.id}
                     >
-                      <td className="py-3.5 pr-4 pl-4 font-bold text-zinc-900 dark:text-zinc-100">
+                      <TableCell className="py-3.5 pr-4 pl-4 font-bold text-zinc-900 dark:text-zinc-100">
                         {product.name}
-                      </td>
-                      <td className="px-4 py-3.5 text-zinc-500 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-zinc-500 dark:text-zinc-400">
                         {product.categoryName || product.type || "Fiziksel"}
-                      </td>
-                      <td className="px-4 py-3.5 text-right font-medium text-zinc-500 dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right font-medium text-zinc-500 dark:text-zinc-400">
                         ₺{product.costPrice.toLocaleString("tr-TR")}
-                      </td>
-                      <td className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                         ₺{product.sellingPrice.toLocaleString("tr-TR")}
-                      </td>
-                      <td className="px-4 py-3.5 text-right">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-right">
                         <span
                           className={`font-extrabold ${
                             margin >= 30
@@ -761,8 +762,8 @@ export default function AnalyticsPage() {
                         >
                           %{margin}
                         </span>
-                      </td>
-                      <td className="py-3.5 pr-4 pl-4 text-center">
+                      </TableCell>
+                      <TableCell className="py-3.5 pr-4 pl-4 text-center">
                         <span
                           className={`inline-block rounded-full px-2 py-0.5 font-bold text-[10px] ${
                             product.currentStock > 10
@@ -776,12 +777,12 @@ export default function AnalyticsPage() {
                             ? `${product.currentStock} ${product.unit || "Adet"}`
                             : "Tükendi"}
                         </span>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}

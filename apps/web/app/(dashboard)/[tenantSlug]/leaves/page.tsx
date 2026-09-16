@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import {
   Calendar as CalendarIcon,
@@ -898,35 +899,35 @@ export default function LeavesPage() {
           {/* Table */}
           <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800/90 dark:bg-zinc-900">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-zinc-100 border-b bg-zinc-50/50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
-                  <tr>
-                    <th className="py-3.5 pr-4 pl-6">Çalışan</th>
-                    <th className="px-4 py-3.5">İzin Türü</th>
-                    <th className="px-4 py-3.5">Tarih Aralığı</th>
-                    <th className="px-4 py-3.5 text-center">Toplam Gün</th>
-                    <th className="px-4 py-3.5">Durum</th>
-                    <th className="px-4 py-3.5">Onaylayan</th>
-                    <th className="py-3.5 pr-6 pl-4 text-right">İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <Table>
+                <TableHeader className="border-zinc-100 bg-zinc-50/50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/30 dark:text-zinc-400">
+                  <TableRow>
+                    <TableHead className="py-3.5 pr-4 pl-6 h-auto">Çalışan</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">İzin Türü</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Tarih Aralığı</TableHead>
+                    <TableHead className="px-4 py-3.5 text-center h-auto">Toplam Gün</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Onaylayan</TableHead>
+                    <TableHead className="py-3.5 pr-6 pl-4 text-right h-auto">İşlemler</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {leaves.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         className="py-8 text-center text-zinc-400 dark:text-zinc-500"
                         colSpan={7}
                       >
                         İzin kaydı bulunamadı.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     leaves.map((l) => (
-                      <tr
+                      <TableRow
                         className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                         key={l.id}
                       >
-                        <td className="py-3.5 pr-4 pl-6">
+                        <TableCell className="py-3.5 pr-4 pl-6">
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {l.employeeName}
                           </div>
@@ -935,34 +936,34 @@ export default function LeavesPage() {
                               {l.departmentName}
                             </div>
                           )}
-                        </td>
-                        <td className="px-4 py-3.5">
+                        </TableCell>
+                        <TableCell className="px-4 py-3.5">
                           <span
                             className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
                           >
                             {getLeaveTypeLabel(l.leaveType)}
                           </span>
-                        </td>
-                        <td className="px-4 py-3.5">
+                        </TableCell>
+                        <TableCell className="px-4 py-3.5">
                           <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                             {new Date(l.startDate).toLocaleDateString("tr-TR")}{" "}
                             - {new Date(l.endDate).toLocaleDateString("tr-TR")}
                           </div>
-                        </td>
-                        <td className="px-4 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="px-4 py-3.5 text-center font-extrabold text-zinc-900 dark:text-zinc-100">
                           {l.totalDays} Gün
-                        </td>
-                        <td className="px-4 py-3.5">
+                        </TableCell>
+                        <TableCell className="px-4 py-3.5">
                           <span
                             className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
                           >
                             {getStatusLabel(l.status)}
                           </span>
-                        </td>
-                        <td className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="px-4 py-3.5 text-zinc-600 dark:text-zinc-400">
                           {l.approvedByUserName || "—"}
-                        </td>
-                        <td className="py-3.5 pr-6 pl-4 text-right">
+                        </TableCell>
+                        <TableCell className="py-3.5 pr-6 pl-4 text-right">
                           {l.status === "Pending" && (
                             <PermissionGate permission="Leaves.Approve">
                               <div className="flex items-center justify-end gap-1.5">
@@ -986,12 +987,12 @@ export default function LeavesPage() {
                               </div>
                             </PermissionGate>
                           )}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>
@@ -1020,63 +1021,63 @@ export default function LeavesPage() {
           </div>
 
           <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-200 border-b bg-zinc-50 font-medium text-[11px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr>
-                  <th className="px-4 py-3">İzin Türü</th>
-                  <th className="px-4 py-3">Tarih Aralığı</th>
-                  <th className="px-4 py-3 text-center">Toplam Gün</th>
-                  <th className="px-4 py-3">Durum</th>
-                  <th className="px-4 py-3">Sebep / Gerekçe</th>
-                  <th className="py-3 pr-4 pl-3 text-right">İptal</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            <Table>
+              <TableHeader className="border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableRow>
+                  <TableHead className="px-4 py-3 h-auto">İzin Türü</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Tarih Aralığı</TableHead>
+                  <TableHead className="px-4 py-3 text-center h-auto">Toplam Gün</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Sebep / Gerekçe</TableHead>
+                  <TableHead className="py-3 pr-4 pl-3 text-right h-auto">İptal</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {leaves.length === 0 ? (
-                  <tr>
-                    <td
+                  <TableRow>
+                    <TableCell
                       className="py-6 text-center text-zinc-400 dark:text-zinc-500"
                       colSpan={6}
                     >
                       Henüz bir izin talebiniz bulunmuyor.
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   leaves.map((l) => (
-                    <tr
+                    <TableRow
                       className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                       key={l.id}
                     >
-                      <td className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
+                      <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
                         >
                           {getLeaveTypeLabel(l.leaveType)}
                         </span>
-                      </td>
-                      <td className="px-4 py-3.5 font-semibold text-zinc-800 dark:text-zinc-200">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 font-semibold text-zinc-800 dark:text-zinc-200">
                         {new Date(l.startDate).toLocaleDateString("tr-TR")} -{" "}
                         {new Date(l.endDate).toLocaleDateString("tr-TR")}
-                      </td>
-                      <td className="px-4 py-3.5 text-center font-bold text-zinc-900 dark:text-zinc-100">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-center font-bold text-zinc-900 dark:text-zinc-100">
                         {l.totalDays} Gün
-                      </td>
-                      <td className="px-4 py-3.5">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5">
                         <span
                           className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
                         >
                           {getStatusLabel(l.status)}
                         </span>
-                      </td>
-                      <td className="px-4 py-3.5 text-zinc-600 italic dark:text-zinc-400">
+                      </TableCell>
+                      <TableCell className="px-4 py-3.5 text-zinc-600 italic dark:text-zinc-400">
                         {l.reason || "—"}
                         {l.rejectionReason && (
                           <div className="mt-0.5 font-bold text-[10px] text-rose-600 not-italic">
                             Ret Nedeni: {l.rejectionReason}
                           </div>
                         )}
-                      </td>
-                      <td className="py-3.5 pr-4 pl-3 text-right">
+                      </TableCell>
+                      <TableCell className="py-3.5 pr-4 pl-3 text-right">
                         {l.status === "Pending" && (
                           <button
                             className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-[11px] text-rose-700 hover:bg-rose-100"
@@ -1086,12 +1087,12 @@ export default function LeavesPage() {
                             İptal Et
                           </button>
                         )}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}

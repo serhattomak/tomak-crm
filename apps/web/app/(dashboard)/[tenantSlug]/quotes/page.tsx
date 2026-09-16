@@ -26,6 +26,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { toast } from "@workspace/ui/components/sonner";
 import { Textarea } from "@workspace/ui/components/textarea";
 import {
@@ -677,32 +678,32 @@ export default function QuotesPage() {
 
             {/* Desktop Table View (Visible on medium+ screens) */}
             <div className="hidden overflow-x-auto md:block">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <th className="w-10 py-3.5 pr-2 pl-4">
+              <Table className="border-collapse">
+                <TableHeader>
+                  <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[11px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                    <TableHead className="w-10 py-3.5 pr-2 pl-4 h-auto">
                       <Checkbox
                         aria-label="Tümünü seç"
                         checked={allSelected}
                         data-indeterminate={someSelected}
                         onCheckedChange={toggleSelectAll}
                       />
-                    </th>
-                    <th className="px-4 py-3.5">Teklif No &amp; Revizyon</th>
-                    <th className="px-4 py-3.5">
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Teklif No &amp; Revizyon</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">
                       Teklif Başlığı &amp; Müşteri
-                    </th>
-                    <th className="px-4 py-3.5">Durum</th>
-                    <th className="px-4 py-3.5">Tutar &amp; İskonto</th>
-                    <th className="px-4 py-3.5">Geçerlilik</th>
-                    <th className="px-4 py-3.5">Temsilci</th>
-                    <th className="px-4 py-3.5 text-right">Aksiyonlar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
+                    </TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Durum</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Tutar &amp; İskonto</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Geçerlilik</TableHead>
+                    <TableHead className="px-4 py-3.5 h-auto">Temsilci</TableHead>
+                    <TableHead className="px-4 py-3.5 text-right h-auto">Aksiyonlar</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                   {quotes.map((quote) => {
                     return (
-                      <tr
+                      <TableRow
                         className={`group cursor-pointer transition hover:bg-blue-50/40 dark:hover:bg-zinc-800/40 ${
                           selectedIds.has(quote.id)
                             ? "bg-blue-50/60 dark:bg-blue-950/20"
@@ -713,7 +714,7 @@ export default function QuotesPage() {
                         key={quote.id}
                         onClick={() => handleOpenDetail(quote.id)}
                       >
-                        <td
+                        <TableCell
                           className="w-10 py-3.5 pr-2 pl-4"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -722,9 +723,9 @@ export default function QuotesPage() {
                             checked={selectedIds.has(quote.id)}
                             onCheckedChange={() => toggleSelectOne(quote.id)}
                           />
-                        </td>
+                        </TableCell>
                         {/* 1. Quote Number & Revision Badge */}
-                        <td className="whitespace-nowrap px-4 py-3.5">
+                        <TableCell className="whitespace-nowrap px-4 py-3.5">
                           <div className="flex items-center gap-2">
                             <span className="font-bold font-mono text-zinc-900 dark:text-zinc-100">
                               {quote.quoteNumber}
@@ -736,10 +737,10 @@ export default function QuotesPage() {
                           <span className="mt-0.5 block text-[10px] text-zinc-400 dark:text-zinc-500">
                             {quote.itemCount} Kalem
                           </span>
-                        </td>
+                        </TableCell>
 
                         {/* 2. Title & Customer */}
-                        <td className="max-w-xs px-4 py-3.5">
+                        <TableCell className="max-w-xs px-4 py-3.5">
                           <span className="block truncate font-bold text-zinc-900 transition group-hover:text-blue-600 dark:text-zinc-100">
                             {quote.title}
                           </span>
@@ -749,15 +750,15 @@ export default function QuotesPage() {
                               {quote.customerName}
                             </span>
                           </div>
-                        </td>
+                        </TableCell>
 
                         {/* 3. Status Badge */}
-                        <td className="whitespace-nowrap px-4 py-3.5">
+                        <TableCell className="whitespace-nowrap px-4 py-3.5">
                           <QuoteStatusBadge status={quote.status} />
-                        </td>
+                        </TableCell>
 
                         {/* 4. Total Amount & Discount */}
-                        <td className="whitespace-nowrap px-4 py-3.5">
+                        <TableCell className="whitespace-nowrap px-4 py-3.5">
                           <span className="block font-extrabold text-zinc-900 dark:text-zinc-100">
                             {formatCurrency(quote.totalAmount, quote.currency)}
                           </span>
@@ -771,15 +772,15 @@ export default function QuotesPage() {
                               )
                             </span>
                           )}
-                        </td>
+                        </TableCell>
 
                         {/* 5. Valid Until — expiry badge: rose 'Süresi doldu', amber 'Son 3 gün', or tr-TR date */}
-                        <td className="whitespace-nowrap px-4 py-3.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <TableCell className="whitespace-nowrap px-4 py-3.5 text-[11px] text-zinc-500 dark:text-zinc-400">
                           <QuoteExpiryBadge validUntil={quote.validUntil} />
-                        </td>
+                        </TableCell>
 
                         {/* 6. Assigned User */}
-                        <td className="whitespace-nowrap px-4 py-3.5">
+                        <TableCell className="whitespace-nowrap px-4 py-3.5">
                           {quote.assignedUserName ? (
                             <div className="flex items-center gap-2">
                               <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -794,10 +795,10 @@ export default function QuotesPage() {
                               Atanmamış
                             </span>
                           )}
-                        </td>
+                        </TableCell>
 
                         {/* 7. Action Buttons */}
-                        <td
+                        <TableCell
                           className="whitespace-nowrap px-4 py-3.5 text-right"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -878,12 +879,12 @@ export default function QuotesPage() {
                               <LinkIcon className="h-4 w-4" />
                             </button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   })}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         )}
@@ -1593,22 +1594,22 @@ function CreateQuoteModal({
             </div>
 
             <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
-                    <th className="min-w-[200px] px-3 py-2.5">
+              <Table className="border-collapse">
+                <TableHeader>
+                  <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                    <TableHead className="min-w-[200px] px-3 py-2.5 h-auto">
                       Ürün / Hizmet Adı
-                    </th>
-                    <th className="w-20 px-2 py-2.5">Miktar</th>
-                    <th className="w-24 px-2 py-2.5">Birim</th>
-                    <th className="w-28 px-2 py-2.5">Birim Fiyat</th>
-                    <th className="w-20 px-2 py-2.5">İskonto %</th>
-                    <th className="w-20 px-2 py-2.5">KDV %</th>
-                    <th className="w-28 px-2 py-2.5 text-right">Tutar</th>
-                    <th className="w-10 px-2 py-2.5 text-center" />
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 font-medium dark:divide-zinc-800">
+                    </TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">Miktar</TableHead>
+                    <TableHead className="w-24 px-2 py-2.5 h-auto">Birim</TableHead>
+                    <TableHead className="w-28 px-2 py-2.5 h-auto">Birim Fiyat</TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">İskonto %</TableHead>
+                    <TableHead className="w-20 px-2 py-2.5 h-auto">KDV %</TableHead>
+                    <TableHead className="w-28 px-2 py-2.5 text-right h-auto">Tutar</TableHead>
+                    <TableHead className="w-10 px-2 py-2.5 text-center h-auto" />
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="divide-y divide-zinc-100 font-medium dark:divide-zinc-800">
                   {items.map((item, idx) => {
                     const raw = (item.unitPrice || 0) * (item.quantity || 1);
                     const disc =
@@ -1621,12 +1622,12 @@ function CreateQuoteModal({
                     const total = afterDisc + tax;
 
                     return (
-                      <tr
+                      <TableRow
                         className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${item.isOptional ? "bg-zinc-50 opacity-60 dark:bg-zinc-800/50" : ""}`}
                         key={idx}
                       >
                         {/* Product Picker or Free Text */}
-                        <td className="px-3 py-2.5">
+                        <TableCell className="px-3 py-2.5">
                           <div className="space-y-1">
                             {products.length > 0 && (
                               <Select
@@ -1690,10 +1691,10 @@ function CreateQuoteModal({
                               </label>
                             </div>
                           </div>
-                        </td>
+                        </TableCell>
 
                         {/* Quantity */}
-                        <td className="w-24 px-2 py-2.5">
+                        <TableCell className="w-24 px-2 py-2.5">
                           <NumberInput
                             inputSize="sm"
                             min={0.01}
@@ -1705,10 +1706,10 @@ function CreateQuoteModal({
                             step={1}
                             value={item.quantity}
                           />
-                        </td>
+                        </TableCell>
 
                         {/* Unit */}
-                        <td className="px-2 py-2.5">
+                        <TableCell className="px-2 py-2.5">
                           <input
                             className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-center text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                             onChange={(e) =>
@@ -1717,10 +1718,10 @@ function CreateQuoteModal({
                             type="text"
                             value={item.unit}
                           />
-                        </td>
+                        </TableCell>
 
                         {/* Unit Price */}
-                        <td className="w-28 px-2 py-2.5">
+                        <TableCell className="w-28 px-2 py-2.5">
                           <NumberInput
                             inputSize="sm"
                             min={0}
@@ -1740,10 +1741,10 @@ function CreateQuoteModal({
                             step={0.01}
                             value={item.unitPrice}
                           />
-                        </td>
+                        </TableCell>
 
                         {/* Discount Rate */}
-                        <td className="w-20 px-2 py-2.5">
+                        <TableCell className="w-20 px-2 py-2.5">
                           <NumberInput
                             className={
                               item.discountRate > 20
@@ -1759,10 +1760,10 @@ function CreateQuoteModal({
                             suffix="%"
                             value={item.discountRate}
                           />
-                        </td>
+                        </TableCell>
 
                         {/* Tax Rate */}
-                        <td className="px-2 py-2.5">
+                        <TableCell className="px-2 py-2.5">
                           <Select
                             onValueChange={(val) =>
                               handleItemChange(
@@ -1783,15 +1784,15 @@ function CreateQuoteModal({
                               <SelectItem value="20">%20</SelectItem>
                             </SelectContent>
                           </Select>
-                        </td>
+                        </TableCell>
 
                         {/* Total Price */}
-                        <td className="whitespace-nowrap px-2 py-2.5 text-right font-bold text-zinc-900 dark:text-zinc-100">
+                        <TableCell className="whitespace-nowrap px-2 py-2.5 text-right font-bold text-zinc-900 dark:text-zinc-100">
                           {formatCurrency(total, currency)}
-                        </td>
+                        </TableCell>
 
                         {/* Remove */}
-                        <td className="px-2 py-2.5 text-center">
+                        <TableCell className="px-2 py-2.5 text-center">
                           <button
                             className="rounded-md p-1 text-zinc-300 transition hover:text-rose-600 disabled:opacity-30"
                             disabled={items.length <= 1}
@@ -1800,12 +1801,12 @@ function CreateQuoteModal({
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   })}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
 
@@ -2829,20 +2830,20 @@ function QuoteDetailDrawer({
             {activeTab === "items" && (
               <div className="space-y-4">
                 <div className="overflow-x-auto rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900">
-                  <table className="w-full border-collapse text-left text-xs">
-                    <thead>
-                      <tr className="border-zinc-200/80 border-b bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
-                        <th className="px-3 py-2.5">Ürün / Hizmet</th>
-                        <th className="px-2 py-2.5 text-center">Miktar</th>
-                        <th className="px-2 py-2.5 text-right">Birim Fiyat</th>
-                        <th className="px-2 py-2.5 text-center">İskonto</th>
-                        <th className="px-2 py-2.5 text-center">KDV</th>
-                        <th className="px-3 py-2.5 text-right">Toplam</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
+                  <Table className="border-collapse">
+                    <TableHeader>
+                      <TableRow className="border-zinc-200/80 bg-zinc-50/70 font-bold text-[10px] text-zinc-500 uppercase tracking-wider dark:border-zinc-800/90 dark:bg-zinc-800/40 dark:text-zinc-400">
+                        <TableHead className="px-3 py-2.5 h-auto">Ürün / Hizmet</TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">Miktar</TableHead>
+                        <TableHead className="px-2 py-2.5 text-right h-auto">Birim Fiyat</TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">İskonto</TableHead>
+                        <TableHead className="px-2 py-2.5 text-center h-auto">KDV</TableHead>
+                        <TableHead className="px-3 py-2.5 text-right h-auto">Toplam</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                       {quote.items.map((item) => (
-                        <tr
+                        <TableRow
                           className={
                             item.isOptional
                               ? "bg-zinc-50/50 opacity-75 dark:bg-zinc-800/30"
@@ -2850,7 +2851,7 @@ function QuoteDetailDrawer({
                           }
                           key={item.id}
                         >
-                          <td className="px-3 py-2.5">
+                          <TableCell className="px-3 py-2.5">
                             <span className="block font-bold text-zinc-900 dark:text-zinc-100">
                               {item.productName}
                             </span>
@@ -2864,28 +2865,28 @@ function QuoteDetailDrawer({
                                 Opsiyonel
                               </span>
                             )}
-                          </td>
-                          <td className="px-2 py-2.5 text-center font-bold">
+                          </TableCell>
+                          <TableCell className="px-2 py-2.5 text-center font-bold">
                             {item.quantity} {item.unit}
-                          </td>
-                          <td className="px-2 py-2.5 text-right font-medium">
+                          </TableCell>
+                          <TableCell className="px-2 py-2.5 text-right font-medium">
                             {formatCurrency(item.unitPrice, quote.currency)}
-                          </td>
-                          <td className="px-2 py-2.5 text-center font-bold text-rose-600">
+                          </TableCell>
+                          <TableCell className="px-2 py-2.5 text-center font-bold text-rose-600">
                             {item.discountRate > 0
                               ? `%${item.discountRate}`
                               : "-"}
-                          </td>
-                          <td className="px-2 py-2.5 text-center text-zinc-500 dark:text-zinc-400">
+                          </TableCell>
+                          <TableCell className="px-2 py-2.5 text-center text-zinc-500 dark:text-zinc-400">
                             %{item.taxRate}
-                          </td>
-                          <td className="px-3 py-2.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                          </TableCell>
+                          <TableCell className="px-3 py-2.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                             {formatCurrency(item.totalPrice, quote.currency)}
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
 
                 {/* Subtotals Box */}
@@ -4330,11 +4331,11 @@ function renderQuotePrintHtml(quote: QuoteDetailDto, tenantName: string) {
   const taxRows = Array.from(map.entries())
     .map(
       ([rate, vals]) => `
-      <tr>
-        <td style="padding: 4px 6px; font-weight: 700;">%${rate}</td>
-        <td style="padding: 4px 6px; text-align: right;">${formatCur(vals.baseAmount)}</td>
-        <td style="padding: 4px 6px; text-align: right; font-weight: 700;">${formatCur(vals.taxAmount)}</td>
-      </tr>
+      <TableRow>
+        <TableCell style="padding: 4px 6px; font-weight: 700;">%${rate}</TableCell>
+        <TableCell style="padding: 4px 6px; text-align: right;">${formatCur(vals.baseAmount)}</TableCell>
+        <TableCell style="padding: 4px 6px; text-align: right; font-weight: 700;">${formatCur(vals.taxAmount)}</TableCell>
+      </TableRow>
     `
     )
     .join("");
@@ -4342,20 +4343,20 @@ function renderQuotePrintHtml(quote: QuoteDetailDto, tenantName: string) {
   const itemsHtml = quote.items
     .map(
       (item, idx) => `
-    <tr style="${item.isOptional ? "background-color: #fefce8; opacity: 0.85;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
-      <td style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</td>
-      <td style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
+    <TableRow style="${item.isOptional ? "background-color: #fefce8; opacity: 0.85;" : idx % 2 === 1 ? "background-color: #f8fafc;" : "background-color: #ffffff;"}">
+      <TableCell style="padding: 7px 8px; text-align: center; color: #64748b; font-weight: 700; border-bottom: 1px solid #e2e8f0;">${idx + 1}</TableCell>
+      <TableCell style="padding: 7px 8px; border-bottom: 1px solid #e2e8f0;">
         <div style="font-weight: 700; color: #0f172a;">${item.productName}</div>
         ${item.sku ? `<div style="font-size: 9px; color: #64748b; font-family: monospace;">SKU: ${item.sku}</div>` : ""}
         ${item.description ? `<div style="font-size: 10px; color: #475569; margin-top: 2px;">${item.description}</div>` : ""}
         ${item.isOptional ? `<div style="display: inline-block; background-color: #fef08a; color: #713f12; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 4px; margin-top: 2px;">Opsiyonel Kalem (Toplama Dahil Değil)</div>` : ""}
-      </td>
-      <td style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.quantity} ${item.unit}</td>
-      <td style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.unitPrice)}</td>
-      <td style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</td>
-      <td style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">%${item.taxRate}</td>
-      <td style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.totalPrice)}</td>
-    </tr>
+      </TableCell>
+      <TableCell style="padding: 7px 8px; text-align: center; font-weight: 700; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.quantity} ${item.unit}</TableCell>
+      <TableCell style="padding: 7px 8px; text-align: right; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.unitPrice)}</TableCell>
+      <TableCell style="padding: 7px 8px; text-align: center; font-weight: 700; color: #e11d48; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${item.discountRate > 0 ? `%${item.discountRate}` : "-"}</TableCell>
+      <TableCell style="padding: 7px 8px; text-align: center; color: #475569; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">%${item.taxRate}</TableCell>
+      <TableCell style="padding: 7px 8px; text-align: right; font-weight: 800; color: #0f172a; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">${formatCur(item.totalPrice)}</TableCell>
+    </TableRow>
   `
     )
     .join("");
@@ -4676,39 +4677,39 @@ function renderQuotePrintHtml(quote: QuoteDetailDto, tenantName: string) {
         </div>
 
         <!-- 3. Line Items -->
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th style="width: 25px; text-align: center;">#</th>
-              <th>Ürün / Hizmet Tanımı</th>
-              <th style="width: 70px; text-align: center;">Miktar</th>
-              <th style="width: 90px; text-align: right;">Birim Fiyat</th>
-              <th style="width: 55px; text-align: center;">İskonto</th>
-              <th style="width: 45px; text-align: center;">KDV</th>
-              <th style="width: 100px; text-align: right;">Toplam Tutar</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table class="items-table">
+          <TableHeader>
+            <TableRow>
+              <TableHead style="width: 25px; text-align: center;">#</TableHead>
+              <TableHead>Ürün / Hizmet Tanımı</TableHead>
+              <TableHead style="width: 70px; text-align: center;">Miktar</TableHead>
+              <TableHead style="width: 90px; text-align: right;">Birim Fiyat</TableHead>
+              <TableHead style="width: 55px; text-align: center;">İskonto</TableHead>
+              <TableHead style="width: 45px; text-align: center;">KDV</TableHead>
+              <TableHead style="width: 100px; text-align: right;">Toplam Tutar</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             ${itemsHtml}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
         <!-- 4. Financial Matrix -->
         <div class="bottom-grid">
           <div class="tax-box">
             <div class="party-label" style="color: #64748b;">KDV ORAN & MATRAH DAĞILIMI</div>
-            <table class="tax-table">
-              <thead>
-                <tr>
-                  <th style="text-align: left;">Oran</th>
-                  <th style="text-align: right;">Matrah</th>
-                  <th style="text-align: right;">KDV Tutarı</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table class="tax-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead style="text-align: left;">Oran</TableHead>
+                  <TableHead style="text-align: right;">Matrah</TableHead>
+                  <TableHead style="text-align: right;">KDV Tutarı</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 ${taxRows}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
 
           <div class="totals-card">
@@ -5120,23 +5121,23 @@ function QuotePrintModal({
 
               {/* 3. Itemized Products/Services Table */}
               <div className="overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700">
-                <table className="w-full border-collapse text-left text-[10px]">
-                  <thead>
-                    <tr className="bg-zinc-900 font-bold text-[9px] text-white uppercase tracking-wider">
-                      <th className="w-7 px-2.5 py-2 text-center">#</th>
-                      <th className="px-2.5 py-2">Ürün / Hizmet Açıklaması</th>
-                      <th className="w-14 px-2 py-2 text-center">Miktar</th>
-                      <th className="w-20 px-2 py-2 text-right">Birim Fiyat</th>
-                      <th className="w-12 px-2 py-2 text-center">İskonto</th>
-                      <th className="w-10 px-2 py-2 text-center">KDV</th>
-                      <th className="w-24 px-2.5 py-2 text-right">
+                <Table className="border-collapse text-[10px]">
+                  <TableHeader>
+                    <TableRow className="bg-zinc-900 font-bold text-[9px] text-white uppercase tracking-wider">
+                      <TableHead className="w-7 px-2.5 py-2 text-center h-auto">#</TableHead>
+                      <TableHead className="px-2.5 py-2 h-auto">Ürün / Hizmet Açıklaması</TableHead>
+                      <TableHead className="w-14 px-2 py-2 text-center h-auto">Miktar</TableHead>
+                      <TableHead className="w-20 px-2 py-2 text-right h-auto">Birim Fiyat</TableHead>
+                      <TableHead className="w-12 px-2 py-2 text-center h-auto">İskonto</TableHead>
+                      <TableHead className="w-10 px-2 py-2 text-center h-auto">KDV</TableHead>
+                      <TableHead className="w-24 px-2.5 py-2 text-right h-auto">
                         Toplam Tutar
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-200 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-zinc-200 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                     {quote.items.map((item, idx) => (
-                      <tr
+                      <TableRow
                         className={
                           item.isOptional
                             ? "bg-amber-50/60 opacity-85"
@@ -5146,10 +5147,10 @@ function QuotePrintModal({
                         }
                         key={item.id}
                       >
-                        <td className="px-2.5 py-1.5 text-center font-bold text-zinc-400 dark:text-zinc-500">
+                        <TableCell className="px-2.5 py-1.5 text-center font-bold text-zinc-400 dark:text-zinc-500">
                           {idx + 1}
-                        </td>
-                        <td className="px-2.5 py-1.5">
+                        </TableCell>
+                        <TableCell className="px-2.5 py-1.5">
                           <span className="block font-bold text-zinc-900 leading-tight dark:text-zinc-100">
                             {item.productName}
                           </span>
@@ -5168,28 +5169,28 @@ function QuotePrintModal({
                               Opsiyonel Kalem (Toplama Dahil Değil)
                             </span>
                           )}
-                        </td>
-                        <td className="whitespace-nowrap px-2 py-1.5 text-center font-bold text-zinc-800 dark:text-zinc-200">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-2 py-1.5 text-center font-bold text-zinc-800 dark:text-zinc-200">
                           {item.quantity} {item.unit}
-                        </td>
-                        <td className="whitespace-nowrap px-2 py-1.5 text-right font-medium text-zinc-700 dark:text-zinc-300">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-2 py-1.5 text-right font-medium text-zinc-700 dark:text-zinc-300">
                           {formatCurrency(item.unitPrice, quote.currency)}
-                        </td>
-                        <td className="whitespace-nowrap px-2 py-1.5 text-center font-bold text-rose-600">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-2 py-1.5 text-center font-bold text-rose-600">
                           {item.discountRate > 0
                             ? `%${item.discountRate}`
                             : "-"}
-                        </td>
-                        <td className="whitespace-nowrap px-2 py-1.5 text-center text-zinc-600 dark:text-zinc-400">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-2 py-1.5 text-center text-zinc-600 dark:text-zinc-400">
                           %{item.taxRate}
-                        </td>
-                        <td className="whitespace-nowrap px-2.5 py-1.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap px-2.5 py-1.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
                           {formatCurrency(item.totalPrice, quote.currency)}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
 
               {/* 4. Financial Calculations & Tax Breakdown Matrix */}
@@ -5199,28 +5200,28 @@ function QuotePrintModal({
                   <span className="block font-extrabold text-[8px] text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
                     KDV ORAN & MATRAH DAĞILIMI
                   </span>
-                  <table className="w-full text-left text-[9px]">
-                    <thead>
-                      <tr className="border-zinc-200 border-b font-bold text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                        <th className="pb-1">Oran</th>
-                        <th className="pb-1 text-right">Matrah</th>
-                        <th className="pb-1 text-right">KDV Tutarı</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
+                  <Table className="text-[9px]">
+                    <TableHeader>
+                      <TableRow className="border-zinc-200 font-bold text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                        <TableHead className="pb-1">Oran</TableHead>
+                        <TableHead className="pb-1 text-right">Matrah</TableHead>
+                        <TableHead className="pb-1 text-right">KDV Tutarı</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-zinc-100 font-medium text-zinc-700 dark:divide-zinc-800 dark:text-zinc-300">
                       {taxBreakdown.map((t) => (
-                        <tr key={t.rate}>
-                          <td className="py-0.5 font-bold">%{t.rate}</td>
-                          <td className="py-0.5 text-right">
+                        <TableRow key={t.rate}>
+                          <TableCell className="py-0.5 font-bold">%{t.rate}</TableCell>
+                          <TableCell className="py-0.5 text-right">
                             {formatCurrency(t.baseAmount, quote.currency)}
-                          </td>
-                          <td className="py-0.5 text-right font-bold text-zinc-900 dark:text-zinc-100">
+                          </TableCell>
+                          <TableCell className="py-0.5 text-right font-bold text-zinc-900 dark:text-zinc-100">
                             {formatCurrency(t.taxAmount, quote.currency)}
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
 
                 {/* Right: Totals Box */}

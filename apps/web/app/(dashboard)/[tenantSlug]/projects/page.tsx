@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
 import { SelectField } from "@workspace/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import {
   ArrowRight,
   Briefcase,
@@ -479,43 +480,43 @@ export default function ProjectsPage() {
       ) : (
         <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-zinc-200/80 border-b bg-zinc-50/50 font-semibold text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
-                <tr>
-                  <th className="px-4 py-3">Anahtar</th>
-                  <th className="px-4 py-3">Proje Adı</th>
-                  <th className="px-4 py-3">Müşteri</th>
-                  <th className="px-4 py-3">Lider / Sorumlu</th>
-                  <th className="px-4 py-3">Durum</th>
-                  <th className="px-4 py-3">İş Maddeleri</th>
-                  <th className="px-4 py-3">Bütçe</th>
-                  <th className="px-4 py-3 text-right">Aksiyon</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <Table>
+              <TableHeader className="border-zinc-200/80 bg-zinc-50/50 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-300">
+                <TableRow>
+                  <TableHead className="px-4 py-3 h-auto">Anahtar</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Proje Adı</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Müşteri</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Lider / Sorumlu</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Durum</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">İş Maddeleri</TableHead>
+                  <TableHead className="px-4 py-3 h-auto">Bütçe</TableHead>
+                  <TableHead className="px-4 py-3 text-right h-auto">Aksiyon</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
                 {projects.map((proj) => (
-                  <tr
+                  <TableRow
                     className="transition hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                     key={proj.id}
                   >
-                    <td className="px-4 py-3 font-bold text-blue-600 dark:text-blue-400">
+                    <TableCell className="px-4 py-3 font-bold text-blue-600 dark:text-blue-400">
                       {proj.key}
-                    </td>
-                    <td className="px-4 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
                       <Link
                         className="hover:underline"
                         href={`/${tenantSlug}/projects/${proj.id}`}
                       >
                         {proj.name}
                       </Link>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
                       {proj.customerName || "-"}
-                    </td>
-                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
                       {proj.leadUserName || "-"}
-                    </td>
-                    <td className="px-4 py-3">
+                    </TableCell>
+                    <TableCell className="px-4 py-3">
                       <span
                         className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(
                           proj.status
@@ -523,28 +524,28 @@ export default function ProjectsPage() {
                       >
                         {getStatusLabel(proj.status)}
                       </span>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
                       {proj.activeItemsCount} açık / {proj.completedItemsCount}{" "}
                       bitti
-                    </td>
-                    <td className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">
                       {proj.budget > 0
                         ? `${proj.budget.toLocaleString("tr-TR")} ${proj.currency}`
                         : "-"}
-                    </td>
-                    <td className="px-4 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 text-right">
                       <Link
                         className="font-bold text-blue-600 hover:underline dark:text-blue-400"
                         href={`/${tenantSlug}/projects/${proj.id}`}
                       >
                         Aç ➜
                       </Link>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}
