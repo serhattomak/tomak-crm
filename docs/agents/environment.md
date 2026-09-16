@@ -288,6 +288,46 @@ remainder is BuildKit's *Shared* cache — layers the existing images still refe
 so it is unreclaimable while those images exist. There is nothing further to win here
 until images are deleted.
 
+### Why it grew to 19.54 GB: the limit was 20 GB
+
+The cache did not grow unbounded — it filled a ceiling that was already set.
+
+`C:\Users\Serhat\.docker\daemon.json` (the file Docker Desktop's **Settings → Docker
+Engine** editor writes):
+
+```json
+{ "builder": { "gc": { "defaultKeepStorage": "10GB", "enabled": true } }, "experimental": false }
+```
+
+**Was `20GB`; changed to `10GB` on 2026-09-17.** The 19.54 GB reading was the cache
+sitting at that ceiling. `defaultKeepStorage` maps to `Reserved Space` in the policy
+below, and it scales the first rule with it — measured across the change:
+
+```
+[[worker.oci.gcpolicy]]  keepDuration 48h, filters source.local/exec.cachemount/source.git.checkout
+                         Max Used Space: 2.764GiB  ->  1.382GiB   (exactly half)
+[[worker.oci.gcpolicy]]  keepDuration 1440h  Reserved Space: 20GiB -> 10GiB
+[[worker.oci.gcpolicy]]                       Reserved Space: 20GiB -> 10GiB
+[[worker.oci.gcpolicy]]  all = true           Reserved Space: 20GiB -> 10GiB
+```
+
+Read the live policy with `docker buildx inspect --bootstrap`. Note that
+`Reserved Space` is a **floor** ("keep at least this much"), not a ceiling — it is not
+the limit you are looking for; `defaultKeepStorage` is.
+
+**Applying it needs `docker desktop restart`, and that is safe here.** Verified: the
+restart issues a new Docker Desktop SessionID (`docker desktop status`), takes seconds,
+does not revert `daemon.json`, and every `restart: unless-stopped` container — the whole
+crm stack included — comes back on its own. The engine was reachable again ~5s after the
+command returned, which is *before* the restart has actually happened; confirm with the
+SessionID rather than with `docker info`, or the measurement will say the restart did
+nothing. This is the same shape as every other trap in this file: an unchanged reading
+that looks like a no-op.
+
+`defaultKeepStorage` is the file's own value and Docker Desktop rewrites `daemon.json`
+when its Engine editor is applied, so change it there or expect the GUI to win.
+
+
 ## Tool limits
 
 - **Supabase CLI is 2.67.1** (2.117.0 is current). `supabase db query` needs 2.79.0+
