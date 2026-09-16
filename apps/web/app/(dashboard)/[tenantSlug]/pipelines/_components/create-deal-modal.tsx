@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
+import { Combobox } from "@workspace/ui/components/combobox";
 import {
   Dialog,
   DialogClose,
@@ -9,6 +10,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import { Plus, X } from "lucide-react";
 import type React from "react";
@@ -144,39 +146,29 @@ export function CreateDealModal({
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <Label className="text-xs">Pipeline</Label>
-              <select
-                className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-                onChange={(e) => {
-                  const nextPipeId = e.target.value;
+              <Combobox
+                onChange={(nextPipeId) => {
                   setPipelineId(nextPipeId);
                   const pipe = pipelines.find((p) => p.id === nextPipeId);
                   if (pipe?.stages?.[0]) {
                     setStageId(pipe.stages[0].id);
                   }
                 }}
+                options={pipelines.map((p) => ({ label: p.name, value: p.id }))}
                 value={pipelineId}
-              >
-                {pipelines.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             <div className="space-y-1">
               <Label className="text-xs">Başlangıç Aşaması</Label>
-              <select
-                className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-                onChange={(e) => setStageId(e.target.value)}
+              <Combobox
+                onChange={setStageId}
+                options={(currentPipe?.stages ?? []).map((s) => ({
+                  label: `${s.name} (%${s.probability})`,
+                  value: s.id,
+                }))}
                 value={stageId}
-              >
-                {currentPipe?.stages?.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name} (%{s.probability})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
 
@@ -206,51 +198,51 @@ export function CreateDealModal({
                   type="number"
                   value={value}
                 />
-                <select
-                  className="h-8 rounded-md border border-input bg-background px-2 font-semibold text-foreground text-xs shadow-xs"
-                  onChange={(e) => setCurrency(e.target.value)}
+                <SelectField
+                  onChange={setCurrency}
+                  options={[
+                    { label: "₺ TRY", value: "TRY" },
+                    { label: "$ USD", value: "USD" },
+                    { label: "€ EUR", value: "EUR" },
+                  ]}
                   value={currency}
-                >
-                  <option value="TRY">₺ TRY</option>
-                  <option value="USD">$ USD</option>
-                  <option value="EUR">€ EUR</option>
-                </select>
+                />
               </div>
             </div>
 
             <div className="space-y-1">
               <Label className="text-xs">Öncelik</Label>
-              <select
-                className="h-8 w-full rounded-md border border-input bg-background px-2 font-medium text-foreground text-xs shadow-xs"
-                onChange={(e) => setPriority(e.target.value)}
+              <SelectField
+                onChange={setPriority}
+                options={[
+                  { label: "Düşük", value: "Low" },
+                  { label: "Orta", value: "Medium" },
+                  { label: "Yüksek", value: "High" },
+                  { label: "Acil", value: "Urgent" },
+                ]}
                 value={priority}
-              >
-                <option value="Low">Düşük</option>
-                <option value="Medium">Orta</option>
-                <option value="High">Yüksek</option>
-                <option value="Urgent">Acil</option>
-              </select>
+              />
             </div>
           </div>
 
           {/* Representative Assignment */}
           <div className="space-y-1">
             <Label className="text-xs">Atama Kuralı / Sorumlu Çalışan</Label>
-            <select
-              className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-              onChange={(e) => setAssignedUserId(e.target.value)}
+            <Combobox
+              onChange={setAssignedUserId}
+              options={[
+                {
+                  label: "⚡ Otomatik Dağıtım (Round-Robin / Yük Dengesi)",
+                  value: "auto",
+                },
+                { label: "Açık Havuzda Bırak (Atanmamış)", value: "unassigned" },
+                ...employees.map((emp) => ({
+                  label: `${emp.fullName} (${emp.departmentName || "Genel"})`,
+                  value: emp.userId || emp.id,
+                })),
+              ]}
               value={assignedUserId}
-            >
-              <option value="auto">
-                ⚡ Otomatik Dağıtım (Round-Robin / Yük Dengesi)
-              </option>
-              <option value="unassigned">Açık Havuzda Bırak (Atanmamış)</option>
-              {employees.map((emp) => (
-                <option key={emp.id} value={emp.userId || emp.id}>
-                  {emp.fullName} ({emp.departmentName || "Genel"})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           {/* Contact Information (Lead) */}
@@ -288,17 +280,17 @@ export function CreateDealModal({
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <div className="space-y-1">
                 <Label className="text-xs">Kaynak</Label>
-                <select
-                  className="h-8 w-full rounded-md border border-input bg-background px-2 text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-                  onChange={(e) => setSource(e.target.value)}
+                <SelectField
+                  onChange={setSource}
+                  options={[
+                    { label: "Manuel Giriş", value: "Manual" },
+                    { label: "Web Sitesi / Form", value: "Website" },
+                    { label: "Tavsiye / Referans", value: "Referral" },
+                    { label: "Pazarlama Kampanyası", value: "Campaign" },
+                    { label: "Gelen Arama", value: "InboundCall" },
+                  ]}
                   value={source}
-                >
-                  <option value="Manual">Manuel Giriş</option>
-                  <option value="Website">Web Sitesi / Form</option>
-                  <option value="Referral">Tavsiye / Referans</option>
-                  <option value="Campaign">Pazarlama Kampanyası</option>
-                  <option value="InboundCall">Gelen Arama</option>
-                </select>
+                />
               </div>
               <div className="space-y-1 sm:col-span-2">
                 <Label className="text-xs">İlk Not / Açıklama</Label>
