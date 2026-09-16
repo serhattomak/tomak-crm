@@ -1004,28 +1004,27 @@ export default function ProjectDetailPage() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Assignee Quick Picker */}
-                        <select
+                        <Combobox
                           aria-label="Atanan Temsilci"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                          onChange={(e) => {
-                            const emp = employees.find(
-                              (emp) => emp.id === e.target.value
-                            );
+                          onChange={(value) => {
+                            const emp = employees.find((emp) => emp.id === value);
                             handleQuickUpdateItem(item.id, {
                               assignedUserAvatar: emp?.avatarUrl || undefined,
-                              assignedUserId: e.target.value || undefined,
+                              assignedUserId: value || undefined,
                               assignedUserName: emp?.fullName || undefined,
                             });
                           }}
+                          options={[
+                            { label: "Atanmamış", value: "" },
+                            ...employees.map((emp) => ({
+                              label: emp.fullName,
+                              value: emp.id,
+                            })),
+                          ]}
+                          placeholder="Atanmamış"
+                          triggerClassName="h-6 px-2 font-medium text-3xs"
                           value={item.assignedUserId || ""}
-                        >
-                          <option value="">Atanmamış</option>
-                          {employees.map((emp) => (
-                            <option key={emp.id} value={emp.id}>
-                              {emp.fullName}
-                            </option>
-                          ))}
-                        </select>
+                        />
 
                         {/* Story Points Quick Picker */}
                         <SelectField
@@ -1219,28 +1218,27 @@ export default function ProjectDetailPage() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Assignee Quick Picker */}
-                        <select
+                        <Combobox
                           aria-label="Atanan Temsilci"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                          onChange={(e) => {
-                            const emp = employees.find(
-                              (emp) => emp.id === e.target.value
-                            );
+                          onChange={(value) => {
+                            const emp = employees.find((emp) => emp.id === value);
                             handleQuickUpdateItem(item.id, {
                               assignedUserAvatar: emp?.avatarUrl || undefined,
-                              assignedUserId: e.target.value || undefined,
+                              assignedUserId: value || undefined,
                               assignedUserName: emp?.fullName || undefined,
                             });
                           }}
+                          options={[
+                            { label: "Atanmamış", value: "" },
+                            ...employees.map((emp) => ({
+                              label: emp.fullName,
+                              value: emp.id,
+                            })),
+                          ]}
+                          placeholder="Atanmamış"
+                          triggerClassName="h-6 px-2 font-medium text-3xs"
                           value={item.assignedUserId || ""}
-                        >
-                          <option value="">Atanmamış</option>
-                          {employees.map((emp) => (
-                            <option key={emp.id} value={emp.id}>
-                              {emp.fullName}
-                            </option>
-                          ))}
-                        </select>
+                        />
 
                         {/* Story Points */}
                         <SelectField
@@ -1385,85 +1383,91 @@ export default function ProjectDetailPage() {
                     onClick={(e) => e.stopPropagation()}
                   >
                     {/* Assignee Quick Picker */}
-                    <select
+                    <Combobox
                       aria-label="Atanan Temsilci"
-                      className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                      onChange={(e) => {
-                        const emp = employees.find(
-                          (emp) => emp.id === e.target.value
-                        );
+                      onChange={(value) => {
+                        const emp = employees.find((emp) => emp.id === value);
                         handleQuickUpdateItem(item.id, {
                           assignedUserAvatar: emp?.avatarUrl || undefined,
-                          assignedUserId: e.target.value || undefined,
+                          assignedUserId: value || undefined,
                           assignedUserName: emp?.fullName || undefined,
                         });
                       }}
+                      options={[
+                        { label: "Atanmamış", value: "" },
+                        ...employees.map((emp) => ({
+                          label: emp.fullName,
+                          value: emp.id,
+                        })),
+                      ]}
+                      placeholder="Atanmamış"
+                      triggerClassName="h-6 px-2 font-medium text-3xs"
                       value={item.assignedUserId || ""}
-                    >
-                      <option value="">Atanmamış</option>
-                      {employees.map((emp) => (
-                        <option key={emp.id} value={emp.id}>
-                          {emp.fullName}
-                        </option>
-                      ))}
-                    </select>
+                    />
 
                     {/* Story Points */}
-                    <select
+                    <SelectField
                       aria-label="Story Points"
-                      className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                      onChange={(e) =>
+                      onChange={(value) =>
                         handleQuickUpdateItem(item.id, {
-                          storyPoints: Number(e.target.value),
+                          storyPoints: Number(value),
                         })
                       }
-                      value={item.storyPoints}
-                    >
-                      <option value={0}>0 SP</option>
-                      <option value={1}>1 SP</option>
-                      <option value={2}>2 SP</option>
-                      <option value={3}>3 SP</option>
-                      <option value={5}>5 SP</option>
-                      <option value={8}>8 SP</option>
-                      <option value={13}>13 SP</option>
-                    </select>
+                      options={[
+                        { label: "0 SP", value: "0" },
+                        { label: "1 SP", value: "1" },
+                        { label: "2 SP", value: "2" },
+                        { label: "3 SP", value: "3" },
+                        { label: "5 SP", value: "5" },
+                        { label: "8 SP", value: "8" },
+                        { label: "13 SP", value: "13" },
+                      ]}
+                      triggerClassName="h-6 px-1.5 font-bold text-3xs"
+                      value={String(item.storyPoints)}
+                    />
 
                     {/* Priority */}
-                    <select
+                    {/* Badge rengi veriye bağlı ve önceliği kodluyor; yüzey
+                        sınıfları gibi düşürülmez (bkz. aynı dosyadaki backlog
+                        satırı). */}
+                    <SelectField
                       aria-label="Öncelik"
-                      className={`rounded-lg border border-transparent px-2 py-1 font-bold text-[10px] ${getPriorityBadge(item.priority)}`}
-                      onChange={(e) =>
+                      onChange={(value) =>
                         handleQuickUpdateItem(item.id, {
-                          priority: e.target.value,
+                          priority: value,
                         })
                       }
+                      options={[
+                        { label: "Düşük", value: "Low" },
+                        { label: "Normal", value: "Medium" },
+                        { label: "Yüksek", value: "High" },
+                        { label: "Acil", value: "Urgent" },
+                      ]}
+                      triggerClassName={`h-6 px-2 font-bold text-3xs ${getPriorityBadge(item.priority)}`}
                       value={item.priority}
-                    >
-                      <option value="Low">Düşük</option>
-                      <option value="Medium">Normal</option>
-                      <option value="High">Yüksek</option>
-                      <option value="Urgent">Acil</option>
-                    </select>
+                    />
 
                     {sprints.length > 0 && (
-                      <select
+                      <Combobox
                         aria-label="Sprinte Taşı"
-                        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-[10px] text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-blue-400"
-                        onChange={(e) =>
-                          handleAssignToSprint(item.id, e.target.value)
+                        onChange={(value) =>
+                          handleAssignToSprint(item.id, value)
                         }
+                        options={[
+                          { label: "Sprinte Taşı ▾", value: "" },
+                          ...sprints
+                            .filter((s) => s.status !== "Completed")
+                            .map((s) => ({
+                              label: `${s.name} (${
+                                s.status === "Active" ? "Aktif" : "Plan"
+                              })`,
+                              value: s.id,
+                            })),
+                        ]}
+                        placeholder="Sprinte Taşı ▾"
+                        triggerClassName="h-6 px-2 font-semibold text-3xs text-blue-600 dark:text-blue-400"
                         value=""
-                      >
-                        <option value="">Sprinte Taşı ▾</option>
-                        {sprints
-                          .filter((s) => s.status !== "Completed")
-                          .map((s) => (
-                            <option key={s.id} value={s.id}>
-                              {s.name} (
-                              {s.status === "Active" ? "Aktif" : "Plan"})
-                            </option>
-                          ))}
-                      </select>
+                      />
                     )}
 
                     <button
@@ -1620,51 +1624,51 @@ export default function ProjectDetailPage() {
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {/* Quick Story Points */}
-                                <select
+                                <SelectField
                                   aria-label="Story Points"
-                                  className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
-                                  onChange={(e) =>
+                                  onChange={(value) =>
                                     handleQuickUpdateItem(item.id, {
-                                      storyPoints: Number(e.target.value),
+                                      storyPoints: Number(value),
                                     })
                                   }
-                                  value={item.storyPoints}
-                                >
-                                  <option value={0}>0 SP</option>
-                                  <option value={1}>1 SP</option>
-                                  <option value={2}>2 SP</option>
-                                  <option value={3}>3 SP</option>
-                                  <option value={5}>5 SP</option>
-                                  <option value={8}>8 SP</option>
-                                  <option value={13}>13 SP</option>
-                                </select>
+                                  options={[
+                                    { label: "0 SP", value: "0" },
+                                    { label: "1 SP", value: "1" },
+                                    { label: "2 SP", value: "2" },
+                                    { label: "3 SP", value: "3" },
+                                    { label: "5 SP", value: "5" },
+                                    { label: "8 SP", value: "8" },
+                                    { label: "13 SP", value: "13" },
+                                  ]}
+                                  triggerClassName="h-5 px-1.5 font-bold text-3xs"
+                                  value={String(item.storyPoints)}
+                                />
 
                                 {/* Quick Assignee */}
-                                <select
+                                <Combobox
                                   aria-label="Atanan"
-                                  className="max-w-[100px] truncate rounded-md border border-zinc-200 bg-white px-1.5 py-0.5 font-medium text-[9px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                                  onChange={(e) => {
-                                    const emp = employees.find(
-                                      (emp) => emp.id === e.target.value
-                                    );
+                                  onChange={(value) => {
+                                    const emp = employees.find((emp) => emp.id === value);
                                     handleQuickUpdateItem(item.id, {
                                       assignedUserAvatar:
                                         emp?.avatarUrl || undefined,
                                       assignedUserId:
-                                        e.target.value || undefined,
+                                        value || undefined,
                                       assignedUserName:
                                         emp?.fullName || undefined,
                                     });
                                   }}
+                                  options={[
+                                    { label: "Atanmamış", value: "" },
+                                    ...employees.map((emp) => ({
+                                      label: emp.fullName,
+                                      value: emp.id,
+                                    })),
+                                  ]}
+                                  placeholder="Atanmamış"
+                                  triggerClassName="h-5 max-w-[100px] truncate px-1.5 font-medium text-3xs"
                                   value={item.assignedUserId || ""}
-                                >
-                                  <option value="">Atanmamış</option>
-                                  {employees.map((emp) => (
-                                    <option key={emp.id} value={emp.id}>
-                                      {emp.fullName}
-                                    </option>
-                                  ))}
-                                </select>
+                                />
 
                                 <div className="flex items-center gap-1">
                                   {colStatus !== "Todo" && (
