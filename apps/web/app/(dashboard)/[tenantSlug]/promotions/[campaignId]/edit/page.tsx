@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import { NumberInput } from "@workspace/ui/components/number-input";
 import { PageContainer } from "@workspace/ui/components/page-container";
@@ -428,39 +429,35 @@ export default function EditCampaignPage() {
               Hedef Ürün ve Kategoriler ({targets.length})
             </span>
             <div className="grid grid-cols-2 gap-3">
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    addProductTarget(e.target.value);
-                    e.target.value = "";
+              <Combobox
+                aria-label="Ürün ekle"
+                onChange={(value) => {
+                  if (value) {
+                    addProductTarget(value);
                   }
                 }}
-              >
-                <option value="">Ürün Ekle...</option>
-                {products.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
+                options={[
+                  { label: "Ürün Ekle...", value: "" },
+                  ...products.map((p) => ({ label: p.name, value: p.id })),
+                ]}
+                placeholder="Ürün Ekle..."
+                value=""
+              />
 
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    addCategoryTarget(e.target.value);
-                    e.target.value = "";
+              <Combobox
+                aria-label="Kategori ekle"
+                onChange={(value) => {
+                  if (value) {
+                    addCategoryTarget(value);
                   }
                 }}
-              >
-                <option value="">Kategori Ekle...</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+                options={[
+                  { label: "Kategori Ekle...", value: "" },
+                  ...categories.map((c) => ({ label: c.name, value: c.id })),
+                ]}
+                placeholder="Kategori Ekle..."
+                value=""
+              />
             </div>
 
             <div className="space-y-2">
