@@ -222,11 +222,30 @@ const RULES = [
             ")(?![A-Za-z0-9\\-\\/])",
           "g"
         );
-        const m = re.exec(literal);
-        if (!m) return null;
-        const prop = m[1].split("-")[0];
-        if (new RegExp(`dark:(?:[a-z-]+:)*${prop}-`).test(whole)) return null;
-        return { offset: m.index, token: m[1] };
+        // EVERY match is examined, not just the first.
+        //
+        // This used to take `re.exec(literal)` and bail if THAT property had a
+        // dark: partner anywhere in the expression. So a class expression like
+        //   `border border-emerald-200 dark:border-emerald-800 bg-emerald-50 ...`
+        // reported nothing: the first match was the correctly-paired border, its
+        // `dark:border-` was found, and the unpaired `bg-emerald-50` was never
+        // looked at. The runtime audit measured that exact badge at 1.44:1 while
+        // this rule sat at zero — a rule narrower than its standard, reporting
+        // success.
+        //
+        // `matchAll` runs on a freshly-built regex, so nothing depends on a
+        // previous `lastIndex`.
+        //
+        // Returning the first UNPAIRED match keeps the one-finding-per-expression
+        // contract and removes the masking.
+        for (const m of literal.matchAll(re)) {
+          const prop = m[1].split("-")[0];
+          if (new RegExp(`dark:(?:[a-z-]+:)*${prop}-`).test(whole)) {
+            continue;
+          }
+          return { offset: m.index, token: m[1] };
+        }
+        return null;
       },
     },
   },
