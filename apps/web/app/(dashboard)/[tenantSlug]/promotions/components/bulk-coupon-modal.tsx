@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import { DatePicker } from "@workspace/ui/components/date-picker";
 import {
   Dialog,
@@ -302,22 +303,20 @@ export function BulkCouponModal({
               <label className="mb-1 block font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 Bağlı Kampanya *
               </label>
-              <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
-                onChange={(e) => setCampaignId(e.target.value)}
-                required
+              <Combobox
+                onChange={setCampaignId}
+                options={[
+                  { label: "Kampanya seçiniz...", value: "" },
+                  ...campaigns.map((c) => ({
+                    label: `${c.name} (${c.type} - ${c.discountValue}${
+                      c.type === "Percentage" ? "%" : "₺"
+                    })`,
+                    value: c.id,
+                  })),
+                ]}
+                placeholder="Kampanya seçiniz..."
                 value={campaignId}
-              >
-                <option disabled value="">
-                  Kampanya seçiniz...
-                </option>
-                {campaigns.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} ({c.type} - {c.discountValue}
-                    {c.type === "Percentage" ? "%" : "₺"})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             {mode === "single" ? (
