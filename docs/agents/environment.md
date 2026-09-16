@@ -328,6 +328,84 @@ that looks like a no-op.
 when its Engine editor is applied, so change it there or expect the GUI to win.
 
 
+## The Docker disk image (WSL2 VHDX)
+
+Windows reports Docker Desktop's disk as a single file:
+
+```
+%LOCALAPPDATA%\Docker\wsl\disk\docker_data.vhdx      (the data disk, mounted at /var/lib)
+%LOCALAPPDATA%\Docker\wsl\main\ext4.vhdx             (0.1 GB, the distro itself)
+```
+
+Measured 2026-09-17, when Explorer said **88.4 GB**:
+
+| Reading | Value |
+|---|---|
+| `docker_data.vhdx` file size | 88.25 GB |
+| Inside the VM (`df -h /var/lib`) | 1 TB virtual, **58 GB used**, 899 GB free |
+| Docker's own accounting | 44.72 images + 11.7 volumes + 3.93 cache + 0.24 containers ≈ 60.6 GB |
+| **Real waste** | **~28 GB** |
+
+`df` inside the VM: `/dev/sdf` (later `/dev/sdd`) is the data disk, mounted at `/var/lib`.
+
+### Two separate reasons the file stays big
+
+1. **The VHDX only grows.** It reached 88 GB during peak use (~90 GB of images + cache +
+   volumes) and does not shrink when files are deleted.
+2. **It was not NTFS-sparse**, so even when blocks *were* freed, Windows had nowhere to
+   put them. `/dev/sdd` is also mounted `rw,relatime` **without `discard`**, unlike the
+   distro's own disk (`rw,relatime,discard`).
+
+### Measuring what the file really occupies
+
+`(Get-Item $f).Length` is the *logical* size and overstates it once the file is sparse.
+Explorer's **Size** is logical; **Size on disk** is allocated. For the allocated figure,
+sum the ranges:
+
+```powershell
+fsutil sparse queryrange "C:\Users\Serhat\AppData\Local\Docker\wsl\disk\docker_data.vhdx"
+```
+
+Parse `Offset: 0x… Length: 0x…` and add the lengths. Measured after the fix: logical
+62.97 GiB, **allocated 61.54 GiB**, sparse holes 1.43 GiB. Watch *size on disk*, not size.
+
+### The fix, and the trap in it
+
+```powershell
+docker desktop stop
+wsl --shutdown
+# diskpart: select vdisk file="…\docker_data.vhdx"
+#           attach vdisk readonly
+#           compact vdisk
+#           detach vdisk
+fsutil sparse setflag "…\docker_data.vhdx"     # needs the file NOT in use
+docker desktop start
+docker compose up -d                            # see the trap below
+```
+
+Result: 88.25 GB → 62.97 GiB logical, C: free 156.76 → 190.84 GB. **~25 GB recovered.**
+`fsutil sparse setflag` frees nothing by itself — it only lets *future* frees be returned,
+so it is a follow-up to the compaction, not a substitute.
+
+**Trap: `wsl --shutdown` breaks the restart policy.** After `docker desktop restart` the
+whole stack came back on its own. After `wsl --shutdown` **nothing did** — 67 containers
+all `Exited`, 0 running — because the VM was killed rather than shut down cleanly, so
+`restart: unless-stopped` never fired. The stack had to be started by hand. If a procedure
+touches WSL, do not expect the one-click story to cover it.
+
+### Things that did not work
+
+- `docker run --privileged --pid=host docker/desktop-reclaim-space` — the documented
+  reclamation container. Pulled and ran in 3.4s, changed nothing (file size and C: free
+  both identical).
+- `fstrim -v /var/lib` on its own — reported **1.1 MiB**, because ext4 believed its free
+  blocks were already discarded. It is only informative after something has *just* been
+  deleted: with a 2 GB file written and removed, the same command reported **2.9 GiB
+  trimmed**. A trim with nothing newly freed proves nothing.
+
+`docker desktop enable` exposes only `model-runner`, so there is no CLI switch for the
+managed-VHD behaviour the 4.34 release notes describe.
+
 ## Tool limits
 
 - **Supabase CLI is 2.67.1** (2.117.0 is current). `supabase db query` needs 2.79.0+
