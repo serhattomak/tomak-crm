@@ -236,6 +236,20 @@ Verify with `/health` returning 200 and a `masstransit-bus` block.
 2. **Every measurement gets a second method.** Blob vs. working tree, `grep` vs. Node,
    line count vs. name set. A lockfile diff of 1618 lines looked alarming and lost
    **zero** packages; the line count was churn, the name set was the fact.
+
+**A `toast()` call is silent where no `<Toaster>` is mounted.** Measured 2026-09-16: sonner
+is the app-wide toast mechanism — **17 files import it** and `<Toaster>` is mounted in exactly
+two layouts, `app/(admin)/layout.tsx` and `app/(dashboard)/layout.tsx`. It is **not** in
+`app/(auth)/layout.tsx`, so `toast(...)` in `app/(auth)/login/page.tsx` would render nothing
+at all. That is the same failure shape as an undefined token: no error, no output, and only a
+hand-check finds it. Before replacing an `alert()` with a `toast()`, confirm the route's layout
+tree mounts one.
+
+Also measured in the same pass: **the `**` glob was blind again.** A
+`Select-String -Path "apps/web/**/*.tsx"` found **0** sonner imports; a plain `readdirSync` walk
+of the same tree found **17**, plus the two layout mounts. This is the second time in this
+repo that a search tool returned a confident zero that a second method contradicted — the
+first is recorded under "Tool limits". Present the glob's zero only with a walk behind it.
 3. **Compare like with like.** Regexes cannot count what they cannot see: three
    matching *lines* held four references.
 4. **Read the diff.** Class strings are checked by neither `tsc` nor the guard, and
