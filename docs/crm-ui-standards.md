@@ -294,6 +294,12 @@ onInteractOutside={(event) => {
 
 **Kazanç (Sheet):** kenardan kayma animasyonu, `Esc`, dışına tıklama, focus tuzağı ve katman yönetimi primitiften gelir.
 
+**`AlertDialog` (onay pencereleri) — `ConfirmDialog` bu primitif üzerine kurulur.** Faz 3.3'te `ConfirmDialog` (`packages/ui/src/components/confirm-dialog.tsx`) elle yazdığı portal/overlay/content'i bırakıp `alert-dialog.tsx`'e taşındı (bulgu 6). Kural: **onay penceresi yazan yeni bir yüzey, `AlertDialog`'u kendi kurmaz; `ConfirmDialog`'u kullanır.** Ek notlar:
+
+1. **Alert asla dışına tıklamayla kapanmaz** — bu primitifin doğası, dış-tıklama politikasının (§2.3) istisnası değil: onay penceresinde "vazgeç" **bilinçli** bir seçimdir.
+2. **`AlertDialogAction` / `AlertDialogCancel` birer `Button` sarmalayıcısıdır** — `variant`/`size` alırlar. Bu yüzden `ConfirmDialog`'un amber `warning` varyantı onlarla ifade **edilemez**; sarılmamış `Cancel`/`Action` + `asChild` kullanılır. Onları kullanmak **yeniden tasarım**dır, göç değil.
+3. **⚠️ Elle yazılmış overlay global print kuralını SESSİZCE atlar.** `globals.css`'teki `@media print` kuralı backdrop'ları **`data-slot` ile** bulur (`[data-slot="alert-dialog-overlay"]` vb.). `radix-ui`'yi doğrudan kullanıp kendi `<Overlay>`'ini yazan bir bileşen bu özniteliği taşımaz → **print'te scrim basılır.** `ConfirmDialog` bu hatayı 2026-09-16'ya kadar taşıdı; kanonik `AlertDialogOverlay` o kuralın hedefi olduğu için düzeltme aynı değişiklikle geldi. Yeni bir overlay primitifi yazarken `data-slot` **zorunludur**
+
 **Kapsam disiplini:** bu geçişte dosyadaki ADR-0002 ihlalleri (native `<select>`, `type="number|date"`) **düzeltilmez** — onlar Faz 5'in işi. Bir geçişte tek değişken değiştirilir; aksi halde bir hata çıktığında hangi değişikliğin yol açtığı ayırt edilemez.
 
 ### 2.4 Popover & DropdownMenu Göçü (Faz 3 alt-deseni)
