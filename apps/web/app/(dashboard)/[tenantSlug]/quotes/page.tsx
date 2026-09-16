@@ -1795,6 +1795,7 @@ function CreateQuoteModal({
                         {/* Remove */}
                         <TableCell className="px-2 py-2.5 text-center">
                           <button
+                            aria-label="Satırı kaldır"
                             className="rounded-md p-1 text-zinc-300 transition hover:text-rose-600 disabled:opacity-30"
                             disabled={items.length <= 1}
                             onClick={() => handleRemoveItem(idx)}

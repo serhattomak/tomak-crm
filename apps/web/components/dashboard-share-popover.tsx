@@ -182,6 +182,7 @@ export function DashboardSharePopover({
               </div>
             </div>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
               onClick={() => setIsOpen(false)}
               type="button"

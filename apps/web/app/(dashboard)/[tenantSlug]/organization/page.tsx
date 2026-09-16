@@ -1139,6 +1139,7 @@ function EmployeesTab({
           {/* Toggle View */}
           <div className="flex items-center rounded-xl border border-border p-0.5">
             <button
+              aria-label="Tablo görünümü"
               className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
@@ -1146,6 +1147,7 @@ function EmployeesTab({
               <List className="h-3.5 w-3.5" />
             </button>
             <button
+              aria-label="Kart görünümü"
               className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("grid")}
               type="button"
@@ -1353,6 +1355,7 @@ function EmployeesTab({
                 </span>
                 <div className="flex items-center gap-1">
                   <button
+                    aria-label="Personeli görüntüle"
                     className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                     onClick={() => onView(emp)}
                     type="button"
@@ -1360,6 +1363,7 @@ function EmployeesTab({
                     <Eye className="h-4 w-4" />
                   </button>
                   <button
+                    aria-label="Personeli düzenle"
                     className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                     onClick={() => onEdit(emp)}
                     type="button"
@@ -1439,6 +1443,7 @@ function PositionsTab({
                 <TableCell className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
+                      aria-label="Pozisyonu düzenle"
                       className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                       onClick={() => onEdit(pos)}
                       type="button"
@@ -1446,6 +1451,7 @@ function PositionsTab({
                       <Edit2 className="h-4 w-4" />
                     </button>
                     <button
+                      aria-label="Pozisyonu sil"
                       className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                       onClick={() => onDelete(pos.id)}
                       type="button"

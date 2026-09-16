@@ -638,6 +638,7 @@ export default function ShipmentsPage() {
               />
               {searchQuery && (
                 <button
+                  aria-label="Aramayı temizle"
                   className="absolute top-2.5 right-3 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   onClick={() => setSearchQuery("")}
                   type="button"
@@ -1774,6 +1775,7 @@ function CreateShipmentModal({
                 </div>
                 {items.length > 1 && (
                   <button
+                    aria-label="Satırı kaldır"
                     className="p-1.5 text-rose-500 hover:text-rose-700"
                     onClick={() => removeItemRow(idx)}
                     type="button"

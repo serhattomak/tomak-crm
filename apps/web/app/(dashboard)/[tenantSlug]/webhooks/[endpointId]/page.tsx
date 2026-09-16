@@ -454,6 +454,7 @@ export default function WebhookBuilderPage() {
       <div className="flex flex-col gap-4 border-border border-b pb-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <button
+            aria-label="Geri"
             className="rounded-xl border border-border p-2 text-zinc-600 transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={() => router.push(`/${tenantSlug}/webhooks`)}
             type="button"
@@ -808,6 +809,7 @@ export default function WebhookBuilderPage() {
                       {secretMasked}
                     </code>
                     <button
+                      aria-label="Kopyala"
                       className="rounded-lg border border-border bg-card p-1.5 text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
                       onClick={() => {
                         void handleCopySecret(secretMasked);
@@ -942,6 +944,7 @@ export default function WebhookBuilderPage() {
               </p>
             </div>
             <button
+              aria-label="Yenile"
               className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400"
               onClick={() => {
                 void loadDeliveries();

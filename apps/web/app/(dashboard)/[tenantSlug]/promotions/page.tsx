@@ -1033,6 +1033,7 @@ export default function PromotionsPage() {
                             )}
                           </span>
                           <button
+                            aria-label="Ürünü kaldır"
                             className="rounded p-1 text-zinc-400 hover:text-red-500"
                             onClick={() => removeSimItem(item.productId)}
                             type="button"

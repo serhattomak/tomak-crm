@@ -1224,6 +1224,7 @@ export default function WebhooksPage() {
                   </code>
                   {testResult.hmacSignature && (
                     <button
+                      aria-label="Kopyala"
                       className="rounded p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
                       onClick={() =>
                         handleCopySignature(testResult.hmacSignature || "")

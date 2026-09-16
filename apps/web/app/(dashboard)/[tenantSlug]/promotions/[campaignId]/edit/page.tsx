@@ -468,6 +468,7 @@ export default function EditCampaignPage() {
                     {t.targetName} ({t.targetType})
                   </span>
                   <button
+                    aria-label="Hedefi kaldır"
                     className="rounded p-1 text-zinc-400 hover:text-red-600"
                     onClick={() => removeTarget(idx)}
                     type="button"

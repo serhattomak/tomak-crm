@@ -1649,6 +1649,7 @@ export default function EmailWorkbenchPage() {
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
+                  aria-label="Sonraki sayfa"
                   className="rounded-lg border border-border p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400"
                   disabled={page >= totalPages}
                   onClick={handleNextPage}

@@ -101,6 +101,7 @@ export function PipelineFilterBar({
             />
             {searchQuery && (
               <button
+                aria-label="Aramayı temizle"
                 className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 onClick={() => onChangeSearchQuery("")}
                 type="button"

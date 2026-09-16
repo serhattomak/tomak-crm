@@ -1414,6 +1414,7 @@ function CreateOrderWizardModal({
                           </TableCell>
                           <TableCell className="px-3 py-2.5 text-center">
                             <button
+                              aria-label="Satırı kaldır"
                               className="p-1 text-zinc-400 hover:text-rose-600 dark:text-zinc-500"
                               onClick={() => handleRemoveItem(idx)}
                               type="button"

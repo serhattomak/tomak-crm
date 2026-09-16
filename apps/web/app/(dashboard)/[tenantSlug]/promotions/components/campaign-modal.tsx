@@ -900,6 +900,7 @@ export function CampaignModal({
                                   </span>
                                 </div>
                                 <button
+                                  aria-label="Hedefi kaldır"
                                   className="rounded p-1 text-zinc-400 hover:text-red-600"
                                   onClick={() => removeTarget(idx)}
                                   type="button"

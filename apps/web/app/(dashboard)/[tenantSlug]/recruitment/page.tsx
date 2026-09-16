@@ -946,6 +946,7 @@ function RecruitmentPageContent() {
                                     </button>
                                   )}
                                   <button
+                                    aria-label="İlanı sil"
                                     className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                                     onClick={() =>
                                       handleDeleteRequisition(req.id)
@@ -1117,6 +1118,7 @@ function RecruitmentPageContent() {
                                     Görüntüle
                                   </button>
                                   <button
+                                    aria-label="Adayı düzenle"
                                     className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => openCandModalForEdit(c)}
                                     type="button"
@@ -1124,6 +1126,7 @@ function RecruitmentPageContent() {
                                     <Edit2 className="h-3.5 w-3.5" />
                                   </button>
                                   <button
+                                    aria-label="Adayı sil"
                                     className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
                                     onClick={() => handleDeleteCandidate(c.id)}
                                     type="button"
@@ -1660,6 +1663,7 @@ function RecruitmentPageContent() {
                             <TableCell className="px-3 py-3 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
+                                  aria-label="Aşamayı düzenle"
                                   className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                   onClick={() => openStageModalForEdit(s)}
                                   type="button"

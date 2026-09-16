@@ -1136,6 +1136,7 @@ export default function VehiclesPage() {
                       {v.brand} {v.model}
                     </span>
                     <button
+                      aria-label="Karşılaştırmadan çıkar"
                       className="text-zinc-400 hover:text-rose-600"
                       onClick={() => toggleCompare(v.id)}
                       type="button"

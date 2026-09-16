@@ -190,6 +190,7 @@ export function EntityPickerModal<T = unknown>({
             />
             {search && (
               <button
+                aria-label="Aramayı temizle"
                 className="absolute top-2.5 right-2.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
                 onClick={() => setSearch("")}
                 type="button"

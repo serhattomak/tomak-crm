@@ -430,6 +430,7 @@ export default function WorkflowBuilderPage() {
       <div className="flex flex-col gap-4 border-border border-b pb-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <button
+            aria-label="Geri"
             className="rounded-xl border border-border p-2 text-zinc-600 transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={() => router.push(`/${tenantSlug}/automations`)}
           >

@@ -1305,6 +1305,7 @@ export default function MessagesPage() {
                     <span>Dahili Ekip Notu Modu (Müşteri görmez)</span>
                   </div>
                   <button
+                    aria-label="Dahili not modunu kapat"
                     className="text-amber-700 hover:text-amber-900 dark:hover:text-amber-100"
                     onClick={() => setIsInternalNote(false)}
                     type="button"
