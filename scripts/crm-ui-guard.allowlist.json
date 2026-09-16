@@ -25,6 +25,11 @@
       "file": "packages/ui/src/components/table.tsx",
       "reason": "This file IS the canonical Table primitive; the ban exists so consumers do not hand-roll a table. The primitive's own internal <table> is the abstraction, not a violation, and the guard cannot tell implementation from consumer. Fixing is impossible by construction. Same class of entry as number-input.tsx",
       "rule": "NATIVE_TABLE"
+    },
+    {
+      "file": "apps/web/app/(dashboard)/[tenantSlug]/orders/[orderId]/print/page.tsx",
+      "reason": "Print surface (already a documented page-shell exemption in crm-ui-standards.md 2.2). Its table carries a deliberately print-designed contract - a full border grid (border-collapse border border-zinc-300) and an inverted header (bg-zinc-900 text-white) that does not follow the theme. The Table primitive would layer its theme-token surfaces and row borders onto that grid, and its wrapper div is 'relative w-full overflow-auto' with no way to override it from the call site, which can clip printed content since paper cannot scroll. Exempting is the honest option; migrating would trade a known print layout for an unverifiable one. Same primitive-API gap as the overlayClassName note in 2.3",
+      "rule": "NATIVE_TABLE"
     }
   ]
 }
