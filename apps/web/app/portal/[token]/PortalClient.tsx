@@ -826,6 +826,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100"
                   type="button"
                 >
@@ -922,6 +923,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100"
                   type="button"
                 >

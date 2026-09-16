@@ -1508,6 +1508,7 @@ function CreateProductModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -2020,6 +2021,7 @@ function QuickStockAdjustModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -2239,6 +2241,7 @@ function CategoryManagerModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >

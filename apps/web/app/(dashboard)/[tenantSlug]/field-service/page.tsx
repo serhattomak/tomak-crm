@@ -755,7 +755,7 @@ export default function FieldServicePage() {
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
-                <button type="button" className="text-zinc-400 hover:text-zinc-600">
+                <button aria-label="Kapat" type="button" className="text-zinc-400 hover:text-zinc-600">
                   <X className="h-5 w-5" />
                 </button>
               </DialogClose>
@@ -941,7 +941,7 @@ export default function FieldServicePage() {
                 </p>
               </div>
               <DialogClose asChild>
-                <button type="button" className="text-zinc-400 hover:text-zinc-600">
+                <button aria-label="Kapat" type="button" className="text-zinc-400 hover:text-zinc-600">
                   <X className="h-4 w-4" />
                 </button>
               </DialogClose>

@@ -1439,6 +1439,7 @@ function CreateQuoteModal({
 
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="shrink-0 rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-400"
               type="button"
             >
@@ -3263,6 +3264,7 @@ function QuoteDetailDrawer({
               </DialogTitle>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100"
                   type="button"
                 >
@@ -3936,6 +3938,7 @@ function QuoteTemplatesModal({
               </button>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="shrink-0 rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                   type="button"
                 >

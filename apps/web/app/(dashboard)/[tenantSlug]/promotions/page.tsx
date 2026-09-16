@@ -584,6 +584,7 @@ export default function PromotionsPage() {
             </div>
 
             <button
+              aria-label="Yenile"
               className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={loadData}
               type="button"

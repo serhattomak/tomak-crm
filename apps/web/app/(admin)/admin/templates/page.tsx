@@ -330,6 +330,7 @@ export default function AdminTemplatesPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700"
                   type="button"
                 >

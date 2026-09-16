@@ -1361,6 +1361,7 @@ export default function CalendarHubPage() {
               </DialogTitle>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
@@ -1658,6 +1659,7 @@ export default function CalendarHubPage() {
               </DialogTitle>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
@@ -1890,6 +1892,7 @@ export default function CalendarHubPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >
@@ -2114,6 +2117,7 @@ export default function CalendarHubPage() {
               </DialogTitle>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                   type="button"
                 >

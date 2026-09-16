@@ -1028,6 +1028,7 @@ function WarehouseStockRow({
               Kaydet
             </button>
             <button
+              aria-label="Düzenlemeyi iptal et"
               className="rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onCancelEdit}
               type="button"
@@ -1041,6 +1042,7 @@ function WarehouseStockRow({
               {stock.binLocation || "Raf Tanımsız"}
             </span>
             <button
+              aria-label="Düzenle"
               className="p-1 text-muted-foreground hover:text-foreground"
               onClick={handleEditClick}
               type="button"
@@ -1420,6 +1422,7 @@ function NewWarehouseModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -1725,6 +1728,7 @@ function NewTransferModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -1907,6 +1911,7 @@ function TransferItemFormRow({
 
       {showRemove ? (
         <button
+          aria-label="Kaldır"
           className="rounded p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
           onClick={handleRemove}
           type="button"
@@ -1993,6 +1998,7 @@ function NewCountModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -2124,6 +2130,7 @@ function TransferDetailDrawer({
             </div>
             <SheetClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
@@ -2385,6 +2392,7 @@ function StockCountAuditDrawer({
             </div>
             <SheetClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >

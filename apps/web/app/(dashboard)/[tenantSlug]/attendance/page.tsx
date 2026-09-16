@@ -1852,6 +1852,7 @@ export default function AttendancePage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-muted-foreground hover:bg-muted"
                   type="button"
                 >
@@ -2213,6 +2214,7 @@ export default function AttendancePage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-muted-foreground hover:bg-muted"
                   type="button"
                 >
@@ -2379,6 +2381,7 @@ export default function AttendancePage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-muted-foreground hover:bg-muted"
                   type="button"
                 >

@@ -1964,6 +1964,7 @@ function RequisitionModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -2293,6 +2294,7 @@ function CandidateModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -2581,6 +2583,7 @@ function ApplicationModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -2749,6 +2752,7 @@ function StageModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -2904,6 +2908,7 @@ function CandidateDetailDrawer({
             </button>
             <SheetClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                 type="button"
               >
@@ -3092,6 +3097,7 @@ function ApplicationDetailDrawer({
           </span>
           <SheetClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
               type="button"
             >

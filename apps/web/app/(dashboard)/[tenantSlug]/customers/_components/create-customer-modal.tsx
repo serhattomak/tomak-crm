@@ -162,6 +162,7 @@ export function CreateCustomerModal({
 
             <DialogClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                 type="button"
               >

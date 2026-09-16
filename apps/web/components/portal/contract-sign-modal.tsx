@@ -198,6 +198,7 @@ export function ContractSignModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >

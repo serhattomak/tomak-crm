@@ -851,6 +851,7 @@ function ChangeStatusModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >
@@ -1028,6 +1029,7 @@ function AddPaymentModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               type="button"
             >

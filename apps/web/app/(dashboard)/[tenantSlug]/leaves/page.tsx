@@ -577,6 +577,7 @@ export default function LeavesPage() {
           <div className="flex flex-col justify-between gap-3 border-border border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <button
+                aria-label="Önceki ay"
                 className="flex h-8 w-8 items-center justify-center rounded-xl border border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                 onClick={handlePrevMonth}
                 type="button"
@@ -587,6 +588,7 @@ export default function LeavesPage() {
                 {monthNames[calendarDate.month - 1]} {calendarDate.year}
               </h2>
               <button
+                aria-label="Sonraki ay"
                 className="flex h-8 w-8 items-center justify-center rounded-xl border border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                 onClick={handleNextMonth}
                 type="button"
@@ -1381,6 +1383,7 @@ function CreateLeaveModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
               type="button"
             >

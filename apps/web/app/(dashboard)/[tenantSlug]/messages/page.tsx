@@ -1447,6 +1447,7 @@ export default function MessagesPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
@@ -1636,6 +1637,7 @@ export default function MessagesPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                   type="button"
                 >
@@ -1704,6 +1706,7 @@ export default function MessagesPage() {
                 </DialogTitle>
                 <DialogClose asChild>
                   <button
+                    aria-label="Kapat"
                     className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-muted dark:hover:bg-zinc-800"
                     type="button"
                   >
@@ -1823,6 +1826,7 @@ export default function MessagesPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
                   type="button"
                 >

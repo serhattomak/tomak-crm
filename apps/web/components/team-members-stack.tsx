@@ -667,6 +667,7 @@ export function InviteMemberModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="shrink-0 rounded-xl p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-muted"
               type="button"
             >

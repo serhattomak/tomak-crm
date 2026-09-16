@@ -106,6 +106,7 @@ export function MobileDrawer({
             <TenantSwitcher />
             <SheetClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
                 type="button"
               >

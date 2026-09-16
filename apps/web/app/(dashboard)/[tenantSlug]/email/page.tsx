@@ -1640,6 +1640,7 @@ export default function EmailWorkbenchPage() {
               </span>
               <div className="flex items-center gap-1">
                 <button
+                  aria-label="Önceki sayfa"
                   className="rounded-lg border border-border p-1 text-zinc-600 hover:bg-zinc-50 disabled:opacity-50 dark:text-zinc-400"
                   disabled={page <= 1}
                   onClick={handlePrevPage}

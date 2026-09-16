@@ -422,6 +422,7 @@ function InvoiceDetailDrawer({
             </button>
             <SheetClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                 type="button"
               >
@@ -992,6 +993,7 @@ function InvoiceItemRow({
       />
       {canRemove ? (
         <button
+          aria-label="Kaldır"
           className="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
           onClick={handleRemove}
           type="button"
@@ -1150,6 +1152,7 @@ function CreateInvoiceModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >

@@ -1102,6 +1102,7 @@ export default function WorkflowBuilderPage() {
               </div>
               <DialogClose asChild>
                 <button
+                  aria-label="Kapat"
                   className="rounded-full p-1 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-400"
                   type="button"
                 >

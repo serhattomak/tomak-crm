@@ -965,6 +965,7 @@ export default function FinancePage() {
                 </button>
                 <SheetClose asChild>
                   <button
+                    aria-label="Kapat"
                     className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
                     type="button"
                   >
@@ -1181,6 +1182,7 @@ function CreateCariModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -1452,6 +1454,7 @@ function CreateAccountModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -1714,6 +1717,7 @@ function CreateTransactionModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -1969,6 +1973,7 @@ function TransferModal({
           </DialogTitle>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >

@@ -2017,6 +2017,7 @@ export default function VehiclesPage() {
                 </button>
                 <SheetClose asChild>
                   <button
+                    aria-label="Kapat"
                     className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     type="button"
                   >
@@ -2764,6 +2765,7 @@ function CreateEditVehicleModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               type="button"
             >
@@ -3872,6 +3874,7 @@ function CreateEditPartModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -4352,6 +4355,7 @@ function CreateDocumentModal({
           </div>
           <DialogClose asChild>
             <button
+              aria-label="Kapat"
               className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
@@ -4820,6 +4824,7 @@ function DocumentPreviewModal({
             </button>
             <DialogClose asChild>
               <button
+                aria-label="Kapat"
                 className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 type="button"
               >
