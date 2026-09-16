@@ -252,14 +252,14 @@ export default function OrderDetailPage() {
                   {order.orderNumber}
                 </h1>
                 <span
-                  className={`rounded-lg border px-2.5 py-0.5 font-bold text-[10px] ${getStatusBadge(
+                  className={`rounded-lg border px-2.5 py-0.5 font-bold text-3xs ${getStatusBadge(
                     order.status
                   )}`}
                 >
                   {getStatusLabel(order.status)}
                 </span>
                 <span
-                  className={`rounded-lg border px-2.5 py-0.5 font-bold text-[10px] ${getPaymentBadge(
+                  className={`rounded-lg border px-2.5 py-0.5 font-bold text-3xs ${getPaymentBadge(
                     order.paymentStatus
                   )}`}
                 >
@@ -413,7 +413,7 @@ export default function OrderDetailPage() {
             {/* Paid & Remaining */}
             <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 pt-2 dark:bg-zinc-800/50">
               <div>
-                <span className="font-medium text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-zinc-400 uppercase dark:text-zinc-500">
                   Tahsil Edilen
                 </span>
                 <div className="font-bold text-emerald-600 text-sm">
@@ -424,7 +424,7 @@ export default function OrderDetailPage() {
                 </div>
               </div>
               <div>
-                <span className="font-medium text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-zinc-400 uppercase dark:text-zinc-500">
                   Kalan Bakiye
                 </span>
                 <div
@@ -442,7 +442,7 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
-            <div className="flex justify-between pt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+            <div className="flex justify-between pt-1 text-2xs text-zinc-500 dark:text-zinc-400">
               <span>Ödeme Yöntemi:</span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {getPaymentMethodLabel(order.paymentMethod)}
@@ -458,7 +458,7 @@ export default function OrderDetailPage() {
 
             <div className="space-y-2.5 text-zinc-600 dark:text-zinc-400">
               <div>
-                <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                   Müşteri / Firma
                 </span>
                 <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -468,7 +468,7 @@ export default function OrderDetailPage() {
 
               {order.shippingAddress && (
                 <div>
-                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                     Teslimat Adresi
                   </span>
                   <p className="mt-0.5 rounded-xl bg-zinc-50 p-2.5 text-zinc-800 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-200">
@@ -479,7 +479,7 @@ export default function OrderDetailPage() {
 
               {order.billingAddress && (
                 <div>
-                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                     Fatura Adresi
                   </span>
                   <p className="mt-0.5 rounded-xl bg-zinc-50 p-2.5 text-zinc-800 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-200">
@@ -495,12 +495,12 @@ export default function OrderDetailPage() {
                     <span>Kargo & Takip</span>
                   </div>
                   {order.carrier && (
-                    <div className="text-[11px] text-cyan-800">
+                    <div className="text-2xs text-cyan-800">
                       Taşıyıcı: {order.carrier}
                     </div>
                   )}
                   {order.trackingNumber && (
-                    <div className="font-bold font-mono text-[11px] text-cyan-950">
+                    <div className="font-bold font-mono text-2xs text-cyan-950">
                       Takip No: {order.trackingNumber}
                     </div>
                   )}
@@ -509,7 +509,7 @@ export default function OrderDetailPage() {
 
               {order.notes && (
                 <div>
-                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                     Sipariş Notu
                   </span>
                   <p className="text-zinc-700 italic dark:text-zinc-300">
@@ -580,12 +580,12 @@ export default function OrderDetailPage() {
                             {item.productName}
                           </div>
                           {item.sku && (
-                            <div className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+                            <div className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
                               SKU: {item.sku}
                             </div>
                           )}
                           {item.optionsOrNotes && (
-                            <div className="mt-0.5 text-[10px] text-zinc-500 italic dark:text-zinc-400">
+                            <div className="mt-0.5 text-3xs text-zinc-500 italic dark:text-zinc-400">
                               {item.optionsOrNotes}
                             </div>
                           )}
@@ -659,7 +659,7 @@ export default function OrderDetailPage() {
                           <div className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getPaymentMethodLabel(p.paymentMethod)}
                           </div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                             {p.referenceNumber
                               ? `Dekont / Ref: ${p.referenceNumber}`
                               : "Referans girilmedi"}
@@ -675,7 +675,7 @@ export default function OrderDetailPage() {
                             minimumFractionDigits: 2,
                           })}
                         </div>
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                           {new Date(p.paymentDate).toLocaleDateString("tr-TR")}
                         </div>
                       </div>
@@ -719,12 +719,12 @@ export default function OrderDetailPage() {
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {act.title}
                           </span>
-                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
                         {act.description && (
-                          <p className="mt-1 rounded-xl bg-zinc-50 p-2 text-[11px] text-zinc-600 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-400">
+                          <p className="mt-1 rounded-xl bg-zinc-50 p-2 text-2xs text-zinc-600 leading-relaxed dark:bg-zinc-800/50 dark:text-zinc-400">
                             {act.description}
                           </p>
                         )}

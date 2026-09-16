@@ -428,11 +428,11 @@ export function SendQuoteEmailModal({
                   <span className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                     Teklif-{quote.quoteNumber}.pdf
                   </span>
-                  <span className="rounded bg-blue-100 px-1.5 py-0.5 font-medium text-[10px] text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
+                  <span className="rounded bg-blue-100 px-1.5 py-0.5 font-medium text-3xs text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
                     Otomatik QuestPDF
                   </span>
                 </div>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                   Kurumsal A4 teklif formu e-postaya PDF eki olarak eklenecek
                 </p>
               </div>

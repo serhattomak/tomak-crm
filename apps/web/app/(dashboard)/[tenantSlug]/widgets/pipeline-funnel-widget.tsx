@@ -119,7 +119,7 @@ export function PipelineFunnelWidget({
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Satış Hunisi (Pipeline Aşamaları)
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 {hasData
                   ? `Toplam Hacim: ₺${totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}`
                   : "Aşamalardaki aktif satış fırsatları"}
@@ -128,7 +128,7 @@ export function PipelineFunnelWidget({
           </div>
 
           {hasData && (
-            <Badge className="text-[11px]" variant="accent">
+            <Badge className="text-2xs" variant="accent">
               {totalCount} Aktif Fırsat
             </Badge>
           )}
@@ -160,7 +160,7 @@ export function PipelineFunnelWidget({
                       </span>
                     </div>
                     <div className="flex items-center gap-3 font-semibold">
-                      <span className="font-medium text-[11px] text-muted-foreground">
+                      <span className="font-medium text-2xs text-muted-foreground">
                         {stage.count} Fırsat
                       </span>
                       <span className="font-semibold text-foreground">

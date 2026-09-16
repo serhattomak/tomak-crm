@@ -1060,7 +1060,7 @@ export default function CalendarHubPage() {
 
                       return (
                         <div
-                          className={`flex cursor-pointer items-center gap-1 truncate rounded-md border px-1.5 py-0.5 text-[11px] transition-transform active:scale-95 ${
+                          className={`flex cursor-pointer items-center gap-1 truncate rounded-md border px-1.5 py-0.5 text-2xs transition-transform active:scale-95 ${
                             cfg.bg
                           } ${cfg.border} ${cfg.text} ${
                             isDone ? "line-through opacity-60" : ""
@@ -1078,7 +1078,7 @@ export default function CalendarHubPage() {
                     })}
 
                     {dayActivities.length > 3 && (
-                      <span className="pl-1 font-bold text-[10px] text-zinc-500 dark:text-zinc-400">
+                      <span className="pl-1 font-bold text-3xs text-zinc-500 dark:text-zinc-400">
                         +{dayActivities.length - 3} daha fazla
                       </span>
                     )}
@@ -1150,7 +1150,7 @@ export default function CalendarHubPage() {
                             {timeStr}
                           </span>
                           {act.status === "Completed" && (
-                            <span className="rounded bg-emerald-100 px-1.5 py-0.2 font-bold text-[10px] text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
+                            <span className="rounded bg-emerald-100 px-1.5 py-0.2 font-bold text-3xs text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
                               Tamam
                             </span>
                           )}
@@ -1159,13 +1159,13 @@ export default function CalendarHubPage() {
                           {act.title}
                         </h4>
                         {act.customerName && (
-                          <span className="flex items-center gap-1 truncate text-[11px] text-zinc-600 dark:text-zinc-400">
+                          <span className="flex items-center gap-1 truncate text-2xs text-zinc-600 dark:text-zinc-400">
                             <User className="h-3 w-3 shrink-0" />
                             {act.customerName}
                           </span>
                         )}
                         {act.meetingLink && (
-                          <span className="mt-0.5 flex items-center gap-1 font-semibold text-[10px] text-blue-600 dark:text-blue-400">
+                          <span className="mt-0.5 flex items-center gap-1 font-semibold text-3xs text-blue-600 dark:text-blue-400">
                             <Video className="h-3 w-3" />
                             Video Linki
                           </span>
@@ -1238,12 +1238,12 @@ export default function CalendarHubPage() {
                           {act.title}
                         </h4>
                         <span
-                          className={`rounded-full px-2 py-0.5 font-bold text-[10px] uppercase tracking-wider ${cfg.bg} ${cfg.text}`}
+                          className={`rounded-full px-2 py-0.5 font-bold text-3xs uppercase tracking-wider ${cfg.bg} ${cfg.text}`}
                         >
                           {cfg.label}
                         </span>
                         {act.priority === "Urgent" && (
-                          <span className="rounded bg-red-100 px-1.5 py-0.5 font-bold text-[10px] text-red-700 dark:bg-red-950 dark:text-red-300">
+                          <span className="rounded bg-red-100 px-1.5 py-0.5 font-bold text-3xs text-red-700 dark:bg-red-950 dark:text-red-300">
                             Acil
                           </span>
                         )}
@@ -1492,7 +1492,7 @@ export default function CalendarHubPage() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <Label className="mb-1 block text-[11px] text-zinc-500">
+                    <Label className="mb-1 block text-2xs text-zinc-500">
                       Başlangıç Tarihi
                     </Label>
                     <DatePicker
@@ -1508,7 +1508,7 @@ export default function CalendarHubPage() {
                   </div>
                   {!activityForm.isAllDay && (
                     <div>
-                      <Label className="mb-1 block text-[11px] text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-zinc-500">
                         Başlangıç Saati
                       </Label>
                       <TimePicker
@@ -1528,7 +1528,7 @@ export default function CalendarHubPage() {
                 {!activityForm.isAllDay && (
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label className="mb-1 block text-[11px] text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-zinc-500">
                         Bitiş Tarihi
                       </Label>
                       <DatePicker
@@ -1543,7 +1543,7 @@ export default function CalendarHubPage() {
                       />
                     </div>
                     <div>
-                      <Label className="mb-1 block text-[11px] text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-zinc-500">
                         Bitiş Saati
                       </Label>
                       <TimePicker
@@ -1798,7 +1798,7 @@ export default function CalendarHubPage() {
                 {callForm.scheduleFollowUp && (
                   <div className="grid grid-cols-2 gap-2 border-emerald-200 border-t pt-2 dark:border-emerald-800">
                     <div>
-                      <Label className="mb-1 block text-[11px] text-emerald-800 dark:text-emerald-400">
+                      <Label className="mb-1 block text-2xs text-emerald-800 dark:text-emerald-400">
                         Takip Tarihi
                       </Label>
                       <DatePicker
@@ -1813,7 +1813,7 @@ export default function CalendarHubPage() {
                       />
                     </div>
                     <div>
-                      <Label className="mb-1 block text-[11px] text-emerald-800 dark:text-emerald-400">
+                      <Label className="mb-1 block text-2xs text-emerald-800 dark:text-emerald-400">
                         Saat
                       </Label>
                       <TimePicker
@@ -1994,7 +1994,7 @@ export default function CalendarHubPage() {
                   <Sparkles className="h-4 w-4 text-amber-500" />
                   Dış Takvim Entegrasyonu
                 </span>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-2xs text-zinc-500">
                   Bu randevuyu tek tıkla kendi takviminize ekleyin veya indirin:
                 </p>
 
@@ -2163,7 +2163,7 @@ export default function CalendarHubPage() {
                 <span className="font-bold text-zinc-800 dark:text-zinc-200">
                   Nasıl Abone Olunur?
                 </span>
-                <ul className="list-disc space-y-1 pl-4 text-[11px] text-zinc-600 dark:text-zinc-400">
+                <ul className="list-disc space-y-1 pl-4 text-2xs text-zinc-600 dark:text-zinc-400">
                   <li>
                     <strong>Google Calendar:</strong> Sol menüdeki "Diğer
                     takvimler +" düğmesine tıklayın, "URL'den ekle"yi seçip

@@ -99,7 +99,7 @@ export function LeadSourcesWidget({
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Müşteri & Lead Dağılımı
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Segment ve portföy kırılımı
               </p>
             </div>
@@ -123,7 +123,7 @@ export function LeadSourcesWidget({
                     <span className="font-bold text-foreground text-xl">
                       {totalCustomers}
                     </span>
-                    <span className="font-semibold text-[9px] text-muted-foreground">
+                    <span className="font-semibold text-3xs text-muted-foreground">
                       Toplam Kayıt
                     </span>
                   </div>
@@ -146,15 +146,15 @@ export function LeadSourcesWidget({
                         <span
                           className={`h-2 w-2 flex-none rounded-full ${s.className}`}
                         />
-                        <span className="font-medium text-[11px] text-muted-foreground">
+                        <span className="font-medium text-2xs text-muted-foreground">
                           {s.name}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 font-semibold">
-                        <span className="font-semibold text-[11px] text-foreground">
+                        <span className="font-semibold text-2xs text-foreground">
                           {s.count}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-3xs text-muted-foreground">
                           %{pct}
                         </span>
                       </div>

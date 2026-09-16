@@ -683,7 +683,7 @@ export default function PayrollPage() {
             <div className="mt-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
               {formatCurrency(activeRun.totalGross)}
             </div>
-            <div className="mt-1 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+            <div className="mt-1 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
               <span>{activeRun.totalEmployees} Aktif Personel</span>
             </div>
           </div>
@@ -696,7 +696,7 @@ export default function PayrollPage() {
             <div className="mt-2 font-bold text-emerald-600 text-lg">
               {formatCurrency(activeRun.totalNet)}
             </div>
-            <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-700">
+            <div className="mt-1 flex items-center gap-1 text-2xs text-emerald-700">
               <span>Çalışanlara Aktarılacak Net</span>
             </div>
           </div>
@@ -714,7 +714,7 @@ export default function PayrollPage() {
                   activeRun.totalStampTax
               )}
             </div>
-            <div className="mt-1 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+            <div className="mt-1 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
               <span>Devlet Yasal Kesintileri</span>
             </div>
           </div>
@@ -727,7 +727,7 @@ export default function PayrollPage() {
             <div className="mt-2 font-bold text-lg text-purple-600">
               {formatCurrency(activeRun.totalEmployerCost)}
             </div>
-            <div className="mt-1 flex items-center gap-1 text-[11px] text-purple-700">
+            <div className="mt-1 flex items-center gap-1 text-2xs text-purple-700">
               <span>5510 %5 Teşviki Dahil</span>
             </div>
           </div>
@@ -746,7 +746,7 @@ export default function PayrollPage() {
         >
           <Calendar className="h-4 w-4" />
           <span>Bordro Dönemleri</span>
-          <span className="rounded-full bg-blue-700 px-1.5 py-0.5 text-[10px] text-blue-100">
+          <span className="rounded-full bg-blue-700 px-1.5 py-0.5 text-3xs text-blue-100">
             {runs.length}
           </span>
         </button>
@@ -888,7 +888,7 @@ export default function PayrollPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3.5">
                         <span
-                          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-bold text-[10px] ${
+                          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-bold text-3xs ${
                             statusColors[run.status] ||
                             "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                           }`}
@@ -1011,7 +1011,7 @@ export default function PayrollPage() {
               />
 
               {selectedRun && (
-                <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                   {selectedRun.employees.length} Personel
                 </span>
               )}
@@ -1084,18 +1084,18 @@ export default function PayrollPage() {
                       <div className="font-bold text-zinc-900 dark:text-zinc-100">
                         {emp.employeeName}
                       </div>
-                      <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                      <div className="text-3xs text-zinc-500 dark:text-zinc-400">
                         {emp.jobTitle || "Personel"} •{" "}
                         {emp.departmentName || "Genel"}
                       </div>
                     </TableCell>
                     <TableCell className="px-2 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
                       {emp.contractSalaryType === "Net" ? (
-                        <span className="rounded bg-blue-50 px-1.5 py-0.5 font-bold text-[10px] text-blue-700">
+                        <span className="rounded bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
                           Net: {formatCurrency(emp.baseSalary)}
                         </span>
                       ) : (
-                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-bold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           Brüt: {formatCurrency(emp.baseSalary)}
                         </span>
                       )}
@@ -1146,7 +1146,7 @@ export default function PayrollPage() {
                     <TableCell className="px-3 py-3 font-medium text-zinc-800 dark:text-zinc-200">
                       {formatCurrency(emp.payableIncomeTax)}
                     </TableCell>
-                    <TableCell className="px-3 py-3 font-medium text-[11px] text-emerald-600">
+                    <TableCell className="px-3 py-3 font-medium text-2xs text-emerald-600">
                       +
                       {formatCurrency(
                         emp.minWageIncomeTaxExemption +
@@ -1169,7 +1169,7 @@ export default function PayrollPage() {
                           <Edit3 className="h-3.5 w-3.5" />
                         </button>
                         <button
-                          className="rounded-lg border border-border bg-card px-2 py-1 font-semibold text-[11px] text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                          className="rounded-lg border border-border bg-card px-2 py-1 font-semibold text-2xs text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
                           onClick={() => handleSelectPayslip(emp.id)}
                         >
                           Pusula
@@ -1238,10 +1238,10 @@ export default function PayrollPage() {
                   <h2 className="font-black text-base uppercase tracking-tight">
                     {activeTenant?.name || "ŞİRKET ADI"}
                   </h2>
-                  <div className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                  <div className="text-2xs text-zinc-600 dark:text-zinc-400">
                     ÜCRET HESAP PUSULASI (BORDRO ZARFI)
                   </div>
-                  <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <div className="text-3xs text-zinc-500 dark:text-zinc-400">
                     4857 Sayılı İş Kanunu Madde 37 Gereğince Düzenlenmiştir
                   </div>
                 </div>
@@ -1250,11 +1250,11 @@ export default function PayrollPage() {
                   <div className="font-black text-sm text-zinc-900 uppercase dark:text-zinc-100">
                     {MONTH_NAMES[payslipData.month - 1]} {payslipData.year}
                   </div>
-                  <div className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                  <div className="text-2xs text-zinc-600 dark:text-zinc-400">
                     Dönem: {payslipData.month.toString().padStart(2, "0")}/
                     {payslipData.year}
                   </div>
-                  <div className="font-medium text-[10px] text-emerald-700">
+                  <div className="font-medium text-3xs text-emerald-700">
                     Durum: {payslipData.runStatus}
                   </div>
                 </div>
@@ -1291,7 +1291,7 @@ export default function PayrollPage() {
                     <span className="text-zinc-500 dark:text-zinc-400">
                       IBAN:
                     </span>
-                    <span className="font-mono text-[11px]">
+                    <span className="font-mono text-2xs">
                       {payslipData.iban || "TR00 0000 0000 0000 0000 0000 00"}
                     </span>
                   </div>
@@ -1343,7 +1343,7 @@ export default function PayrollPage() {
                   <div className="border-border border-b pb-1.5 font-bold text-xs text-zinc-900 uppercase dark:text-zinc-100">
                     1. KAZANÇLAR
                   </div>
-                  <div className="space-y-1 text-[11px]">
+                  <div className="space-y-1 text-2xs">
                     <div className="flex justify-between">
                       <span className="text-zinc-600 dark:text-zinc-400">
                         Normal Çalışma Ücreti:
@@ -1406,7 +1406,7 @@ export default function PayrollPage() {
                   <div className="border-border border-b pb-1.5 font-bold text-xs text-zinc-900 uppercase dark:text-zinc-100">
                     2. YASAL KESİNTİLER
                   </div>
-                  <div className="space-y-1 text-[11px]">
+                  <div className="space-y-1 text-2xs">
                     <div className="flex justify-between">
                       <span className="text-zinc-600 dark:text-zinc-400">
                         SGK İşçi Primi (%14):
@@ -1484,7 +1484,7 @@ export default function PayrollPage() {
                     <div className="border-border border-b pb-1.5 font-bold text-xs text-zinc-900 uppercase dark:text-zinc-100">
                       3. ÖZEL KESİNTİLER & NET
                     </div>
-                    <div className="mt-2 space-y-1 text-[11px]">
+                    <div className="mt-2 space-y-1 text-2xs">
                       <div className="flex justify-between">
                         <span className="text-zinc-600 dark:text-zinc-400">
                           Otomatik BES (%3):
@@ -1529,7 +1529,7 @@ export default function PayrollPage() {
                   </div>
 
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center">
-                    <div className="font-bold text-[10px] text-emerald-800 uppercase tracking-wider">
+                    <div className="font-bold text-3xs text-emerald-800 uppercase tracking-wider">
                       ÖDENECEK NET ÜCRET
                     </div>
                     <div className="font-black text-emerald-700 text-xl">
@@ -1540,7 +1540,7 @@ export default function PayrollPage() {
               </div>
 
               {/* Employer Cost Footer */}
-              <div className="mt-4 rounded-xl border border-border bg-zinc-50/50 p-3 text-[11px] dark:bg-zinc-800/30">
+              <div className="mt-4 rounded-xl border border-border bg-zinc-50/50 p-3 text-2xs dark:bg-zinc-800/30">
                 <div className="mb-1.5 font-bold text-zinc-700 uppercase dark:text-zinc-300">
                   İşveren Yasal Yükümlülükleri & Maliyeti
                 </div>
@@ -1588,7 +1588,7 @@ export default function PayrollPage() {
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
                     İŞVEREN / YETKİLİ KAŞE VE İMZA
                   </div>
-                  <div className="mt-8 text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <div className="mt-8 text-3xs text-zinc-500 dark:text-zinc-400">
                     Kaşe / İmza
                   </div>
                 </div>
@@ -1597,10 +1597,10 @@ export default function PayrollPage() {
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
                     PERSONEL İMZA
                   </div>
-                  <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <div className="text-3xs text-zinc-500 dark:text-zinc-400">
                     Yukarıda dökümü yapılan net ücretimi eksiksiz teslim aldım.
                   </div>
-                  <div className="mt-6 text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <div className="mt-6 text-3xs text-zinc-500 dark:text-zinc-400">
                     İmza / Tarih
                   </div>
                 </div>
@@ -1643,7 +1643,7 @@ export default function PayrollPage() {
 
           {icmalData && (
             <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-2xs">
-              <Table className="min-w-[1200px] text-[11px]">
+              <Table className="min-w-[1200px] text-2xs">
                 <TableHeader className="border-border bg-zinc-50 font-bold text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <TableRow>
                     <TableHead className="px-3 py-2.5 h-auto">No</TableHead>
@@ -1829,7 +1829,7 @@ export default function PayrollPage() {
                 step={1000}
                 value={simForm.priorCumulativeIncomeTaxBase}
               />
-              <p className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
                 Vergi dilim geçişlerini (%15, %20, %27, %35, %40) test etmek
                 için
               </p>
@@ -1958,7 +1958,7 @@ export default function PayrollPage() {
                     <div className="mt-2 font-black text-2xl text-emerald-700">
                       {formatCurrency(simResult.payableNetSalary)}
                     </div>
-                    <div className="mt-1 text-[11px] text-emerald-700">
+                    <div className="mt-1 text-2xs text-emerald-700">
                       Hesaplanan Brüt: {formatCurrency(simResult.totalGross)}
                     </div>
                   </div>
@@ -1970,7 +1970,7 @@ export default function PayrollPage() {
                     <div className="mt-2 font-black text-2xl text-purple-700">
                       {formatCurrency(simResult.totalEmployerCost)}
                     </div>
-                    <div className="mt-1 text-[11px] text-purple-700">
+                    <div className="mt-1 text-2xs text-purple-700">
                       5510 Teşvik Tasarrufu: -
                       {formatCurrency(simResult.sgkEmployerDiscount5510)}
                     </div>
@@ -2381,7 +2381,7 @@ export default function PayrollPage() {
                 />
               </div>
 
-              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 font-medium text-[11px] text-blue-900 leading-relaxed">
+              <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-3 font-medium text-2xs text-blue-900 leading-relaxed">
                 Bu işlem başlatıldığında şirketteki tüm aktif çalışanların
                 kadro, pozisyon ve taban maaş bilgileri otomatik olarak
                 kopyalanır ve 30 günlük standart puantaj hesabı yapılır.

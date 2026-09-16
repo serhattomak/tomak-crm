@@ -227,7 +227,7 @@ export function DealDetailDrawer({
               </Button>
             </SheetClose>
             <div className="min-w-0">
-              <span className="block truncate font-medium text-[11px] text-muted-foreground">
+              <span className="block truncate font-medium text-2xs text-muted-foreground">
                 {deal?.pipelineName || "Pipeline Fırsatı"}
               </span>
               <SheetTitle className="max-w-[200px] truncate font-semibold text-foreground text-sm leading-tight sm:max-w-md sm:text-base">
@@ -260,7 +260,7 @@ export function DealDetailDrawer({
           <div className="custom-scrollbar flex-1 space-y-6 overflow-y-auto p-4 pb-28 sm:p-5 sm:pb-8">
             {/* 1. Stage Progression Stepper */}
             <div>
-              <span className="mb-2 block font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
+              <span className="mb-2 block font-semibold text-2xs text-muted-foreground uppercase tracking-wider">
                 Aşama İlerlemesi (Tıklayarak Değiştirin)
               </span>
               <div className="grid grid-cols-2 gap-2 rounded-lg border border-border/80 bg-muted/40 p-2.5 sm:grid-cols-4">
@@ -275,7 +275,7 @@ export function DealDetailDrawer({
                     >
                       <span className="truncate">{stage.name}</span>
                       <span
-                        className={`mt-1 text-[10px] ${
+                        className={`mt-1 text-3xs ${
                           isCurrent
                             ? "text-primary-foreground/80"
                             : "text-muted-foreground"
@@ -300,7 +300,7 @@ export function DealDetailDrawer({
                     <h4 className="font-semibold text-purple-700 text-xs">
                       Canlı Destek Oturumu Bağlantılı
                     </h4>
-                    <p className="text-[11px] text-purple-600">
+                    <p className="text-2xs text-purple-600">
                       Bu kart canlı destek sohbetinden otomatik türetildi.
                     </p>
                   </div>
@@ -322,7 +322,7 @@ export function DealDetailDrawer({
             <div className="grid grid-cols-2 gap-4 rounded-lg border border-border/80 bg-card p-4 shadow-xs sm:grid-cols-3">
               {/* Value */}
               <div>
-                <span className="font-medium text-[10px] text-muted-foreground uppercase">
+                <span className="font-medium text-3xs text-muted-foreground uppercase">
                   Tutar
                 </span>
                 <p className="mt-0.5 font-bold text-base text-foreground">
@@ -332,7 +332,7 @@ export function DealDetailDrawer({
 
               {/* Priority */}
               <div>
-                <span className="font-medium text-[10px] text-muted-foreground uppercase">
+                <span className="font-medium text-3xs text-muted-foreground uppercase">
                   Öncelik
                 </span>
                 <p className="mt-1">
@@ -348,16 +348,16 @@ export function DealDetailDrawer({
 
               {/* SLA Status */}
               <div>
-                <span className="font-medium text-[10px] text-muted-foreground uppercase">
+                <span className="font-medium text-3xs text-muted-foreground uppercase">
                   SLA Durumu
                 </span>
                 <p className="mt-1">
                   {deal.isSlaBreached ? (
-                    <span className="inline-flex items-center gap-1 font-medium text-[10px] text-destructive">
+                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-destructive">
                       <AlertTriangle className="h-3.5 w-3.5" /> Süre Aşıldı
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 font-medium text-[10px] text-emerald-600">
+                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-600">
                       <Check className="h-3.5 w-3.5" /> Uygun
                     </span>
                   )}
@@ -478,7 +478,7 @@ export function DealDetailDrawer({
                           <span className="font-semibold text-foreground">
                             {act.title}
                           </span>
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-3xs text-muted-foreground">
                             {new Date(act.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
@@ -530,7 +530,7 @@ export function DealDetailDrawer({
                           <span className="font-semibold text-primary">
                             {n.userName || "Kullanıcı"}
                           </span>
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-3xs text-muted-foreground">
                             {new Date(n.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>

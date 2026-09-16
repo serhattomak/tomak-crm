@@ -45,7 +45,7 @@ export function BulkActionBar({
     <div className="slide-in-from-bottom-4 fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 animate-in items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-2xl duration-200">
       {/* Count badge */}
       <div className="flex items-center gap-2 border-border border-r pr-3">
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-bold text-[11px] text-white">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-bold text-2xs text-white">
           {selectedCount}
         </span>
         <span className="font-medium text-sm text-zinc-700 dark:text-zinc-300">

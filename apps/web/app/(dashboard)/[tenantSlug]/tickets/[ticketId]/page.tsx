@@ -404,16 +404,16 @@ export default function TicketDetailPage() {
               <span className="font-bold text-blue-600 text-sm">
                 #{ticket.ticketNumber}
               </span>
-              <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {ticket.category}
               </span>
               {ticket.isSlaBreached ? (
-                <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-0.5 font-bold text-[11px] text-red-700">
+                <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-0.5 font-bold text-2xs text-red-700">
                   <Flame className="h-3 w-3 animate-pulse" />
                   SLA Aşıldı
                 </span>
               ) : ticket.slaResolutionDueAt ? (
-                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 font-medium text-[11px] text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700">
                   <Timer className="h-3 w-3 text-emerald-600" />
                   SLA:{" "}
                   {new Date(ticket.slaResolutionDueAt).toLocaleTimeString(
@@ -521,7 +521,7 @@ export default function TicketDetailPage() {
               <History className="h-3.5 w-3.5" />
               <span>Denetim & İşlem Geçmişi ({ticket.activities.length})</span>
             </button>
-            <label className="ml-auto flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+            <label className="ml-auto flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
               <input
                 checked={includeInternal}
                 onChange={(e) => setIncludeInternal(e.target.checked)}
@@ -540,7 +540,7 @@ export default function TicketDetailPage() {
                   <div className="rounded-2xl border border-border bg-card p-4 text-xs shadow-2xs">
                     <div className="flex items-center justify-between font-semibold text-zinc-700 dark:text-zinc-300">
                       <span>{ticket.customerName} (İlk Talep)</span>
-                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
                         {new Date(ticket.createdAt).toLocaleString("tr-TR")}
                       </span>
                     </div>
@@ -559,7 +559,7 @@ export default function TicketDetailPage() {
                   if (isSystem) {
                     return (
                       <div className="my-2 flex justify-center" key={m.id}>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200/70 px-3 py-1 text-[11px] text-zinc-600 shadow-2xs dark:text-zinc-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200/70 px-3 py-1 text-2xs text-zinc-600 shadow-2xs dark:text-zinc-400">
                           <Info className="h-3 w-3" />
                           {m.content}
                         </span>
@@ -576,7 +576,7 @@ export default function TicketDetailPage() {
                       >
                         <div className="flex items-center justify-between border-amber-200/70 border-b pb-2 text-amber-900">
                           <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-1 font-bold text-[11px] text-amber-800">
+                            <span className="flex items-center gap-1 font-bold text-2xs text-amber-800">
                               <Lock className="h-3 w-3 text-amber-600" />
                               Dahili Ekip Notu (Müşteri Göremez)
                             </span>
@@ -584,7 +584,7 @@ export default function TicketDetailPage() {
                               · {m.senderName}
                             </span>
                           </div>
-                          <span className="text-[10px] text-amber-700/70">
+                          <span className="text-3xs text-amber-700/70">
                             {new Date(m.createdAt).toLocaleTimeString("tr-TR", {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -614,7 +614,7 @@ export default function TicketDetailPage() {
                         className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${ isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white" }`}
                       >
                         <div
-                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-[10px] ${ isCustomer ? "border-border text-zinc-500 dark:text-zinc-400" : "border-blue-500/80 text-blue-100" }`}
+                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${ isCustomer ? "border-border text-zinc-500 dark:text-zinc-400" : "border-blue-500/80 text-blue-100" }`}
                         >
                           <span className="font-semibold">{m.senderName}</span>
                           <span>
@@ -639,7 +639,7 @@ export default function TicketDetailPage() {
                             <div>
                               <div className="font-bold">{e.entityTitle}</div>
                               {e.entitySubtitle && (
-                                <div className="text-[10px] opacity-80">
+                                <div className="text-3xs opacity-80">
                                   {e.entitySubtitle}
                                 </div>
                               )}
@@ -699,7 +699,7 @@ export default function TicketDetailPage() {
                           }
                         }}
                       >
-                        <SelectTrigger className="h-7 w-[160px] rounded-lg border-border text-[11px]">
+                        <SelectTrigger className="h-7 w-[160px] rounded-lg border-border text-2xs">
                           <Zap className="mr-1 h-3 w-3 text-amber-500" />
                           <SelectValue placeholder="Hazır Şablonlar" />
                         </SelectTrigger>
@@ -713,7 +713,7 @@ export default function TicketDetailPage() {
                       </Select>
                     )}
                     <button
-                      className="rounded-lg border border-border bg-card px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
+                      className="rounded-lg border border-border bg-card px-2 py-1 font-semibold text-2xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400"
                       onClick={() => setIsTemplateManagerOpen(true)}
                       type="button"
                     >
@@ -736,7 +736,7 @@ export default function TicketDetailPage() {
                   />
 
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                    <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                       {messageMode === "internal" ? (
                         <span className="font-medium text-amber-700">
                           ⚠️ Bu not müşteriye iletilmez
@@ -780,7 +780,7 @@ export default function TicketDetailPage() {
                 {ticket.activities.map((act) => (
                   <div className="relative pl-6 text-xs" key={act.id}>
                     <div className="absolute top-1 -left-1.5 h-3 w-3 rounded-full border-2 border-white bg-blue-500 shadow-xs" />
-                    <div className="flex items-center justify-between text-[11px] text-zinc-400 dark:text-zinc-500">
+                    <div className="flex items-center justify-between text-2xs text-zinc-400 dark:text-zinc-500">
                       <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                         {act.userName}
                       </span>
@@ -824,7 +824,7 @@ export default function TicketDetailPage() {
                   <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     {ticket.customerName}
                   </h4>
-                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                     Kayıtlı Müşteri
                   </span>
                 </div>
@@ -846,7 +846,7 @@ export default function TicketDetailPage() {
 
               <div className="grid grid-cols-2 gap-2 border-border border-t pt-2.5 text-center">
                 <div className="rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/50">
-                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                     Toplam Talep
                   </span>
                   <span className="font-bold text-sm text-zinc-800 dark:text-zinc-200">
@@ -854,7 +854,7 @@ export default function TicketDetailPage() {
                   </span>
                 </div>
                 <div className="rounded-xl bg-zinc-50 p-2 dark:bg-zinc-800/50">
-                  <span className="block text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block text-3xs text-zinc-400 dark:text-zinc-500">
                     Açık Talepler
                   </span>
                   <span className="font-bold text-blue-600 text-sm">
@@ -905,14 +905,14 @@ export default function TicketDetailPage() {
                     key={pt.id}
                   >
                     <div className="max-w-[170px] space-y-0.5">
-                      <span className="font-bold text-[11px] text-blue-600">
+                      <span className="font-bold text-2xs text-blue-600">
                         #{pt.ticketNumber}
                       </span>
-                      <p className="line-clamp-1 font-medium text-[11px] text-zinc-800 dark:text-zinc-200">
+                      <p className="line-clamp-1 font-medium text-2xs text-zinc-800 dark:text-zinc-200">
                         {pt.subject}
                       </p>
                     </div>
-                    <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                    <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                       {pt.status}
                     </span>
                   </Link>
@@ -939,16 +939,16 @@ export default function TicketDetailPage() {
                     key={ord.id}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold font-mono text-[11px] text-blue-700">
+                      <span className="font-bold font-mono text-2xs text-blue-700">
                         {ord.orderNumber}
                       </span>
                       <span
-                        className={`rounded-md px-1.5 py-0.5 font-bold text-[10px] ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-zinc-100 text-zinc-700"}`}
+                        className={`rounded-md px-1.5 py-0.5 font-bold text-3xs ${ord.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : ord.status === "Cancelled" ? "bg-rose-100 text-rose-700" : "bg-zinc-100 text-zinc-700"}`}
                       >
                         {ord.status}
                       </span>
                     </div>
-                    <div className="mt-1 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <div className="mt-1 flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
                       <span>
                         {new Date(ord.orderDate).toLocaleDateString("tr-TR")}
                       </span>
@@ -964,7 +964,7 @@ export default function TicketDetailPage() {
                       <div className="mt-2 space-y-1 rounded-lg bg-card p-2">
                         {ord.items.slice(0, 3).map((it) => (
                           <div
-                            className="flex justify-between text-[11px]"
+                            className="flex justify-between text-2xs"
                             key={it.id}
                           >
                             <span className="truncate font-medium text-zinc-700 dark:text-zinc-300">
@@ -976,7 +976,7 @@ export default function TicketDetailPage() {
                           </div>
                         ))}
                         {ord.items.length > 3 && (
-                          <div className="text-[10px] text-zinc-400">
+                          <div className="text-3xs text-zinc-400">
                             +{ord.items.length - 3} ürün daha
                           </div>
                         )}
@@ -1006,16 +1006,16 @@ export default function TicketDetailPage() {
                     key={sh.id}
                   >
                     <div>
-                      <div className="font-bold font-mono text-[11px] text-zinc-900 dark:text-zinc-100">
+                      <div className="font-bold font-mono text-2xs text-zinc-900 dark:text-zinc-100">
                         {sh.shipmentNumber}
                       </div>
-                      <div className="text-[11px] text-zinc-500">
+                      <div className="text-2xs text-zinc-500">
                         {sh.carrierName || "Taşıyıcı yok"}
                         {sh.trackingNumber ? ` · ${sh.trackingNumber}` : ""}
                       </div>
                     </div>
                     <span
-                      className={`rounded-md px-2 py-0.5 font-bold text-[10px] ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-zinc-100 text-zinc-700"}`}
+                      className={`rounded-md px-2 py-0.5 font-bold text-3xs ${sh.status === "Delivered" ? "bg-emerald-100 text-emerald-700" : sh.status === "InTransit" ? "bg-blue-100 text-blue-700" : "bg-zinc-100 text-zinc-700"}`}
                     >
                       {sh.status}
                     </span>
@@ -1134,31 +1134,31 @@ export default function TicketDetailPage() {
                   <div className="min-w-0">
                     <div className="truncate font-bold text-zinc-900 dark:text-zinc-100">
                       {t.title}{" "}
-                      <span className="font-mono text-[10px] text-zinc-500">
+                      <span className="font-mono text-3xs text-zinc-500">
                         /{t.shortcut}
                       </span>
                     </div>
-                    <div className="truncate text-[11px] text-zinc-500">
+                    <div className="truncate text-2xs text-zinc-500">
                       {t.content.slice(0, 80)}
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-1">
                     <button
-                      className="rounded-lg bg-blue-50 px-2 py-1 font-semibold text-[11px] text-blue-700 hover:bg-blue-100"
+                      className="rounded-lg bg-blue-50 px-2 py-1 font-semibold text-2xs text-blue-700 hover:bg-blue-100"
                       onClick={() => handleTemplateEdit(t)}
                       type="button"
                     >
                       Düzenle
                     </button>
                     <button
-                      className="rounded-lg bg-rose-50 px-2 py-1 font-semibold text-[11px] text-rose-700 hover:bg-rose-100"
+                      className="rounded-lg bg-rose-50 px-2 py-1 font-semibold text-2xs text-rose-700 hover:bg-rose-100"
                       onClick={() => handleTemplateDelete(t.id)}
                       type="button"
                     >
                       Sil
                     </button>
                     <button
-                      className="rounded-lg border border-border px-2 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-100"
+                      className="rounded-lg border border-border px-2 py-1 font-semibold text-2xs text-zinc-600 hover:bg-zinc-100"
                       onClick={() => applyCannedResponse(t)}
                       type="button"
                     >
@@ -1172,7 +1172,7 @@ export default function TicketDetailPage() {
               )}
             </div>
             <div className="mt-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/40">
-              <div className="font-bold text-[11px] text-zinc-600 uppercase tracking-wider">
+              <div className="font-bold text-2xs text-zinc-600 uppercase tracking-wider">
                 {editingTemplate
                   ? "Şablonu Düzenle (PUT)"
                   : "Yeni Şablon (POST)"}

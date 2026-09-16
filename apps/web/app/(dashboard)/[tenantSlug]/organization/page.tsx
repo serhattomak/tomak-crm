@@ -660,7 +660,7 @@ function OrgChartTab({
         >
           <ZoomIn className="h-4 w-4" />
         </button>
-        <span className="px-1 font-mono font-semibold text-[11px] text-zinc-500 dark:text-zinc-400">
+        <span className="px-1 font-mono font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
           {Math.round(zoom * 100)}%
         </span>
         <button
@@ -745,12 +745,12 @@ function OrgNodeItem({
         {/* Top badges */}
         <div className="mb-3 flex items-center justify-between">
           <span
-            className={`rounded-full px-2.5 py-0.5 font-bold text-[10px] tracking-wide shadow-2xs ${levelBadge}`}
+            className={`rounded-full px-2.5 py-0.5 font-bold text-3xs tracking-wide shadow-2xs ${levelBadge}`}
           >
             {node.level || "Staff"}
           </span>
           {node.departmentName && (
-            <span className="rounded-lg bg-blue-50/80 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/40 dark:text-blue-400">
+            <span className="rounded-lg bg-blue-50/80 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:bg-blue-950/40 dark:text-blue-400">
               {node.departmentCode ? `[${node.departmentCode}] ` : ""}
               {node.departmentName}
             </span>
@@ -778,22 +778,22 @@ function OrgNodeItem({
             <h4 className="truncate font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
               {node.fullName}
             </h4>
-            <p className="truncate font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="truncate font-medium text-2xs text-zinc-500 dark:text-zinc-400">
               {node.title || "Ünvan Belirtilmedi"}
             </p>
-            <p className="truncate font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+            <p className="truncate font-mono text-3xs text-zinc-400 dark:text-zinc-500">
               {node.email}
             </p>
           </div>
         </div>
 
         {/* Card Footer: Subordinates & Quick Actions */}
-        <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-[11px]">
+        <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-2xs">
           <div className="flex items-center gap-1 font-semibold text-zinc-500 dark:text-zinc-400">
             <Users className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
             <span>{node.directReportsCount} Doğrudan</span>
             {node.totalSubordinatesCount > node.directReportsCount && (
-              <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-3xs text-zinc-400 dark:text-zinc-500">
                 ({node.totalSubordinatesCount} Toplam)
               </span>
             )}
@@ -933,7 +933,7 @@ function DepartmentsTab({
                       {dept.name}
                     </h3>
                     {dept.code && (
-                      <span className="font-bold font-mono text-[10px] text-blue-600 dark:text-blue-400">
+                      <span className="font-bold font-mono text-3xs text-blue-600 dark:text-blue-400">
                         [{dept.code}]
                       </span>
                     )}
@@ -962,7 +962,7 @@ function DepartmentsTab({
 
               {/* Description & Parent */}
               {dept.parentName && (
-                <div className="mt-3 flex items-center gap-1 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+                <div className="mt-3 flex items-center gap-1 font-medium text-2xs text-zinc-500 dark:text-zinc-400">
                   <span className="text-zinc-400 dark:text-zinc-500">
                     Üst Departman:
                   </span>
@@ -981,7 +981,7 @@ function DepartmentsTab({
               {/* Lead & Stats */}
               <div className="mt-4 space-y-2 rounded-xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                  <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                     Departman Lideri:
                   </span>
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -991,10 +991,10 @@ function DepartmentsTab({
 
                 {dept.costCenter && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                    <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                       Maliyet Merkezi:
                     </span>
-                    <span className="font-mono font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                    <span className="font-mono font-semibold text-2xs text-zinc-700 dark:text-zinc-300">
                       {dept.costCenter}
                     </span>
                   </div>
@@ -1018,7 +1018,7 @@ function DepartmentsTab({
               </div>
 
               <button
-                className="flex items-center gap-1 font-bold text-[11px] text-blue-600 transition-colors hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="flex items-center gap-1 font-bold text-2xs text-blue-600 transition-colors hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                 onClick={() => onAddChild(dept.id)}
                 type="button"
               >
@@ -1210,7 +1210,7 @@ function EmployeesTab({
                         <div className="font-bold text-zinc-900 dark:text-zinc-100">
                           {emp.fullName}
                         </div>
-                        <div className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                        <div className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
                           {emp.email}
                         </div>
                       </div>
@@ -1220,7 +1220,7 @@ function EmployeesTab({
                     <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {emp.title || "—"}
                     </div>
-                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                       {emp.departmentName || "Genel"}
                     </div>
                   </TableCell>
@@ -1237,13 +1237,13 @@ function EmployeesTab({
                     )}
                   </TableCell>
                   <TableCell className="px-6 py-4">
-                    <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                    <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                       {emp.employmentType}
                     </span>
                   </TableCell>
                   <TableCell className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         emp.status === "Active"
                           ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
                           : emp.status === "OnLeave"
@@ -1322,7 +1322,7 @@ function EmployeesTab({
                     </div>
                   </div>
                   <span
-                    className={`rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                    className={`rounded-full px-2 py-0.5 font-bold text-3xs ${
                       emp.status === "Active"
                         ? "bg-emerald-50 text-emerald-700"
                         : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
@@ -1339,7 +1339,7 @@ function EmployeesTab({
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
-                    <span className="truncate font-mono text-[11px]">
+                    <span className="truncate font-mono text-2xs">
                       {emp.email}
                     </span>
                   </div>
@@ -1353,7 +1353,7 @@ function EmployeesTab({
               </div>
 
               <div className="mt-5 flex items-center justify-between border-border border-t pt-3">
-                <span className="font-medium text-[11px] text-zinc-400 dark:text-zinc-500">
+                <span className="font-medium text-2xs text-zinc-400 dark:text-zinc-500">
                   {emp.directReportCount > 0
                     ? `${emp.directReportCount} Doğrudan Ast`
                     : "Bireysel Katılımcı"}
@@ -1422,20 +1422,20 @@ function PositionsTab({
                     {pos.title}
                   </div>
                   {pos.jobDescription && (
-                    <div className="mt-0.5 line-clamp-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+                    <div className="mt-0.5 line-clamp-1 text-2xs text-zinc-400 dark:text-zinc-500">
                       {pos.jobDescription}
                     </div>
                   )}
                 </TableCell>
                 <TableCell className="px-6 py-4">
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-bold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                     {pos.level}
                   </span>
                 </TableCell>
                 <TableCell className="px-6 py-4 font-semibold text-zinc-700 dark:text-zinc-300">
                   {pos.departmentName || "Tüm Departmanlar"}
                 </TableCell>
-                <TableCell className="px-6 py-4 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+                <TableCell className="px-6 py-4 font-mono text-2xs text-zinc-600 dark:text-zinc-400">
                   {pos.minSalary || pos.maxSalary
                     ? `$${pos.minSalary?.toLocaleString() || "0"} – $${pos.maxSalary?.toLocaleString() || "Max"}`
                     : "—"}
@@ -2472,10 +2472,10 @@ function EmployeeDetailDrawer({
             </p>
 
             <div className="mt-2 flex items-center gap-2">
-              <span className="rounded-full bg-zinc-100 px-3 py-0.5 font-bold text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-full bg-zinc-100 px-3 py-0.5 font-bold text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {employeeDetail.departmentName || "Genel"}
               </span>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 font-bold text-[11px] text-emerald-700">
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 font-bold text-2xs text-emerald-700">
                 {employeeDetail.status}
               </span>
             </div>
@@ -2483,7 +2483,7 @@ function EmployeeDetailDrawer({
 
           {/* Contact Details Card */}
           <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-            <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               İletişim & İK Bilgileri
             </h4>
             <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
@@ -2515,13 +2515,13 @@ function EmployeeDetailDrawer({
 
           {/* Hierarchy & Reporting Tree */}
           <div className="mt-5 space-y-3 text-xs">
-            <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               Hiyerarşi & Raporlama
             </h4>
 
             {/* Manager */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-1.5 font-bold text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="mb-1.5 font-bold text-3xs text-zinc-400 uppercase dark:text-zinc-500">
                 Bağlı Olduğu Yönetici
               </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
@@ -2536,7 +2536,7 @@ function EmployeeDetailDrawer({
                     <div className="font-bold text-zinc-900 dark:text-zinc-100">
                       {employeeDetail.managerName}
                     </div>
-                    <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <div className="text-3xs text-zinc-500 dark:text-zinc-400">
                       Yönetici Profilini Görüntüle →
                     </div>
                   </div>
@@ -2550,7 +2550,7 @@ function EmployeeDetailDrawer({
 
             {/* Direct Reports */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-2 flex items-center justify-between font-bold text-[10px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="mb-2 flex items-center justify-between font-bold text-3xs text-zinc-400 uppercase dark:text-zinc-500">
                 <span>
                   Doğrudan Yönettiği Kişiler (
                   {employeeDetail.directReports.length})
@@ -2570,14 +2570,14 @@ function EmployeeDetailDrawer({
                       onClick={() => onSelectEmployee(report.id)}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-500 font-bold text-[10px] text-white">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-500 font-bold text-3xs text-white">
                           {report.fullName.charAt(0)}
                         </div>
                         <div>
                           <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {report.fullName}
                           </div>
-                          <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                          <div className="text-3xs text-zinc-500 dark:text-zinc-400">
                             {report.title || report.email}
                           </div>
                         </div>

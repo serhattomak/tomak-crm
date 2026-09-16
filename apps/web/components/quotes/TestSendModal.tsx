@@ -172,7 +172,7 @@ export function TestSendModal({
               <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Test Gönder
               </DialogTitle>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                 {templateName ? `${templateName} — ` : ""}önizleme modunda
                 e-posta hazırla
               </p>
@@ -236,7 +236,7 @@ export function TestSendModal({
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-2xs text-zinc-500 dark:text-zinc-400">
               {selectedQuoteId
                 ? `Gerçek Veri: ${quoteOptions.find((q) => q.id === selectedQuoteId)?.quoteNumber ?? selectedQuoteId} ile render edilecek`
                 : "Mock Veri ile render edilecek — test e-postası gerçek veriye ihtiyaç duymaz"}
@@ -246,11 +246,11 @@ export function TestSendModal({
           {/* Current preview summary */}
           {templateId ? (
             <div className="rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/30">
-              <p className="flex items-center gap-1.5 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+              <p className="flex items-center gap-1.5 font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                 <Eye className="h-3.5 w-3.5" />
                 Önizleme özeti
               </p>
-              <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
                 Gönderim sonrası dönen{" "}
                 <span className="font-mono">previewHtml</span> aşağıda iframe
                 içinde gösterilir. SMTP bu fazda yalnızca log + bildirim —
@@ -267,7 +267,7 @@ export function TestSendModal({
                   Dönen Önizleme
                 </span>
                 {resultSubject ? (
-                  <span className="truncate rounded bg-zinc-100 px-2 py-0.5 font-medium text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                  <span className="truncate rounded bg-zinc-100 px-2 py-0.5 font-medium text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                     Konu: {resultSubject}
                   </span>
                 ) : null}
@@ -276,7 +276,7 @@ export function TestSendModal({
                 className="rounded-xl border border-border bg-card open:shadow-2xs"
                 open
               >
-                <summary className="cursor-pointer list-none px-3 py-2 font-semibold text-[11px] text-zinc-700 dark:text-zinc-300">
+                <summary className="cursor-pointer list-none px-3 py-2 font-semibold text-2xs text-zinc-700 dark:text-zinc-300">
                   HTML önizlemeyi aç/kapat
                 </summary>
                 <div className="border-border border-t p-2">

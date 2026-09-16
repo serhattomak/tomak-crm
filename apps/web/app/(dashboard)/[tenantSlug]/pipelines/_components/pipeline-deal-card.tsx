@@ -44,7 +44,7 @@ export function PipelineDealCard({
     >
       {/* SLA Breach Warning */}
       {deal.isSlaBreached && (
-        <div className="mb-2 flex items-center gap-1.5 rounded-md border border-destructive/20 bg-destructive/10 px-2 py-0.5 font-medium text-[10px] text-destructive">
+        <div className="mb-2 flex items-center gap-1.5 rounded-md border border-destructive/20 bg-destructive/10 px-2 py-0.5 font-medium text-3xs text-destructive">
           <AlertTriangle className="h-3 w-3 flex-none" />
           <span>Aşama SLA Süresi Aşıldı!</span>
         </div>
@@ -53,7 +53,7 @@ export function PipelineDealCard({
       {/* Top row: Source & Priority */}
       <div className="mb-2 flex items-center justify-between gap-2">
         <span
-          className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-medium text-[10px] ${getSourceBadgeClass(
+          className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-medium text-3xs ${getSourceBadgeClass(
             deal.source
           )}`}
         >
@@ -64,7 +64,7 @@ export function PipelineDealCard({
         </span>
 
         <span
-          className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-[10px] ${getPriorityBadgeClass(
+          className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs ${getPriorityBadgeClass(
             deal.priority
           )}`}
         >
@@ -79,7 +79,7 @@ export function PipelineDealCard({
 
       {/* Customer / Company */}
       {deal.customerName && (
-        <div className="mb-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+        <div className="mb-2 flex items-center gap-1.5 text-2xs text-muted-foreground">
           {deal.customerType === "Company" ? (
             <Building2 className="h-3.5 w-3.5 flex-none" />
           ) : (
@@ -95,18 +95,18 @@ export function PipelineDealCard({
           {formatCurrency(deal.value, deal.currency)}
         </span>
         {deal.tags && deal.tags.length > 0 && (
-          <Badge className="text-[9px]" variant="secondary">
+          <Badge className="text-3xs" variant="secondary">
             #{deal.tags[0]}
           </Badge>
         )}
       </div>
 
       {/* Card Footer: Assignee & Action */}
-      <div className="flex items-center justify-between border-border/60 border-t pt-2 text-[11px]">
+      <div className="flex items-center justify-between border-border/60 border-t pt-2 text-2xs">
         {deal.assignedUserId ? (
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Avatar className="h-5 w-5">
-              <AvatarFallback className="bg-primary/10 text-[10px] text-primary">
+              <AvatarFallback className="bg-primary/10 text-3xs text-primary">
                 {deal.assignedUserName ? deal.assignedUserName.charAt(0) : "U"}
               </AvatarFallback>
             </Avatar>
@@ -116,7 +116,7 @@ export function PipelineDealCard({
           </div>
         ) : (
           <Button
-            className="h-6 gap-1 rounded-md px-2 text-[10px]"
+            className="h-6 gap-1 rounded-md px-2 text-3xs"
             onClick={(e) => onClaimDeal(deal.id, e)}
             size="xs"
             type="button"
@@ -128,7 +128,7 @@ export function PipelineDealCard({
         )}
 
         {/* Counters */}
-        <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+        <div className="flex items-center gap-2 text-3xs text-muted-foreground">
           {deal.notesCount > 0 && (
             <span className="flex items-center gap-0.5">
               <MessageSquare className="h-3 w-3" />

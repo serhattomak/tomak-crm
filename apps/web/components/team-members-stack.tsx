@@ -227,7 +227,7 @@ export function TeamMembersStack({
               })}
 
               {remainingCount > 0 && (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-zinc-100 font-bold text-[10px] text-zinc-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-zinc-100 font-bold text-3xs text-zinc-700 shadow-xs transition-transform group-hover:scale-105 dark:border-card dark:bg-muted dark:text-foreground">
                   +{remainingCount}
                 </div>
               )}
@@ -252,7 +252,7 @@ export function TeamMembersStack({
                   <h3 className="font-bold text-zinc-900 text-xs dark:text-foreground">
                     Ekip Üyeleri
                   </h3>
-                  <p className="text-[10px] text-zinc-500 dark:text-muted-foreground">
+                  <p className="text-3xs text-zinc-500 dark:text-muted-foreground">
                     Toplam {users.length} aktif kullanıcı
                   </p>
                 </div>
@@ -260,7 +260,7 @@ export function TeamMembersStack({
 
               <div className="flex items-center gap-1">
                 <Button
-                  className="h-7 bg-blue-600 px-2.5 font-semibold text-[11px] text-white shadow-2xs hover:bg-blue-700"
+                  className="h-7 bg-blue-600 px-2.5 font-semibold text-2xs text-white shadow-2xs hover:bg-blue-700"
                   onClick={() => {
                     setIsOpen(false);
                     if (onOpenInvite) {
@@ -312,7 +312,7 @@ export function TeamMembersStack({
                   <p className="mt-2 font-semibold text-zinc-700 text-xs dark:text-zinc-300">
                     Kullanıcı bulunamadı
                   </p>
-                  <p className="mt-1 text-[11px] text-zinc-400">
+                  <p className="mt-1 text-2xs text-zinc-400">
                     Aramanıza uygun üye eşleşmedi.
                   </p>
                 </div>
@@ -353,7 +353,7 @@ export function TeamMembersStack({
                               {user.fullName || user.email.split("@")[0]}
                             </span>
                           </div>
-                          <div className="truncate text-[11px] text-zinc-500 dark:text-muted-foreground">
+                          <div className="truncate text-2xs text-zinc-500 dark:text-muted-foreground">
                             {user.email}
                           </div>
 
@@ -362,7 +362,7 @@ export function TeamMembersStack({
                             <div className="mt-1 flex flex-wrap gap-1">
                               {user.roles.map((role) => (
                                 <span
-                                  className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-0.2 font-semibold text-[9px] text-zinc-700 dark:bg-muted dark:text-zinc-300"
+                                  className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-0.2 font-semibold text-3xs text-zinc-700 dark:bg-muted dark:text-zinc-300"
                                   key={role.id}
                                   role="status"
                                 >
@@ -373,7 +373,7 @@ export function TeamMembersStack({
                             </div>
                           ) : (
                             <div className="mt-1 flex flex-wrap gap-1">
-                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-1.5 py-0.2 font-semibold text-[9px] text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-1.5 py-0.2 font-semibold text-3xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
                                 Rolsüz
                               </span>
                             </div>
@@ -414,7 +414,7 @@ export function TeamMembersStack({
             {/* Footer: Manage Users Link */}
             <div className="border-border border-t bg-zinc-50/50 p-2.5 text-center dark:border-border dark:bg-muted/30">
               <button
-                className="inline-flex items-center gap-1 font-semibold text-[11px] text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
+                className="inline-flex items-center gap-1 font-semibold text-2xs text-blue-600 hover:text-blue-700 dark:hover:text-blue-400"
                 onClick={() => {
                   setIsOpen(false);
                   router.push(`/${tenantSlug}/users`);
@@ -660,7 +660,7 @@ export function InviteMemberModal({
               <DialogTitle className="font-bold text-zinc-900 text-sm sm:text-base dark:text-foreground">
                 Ekip Arkadaşı Davet Et
               </DialogTitle>
-              <p className="text-[11px] text-zinc-500 dark:text-muted-foreground">
+              <p className="text-2xs text-zinc-500 dark:text-muted-foreground">
                 Çalışma alanınıza yeni bir kullanıcı ekleyin
               </p>
             </div>
@@ -727,7 +727,7 @@ export function InviteMemberModal({
             )}
           </div>
 
-          <div className="flex items-start gap-2 rounded-xl bg-blue-50/70 p-3 text-[11px] text-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
+          <div className="flex items-start gap-2 rounded-xl bg-blue-50/70 p-3 text-2xs text-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
             <p>
               Davet edilen kullanıcıya e-posta ile davet bağlantısı gönderilecek

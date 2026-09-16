@@ -39,7 +39,7 @@ export function PipelineStatsBanner({
             <TrendingUp className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-[11px] text-muted-foreground">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-2xs text-muted-foreground">
           <span>{openCount} Aktif Fırsat</span>
           <span>•</span>
           <span>{wonCount} Kazanılan</span>
@@ -61,7 +61,7 @@ export function PipelineStatsBanner({
             <Award className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-[11px] text-emerald-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-emerald-600">
           <span>Başarıyla tamamlanan fırsatlar</span>
         </div>
       </Card>
@@ -81,7 +81,7 @@ export function PipelineStatsBanner({
             <Users className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-[11px] text-amber-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-amber-600">
           <span>Temsilci ataması bekleyen kartlar</span>
         </div>
       </Card>
@@ -101,7 +101,7 @@ export function PipelineStatsBanner({
             <Flame className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-[11px] text-rose-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-rose-600">
           <span>Aşama yanıt süresi gecikenler</span>
         </div>
       </Card>

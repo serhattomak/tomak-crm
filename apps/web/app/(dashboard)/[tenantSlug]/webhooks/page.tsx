@@ -80,7 +80,7 @@ function formatDateTr(value: string | null | undefined): string {
 function getDeliveryStatusBadge(status: string) {
   if (status === "Success") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-[11px] text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-300">
+      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-300">
         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
         Success
       </span>
@@ -88,7 +88,7 @@ function getDeliveryStatusBadge(status: string) {
   }
   if (status === "Failed") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 font-medium text-[11px] text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-300">
+      <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 font-medium text-2xs text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-300">
         <XCircle className="h-3 w-3 text-rose-600" />
         Failed
       </span>
@@ -96,14 +96,14 @@ function getDeliveryStatusBadge(status: string) {
   }
   if (status === "Retrying") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-[11px] text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-300">
+      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-300">
         <Clock className="h-3 w-3 text-amber-600" />
         Retrying
       </span>
     );
   }
   return (
-    <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+    <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
       {status}
     </span>
   );
@@ -112,7 +112,7 @@ function getDeliveryStatusBadge(status: string) {
 function getEventBadge(event: string) {
   return (
     <span
-      className="inline-flex rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+      className="inline-flex rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
       key={event}
     >
       {event}
@@ -507,7 +507,7 @@ export default function WebhooksPage() {
             <div>
               <h1 className="flex items-center gap-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Webhook & Entegrasyonlar
-                <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   HMAC-SHA256
                 </span>
               </h1>
@@ -533,7 +533,7 @@ export default function WebhooksPage() {
       {/* KPI Cards - Bento Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Aktif Endpoint</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-400">
               <ShieldCheck className="h-4 w-4" />
@@ -547,14 +547,14 @@ export default function WebhooksPage() {
               / {totalEndpointsDisplay} toplam
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
             <Activity className="h-3.5 w-3.5 text-emerald-500" />
             <span>Aktif / pasif ayrımı tenant izolasyonlu</span>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Toplam Teslimat</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               <Link2 className="h-4 w-4" />
@@ -568,7 +568,7 @@ export default function WebhooksPage() {
               deneme
             </span>
           </div>
-          <div className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             {failedDeliveries > 0 ? (
               <span className="text-rose-600 dark:text-rose-400">
                 {failedDeliveries} başarısız •{" "}
@@ -579,7 +579,7 @@ export default function WebhooksPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-[11px] text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
             <span>Başarı Oranı</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
@@ -593,7 +593,7 @@ export default function WebhooksPage() {
               success / total
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
             <span
               className={
                 displaySuccessRate >= 90
@@ -632,7 +632,7 @@ export default function WebhooksPage() {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+        <div className="flex items-center gap-2 text-2xs text-zinc-500 dark:text-zinc-400">
           <span className="hidden sm:inline">Tenant:</span>
           <span className="rounded-lg border border-border bg-zinc-50 px-2 py-1 font-mono text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             {tenantSlug || "-"}
@@ -923,7 +923,7 @@ export default function WebhooksPage() {
                 Toplam {endpointsTotal} • Sayfa {endpointPage} /{" "}
                 {endpointsTotalPages}
               </span>
-              <span className="font-mono text-[11px]">
+              <span className="font-mono text-2xs">
                 pageSize {PAGE_SIZE}
               </span>
             </div>
@@ -1082,7 +1082,7 @@ export default function WebhooksPage() {
                           </span>
                         </TableCell>
                         <TableCell className="px-3 py-3">
-                          <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                          <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                             {d.eventType}
                           </span>
                         </TableCell>
@@ -1234,7 +1234,7 @@ export default function WebhooksPage() {
                   )}
                 </div>
                 {testResult.headers && (
-                  <div className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <div className="mt-2 text-2xs text-zinc-500 dark:text-zinc-400">
                     X-Webhook-Timestamp:{" "}
                     <span className="font-mono text-zinc-700 dark:text-zinc-300">
                       {testResult.headers["X-Webhook-Timestamp"] ||
@@ -1265,7 +1265,7 @@ export default function WebhooksPage() {
                 </div>
               )}
 
-              <p className="text-center text-[11px] text-zinc-400 dark:text-zinc-500">
+              <p className="text-center text-2xs text-zinc-400 dark:text-zinc-500">
                 Dry-run modunda gerçek teslimat yazılmaz, sadece imza ve akış
                 doğrulanır.
               </p>

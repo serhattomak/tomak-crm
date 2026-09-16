@@ -553,7 +553,7 @@ export function CampaignModal({
                       <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                         Diğer Kampanyalarla Birleşebilir (Stacking)
                       </span>
-                      <p className="text-[11px] text-zinc-500">
+                      <p className="text-2xs text-zinc-500">
                         Açık ise diğer sepet indirimlerinin üzerine ilave
                         uygulanır.
                       </p>
@@ -630,7 +630,7 @@ export function CampaignModal({
                           <span className="mt-2 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                             {t.name}
                           </span>
-                          <span className="mt-0.5 text-[10px] text-zinc-500">
+                          <span className="mt-0.5 text-3xs text-zinc-500">
                             {t.desc}
                           </span>
                         </button>
@@ -806,7 +806,7 @@ export function CampaignModal({
                       <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                         Tüm Katalog
                       </div>
-                      <p className="mt-0.5 text-[11px] text-zinc-500">
+                      <p className="mt-0.5 text-2xs text-zinc-500">
                         Tüm ürün ve kategorilerde geçerli.
                       </p>
                     </button>
@@ -819,7 +819,7 @@ export function CampaignModal({
                       <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                         Seçili Ürün & Kategoriler
                       </div>
-                      <p className="mt-0.5 text-[11px] text-zinc-500">
+                      <p className="mt-0.5 text-2xs text-zinc-500">
                         Belirli ürün veya kategorileri hedefleyin.
                       </p>
                     </button>
@@ -928,7 +928,7 @@ export function CampaignModal({
                         <Zap className="h-3.5 w-3.5 text-amber-500" />
                         Otomatik Kural
                       </div>
-                      <p className="mt-0.5 text-[10px] text-zinc-500">
+                      <p className="mt-0.5 text-3xs text-zinc-500">
                         Sepet sağlandığında doğrudan uygulanır.
                       </p>
                     </button>
@@ -942,7 +942,7 @@ export function CampaignModal({
                         <Ticket className="h-3.5 w-3.5 text-blue-600" />
                         Kupon Kodu Gerektiren
                       </div>
-                      <p className="mt-0.5 text-[10px] text-zinc-500">
+                      <p className="mt-0.5 text-3xs text-zinc-500">
                         Müşteri kupon girdiğinde aktif olur.
                       </p>
                     </button>
@@ -1027,11 +1027,11 @@ export function CampaignModal({
                           : "(Süresiz)"}
                       </div>
                       <div className="flex gap-2">
-                        <span className="rounded bg-zinc-200 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <span className="rounded bg-zinc-200 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           Öncelik: {priority}
                         </span>
                         {isStackable && (
-                          <span className="rounded bg-emerald-100 px-2 py-0.5 font-medium text-[11px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+                          <span className="rounded bg-emerald-100 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
                             Birleşebilir
                           </span>
                         )}

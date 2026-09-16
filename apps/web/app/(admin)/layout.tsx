@@ -68,7 +68,7 @@ export default function AdminLayout({
             <h1 className="font-bold text-sm text-zinc-900 leading-none dark:text-zinc-100">
               Super Admin
             </h1>
-            <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
               Yönetim Konsolu
             </p>
           </div>
@@ -135,11 +135,11 @@ export default function AdminLayout({
                 <span className="font-extrabold text-sm text-zinc-900 tracking-tight dark:text-zinc-100">
                   CRM Cloud
                 </span>
-                <span className="rounded-md border border-blue-200/60 bg-blue-50 px-1.5 py-0.5 font-bold text-[9px] text-blue-600 dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-400">
+                <span className="rounded-md border border-blue-200/60 bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-600 dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-400">
                   ADMIN
                 </span>
               </div>
-              <p className="truncate text-[11px] text-zinc-400 dark:text-zinc-500">
+              <p className="truncate text-2xs text-zinc-400 dark:text-zinc-500">
                 Lisans & Çoklu Firma
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function AdminLayout({
 
           {/* Navigation Links */}
           <nav className="space-y-1">
-            <div className="px-3 pb-2 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <div className="px-3 pb-2 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               Yönetim Menüsü
             </div>
             {navItems.map((item) => {
@@ -193,7 +193,7 @@ export default function AdminLayout({
               <p className="truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                 {userEmail}
               </p>
-              <p className="flex items-center gap-1 font-semibold text-[10px] text-emerald-600 dark:text-emerald-400">
+              <p className="flex items-center gap-1 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Root Yetkisi
               </p>

@@ -229,7 +229,7 @@ export default function AdminTemplatesPage() {
                         <h3 className="font-bold text-zinc-900 text-sm">
                           {tpl.name}
                         </h3>
-                        <p className="font-mono text-[10px] text-zinc-400">
+                        <p className="font-mono text-3xs text-zinc-400">
                           key: {tpl.key}
                         </p>
                       </div>
@@ -249,13 +249,13 @@ export default function AdminTemplatesPage() {
 
                   {/* Modules in Template */}
                   <div className="space-y-1.5 border-border border-t pt-2">
-                    <span className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider">
+                    <span className="font-bold text-3xs text-zinc-400 uppercase tracking-wider">
                       Varsayılan Modüller ({tpl.defaultModules?.length || 0})
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {tpl.defaultModules?.map((m) => (
                         <span
-                          className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-[10px] text-zinc-700"
+                          className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-3xs text-zinc-700"
                           key={m}
                         >
                           {m}
@@ -266,8 +266,8 @@ export default function AdminTemplatesPage() {
 
                   {/* Key Label Previews */}
                   {parsedLabels?.modules && (
-                    <div className="space-y-1.5 border-border border-t pt-2 text-[11px]">
-                      <span className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider">
+                    <div className="space-y-1.5 border-border border-t pt-2 text-2xs">
+                      <span className="font-bold text-3xs text-zinc-400 uppercase tracking-wider">
                         Terminoloji Dönüşümleri
                       </span>
                       {Object.entries(parsedLabels.modules).map(
@@ -287,7 +287,7 @@ export default function AdminTemplatesPage() {
                   )}
                 </div>
 
-                <div className="mt-4 border-border border-t pt-3 text-[10px] text-zinc-400">
+                <div className="mt-4 border-border border-t pt-3 text-3xs text-zinc-400">
                   Oluşturulma:{" "}
                   {new Date(tpl.createdAt).toLocaleDateString("tr-TR")}
                 </div>
@@ -409,7 +409,7 @@ export default function AdminTemplatesPage() {
                     );
                     return (
                       <label
-                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 text-[11px] transition ${ checked ? "border-blue-200 bg-blue-50 font-medium text-blue-800" : "border-border bg-card text-zinc-600 hover:bg-zinc-50" }`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl border p-2 text-2xs transition ${ checked ? "border-blue-200 bg-blue-50 font-medium text-blue-800" : "border-border bg-card text-zinc-600 hover:bg-zinc-50" }`}
                         key={mod.key}
                         onClick={() => handleToggleModule(mod.key)}
                       >
@@ -432,7 +432,7 @@ export default function AdminTemplatesPage() {
                   <label className="block font-bold text-zinc-700">
                     Terminoloji Sözlüğü (JSON Schema)
                   </label>
-                  <span className="font-mono text-[10px] text-zinc-400">
+                  <span className="font-mono text-3xs text-zinc-400">
                     modules & fields sözlüğü
                   </span>
                 </div>

@@ -417,7 +417,7 @@ export default function LeavesPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               İzin & Zaman Yönetimi
             </h1>
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
+            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-2xs text-blue-700">
               {stats?.totalApprovedRequests ?? 0} Onaylı İzin
             </span>
           </div>
@@ -459,7 +459,7 @@ export default function LeavesPage() {
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Yönetici onayı bekleyen izinler</span>
           </div>
         </div>
@@ -479,7 +479,7 @@ export default function LeavesPage() {
               <Sun className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Bugün aktif izin kullanan personel</span>
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function LeavesPage() {
               <CalendarIcon className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Bu ay içinde onaylanan toplam iş günü</span>
           </div>
         </div>
@@ -519,7 +519,7 @@ export default function LeavesPage() {
               <Palmtree className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Kullanılan: {myBalance?.usedDays ?? 0} Gün</span>
             <span>Hakediş: {myBalance?.totalDays ?? 14} Gün</span>
           </div>
@@ -545,7 +545,7 @@ export default function LeavesPage() {
           <Clock className="h-4 w-4" />
           <span>Onay Masası ({pendingLeaves.length})</span>
           {pendingLeaves.length > 0 && (
-            <span className="rounded-full bg-amber-500 px-1.5 py-0.2 font-bold text-[9px] text-white">
+            <span className="rounded-full bg-amber-500 px-1.5 py-0.2 font-bold text-3xs text-white">
               {pendingLeaves.length}
             </span>
           )}
@@ -625,7 +625,7 @@ export default function LeavesPage() {
           <div className="overflow-x-auto">
             <div className="min-w-[700px]">
               {/* Day Names Header */}
-              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-[11px] text-zinc-500 dark:text-zinc-400">
+              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-2xs text-zinc-500 dark:text-zinc-400">
                 <div className="rounded-lg bg-zinc-50 py-1 dark:bg-zinc-800/50">
                   Pazartesi
                 </div>
@@ -686,14 +686,14 @@ export default function LeavesPage() {
                           {cell.day}
                         </span>
                         {activeLeaves.length > 0 && (
-                          <span className="rounded-full bg-zinc-100 px-1.5 py-0.2 font-bold text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                          <span className="rounded-full bg-zinc-100 px-1.5 py-0.2 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                             {activeLeaves.length} İzinli
                           </span>
                         )}
                       </div>
 
                       {/* Leaves pills inside day */}
-                      <div className="mt-1 max-h-16 space-y-1 overflow-y-auto text-[10px]">
+                      <div className="mt-1 max-h-16 space-y-1 overflow-y-auto text-3xs">
                         {activeLeaves.map((ev) => (
                           <div
                             className={`truncate rounded-lg border px-1.5 py-0.5 font-semibold ${
@@ -757,12 +757,12 @@ export default function LeavesPage() {
                         {leave.employeeName}
                       </span>
                       {leave.departmentName && (
-                        <span className="rounded-md bg-zinc-200 px-2 py-0.5 font-medium text-[10px] text-zinc-700 dark:text-zinc-300">
+                        <span className="rounded-md bg-zinc-200 px-2 py-0.5 font-medium text-3xs text-zinc-700 dark:text-zinc-300">
                           {leave.departmentName}
                         </span>
                       )}
                       <span
-                        className={`rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(leave.leaveType)}`}
+                        className={`rounded-lg border px-2 py-0.5 font-bold text-3xs ${getLeaveTypeBadge(leave.leaveType)}`}
                       >
                         {getLeaveTypeLabel(leave.leaveType)}
                       </span>
@@ -912,14 +912,14 @@ export default function LeavesPage() {
                             {l.employeeName}
                           </div>
                           {l.departmentName && (
-                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                            <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                               {l.departmentName}
                             </div>
                           )}
                         </TableCell>
                         <TableCell className="px-4 py-3.5">
                           <span
-                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
+                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-3xs ${getLeaveTypeBadge(l.leaveType)}`}
                           >
                             {getLeaveTypeLabel(l.leaveType)}
                           </span>
@@ -935,7 +935,7 @@ export default function LeavesPage() {
                         </TableCell>
                         <TableCell className="px-4 py-3.5">
                           <span
-                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
+                            className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(l.status)}`}
                           >
                             {getStatusLabel(l.status)}
                           </span>
@@ -948,14 +948,14 @@ export default function LeavesPage() {
                             <PermissionGate permission="Leaves.Approve">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
-                                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-bold text-[11px] text-emerald-700 hover:bg-emerald-100"
+                                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-bold text-2xs text-emerald-700 hover:bg-emerald-100"
                                   onClick={() => handleApprove(l.id)}
                                   type="button"
                                 >
                                   Onayla
                                 </button>
                                 <button
-                                  className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-[11px] text-rose-700 hover:bg-rose-100"
+                                  className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-2xs text-rose-700 hover:bg-rose-100"
                                   onClick={() => {
                                     setRejectingLeave(l);
                                     setRejectionReason("");
@@ -1030,7 +1030,7 @@ export default function LeavesPage() {
                     >
                       <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                         <span
-                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[10px] ${getLeaveTypeBadge(l.leaveType)}`}
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-3xs ${getLeaveTypeBadge(l.leaveType)}`}
                         >
                           {getLeaveTypeLabel(l.leaveType)}
                         </span>
@@ -1044,7 +1044,7 @@ export default function LeavesPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3.5">
                         <span
-                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(l.status)}`}
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(l.status)}`}
                         >
                           {getStatusLabel(l.status)}
                         </span>
@@ -1052,7 +1052,7 @@ export default function LeavesPage() {
                       <TableCell className="px-4 py-3.5 text-zinc-600 italic dark:text-zinc-400">
                         {l.reason || "—"}
                         {l.rejectionReason && (
-                          <div className="mt-0.5 font-bold text-[10px] text-rose-600 not-italic">
+                          <div className="mt-0.5 font-bold text-3xs text-rose-600 not-italic">
                             Ret Nedeni: {l.rejectionReason}
                           </div>
                         )}
@@ -1060,7 +1060,7 @@ export default function LeavesPage() {
                       <TableCell className="py-3.5 pr-4 pl-3 text-right">
                         {l.status === "Pending" && (
                           <button
-                            className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-[11px] text-rose-700 hover:bg-rose-100"
+                            className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 font-bold text-2xs text-rose-700 hover:bg-rose-100"
                             onClick={() => handleCancel(l.id)}
                             type="button"
                           >
@@ -1523,7 +1523,7 @@ function CreateLeaveModal({
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   Hesaplanan İş Günü:
                 </span>
-                <span className="block text-[11px] text-zinc-500 dark:text-zinc-400">
+                <span className="block text-2xs text-zinc-500 dark:text-zinc-400">
                   Hafta sonları otomatik atlandı
                 </span>
               </div>

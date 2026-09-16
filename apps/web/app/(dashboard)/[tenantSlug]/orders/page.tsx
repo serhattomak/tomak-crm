@@ -369,7 +369,7 @@ export default function OrdersPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Sipariş & Satış Yönetimi
             </h1>
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
+            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-2xs text-blue-700">
               {totalCount} Sipariş
             </span>
           </div>
@@ -425,7 +425,7 @@ export default function OrdersPage() {
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>{stats?.totalOrders ?? 0} Toplam Sipariş Kaydı</span>
           </div>
         </div>
@@ -448,7 +448,7 @@ export default function OrdersPage() {
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>
               Tahsilat Oranı: %
               {stats && stats.totalRevenue > 0
@@ -473,7 +473,7 @@ export default function OrdersPage() {
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>
               {stats?.confirmedOrders ?? 0} Onaylandı •{" "}
               {stats?.shippedOrders ?? 0} Yolda
@@ -499,7 +499,7 @@ export default function OrdersPage() {
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Ödenmesi gereken açık alacaklar</span>
           </div>
         </div>
@@ -676,7 +676,7 @@ export default function OrdersPage() {
                       >
                         {o.orderNumber}
                       </Link>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                         {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                       </div>
                     </TableCell>
@@ -686,7 +686,7 @@ export default function OrdersPage() {
                         {o.customerName}
                       </div>
                       {o.invoiceNumber && (
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                           Fat: {o.invoiceNumber}
                         </div>
                       )}
@@ -694,7 +694,7 @@ export default function OrdersPage() {
 
                     <TableCell className="px-4 py-4">
                       <span
-                        className={`inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-[10px] ${getStatusBadge(
+                        className={`inline-flex items-center rounded-lg border px-2.5 py-0.5 font-bold text-3xs ${getStatusBadge(
                           o.status
                         )}`}
                       >
@@ -704,7 +704,7 @@ export default function OrdersPage() {
 
                     <TableCell className="px-4 py-4">
                       <span
-                        className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getPaymentBadge(
+                        className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-bold text-3xs ${getPaymentBadge(
                           o.paymentStatus
                         )}`}
                       >
@@ -723,7 +723,7 @@ export default function OrdersPage() {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <div className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                         KDV Dahil
                       </div>
                     </TableCell>
@@ -736,7 +736,7 @@ export default function OrdersPage() {
                         })}
                       </div>
                       {o.remainingAmount > 0 && (
-                        <div className="font-medium text-[10px] text-rose-500">
+                        <div className="font-medium text-3xs text-rose-500">
                           Kalan: ₺
                           {o.remainingAmount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -793,11 +793,11 @@ export default function OrdersPage() {
                     <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                       {col.label}
                     </span>
-                    <span className="rounded-full bg-zinc-200 px-2 py-0.5 font-bold text-[10px] text-zinc-800 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100">
+                    <span className="rounded-full bg-zinc-200 px-2 py-0.5 font-bold text-3xs text-zinc-800 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100">
                       {colOrders.length}
                     </span>
                   </div>
-                  <span className="font-bold text-[11px] text-zinc-600 dark:text-zinc-400">
+                  <span className="font-bold text-2xs text-zinc-600 dark:text-zinc-400">
                     ₺
                     {colTotal.toLocaleString("tr-TR", {
                       minimumFractionDigits: 0,
@@ -808,7 +808,7 @@ export default function OrdersPage() {
                 {/* Column Orders */}
                 <div className="max-h-[600px] flex-1 space-y-2.5 overflow-y-auto">
                   {colOrders.length === 0 ? (
-                    <div className="rounded-2xl border border-border border-dashed p-6 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
+                    <div className="rounded-2xl border border-border border-dashed p-6 text-center text-2xs text-zinc-400 dark:text-zinc-500">
                       Bu aşamada sipariş yok
                     </div>
                   ) : (
@@ -824,7 +824,7 @@ export default function OrdersPage() {
                               {o.orderNumber}
                             </span>
                             <span
-                              className={`rounded-md border px-1.5 py-0.2 font-bold text-[9px] ${getPaymentBadge(
+                              className={`rounded-md border px-1.5 py-0.2 font-bold text-3xs ${getPaymentBadge(
                                 o.paymentStatus
                               )}`}
                             >
@@ -837,7 +837,7 @@ export default function OrdersPage() {
                           </div>
                         </div>
 
-                        <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-[11px]">
+                        <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-2xs">
                           <span className="font-medium text-zinc-400 dark:text-zinc-500">
                             {new Date(o.orderDate).toLocaleDateString("tr-TR")}
                           </span>
@@ -1356,7 +1356,7 @@ function CreateOrderWizardModal({
                               {item.productName}
                             </span>
                             {item.sku && (
-                              <span className="ml-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+                              <span className="ml-1 text-3xs text-zinc-400 dark:text-zinc-500">
                                 ({item.sku})
                               </span>
                             )}
@@ -1529,7 +1529,7 @@ function CreateOrderWizardModal({
 
                 {promoMessage && (
                   <p
-                    className={`mt-1.5 font-medium text-[11px] ${promoMessage.isSuccess ? "text-emerald-700 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}
+                    className={`mt-1.5 font-medium text-2xs ${promoMessage.isSuccess ? "text-emerald-700 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}
                   >
                     {promoMessage.text}
                   </p>
@@ -1539,7 +1539,7 @@ function CreateOrderWizardModal({
                   <div className="mt-2 space-y-1">
                     {appliedPromotions.map((p, idx) => (
                       <div
-                        className="flex items-center justify-between font-medium text-[11px] text-blue-800 dark:text-blue-300"
+                        className="flex items-center justify-between font-medium text-2xs text-blue-800 dark:text-blue-300"
                         key={idx}
                       >
                         <span className="flex items-center gap-1">
@@ -1595,7 +1595,7 @@ function CreateOrderWizardModal({
 
             {/* Right Financial Summary Card (5 cols) */}
             <div className="flex flex-col justify-between space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs lg:col-span-5">
-              <div className="space-y-1.5 text-[11px]">
+              <div className="space-y-1.5 text-2xs">
                 <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
                   <span>Ara Toplam (KDV Hariç):</span>
                   <span className="font-semibold text-zinc-900 dark:text-zinc-100">
@@ -1648,7 +1648,7 @@ function CreateOrderWizardModal({
                     <span className="block font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                       Genel Toplam
                     </span>
-                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                       Tüm Vergiler Dahil
                     </span>
                   </div>

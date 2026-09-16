@@ -130,7 +130,7 @@ export function QuotesSummaryWidget() {
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Teklif Yönetimi & Süreçler
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 {quoteStats
                   ? `${quoteStats.totalQuotes} Toplam Teklif · ₺${Number(quoteStats.activeProposalsVolume || 0).toLocaleString("tr-TR")} Hacim`
                   : "Güncel tekliflerin durumları"}
@@ -151,7 +151,7 @@ export function QuotesSummaryWidget() {
           {/* Quick Stats Pills */}
           <div className="mb-3.5 grid grid-cols-3 gap-2">
             <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
-              <span className="block font-medium text-[9px] text-muted-foreground uppercase">
+              <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Onay Bekleyen
               </span>
               <span className="font-bold text-primary text-xs">
@@ -159,7 +159,7 @@ export function QuotesSummaryWidget() {
               </span>
             </div>
             <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
-              <span className="block font-medium text-[9px] text-muted-foreground uppercase">
+              <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Müşteride
               </span>
               <span className="font-bold text-foreground text-xs">
@@ -167,7 +167,7 @@ export function QuotesSummaryWidget() {
               </span>
             </div>
             <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
-              <span className="block font-medium text-[9px] text-muted-foreground uppercase">
+              <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Kabul Edilen
               </span>
               <span className="font-bold text-emerald-500 text-xs">
@@ -205,12 +205,12 @@ export function QuotesSummaryWidget() {
                 >
                   <div className="truncate pr-2">
                     <div className="flex items-center gap-1.5 font-semibold text-foreground text-xs">
-                      <span className="font-mono text-[11px] text-muted-foreground">
+                      <span className="font-mono text-2xs text-muted-foreground">
                         {q.quoteNumber} (R{q.revisionNumber})
                       </span>
                       <span className="truncate">{q.title}</span>
                     </div>
-                    <div className="mt-0.5 truncate font-medium text-[11px] text-muted-foreground">
+                    <div className="mt-0.5 truncate font-medium text-2xs text-muted-foreground">
                       {q.customerName}
                     </div>
                   </div>
@@ -223,7 +223,7 @@ export function QuotesSummaryWidget() {
                       })}
                     </span>
                     <Badge
-                      className="px-1.5 py-0 text-[10px]"
+                      className="px-1.5 py-0 text-3xs"
                       variant={getStatusVariant(q.status)}
                     >
                       {getStatusLabel(q.status)}

@@ -176,7 +176,7 @@ export function DashboardSharePopover({
                 <h3 className="font-bold text-zinc-900 text-xs dark:text-foreground">
                   Panoyu Paylaş
                 </h3>
-                <p className="text-[10px] text-zinc-500 dark:text-muted-foreground">
+                <p className="text-3xs text-zinc-500 dark:text-muted-foreground">
                   Görünümü paylaş veya rapor olarak indir
                 </p>
               </div>
@@ -192,12 +192,12 @@ export function DashboardSharePopover({
 
           {/* Quick URL Copy Bar */}
           <div className="border-border border-b bg-zinc-50/70 p-3 dark:border-border dark:bg-muted/30">
-            <label className="mb-1.5 block font-semibold text-[10px] text-zinc-500 dark:text-muted-foreground">
+            <label className="mb-1.5 block font-semibold text-3xs text-zinc-500 dark:text-muted-foreground">
               Mevcut Görünüm Bağlantısı ({activeTab})
             </label>
             <div className="flex items-center gap-1.5">
               <input
-                className="w-full truncate rounded-xl border border-border bg-card px-2.5 py-1.5 text-[11px] text-zinc-600 focus:outline-none dark:border-border dark:bg-card dark:text-zinc-300"
+                className="w-full truncate rounded-xl border border-border bg-card px-2.5 py-1.5 text-2xs text-zinc-600 focus:outline-none dark:border-border dark:bg-card dark:text-zinc-300"
                 readOnly
                 value={getShareableUrl()}
               />
@@ -236,7 +236,7 @@ export function DashboardSharePopover({
                   <div className="font-bold text-zinc-900 dark:text-foreground">
                     Cihazla Paylaş
                   </div>
-                  <div className="text-[11px] text-zinc-500">
+                  <div className="text-2xs text-zinc-500">
                     WhatsApp, e-posta veya diğer uygulamalarla
                   </div>
                 </div>
@@ -256,7 +256,7 @@ export function DashboardSharePopover({
                 <div className="font-bold text-zinc-900 dark:text-foreground">
                   Ekip Sohbetine Gönder
                 </div>
-                <div className="text-[11px] text-zinc-500">
+                <div className="text-2xs text-zinc-500">
                   Özet kartı olarak canlı mesajlaşma kanalına ilet
                 </div>
               </div>
@@ -275,7 +275,7 @@ export function DashboardSharePopover({
                 <div className="font-bold text-zinc-900 dark:text-foreground">
                   PDF / Yazdır
                 </div>
-                <div className="text-[11px] text-zinc-500">
+                <div className="text-2xs text-zinc-500">
                   Temiz sayfa düzeninde yazıcı veya PDF çıktısı al
                 </div>
               </div>
@@ -294,7 +294,7 @@ export function DashboardSharePopover({
                 <div className="font-bold text-zinc-900 dark:text-foreground">
                   CSV Olarak İndir
                 </div>
-                <div className="text-[11px] text-zinc-500">
+                <div className="text-2xs text-zinc-500">
                   Mevcut sekmedeki KPI metriklerini Excel/CSV formatında indir
                 </div>
               </div>

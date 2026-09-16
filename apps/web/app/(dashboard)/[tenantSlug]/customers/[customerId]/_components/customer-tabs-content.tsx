@@ -232,7 +232,7 @@ export function CustomerTabsContent({
               <span>{tab.label}</span>
               {tab.count !== undefined && (
                 <span
-                  className={`rounded-full px-1.5 py-0.2 font-semibold text-[10px] ${
+                  className={`rounded-full px-1.5 py-0.2 font-semibold text-3xs ${
                     isActive
                       ? "bg-primary/10 text-primary"
                       : "bg-muted text-muted-foreground"
@@ -252,7 +252,7 @@ export function CustomerTabsContent({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <Card>
               <CardContent className="p-3.5">
-                <div className="font-medium text-[11px] text-muted-foreground">
+                <div className="font-medium text-2xs text-muted-foreground">
                   Toplam Ciro
                 </div>
                 <div className="mt-1 font-bold text-base text-foreground tracking-tight sm:text-lg">
@@ -265,7 +265,7 @@ export function CustomerTabsContent({
             </Card>
             <Card>
               <CardContent className="p-3.5">
-                <div className="font-medium text-[11px] text-muted-foreground">
+                <div className="font-medium text-2xs text-muted-foreground">
                   Fırsatlar
                 </div>
                 <div className="mt-1 font-bold text-base text-foreground tracking-tight sm:text-lg">
@@ -275,7 +275,7 @@ export function CustomerTabsContent({
             </Card>
             <Card>
               <CardContent className="p-3.5">
-                <div className="font-medium text-[11px] text-muted-foreground">
+                <div className="font-medium text-2xs text-muted-foreground">
                   Teklifler
                 </div>
                 <div className="mt-1 font-bold text-base text-foreground tracking-tight sm:text-lg">
@@ -285,7 +285,7 @@ export function CustomerTabsContent({
             </Card>
             <Card>
               <CardContent className="p-3.5">
-                <div className="font-medium text-[11px] text-muted-foreground">
+                <div className="font-medium text-2xs text-muted-foreground">
                   Destek Talepleri
                 </div>
                 <div className="mt-1 font-bold text-base text-foreground tracking-tight sm:text-lg">
@@ -335,7 +335,7 @@ export function CustomerTabsContent({
                           {act.title}
                         </span>
                       </div>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-3xs text-muted-foreground">
                         {new Date(act.performedAt).toLocaleDateString("tr-TR")}
                       </span>
                     </div>
@@ -385,7 +385,7 @@ export function CustomerTabsContent({
                           {deal.stageName}
                         </Badge>
                       </div>
-                      <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="mt-1 flex items-center gap-3 text-2xs text-muted-foreground">
                         <span>
                           Sorumlu: {deal.assignedUserName || "Atanmadı"}
                         </span>
@@ -456,7 +456,7 @@ export function CustomerTabsContent({
                           {quote.status}
                         </Badge>
                       </div>
-                      <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="mt-1 flex items-center gap-3 text-2xs text-muted-foreground">
                         <span>Revizyon: v{quote.revisionNumber}</span>
                         <span>
                           Tarih:{" "}
@@ -540,7 +540,7 @@ export function CustomerTabsContent({
                             : "Beklemede"}
                         </Badge>
                       </div>
-                      <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="mt-1 flex items-center gap-3 text-2xs text-muted-foreground">
                         <span>{order.itemsCount} Kalem Ürün</span>
                         <span>
                           Tarih:{" "}
@@ -624,7 +624,7 @@ export function CustomerTabsContent({
                           {ticket.status}
                         </Badge>
                       </div>
-                      <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="mt-1 flex items-center gap-3 text-2xs text-muted-foreground">
                         <span>Kategori: {ticket.category}</span>
                         <span>Mesaj: {ticket.messageCount}</span>
                         {ticket.isSlaBreached && (
@@ -694,7 +694,7 @@ export function CustomerTabsContent({
                           <div className="font-bold text-foreground text-xs">
                             {contact.fullName}
                           </div>
-                          <div className="text-[11px] text-muted-foreground">
+                          <div className="text-2xs text-muted-foreground">
                             {contact.title || "Yetkili"}
                           </div>
                         </div>
@@ -723,7 +723,7 @@ export function CustomerTabsContent({
 
                     <div className="mt-4 flex justify-end border-border/60 border-t pt-2.5">
                       <Button
-                        className="h-7 text-[11px] text-destructive hover:bg-destructive/10"
+                        className="h-7 text-2xs text-destructive hover:bg-destructive/10"
                         onClick={() => onDeleteContact(contact.id)}
                         size="sm"
                         variant="ghost"
@@ -759,7 +759,7 @@ export function CustomerTabsContent({
                     type="button"
                   >
                     <span>{tab.label}</span>
-                    <span className="rounded-full bg-muted px-1.5 py-0.2 text-[10px] text-muted-foreground">
+                    <span className="rounded-full bg-muted px-1.5 py-0.2 text-3xs text-muted-foreground">
                       {tab.count}
                     </span>
                   </button>
@@ -861,7 +861,7 @@ export function CustomerTabsContent({
                               </h5>
                             </div>
 
-                            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                            <div className="flex items-center gap-1.5 text-2xs text-muted-foreground">
                               <Clock className="h-3 w-3" />
                               <span>
                                 {isToday
@@ -965,7 +965,7 @@ export function CustomerTabsContent({
                   key={note.id}
                 >
                   <CardContent className="p-3.5">
-                    <div className="mb-2 flex items-center justify-between text-[11px] text-muted-foreground">
+                    <div className="mb-2 flex items-center justify-between text-2xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         {note.isPinned && (
                           <Badge className="gap-1" size="sm" variant="warning">
@@ -1065,7 +1065,7 @@ export function CustomerTabsContent({
             <CardContent className="space-y-4 p-4 pt-0">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div className="rounded-lg border border-border/60 bg-muted/30 p-3.5">
-                  <span className="font-medium text-[11px] text-muted-foreground">
+                  <span className="font-medium text-2xs text-muted-foreground">
                     Toplam Sipariş Tutarı
                   </span>
                   <div className="mt-1 font-bold text-base text-foreground tracking-tight sm:text-lg">
@@ -1077,7 +1077,7 @@ export function CustomerTabsContent({
                 </div>
 
                 <div className="rounded-lg border border-border/60 bg-muted/30 p-3.5">
-                  <span className="font-medium text-[11px] text-muted-foreground">
+                  <span className="font-medium text-2xs text-muted-foreground">
                     Tahsil Edilen (Ödenen)
                   </span>
                   <div className="mt-1 font-bold text-base text-emerald-600 tracking-tight sm:text-lg">
@@ -1089,7 +1089,7 @@ export function CustomerTabsContent({
                 </div>
 
                 <div className="rounded-lg border border-border/60 bg-muted/30 p-3.5">
-                  <span className="font-medium text-[11px] text-muted-foreground">
+                  <span className="font-medium text-2xs text-muted-foreground">
                     Bekleyen Bakiye
                   </span>
                   <div

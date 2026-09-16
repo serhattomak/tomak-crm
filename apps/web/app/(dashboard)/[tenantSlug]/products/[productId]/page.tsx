@@ -481,14 +481,14 @@ export default function ProductDetailPage() {
                   {product.name}
                 </h1>
                 <span
-                  className={`rounded-lg border px-2 py-0.5 font-bold text-[10px] ${getTypeBadge(
+                  className={`rounded-lg border px-2 py-0.5 font-bold text-3xs ${getTypeBadge(
                     product.type
                   )}`}
                 >
                   {product.type}
                 </span>
                 {product.trackInventory && product.isLowStock && (
-                  <span className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-[10px] text-amber-700">
+                  <span className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-3xs text-amber-700">
                     Kritik Stok
                   </span>
                 )}
@@ -550,7 +550,7 @@ export default function ProductDetailPage() {
               <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Ürün Görselleri
               </h3>
-              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                 {(product.images ?? []).length}/{MAX_PRODUCT_IMAGES}
               </span>
             </div>
@@ -605,7 +605,7 @@ export default function ProductDetailPage() {
                 Fiyatlandırma & Karlılık
               </h3>
               <span
-                className={`rounded-lg px-2 py-0.5 font-bold text-[10px] ${
+                className={`rounded-lg px-2 py-0.5 font-bold text-3xs ${
                   product.profitMargin >= 40
                     ? "bg-emerald-100 text-emerald-800"
                     : product.profitMargin > 0
@@ -678,7 +678,7 @@ export default function ProductDetailPage() {
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="rounded-2xl bg-blue-50/60 p-3">
-                  <span className="font-semibold text-[10px] text-blue-600 uppercase">
+                  <span className="font-semibold text-3xs text-blue-600 uppercase">
                     Mevcut Stok
                   </span>
                   <div className="mt-1 font-extrabold text-blue-950 text-lg">
@@ -687,7 +687,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
                     Kullanılabilir
                   </span>
                   <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
@@ -696,7 +696,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
                     Rezerve
                   </span>
                   <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
@@ -705,7 +705,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
                     Kritik Eşik
                   </span>
                   <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
@@ -789,7 +789,7 @@ export default function ProductDetailPage() {
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     SEO & Vitrin
                   </h4>
-                  <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold font-mono text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                  <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold font-mono text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                     /{product.slug ?? slugifyTr(product.name)}
                   </span>
                 </div>
@@ -916,7 +916,7 @@ export default function ProductDetailPage() {
                                 : `+${mov.quantity}`}{" "}
                               {product.unit})
                             </div>
-                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                            <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                               {mov.reason || "Kayıtlı açıklama yok"}
                             </div>
                           </div>
@@ -926,7 +926,7 @@ export default function ProductDetailPage() {
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {mov.previousStock} → {mov.newStock} {product.unit}
                           </div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </div>
                         </div>
@@ -1001,7 +1001,7 @@ export default function ProductDetailPage() {
                             <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                               {v.name}
                             </TableCell>
-                            <TableCell className="px-4 py-3.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                            <TableCell className="px-4 py-3.5 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
                               {v.sku || v.barcode || "—"}
                             </TableCell>
                             <TableCell className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
@@ -1086,12 +1086,12 @@ export default function ProductDetailPage() {
                               : `+${mov.quantity}`}{" "}
                             {product.unit})
                           </span>
-                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                             {new Date(mov.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
 
-                        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-1 flex flex-wrap items-center gap-3 text-2xs text-zinc-500 dark:text-zinc-400">
                           <span>
                             Önceki: <strong>{mov.previousStock}</strong> → Yeni:{" "}
                             <strong>
@@ -1132,7 +1132,7 @@ export default function ProductDetailPage() {
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
-                    <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <span className="font-medium text-2xs text-zinc-500 dark:text-zinc-400">
                       Maliyet (Alış)
                     </span>
                     <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
@@ -1144,7 +1144,7 @@ export default function ProductDetailPage() {
                   </div>
 
                   <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
-                    <span className="font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <span className="font-medium text-2xs text-zinc-500 dark:text-zinc-400">
                       Satış Fiyatı
                     </span>
                     <div className="mt-1 font-extrabold text-blue-600 text-lg">
@@ -1156,7 +1156,7 @@ export default function ProductDetailPage() {
                   </div>
 
                   <div className="rounded-2xl bg-emerald-50/70 p-4">
-                    <span className="font-medium text-[11px] text-emerald-800">
+                    <span className="font-medium text-2xs text-emerald-800">
                       Net Brüt Kar
                     </span>
                     <div className="mt-1 font-extrabold text-emerald-700 text-lg">
@@ -1180,7 +1180,7 @@ export default function ProductDetailPage() {
                   <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Fiyat Değişiklik Geçmişi
                   </h4>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                     Ürünün alış ve satış fiyatlarında yapılan tüm güncellemeler
                     otomatik kaydedilir.
                   </p>
@@ -1216,7 +1216,7 @@ export default function ProductDetailPage() {
                               {hist.changeReason || "Fiyat Güncellemesi"}
                             </span>
                           </div>
-                          <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                             {new Date(hist.createdAt).toLocaleString("tr-TR")}
                           </span>
                         </div>
@@ -1230,11 +1230,11 @@ export default function ProductDetailPage() {
                                 : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                            <div className="flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
                               <span>Satış Fiyatı</span>
                               {sellingChanged && (
                                 <span
-                                  className={`flex items-center font-bold text-[10px] ${
+                                  className={`flex items-center font-bold text-3xs ${
                                     sellingDiff >= 0
                                       ? "text-emerald-600"
                                       : "text-rose-600"
@@ -1282,11 +1282,11 @@ export default function ProductDetailPage() {
                                 : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                            <div className="flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
                               <span>Maliyet (Alış)</span>
                               {costChanged && (
                                 <span
-                                  className={`flex items-center font-bold text-[10px] ${
+                                  className={`flex items-center font-bold text-3xs ${
                                     costDiff <= 0
                                       ? "text-emerald-600"
                                       : "text-amber-600"

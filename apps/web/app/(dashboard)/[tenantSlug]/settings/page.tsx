@@ -121,7 +121,7 @@ export default function WorkspaceSettingsPage() {
               type="text"
               value={activeTenant?.slug || ""}
             />
-            <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
               Slug is permanent and used in URL paths and database partition
               keys.
             </p>
@@ -176,16 +176,16 @@ export default function WorkspaceSettingsPage() {
                   ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Order.Created
                   </span>
-                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Quote.Accepted
                   </span>
-                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Ticket.Created
                   </span>
-                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                     Deal.StageChanged
                   </span>
                 </div>

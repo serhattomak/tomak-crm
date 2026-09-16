@@ -66,7 +66,7 @@ function GenericImapFields({
       <div className="grid grid-cols-3 gap-2">
         <div className="col-span-2">
           <label
-            className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+            className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
             htmlFor="account-imap-host"
           >
             IMAP Sunucusu *
@@ -82,7 +82,7 @@ function GenericImapFields({
         </div>
         <div>
           <label
-            className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+            className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
             htmlFor="account-imap-port"
           >
             IMAP Port
@@ -104,7 +104,7 @@ function GenericImapFields({
       <div className="grid grid-cols-3 gap-2">
         <div className="col-span-2">
           <label
-            className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+            className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
             htmlFor="account-smtp-host"
           >
             SMTP Sunucusu *
@@ -120,7 +120,7 @@ function GenericImapFields({
         </div>
         <div>
           <label
-            className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+            className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
             htmlFor="account-smtp-port"
           >
             SMTP Port
@@ -160,7 +160,7 @@ function TestResultCard({
     >
       <p className="mb-1 font-semibold">{result.message}</p>
       {provider === "generic_imap" ? (
-        <div className="space-y-0.5 text-[11px]">
+        <div className="space-y-0.5 text-2xs">
           <div>{`IMAP: ${result.imapSuccess ? "✓ Bağlandı" : `✗ ${result.imapMessage}`}`}</div>
           <div>{`SMTP: ${result.smtpSuccess ? "✓ Bağlandı" : `✗ ${result.smtpMessage}`}`}</div>
         </div>
@@ -561,7 +561,7 @@ export function EmailAccountModal({
                 {isEdit ? null : " *"}
               </label>
               {isEdit && account?.secretMasked ? (
-                <span className="font-mono text-[11px] text-zinc-400">
+                <span className="font-mono text-2xs text-zinc-400">
                   Mevcut: {account.secretMasked}
                 </span>
               ) : null}
@@ -593,7 +593,7 @@ export function EmailAccountModal({
                 )}
               </button>
             </div>
-            <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
               Şifreler AES-256 ile veritabanında şifrelenerek saklanır; hiçbir
               zaman açık gösterilmez.
             </p>

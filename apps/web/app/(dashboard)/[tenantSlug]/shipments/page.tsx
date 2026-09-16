@@ -484,7 +484,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {stats?.totalShipments ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
             Kayıtlı paket
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-amber-600 dark:text-amber-400">
             {stats?.preparingCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
             Depo masasında
           </div>
         </div>
@@ -514,7 +514,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-indigo-600 dark:text-indigo-400">
             {stats?.inTransitCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
             Kurye / Taşıyıcıda
           </div>
         </div>
@@ -529,7 +529,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-emerald-600 dark:text-emerald-400">
             {stats?.deliveredTodayCount ?? 0}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
             Başarılı teslimat
           </div>
         </div>
@@ -544,7 +544,7 @@ export default function ShipmentsPage() {
           <div className="mt-2 font-bold text-2xl text-teal-600 dark:text-teal-400">
             %{stats?.deliverySuccessRatePercentage ?? 100}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
             {stats?.pendingReturnsCount ?? 0} bekleyen iade
           </div>
         </div>
@@ -566,7 +566,7 @@ export default function ShipmentsPage() {
         >
           <Package className="h-4 w-4" />
           <span>Giden Kargolar (Sevkiyatlar)</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             {shipments.length}
           </span>
         </button>
@@ -585,7 +585,7 @@ export default function ShipmentsPage() {
         >
           <RotateCcw className="h-4 w-4" />
           <span>İade Kargolar (Tersine Lojistik)</span>
-          <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-[10px] text-amber-700 dark:bg-amber-950 dark:text-amber-400">
+          <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-3xs text-amber-700 dark:bg-amber-950 dark:text-amber-400">
             {returns.length}
           </span>
         </button>
@@ -601,7 +601,7 @@ export default function ShipmentsPage() {
         >
           <Building2 className="h-4 w-4" />
           <span>Taşıyıcı Kargo Firmaları</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             {carriers.length}
           </span>
         </button>
@@ -726,7 +726,7 @@ export default function ShipmentsPage() {
                           <p className="font-medium text-zinc-600 dark:text-zinc-300">
                             Kayıtlı kargo gönderisi bulunamadı.
                           </p>
-                          <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <p className="text-2xs text-zinc-400 dark:text-zinc-500">
                             Filtreleri değiştirebilir veya yeni bir kargo paketi
                             oluşturabilirsiniz.
                           </p>
@@ -749,7 +749,7 @@ export default function ShipmentsPage() {
                               <span className="font-bold text-zinc-900 dark:text-zinc-100">
                                 {s.shipmentNumber}
                               </span>
-                              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                                 {new Date(s.createdAt).toLocaleDateString(
                                   "tr-TR",
                                   {
@@ -771,11 +771,11 @@ export default function ShipmentsPage() {
                                 {s.customerName}
                               </span>
                               {s.orderNumber ? (
-                                <span className="font-mono text-[11px] text-blue-600 dark:text-blue-400">
+                                <span className="font-mono text-2xs text-blue-600 dark:text-blue-400">
                                   {s.orderNumber}
                                 </span>
                               ) : (
-                                <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                                <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                                   Doğrudan Sevkiyat
                                 </span>
                               )}
@@ -790,7 +790,7 @@ export default function ShipmentsPage() {
                               </span>
                               {s.trackingNumber ? (
                                 <div className="flex items-center gap-1.5">
-                                  <span className="font-mono text-[11px] text-zinc-600 dark:text-zinc-300">
+                                  <span className="font-mono text-2xs text-zinc-600 dark:text-zinc-300">
                                     {s.trackingNumber}
                                   </span>
                                   <button
@@ -819,7 +819,7 @@ export default function ShipmentsPage() {
                                   )}
                                 </div>
                               ) : (
-                                <span className="text-[11px] text-zinc-400 italic dark:text-zinc-500">
+                                <span className="text-2xs text-zinc-400 italic dark:text-zinc-500">
                                   Takip no girilmedi
                                 </span>
                               )}
@@ -828,7 +828,7 @@ export default function ShipmentsPage() {
 
                           {/* 4. Package & Desi */}
                           <TableCell className="px-4 py-3.5">
-                            <div className="flex flex-col text-[11px] text-zinc-600 dark:text-zinc-300">
+                            <div className="flex flex-col text-2xs text-zinc-600 dark:text-zinc-300">
                               <span>
                                 {s.packageCount} Koli / Paket (
                                 {s.items?.length || 0} Kalem Ürün)
@@ -846,7 +846,7 @@ export default function ShipmentsPage() {
                                 {s.recipientName}
                               </span>
                               <span
-                                className="truncate text-[11px] text-zinc-500 dark:text-zinc-400"
+                                className="truncate text-2xs text-zinc-500 dark:text-zinc-400"
                                 title={s.recipientAddress}
                               >
                                 {s.recipientCity
@@ -859,7 +859,7 @@ export default function ShipmentsPage() {
                           {/* 6. Status Badge */}
                           <TableCell className="px-4 py-3.5">
                             <span
-                              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-[11px] ${statusConf.bg} ${statusConf.text} ${statusConf.border}`}
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-2xs ${statusConf.bg} ${statusConf.text} ${statusConf.border}`}
                             >
                               <StatusIcon className="h-3 w-3" />
                               {statusConf.label}
@@ -897,7 +897,7 @@ export default function ShipmentsPage() {
 
                               {/* Advance Status */}
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-[11px] text-blue-700 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/60"
+                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-2xs text-blue-700 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/60"
                                 onClick={() => {
                                   setSelectedShipmentForStatus(s);
                                   setIsUpdateStatusModalOpen(true);
@@ -1045,7 +1045,7 @@ export default function ShipmentsPage() {
                                   <Copy className="h-3 w-3" />
                                 </button>
                               </div>
-                              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                                 {new Date(r.createdAt).toLocaleDateString(
                                   "tr-TR"
                                 )}
@@ -1062,7 +1062,7 @@ export default function ShipmentsPage() {
                           </TableCell>
 
                           <TableCell className="px-4 py-3.5">
-                            <div className="flex flex-col text-[11px]">
+                            <div className="flex flex-col text-2xs">
                               <span>{r.carrierName || "Taşıyıcı Yok"}</span>
                               <span className="font-mono text-zinc-400 dark:text-zinc-500">
                                 {r.trackingNumber || "Takip No Yok"}
@@ -1071,14 +1071,14 @@ export default function ShipmentsPage() {
                           </TableCell>
 
                           <TableCell className="px-4 py-3.5">
-                            <span className="text-[11px] text-zinc-500 italic dark:text-zinc-400">
+                            <span className="text-2xs text-zinc-500 italic dark:text-zinc-400">
                               {r.inspectionNotes || "Henüz kontrol edilmedi"}
                             </span>
                           </TableCell>
 
                           <TableCell className="px-4 py-3.5">
                             <span
-                              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-[11px] ${retConf.bg} ${retConf.text} ${retConf.border}`}
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium text-2xs ${retConf.bg} ${retConf.text} ${retConf.border}`}
                             >
                               <RetIcon className="h-3 w-3" />
                               {retConf.label}
@@ -1088,7 +1088,7 @@ export default function ShipmentsPage() {
                           <TableCell className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-[11px] text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
+                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-2xs text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
                                 onClick={() => {
                                   setSelectedReturnForStatus(r);
                                   setIsUpdateReturnModalOpen(true);
@@ -1156,20 +1156,20 @@ export default function ShipmentsPage() {
                         <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {c.name}
                         </h2>
-                        <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                        <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
                           {c.code}
                         </span>
                       </div>
                     </div>
 
                     {c.isDefault && (
-                      <span className="rounded-full bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+                      <span className="rounded-full bg-blue-50 px-2 py-0.5 font-bold text-3xs text-blue-600 dark:bg-blue-950 dark:text-blue-400">
                         Varsayılan
                       </span>
                     )}
                   </div>
 
-                  <div className="mt-4 space-y-2 border-border border-t pt-3 text-[11px] text-zinc-600 dark:text-zinc-300">
+                  <div className="mt-4 space-y-2 border-border border-t pt-3 text-2xs text-zinc-600 dark:text-zinc-300">
                     <div className="flex justify-between">
                       <span className="text-zinc-400 dark:text-zinc-500">
                         Müşteri Hesap No:
@@ -1198,7 +1198,7 @@ export default function ShipmentsPage() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between border-border border-t pt-3">
-                  <span className="block max-w-[200px] truncate text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="block max-w-[200px] truncate text-3xs text-zinc-400 dark:text-zinc-500">
                     {c.trackingUrlTemplate || "Manuel takip bağlantısı"}
                   </span>
                   <button
@@ -1294,7 +1294,7 @@ export default function ShipmentsPage() {
                   Toplam İade
                 </span>
               </div>
-              <div className="mt-4 rounded-xl bg-amber-50/50 p-3 text-[11px] text-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+              <div className="mt-4 rounded-xl bg-amber-50/50 p-3 text-2xs text-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
                 Müşteri memnuniyetini artırmak için iade kalite kontrollerini 24
                 saat içinde tamamlayınız.
               </div>
@@ -1727,7 +1727,7 @@ function CreateShipmentModal({
                 Paket İçeriği (Ürün Kalemleri)
               </h3>
               <button
-                className="flex items-center gap-1 font-semibold text-[11px] text-blue-600 hover:underline dark:text-blue-400"
+                className="flex items-center gap-1 font-semibold text-2xs text-blue-600 hover:underline dark:text-blue-400"
                 onClick={addItemRow}
                 type="button"
               >
@@ -1900,7 +1900,7 @@ function UpdateStatusModal({
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Durumunu İlerlet
             </DialogTitle>
-            <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+            <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
               {shipment.shipmentNumber}
             </span>
           </div>
@@ -2072,7 +2072,7 @@ function PrintLabelModal({
                 <span className="font-black text-xl tracking-tight">
                   {shipment.carrierName || "STANDART KARGO"}
                 </span>
-                <span className="block text-[10px] text-zinc-600 uppercase dark:text-zinc-400">
+                <span className="block text-3xs text-zinc-600 uppercase dark:text-zinc-400">
                   SEVKİYAT İRSALİYE ETİKETİ
                 </span>
               </div>
@@ -2098,25 +2098,25 @@ function PrintLabelModal({
             <div className="grid grid-cols-2 gap-4 border-zinc-900 border-b-2 pb-4 text-xs dark:border-zinc-700">
               {/* Sender */}
               <div className="border-border border-r pr-3">
-                <span className="block font-bold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
+                <span className="block font-bold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
                   GÖNDERİCİ:
                 </span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   CRM Monorepo Lojistik Deposu
                 </span>
-                <p className="text-[11px] text-zinc-700 leading-tight dark:text-zinc-300">
+                <p className="text-2xs text-zinc-700 leading-tight dark:text-zinc-300">
                   İkitelli OSB Mah. Sanayi Cad. No: 42
                   <br />
                   Başakşehir / İSTANBUL
                 </p>
-                <span className="mt-1 block text-[10px] text-zinc-500 dark:text-zinc-400">
+                <span className="mt-1 block text-3xs text-zinc-500 dark:text-zinc-400">
                   Tel: 0850 000 00 00
                 </span>
               </div>
 
               {/* Recipient */}
               <div className="pl-1">
-                <span className="block font-bold text-[10px] text-zinc-500 uppercase dark:text-zinc-400">
+                <span className="block font-bold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
                   ALICI (TESLİMAT):
                 </span>
                 <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -2137,7 +2137,7 @@ function PrintLabelModal({
             </div>
 
             {/* Bottom Meta */}
-            <div className="mt-3 flex items-center justify-between font-mono text-[10px] text-zinc-600 dark:text-zinc-400">
+            <div className="mt-3 flex items-center justify-between font-mono text-3xs text-zinc-600 dark:text-zinc-400">
               <div>
                 <span>SİPARİŞ NO: {shipment.orderNumber || "MANUEL"}</span>
                 <span className="ml-3">REF: {shipment.shipmentNumber}</span>
@@ -2198,7 +2198,7 @@ function ShipmentDetailDrawer({
             </span>
             <div className="mt-1 flex items-center gap-2">
               <span
-                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-medium text-[10px] ${statusConf.bg} ${statusConf.text} ${statusConf.border}`}
+                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-medium text-3xs ${statusConf.bg} ${statusConf.text} ${statusConf.border}`}
               >
                 <StatusIcon className="h-2.5 w-2.5" />
                 {statusConf.label}
@@ -2220,7 +2220,7 @@ function ShipmentDetailDrawer({
           {/* Quick Info Grid */}
           <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50 dark:bg-zinc-900/60">
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                 Müşteri
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2228,7 +2228,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                 Taşıyıcı
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2236,7 +2236,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                 Takip No
               </span>
               <span className="block font-mono font-semibold text-blue-600 dark:text-blue-400">
@@ -2244,7 +2244,7 @@ function ShipmentDetailDrawer({
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+              <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                 Paket & Desi
               </span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2287,7 +2287,7 @@ function ShipmentDetailDrawer({
                       {it.productName}
                     </span>
                     {it.sku && (
-                      <span className="block font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <span className="block font-mono text-3xs text-zinc-400 dark:text-zinc-500">
                         {it.sku}
                       </span>
                     )}
@@ -2313,7 +2313,7 @@ function ShipmentDetailDrawer({
                   <span className="font-bold text-zinc-900 dark:text-zinc-100">
                     {h.status}
                   </span>
-                  <span className="ml-2 text-[10px] text-zinc-400 dark:text-zinc-500">
+                  <span className="ml-2 text-3xs text-zinc-400 dark:text-zinc-500">
                     {new Date(h.createdAt).toLocaleDateString("tr-TR", {
                       day: "2-digit",
                       hour: "2-digit",
@@ -2322,12 +2322,12 @@ function ShipmentDetailDrawer({
                     })}
                   </span>
                   {h.location && (
-                    <span className="block text-[11px] text-zinc-600 dark:text-zinc-300">
+                    <span className="block text-2xs text-zinc-600 dark:text-zinc-300">
                       Lokasyon: {h.location}
                     </span>
                   )}
                   {h.description && (
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                       {h.description}
                     </p>
                   )}
@@ -2617,7 +2617,7 @@ function UpdateReturnStatusModal({
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               İade Kargo Kabul & Kontrol
             </DialogTitle>
-            <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+            <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
               {returnShipment.returnCode}
             </span>
           </div>
@@ -2842,7 +2842,7 @@ function CreateCarrierModal({
               type="text"
               value={trackingUrlTemplate}
             />
-            <span className="mt-1 block text-[10px] text-zinc-400 dark:text-zinc-500">
+            <span className="mt-1 block text-3xs text-zinc-400 dark:text-zinc-500">
               Takip numarası için <code>{"{tracking_number}"}</code>{" "}
               kullanabilirsiniz.
             </span>

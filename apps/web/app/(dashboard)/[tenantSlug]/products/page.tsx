@@ -431,7 +431,7 @@ export default function ProductsPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
               Ürün & Hizmetler
             </h1>
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-[11px] text-blue-700">
+            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 font-bold text-2xs text-blue-700">
               {totalCount} Kayıt
             </span>
           </div>
@@ -491,7 +491,7 @@ export default function ProductsPage() {
               <Package className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>{stats?.physicalProductsCount ?? 0} Fiziksel</span>
             <span>•</span>
             <span>{stats?.servicesCount ?? 0} Hizmet</span>
@@ -518,7 +518,7 @@ export default function ProductsPage() {
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>
               Satış Değeri: ₺
               {(stats?.totalRetailValue ?? 0).toLocaleString("tr-TR", {
@@ -543,7 +543,7 @@ export default function ProductsPage() {
               <AlertTriangle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 font-semibold text-[11px] text-rose-600">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 font-semibold text-2xs text-rose-600">
             <span>{stats?.outOfStockCount ?? 0} Ürün Tükendi</span>
           </div>
         </div>
@@ -563,7 +563,7 @@ export default function ProductsPage() {
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Stoksuz katma değerli teklif kalemleri</span>
           </div>
         </div>
@@ -821,7 +821,7 @@ export default function ProductsPage() {
                           >
                             {p.name}
                           </Link>
-                          <div className="flex items-center gap-2 font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <div className="flex items-center gap-2 font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                             {p.sku && <span>SKU: {p.sku}</span>}
                             {p.barcode && (
                               <>
@@ -843,11 +843,11 @@ export default function ProductsPage() {
                     </TableCell>
 
                     <TableCell className="px-4 py-4">
-                      <div className="font-medium text-[11px] text-zinc-800 dark:text-zinc-200">
+                      <div className="font-medium text-2xs text-zinc-800 dark:text-zinc-200">
                         {p.categoryName || "Kategorisiz"}
                       </div>
                       {p.brand && (
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                           {p.brand}
                         </div>
                       )}
@@ -856,14 +856,14 @@ export default function ProductsPage() {
                     <TableCell className="px-4 py-4">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span
-                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getTypeBadge(
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-3xs ${getTypeBadge(
                             p.type
                           )}`}
                         >
                           {getTypeLabel(p.type)}
                         </span>
                         <span
-                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getStatusBadge(
+                          className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-semibold text-3xs ${getStatusBadge(
                             p.status
                           )}`}
                         >
@@ -888,17 +888,17 @@ export default function ProductsPage() {
                               {p.currentStock} {p.unit}
                             </span>
                             {p.isLowStock && (
-                              <span className="rounded bg-amber-100 px-1 py-0.2 font-bold text-[9px] text-amber-800">
+                              <span className="rounded bg-amber-100 px-1 py-0.2 font-bold text-3xs text-amber-800">
                                 Kritik
                               </span>
                             )}
                           </div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                             Min: {p.minStockLevel} {p.unit}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                        <span className="text-2xs text-zinc-400 dark:text-zinc-500">
                           — (Stoksuz)
                         </span>
                       )}
@@ -920,14 +920,14 @@ export default function ProductsPage() {
                           minimumFractionDigits: 2,
                         })}
                       </div>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                         KDV: %{p.taxRate}
                       </div>
                     </TableCell>
 
                     <TableCell className="px-4 py-4 text-right">
                       <span
-                        className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-[10px] ${
+                        className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-3xs ${
                           p.profitMargin >= 40
                             ? "bg-emerald-50 text-emerald-700"
                             : p.profitMargin > 0
@@ -944,7 +944,7 @@ export default function ProductsPage() {
                         {p.trackInventory && (
                           <PermissionGate permission="Products.StockAdjust">
                             <button
-                              className="flex h-7 items-center gap-1 rounded-lg border border-border px-2 font-semibold text-[10px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                              className="flex h-7 items-center gap-1 rounded-lg border border-border px-2 font-semibold text-3xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                               onClick={() => setStockAdjustProduct(p)}
                               title="Stok Hareketi Ekle"
                               type="button"
@@ -1000,14 +1000,14 @@ export default function ProductsPage() {
                     >
                       {p.name}
                     </Link>
-                    <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                    <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                       {p.categoryName || "Kategorisiz"}{" "}
                       {p.brand && `• ${p.brand}`}
                     </div>
                   </div>
 
                   <span
-                    className={`shrink-0 rounded-lg border px-2 py-0.5 font-semibold text-[10px] ${getTypeBadge(
+                    className={`shrink-0 rounded-lg border px-2 py-0.5 font-semibold text-3xs ${getTypeBadge(
                       p.type
                     )}`}
                   >
@@ -1018,7 +1018,7 @@ export default function ProductsPage() {
                 {/* Stock & Price Strip */}
                 <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                   <div>
-                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                       Satış Fiyatı
                     </span>
                     <div className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1029,7 +1029,7 @@ export default function ProductsPage() {
                     </div>
                   </div>
                   <div>
-                    <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                    <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                       Stok Miktarı
                     </span>
                     <div
@@ -1052,7 +1052,7 @@ export default function ProductsPage() {
               {/* Card Footer */}
               <div className="mt-4 flex items-center justify-between border-border border-t pt-3">
                 <span
-                  className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-[10px] ${
+                  className={`inline-flex items-center rounded-lg px-2 py-0.5 font-bold text-3xs ${
                     p.profitMargin >= 40
                       ? "bg-emerald-50 text-emerald-700"
                       : "bg-blue-50 text-blue-700"
@@ -1315,7 +1315,7 @@ function ProductGridCover({
           aria-hidden="true"
           className="h-8 w-8 text-zinc-300 dark:text-zinc-600"
         />
-        <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+        <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
           Görsel yok
         </span>
       </div>
@@ -1351,7 +1351,7 @@ function ProductGridCover({
         />
       )}
       {images.length > 1 && (
-        <span className="absolute right-2 bottom-2 rounded-lg bg-zinc-950/70 px-2 py-0.5 font-bold text-[10px] text-white">
+        <span className="absolute right-2 bottom-2 rounded-lg bg-zinc-950/70 px-2 py-0.5 font-bold text-3xs text-white">
           +{images.length - 1} görsel
         </span>
       )}
@@ -1727,7 +1727,7 @@ function CreateProductModal({
                 Fiyatlandırma & Vergi
               </h4>
               <span
-                className={`rounded-lg px-2 py-0.5 font-bold text-[11px] ${
+                className={`rounded-lg px-2 py-0.5 font-bold text-2xs ${
                   calculatedMargin >= 40
                     ? "bg-emerald-100 text-emerald-800"
                     : calculatedMargin > 0
@@ -2319,7 +2319,7 @@ function CategoryManagerModal({
                       <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {root.name}
                       </span>
-                      <span className="rounded-md bg-zinc-200/70 px-1.5 py-0.5 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
+                      <span className="rounded-md bg-zinc-200/70 px-1.5 py-0.5 font-bold text-3xs text-zinc-600 dark:text-zinc-400">
                         {root.productsCount} Ürün
                       </span>
                     </div>
@@ -2346,7 +2346,7 @@ function CategoryManagerModal({
                         <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                           {sub.name}
                         </span>
-                        <span className="font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <span className="font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                           ({sub.productsCount} Ürün)
                         </span>
                       </div>

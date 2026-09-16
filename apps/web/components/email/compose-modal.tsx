@@ -501,7 +501,7 @@ export function ComposeModal({
           {/* Account Selector + Template Picker */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <span className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
+              <span className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400">
                 Gönderici Hesap *
               </span>
               <Combobox
@@ -520,7 +520,7 @@ export function ComposeModal({
             </div>
 
             <div>
-              <span className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400">
+              <span className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400">
                 Şablon Seç (İsteğe Bağlı)
               </span>
               <Combobox
@@ -541,14 +541,14 @@ export function ComposeModal({
             <div>
               <div className="mb-1 flex items-center justify-between">
                 <label
-                  className="font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+                  className="font-medium text-2xs text-zinc-600 dark:text-zinc-400"
                   htmlFor="compose-to"
                 >
                   Alıcı (Kime) *
                 </label>
                 {showCc ? null : (
                   <button
-                    className="text-[11px] text-sky-600 hover:underline dark:text-sky-400"
+                    className="text-2xs text-sky-600 hover:underline dark:text-sky-400"
                     onClick={handleToggleCc}
                     type="button"
                   >
@@ -569,7 +569,7 @@ export function ComposeModal({
             {showCc ? (
               <div>
                 <label
-                  className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+                  className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
                   htmlFor="compose-cc"
                 >
                   Bilgi (Cc)
@@ -587,7 +587,7 @@ export function ComposeModal({
 
             <div>
               <label
-                className="mb-1 block font-medium text-[11px] text-zinc-600 dark:text-zinc-400"
+                className="mb-1 block font-medium text-2xs text-zinc-600 dark:text-zinc-400"
                 htmlFor="compose-subject"
               >
                 Konu *
@@ -629,7 +629,7 @@ export function ComposeModal({
                 </button>
               </div>
 
-              <span className="font-mono text-[11px] text-zinc-400">
+              <span className="font-mono text-2xs text-zinc-400">
                 {htmlBody.length} karakter
               </span>
             </div>

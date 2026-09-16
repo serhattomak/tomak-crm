@@ -89,7 +89,7 @@ export function DraggableWidgetWrapper({
         <div className="pointer-events-auto absolute -top-3 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/80 bg-background/95 px-2 py-0.5 opacity-0 shadow-md backdrop-blur-md transition-all duration-150 group-hover/widget:opacity-100">
           {/* Drag Handle */}
           <div
-            className="flex cursor-grab select-none items-center gap-1 rounded-full px-2 py-0.5 font-semibold text-[11px] text-muted-foreground hover:text-foreground active:cursor-grabbing"
+            className="flex cursor-grab select-none items-center gap-1 rounded-full px-2 py-0.5 font-semibold text-2xs text-muted-foreground hover:text-foreground active:cursor-grabbing"
             draggable={true}
             onDragEnd={onDragEnd}
             onDragStart={(e) => {

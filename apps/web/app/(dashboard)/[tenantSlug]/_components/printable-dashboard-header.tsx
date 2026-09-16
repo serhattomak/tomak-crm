@@ -63,10 +63,10 @@ export function PrintableDashboardHeader({
               year: "numeric",
             })}
           </div>
-          <div className="mt-1 text-[11px] text-muted-foreground">
+          <div className="mt-1 text-2xs text-muted-foreground">
             Hazırlayan: {userName || "Yetkili Kullanıcı"}
           </div>
-          <div className="mt-2 inline-block rounded-md bg-muted px-2 py-0.5 font-semibold text-[9px] text-muted-foreground uppercase tracking-wider">
+          <div className="mt-2 inline-block rounded-md bg-muted px-2 py-0.5 font-semibold text-3xs text-muted-foreground uppercase tracking-wider">
             Gizli & Kurum İçi
           </div>
         </div>

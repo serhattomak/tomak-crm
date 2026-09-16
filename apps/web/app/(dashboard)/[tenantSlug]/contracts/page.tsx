@@ -403,13 +403,13 @@ export default function ContractsPage() {
                     <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                       {c.title}
                     </div>
-                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                       {c.customerName || "—"}
                     </div>
                   </TableCell>
                   <TableCell className="px-4 py-3">
                     <span
-                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium text-[11px] ${
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium text-2xs ${
                         c.status === "Signed" || c.status === "Active"
                           ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
                           : c.status === "Draft"
@@ -681,7 +681,7 @@ export default function ContractsPage() {
                       </div>
                     )}
                     {selectedContract.auditHash && (
-                      <div className="break-all font-mono text-[10px]">
+                      <div className="break-all font-mono text-3xs">
                         <strong>SHA-256 Audit Hash:</strong>{" "}
                         {selectedContract.auditHash}
                       </div>

@@ -132,7 +132,7 @@ export function DealsTableWidget() {
               <CardTitle className="text-sm">
                 Sıcak Fırsatlar & Teklifler
               </CardTitle>
-              <CardDescription className="text-[11px]">
+              <CardDescription className="text-2xs">
                 En yüksek potansiyelli anlaşmalar ve teklifler
               </CardDescription>
             </div>
@@ -178,13 +178,13 @@ export function DealsTableWidget() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="h-8 text-[10px]">
+                  <TableHead className="h-8 text-3xs">
                     Anlaşma & Müşteri
                   </TableHead>
-                  <TableHead className="h-8 text-[10px]">Tutar</TableHead>
-                  <TableHead className="h-8 text-[10px]">Aşama</TableHead>
-                  <TableHead className="h-8 text-[10px]">Olasılık</TableHead>
-                  <TableHead className="h-8 text-right text-[10px]">
+                  <TableHead className="h-8 text-3xs">Tutar</TableHead>
+                  <TableHead className="h-8 text-3xs">Aşama</TableHead>
+                  <TableHead className="h-8 text-3xs">Olasılık</TableHead>
+                  <TableHead className="h-8 text-right text-3xs">
                     Temsilci
                   </TableHead>
                 </TableRow>
@@ -196,7 +196,7 @@ export function DealsTableWidget() {
                       <div className="max-w-[150px] truncate font-semibold text-foreground sm:max-w-xs">
                         {deal.title}
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <div className="mt-0.5 flex items-center gap-1 text-2xs text-muted-foreground">
                         <Building2 className="h-3 w-3 flex-none text-muted-foreground/70" />
                         <span className="truncate">{deal.customerName}</span>
                       </div>
@@ -223,7 +223,7 @@ export function DealsTableWidget() {
                             style={{ width: `${deal.probability}%` }}
                           />
                         </div>
-                        <span className="font-medium text-[11px] text-muted-foreground">
+                        <span className="font-medium text-2xs text-muted-foreground">
                           %{deal.probability}
                         </span>
                       </div>
@@ -232,7 +232,7 @@ export function DealsTableWidget() {
                     <TableCell className="whitespace-nowrap py-2 text-right">
                       <div className="flex items-center justify-end">
                         <div
-                          className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-primary/20 font-bold text-[10px] text-primary shadow-2xs"
+                          className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-primary/20 font-bold text-3xs text-primary shadow-2xs"
                           title={deal.assignedUserName || "Temsilci"}
                         >
                           {(deal.assignedUserName || "T")
@@ -249,7 +249,7 @@ export function DealsTableWidget() {
         </CardContent>
       </div>
 
-      <div className="flex items-center justify-between border-border/70 border-t px-4 py-2.5 font-medium text-[11px] text-muted-foreground">
+      <div className="flex items-center justify-between border-border/70 border-t px-4 py-2.5 font-medium text-2xs text-muted-foreground">
         <span>{deals.length} anlaşmanın potansiyeli:</span>
         <strong className="font-semibold text-foreground">
           ₺{totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}

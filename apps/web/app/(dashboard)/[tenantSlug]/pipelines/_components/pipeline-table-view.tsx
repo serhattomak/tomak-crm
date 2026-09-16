@@ -62,7 +62,7 @@ export function PipelineTableView({
               </TableCell>
               <TableCell>
                 <span
-                  className="inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-[10px]"
+                  className="inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs"
                   style={{
                     backgroundColor: deal.stageColor
                       ? `${deal.stageColor}15`
@@ -78,7 +78,7 @@ export function PipelineTableView({
               </TableCell>
               <TableCell>
                 <span
-                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-[10px] ${getPriorityBadgeClass(
+                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs ${getPriorityBadgeClass(
                     deal.priority
                   )}`}
                 >
@@ -87,7 +87,7 @@ export function PipelineTableView({
               </TableCell>
               <TableCell>
                 <span
-                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-[10px] ${getSourceBadgeClass(
+                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs ${getSourceBadgeClass(
                     deal.source
                   )}`}
                 >
@@ -98,7 +98,7 @@ export function PipelineTableView({
                 {deal.assignedUserId ? (
                   <div className="flex items-center gap-1.5">
                     <Avatar className="h-5 w-5">
-                      <AvatarFallback className="bg-primary/10 text-[10px] text-primary">
+                      <AvatarFallback className="bg-primary/10 text-3xs text-primary">
                         {deal.assignedUserName?.charAt(0) || "U"}
                       </AvatarFallback>
                     </Avatar>
@@ -106,7 +106,7 @@ export function PipelineTableView({
                   </div>
                 ) : (
                   <Badge
-                    className="text-[10px] text-amber-600"
+                    className="text-3xs text-amber-600"
                     variant="outline"
                   >
                     Açık Havuz
@@ -115,12 +115,12 @@ export function PipelineTableView({
               </TableCell>
               <TableCell>
                 {deal.isSlaBreached ? (
-                  <span className="inline-flex items-center gap-1 font-medium text-[10px] text-destructive">
+                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-destructive">
                     <AlertTriangle className="h-3.5 w-3.5" />
                     SLA Aşıldı
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 font-medium text-[10px] text-emerald-600">
+                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-600">
                     <Check className="h-3.5 w-3.5" />
                     Normal
                   </span>

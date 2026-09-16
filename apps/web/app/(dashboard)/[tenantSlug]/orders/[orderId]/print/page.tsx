@@ -153,7 +153,7 @@ export default function OrderPrintPage() {
               <div className="font-black text-lg uppercase tracking-tight">
                 {activeTenant?.name || "Şirket"}
               </div>
-              <div className="text-[11px] text-zinc-500">
+              <div className="text-2xs text-zinc-500">
                 {isProforma ? "Proforma Fatura / Teklif" : "Sipariş Belgesi"}
               </div>
             </div>
@@ -163,14 +163,14 @@ export default function OrderPrintPage() {
               {order.orderNumber}
             </div>
             <div className="mt-1 flex justify-end gap-1">
-              <span className="rounded-md border border-border bg-zinc-100 px-2 py-0.5 font-bold text-[10px]">
+              <span className="rounded-md border border-border bg-zinc-100 px-2 py-0.5 font-bold text-3xs">
                 {getLabel(order.status)}
               </span>
-              <span className="rounded-md border border-border bg-zinc-50 px-2 py-0.5 font-bold text-[10px]">
+              <span className="rounded-md border border-border bg-zinc-50 px-2 py-0.5 font-bold text-3xs">
                 {order.paymentStatus}
               </span>
             </div>
-            <div className="mt-1 text-[11px] text-zinc-500">
+            <div className="mt-1 text-2xs text-zinc-500">
               <div>
                 Sipariş Tarihi:{" "}
                 {new Date(order.orderDate).toLocaleDateString("tr-TR")}
@@ -190,7 +190,7 @@ export default function OrderPrintPage() {
         {/* Customer */}
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="rounded-xl border border-border bg-zinc-50 p-3">
-            <div className="font-extrabold text-[10px] text-blue-700 uppercase tracking-wider">
+            <div className="font-extrabold text-3xs text-blue-700 uppercase tracking-wider">
               Müşteri
             </div>
             <div className="mt-1 font-bold text-sm">{order.customerName}</div>
@@ -206,7 +206,7 @@ export default function OrderPrintPage() {
             )}
           </div>
           <div className="rounded-xl border border-border bg-zinc-50 p-3">
-            <div className="font-extrabold text-[10px] text-zinc-500 uppercase tracking-wider">
+            <div className="font-extrabold text-3xs text-zinc-500 uppercase tracking-wider">
               Ödeme Bilgisi
             </div>
             <div className="mt-1 text-xs">
@@ -219,7 +219,7 @@ export default function OrderPrintPage() {
                   <b>{new Date(order.dueDate).toLocaleDateString("tr-TR")}</b>
                 </div>
               )}
-              <div className="mt-1 text-[11px] text-zinc-500">
+              <div className="mt-1 text-2xs text-zinc-500">
                 Durum: {order.paymentStatus}
               </div>
             </div>
@@ -259,12 +259,12 @@ export default function OrderPrintPage() {
                 <td className="border-border border-t px-2 py-2">
                   <div className="font-semibold">{it.productName}</div>
                   {it.optionsOrNotes && (
-                    <div className="text-[11px] text-zinc-500">
+                    <div className="text-2xs text-zinc-500">
                       {it.optionsOrNotes}
                     </div>
                   )}
                 </td>
-                <td className="border-border border-t px-2 py-2 text-center font-mono text-[11px]">
+                <td className="border-border border-t px-2 py-2 text-center font-mono text-2xs">
                   {it.sku || "—"}
                 </td>
                 <td className="border-border border-t px-2 py-2 text-center font-bold">
@@ -368,7 +368,7 @@ export default function OrderPrintPage() {
         {/* Payment history */}
         {order.payments.length > 0 && (
           <div className="mt-4">
-            <div className="font-bold text-[11px] uppercase tracking-wider">
+            <div className="font-bold text-2xs uppercase tracking-wider">
               Tahsilat Geçmişi
             </div>
             <div className="mt-1 divide-y divide-zinc-200 rounded-xl border border-border">
@@ -408,7 +408,7 @@ export default function OrderPrintPage() {
           </div>
         )}
 
-        <div className="mt-6 flex justify-between border-border border-t pt-3 text-[10px] text-zinc-400">
+        <div className="mt-6 flex justify-between border-border border-t pt-3 text-3xs text-zinc-400">
           <span>
             Bu belge {isProforma ? "proforma" : "sipariş"} olarak elektronik
             ortamda oluşturulmuştur.

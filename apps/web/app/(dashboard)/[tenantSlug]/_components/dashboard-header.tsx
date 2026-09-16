@@ -33,7 +33,7 @@ export function DashboardHeader({
           <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
             Dashboard
           </h1>
-          <Badge className="gap-1 px-2 py-0.5 text-[11px]" variant="accent">
+          <Badge className="gap-1 px-2 py-0.5 text-2xs" variant="accent">
             <Sparkles className="h-3 w-3 text-primary" />
             {tenantName || "Ana Çalışma Alanı"}
           </Badge>

@@ -657,7 +657,7 @@ export default function AutomationsPage() {
                             {wf.actionsCount} Aksiyon Adımı
                           </span>
                         </div>
-                        <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                        <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
                           {wf.executionCount} kez çalıştı
                         </span>
                       </div>
@@ -772,7 +772,7 @@ export default function AutomationsPage() {
                         {exec.workflowName}
                       </TableCell>
                       <TableCell className="px-4 py-3">
-                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {exec.triggerSource}
                         </span>
                       </TableCell>
@@ -789,17 +789,17 @@ export default function AutomationsPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3">
                         {exec.status === "Success" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-[11px] text-emerald-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700">
                             <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                             Başarılı
                           </span>
                         ) : exec.status === "Skipped" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-[11px] text-amber-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-2xs text-amber-700">
                             <AlertCircle className="h-3 w-3 text-amber-600" />
                             Koşul Sağlanmadı
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-medium text-[11px] text-red-700">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-medium text-2xs text-red-700">
                             <XCircle className="h-3 w-3 text-red-600" />
                             Hata
                           </span>
@@ -1042,13 +1042,13 @@ export default function AutomationsPage() {
                     )}
                     <span>Simülasyon Sonucu: {simulationResult.status}</span>
                   </div>
-                  <p className="text-[11px] opacity-90">
+                  <p className="text-2xs opacity-90">
                     {simulationResult.conditionsSummary}
                   </p>
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                     Yürütülen Adımlar ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
@@ -1060,18 +1060,18 @@ export default function AutomationsPage() {
                         <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                           {log.stepTitle}
                         </div>
-                        <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
                           {log.message}
                         </div>
                       </div>
-                      <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
                         {log.executionDurationMs}ms
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <p className="text-center text-[11px] text-zinc-400 dark:text-zinc-500">
+                <p className="text-center text-2xs text-zinc-400 dark:text-zinc-500">
                   * Dry-Run modunda gerçek e-posta veya webhook fırlatılmaz,
                   yalnızca kural testi yapılır.
                 </p>

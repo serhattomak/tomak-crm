@@ -294,7 +294,7 @@ function AdminTenantsContent() {
                           >
                             {tenant.name}
                           </Link>
-                          <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <p className="text-2xs text-zinc-400 dark:text-zinc-500">
                             /{tenant.slug}
                           </p>
                         </div>
@@ -330,12 +330,12 @@ function AdminTenantsContent() {
                     {/* Status */}
                     <TableCell className="px-5 py-4">
                       {tenant.isActive ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200/60 bg-emerald-50 px-2.5 py-0.5 font-bold text-[11px] text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200/60 bg-emerald-50 px-2.5 py-0.5 font-bold text-2xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
                           <CheckCircle2 className="h-3 w-3" />
                           Aktif
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-rose-200/60 bg-rose-50 px-2.5 py-0.5 font-bold text-[11px] text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-400">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-rose-200/60 bg-rose-50 px-2.5 py-0.5 font-bold text-2xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-400">
                           <XCircle className="h-3 w-3" />
                           Askıda
                         </span>
@@ -488,7 +488,7 @@ function AdminTenantsContent() {
                     seçildi)
                   </label>
                   <button
-                    className="font-semibold text-[11px] text-blue-600 hover:underline"
+                    className="font-semibold text-2xs text-blue-600 hover:underline"
                     onClick={() =>
                       setFormData({
                         ...formData,

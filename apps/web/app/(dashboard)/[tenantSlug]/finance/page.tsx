@@ -143,7 +143,7 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-[11px] text-zinc-400">{trend}</span>
+          <span className="font-medium text-2xs text-zinc-400">{trend}</span>
         ) : null}
       </div>
     </div>
@@ -183,7 +183,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {cari.title}
         </div>
-        <div className="font-mono text-[11px] text-zinc-400">
+        <div className="font-mono text-2xs text-zinc-400">
           {cari.code} • {cari.city || "Şehir Belirtilmemiş"}
         </div>
       </TableCell>
@@ -219,7 +219,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
             minimumFractionDigits: 2,
           })}{" "}
           {cari.currency}
-          <span className="ml-1 font-normal text-[10px]">
+          <span className="ml-1 font-normal text-3xs">
             {getBalanceSuffix(isDebtor, isCreditor)}
           </span>
         </div>
@@ -339,13 +339,13 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
             </div>
           </div>
 
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             {account.currency}
           </span>
         </div>
 
         {account.iban ? (
-          <div className="mt-4 rounded-xl bg-zinc-50 p-2.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400">
+          <div className="mt-4 rounded-xl bg-zinc-50 p-2.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400">
             IBAN: {account.iban}
           </div>
         ) : null}
@@ -353,7 +353,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
 
       <div className="mt-6 flex items-baseline justify-between border-border border-t pt-4">
         <div>
-          <span className="block font-medium text-[11px] text-zinc-400 uppercase tracking-wider">
+          <span className="block font-medium text-2xs text-zinc-400 uppercase tracking-wider">
             Güncel Bakiye
           </span>
           <span className="font-extrabold font-mono text-xl text-zinc-900 dark:text-zinc-100">
@@ -419,7 +419,7 @@ function StatementTableBody({
               {tx.description}
             </div>
             {tx.documentNumber ? (
-              <div className="font-mono text-[10px] text-zinc-400">
+              <div className="font-mono text-3xs text-zinc-400">
                 {tx.documentNumber}
               </div>
             ) : null}
@@ -806,7 +806,7 @@ export default function FinancePage() {
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Cari Kart & Kod</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                     <TableHead className="px-3 py-3 h-auto">VKN / TCKN</TableHead>
@@ -862,7 +862,7 @@ export default function FinancePage() {
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Tarih & Evrak</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Hesap (Kasa/Banka)</TableHead>
                     <TableHead className="px-3 py-3 h-auto">İşlem Türü</TableHead>
@@ -894,7 +894,7 @@ export default function FinancePage() {
                               "tr-TR"
                             )}
                           </div>
-                          <div className="text-[10px] text-zinc-400">
+                          <div className="text-3xs text-zinc-400">
                             {tx.documentNumber || "—"}
                           </div>
                         </TableCell>
@@ -987,7 +987,7 @@ export default function FinancePage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="block font-medium text-[11px] text-zinc-400 uppercase tracking-wider">
+                  <span className="block font-medium text-2xs text-zinc-400 uppercase tracking-wider">
                     Güncel Bakiye
                   </span>
                   <span className="font-bold font-mono text-lg text-blue-600 dark:text-blue-400">

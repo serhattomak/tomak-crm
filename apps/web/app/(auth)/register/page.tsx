@@ -89,7 +89,7 @@ export default function RegisterPage() {
 
           {/* Top Caption */}
           <div className="relative z-10 flex w-full items-center gap-3">
-            <span className="font-bold text-[11px] text-white/90 uppercase tracking-[0.25em]">
+            <span className="font-bold text-2xs text-white/90 uppercase tracking-[0.25em]">
               START YOUR JOURNEY
             </span>
             <div className="h-[1px] max-w-[120px] flex-1 bg-white/40" />

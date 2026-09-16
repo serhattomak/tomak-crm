@@ -84,11 +84,11 @@ export function SubNavRail({
           >
             <div className="flex min-w-0 items-center gap-2">
               <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
-              <span className="truncate text-[11px] text-muted-foreground group-hover:text-foreground">
+              <span className="truncate text-2xs text-muted-foreground group-hover:text-foreground">
                 {tHubs("quickSearch")}
               </span>
             </div>
-            <div className="flex items-center gap-0.5 rounded border border-border bg-background px-1.5 py-0.5 font-semibold text-[9px] text-muted-foreground shadow-2xs">
+            <div className="flex items-center gap-0.5 rounded border border-border bg-background px-1.5 py-0.5 font-semibold text-3xs text-muted-foreground shadow-2xs">
               <Command className="h-2.5 w-2.5" />
               <span>K</span>
             </div>
@@ -127,10 +127,10 @@ export function SubNavRail({
                       : "text-muted-foreground group-hover:text-foreground"
                   }`}
                 />
-                <span className="truncate text-[11.5px]">{item.name}</span>
+                <span className="truncate text-2xs">{item.name}</span>
 
                 {item.badge ? (
-                  <span className="ml-auto flex h-4 min-w-4 items-center justify-center rounded-full bg-primary/15 px-1 font-semibold text-[9px] text-primary">
+                  <span className="ml-auto flex h-4 min-w-4 items-center justify-center rounded-full bg-primary/15 px-1 font-semibold text-3xs text-primary">
                     {item.badge}
                   </span>
                 ) : null}
@@ -158,7 +158,7 @@ export function SubNavRail({
       <div className="mt-2 shrink-0 border-border/80 border-t pt-2">
         <div className="flex items-center justify-between px-1">
           <button
-            className="flex items-center gap-1 font-medium text-[10px] text-muted-foreground transition hover:text-foreground"
+            className="flex items-center gap-1 font-medium text-3xs text-muted-foreground transition hover:text-foreground"
             onClick={onOpenShortcutsHelp}
             type="button"
           >
@@ -166,7 +166,7 @@ export function SubNavRail({
             <span>Kısayollar (?)</span>
           </button>
 
-          <span className="font-semibold text-[9px] text-primary/70 uppercase tracking-wider">
+          <span className="font-semibold text-3xs text-primary/70 uppercase tracking-wider">
             {currentHubMeta.label}
           </span>
         </div>

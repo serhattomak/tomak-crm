@@ -266,14 +266,14 @@ export function TeamLeaderboardWidget() {
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Satış Liderlik Tablosu
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Dönemin en başarılı temsilcileri
               </p>
             </div>
           </div>
 
           {members.length > 0 && (
-            <Badge className="gap-1 text-[10px]" variant="warning">
+            <Badge className="gap-1 text-3xs" variant="warning">
               <Flame className="h-3 w-3 text-amber-500" />
               Yarış Sürüyor
             </Badge>
@@ -318,7 +318,7 @@ export function TeamLeaderboardWidget() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         {getRankBadge(member.rank)}
-                        <Avatar className="h-7 w-7 font-bold text-[11px]">
+                        <Avatar className="h-7 w-7 font-bold text-2xs">
                           <AvatarFallback className={member.avatarColor}>
                             {member.initials}
                           </AvatarFallback>
@@ -327,7 +327,7 @@ export function TeamLeaderboardWidget() {
                           <div className="font-semibold text-foreground text-xs">
                             {member.name}
                           </div>
-                          <div className="text-[10px] text-muted-foreground">
+                          <div className="text-3xs text-muted-foreground">
                             {member.role}
                           </div>
                         </div>
@@ -337,7 +337,7 @@ export function TeamLeaderboardWidget() {
                         <div className="font-semibold text-foreground text-xs">
                           ₺{member.achieved.toLocaleString("tr-TR")}
                         </div>
-                        <div className="text-[10px] text-muted-foreground">
+                        <div className="text-3xs text-muted-foreground">
                           {member.dealsClosed} Satış
                         </div>
                       </div>
@@ -354,7 +354,7 @@ export function TeamLeaderboardWidget() {
                         />
                       </div>
                       <span
-                        className={`font-semibold text-[10px] ${
+                        className={`font-semibold text-3xs ${
                           pct >= 100
                             ? "text-emerald-500"
                             : "text-muted-foreground"

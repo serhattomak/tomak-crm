@@ -655,7 +655,7 @@ export default function PromotionsPage() {
                           {camp.name}
                         </div>
                         {camp.description && (
-                          <div className="line-clamp-1 text-[11px] text-zinc-400">
+                          <div className="line-clamp-1 text-2xs text-zinc-400">
                             {camp.description}
                           </div>
                         )}
@@ -708,16 +708,16 @@ export default function PromotionsPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3.5">
                         <div className="flex flex-wrap gap-1">
-                          <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-medium text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                          <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                             Öncelik: {camp.priority}
                           </span>
                           {camp.isStackable && (
-                            <span className="rounded bg-emerald-100 px-1.5 py-0.5 font-medium text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+                            <span className="rounded bg-emerald-100 px-1.5 py-0.5 font-medium text-3xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
                               Birleşebilir
                             </span>
                           )}
                           {camp.targetsCount > 0 && (
-                            <span className="rounded bg-blue-100 px-1.5 py-0.5 font-medium text-[10px] text-blue-700 dark:bg-blue-950 dark:text-blue-400">
+                            <span className="rounded bg-blue-100 px-1.5 py-0.5 font-medium text-3xs text-blue-700 dark:bg-blue-950 dark:text-blue-400">
                               {camp.targetsCount} Hedef
                             </span>
                           )}
@@ -896,7 +896,7 @@ export default function PromotionsPage() {
                         {coup.campaignName || "Genel Kampanya"}
                       </TableCell>
                       <TableCell className="px-4 py-3.5">
-                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {coup.type === "SingleUse"
                             ? "Tek Kullanımlık"
                             : "Standart / Çoklu"}
@@ -922,7 +922,7 @@ export default function PromotionsPage() {
                           ? new Date(coup.expiresAt).toLocaleDateString("tr-TR")
                           : "Süresiz"}
                       </TableCell>
-                      <TableCell className="px-4 py-3.5 font-mono text-[11px] text-zinc-400">
+                      <TableCell className="px-4 py-3.5 font-mono text-2xs text-zinc-400">
                         {coup.batchId || "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3.5 text-right">
@@ -1003,7 +1003,7 @@ export default function PromotionsPage() {
                           <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                             {item.productName}
                           </span>
-                          <div className="text-[11px] text-zinc-400">
+                          <div className="text-2xs text-zinc-400">
                             ₺{item.unitPrice} / adet
                           </div>
                         </div>
@@ -1123,7 +1123,7 @@ export default function PromotionsPage() {
                               <div className="font-semibold text-blue-950 dark:text-blue-200">
                                 {p.campaignName}
                               </div>
-                              <div className="text-[11px] text-blue-600 dark:text-blue-400">
+                              <div className="text-2xs text-blue-600 dark:text-blue-400">
                                 {p.description}
                               </div>
                             </div>

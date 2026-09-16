@@ -147,7 +147,7 @@ function MessageCardBody({
                 <span className="line-clamp-1 max-w-[160px] font-medium">
                   {att.filename}
                 </span>
-                <span className="text-[10px] text-zinc-400">
+                <span className="text-3xs text-zinc-400">
                   ({formatBytes(att.sizeBytes)})
                 </span>
                 <Download className="ml-1 h-3.5 w-3.5 text-zinc-400" />
@@ -288,7 +288,7 @@ function MessageCard({
                 {message.fromAddress}
               </span>
               <span
-                className={`rounded-full px-2 py-0.5 font-medium text-[10px] ${
+                className={`rounded-full px-2 py-0.5 font-medium text-3xs ${
                   isOutbound
                     ? "bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300"
                     : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
@@ -297,7 +297,7 @@ function MessageCard({
                 {message.direction === "Inbound" ? "Gelen" : "Giden"}
               </span>
               {message.status === "Failed" ? (
-                <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-[10px] text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-3xs text-rose-700 dark:bg-rose-950 dark:text-rose-300">
                   Başarısız
                 </span>
               ) : null}

@@ -237,7 +237,7 @@ export function ActivityTimelineWidget() {
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Canlı Aktivite Akışı
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Teklif, müşteri, fırsat ve sipariş hareketleri
               </p>
             </div>
@@ -282,7 +282,7 @@ export function ActivityTimelineWidget() {
                   className="relative flex items-start gap-2.5 text-xs"
                   key={act.id}
                 >
-                  <Avatar className="relative z-10 h-6 w-6 font-bold text-[9px]">
+                  <Avatar className="relative z-10 h-6 w-6 font-bold text-3xs">
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       {act.user.initials}
                     </AvatarFallback>
@@ -294,11 +294,11 @@ export function ActivityTimelineWidget() {
                         {getActionIcon(act.type)}
                         <span>{act.user.name}</span>
                       </div>
-                      <span className="font-medium text-[10px] text-muted-foreground">
+                      <span className="font-medium text-3xs text-muted-foreground">
                         {act.timestamp}
                       </span>
                     </div>
-                    <p className="mt-0.5 font-normal text-[11px] text-muted-foreground">
+                    <p className="mt-0.5 font-normal text-2xs text-muted-foreground">
                       {act.action}:{" "}
                       <strong className="font-semibold text-foreground">
                         {act.target}

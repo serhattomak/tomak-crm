@@ -155,21 +155,21 @@ function NotificationItemRow({
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
               )}
             </div>
-            <span className="shrink-0 text-[10px] text-zinc-400">
+            <span className="shrink-0 text-3xs text-zinc-400">
               {formatTimeAgo(item.createdAt)}
             </span>
           </div>
 
-          <p className="mt-1 line-clamp-2 text-[11px] text-zinc-600 leading-relaxed dark:text-zinc-400">
+          <p className="mt-1 line-clamp-2 text-2xs text-zinc-600 leading-relaxed dark:text-zinc-400">
             {item.description}
           </p>
 
           {item.badgeText ? (
             <div className="mt-2 flex items-center gap-2">
-              <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                 {item.badgeText}
               </span>
-              <span className="flex items-center gap-0.5 text-[10px] text-blue-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-blue-400">
+              <span className="flex items-center gap-0.5 text-3xs text-blue-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-blue-400">
                 <span>Görüntüle</span>
                 <ExternalLink className="h-2.5 w-2.5" />
               </span>
@@ -242,7 +242,7 @@ function NotificationEmptyState({
       <h4 className="mt-3 font-semibold text-xs text-zinc-800 dark:text-zinc-200">
         Bildirim Bulunmuyor
       </h4>
-      <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+      <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
         {isUnreadFilter
           ? "Tüm bildirimleri okudunuz."
           : "Henüz yeni bir sistem bildirimi almadınız."}
@@ -280,7 +280,7 @@ function NotificationHeader({
               Bildirimler
             </h3>
             <span
-              className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.2 font-bold text-[9px] ${
+              className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.2 font-bold text-3xs ${
                 isConnected
                   ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
                   : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
@@ -296,11 +296,11 @@ function NotificationHeader({
             </span>
           </div>
           {unreadCount > 0 ? (
-            <p className="font-semibold text-[10px] text-blue-600 dark:text-blue-400">
+            <p className="font-semibold text-3xs text-blue-600 dark:text-blue-400">
               {unreadCount} yeni okunmamış bildirim
             </p>
           ) : (
-            <p className="text-[10px] text-zinc-400">Tümü okundu</p>
+            <p className="text-3xs text-zinc-400">Tümü okundu</p>
           )}
         </div>
       </div>
@@ -308,7 +308,7 @@ function NotificationHeader({
       <div className="flex items-center gap-1">
         <div className="relative">
           <button
-            className="flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-2 py-1 font-bold text-[10px] text-blue-700 transition hover:bg-blue-100 active:scale-95 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300"
+            className="flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-2 py-1 font-bold text-3xs text-blue-700 transition hover:bg-blue-100 active:scale-95 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300"
             onClick={onToggleTestMenu}
             title="Test Bildirimi Gönder"
             type="button"
@@ -319,7 +319,7 @@ function NotificationHeader({
 
           {showTestMenu ? (
             <div className="absolute top-8 right-0 z-50 w-44 rounded-2xl border border-border bg-card p-1.5 shadow-xl">
-              <div className="px-2 py-1 font-semibold text-[10px] text-zinc-400 uppercase tracking-wider">
+              <div className="px-2 py-1 font-semibold text-3xs text-zinc-400 uppercase tracking-wider">
                 Simülasyon Seç
               </div>
               {TEST_PRESETS.map((p) => (
@@ -336,7 +336,7 @@ function NotificationHeader({
 
         {unreadCount > 0 ? (
           <button
-            className="flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-[11px] text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-2xs text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
             onClick={onMarkAllAsRead}
             title="Tümünü okundu işaretle"
             type="button"
@@ -368,14 +368,14 @@ function NotificationTabs({
   return (
     <div className="flex items-center gap-1 border-border border-b bg-zinc-50/70 px-3 py-1.5 dark:bg-zinc-800/40">
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition-all ${ activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         onClick={onSelectAll}
         type="button"
       >
         Tümü ({totalCount})
       </button>
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition-all ${ activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         onClick={onSelectUnread}
         type="button"
       >
@@ -524,13 +524,13 @@ export function NotificationCenter({
           {notifications.length > 0 ? (
             <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 dark:bg-zinc-800/30">
               <button
-                className="font-semibold text-[11px] text-zinc-500 transition-colors hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
+                className="font-semibold text-2xs text-zinc-500 transition-colors hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
                 onClick={clearAll}
                 type="button"
               >
                 Listeyi Temizle
               </button>
-              <span className="text-[10px] text-zinc-400">
+              <span className="text-3xs text-zinc-400">
                 {notifications.length} toplam bildirim
               </span>
             </div>

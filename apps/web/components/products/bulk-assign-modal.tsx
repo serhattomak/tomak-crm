@@ -204,7 +204,7 @@ export function BulkAssignModal({
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{failures.length} üründe hata oluştu:</span>
             </div>
-            <ul className="mt-1.5 list-disc space-y-1 pl-5 text-[11px]">
+            <ul className="mt-1.5 list-disc space-y-1 pl-5 text-2xs">
               {failures.slice(0, 5).map((f) => (
                 <li key={f.productId}>
                   <span className="font-mono">{f.productId.slice(0, 8)}…</span>:{" "}
@@ -252,7 +252,7 @@ export function BulkAssignModal({
                     }}
                   />
                   <label
-                    className="cursor-pointer text-[11px] text-zinc-600 dark:text-zinc-400"
+                    className="cursor-pointer text-2xs text-zinc-600 dark:text-zinc-400"
                     htmlFor="clear-cat"
                   >
                     Kategoriyi kaldır (Kategorisiz yap)
@@ -394,7 +394,7 @@ export function BulkAssignModal({
                 </Label>
               </div>
               {assignTags && (
-                <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+                <div className="flex items-center gap-2 text-2xs text-zinc-500">
                   <Checkbox
                     checked={appendTags}
                     id="append-tags"
@@ -431,7 +431,7 @@ export function BulkAssignModal({
                 </Label>
               </div>
               {assignImage && (
-                <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+                <div className="flex items-center gap-2 text-2xs text-zinc-500">
                   <Checkbox
                     checked={appendImages}
                     id="append-images"
@@ -452,7 +452,7 @@ export function BulkAssignModal({
                   type="url"
                   value={imageUrl}
                 />
-                <p className="text-[10px] text-zinc-400">
+                <p className="text-3xs text-zinc-400">
                   Girilen görsel URL'si seçili tüm ürünlerin galeri listesine
                   atanacaktır.
                 </p>

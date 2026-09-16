@@ -86,7 +86,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 {activeTenant?.name || "Çalışma Alanı Seçin"}
               </div>
-              <div className="truncate font-medium text-[10px] text-zinc-400 dark:text-zinc-500">
+              <div className="truncate font-medium text-3xs text-zinc-400 dark:text-zinc-500">
                 Kurumsal Workspace
               </div>
             </div>
@@ -109,9 +109,9 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
         side={isCollapsed ? "right" : "bottom"}
         sideOffset={isCollapsed ? 14 : 6}
       >
-        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
           <span>Çalışma Alanları</span>
-          <span className="font-mono text-[9px] text-zinc-400">
+          <span className="font-mono text-3xs text-zinc-400">
             {tenants.length} Alan
           </span>
         </div>
@@ -131,7 +131,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
                 type="button"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-100 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-100 font-bold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                     {tenant.name.charAt(0).toUpperCase()}
                   </div>
                   <span className="truncate">{tenant.name}</span>
@@ -161,14 +161,14 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               />
               <div className="flex justify-end gap-1">
                 <button
-                  className="px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+                  className="px-2 py-1 text-2xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                   onClick={() => setIsCreating(false)}
                   type="button"
                 >
                   Vazgeç
                 </button>
                 <button
-                  className="flex items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1 font-medium text-[11px] text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1 font-medium text-2xs text-white hover:bg-blue-700 disabled:opacity-50"
                   disabled={isLoading}
                   type="submit"
                 >

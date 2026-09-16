@@ -118,7 +118,7 @@ export function MobileDrawer({
           <div className="grid grid-cols-5 gap-1 rounded-lg bg-muted/60 p-1">
             {hubs.map((hub) => (
               <button
-                className={`flex flex-col items-center justify-center rounded-md py-1.5 font-semibold text-[10px] transition-all ${
+                className={`flex flex-col items-center justify-center rounded-md py-1.5 font-semibold text-3xs transition-all ${
                   activeHub === hub.id
                     ? "bg-background font-bold text-primary shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"
@@ -170,7 +170,7 @@ export function MobileDrawer({
                   <item.icon className="h-4 w-4 shrink-0" />
                   <span className="truncate">{item.name}</span>
                   {item.badge ? (
-                    <span className="ml-auto flex h-4 min-w-4 items-center justify-center rounded-full bg-primary/15 px-1 font-semibold text-[9px] text-primary">
+                    <span className="ml-auto flex h-4 min-w-4 items-center justify-center rounded-full bg-primary/15 px-1 font-semibold text-3xs text-primary">
                       {item.badge}
                     </span>
                   ) : null}
@@ -209,7 +209,7 @@ export function MobileDrawer({
                 <div className="truncate font-semibold text-foreground text-xs">
                   {profile?.fullName || "Profil"}
                 </div>
-                <div className="truncate text-[10px] text-muted-foreground">
+                <div className="truncate text-3xs text-muted-foreground">
                   {activeTenant?.name || "CRM"}
                 </div>
               </div>
@@ -285,7 +285,7 @@ export function MobileBottomNav({
 
         return (
           <Link
-            className={`flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 font-semibold text-[10px] transition-all ${
+            className={`flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 font-semibold text-3xs transition-all ${
               isActive
                 ? "font-bold text-primary"
                 : "text-muted-foreground hover:text-foreground"
@@ -305,7 +305,7 @@ export function MobileBottomNav({
         );
       })}
       <button
-        className="flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 font-semibold text-[10px] text-muted-foreground transition-all hover:text-foreground"
+        className="flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 font-semibold text-3xs text-muted-foreground transition-all hover:text-foreground"
         onClick={onOpenDrawer}
         type="button"
       >

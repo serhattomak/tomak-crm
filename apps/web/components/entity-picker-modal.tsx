@@ -145,7 +145,7 @@ export function EntityPickerModal<T = unknown>({
               {title}
             </DialogTitle>
             {description && (
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                 {description}
               </p>
             )}
@@ -153,7 +153,7 @@ export function EntityPickerModal<T = unknown>({
           <div className="flex items-center gap-1.5">
             {onAddNew && (
               <button
-                className="flex items-center gap-1 rounded-xl bg-blue-50 px-2.5 py-1.5 font-bold text-[11px] text-blue-700 transition hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300 dark:hover:bg-blue-900"
+                className="flex items-center gap-1 rounded-xl bg-blue-50 px-2.5 py-1.5 font-bold text-2xs text-blue-700 transition hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300 dark:hover:bg-blue-900"
                 onClick={() => {
                   handleClose();
                   onAddNew();
@@ -267,14 +267,14 @@ export function EntityPickerModal<T = unknown>({
                         </span>
                         {item.badge && (
                           <span
-                            className={`shrink-0 rounded-md border px-1.5 py-0.2 font-semibold text-[10px] ${badgeCls}`}
+                            className={`shrink-0 rounded-md border px-1.5 py-0.2 font-semibold text-3xs ${badgeCls}`}
                           >
                             {item.badge.label}
                           </span>
                         )}
                       </div>
                       {item.subLabel && (
-                        <p className="truncate text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <p className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
                           {item.subLabel}
                         </p>
                       )}
@@ -288,7 +288,7 @@ export function EntityPickerModal<T = unknown>({
                         <Check className="h-3 w-3" />
                       </div>
                     ) : (
-                      <span className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 dark:text-zinc-500">
+                      <span className="text-3xs text-zinc-400 opacity-0 group-hover:opacity-100 dark:text-zinc-500">
                         Seç
                       </span>
                     )}
@@ -300,7 +300,7 @@ export function EntityPickerModal<T = unknown>({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 px-3 text-[11px] text-zinc-500 dark:bg-zinc-900/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 px-3 text-2xs text-zinc-500 dark:bg-zinc-900/50 dark:text-zinc-400">
           <span>{filteredItems.length} kayıt listelendi</span>
           {selectedId && (
             <button
@@ -389,7 +389,7 @@ export function SalesRepPicker({
           <div className="flex min-w-0 items-center gap-2 truncate">
             {selectedEmployee ? (
               <>
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-[10px] text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-3xs text-white">
                   {(
                     selectedEmployee.firstName?.[0] ||
                     selectedEmployee.fullName?.[0] ||
@@ -400,7 +400,7 @@ export function SalesRepPicker({
                   {selectedEmployee.fullName || selectedEmployee.email}
                 </span>
                 {selectedEmployee.title && (
-                  <span className="hidden truncate text-[11px] text-zinc-400 sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
                     ({selectedEmployee.title})
                   </span>
                 )}
@@ -522,14 +522,14 @@ export function CustomerPicker({
           <div className="flex min-w-0 items-center gap-2 truncate">
             {selectedCustomer ? (
               <>
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-[10px] text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-3xs text-white">
                   {(selectedCustomer.name?.[0] || "M").toUpperCase()}
                 </div>
                 <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
                   {selectedCustomer.name}
                 </span>
                 {selectedCustomer.city && (
-                  <span className="hidden truncate text-[11px] text-zinc-400 sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
                     ({selectedCustomer.city})
                   </span>
                 )}
@@ -649,13 +649,13 @@ export function ProductPicker({
           <div className="flex min-w-0 items-center gap-2 truncate">
             {selectedProduct ? (
               <>
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-emerald-600 font-bold text-[10px] text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-emerald-600 font-bold text-3xs text-white">
                   {(selectedProduct.name?.[0] || "Ü").toUpperCase()}
                 </div>
                 <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
                   {selectedProduct.name}
                 </span>
-                <span className="hidden truncate text-[11px] text-zinc-400 sm:inline-block dark:text-zinc-500">
+                <span className="hidden truncate text-2xs text-zinc-400 sm:inline-block dark:text-zinc-500">
                   ({selectedProduct.sellingPrice?.toLocaleString("tr-TR")} ₺)
                 </span>
               </>

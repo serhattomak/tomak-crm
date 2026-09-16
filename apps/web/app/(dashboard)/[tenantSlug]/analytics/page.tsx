@@ -329,7 +329,7 @@ export default function AnalyticsPage() {
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-emerald-600 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-emerald-600 dark:text-emerald-400">
             <ArrowUpRight className="h-3.5 w-3.5" />
             <span>Geçen döneme göre +%18.4 artış</span>
           </div>
@@ -350,7 +350,7 @@ export default function AnalyticsPage() {
               <ShoppingCart className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-blue-600 dark:text-blue-400">
             <span>{totalOrders} Adet Tamamlanan Sipariş</span>
           </div>
         </div>
@@ -370,7 +370,7 @@ export default function AnalyticsPage() {
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-blue-600 dark:text-blue-400">
             <span>
               {quoteStats?.acceptedCount || 0} Onaylandı /{" "}
               {quoteStats?.totalQuotes || 0} Toplam
@@ -393,7 +393,7 @@ export default function AnalyticsPage() {
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-zinc-500 dark:text-zinc-400">
             <span>Ödeme bekleyen vadeli siparişler</span>
           </div>
         </div>
@@ -441,7 +441,7 @@ export default function AnalyticsPage() {
                   Aylık faturalandırılan ve tahsil edilen sipariş hacimleri
                 </p>
               </div>
-              <span className="rounded-xl border border-border bg-zinc-50 px-2.5 py-1 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-xl border border-border bg-zinc-50 px-2.5 py-1 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                 2026 TRY Hacim
               </span>
             </div>
@@ -453,7 +453,7 @@ export default function AnalyticsPage() {
                   className="flex flex-1 flex-col items-center gap-2"
                   key={m.name}
                 >
-                  <span className="font-bold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <span className="font-bold text-3xs text-zinc-500 dark:text-zinc-400">
                     ₺{(m.amount / 1000).toFixed(0)}k
                   </span>
                   <div className="relative flex h-36 w-full items-end justify-center rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
@@ -506,7 +506,7 @@ export default function AnalyticsPage() {
                 <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 <span>Huniyi Hızlandırma İpucu</span>
               </div>
-              <p className="mt-1 text-[11px] text-blue-800 leading-relaxed dark:text-blue-300/80">
+              <p className="mt-1 text-2xs text-blue-800 leading-relaxed dark:text-blue-300/80">
                 Müşteride olan tekliflerin ortalama karar süresi 4.2 gün. 3.
                 günü aşan tekliflere otomatik hatırlatıcı kurulması dönüşümü %14
                 artırabilir.
@@ -570,7 +570,7 @@ export default function AnalyticsPage() {
                   <div className="mt-2 font-extrabold text-xl text-zinc-900 dark:text-zinc-100">
                     {tier.count}
                   </div>
-                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <span className="text-3xs text-zinc-500 dark:text-zinc-400">
                     {tier.share}
                   </span>
                 </div>
@@ -614,13 +614,13 @@ export default function AnalyticsPage() {
                         <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {cust.name}
                         </span>
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                           {cust.city || "Konum belirtilmemiş"} •{" "}
                           {cust.type === "Company" ? "Kurumsal" : "Bireysel"}
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="inline-block rounded-md bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+                        <span className="inline-block rounded-md bg-blue-50 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                           {cust.tier || "Standart"}
                         </span>
                       </div>
@@ -652,7 +652,7 @@ export default function AnalyticsPage() {
                         <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {order.customerName}
                         </span>
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        <div className="text-3xs text-zinc-400 dark:text-zinc-500">
                           {order.orderNumber} •{" "}
                           {new Date(order.orderDate).toLocaleDateString(
                             "tr-TR"
@@ -663,7 +663,7 @@ export default function AnalyticsPage() {
                         <span className="font-extrabold text-xs text-zinc-900 dark:text-zinc-100">
                           ₺{order.totalAmount.toLocaleString("tr-TR")}
                         </span>
-                        <div className="text-[10px]">
+                        <div className="text-3xs">
                           <span
                             className={`inline-block rounded-md px-1.5 py-0.2 font-bold ${
                               order.paymentStatus === "Paid"
@@ -761,7 +761,7 @@ export default function AnalyticsPage() {
                       </TableCell>
                       <TableCell className="py-3.5 pr-4 pl-4 text-center">
                         <span
-                          className={`inline-block rounded-full px-2 py-0.5 font-bold text-[10px] ${
+                          className={`inline-block rounded-full px-2 py-0.5 font-bold text-3xs ${
                             product.currentStock > 10
                               ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                               : product.currentStock > 0

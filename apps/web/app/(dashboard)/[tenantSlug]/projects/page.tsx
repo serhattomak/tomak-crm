@@ -421,7 +421,7 @@ export default function ProjectsPage() {
                           {proj.name}
                         </h3>
                         {proj.customerName && (
-                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                          <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                             {proj.customerName}
                           </div>
                         )}
@@ -429,7 +429,7 @@ export default function ProjectsPage() {
                     </div>
 
                     <span
-                      className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(
+                      className={`rounded-md border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(
                         proj.status
                       )}`}
                     >
@@ -445,7 +445,7 @@ export default function ProjectsPage() {
 
                   {/* Progress Bar */}
                   <div className="mt-4">
-                    <div className="flex items-center justify-between text-[11px]">
+                    <div className="flex items-center justify-between text-2xs">
                       <span className="font-medium text-zinc-500 dark:text-zinc-400">
                         İlerleme
                       </span>
@@ -462,7 +462,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400">
+                <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400">
                   <div className="flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5" />
                     <span>{proj.leadUserName || "Atanmamış"}</span>
@@ -518,7 +518,7 @@ export default function ProjectsPage() {
                     </TableCell>
                     <TableCell className="px-4 py-3">
                       <span
-                        className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(
+                        className={`rounded-md border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(
                           proj.status
                         )}`}
                       >

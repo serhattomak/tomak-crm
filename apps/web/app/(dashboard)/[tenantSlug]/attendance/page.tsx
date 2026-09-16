@@ -1413,7 +1413,7 @@ export default function AttendancePage() {
                                   }}
                                 >
                                   <div>{sch.shiftName}</div>
-                                  <div className="text-[10px] opacity-90">
+                                  <div className="text-3xs opacity-90">
                                     {sch.startTime.slice(0, 5)} -{" "}
                                     {sch.endTime.slice(0, 5)}
                                   </div>
@@ -1932,7 +1932,7 @@ export default function AttendancePage() {
                   <label className="block font-semibold text-foreground text-xs">
                     Molalar
                   </label>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-3xs text-muted-foreground">
                     Toplam: {templateCompliance.metrics.providedBreakMinutes} dk
                     (Asgari: {templateCompliance.metrics.requiredBreakMinutes}{" "}
                     dk)

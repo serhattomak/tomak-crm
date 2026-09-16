@@ -198,7 +198,7 @@ export function ProductGallery({
           src={activeSrc}
           unoptimized
         />
-        <span className="absolute top-3 left-3 rounded-lg bg-blue-600 px-2 py-0.5 font-bold text-[10px] text-white shadow-xs">
+        <span className="absolute top-3 left-3 rounded-lg bg-blue-600 px-2 py-0.5 font-bold text-3xs text-white shadow-xs">
           {isExternalVariantCover && safeActiveIndex === 0
             ? "Varyant"
             : "Kapak"}
@@ -267,7 +267,7 @@ export function ProductGallery({
                 unoptimized
               />
               {index === 0 && (
-                <span className="absolute bottom-1 left-1 rounded-md bg-blue-600 px-1.5 py-px font-bold text-[9px] text-white">
+                <span className="absolute bottom-1 left-1 rounded-md bg-blue-600 px-1.5 py-px font-bold text-3xs text-white">
                   {isExternalVariantCover ? "Varyant" : "Kapak"}
                 </span>
               )}
@@ -289,7 +289,7 @@ export function ProductGallery({
                   {index !== 0 && (
                     <button
                       aria-label={`${index + 1}. görseli kapak yap`}
-                      className="rounded-md px-1 py-0.5 font-bold text-[9px] text-white transition-colors hover:bg-white/20"
+                      className="rounded-md px-1 py-0.5 font-bold text-3xs text-white transition-colors hover:bg-white/20"
                       onClick={(event) => {
                         event.stopPropagation();
                         handleSetCover(index);
@@ -393,7 +393,7 @@ export function ProductGallery({
                 src={lightboxSrc}
                 unoptimized
               />
-              <figcaption className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-lg bg-zinc-950/70 px-3 py-1 font-medium text-[11px] text-white">
+              <figcaption className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-lg bg-zinc-950/70 px-3 py-1 font-medium text-2xs text-white">
                 {lightboxIndex + 1} / {displayImages.length}
                 {lightboxIndex === 0
                   ? isExternalVariantCover

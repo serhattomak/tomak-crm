@@ -592,7 +592,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {vehicles.length}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400">
+          <div className="mt-1 text-2xs text-zinc-400">
             {vehicles.filter((v) => v.status === "Active").length} Aktif ·{" "}
             {vehicles.filter((v) => v.status === "Development").length} Ar-Ge
           </div>
@@ -608,7 +608,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {brands.length}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400">
+          <div className="mt-1 text-2xs text-zinc-400">
             Kendi Modellerimiz + Rakipler
           </div>
         </div>
@@ -623,7 +623,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {parts.length}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400">
+          <div className="mt-1 text-2xs text-zinc-400">
             {epcSystems.length} Ana Montaj Sisteminde
           </div>
         </div>
@@ -638,7 +638,7 @@ export default function VehiclesPage() {
           <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
             {documents.length}
           </div>
-          <div className="mt-1 text-[11px] text-zinc-400">
+          <div className="mt-1 text-2xs text-zinc-400">
             Kılavuzlar, Homologasyon & CAD
           </div>
         </div>
@@ -657,7 +657,7 @@ export default function VehiclesPage() {
         >
           <Car className="h-4 w-4" />
           <span>Araç Kataloğu & Veritabanı</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {filteredVehicles.length}
           </span>
         </button>
@@ -674,7 +674,7 @@ export default function VehiclesPage() {
           <TrendingUp className="h-4 w-4" />
           <span>Araç Karşılaştırma & Benchmarking</span>
           {compareIds.length > 0 && (
-            <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/80 dark:text-blue-300">
+            <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:bg-blue-950/80 dark:text-blue-300">
               {compareIds.length} Seçili
             </span>
           )}
@@ -691,7 +691,7 @@ export default function VehiclesPage() {
         >
           <Wrench className="h-4 w-4" />
           <span>Elektronik Parça Kataloğu (EPC)</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {parts.length}
           </span>
         </button>
@@ -707,7 +707,7 @@ export default function VehiclesPage() {
         >
           <FileText className="h-4 w-4" />
           <span>Teknik Bültenler & Dokümanlar</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {documents.length}
           </span>
         </button>
@@ -850,14 +850,14 @@ export default function VehiclesPage() {
                         </div>
 
                         <span
-                          className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(v.status)}`}
+                          className={`rounded-md border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(v.status)}`}
                         >
                           {getStatusLabel(v.status)}
                         </span>
                       </div>
 
                       {/* Pills */}
-                      <div className="mt-3 flex min-h-[22px] flex-wrap gap-1.5 font-semibold text-[10px]">
+                      <div className="mt-3 flex min-h-[22px] flex-wrap gap-1.5 font-semibold text-3xs">
                         {v.segment && (
                           <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                             {v.segment}
@@ -884,7 +884,7 @@ export default function VehiclesPage() {
                           v.driveType ||
                           v.projectCode
                         ) && (
-                          <span className="text-[11px] text-zinc-400 italic">
+                          <span className="text-2xs text-zinc-400 italic">
                             Temel Tanım
                           </span>
                         )}
@@ -893,13 +893,13 @@ export default function VehiclesPage() {
                       {/* Specs Mini Grid */}
                       <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-zinc-50/70 p-2.5 text-center dark:bg-zinc-800/40">
                         <div>
-                          <div className="text-[10px] text-zinc-400">Güç</div>
+                          <div className="text-3xs text-zinc-400">Güç</div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                             {engineSpec.power || v.engine || "—"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">
+                          <div className="text-3xs text-zinc-400">
                             0-100 km/s
                           </div>
                           <div className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
@@ -907,7 +907,7 @@ export default function VehiclesPage() {
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">
+                          <div className="text-3xs text-zinc-400">
                             Ref. Fiyat
                           </div>
                           <div className="font-bold text-emerald-600 text-xs dark:text-emerald-400">
@@ -1022,7 +1022,7 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </div>
                             {v.trim && (
-                              <div className="text-[11px] text-zinc-400">
+                              <div className="text-2xs text-zinc-400">
                                 {v.trim}
                               </div>
                             )}
@@ -1040,7 +1040,7 @@ export default function VehiclesPage() {
                           {v.engine || "—"}
                         </div>
                         {(v.fuel || v.transmission) && (
-                          <div className="text-[11px] text-zinc-400">
+                          <div className="text-2xs text-zinc-400">
                             {[v.fuel, v.transmission]
                               .filter(Boolean)
                               .join(" · ")}
@@ -1055,7 +1055,7 @@ export default function VehiclesPage() {
                       </TableCell>
                       <TableCell className="px-4 py-3">
                         <span
-                          className={`rounded-md border px-2 py-0.5 font-bold text-[10px] ${getStatusBadge(v.status)}`}
+                          className={`rounded-md border px-2 py-0.5 font-bold text-3xs ${getStatusBadge(v.status)}`}
                         >
                           {getStatusLabel(v.status)}
                         </span>
@@ -1199,7 +1199,7 @@ export default function VehiclesPage() {
                               {v.brand} {v.model}
                             </div>
                             {v.trim && (
-                              <div className="font-normal text-[10px] text-zinc-400">
+                              <div className="font-normal text-3xs text-zinc-400">
                                 {v.trim}
                               </div>
                             )}
@@ -1211,7 +1211,7 @@ export default function VehiclesPage() {
                 </TableHeader>
                 <TableBody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {/* Category: GENEL & KASA */}
-                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                  <TableRow className="bg-zinc-100/60 font-bold text-2xs text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1277,7 +1277,7 @@ export default function VehiclesPage() {
                   </TableRow>
 
                   {/* Category: MOTOR & PERFORMANS */}
-                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                  <TableRow className="bg-zinc-100/60 font-bold text-2xs text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1355,7 +1355,7 @@ export default function VehiclesPage() {
                   </TableRow>
 
                   {/* Category: FİYAT & GARANTİ */}
-                  <TableRow className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
+                  <TableRow className="bg-zinc-100/60 font-bold text-2xs text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <TableCell
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1435,7 +1435,7 @@ export default function VehiclesPage() {
                         <span>{sys.icon}</span>
                         <span>{sys.name}</span>
                       </div>
-                      <span className="rounded-full bg-zinc-200/70 px-1.5 py-0.2 font-bold text-[10px] text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
+                      <span className="rounded-full bg-zinc-200/70 px-1.5 py-0.2 font-bold text-3xs text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
                         {sys.totalPartsCount}
                       </span>
                     </button>
@@ -1445,7 +1445,7 @@ export default function VehiclesPage() {
                       <div className="mt-1 ml-3 space-y-0.5 border-blue-200 border-l-2 pl-6 dark:border-blue-900">
                         {sys.subsystems.map((sub) => (
                           <button
-                            className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 font-medium text-[11px] transition ${
+                            className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 font-medium text-2xs transition ${
                               selectedSubsystemId === sub.id
                                 ? "bg-blue-100/80 font-bold text-blue-900 dark:bg-blue-900/50 dark:text-blue-200"
                                 : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
@@ -1455,7 +1455,7 @@ export default function VehiclesPage() {
                             type="button"
                           >
                             <span>{sub.name}</span>
-                            <span className="text-[10px] opacity-70">
+                            <span className="text-3xs opacity-70">
                               {sub.partsCount}
                             </span>
                           </button>
@@ -1476,7 +1476,7 @@ export default function VehiclesPage() {
                 <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                   Patlatılmış Şema & Hotspotlar (Exploded View)
                 </span>
-                <span className="text-[10px] text-zinc-400">
+                <span className="text-3xs text-zinc-400">
                   Şemadaki numaralara tıklayarak parçayı seçin
                 </span>
               </div>
@@ -1543,7 +1543,7 @@ export default function VehiclesPage() {
 
                   return (
                     <button
-                      className={`absolute flex h-6 w-6 items-center justify-center rounded-full font-bold text-[10px] shadow-md transition-all ${
+                      className={`absolute flex h-6 w-6 items-center justify-center rounded-full font-bold text-3xs shadow-md transition-all ${
                         isHotspotSelected
                           ? "z-10 scale-125 bg-blue-600 text-white ring-4 ring-blue-400/50"
                           : "bg-zinc-900 text-white hover:scale-110 dark:bg-white dark:text-zinc-900"
@@ -1574,7 +1574,7 @@ export default function VehiclesPage() {
                     value={epcSearch}
                   />
                 </div>
-                <span className="font-bold text-[11px] text-zinc-500">
+                <span className="font-bold text-2xs text-zinc-500">
                   {filteredParts.length} Parça
                 </span>
               </div>
@@ -1594,14 +1594,14 @@ export default function VehiclesPage() {
                       onClick={() => setSelectedPartId(p.id)}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-[10px] text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 font-bold text-3xs text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200">
                           {idx + 1}
                         </span>
                         <div>
                           <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {p.nameTr}
                           </div>
-                          <div className="font-mono text-[10px] text-zinc-400">
+                          <div className="font-mono text-3xs text-zinc-400">
                             {p.partNumber}
                           </div>
                         </div>
@@ -1646,7 +1646,7 @@ export default function VehiclesPage() {
               <div className="space-y-4 text-xs">
                 <div className="flex items-start justify-between border-border border-b pb-3">
                   <div>
-                    <span className="font-bold font-mono text-[10px] text-blue-600 dark:text-blue-400">
+                    <span className="font-bold font-mono text-3xs text-blue-600 dark:text-blue-400">
                       {selectedPart.partNumber}
                     </span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1715,7 +1715,7 @@ export default function VehiclesPage() {
                 </div>
 
                 {selectedPart.notes && (
-                  <div className="rounded-xl bg-zinc-50 p-3 text-[11px] text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
+                  <div className="rounded-xl bg-zinc-50 p-3 text-2xs text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                     {selectedPart.notes}
                   </div>
                 )}
@@ -1874,7 +1874,7 @@ export default function VehiclesPage() {
                       {doc.name}
                     </h4>
 
-                    <div className="mt-1 flex items-center gap-2 text-[11px] text-zinc-400">
+                    <div className="mt-1 flex items-center gap-2 text-2xs text-zinc-400">
                       <span className="font-semibold text-zinc-600 dark:text-zinc-300">
                         {doc.category || "Genel"}
                       </span>
@@ -1885,7 +1885,7 @@ export default function VehiclesPage() {
                     </div>
 
                     {doc.vehicleName && (
-                      <div className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+                      <div className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                         <Car className="h-3 w-3" />
                         <span>{doc.vehicleName}</span>
                       </div>
@@ -1895,7 +1895,7 @@ export default function VehiclesPage() {
                       <div className="mt-3 flex flex-wrap gap-1">
                         {tags.map((t) => (
                           <span
-                            className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-semibold text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+                            className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-semibold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
                             key={t}
                           >
                             {t}
@@ -1905,7 +1905,7 @@ export default function VehiclesPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400">
+                  <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400">
                     <span>
                       {new Date(doc.createdAt).toLocaleDateString("tr-TR")}
                     </span>
@@ -2029,7 +2029,7 @@ export default function VehiclesPage() {
             {/* Quick Specs Banner */}
             <div className="mt-4 grid grid-cols-4 gap-2 rounded-2xl bg-zinc-900 p-3 text-center text-white dark:bg-zinc-800">
               <div>
-                <div className="text-[10px] text-zinc-400">Güç</div>
+                <div className="text-3xs text-zinc-400">Güç</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ power?: string }>(
                     selectedVehicle.engineSpecJson,
@@ -2040,7 +2040,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[10px] text-zinc-400">0-100</div>
+                <div className="text-3xs text-zinc-400">0-100</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ accel?: string }>(
                     selectedVehicle.performanceJson,
@@ -2049,7 +2049,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[10px] text-zinc-400">Ort. Tüketim</div>
+                <div className="text-3xs text-zinc-400">Ort. Tüketim</div>
                 <div className="font-bold text-xs">
                   {parseJson<{ combined?: string }>(
                     selectedVehicle.fuelEcoJson,
@@ -2058,7 +2058,7 @@ export default function VehiclesPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[10px] text-zinc-400">Ref. Fiyat</div>
+                <div className="text-3xs text-zinc-400">Ref. Fiyat</div>
                 <div className="font-bold text-emerald-400 text-xs">
                   {selectedVehicle.priceUsd
                     ? `$${selectedVehicle.priceUsd.toLocaleString()}`
@@ -2752,7 +2752,7 @@ function CreateEditVehicleModal({
                   : "Yeni Araç Modeli Ekle"}
               </DialogTitle>
               {initialVehicle && (
-                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                   {initialVehicle.brand} {initialVehicle.model}
                 </span>
               )}
@@ -2809,7 +2809,7 @@ function CreateEditVehicleModal({
                   >
                     {s.title}
                   </div>
-                  <div className="hidden truncate text-[10px] text-zinc-400 sm:block">
+                  <div className="hidden truncate text-3xs text-zinc-400 sm:block">
                     {s.num === 1 && (brand ? `${brand} ${model}` : "Temel")}
                     {s.num === 2 && (engine ? `${engine}` : "Motor")}
                     {s.num === 3 && (power ? `${power}` : "Teknik")}
@@ -3519,7 +3519,7 @@ function CreateEditVehicleModal({
                             const isSelected = adasString.includes(opt);
                             return (
                               <button
-                                className={`rounded-lg px-2.5 py-1 font-medium text-[11px] transition ${
+                                className={`rounded-lg px-2.5 py-1 font-medium text-2xs transition ${
                                   isSelected
                                     ? "bg-blue-600 text-white"
                                     : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
@@ -3603,7 +3603,7 @@ function CreateEditVehicleModal({
                       <span className="font-bold text-blue-600 text-xs uppercase tracking-wider dark:text-blue-400">
                         ✦ Canlı Katalog Kartı Önizlemesi
                       </span>
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                         {status === "Active"
                           ? "Satışta"
                           : status === "Development"
@@ -3630,13 +3630,13 @@ function CreateEditVehicleModal({
 
                       <div className="grid grid-cols-3 gap-2 rounded-xl bg-white/80 p-3 shadow-2xs dark:bg-zinc-800/80">
                         <div>
-                          <div className="text-[10px] text-zinc-400">Güç</div>
+                          <div className="text-3xs text-zinc-400">Güç</div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {power || "—"}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">
+                          <div className="text-3xs text-zinc-400">
                             0-100 km/s
                           </div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
@@ -3644,14 +3644,14 @@ function CreateEditVehicleModal({
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-zinc-400">Çekiş</div>
+                          <div className="text-3xs text-zinc-400">Çekiş</div>
                           <div className="font-bold text-zinc-800 dark:text-zinc-200">
                             {driveType || "—"}
                           </div>
                         </div>
                       </div>
 
-                      <div className="space-y-1 text-[11px] text-zinc-600 dark:text-zinc-400">
+                      <div className="space-y-1 text-2xs text-zinc-600 dark:text-zinc-400">
                         <div className="flex justify-between">
                           <span>Motor:</span>
                           <span className="font-medium text-zinc-800 dark:text-zinc-200">
@@ -4412,13 +4412,13 @@ function CreateDocumentModal({
                         <div className="truncate font-bold text-emerald-950 text-xs dark:text-emerald-100">
                           {uploadedFileName}
                         </div>
-                        <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
+                        <div className="text-2xs text-emerald-700 dark:text-emerald-400">
                           {fileSize} · {documentType} olarak algılandı
                         </div>
                       </div>
                     </div>
                     <button
-                      className="shrink-0 rounded-xl border border-emerald-300 px-3 py-1.5 font-semibold text-[11px] text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+                      className="shrink-0 rounded-xl border border-emerald-300 px-3 py-1.5 font-semibold text-2xs text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
                       onClick={() => {
                         setUploadedFileName(null);
                         setFileUrl("");
@@ -4445,7 +4445,7 @@ function CreateDocumentModal({
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosya Yükleniyor...
                         </span>
-                        <span className="text-[11px] text-zinc-400">
+                        <span className="text-2xs text-zinc-400">
                           Format ve boyut taranıyor
                         </span>
                       </div>
@@ -4457,7 +4457,7 @@ function CreateDocumentModal({
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosyayı buraya sürükleyip bırakın veya seçin
                         </span>
-                        <span className="mt-1 text-[11px] text-zinc-400">
+                        <span className="mt-1 text-2xs text-zinc-400">
                           PDF, CAD (.STEP/.DWG), Excel, Word, Görsel veya ZIP
                           (Maks. 50 MB)
                         </span>
@@ -4643,7 +4643,7 @@ function CreateDocumentModal({
                   const isSelected = selectedTags.includes(tag);
                   return (
                     <button
-                      className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition ${ isSelected ? "bg-blue-600 text-white shadow-2xs" : "border border-border bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
+                      className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition ${ isSelected ? "bg-blue-600 text-white shadow-2xs" : "border border-border bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700" }`}
                       key={tag}
                       onClick={() => handleToggleTag(tag)}
                       type="button"
@@ -4768,14 +4768,14 @@ function DocumentPreviewModal({
                 >
                   {document.name}
                 </DialogTitle>
-                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   {document.documentType}
                 </span>
-                <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
+                <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                   {document.category}
                 </span>
               </div>
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-2xs text-zinc-400">
                 {document.fileSize} ·{" "}
                 {new Date(document.createdAt).toLocaleDateString("tr-TR")}{" "}
                 tarihinde yüklendi
@@ -4886,13 +4886,13 @@ function DocumentPreviewModal({
           {/* Metadata Footer */}
           <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs sm:grid-cols-4 dark:bg-zinc-800/30">
             <div>
-              <span className="block text-[10px] text-zinc-400">Kategori</span>
+              <span className="block text-3xs text-zinc-400">Kategori</span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {document.category}
               </span>
             </div>
             <div>
-              <span className="block text-[10px] text-zinc-400">
+              <span className="block text-3xs text-zinc-400">
                 Dosya Boyutu
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4900,7 +4900,7 @@ function DocumentPreviewModal({
               </span>
             </div>
             <div>
-              <span className="block text-[10px] text-zinc-400">
+              <span className="block text-3xs text-zinc-400">
                 İlişkili Araç
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4908,7 +4908,7 @@ function DocumentPreviewModal({
               </span>
             </div>
             <div>
-              <span className="block text-[10px] text-zinc-400">
+              <span className="block text-3xs text-zinc-400">
                 İlişkili Parça
               </span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -4919,10 +4919,10 @@ function DocumentPreviewModal({
 
           {tags.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="mr-1 text-[11px] text-zinc-400">Etiketler:</span>
+              <span className="mr-1 text-2xs text-zinc-400">Etiketler:</span>
               {tags.map((t) => (
                 <span
-                  className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                  className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                   key={t}
                 >
                   {t}
@@ -4983,7 +4983,7 @@ function DeleteConfirmationModal({
             <Trash2 className="h-6 w-6" />
           </div>
           <div>
-            <span className="font-bold text-[11px] text-rose-600 uppercase tracking-wider dark:text-rose-400">
+            <span className="font-bold text-2xs text-rose-600 uppercase tracking-wider dark:text-rose-400">
               Kalıcı Silme Onayı
             </span>
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -4997,7 +4997,7 @@ function DeleteConfirmationModal({
             {title}
           </div>
           {subtitle && (
-            <p className="mt-1 text-[11px] text-zinc-500 leading-relaxed dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-zinc-500 leading-relaxed dark:text-zinc-400">
               {subtitle}
             </p>
           )}

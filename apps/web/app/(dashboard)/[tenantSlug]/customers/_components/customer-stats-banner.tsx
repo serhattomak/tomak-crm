@@ -40,7 +40,7 @@ export function CustomerStatsBanner({
             <Users className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-[11px] text-muted-foreground">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-2xs text-muted-foreground">
           <span>{stats?.companiesCount ?? 0} Şirket</span>
           <span>•</span>
           <span>{stats?.individualsCount ?? 0} Bireysel</span>
@@ -70,7 +70,7 @@ export function CustomerStatsBanner({
           <Badge size="sm" variant="success">
             %{activeRate} Aktiflik
           </Badge>
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-2xs text-muted-foreground">
             oranı sağlandı
           </span>
         </div>
@@ -99,7 +99,7 @@ export function CustomerStatsBanner({
           <Badge size="sm" variant="accent">
             Dönüşüm Bekleyen
           </Badge>
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-2xs text-muted-foreground">
             aday müşteri
           </span>
         </div>
@@ -124,7 +124,7 @@ export function CustomerStatsBanner({
             <TrendingUp className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-[11px] text-muted-foreground">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-2xs text-muted-foreground">
           <span>Ort. Müşteri Değeri:</span>
           <strong className="font-semibold text-foreground">
             ₺{(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}

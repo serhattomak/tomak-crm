@@ -83,14 +83,14 @@ export function SalesGaugeWidget({
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Satış Hedef Performansı
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Dönemsel Kota & Hedef Takibi
               </p>
             </div>
           </div>
 
           {hasData && (
-            <Badge className="gap-1 text-[10px]" variant="success">
+            <Badge className="gap-1 text-3xs" variant="success">
               <Sparkles className="h-3 w-3" />
               Aktif
             </Badge>
@@ -146,7 +146,7 @@ export function SalesGaugeWidget({
                       %{currentScore}
                     </span>
                   </div>
-                  <span className="font-medium text-[11px] text-muted-foreground">
+                  <span className="font-medium text-2xs text-muted-foreground">
                     Gerçekleşen: ₺
                     {totalRevenue.toLocaleString("tr-TR", {
                       maximumFractionDigits: 0,
@@ -172,7 +172,7 @@ export function SalesGaugeWidget({
                     style={{ width: `${Math.max(5, currentScore)}%` }}
                   />
                 </div>
-                <p className="font-medium text-[11px] text-muted-foreground leading-relaxed">
+                <p className="font-medium text-2xs text-muted-foreground leading-relaxed">
                   Dönemsel hedefin %{currentScore}&apos;una ulaşıldı.
                 </p>
               </div>

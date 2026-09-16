@@ -63,11 +63,11 @@ export function TemplatePreview({
               Önizleme
             </span>
             {quoteId && selectedQuote ? (
-              <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
                 Gerçek Veri: {selectedQuote.quoteNumber}
               </span>
             ) : (
-              <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                 Mock Veri
               </span>
             )}
@@ -82,7 +82,7 @@ export function TemplatePreview({
                 }
                 value={quoteId ?? "mock"}
               >
-                <SelectTrigger className="h-7 text-[11px]">
+                <SelectTrigger className="h-7 text-2xs">
                   <SelectValue
                     placeholder={
                       isQuotesLoading
@@ -105,7 +105,7 @@ export function TemplatePreview({
         </div>
 
         {previewSubject ? (
-          <p className="mt-2 truncate rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300">
+          <p className="mt-2 truncate rounded-lg border border-border bg-zinc-50 px-2.5 py-1.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-300">
             Konu: {previewSubject}
           </p>
         ) : null}
@@ -115,7 +115,7 @@ export function TemplatePreview({
           <div className="flex items-center gap-1 rounded-lg border border-border bg-zinc-50 p-1 dark:bg-zinc-800/50">
             {ZOOM_OPTIONS.map((level) => (
               <button
-                className={`rounded-md px-2.5 py-1 font-bold text-[11px] transition ${ zoom === level ? "bg-card text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100" : "text-zinc-500 hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200" }`}
+                className={`rounded-md px-2.5 py-1 font-bold text-2xs transition ${ zoom === level ? "bg-card text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100" : "text-zinc-500 hover:bg-white hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200" }`}
                 key={level}
                 onClick={() => onZoomChange(level)}
                 type="button"
@@ -126,7 +126,7 @@ export function TemplatePreview({
           </div>
 
           <button
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-[11px] text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-semibold text-2xs text-zinc-700 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
             onClick={() => {
               void handleCopyInternal();
             }}
@@ -144,7 +144,7 @@ export function TemplatePreview({
           <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-zinc-500 dark:text-zinc-400">
             <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
             <span className="font-semibold text-xs">Preview yükleniyor...</span>
-            <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+            <span className="text-2xs text-zinc-400 dark:text-zinc-500">
               Handlebars derleniyor...
             </span>
           </div>
@@ -153,7 +153,7 @@ export function TemplatePreview({
             <p className="font-semibold text-rose-800 text-xs dark:text-rose-200">
               Önizleme alınamadı
             </p>
-            <p className="mt-1 text-[11px] text-rose-700 dark:text-rose-300">
+            <p className="mt-1 text-2xs text-rose-700 dark:text-rose-300">
               {error}
             </p>
           </div>
@@ -172,7 +172,7 @@ export function TemplatePreview({
                 title="E-posta Önizleme"
               />
             </div>
-            <p className="mt-2 text-center text-[10px] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2 text-center text-3xs text-zinc-400 dark:text-zinc-500">
               iframe sandbox=&quot;allow-same-origin&quot; · srcDoc render ·
               bağlantılar rel noopener ile korunur
             </p>

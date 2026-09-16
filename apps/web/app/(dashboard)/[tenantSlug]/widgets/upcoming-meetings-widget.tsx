@@ -104,14 +104,14 @@ export function UpcomingMeetingsWidget() {
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Görüşmeler & Randevular
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Planlanan veya geçmiş müşteri görüşmeleri
               </p>
             </div>
           </div>
 
           <Button
-            className="h-7 gap-1 px-2.5 text-[11px]"
+            className="h-7 gap-1 px-2.5 text-2xs"
             onClick={() => setShowAddForm(!showAddForm)}
             size="sm"
             variant="outline"
@@ -140,7 +140,7 @@ export function UpcomingMeetingsWidget() {
               <div className="flex items-center gap-1.5">
                 {["Bugün", "Dün", "Yarın", "Geçen Hafta"].map((d) => (
                   <Button
-                    className="h-6 px-2 text-[10px]"
+                    className="h-6 px-2 text-3xs"
                     key={d}
                     onClick={() => setNewDate(d)}
                     type="button"
@@ -210,7 +210,7 @@ export function UpcomingMeetingsWidget() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-1.5">
                           <Badge
-                            className="gap-1 px-1.5 py-0 font-medium text-[10px]"
+                            className="gap-1 px-1.5 py-0 font-medium text-3xs"
                             variant="neutral"
                           >
                             {getTypeIcon(meeting.type)}
@@ -220,7 +220,7 @@ export function UpcomingMeetingsWidget() {
                         <h4 className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
                           {meeting.title}
                         </h4>
-                        <p className="text-[11px] text-muted-foreground">
+                        <p className="text-2xs text-muted-foreground">
                           {meeting.customer}
                         </p>
                       </div>
@@ -228,7 +228,7 @@ export function UpcomingMeetingsWidget() {
                       {meeting.link && (
                         <Button
                           asChild
-                          className="h-6 shrink-0 gap-1 px-2 text-[10px]"
+                          className="h-6 shrink-0 gap-1 px-2 text-3xs"
                           size="sm"
                         >
                           <a

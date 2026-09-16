@@ -935,7 +935,7 @@ function WarehouseItemCard({
         <span className="flex items-center gap-1.5 font-semibold text-sm">
           {warehouse.name}
           {warehouse.isDefault ? (
-            <span className="rounded bg-primary/10 px-1.5 py-0.5 font-medium text-[10px] text-primary">
+            <span className="rounded bg-primary/10 px-1.5 py-0.5 font-medium text-3xs text-primary">
               Varsayılan
             </span>
           ) : null}
@@ -1001,14 +1001,14 @@ function WarehouseStockRow({
       <TableCell className="p-3 font-medium text-foreground">
         {stock.productName}
         {stock.variantName ? (
-          <span className="block text-[11px] text-muted-foreground">
+          <span className="block text-2xs text-muted-foreground">
             Varyant: {stock.variantName}
           </span>
         ) : null}
       </TableCell>
       <TableCell className="p-3 font-mono text-muted-foreground">
         <div>{stock.productSKU || "-"}</div>
-        <div className="text-[10px]">{stock.productBarcode || ""}</div>
+        <div className="text-3xs">{stock.productBarcode || ""}</div>
       </TableCell>
       <TableCell className="p-3">
         {isEditing ? (
@@ -1021,7 +1021,7 @@ function WarehouseStockRow({
               value={editingBinLocation}
             />
             <button
-              className="rounded bg-primary px-2 py-1 font-medium text-[10px] text-primary-foreground"
+              className="rounded bg-primary px-2 py-1 font-medium text-3xs text-primary-foreground"
               onClick={handleSaveClick}
               type="button"
             >
@@ -1037,7 +1037,7 @@ function WarehouseStockRow({
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+            <span className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               {stock.binLocation || "Raf Tanımsız"}
             </span>
             <button
@@ -1069,7 +1069,7 @@ function WarehouseStockRow({
         </span>
       </TableCell>
       <TableCell className="p-3 text-center">
-        <span className="text-[11px] text-muted-foreground">
+        <span className="text-2xs text-muted-foreground">
           {Number(stock.sellingPrice).toLocaleString("tr-TR", {
             currency: stock.currency || "TRY",
             style: "currency",
@@ -1137,7 +1137,7 @@ function StockTransferRow({
       </TableCell>
       <TableCell className="p-3 text-center">
         <span className="font-semibold">{transfer.totalItemCount} Kalem</span>
-        <span className="block text-[10px] text-muted-foreground">
+        <span className="block text-3xs text-muted-foreground">
           ({Number(transfer.totalQuantity).toLocaleString("tr-TR")} Adet)
         </span>
       </TableCell>
@@ -1250,27 +1250,27 @@ function StockCountRow({
 function TransferStatusBadge({ status }: { status: string }) {
   if (status === "Received") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-[10px] text-emerald-600 dark:text-emerald-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
         <CheckCircle2 className="h-3 w-3" /> Teslim Alındı
       </span>
     );
   }
   if (status === "Dispatched") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 font-semibold text-[10px] text-amber-600 dark:text-amber-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 font-semibold text-3xs text-amber-600 dark:text-amber-400">
         <Truck className="h-3 w-3" /> Yolda / Sevk Edildi
       </span>
     );
   }
   if (status === "Cancelled") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-rose-500/10 px-2 py-0.5 font-semibold text-[10px] text-rose-600 dark:text-rose-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-rose-500/10 px-2 py-0.5 font-semibold text-3xs text-rose-600 dark:text-rose-400">
         <X className="h-3 w-3" /> İptal Edildi
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+    <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
       <Clock className="h-3 w-3" /> Taslak
     </span>
   );
@@ -1279,13 +1279,13 @@ function TransferStatusBadge({ status }: { status: string }) {
 function CountStatusBadge({ status }: { status: string }) {
   if (status === "Completed") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-[10px] text-emerald-600 dark:text-emerald-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
         <CheckCircle2 className="h-3 w-3" /> Mutabakat Tamamlandı
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 font-semibold text-[10px] text-blue-600 dark:text-blue-400">
+    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 font-semibold text-3xs text-blue-600 dark:text-blue-400">
       <Clock className="h-3 w-3" /> Sayım Devam Ediyor
     </span>
   );
@@ -2025,7 +2025,7 @@ function NewCountModal({
               searchPlaceholder="Depo ara..."
               value={warehouseId}
             />
-            <p className="mt-1 text-[11px] text-muted-foreground">
+            <p className="mt-1 text-2xs text-muted-foreground">
               Sayım başlatıldığında, bu depoda tanımlı tüm fiziksel ürünler
               sistemdeki mevcut stoklarıyla birlikte listelenecektir.
             </p>
@@ -2507,7 +2507,7 @@ function CountAuditRow({
       <TableCell className="p-2.5 font-medium text-foreground">
         {item.productName}
         {item.sku ? (
-          <span className="block text-[10px] text-muted-foreground">
+          <span className="block text-3xs text-muted-foreground">
             {item.sku}
           </span>
         ) : null}

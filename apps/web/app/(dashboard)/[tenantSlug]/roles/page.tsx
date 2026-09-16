@@ -234,7 +234,7 @@ export default function RolesManagementPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
         <div className="space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs md:col-span-4">
-          <div className="mb-2 px-2 font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 px-2 font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Available Roles ({roles.length})
           </div>
 
@@ -261,13 +261,13 @@ export default function RolesManagementPage() {
                           </span>
                         )}
                       </span>
-                      <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
                         {role.memberCount} member
                         {role.memberCount === 1 ? "" : "s"}
                       </span>
                     </div>
                     {role.description && (
-                      <p className="mt-1 line-clamp-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                      <p className="mt-1 line-clamp-2 text-2xs text-zinc-500 dark:text-zinc-400">
                         {role.description}
                       </p>
                     )}
@@ -287,7 +287,7 @@ export default function RolesManagementPage() {
                   <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedRole.name}
                     {selectedRole.isDefault && (
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-[10px] text-amber-700">
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-3xs text-amber-700">
                         System Default
                       </span>
                     )}
@@ -314,7 +314,7 @@ export default function RolesManagementPage() {
               <div className="max-h-[460px] space-y-6 overflow-y-auto pr-2">
                 {permissionGroups.map((group) => (
                   <div className="space-y-3" key={group.module}>
-                    <div className="flex items-center gap-1.5 font-bold text-[11px] text-blue-600 uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5 font-bold text-2xs text-blue-600 uppercase tracking-wider">
                       <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                       {group.module} Module
                     </div>
@@ -337,11 +337,11 @@ export default function RolesManagementPage() {
                               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                                 {perm.name}
                               </div>
-                              <div className="font-mono text-[10px] text-blue-600/90">
+                              <div className="font-mono text-3xs text-blue-600/90">
                                 {perm.code}
                               </div>
                               {perm.description && (
-                                <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
                                   {perm.description}
                                 </div>
                               )}

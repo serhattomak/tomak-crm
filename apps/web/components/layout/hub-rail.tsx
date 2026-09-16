@@ -86,7 +86,7 @@ export function HubRail({
 
                   <HubIcon className="h-4 w-4 shrink-0 transition-transform group-hover:scale-105" />
                   <span
-                    className={`mt-0.5 font-bold text-[9px] leading-none tracking-tight ${
+                    className={`mt-0.5 font-bold text-3xs leading-none tracking-tight ${
                       isHubActive
                         ? "text-primary-foreground"
                         : "text-muted-foreground/80 group-hover:text-foreground"
@@ -97,7 +97,7 @@ export function HubRail({
 
                   {/* Hub Notification Badge */}
                   {hub.badge && (
-                    <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-bold text-[9px] text-destructive-foreground ring-2 ring-background">
+                    <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-bold text-3xs text-destructive-foreground ring-2 ring-background">
                       {hub.badge}
                     </span>
                   )}
@@ -109,7 +109,7 @@ export function HubRail({
                     <span className="font-semibold text-foreground">
                       {hub.name}
                     </span>
-                    <span className="font-normal text-[10px] text-muted-foreground">
+                    <span className="font-normal text-3xs text-muted-foreground">
                       • {hub.description}
                     </span>
                   </div>

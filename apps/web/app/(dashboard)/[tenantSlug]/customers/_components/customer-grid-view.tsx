@@ -70,7 +70,7 @@ export function CustomerGridView({
                     >
                       {c.name}
                     </Link>
-                    <div className="text-[10px] text-muted-foreground">
+                    <div className="text-3xs text-muted-foreground">
                       {c.industry ||
                         (c.type === "Company" ? "Kurumsal Şirket" : "Bireysel")}
                     </div>
@@ -85,19 +85,19 @@ export function CustomerGridView({
               {/* Contact info list */}
               <div className="mt-3.5 space-y-1 border-border/60 border-t pt-2.5 text-muted-foreground text-xs">
                 {c.phone ? (
-                  <div className="flex items-center gap-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-2xs">
                     <Phone className="h-3 w-3 text-muted-foreground/70" />
                     <span>{c.phone}</span>
                   </div>
                 ) : null}
                 {c.email ? (
-                  <div className="flex items-center gap-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-2xs">
                     <Mail className="h-3 w-3 text-muted-foreground/70" />
                     <span className="truncate">{c.email}</span>
                   </div>
                 ) : null}
                 {c.city ? (
-                  <div className="flex items-center gap-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-2xs">
                     <Globe className="h-3 w-3 text-muted-foreground/70" />
                     <span>{c.city}, TR</span>
                   </div>
@@ -108,7 +108,7 @@ export function CustomerGridView({
             {/* Card Footer */}
             <div className="mt-4 flex items-center justify-between border-border/60 border-t pt-2.5">
               <div>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-3xs text-muted-foreground">
                   Toplam Ciro:
                 </span>
                 <div className="font-semibold text-foreground text-xs">

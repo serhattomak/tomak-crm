@@ -216,13 +216,13 @@ export function QuickActionsWidget({
                 Hızlı İşlemler & Kısayollar
               </h3>
               <Badge
-                className="px-1.5 py-0 font-mono text-[9px]"
+                className="px-1.5 py-0 font-mono text-3xs"
                 variant="neutral"
               >
                 {visibleActions.length} Eylem
               </Badge>
             </div>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-3xs text-muted-foreground">
               Sık kullanılan CRM eylemlerini tek tıkla başlatın
             </p>
           </div>
@@ -294,7 +294,7 @@ export function QuickActionsWidget({
                     <div className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
                       {act.title}
                     </div>
-                    <div className="truncate text-[10px] text-muted-foreground">
+                    <div className="truncate text-3xs text-muted-foreground">
                       {act.description}
                     </div>
                   </div>
@@ -329,7 +329,7 @@ export function QuickActionsWidget({
                 <DialogTitle className="font-semibold text-foreground text-sm">
                   Hızlı İşlemleri Özelleştir
                 </DialogTitle>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-2xs text-muted-foreground">
                   Dashboard üzerinde görünecek butonları seçin
                 </p>
               </div>
@@ -371,7 +371,7 @@ export function QuickActionsWidget({
                       <div className="font-semibold text-foreground text-xs">
                         {act.title}
                       </div>
-                      <div className="text-[10px] text-muted-foreground">
+                      <div className="text-3xs text-muted-foreground">
                         {act.description}
                       </div>
                     </div>
@@ -389,7 +389,7 @@ export function QuickActionsWidget({
 
           <div className="flex items-center justify-between border-border border-t pt-3">
             <Button
-              className="h-7 gap-1 text-[11px] text-muted-foreground"
+              className="h-7 gap-1 text-2xs text-muted-foreground"
               onClick={handleResetDefaults}
               type="button"
               variant="ghost"

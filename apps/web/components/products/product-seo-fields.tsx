@@ -159,7 +159,7 @@ export function ProductSeoFields({
             <RefreshCw aria-hidden="true" className="h-4 w-4" />
           </button>
         </div>
-        <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+        <p className="mt-1 text-2xs text-zinc-400 dark:text-zinc-500">
           Türkçe karaktersiz otomatik üretilir; çakışmada -2, -3 eklenir.
         </p>
       </div>

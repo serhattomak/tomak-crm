@@ -254,7 +254,7 @@ export function PipelineSettingsModal({
 
                   {/* Probability */}
                   <div className="flex w-20 items-center gap-1">
-                    <span className="font-medium text-[10px] text-muted-foreground">
+                    <span className="font-medium text-3xs text-muted-foreground">
                       %
                     </span>
                     <Input
@@ -276,7 +276,7 @@ export function PipelineSettingsModal({
 
                   {/* SLA Hours */}
                   <div className="flex w-24 items-center gap-1">
-                    <span className="font-medium text-[10px] text-muted-foreground">
+                    <span className="font-medium text-3xs text-muted-foreground">
                       SLA:
                     </span>
                     <Input

@@ -75,7 +75,7 @@ function KpiCard({
           {value}
         </span>
         {trend ? (
-          <span className="font-medium text-[11px] text-zinc-400">{trend}</span>
+          <span className="font-medium text-2xs text-zinc-400">{trend}</span>
         ) : null}
       </div>
     </div>
@@ -157,7 +157,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
         <div className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
           {invoice.invoiceNumber}
         </div>
-        <div className="font-medium text-[11px] text-zinc-400">
+        <div className="font-medium text-2xs text-zinc-400">
           {invoice.profile} •{" "}
           {new Date(invoice.issueDate).toLocaleDateString("tr-TR")}
         </div>
@@ -178,7 +178,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           {invoice.cariTitle}
         </div>
         {invoice.cariTaxNumber ? (
-          <div className="text-[11px] text-zinc-400">
+          <div className="text-2xs text-zinc-400">
             VKN/TCKN: {invoice.cariTaxNumber}
           </div>
         ) : null}
@@ -191,7 +191,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           })}{" "}
           {invoice.currency}
         </div>
-        <div className="text-[11px] text-zinc-400">
+        <div className="text-2xs text-zinc-400">
           KDV:{" "}
           {invoice.taxTotal.toLocaleString("tr-TR", {
             minimumFractionDigits: 2,
@@ -205,7 +205,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
       <TableCell className="py-3.5 pr-4 pl-3 text-right">
         <div className="flex items-center justify-end gap-1">
           <a
-            className="rounded-lg border border-border bg-zinc-50 px-2 py-1 font-mono text-[11px] text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800/60 dark:text-zinc-300"
+            className="rounded-lg border border-border bg-zinc-50 px-2 py-1 font-mono text-2xs text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-800/60 dark:text-zinc-300"
             download
             href={`/api/invoicing/invoices/${invoice.id}/download-ubl`}
             onClick={(e) => e.stopPropagation()}
@@ -487,7 +487,7 @@ function InvoiceDetailDrawer({
                   <div className="text-zinc-500 dark:text-zinc-400">
                     {invoice.cariCity} / {invoice.cariDistrict}
                   </div>
-                  <div className="mt-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+                  <div className="mt-1 font-mono text-2xs text-zinc-600 dark:text-zinc-400">
                     VKN/TCKN: {invoice.cariTaxNumber || "—"} •{" "}
                     {invoice.cariTaxOffice || "—"} VD.
                   </div>
@@ -527,12 +527,12 @@ function InvoiceDetailDrawer({
                             {item.productName}
                           </div>
                           {item.sku ? (
-                            <div className="font-mono text-[10px] text-zinc-400">
+                            <div className="font-mono text-3xs text-zinc-400">
                               {item.sku}
                             </div>
                           ) : null}
                           {item.withholdingRate ? (
-                            <div className="text-[10px] text-amber-600 dark:text-amber-400">
+                            <div className="text-3xs text-amber-600 dark:text-amber-400">
                               Tevkifat: {item.withholdingRate}
                             </div>
                           ) : null}
@@ -855,7 +855,7 @@ export default function InvoicesPage() {
         <div className="overflow-x-auto">
           <Table className="font-sans">
             <TableHeader>
-              <TableRow className="border-border bg-zinc-50/80 font-semibold text-[11px] text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
                 <TableHead className="py-3 pr-3 pl-4 h-auto">Fatura No & Tarih</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Cari Hesap (Ünvan)</TableHead>

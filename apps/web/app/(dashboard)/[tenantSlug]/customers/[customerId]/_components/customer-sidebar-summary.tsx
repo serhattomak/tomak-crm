@@ -92,7 +92,7 @@ export function CustomerSidebarSummary({
                 <div className="font-semibold text-foreground text-xs">
                   {customer.assignedEmployeeName}
                 </div>
-                <div className="text-[11px] text-muted-foreground">
+                <div className="text-2xs text-muted-foreground">
                   Portföy & Müşteri Yöneticisi
                 </div>
               </div>

@@ -246,11 +246,11 @@ export default function AdminTenantDetailPage() {
                 {tenant?.name}
               </h1>
               {tenant?.isActive ? (
-                <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
                   Aktif
                 </span>
               ) : (
-                <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-[10px] text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-400">
+                <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-3xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-400">
                   Askıda
                 </span>
               )}
@@ -322,7 +322,7 @@ export default function AdminTenantDetailPage() {
                 key={mod.moduleKey}
               >
                 <div className="flex items-center justify-between">
-                  <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 uppercase tracking-wider dark:bg-zinc-800 dark:text-zinc-400">
+                  <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-600 uppercase tracking-wider dark:bg-zinc-800 dark:text-zinc-400">
                     {mod.category}
                   </span>
                   <label className="relative inline-flex cursor-pointer items-center">
@@ -346,14 +346,14 @@ export default function AdminTenantDetailPage() {
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     {mod.defaultDisplayName}
                   </h3>
-                  <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                  <p className="font-mono text-2xs text-zinc-400 dark:text-zinc-500">
                     key: {mod.moduleKey}
                   </p>
                 </div>
 
                 {/* Custom Display Name Input */}
                 <div className="mt-3 space-y-1 border-border border-t pt-3">
-                  <label className="font-bold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <label className="font-bold text-3xs text-zinc-500 dark:text-zinc-400">
                     Menüde Görünecek Özel İsim:
                   </label>
                   <input
@@ -439,7 +439,7 @@ export default function AdminTenantDetailPage() {
                 </button>
               </div>
             </div>
-            <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+            <p className="text-2xs text-zinc-400 dark:text-zinc-500">
               Örnekler:{" "}
               <code className="font-semibold text-blue-600">products.name</code>
               ,{" "}

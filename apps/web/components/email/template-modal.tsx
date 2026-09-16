@@ -129,7 +129,7 @@ function VariableChipButton({ onInsert, variable }: VariableChipButtonProps) {
 
   return (
     <button
-      className="inline-flex items-center gap-0.5 rounded-lg border border-border bg-card px-2 py-0.5 font-medium font-mono text-[10px] text-zinc-700 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700"
+      className="inline-flex items-center gap-0.5 rounded-lg border border-border bg-card px-2 py-0.5 font-medium font-mono text-3xs text-zinc-700 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700"
       onClick={handleClick}
       title={VARIABLE_LABELS[variable]}
       type="button"
@@ -312,7 +312,7 @@ function TemplateLivePreview({
 
         <div className="flex items-center gap-1.5">
           <button
-            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
+            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-1 font-medium text-2xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
             onClick={handleTogglePreviewTheme}
             title={isDark ? "Açık (Kağıt) Görünüme Geç" : "Koyu Görünüme Geç"}
             type="button"
@@ -326,7 +326,7 @@ function TemplateLivePreview({
           </button>
 
           <button
-            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2.5 py-1 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
+            className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2.5 py-1 font-medium text-2xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
             onClick={onCopyHtml}
             title="HTML Kodunu Kopyala"
             type="button"
@@ -651,7 +651,7 @@ export function TemplateModal({
 
               {/* Variable Chips */}
               <div className="space-y-1.5">
-                <span className="block font-medium text-[11px] text-zinc-500">
+                <span className="block font-medium text-2xs text-zinc-500">
                   Dinamik Değişkenler (Tıklayıp imlece ekleyin):
                 </span>
                 <div className="flex flex-wrap gap-1">

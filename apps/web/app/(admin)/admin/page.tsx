@@ -225,11 +225,11 @@ export default function AdminDashboardPage() {
                           {tenant.name}
                         </Link>
                         {tenant.isActive ? (
-                          <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-[10px] text-emerald-700">
+                          <span className="rounded-full border border-emerald-200/60 bg-emerald-50 px-2 py-0.5 font-bold text-3xs text-emerald-700">
                             Aktif
                           </span>
                         ) : (
-                          <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-[10px] text-rose-700">
+                          <span className="rounded-full border border-rose-200/60 bg-rose-50 px-2 py-0.5 font-bold text-3xs text-rose-700">
                             Askıda
                           </span>
                         )}
@@ -251,7 +251,7 @@ export default function AdminDashboardPage() {
                       <p className="font-semibold text-zinc-700 text-xs">
                         {tenant.enabledModuleCount} Modül
                       </p>
-                      <p className="text-[11px] text-zinc-400">
+                      <p className="text-2xs text-zinc-400">
                         {tenant.memberCount} Üye
                       </p>
                     </div>
@@ -317,7 +317,7 @@ export default function AdminDashboardPage() {
               <Shield className="h-4 w-4" />
               <span>Modüler Satış Prensibi</span>
             </div>
-            <p className="text-[11px] text-zinc-600 leading-relaxed">
+            <p className="text-2xs text-zinc-600 leading-relaxed">
               Her firma için aktif modülleri ve özel terminolojiyi Firma Detay
               sayfasından anlık değiştirebilirsiniz. Değişiklikler Redis
               üzerinden sıfır gecikmeyle yansır.

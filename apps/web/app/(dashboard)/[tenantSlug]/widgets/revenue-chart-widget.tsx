@@ -84,7 +84,7 @@ export function RevenueChartWidget({
                 </CardTitle>
                 <Info className="h-3 w-3 text-muted-foreground" />
               </div>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 Dönemsel gerçekleşen satış ve teklif analitiği
               </p>
             </div>
@@ -124,7 +124,7 @@ export function RevenueChartWidget({
             <div className="relative pt-2 pb-1">
               <div className="grid grid-cols-2 gap-3 py-2 sm:grid-cols-4">
                 <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
-                  <span className="block font-medium text-[11px] text-muted-foreground">
+                  <span className="block font-medium text-2xs text-muted-foreground">
                     Toplam Sipariş Geliri
                   </span>
                   <span className="mt-1 block font-bold text-base text-foreground tracking-tight">
@@ -135,7 +135,7 @@ export function RevenueChartWidget({
                   </span>
                 </div>
                 <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
-                  <span className="block font-medium text-[11px] text-muted-foreground">
+                  <span className="block font-medium text-2xs text-muted-foreground">
                     Tahsil Edilen
                   </span>
                   <span className="mt-1 block font-bold text-base text-emerald-500 tracking-tight">
@@ -146,7 +146,7 @@ export function RevenueChartWidget({
                   </span>
                 </div>
                 <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
-                  <span className="block font-medium text-[11px] text-muted-foreground">
+                  <span className="block font-medium text-2xs text-muted-foreground">
                     Aktif Teklif Hacmi
                   </span>
                   <span className="mt-1 block font-bold text-base text-primary tracking-tight">
@@ -157,7 +157,7 @@ export function RevenueChartWidget({
                   </span>
                 </div>
                 <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
-                  <span className="block font-medium text-[11px] text-muted-foreground">
+                  <span className="block font-medium text-2xs text-muted-foreground">
                     Toplam Sipariş
                   </span>
                   <span className="mt-1 block font-bold text-base text-foreground tracking-tight">
@@ -187,7 +187,7 @@ export function RevenueChartWidget({
         <CardFooter className="flex flex-wrap items-center justify-between gap-4 border-border/80 border-t pt-2 pb-3 text-xs">
           <div className="flex items-center gap-5">
             <div>
-              <span className="font-medium text-[10px] text-muted-foreground">
+              <span className="font-medium text-3xs text-muted-foreground">
                 Toplam İşlem:
               </span>
               <div className="font-semibold text-foreground text-xs">
@@ -198,7 +198,7 @@ export function RevenueChartWidget({
               </div>
             </div>
             <div>
-              <span className="font-medium text-[10px] text-muted-foreground">
+              <span className="font-medium text-3xs text-muted-foreground">
                 Teslim Edilen:
               </span>
               <div className="font-semibold text-emerald-500 text-xs">

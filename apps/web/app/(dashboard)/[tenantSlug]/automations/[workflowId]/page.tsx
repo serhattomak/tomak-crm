@@ -516,7 +516,7 @@ export default function WorkflowBuilderPage() {
                 1
               </div>
               <div>
-                <span className="font-bold text-[11px] text-blue-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-blue-600 uppercase tracking-wider">
                   TETİKLEYİCİ OLAY (WHEN)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -638,7 +638,7 @@ export default function WorkflowBuilderPage() {
                 2
               </div>
               <div>
-                <span className="font-bold text-[11px] text-amber-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-amber-600 uppercase tracking-wider">
                   KOŞULLAR & KURALLAR (IF / ONLY IF)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -814,7 +814,7 @@ export default function WorkflowBuilderPage() {
                 3
               </div>
               <div>
-                <span className="font-bold text-[11px] text-emerald-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-emerald-600 uppercase tracking-wider">
                   OTOMATİK AKSİYONLAR (THEN / DO THIS)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -898,7 +898,7 @@ export default function WorkflowBuilderPage() {
                         type="text"
                         value={act.title}
                       />
-                      <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                      <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                         {act.type}
                       </span>
                     </div>
@@ -917,7 +917,7 @@ export default function WorkflowBuilderPage() {
                     <div className="space-y-2 rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                          <label className="mb-1 block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                             Kanal
                           </label>
                           <SelectField
@@ -937,7 +937,7 @@ export default function WorkflowBuilderPage() {
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                          <label className="mb-1 block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                             Başlık
                           </label>
                           <input
@@ -956,7 +956,7 @@ export default function WorkflowBuilderPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        <label className="mb-1 block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                           Mesaj İçeriği (Değişkenler: {"{customerName}"},{" "}
                           {"{totalAmount}"}, {"{orderNumber}"})
                         </label>
@@ -979,7 +979,7 @@ export default function WorkflowBuilderPage() {
 
                   {act.type === "createRecord" && (
                     <div className="space-y-2 rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
-                      <label className="block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      <label className="block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                         Görev / Not Başlığı
                       </label>
                       <input
@@ -997,7 +997,7 @@ export default function WorkflowBuilderPage() {
                   {act.type === "updateRecord" && (
                     <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                       <div>
-                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        <label className="mb-1 block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                           Güncellenecek Alan
                         </label>
                         <input
@@ -1010,7 +1010,7 @@ export default function WorkflowBuilderPage() {
                         />
                       </div>
                       <div>
-                        <label className="mb-1 block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                        <label className="mb-1 block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                           Yeni Değer
                         </label>
                         <input
@@ -1027,7 +1027,7 @@ export default function WorkflowBuilderPage() {
 
                   {act.type === "webhook" && (
                     <div className="space-y-2 rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
-                      <label className="block font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      <label className="block font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                         Hedef URL (POST Endpoint)
                       </label>
                       <input
@@ -1044,7 +1044,7 @@ export default function WorkflowBuilderPage() {
 
                   {act.type === "delay" && (
                     <div className="flex items-center gap-3 rounded-xl border border-border bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
-                      <label className="font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                      <label className="font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                         Bekleme Süresi (Dakika):
                       </label>
                       <NumberInput
@@ -1112,12 +1112,12 @@ export default function WorkflowBuilderPage() {
 
             {/* Mock input editor */}
             <div className="space-y-2 rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-              <span className="font-bold text-[11px] text-zinc-500 uppercase dark:text-zinc-400">
+              <span className="font-bold text-2xs text-zinc-500 uppercase dark:text-zinc-400">
                 Test Parametreleri
               </span>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
                     customerName
                   </label>
                   <input
@@ -1133,7 +1133,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
                     tier
                   </label>
                   <input
@@ -1146,7 +1146,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
                     totalAmount
                   </label>
                   <NumberInput
@@ -1165,7 +1165,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
                     status
                   </label>
                   <input
@@ -1214,13 +1214,13 @@ export default function WorkflowBuilderPage() {
                     )}
                     <span>Simülasyon Durumu: {simulationResult.status}</span>
                   </div>
-                  <p className="text-[11px] opacity-90">
+                  <p className="text-2xs opacity-90">
                     {simulationResult.conditionsSummary}
                   </p>
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                     Adım Logları ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
@@ -1232,11 +1232,11 @@ export default function WorkflowBuilderPage() {
                         <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                           {log.stepTitle}
                         </div>
-                        <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
                           {log.message}
                         </div>
                       </div>
-                      <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <span className="font-mono text-3xs text-zinc-400 dark:text-zinc-500">
                         {log.executionDurationMs}ms
                       </span>
                     </div>

@@ -59,7 +59,7 @@ export function PipelineKanbanBoard({
                 <span className="truncate font-semibold text-foreground text-xs">
                   {stage.name}
                 </span>
-                <span className="rounded-md bg-muted px-1.5 py-0.5 font-semibold text-[10px] text-muted-foreground">
+                <span className="rounded-md bg-muted px-1.5 py-0.5 font-semibold text-3xs text-muted-foreground">
                   {stageDeals.length}
                 </span>
               </div>
@@ -70,7 +70,7 @@ export function PipelineKanbanBoard({
             </div>
 
             {/* Stage Probability & SLA Sub-header */}
-            <div className="mb-3 flex items-center justify-between rounded-md border border-border/80 bg-card px-2.5 py-1 text-[10px] text-muted-foreground shadow-2xs">
+            <div className="mb-3 flex items-center justify-between rounded-md border border-border/80 bg-card px-2.5 py-1 text-3xs text-muted-foreground shadow-2xs">
               <span className="flex items-center gap-1 font-medium">
                 <Award className="h-3 w-3 text-primary" />
                 Kazanma: %{stage.probability}
@@ -103,7 +103,7 @@ export function PipelineKanbanBoard({
                   <p className="font-medium text-muted-foreground text-xs">
                     Bu aşamada kart yok
                   </p>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                  <p className="mt-0.5 text-3xs text-muted-foreground">
                     Kart sürükleyip bırakabilirsiniz
                   </p>
                 </div>

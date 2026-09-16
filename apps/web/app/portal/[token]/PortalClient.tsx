@@ -186,7 +186,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-sm">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded-full bg-blue-100 px-3 py-0.5 font-bold text-[11px] text-blue-700">
+                <span className="rounded-full bg-blue-100 px-3 py-0.5 font-bold text-2xs text-blue-700">
                   Resmi Sözleşme
                 </span>
                 <span className="font-mono text-zinc-500 text-xs">
@@ -236,7 +236,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               <CheckCircle2 className="h-5 w-5 text-emerald-600" />
               <div>
                 <strong>Dijital Olarak Onaylandı & İmzalandı</strong>
-                <p className="mt-0.5 text-[11px] text-emerald-800">
+                <p className="mt-0.5 text-2xs text-emerald-800">
                   İmzalayan: {contract.signedByName} • Tarih:{" "}
                   {contract.signedAt
                     ? new Date(contract.signedAt).toLocaleString("tr-TR")
@@ -318,7 +318,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           </h2>
           <p className="text-zinc-500 text-xs">{displayMessage}</p>
           {isExpired && expiredDate && (
-            <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-[11px] text-amber-700">
+            <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700">
               <Clock className="h-3 w-3" />
               Son Geçerlilik: {expiredDate}
             </span>
@@ -505,11 +505,11 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 <span className="font-bold font-mono text-zinc-900 text-xs">
                   {quote.quoteNumber}
                 </span>
-                <span className="rounded bg-blue-100 px-1.5 py-0.2 font-bold text-[10px] text-blue-700">
+                <span className="rounded bg-blue-100 px-1.5 py-0.2 font-bold text-3xs text-blue-700">
                   R{quote.revisionNumber}
                 </span>
               </div>
-              <span className="block max-w-xs truncate text-[11px] text-zinc-500">
+              <span className="block max-w-xs truncate text-2xs text-zinc-500">
                 {quote.title}
               </span>
             </div>
@@ -587,7 +587,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 Tarih: {new Date().toLocaleDateString("tr-TR")}
               </span>
               {quote.validUntil && (
-                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-[11px] text-amber-700">
+                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700">
                   <Clock className="h-3 w-3" />
                   Son Geçerlilik:{" "}
                   {new Date(quote.validUntil).toLocaleDateString("tr-TR")}
@@ -599,7 +599,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           {/* Client & Description Banner */}
           <div className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-zinc-50 p-5 sm:grid-cols-2">
             <div>
-              <span className="block font-bold text-[10px] text-zinc-400 uppercase tracking-wider">
+              <span className="block font-bold text-3xs text-zinc-400 uppercase tracking-wider">
                 SAYIN / MÜŞTERİ:
               </span>
               <h3 className="mt-1 font-extrabold text-zinc-900 text-sm">
@@ -611,7 +611,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </div>
 
             <div>
-              <span className="block font-bold text-[10px] text-zinc-400 uppercase tracking-wider">
+              <span className="block font-bold text-3xs text-zinc-400 uppercase tracking-wider">
                 TEKLİF DETAYI:
               </span>
               <p className="mt-1 text-zinc-600 text-xs">
@@ -630,7 +630,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             <div className="overflow-x-auto rounded-2xl border border-border bg-card">
               <Table className="border-collapse">
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50 font-bold text-[11px] text-zinc-600">
+                  <TableRow className="border-border bg-zinc-50 font-bold text-2xs text-zinc-600">
                     <TableHead className="px-4 py-3 h-auto">#</TableHead>
                     <TableHead className="px-4 py-3 h-auto">Ürün / Hizmet Açıklaması</TableHead>
                     <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
@@ -656,12 +656,12 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                           {item.productName}
                         </span>
                         {item.description && (
-                          <span className="mt-0.5 block text-[11px] text-zinc-500">
+                          <span className="mt-0.5 block text-2xs text-zinc-500">
                             {item.description}
                           </span>
                         )}
                         {item.isOptional && (
-                          <span className="mt-1 inline-block rounded bg-amber-100 px-1.5 py-0.2 font-bold text-[9px] text-amber-800">
+                          <span className="mt-1 inline-block rounded bg-amber-100 px-1.5 py-0.2 font-bold text-3xs text-amber-800">
                             Opsiyonel Hizmet
                           </span>
                         )}
@@ -870,7 +870,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 />
               </div>
 
-              <div className="rounded-xl bg-zinc-50 p-3 text-[11px] text-zinc-500 leading-relaxed">
+              <div className="rounded-xl bg-zinc-50 p-3 text-2xs text-zinc-500 leading-relaxed">
                 Bu teklifi onaylayarak yukarıda belirtilen şart ve koşulları
                 kabul etmiş ve sipariş sürecini başlatmış olursunuz.
               </div>

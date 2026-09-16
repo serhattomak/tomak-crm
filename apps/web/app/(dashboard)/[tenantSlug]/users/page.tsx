@@ -222,7 +222,7 @@ export default function UsersManagementPage() {
                   </TableCell>
                   <TableCell className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-[10px] ${
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         user.isActive
                           ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
                           : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"

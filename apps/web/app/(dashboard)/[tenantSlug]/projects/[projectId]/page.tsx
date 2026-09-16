@@ -822,7 +822,7 @@ export default function ProjectDetailPage() {
         >
           <ListTodo className="h-4 w-4" />
           <span>Backlog & Sprint Planlama</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {items.length}
           </span>
         </button>
@@ -839,7 +839,7 @@ export default function ProjectDetailPage() {
           <Kanban className="h-4 w-4" />
           <span>Aktif Sprint Panosu</span>
           {activeSprint && (
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300">
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300">
               {activeSprint.name}
             </span>
           )}
@@ -856,7 +856,7 @@ export default function ProjectDetailPage() {
         >
           <Milestone className="h-4 w-4" />
           <span>Epikler & Yol Haritası</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {epics.length}
           </span>
         </button>
@@ -902,7 +902,7 @@ export default function ProjectDetailPage() {
                       <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                         {activeSprint.name}
                       </h3>
-                      <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                         Aktif Sprint
                       </span>
                     </div>
@@ -978,7 +978,7 @@ export default function ProjectDetailPage() {
                       <div className="flex items-center gap-3 truncate">
                         <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                         <span
-                          className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                          className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                         >
                           {item.type}
                         </span>
@@ -989,7 +989,7 @@ export default function ProjectDetailPage() {
                           {item.title}
                         </span>
                         {item.epicName && (
-                          <span className="rounded-md bg-purple-50 px-2 py-0.5 font-bold text-[10px] text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
+                          <span className="rounded-md bg-purple-50 px-2 py-0.5 font-bold text-3xs text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
                             {item.epicName}
                           </span>
                         )}
@@ -1141,7 +1141,7 @@ export default function ProjectDetailPage() {
                       <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                         {sprint.name}
                       </h3>
-                      <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                      <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-3xs text-blue-700 dark:bg-blue-950 dark:text-blue-300">
                         Planlama
                       </span>
                     </div>
@@ -1193,7 +1193,7 @@ export default function ProjectDetailPage() {
                       <div className="flex items-center gap-3 truncate">
                         <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                         <span
-                          className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                          className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                         >
                           {item.type}
                         </span>
@@ -1254,7 +1254,7 @@ export default function ProjectDetailPage() {
                         />
 
                         <button
-                          className="rounded-lg border border-border px-2 py-1 text-[10px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                          className="rounded-lg border border-border px-2 py-1 text-3xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700"
                           onClick={() => handleAssignToSprint(item.id, null)}
                           title="Backlog'a Taşı"
                           type="button"
@@ -1349,7 +1349,7 @@ export default function ProjectDetailPage() {
                   <div className="flex items-center gap-3 truncate">
                     <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                     <span
-                      className={`rounded-md border px-1.5 py-0.5 font-bold text-[10px] ${getTypeBadge(item.type)}`}
+                      className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                     >
                       {item.type}
                     </span>
@@ -1360,7 +1360,7 @@ export default function ProjectDetailPage() {
                       {item.title}
                     </span>
                     {item.epicName && (
-                      <span className="rounded-md bg-purple-50 px-2 py-0.5 font-bold text-[10px] text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
+                      <span className="rounded-md bg-purple-50 px-2 py-0.5 font-bold text-3xs text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
                         {item.epicName}
                       </span>
                     )}
@@ -1537,7 +1537,7 @@ export default function ProjectDetailPage() {
                         <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                           {colTitle}
                         </span>
-                        <span className="rounded-full bg-zinc-200/80 px-2 py-0.5 font-bold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <span className="rounded-full bg-zinc-200/80 px-2 py-0.5 font-bold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                           {colItems.length}
                         </span>
                       </div>
@@ -1566,13 +1566,13 @@ export default function ProjectDetailPage() {
                                 <div className="flex items-center gap-1.5">
                                   <GripVertical className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                                   <span
-                                    className={`rounded-md border px-1.5 py-0.5 font-bold text-[9px] ${getTypeBadge(item.type)}`}
+                                    className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                                   >
                                     {item.type}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
-                                  <span className="font-bold text-[10px] text-zinc-400">
+                                  <span className="font-bold text-3xs text-zinc-400">
                                     {item.itemKey}
                                   </span>
                                   <button
@@ -1594,13 +1594,13 @@ export default function ProjectDetailPage() {
                               </h4>
 
                               {item.epicName && (
-                                <span className="mt-2 inline-block rounded-md bg-purple-50 px-1.5 py-0.5 font-bold text-[9px] text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
+                                <span className="mt-2 inline-block rounded-md bg-purple-50 px-1.5 py-0.5 font-bold text-3xs text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
                                   {item.epicName}
                                 </span>
                               )}
 
                               <div
-                                className="mt-3 flex items-center justify-between border-border border-t pt-2 text-[10px] text-zinc-400"
+                                className="mt-3 flex items-center justify-between border-border border-t pt-2 text-3xs text-zinc-400"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {/* Quick Story Points */}
@@ -1696,7 +1696,7 @@ export default function ProjectDetailPage() {
                         })}
 
                         {colItems.length === 0 && (
-                          <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-[11px] text-zinc-400">
+                          <div className="flex h-32 items-center justify-center rounded-xl border border-border border-dashed p-6 text-center text-2xs text-zinc-400">
                             Maddeleri buraya sürükleyin
                           </div>
                         )}
@@ -1746,7 +1746,7 @@ export default function ProjectDetailPage() {
                       <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                         {epic.name}
                       </h3>
-                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      <span className="text-2xs text-zinc-500 dark:text-zinc-400">
                         {epic.status}
                       </span>
                     </div>
@@ -1760,7 +1760,7 @@ export default function ProjectDetailPage() {
                 )}
 
                 <div className="mt-4">
-                  <div className="flex items-center justify-between text-[11px]">
+                  <div className="flex items-center justify-between text-2xs">
                     <span className="font-medium text-zinc-500 dark:text-zinc-400">
                       Tamamlanma Oranı
                     </span>
@@ -1869,7 +1869,7 @@ export default function ProjectDetailPage() {
               {/* Status, Priority, Story Points, Type Grid */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Durum
                   </label>
                   <SelectField
@@ -1886,7 +1886,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Öncelik
                   </label>
                   <SelectField
@@ -1902,7 +1902,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Story Points
                   </label>
                   <SelectField
@@ -1921,7 +1921,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Tür
                   </label>
                   <SelectField
@@ -1941,7 +1941,7 @@ export default function ProjectDetailPage() {
               {/* Assignee, Epic, Sprint, Customer Grid */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Atanan Temsilci
                   </label>
                   <Combobox
@@ -1959,7 +1959,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Epik
                   </label>
                   <Combobox
@@ -1974,7 +1974,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Sprint
                   </label>
                   <Combobox
@@ -1994,7 +1994,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Müşteri Bağlantısı
                   </label>
                   <Combobox
@@ -2012,7 +2012,7 @@ export default function ProjectDetailPage() {
               {/* Time Tracking (Estimated vs Logged) & Due Date */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Tahmini Efor (Saat)
                   </label>
                   <input
@@ -2028,7 +2028,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Harcanan Efor (Saat)
                   </label>
                   <input
@@ -2044,7 +2044,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-medium text-[11px] text-zinc-700 dark:text-zinc-300">
+                  <label className="font-medium text-2xs text-zinc-700 dark:text-zinc-300">
                     Bitiş Tarihi
                   </label>
                   <input
@@ -2180,7 +2180,7 @@ export default function ProjectDetailPage() {
                     className="rounded-xl border border-border bg-zinc-50/50 p-3 text-xs dark:bg-zinc-800/40"
                     key={c.id}
                   >
-                    <div className="flex items-center justify-between font-medium text-[11px] text-zinc-400">
+                    <div className="flex items-center justify-between font-medium text-2xs text-zinc-400">
                       <span className="font-bold text-zinc-800 dark:text-zinc-200">
                         {c.userName}
                       </span>

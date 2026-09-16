@@ -847,24 +847,24 @@ function RecruitmentPageContent() {
                                 <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                   {req.title}
                                 </div>
-                                <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                <div className="flex items-center gap-1.5 text-2xs text-zinc-500 dark:text-zinc-400">
                                   {req.location && <span>{req.location}</span>}
                                   {req.workModel && (
                                     <>
                                       <span>•</span>
-                                      <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-semibold text-[10px] dark:bg-zinc-800">
+                                      <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-semibold text-3xs dark:bg-zinc-800">
                                         {req.workModel}
                                       </span>
                                     </>
                                   )}
                                   {req.employmentType && (
-                                    <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-semibold text-[10px] text-blue-700">
+                                    <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-semibold text-3xs text-blue-700">
                                       {req.employmentType}
                                     </span>
                                   )}
                                 </div>
                                 {req.headcountWarning && (
-                                  <p className="mt-1 text-[11px] text-amber-600">
+                                  <p className="mt-1 text-2xs text-amber-600">
                                     {req.headcountWarning}
                                   </p>
                                 )}
@@ -873,7 +873,7 @@ function RecruitmentPageContent() {
                                 <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                   {req.departmentName || "—"}
                                 </div>
-                                <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                                   {req.jobPositionTitle ||
                                     "Pozisyon belirtilmedi"}
                                 </div>
@@ -883,17 +883,17 @@ function RecruitmentPageContent() {
                                   <Users className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
                                   {req.hiredCount}/{req.headcount}
                                 </span>
-                                <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+                                <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
                                   {req.applicationCount} başvuru
                                 </div>
                               </TableCell>
                               <TableCell className="px-6 py-4">
                                 <span
-                                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-[10px] ${getStatusBadge(req.status)}`}
+                                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-3xs ${getStatusBadge(req.status)}`}
                                 >
                                   {getStatusLabel(req.status)}
                                 </span>
-                                <div className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                                <div className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
                                   {req.isPublished ? (
                                     <span className="text-emerald-600">
                                       Yayında
@@ -916,7 +916,7 @@ function RecruitmentPageContent() {
                               <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-2xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => openReqModalForEdit(req)}
                                     type="button"
                                   >
@@ -925,7 +925,7 @@ function RecruitmentPageContent() {
                                   {req.status === "Draft" &&
                                     !req.isPublished && (
                                       <button
-                                        className="rounded-lg bg-emerald-600 px-2.5 py-1 font-semibold text-[11px] text-white hover:bg-emerald-700"
+                                        className="rounded-lg bg-emerald-600 px-2.5 py-1 font-semibold text-2xs text-white hover:bg-emerald-700"
                                         onClick={() =>
                                           handlePublishRequisition(req.id)
                                         }
@@ -936,7 +936,7 @@ function RecruitmentPageContent() {
                                     )}
                                   {req.status === "Open" && (
                                     <button
-                                      className="rounded-lg bg-amber-600 px-2.5 py-1 font-semibold text-[11px] text-white hover:bg-amber-700"
+                                      className="rounded-lg bg-amber-600 px-2.5 py-1 font-semibold text-2xs text-white hover:bg-amber-700"
                                       onClick={() =>
                                         handleCloseRequisition(req.id)
                                       }
@@ -1060,7 +1060,7 @@ function RecruitmentPageContent() {
                                     <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                       {c.fullName}
                                     </div>
-                                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                                       {c.applicationCount} başvuru •{" "}
                                       {formatDate(c.createdAt)}
                                     </div>
@@ -1068,18 +1068,18 @@ function RecruitmentPageContent() {
                                 </div>
                               </TableCell>
                               <TableCell className="px-6 py-4">
-                                <div className="font-medium font-mono text-[11px] text-zinc-800 dark:text-zinc-200">
+                                <div className="font-medium font-mono text-2xs text-zinc-800 dark:text-zinc-200">
                                   {c.email}
                                 </div>
-                                <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                                   {c.phone || "Telefon yok"}
                                 </div>
                               </TableCell>
                               <TableCell className="px-6 py-4">
-                                <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                                <span className="rounded-lg bg-zinc-100 px-2.5 py-1 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                   {c.source}
                                 </span>
-                                <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+                                <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
                                   {c.consentGiven ? "KVKK ✓" : "Onay yok"}
                                 </div>
                               </TableCell>
@@ -1088,7 +1088,7 @@ function RecruitmentPageContent() {
                                   <div className="flex flex-wrap gap-1">
                                     {c.tags.slice(0, 3).map((tag) => (
                                       <span
-                                        className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
+                                        className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
                                         key={`${c.id}-${tag}`}
                                       >
                                         <Tags className="h-2.5 w-2.5" />
@@ -1096,7 +1096,7 @@ function RecruitmentPageContent() {
                                       </span>
                                     ))}
                                     {c.tags.length > 3 && (
-                                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
                                         +{c.tags.length - 3}
                                       </span>
                                     )}
@@ -1110,7 +1110,7 @@ function RecruitmentPageContent() {
                               <TableCell className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-1">
                                   <button
-                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-2xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                     onClick={() => setSelectedCandidateId(c.id)}
                                     type="button"
                                   >
@@ -1244,12 +1244,12 @@ function RecruitmentPageContent() {
                                   {stage.name}
                                 </span>
                                 {stage.isDefault && (
-                                  <span className="rounded-full bg-blue-100 px-1.5 py-0.5 font-bold text-[9px] text-blue-700">
+                                  <span className="rounded-full bg-blue-100 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
                                     Varsayılan
                                   </span>
                                 )}
                               </div>
-                              <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                              <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-bold text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                                 {apps.length}
                               </span>
                             </div>
@@ -1279,19 +1279,19 @@ function RecruitmentPageContent() {
                                       </div>
                                       <GripVertical className="h-3.5 w-3.5 shrink-0 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-400" />
                                     </div>
-                                    <div className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                                    <div className="font-mono text-2xs text-zinc-500 dark:text-zinc-400">
                                       {app.candidateEmail}
                                     </div>
-                                    <div className="mt-1 font-semibold text-[11px] text-zinc-600 dark:text-zinc-400">
+                                    <div className="mt-1 font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
                                       {app.requisitionTitle}
                                     </div>
                                     <div className="mt-2 flex items-center justify-between">
-                                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                                      <span className="text-3xs text-zinc-400 dark:text-zinc-500">
                                         {formatDate(app.createdAt)}
                                       </span>
                                       {app.score !== undefined &&
                                         app.score !== null && (
-                                          <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-bold text-[10px] text-blue-700">
+                                          <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-700">
                                             Puan {app.score}
                                           </span>
                                         )}
@@ -1310,7 +1310,7 @@ function RecruitmentPageContent() {
                                       >
                                         <SelectTrigger
                                           aria-label="Aşama değiştir"
-                                          className="h-7 w-full text-[11px]"
+                                          className="h-7 w-full text-2xs"
                                         >
                                           <SelectValue placeholder="Aşama taşı..." />
                                         </SelectTrigger>
@@ -1327,7 +1327,7 @@ function RecruitmentPageContent() {
                                       </Select>
                                     </div>
                                     {app.headcountWarning && (
-                                      <p className="mt-1 text-[11px] text-amber-600">
+                                      <p className="mt-1 text-2xs text-amber-600">
                                         {app.headcountWarning}
                                       </p>
                                     )}
@@ -1344,7 +1344,7 @@ function RecruitmentPageContent() {
                           <span className="font-bold text-amber-800 text-xs">
                             Atanmamış
                           </span>
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-[11px] text-amber-700">
+                          <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-2xs text-amber-700">
                             {applicationsByStage.unassigned.length}
                           </span>
                         </div>
@@ -1357,11 +1357,11 @@ function RecruitmentPageContent() {
                               <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                                 {app.candidateName}
                               </div>
-                              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                              <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                                 {app.requisitionTitle}
                               </div>
                               <button
-                                className="mt-2 w-full rounded-lg bg-blue-600 px-2 py-1 font-semibold text-[11px] text-white hover:bg-blue-700"
+                                className="mt-2 w-full rounded-lg bg-blue-600 px-2 py-1 font-semibold text-2xs text-white hover:bg-blue-700"
                                 onClick={() => setSelectedApplicationId(app.id)}
                                 type="button"
                               >
@@ -1418,7 +1418,7 @@ function RecruitmentPageContent() {
                                   <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                     {app.candidateName}
                                   </div>
-                                  <div className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                                  <div className="font-mono text-2xs text-zinc-500 dark:text-zinc-400">
                                     {app.candidateEmail}
                                   </div>
                                 </TableCell>
@@ -1426,11 +1426,11 @@ function RecruitmentPageContent() {
                                   <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                     {app.requisitionTitle}
                                   </div>
-                                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                  <div className="text-2xs text-zinc-500 dark:text-zinc-400">
                                     {formatDate(app.createdAt)}
                                   </div>
                                   {app.headcountWarning && (
-                                    <p className="text-[11px] text-amber-600">
+                                    <p className="text-2xs text-amber-600">
                                       {app.headcountWarning}
                                     </p>
                                   )}
@@ -1438,7 +1438,7 @@ function RecruitmentPageContent() {
                                 <TableCell className="px-6 py-4">
                                   {app.stageName ? (
                                     <span
-                                      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-bold text-[11px]"
+                                      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-bold text-2xs"
                                       style={{
                                         backgroundColor: `${app.stageColorHex || "#f1f5f9"}18`,
                                         borderColor:
@@ -1460,7 +1460,7 @@ function RecruitmentPageContent() {
                                       —
                                     </span>
                                   )}
-                                  <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+                                  <div className="mt-1 text-3xs text-zinc-400 dark:text-zinc-500">
                                     {app.status}
                                   </div>
                                 </TableCell>
@@ -1479,7 +1479,7 @@ function RecruitmentPageContent() {
                                 <TableCell className="px-6 py-4 text-right">
                                   <div className="flex items-center justify-end gap-1">
                                     <button
-                                      className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-[11px] text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                      className="rounded-lg border border-border bg-card px-2.5 py-1 font-semibold text-2xs text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                                       onClick={() =>
                                         setSelectedApplicationId(app.id)
                                       }
@@ -1497,7 +1497,7 @@ function RecruitmentPageContent() {
                                     >
                                       <SelectTrigger
                                         aria-label="Aşama taşı"
-                                        className="h-7 w-[120px] text-[11px]"
+                                        className="h-7 w-[120px] text-2xs"
                                       >
                                         <SelectValue placeholder="Aşama seç" />
                                       </SelectTrigger>
@@ -1626,17 +1626,17 @@ function RecruitmentPageContent() {
                                   {s.name}
                                 </span>
                                 {s.isDefault && (
-                                  <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-[10px] text-blue-700">
+                                  <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-3xs text-blue-700">
                                     Varsayılan
                                   </span>
                                 )}
                               </div>
                             </TableCell>
-                            <TableCell className="px-3 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                            <TableCell className="px-3 py-3 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
                               {s.slug}
                             </TableCell>
                             <TableCell className="px-3 py-3">
-                              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                 {s.stageType}
                               </span>
                             </TableCell>
@@ -1653,7 +1653,7 @@ function RecruitmentPageContent() {
                                   className={`inline-block h-3.5 w-3.5 transform rounded-full bg-card shadow transition-transform ${s.isActive ? "translate-x-5" : "translate-x-1"}`}
                                 />
                               </button>
-                              <span className="ml-2 font-bold text-[10px] text-zinc-600 dark:text-zinc-400">
+                              <span className="ml-2 font-bold text-3xs text-zinc-600 dark:text-zinc-400">
                                 {s.isActive ? "Aktif" : "Pasif"}
                               </span>
                             </TableCell>
@@ -2339,7 +2339,7 @@ function CandidateModal({
               value={email}
             />
             {duplicateWarning && (
-              <p className="mt-1 text-[11px] text-amber-600">
+              <p className="mt-1 text-2xs text-amber-600">
                 {duplicateWarning}
               </p>
             )}
@@ -2483,7 +2483,7 @@ function CandidateModal({
             </span>
           </label>
           {!consentGiven && (
-            <p className="text-[11px] text-amber-600">
+            <p className="text-2xs text-amber-600">
               KVKK onayı olmadan aday oluşturulamaz.
             </p>
           )}
@@ -2934,18 +2934,18 @@ function CandidateDetailDrawer({
           )}
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
             <span
-              className={`rounded-full px-2.5 py-0.5 font-bold text-[11px] ${candidate.consentGiven ? "border border-emerald-200 bg-emerald-50 text-emerald-700" : "border border-rose-200 bg-rose-50 text-rose-700"}`}
+              className={`rounded-full px-2.5 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "border border-emerald-200 bg-emerald-50 text-emerald-700" : "border border-rose-200 bg-rose-50 text-rose-700"}`}
             >
               {candidate.consentGiven ? "KVKK ✓" : "KVKK Onay Yok"}
             </span>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-semibold text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 font-semibold text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
               {candidate.source}
             </span>
           </div>
         </div>
 
         <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-          <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             Bilgiler
           </h4>
           <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
@@ -2971,7 +2971,7 @@ function CandidateDetailDrawer({
             <div className="flex flex-wrap gap-1 pt-1">
               {candidate.tags.map((tag) => (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
+                  className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
                   key={tag}
                 >
                   <Tags className="h-2.5 w-2.5" />
@@ -2991,7 +2991,7 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-4 rounded-2xl border border-border p-4">
-          <h4 className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
             CV
           </h4>
           {candidate.cvFileUrl ? (
@@ -3117,7 +3117,7 @@ function ApplicationDetailDrawer({
           </div>
 
           <div className="rounded-2xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
-            <div className="font-bold text-[11px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+            <div className="font-bold text-2xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
               Aşama
             </div>
             {application.stageName ? (
@@ -3131,7 +3131,7 @@ function ApplicationDetailDrawer({
                 <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   {application.stageName}
                 </span>
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                <span className="text-2xs text-zinc-500 dark:text-zinc-400">
                   — {application.status}
                 </span>
               </div>
@@ -3174,7 +3174,7 @@ function ApplicationDetailDrawer({
 
           <div className="flex gap-2">
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                 Puan
               </div>
               <div className="mt-1 font-bold text-blue-700">
@@ -3182,7 +3182,7 @@ function ApplicationDetailDrawer({
               </div>
             </div>
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                 Durum
               </div>
               <div className="mt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
@@ -3193,7 +3193,7 @@ function ApplicationDetailDrawer({
 
           {application.notes && (
             <div className="rounded-2xl border border-border p-3">
-              <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                 Notlar
               </div>
               <p className="mt-1 text-xs text-zinc-700 leading-relaxed dark:text-zinc-300">
@@ -3204,18 +3204,18 @@ function ApplicationDetailDrawer({
 
           {candidate && (
             <div className="rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-              <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
                 Aday KVKK & Etiketler
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
                 <span
-                  className={`rounded-full px-2 py-0.5 font-bold text-[11px] ${candidate.consentGiven ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}
+                  className={`rounded-full px-2 py-0.5 font-bold text-2xs ${candidate.consentGiven ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}
                 >
                   {candidate.consentGiven ? "KVKK ✓" : "KVKK Yok"}
                 </span>
                 {candidate.tags?.map((t) => (
                   <span
-                    className="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
+                    className="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-3xs text-blue-700"
                     key={t}
                   >
                     {t}
@@ -3251,7 +3251,7 @@ function ApplicationDetailDrawer({
           )}
 
           <div className="rounded-2xl border border-border p-3 text-xs">
-            <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
+            <div className="font-bold text-2xs text-zinc-400 uppercase dark:text-zinc-500">
               Zaman
             </div>
             <div className="mt-1 text-zinc-600 dark:text-zinc-400">

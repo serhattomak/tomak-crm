@@ -191,7 +191,7 @@ export function ContractSignModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Sözleşmeyi Dijital Olarak İmzala
               </DialogTitle>
-              <p className="font-mono text-[11px] text-zinc-500">
+              <p className="font-mono text-2xs text-zinc-500">
                 {contract.contractNumber}
               </p>
             </div>
@@ -213,7 +213,7 @@ export function ContractSignModal({
                 <ShieldCheck className="h-4 w-4 text-blue-600" />
                 Yasal Denetim İzi (Audit Trail)
               </div>
-              <p className="mt-1 text-[11px] text-blue-800/80 dark:text-blue-400">
+              <p className="mt-1 text-2xs text-blue-800/80 dark:text-blue-400">
                 İmzalama anında IP adresiniz, zaman damganız ve doküman SHA-256
                 bütünlük özeti sistemde kalıcı ve değiştirilemez olarak
                 kaydedilecektir.
@@ -254,7 +254,7 @@ export function ContractSignModal({
                   Dokunmatik / Fare ile İmzanızı Çizin *
                 </label>
                 <button
-                  className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                  className="flex items-center gap-1 text-2xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
                   onClick={clearCanvas}
                   type="button"
                 >

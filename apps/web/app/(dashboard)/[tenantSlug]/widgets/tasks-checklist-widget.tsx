@@ -176,7 +176,7 @@ export function TasksChecklistWidget() {
               <CardTitle className="font-semibold text-sm tracking-tight">
                 Görevler & Checklist
               </CardTitle>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-2xs text-muted-foreground">
                 {tasks.length > 0
                   ? `${tasks.length} görevden ${completedCount} tanesi tamamlandı (%${progressPct})`
                   : "Kişisel ve ekip içi yapılacak işler"}
@@ -242,7 +242,7 @@ export function TasksChecklistWidget() {
           {/* Filter Pills */}
           <div className="mb-2.5 flex items-center gap-1">
             <Button
-              className="h-6 px-2 font-semibold text-[10px]"
+              className="h-6 px-2 font-semibold text-3xs"
               onClick={() => setActiveFilter("all")}
               size="sm"
               type="button"
@@ -251,7 +251,7 @@ export function TasksChecklistWidget() {
               Tümü ({tasks.length})
             </Button>
             <Button
-              className="h-6 px-2 font-semibold text-[10px]"
+              className="h-6 px-2 font-semibold text-3xs"
               onClick={() => setActiveFilter("pending")}
               size="sm"
               type="button"
@@ -260,7 +260,7 @@ export function TasksChecklistWidget() {
               Bekleyen ({tasks.length - completedCount})
             </Button>
             <Button
-              className="h-6 px-2 font-semibold text-[10px]"
+              className="h-6 px-2 font-semibold text-3xs"
               onClick={() => setActiveFilter("completed")}
               size="sm"
               type="button"
@@ -312,7 +312,7 @@ export function TasksChecklistWidget() {
                         >
                           {task.title}
                         </p>
-                        <div className="flex items-center gap-2 font-medium text-[10px] text-muted-foreground">
+                        <div className="flex items-center gap-2 font-medium text-3xs text-muted-foreground">
                           {task.dueDate ? (
                             <span className="flex items-center gap-1">
                               <Clock className="h-3 w-3" />
@@ -333,7 +333,7 @@ export function TasksChecklistWidget() {
                           )}
                           {task.category && (
                             <Badge
-                              className="px-1 py-0 text-[9px]"
+                              className="px-1 py-0 text-3xs"
                               variant="neutral"
                             >
                               {task.category}
@@ -345,7 +345,7 @@ export function TasksChecklistWidget() {
 
                     <div className="flex flex-none items-center gap-1.5">
                       <Badge
-                        className="px-1.5 py-0 text-[9px]"
+                        className="px-1.5 py-0 text-3xs"
                         variant={getPriorityVariant(task.priority)}
                       >
                         {getPriorityLabel(task.priority)}

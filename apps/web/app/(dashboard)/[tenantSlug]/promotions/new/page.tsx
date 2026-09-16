@@ -355,7 +355,7 @@ export default function NewCampaignPage() {
                   step={5}
                   value={priority}
                 />
-                <p className="mt-1 text-[11px] text-zinc-400">
+                <p className="mt-1 text-2xs text-zinc-400">
                   Yüksek öncelikli kampanyalar ilk sırada hesaplanır.
                 </p>
               </div>
@@ -406,7 +406,7 @@ export default function NewCampaignPage() {
                 <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Diğer Kampanyalarla Birleştirilebilir mi? (Stacking)
                 </span>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-2xs text-zinc-500">
                   Açık ise, bu kampanya diğer indirimlerin üzerine ilave olarak
                   uygulanabilir.
                 </p>
@@ -488,7 +488,7 @@ export default function NewCampaignPage() {
                   <span className="mt-2 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                     {t.name}
                   </span>
-                  <span className="mt-0.5 text-[11px] text-zinc-500">
+                  <span className="mt-0.5 text-2xs text-zinc-500">
                     {t.desc}
                   </span>
                 </button>
@@ -670,7 +670,7 @@ export default function NewCampaignPage() {
               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                 Tüm Katalogda Geçerli
               </div>
-              <p className="mt-1 text-[11px] text-zinc-500">
+              <p className="mt-1 text-2xs text-zinc-500">
                 İstisnasız tüm ürün ve kategorilerde geçerli olur.
               </p>
             </button>
@@ -683,7 +683,7 @@ export default function NewCampaignPage() {
               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                 Seçili Ürün & Kategoriler
               </div>
-              <p className="mt-1 text-[11px] text-zinc-500">
+              <p className="mt-1 text-2xs text-zinc-500">
                 Belirli ürün veya kategorileri dahil edin veya hariç tutun.
               </p>
             </button>
@@ -759,7 +759,7 @@ export default function NewCampaignPage() {
                       >
                         <div className="flex items-center gap-2">
                           <span
-                            className={`rounded px-1.5 py-0.5 font-bold text-[10px] ${
+                            className={`rounded px-1.5 py-0.5 font-bold text-3xs ${
                               t.ruleCondition === "Include"
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
                                 : "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
@@ -809,7 +809,7 @@ export default function NewCampaignPage() {
                 <Zap className="h-4 w-4 text-amber-500" />
                 Otomatik Kural
               </div>
-              <p className="mt-1 text-[11px] text-zinc-500">
+              <p className="mt-1 text-2xs text-zinc-500">
                 Sepet şartları sağlandığında indirim anında sepete yansır (kod
                 gerekmez).
               </p>
@@ -824,7 +824,7 @@ export default function NewCampaignPage() {
                 <Ticket className="h-4 w-4 text-blue-600" />
                 Kupon Kodu Gerektiren
               </div>
-              <p className="mt-1 text-[11px] text-zinc-500">
+              <p className="mt-1 text-2xs text-zinc-500">
                 Müşteri geçerli bir promosyon kodu girdiğinde indirim aktif
                 olur.
               </p>
@@ -847,7 +847,7 @@ export default function NewCampaignPage() {
                   type="text"
                   value={initialCouponCode}
                 />
-                <p className="mt-1 text-[11px] text-zinc-400">
+                <p className="mt-1 text-2xs text-zinc-400">
                   Kampanyayı kaydettikten sonra ayrıca &quot;Kupon Üret&quot;
                   butonundan toplu rastgele kodlar da üretebilirsiniz.
                 </p>
@@ -917,11 +917,11 @@ export default function NewCampaignPage() {
                   : "(Süresiz)"}
               </div>
               <div className="flex gap-2">
-                <span className="rounded bg-zinc-200 px-2 py-0.5 font-medium text-[11px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded bg-zinc-200 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                   Öncelik: {priority}
                 </span>
                 {isStackable && (
-                  <span className="rounded bg-emerald-100 px-2 py-0.5 font-medium text-[11px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+                  <span className="rounded bg-emerald-100 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
                     Birleşebilir
                   </span>
                 )}

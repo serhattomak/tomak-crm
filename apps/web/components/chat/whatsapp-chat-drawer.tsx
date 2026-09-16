@@ -214,7 +214,7 @@ export function WhatsAppChatDrawer({
                       <div className="flex items-center justify-between">
                         <span className="truncate font-semibold text-xs">{conv.title}</span>
                         {conv.lastMsg && (
-                          <span className="text-[10px] text-zinc-400">
+                          <span className="text-3xs text-zinc-400">
                             {new Date(conv.lastMsg.createdAt).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -222,8 +222,8 @@ export function WhatsAppChatDrawer({
                           </span>
                         )}
                       </div>
-                      <p className="truncate font-mono text-[10px] text-zinc-400">{conv.phone}</p>
-                      <p className="mt-0.5 truncate text-[11px] text-zinc-500">
+                      <p className="truncate font-mono text-3xs text-zinc-400">{conv.phone}</p>
+                      <p className="mt-0.5 truncate text-2xs text-zinc-500">
                         {conv.lastMsg?.messageText || "—"}
                       </p>
                     </div>
@@ -243,7 +243,7 @@ export function WhatsAppChatDrawer({
                 {selectedPhone ? `+${selectedPhone}` : "Konuşma Seçin"}
               </h4>
               {selectedCustomer && (
-                <p className="text-[11px] text-emerald-600 dark:text-emerald-400">
+                <p className="text-2xs text-emerald-600 dark:text-emerald-400">
                   Cari: {selectedCustomer.name}
                 </p>
               )}
@@ -282,7 +282,7 @@ export function WhatsAppChatDrawer({
                     >
                       <p className="leading-relaxed">{m.messageText}</p>
                       <div
-                        className={`mt-1 flex items-center justify-end gap-1 text-[10px] ${
+                        className={`mt-1 flex items-center justify-end gap-1 text-3xs ${
                           isOutbound ? "text-emerald-200" : "text-zinc-400"
                         }`}
                       >

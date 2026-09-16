@@ -265,7 +265,7 @@ export function CustomizeWidgetsModal({
                       >
                         <ChevronUp className="h-3 w-3" />
                       </Button>
-                      <span className="font-semibold text-[10px] text-primary">
+                      <span className="font-semibold text-3xs text-primary">
                         #{activeIndex + 1}
                       </span>
                       <Button
@@ -292,11 +292,11 @@ export function CustomizeWidgetsModal({
                       <span className="truncate font-medium text-foreground text-xs">
                         {widget.title}
                       </span>
-                      <Badge className="text-[10px]" variant="secondary">
+                      <Badge className="text-3xs" variant="secondary">
                         {widget.category}
                       </Badge>
                     </div>
-                    <p className="mt-0.5 truncate text-[11px] text-muted-foreground leading-snug">
+                    <p className="mt-0.5 truncate text-2xs text-muted-foreground leading-snug">
                       {widget.description}
                     </p>
                   </div>

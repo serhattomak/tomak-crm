@@ -136,7 +136,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
             {isLoading ? "-" : stats.unreadCount}
           </span>
           {stats.unreadCount > 0 ? (
-            <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 font-medium text-[10px] text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+            <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 font-medium text-3xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
               Aksiyon Bekliyor
             </span>
           ) : null}
@@ -236,24 +236,24 @@ function MessageRow({
             <Paperclip className="h-3 w-3 shrink-0 text-zinc-400" />
           ) : null}
         </div>
-        <p className="line-clamp-1 font-normal text-[11px] text-zinc-500 dark:text-zinc-400">
+        <p className="line-clamp-1 font-normal text-2xs text-zinc-500 dark:text-zinc-400">
           {msg.textBody || msg.htmlBody?.replace(/<[^>]+>/g, " ") || "-"}
         </p>
       </TableCell>
 
-      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
         {boundAccount}
       </TableCell>
 
       {activeTab === "sent" ? (
         <TableCell className="whitespace-nowrap px-4 py-3">
           {msg.status === "Sent" ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-medium text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-medium text-3xs text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
               <CheckCircle2 className="h-3 w-3" />
               Gönderildi
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 font-medium text-[10px] text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+            <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 font-medium text-3xs text-rose-700 dark:bg-rose-950 dark:text-rose-300">
               <XCircle className="h-3 w-3" />
               Başarısız
             </span>
@@ -261,7 +261,7 @@ function MessageRow({
         </TableCell>
       ) : null}
 
-      <TableCell className="whitespace-nowrap px-4 py-3 text-right font-mono text-[11px] text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 text-right font-mono text-2xs text-zinc-400">
         {formatDateTr(msg.createdAt)}
       </TableCell>
 
@@ -332,19 +332,19 @@ function AccountRow({
           {account.email}
         </div>
         {account.description ? (
-          <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="text-2xs text-zinc-500 dark:text-zinc-400">
             {account.description}
           </div>
         ) : null}
       </TableCell>
 
       <TableCell className="px-4 py-3">
-        <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-medium font-mono text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-medium font-mono text-3xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
           {account.provider}
         </span>
       </TableCell>
 
-      <TableCell className="px-4 py-3 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+      <TableCell className="px-4 py-3 font-mono text-2xs text-zinc-600 dark:text-zinc-400">
         {account.provider === "generic_imap" ? (
           <div>
             <div>
@@ -361,7 +361,7 @@ function AccountRow({
 
       <TableCell className="px-4 py-3">
         <button
-          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-medium text-[10px] transition ${
+          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-medium text-3xs transition ${
             account.isActive
               ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
               : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
@@ -381,7 +381,7 @@ function AccountRow({
       <TableCell className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <button
-            className="rounded-lg border border-border bg-card px-2 py-1 font-medium text-[11px] text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
+            className="rounded-lg border border-border bg-card px-2 py-1 font-medium text-2xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300"
             onClick={handleTest}
             title="Bağlantıyı Test Et"
             type="button"
@@ -430,14 +430,14 @@ function DeleteActionButton({
     return (
       <div className="flex items-center gap-1">
         <button
-          className="rounded bg-rose-600 px-1.5 py-0.5 font-medium text-[10px] text-white hover:bg-rose-700"
+          className="rounded bg-rose-600 px-1.5 py-0.5 font-medium text-3xs text-white hover:bg-rose-700"
           onClick={onConfirm}
           type="button"
         >
           Sil
         </button>
         <button
-          className="rounded px-1 py-0.5 text-[10px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded px-1 py-0.5 text-3xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           onClick={onCancel}
           type="button"
         >
@@ -512,7 +512,7 @@ function TemplateCard({
             {template.name}
           </h3>
           {template.isDefault ? (
-            <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-[10px] text-sky-700 dark:bg-sky-950 dark:text-sky-300">
+            <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-3xs text-sky-700 dark:bg-sky-950 dark:text-sky-300">
               Varsayılan
             </span>
           ) : null}
@@ -846,7 +846,7 @@ function EmailNavHeader({
           <Inbox className="h-4 w-4" />
           <span>Gelen Kutusu</span>
           {unreadCount > 0 ? (
-            <span className="rounded-full bg-zinc-900 px-2 py-0.5 font-semibold text-[10px] text-white dark:bg-zinc-100 dark:text-zinc-900">
+            <span className="rounded-full bg-zinc-900 px-2 py-0.5 font-semibold text-3xs text-white dark:bg-zinc-100 dark:text-zinc-900">
               {unreadCount}
             </span>
           ) : null}
@@ -889,7 +889,7 @@ function EmailNavHeader({
         >
           <Server className="h-4 w-4" />
           <span>Bağlı Hesaplar</span>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-medium text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {accountsCount}
           </span>
         </button>
@@ -1057,7 +1057,7 @@ function TemplatePreviewModal({
             </DialogTitle>
 
             <button
-              className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-0.5 font-medium text-[11px] text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
+              className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2 py-0.5 font-medium text-2xs text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300"
               onClick={handleTogglePreviewTheme}
               title={isDark ? "Açık (Kağıt) Görünüme Geç" : "Koyu Görünüme Geç"}
               type="button"

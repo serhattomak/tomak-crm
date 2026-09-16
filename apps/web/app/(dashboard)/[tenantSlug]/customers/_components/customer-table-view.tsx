@@ -173,7 +173,7 @@ export function CustomerTableView({
                       <div className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
                         {c.name}
                       </div>
-                      <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                      <div className="flex items-center gap-1.5 text-3xs text-muted-foreground">
                         <span>
                           {c.type === "Company" ? "Kurumsal" : "Bireysel"}
                         </span>
@@ -206,7 +206,7 @@ export function CustomerTableView({
                 </TableCell>
 
                 <TableCell className="px-3">
-                  <div className="space-y-0.5 text-[11px] text-muted-foreground">
+                  <div className="space-y-0.5 text-2xs text-muted-foreground">
                     {c.phone ? (
                       <a
                         className="flex items-center gap-1 transition-colors hover:text-foreground"
@@ -231,7 +231,7 @@ export function CustomerTableView({
                 </TableCell>
 
                 <TableCell className="px-3">
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-2xs text-muted-foreground">
                     {c.city ? `${c.city}, ${c.country || "TR"}` : "—"}
                   </span>
                 </TableCell>
@@ -239,15 +239,15 @@ export function CustomerTableView({
                 <TableCell className="px-3">
                   {c.assignedEmployeeName ? (
                     <div className="flex items-center gap-1.5">
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20 font-bold text-[9px] text-primary">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20 font-bold text-3xs text-primary">
                         {c.assignedEmployeeName.charAt(0)}
                       </div>
-                      <span className="font-medium text-[11px] text-foreground">
+                      <span className="font-medium text-2xs text-foreground">
                         {c.assignedEmployeeName}
                       </span>
                     </div>
                   ) : (
-                    <span className="text-[11px] text-muted-foreground">—</span>
+                    <span className="text-2xs text-muted-foreground">—</span>
                   )}
                 </TableCell>
 

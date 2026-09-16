@@ -487,7 +487,7 @@ export default function FieldServicePage() {
                             {job.jobNumber}
                           </span>
                           <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            className={`px-2 py-0.5 rounded-full text-3xs font-bold ${
                               job.status === "Completed"
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                                 : job.status === "InProgress"
@@ -501,7 +501,7 @@ export default function FieldServicePage() {
                               ? "Sahada İşlemde"
                               : "Planlandı"}
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                          <span className="text-3xs px-1.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                             {job.serviceType}
                           </span>
                         </div>
@@ -528,7 +528,7 @@ export default function FieldServicePage() {
                           {job.assignedTechnicianName || "Atama Bekliyor"}
                         </div>
                         {job.scheduledDate && (
-                          <div className="text-[11px] text-zinc-500 mt-0.5 flex items-center justify-end gap-1">
+                          <div className="text-2xs text-zinc-500 mt-0.5 flex items-center justify-end gap-1">
                             <Calendar className="h-3 w-3" />
                             {new Date(job.scheduledDate).toLocaleDateString("tr-TR")}
                           </div>
@@ -572,7 +572,7 @@ export default function FieldServicePage() {
                       {selectedJob.jobNumber}
                     </span>
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                      className={`text-3xs px-2 py-0.5 rounded-full font-bold ${
                         selectedJob.status === "Completed"
                           ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                           : selectedJob.status === "InProgress"
@@ -659,7 +659,7 @@ export default function FieldServicePage() {
                   <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                     Saha Kontrol Adımları
                   </span>
-                  <span className="text-[11px] text-zinc-400">
+                  <span className="text-2xs text-zinc-400">
                     {selectedJob.tasks.filter((t) => t.isCompleted).length}/{selectedJob.tasks.length}
                   </span>
                 </div>
@@ -692,7 +692,7 @@ export default function FieldServicePage() {
                     <CheckCircle2 className="h-4 w-4" />
                     Yerinde Teslim Edildi ve İmzalandı
                   </div>
-                  <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
+                  <div className="text-2xs text-emerald-700 dark:text-emerald-400">
                     İmzalayan: <strong>{selectedJob.customerSignedName || "Müşteri"}</strong>
                   </div>
                   {selectedJob.customerSignatureData && (
@@ -936,7 +936,7 @@ export default function FieldServicePage() {
                   <PenTool className="h-4 w-4 text-emerald-600" />
                   Müşteri Teslim & Kabul İmzası
                 </DialogTitle>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-2xs text-zinc-500">
                   {selectedJob.jobNumber} • {selectedJob.title}
                 </p>
               </div>
@@ -984,7 +984,7 @@ export default function FieldServicePage() {
                   <button
                     type="button"
                     onClick={clearCanvas}
-                    className="text-[11px] text-red-600 hover:underline"
+                    className="text-2xs text-red-600 hover:underline"
                   >
                     Temizle
                   </button>

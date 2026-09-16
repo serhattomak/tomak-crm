@@ -83,7 +83,7 @@ export function ShortcutsHelpModal({
               <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Klavye Kısayolları Kılavuzu
               </DialogTitle>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
                 CRM içinde hızlı ve etkili gezinme için klavye komutları
               </p>
             </div>
@@ -102,7 +102,7 @@ export function ShortcutsHelpModal({
         <div className="flex-1 space-y-4 overflow-y-auto pr-1">
           {shortcutSections.map((section) => (
             <div className="space-y-1.5" key={section.title}>
-              <div className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
+              <div className="font-bold text-3xs text-zinc-400 uppercase tracking-wider dark:text-zinc-500">
                 {section.title}
               </div>
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
@@ -117,7 +117,7 @@ export function ShortcutsHelpModal({
                     <div className="ml-2 flex shrink-0 items-center gap-1">
                       {item.keys.map((k, kIdx) => (
                         <kbd
-                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-border bg-card px-1.5 font-bold font-mono text-[10px] text-zinc-700 shadow-2xs dark:text-zinc-200"
+                          className="flex h-5 min-w-[20px] items-center justify-center rounded-md border border-border bg-card px-1.5 font-bold font-mono text-3xs text-zinc-700 shadow-2xs dark:text-zinc-200"
                           key={kIdx}
                         >
                           {k}
@@ -132,7 +132,7 @@ export function ShortcutsHelpModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-[11px] text-zinc-400 dark:text-zinc-500">
+        <div className="mt-4 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400 dark:text-zinc-500">
           <div className="flex items-center gap-1.5">
             <HelpCircle className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>

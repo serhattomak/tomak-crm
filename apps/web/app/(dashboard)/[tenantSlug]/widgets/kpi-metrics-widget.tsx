@@ -181,7 +181,7 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
             <div className="mt-3.5 flex items-center justify-between border-border/60 border-t pt-2.5">
               <div className="flex min-w-0 items-center gap-1.5">
                 <Badge
-                  className="px-1.5 py-0.5 text-[10px]"
+                  className="px-1.5 py-0.5 text-3xs"
                   variant={m.isPositive ? "success" : "warning"}
                 >
                   {m.isPositive ? (
@@ -191,7 +191,7 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
                   )}
                   {m.change}
                 </Badge>
-                <span className="truncate text-[11px] text-muted-foreground">
+                <span className="truncate text-2xs text-muted-foreground">
                   {m.subtitle}
                 </span>
               </div>
