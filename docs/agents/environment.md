@@ -132,6 +132,32 @@ of 16. The check was only "exit 1", and the other seven carried it. Assert the r
 **Fixing a surface without its text makes it worse.** Measured: light surfaces 51 → 10
 while low contrast went 47 → **83**. Only runtime measurement could see it.
 
+**A stable total hides a swap.** Fixing `text-emerald-500` → `text-emerald-700` corrected
+the light theme and broke the dark one (3.50:1). The dark count went 198 → 198, because
+three findings appeared while three disappeared — and a total that does not move says
+nothing about what moved. Only per-finding inspection caught it. Compare the two runs
+item by item, not just their totals.
+
+**Variant-blind comparison deletes what it should keep.** A check asking "does this class
+string contain a light `text-zinc-400`?" answered yes for
+`hover:text-zinc-400 dark:text-zinc-500`, and then removed the BASE dark token — which was
+supplying that element's dark-mode colour, for an element whose light colour was
+`text-zinc-600`. Dark went 195 → 234. Compare the same VARIANT: a hover light token pairs
+with a `dark:hover:` token, never with a bare `dark:` one.
+
+**Pattern-matching a class string misattributes the cause.** After that migration, four
+dark findings "contained" the token that was introduced — and were not caused by it. They
+failed at 3.89:1 on `dark:text-zinc-500`, deliberately left in place. A class string can
+hold both the fix and the fault; ask which TOKEN lost, not whether the string mentions
+something.
+
+**Gradients are invisible to `backgroundColor` — and to the static rule.** A gradient leaves
+`backgroundColor` as `rgba(0,0,0,0)`, so a walk upward measured white text against the
+near-white page: 1.04:1 on all 31 routes, a false finding. The runtime audit now returns
+"unmeasurable" and records the class string, and the static rule never saw it either
+because `from-indigo-50` is not a `bg-` class. Four cards carried a light gradient over
+`bg-card` with no `dark:` stops for that reason.
+
 ## Verification rules
 
 1. **Every detector gets a positive control.** Inject a known defect; if the detector
@@ -147,6 +173,18 @@ while low contrast went 47 → **83**. Only runtime measurement could see it.
 6. **Counts are read from artifacts, not from logs.** The dark-mode audit now writes
    `test-results/<theme>-mode-audit.json`, because a log that printed eight findings per
    route made a ceiling look like a total.
+7. **Verify a fix with the instrument that CAN see it.** A gradient fix cannot be checked
+   by a text-contrast audit, so it was checked in the COMPILED CSS — that is where the
+   collision rule is decided, since the later declaration wins. Choosing the wrong
+   instrument for the evidence turns a verified change into a hopeful one.
+8. **Put the guard inside the tool, before the write.** A 545-occurrence sweep only went
+   ahead because the script refused unless (a) the plan replaced exactly as many as were
+   measured, (b) no carriage return changed, and (c) the dark-token population was
+   identical. Three of its own bugs were caught by those checks before a single byte was
+   written. A dry run is not a formality.
+9. **A measurement method answers only the question it asks.** `git grep -c` counts LINES,
+   so a 545-occurrence change looked like 536; a substring count of `text-zinc-400` also
+   matched inside `dark:text-zinc-400`, doubling the real total. State the unit.
 
 ## Shell
 
