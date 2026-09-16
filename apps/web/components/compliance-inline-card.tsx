@@ -213,7 +213,7 @@ export function ComplianceInlineCard({
             <label className="flex cursor-pointer select-none items-center gap-2">
               <input
                 checked={localChecked}
-                className="h-4 w-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                className="h-4 w-4 rounded border-amber-300 dark:border-amber-700 text-amber-600 focus:ring-amber-500"
                 onChange={(e) => handleToggle(e.target.checked)}
                 type="checkbox"
               />

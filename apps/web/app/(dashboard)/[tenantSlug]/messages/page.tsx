@@ -998,7 +998,7 @@ export default function MessagesPage() {
                           {isEditing ? (
                             <div className="mt-2 space-y-2">
                               <textarea
-                                className="w-full rounded-lg border border-amber-300 bg-card p-2 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:bg-card dark:text-foreground"
+                                className="w-full rounded-lg border border-amber-300 dark:border-amber-700 bg-card p-2 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:bg-card dark:text-foreground"
                                 onChange={(e) => setEditInput(e.target.value)}
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter" && !e.shiftKey) {

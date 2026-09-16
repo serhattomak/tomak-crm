@@ -1653,7 +1653,7 @@ export default function AttendancePage() {
                           {c.status === "Pending" && (
                             <div className="flex items-center justify-end gap-2">
                               <Button
-                                className="border-emerald-300 text-emerald-600 hover:bg-emerald-50"
+                                className="border-emerald-300 dark:border-emerald-700 text-emerald-600 hover:bg-emerald-50"
                                 onClick={async () => {
                                   if (!activeTenant) {
                                     return;
@@ -1675,7 +1675,7 @@ export default function AttendancePage() {
                                 Onayla
                               </Button>
                               <Button
-                                className="border-rose-300 text-rose-600 hover:bg-rose-50"
+                                className="border-rose-300 dark:border-rose-700 text-rose-600 hover:bg-rose-50"
                                 onClick={async () => {
                                   if (!activeTenant) {
                                     return;

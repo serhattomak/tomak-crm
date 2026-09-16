@@ -649,7 +649,7 @@ export default function WorkflowBuilderPage() {
             </div>
 
             <button
-              className="flex items-center gap-1 rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/60 px-3 py-1.5 font-semibold text-amber-800 dark:text-amber-300 text-xs transition-all hover:bg-amber-100"
+              className="flex items-center gap-1 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/60 px-3 py-1.5 font-semibold text-amber-800 dark:text-amber-300 text-xs transition-all hover:bg-amber-100"
               onClick={addConditionGroup}
             >
               <Plus className="h-3.5 w-3.5" />

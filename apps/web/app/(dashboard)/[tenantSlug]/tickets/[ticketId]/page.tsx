@@ -724,7 +724,7 @@ export default function TicketDetailPage() {
 
                 <form className="space-y-2" onSubmit={handleSendMessage}>
                   <textarea
-                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
+                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${ messageMode === "internal" ? "border-amber-300 dark:border-amber-700 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100" }`}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder={
                       messageMode === "internal"

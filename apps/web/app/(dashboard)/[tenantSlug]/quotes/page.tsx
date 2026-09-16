@@ -2997,7 +2997,7 @@ function QuoteDetailDrawer({
                   const isCurrent = rev.id === quote.id;
                   return (
                     <div
-                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${ isCurrent ? "border-blue-300 bg-blue-50/70 ring-2 ring-blue-500/20" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50" }`}
+                      className={`flex items-center justify-between rounded-2xl border p-3.5 transition ${ isCurrent ? "border-blue-300 dark:border-blue-700 bg-blue-50/70 ring-2 ring-blue-500/20" : "border-border bg-card hover:bg-zinc-50 dark:hover:bg-zinc-800/50" }`}
                       key={rev.id}
                     >
                       <div className="flex items-center gap-3">

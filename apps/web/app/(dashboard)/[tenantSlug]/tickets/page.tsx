@@ -257,34 +257,34 @@ export default function TicketsDashboardPage() {
     switch (status) {
       case "New":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-800 dark:text-emerald-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-800 dark:text-emerald-300">
             <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-500" />
             Yeni
           </span>
         );
       case "InProgress":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-blue-300 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-semibold text-2xs text-blue-800 dark:text-blue-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-semibold text-2xs text-blue-800 dark:text-blue-300">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
             İşlemde
           </span>
         );
       case "PendingCustomer":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-semibold text-2xs text-amber-800 dark:text-amber-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-semibold text-2xs text-amber-800 dark:text-amber-300">
             <Clock className="h-3 w-3 text-amber-600" />
             Müşteri Bekleniyor
           </span>
         );
       case "OnHold":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-purple-300 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-0.5 font-semibold text-2xs text-purple-800 dark:text-purple-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-0.5 font-semibold text-2xs text-purple-800 dark:text-purple-300">
             Beklemede
           </span>
         );
       case "Resolved":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100/70 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-900 dark:text-emerald-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 dark:border-emerald-700 bg-emerald-100/70 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-2xs text-emerald-900 dark:text-emerald-300">
             <CheckCircle2 className="h-3 w-3 text-emerald-700" />
             Çözüldü
           </span>
