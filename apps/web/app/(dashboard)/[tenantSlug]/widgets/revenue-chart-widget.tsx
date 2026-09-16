@@ -138,7 +138,7 @@ export function RevenueChartWidget({
                   <span className="block font-medium text-2xs text-muted-foreground">
                     Tahsil Edilen
                   </span>
-                  <span className="mt-1 block font-bold text-base text-emerald-500 tracking-tight">
+                  <span className="mt-1 block font-bold text-base text-emerald-700 tracking-tight dark:text-emerald-300">
                     ₺
                     {(orderStats?.paidRevenue || 0).toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -201,7 +201,7 @@ export function RevenueChartWidget({
               <span className="font-medium text-3xs text-muted-foreground">
                 Teslim Edilen:
               </span>
-              <div className="font-semibold text-emerald-500 text-xs">
+              <div className="font-semibold text-emerald-700 text-xs dark:text-emerald-300">
                 {orderStats?.deliveredOrders ?? 0} Sipariş
               </div>
             </div>

@@ -170,7 +170,7 @@ export function QuotesSummaryWidget() {
               <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Kabul Edilen
               </span>
-              <span className="font-bold text-emerald-500 text-xs">
+              <span className="font-bold text-emerald-700 text-xs dark:text-emerald-300">
                 {quoteStats?.acceptedCount ?? 0}
               </span>
             </div>

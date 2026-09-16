@@ -1361,12 +1361,12 @@ export default function MessagesPage() {
                   )}
                 </div>
 
-                <div className="hidden shrink-0 text-2xs text-zinc-400 sm:block dark:text-zinc-500">
-                  <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-3xs dark:bg-muted dark:bg-zinc-800">
+                <div className="hidden shrink-0 text-2xs text-muted-foreground sm:block">
+                  <kbd className="rounded bg-muted px-1 py-0.5 font-mono text-3xs">
                     Enter
                   </kbd>{" "}
                   gönder,{" "}
-                  <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-3xs dark:bg-muted dark:bg-zinc-800">
+                  <kbd className="rounded bg-muted px-1 py-0.5 font-mono text-3xs">
                     Shift+Enter
                   </kbd>{" "}
                   yeni satır
@@ -1458,7 +1458,7 @@ export default function MessagesPage() {
             </div>
 
             {/* Type Selector Tabs */}
-            <div className="my-3 flex shrink-0 rounded-xl bg-zinc-100 p-1 dark:bg-muted dark:bg-zinc-800">
+            <div className="my-3 flex shrink-0 rounded-xl bg-muted p-1">
               <button
                 className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Customer" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Customer")}

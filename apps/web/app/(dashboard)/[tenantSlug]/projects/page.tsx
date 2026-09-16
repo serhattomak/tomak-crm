@@ -464,7 +464,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-2xs text-zinc-400">
+                <div className="mt-5 flex items-center justify-between border-border border-t pt-3 text-2xs text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5" />
                     <span>{proj.leadUserName || "Atanmamış"}</span>
