@@ -49,8 +49,28 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run test
       - run: npm run lint
       - run: npm run build --workspace=web
+
+  # Unauthenticated smoke suite. Needs no Supabase, no credentials and no
+  # Docker: the app's middleware falls back to 127.0.0.1 and treats /login,
+  # /register and the public routes as reachable, and behaves identically when
+  # Supabase is unreachable (verified against a dead port: 200 and 307).
+  # The five authenticated flows the roadmap names are deferred — they need a
+  # seeded project, which this repository does not define.
+  e2e:
+    name: web e2e smoke (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e --workspace=web
 
   api:
     name: api (.NET build)

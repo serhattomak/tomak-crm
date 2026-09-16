@@ -10,6 +10,7 @@
     "lint": "eslint",
     "start": "next start",
     "test": "node --experimental-strip-types --test \"components/**/*.test.ts\" \"lib/**/*.test.ts\" \"app/**/*.test.ts\"",
+    "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "sonner": "^2.0.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

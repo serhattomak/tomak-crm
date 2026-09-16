@@ -80,6 +80,12 @@ const SKIP_DIRS = new Set([
   "build",
   "coverage",
   "crm-ui-guard.fixtures",
+  // Playwright output. Ignored by git, but the guard walks the tree, and a
+  // generated artifact must never be able to fail the gate.
+  "test-results",
+  "playwright-report",
+  "blob-report",
+  ".playwright",
 ]);
 
 /**
