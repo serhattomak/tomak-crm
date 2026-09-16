@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,8 +26,22 @@ import { expect, type Page, test } from "@playwright/test";
 
 /** Light enough to be wrong on a dark page. zinc-400 is ~0.37; zinc-200 ~0.78. */
 const LIGHT_BACKGROUND_LUMINANCE = 0.6;
-/** WCAG AA for large text. Anything below this on a dark page is unreadable. */
-const MIN_CONTRAST = 3;
+/**
+ * WCAG AA for NORMAL text (4.5:1).
+ *
+ * This was 3:1 — the LARGE-text floor — which excused every normal-sized label
+ * on every screen. The first number this audit ever reported (21 low-contrast
+ * nodes) was measured at the weaker threshold, so it is a floor, not a total.
+ */
+const MIN_CONTRAST = 4.5;
+
+/**
+ * Report-only diagnostic, never an assertion: a route that fails to render (API
+ * down, data missing, a crash caught by an error boundary) audits almost nothing
+ * and therefore looks perfectly clean. The positive control proves the DETECTOR
+ * works; it cannot prove the PAGE had anything to detect.
+ */
+const STARVED_ROUTE_FLOOR = 50;
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const TENANT_DIR = resolve(HERE, "..", "app", "(dashboard)", "[tenantSlug]");
@@ -39,6 +53,14 @@ type Finding = {
   lum?: number;
   tag: string;
   text: string;
+};
+
+/** One route's slice of the artifact, including how much of it was actually audited. */
+type RouteAudit = {
+  audited: number;
+  contrast: Finding[];
+  light: Finding[];
+  route: string;
 };
 
 /** Every dashboard route that has a page, taken from the app's own structure. */
@@ -123,6 +145,8 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
 
       const lightSurfaces: Finding[] = [];
       const lowContrast: Finding[] = [];
+      /** Elements that passed the size + visibility filter — the audit's actual reach. */
+      let audited = 0;
 
       /**
        * The background a text node ACTUALLY sits on. Most text has a
@@ -157,8 +181,12 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
         if (cs.visibility === "hidden" || cs.display === "none" || cs.opacity === "0") {
           continue;
         }
-        const cls = (el.getAttribute("class") ?? "").slice(0, 110);
-        const text = (el.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 48);
+        audited += 1;
+        // NOT truncated. A clipped class string once misread a finding
+        // (`text-destructive-foreground` printed as `text-destru…`), and this
+        // audit clipped twice: at 110 characters here and 85 again at print time.
+        const cls = el.getAttribute("class") ?? "";
+        const text = (el.textContent ?? "").trim().replace(/\s+/g, " ");
         const bg = parse(cs.backgroundColor);
 
         if (bg && bg.a >= 0.5 && luminanceOf(bg) > threshold) {
@@ -200,7 +228,12 @@ function auditPage(page: Page, luminance: number, minContrast: number) {
           });
         }
       }
-      return { isDark: document.documentElement.classList.contains("dark"), lightSurfaces, lowContrast };
+      return {
+        audited,
+        isDark: document.documentElement.classList.contains("dark"),
+        lightSurfaces,
+        lowContrast,
+      };
     },
     { contrastFloor: minContrast, threshold: luminance }
   );
@@ -270,35 +303,85 @@ test("dark mode: audit every reachable screen", async ({ page }) => {
   const routes = ["", ...dashboardRoutes().map((name) => `/${name}`)];
   console.log(`dark-mode audit: ${routes.length} route(s) from the app structure`);
 
-  const report: Array<{ route: string; light: Finding[]; contrast: Finding[] }> = [];
+  const report: RouteAudit[] = [];
   for (const route of routes) {
     await gotoSettled(page, `/${slug}${route}`);
-    const { lightSurfaces, lowContrast } = await auditPage(
+    const { audited, lightSurfaces, lowContrast } = await auditPage(
       page,
       LIGHT_BACKGROUND_LUMINANCE,
       MIN_CONTRAST
     );
-    if (lightSurfaces.length > 0 || lowContrast.length > 0) {
-      report.push({ contrast: lowContrast, light: lightSurfaces, route });
-    }
+    report.push({ audited, contrast: lowContrast, light: lightSurfaces, route });
   }
 
   const totalLight = report.reduce((n, r) => n + r.light.length, 0);
   const totalContrast = report.reduce((n, r) => n + r.contrast.length, 0);
-  console.log(
-    `dark-mode audit: ${report.length}/${routes.length} route(s) with findings — ` +
-      `${totalLight} light surface(s), ${totalContrast} low-contrast node(s)`
+  const withFindings = report.filter(
+    (r) => r.light.length > 0 || r.contrast.length > 0
+  ).length;
+  const starved = report.filter((r) => r.audited < STARVED_ROUTE_FLOOR);
+
+  /**
+   * The counts are read from THIS file, never from the log.
+   *
+   * The previous version printed at most 8 findings per route, so a route with
+   * nine nodes of one kind under-reported and the total read like a fact when it
+   * was a ceiling. `test-results/` is gitignored, so this never dirties the tree.
+   */
+  const artifactPath = resolve(HERE, "..", "test-results", "dark-mode-audit.json");
+  mkdirSync(dirname(artifactPath), { recursive: true });
+  writeFileSync(
+    artifactPath,
+    `${JSON.stringify(
+      {
+        auditedElements: report.reduce((n, r) => n + r.audited, 0),
+        generatedAt: new Date().toISOString(),
+        lightSurfaceThreshold: LIGHT_BACKGROUND_LUMINANCE,
+        minContrast: MIN_CONTRAST,
+        routes: report,
+        starvedRouteFloor: STARVED_ROUTE_FLOOR,
+        starvedRoutes: starved.map((r) => ({ audited: r.audited, route: r.route })),
+        totals: {
+          lightSurfaces: totalLight,
+          lowContrast: totalContrast,
+          routes: routes.length,
+          routesWithFindings: withFindings,
+        },
+      },
+      null,
+      2
+    )}\n`
   );
+
+  console.log(
+    `dark-mode audit: ${withFindings}/${routes.length} route(s) with findings — ` +
+      `${totalLight} light surface(s), ${totalContrast} low-contrast node(s) ` +
+      `at ${MIN_CONTRAST}:1 — artifact: ${artifactPath}`
+  );
+  if (starved.length > 0) {
+    console.log(
+      `dark-mode audit: WARNING — ${starved.length} route(s) audited fewer than ` +
+        `${STARVED_ROUTE_FLOOR} element(s); a page that rendered nothing also reports clean:`
+    );
+    for (const r of starved) {
+      console.log(`  ${r.route || "/(dashboard)"}: ${r.audited} element(s)`);
+    }
+  }
   for (const entry of report) {
-    console.log(`  ${entry.route || "/(dashboard)"}`);
-    for (const f of entry.light.slice(0, 8)) {
+    if (entry.light.length === 0 && entry.contrast.length === 0) {
+      continue;
+    }
+    console.log(
+      `  ${entry.route || "/(dashboard)"} — audited ${entry.audited} element(s)`
+    );
+    for (const f of entry.light) {
       console.log(
-        `     LIGHT lum=${f.lum} area=${f.area} <${f.tag}> "${f.text}" :: ${f.cls.slice(0, 85)}`
+        `     LIGHT lum=${f.lum} area=${f.area} <${f.tag}> "${f.text}" :: ${f.cls}`
       );
     }
-    for (const f of entry.contrast.slice(0, 8)) {
+    for (const f of entry.contrast) {
       console.log(
-        `     CONTRAST ${f.contrast}:1 <${f.tag}> "${f.text}" :: ${f.cls.slice(0, 85)}`
+        `     CONTRAST ${f.contrast}:1 <${f.tag}> "${f.text}" :: ${f.cls}`
       );
     }
   }
