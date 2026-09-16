@@ -159,6 +159,7 @@ export interface SelectOption {
 }
 
 export interface SelectFieldProps {
+  "aria-label"?: string;
   className?: string;
   disabled?: boolean;
   onChange?: (value: string) => void;
@@ -169,6 +170,7 @@ export interface SelectFieldProps {
 }
 
 export function SelectField({
+  "aria-label": ariaLabel,
   options,
   value,
   onChange,
@@ -179,7 +181,10 @@ export function SelectField({
 }: SelectFieldProps) {
   return (
     <Select disabled={disabled} onValueChange={onChange} value={value}>
-      <SelectTrigger className={cn(triggerClassName, className)}>
+      <SelectTrigger
+        aria-label={ariaLabel}
+        className={cn(triggerClassName, className)}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

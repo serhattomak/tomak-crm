@@ -1028,24 +1028,25 @@ export default function ProjectDetailPage() {
                         </select>
 
                         {/* Story Points Quick Picker */}
-                        <select
+                        <SelectField
                           aria-label="Story Points"
-                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                          onChange={(e) =>
+                          onChange={(value) =>
                             handleQuickUpdateItem(item.id, {
-                              storyPoints: Number(e.target.value),
+                              storyPoints: Number(value),
                             })
                           }
-                          value={item.storyPoints}
-                        >
-                          <option value={0}>0 SP</option>
-                          <option value={1}>1 SP</option>
-                          <option value={2}>2 SP</option>
-                          <option value={3}>3 SP</option>
-                          <option value={5}>5 SP</option>
-                          <option value={8}>8 SP</option>
-                          <option value={13}>13 SP</option>
-                        </select>
+                          options={[
+                            { label: "0 SP", value: "0" },
+                            { label: "1 SP", value: "1" },
+                            { label: "2 SP", value: "2" },
+                            { label: "3 SP", value: "3" },
+                            { label: "5 SP", value: "5" },
+                            { label: "8 SP", value: "8" },
+                            { label: "13 SP", value: "13" },
+                          ]}
+                          triggerClassName="h-6 px-2 font-bold text-3xs"
+                          value={String(item.storyPoints)}
+                        />
 
                         {/* Priority Quick Picker */}
                         <select
@@ -1065,19 +1066,18 @@ export default function ProjectDetailPage() {
                         </select>
 
                         {/* Status Quick Picker */}
-                        <select
+                        <SelectField
                           aria-label="Durum"
-                          className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-medium text-[10px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                          onChange={(e) =>
-                            handleMoveStatus(item.id, e.target.value)
-                          }
+                          onChange={(value) => handleMoveStatus(item.id, value)}
+                          options={[
+                            { label: "To Do", value: "Todo" },
+                            { label: "In Progress", value: "InProgress" },
+                            { label: "In Review", value: "InReview" },
+                            { label: "Done", value: "Done" },
+                          ]}
+                          triggerClassName="h-6 px-2 font-medium text-3xs"
                           value={item.status}
-                        >
-                          <option value="Todo">To Do</option>
-                          <option value="InProgress">In Progress</option>
-                          <option value="InReview">In Review</option>
-                          <option value="Done">Done</option>
-                        </select>
+                        />
 
                         {/* Delete Button */}
                         <button
@@ -1239,24 +1239,25 @@ export default function ProjectDetailPage() {
                         </select>
 
                         {/* Story Points */}
-                        <select
+                        <SelectField
                           aria-label="Story Points"
-                          className="rounded-lg border border-zinc-200 bg-zinc-100 px-1.5 py-1 font-bold text-[10px] text-zinc-800 dark:border-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
-                          onChange={(e) =>
+                          onChange={(value) =>
                             handleQuickUpdateItem(item.id, {
-                              storyPoints: Number(e.target.value),
+                              storyPoints: Number(value),
                             })
                           }
-                          value={item.storyPoints}
-                        >
-                          <option value={0}>0 SP</option>
-                          <option value={1}>1 SP</option>
-                          <option value={2}>2 SP</option>
-                          <option value={3}>3 SP</option>
-                          <option value={5}>5 SP</option>
-                          <option value={8}>8 SP</option>
-                          <option value={13}>13 SP</option>
-                        </select>
+                          options={[
+                            { label: "0 SP", value: "0" },
+                            { label: "1 SP", value: "1" },
+                            { label: "2 SP", value: "2" },
+                            { label: "3 SP", value: "3" },
+                            { label: "5 SP", value: "5" },
+                            { label: "8 SP", value: "8" },
+                            { label: "13 SP", value: "13" },
+                          ]}
+                          triggerClassName="h-6 px-2 font-bold text-3xs"
+                          value={String(item.storyPoints)}
+                        />
 
                         <button
                           className="rounded-lg border border-zinc-200 px-2 py-1 text-[10px] text-zinc-500 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-700"
