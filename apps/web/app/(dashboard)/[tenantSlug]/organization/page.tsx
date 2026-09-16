@@ -1240,9 +1240,9 @@ function EmployeesTab({
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         emp.status === "Active"
-                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 text-emerald-700 dark:text-emerald-300"
+                          ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                           : emp.status === "OnLeave"
-                            ? "border border-amber-200 dark:border-amber-800 bg-amber-50 text-amber-700 dark:text-amber-300"
+                            ? "border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
                             : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
@@ -1319,7 +1319,7 @@ function EmployeesTab({
                   <span
                     className={`rounded-full px-2 py-0.5 font-bold text-3xs ${
                       emp.status === "Active"
-                        ? "bg-emerald-50 text-emerald-700 dark:text-emerald-300"
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                     }`}
                   >
