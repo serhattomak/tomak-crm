@@ -234,7 +234,7 @@ export default function ContractsPage() {
             <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               Sözleşmeler & E-İmza
             </h1>
-            <span className="rounded-full bg-violet-500/10 px-2 py-0.5 font-medium text-violet-600 text-xs dark:bg-violet-500/20 dark:text-violet-400">
+            <span className="rounded-full bg-blue-500/10 px-2 py-0.5 font-medium text-blue-600 text-xs dark:bg-blue-500/20 dark:text-blue-400">
               B2B Dijital Onay
             </span>
           </div>
@@ -258,7 +258,7 @@ export default function ContractsPage() {
           </Button>
 
           <Button
-            className="flex items-center gap-2 bg-violet-600 text-white hover:bg-violet-700 active:scale-[0.98]"
+            className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]"
             onClick={() => setIsCreateModalOpen(true)}
             size="sm"
           >
@@ -311,7 +311,7 @@ export default function ContractsPage() {
             <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
               Toplam Portföy Değeri
             </span>
-            <ShieldCheck className="h-4 w-4 text-violet-500" />
+            <ShieldCheck className="h-4 w-4 text-blue-500" />
           </div>
           <p className="mt-2 font-semibold text-2xl text-zinc-900 tabular-nums dark:text-zinc-100">
             {formatCurrency(totalValue)}
@@ -325,7 +325,7 @@ export default function ContractsPage() {
           <div className="relative w-full max-w-sm">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
             <input
-              className="h-9 w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 pr-3 pl-9 text-xs text-zinc-900 outline-hidden transition focus:border-violet-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-100 dark:focus:border-violet-400"
+              className="h-9 w-full rounded-xl border border-zinc-200/80 bg-zinc-50/50 pr-3 pl-9 text-xs text-zinc-900 outline-hidden transition focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-100 dark:focus:border-blue-400"
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Sözleşme no, başlık veya müşteri ara..."
               type="text"
@@ -338,7 +338,7 @@ export default function ContractsPage() {
               <button
                 className={`rounded-lg px-2.5 py-1.5 font-medium text-xs transition ${
                   statusFilter === s
-                    ? "bg-violet-600 text-white"
+                    ? "bg-blue-600 text-white"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
                 key={s}
@@ -379,7 +379,7 @@ export default function ContractsPage() {
             {isLoading ? (
               <tr>
                 <td className="py-12 text-center text-zinc-500" colSpan={6}>
-                  <Loader2 className="mx-auto h-6 w-6 animate-spin text-violet-500" />
+                  <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-500" />
                   <span className="mt-2 block">Yükleniyor...</span>
                 </td>
               </tr>
@@ -521,7 +521,7 @@ export default function ContractsPage() {
                     Sözleşme Başlığı *
                   </label>
                   <input
-                    className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-violet-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="h-9 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="Örn: 2026 Yıllık Yazılım Bakım Sözleşmesi"
                     required
@@ -580,7 +580,7 @@ export default function ContractsPage() {
                     Sözleşme Maddeleri (HTML Metin)
                   </label>
                   <textarea
-                    className="min-h-[160px] w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 font-mono text-xs text-zinc-900 outline-hidden focus:border-violet-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    className="min-h-[160px] w-full rounded-xl border border-zinc-200 bg-zinc-50 p-3 font-mono text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                     onChange={(e) => setNewContentHtml(e.target.value)}
                     value={newContentHtml}
                   />
@@ -596,7 +596,7 @@ export default function ContractsPage() {
                   Vazgeç
                 </Button>
                 <Button
-                  className="bg-violet-600 text-white hover:bg-violet-700"
+                  className="bg-blue-600 text-white hover:bg-blue-700"
                   disabled={isSubmitting}
                   type="submit"
                 >
@@ -661,12 +661,12 @@ export default function ContractsPage() {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="flex flex-col gap-6">
                 {/* Audit summary */}
-                <div className="rounded-xl border border-violet-200/80 bg-violet-50/50 p-4 dark:border-violet-800/60 dark:bg-violet-950/30">
-                  <h4 className="flex items-center gap-1.5 font-semibold text-violet-900 text-xs dark:text-violet-300">
+                <div className="rounded-xl border border-blue-200/80 bg-blue-50/50 p-4 dark:border-blue-800/60 dark:bg-blue-950/30">
+                  <h4 className="flex items-center gap-1.5 font-semibold text-blue-900 text-xs dark:text-blue-300">
                     <ShieldCheck className="h-4 w-4" />
                     E-İmza & Güvenlik Özeti
                   </h4>
-                  <div className="mt-2 space-y-1 text-violet-800/80 text-xs dark:text-violet-400">
+                  <div className="mt-2 space-y-1 text-blue-800/80 text-xs dark:text-blue-400">
                     <div>
                       <strong>İmzalayan:</strong>{" "}
                       {selectedContract.signedByName || "Henüz imzalanmadı"}
@@ -731,7 +731,7 @@ export default function ContractsPage() {
                 Yazdır / PDF
               </Button>
               <Button
-                className="bg-violet-600 text-white hover:bg-violet-700"
+                className="bg-blue-600 text-white hover:bg-blue-700"
                 onClick={() => setSelectedContract(null)}
                 size="sm"
               >

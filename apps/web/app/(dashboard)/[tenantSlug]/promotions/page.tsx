@@ -334,7 +334,7 @@ export default function PromotionsPage() {
     switch (type) {
       case "Percentage":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2.5 py-0.5 font-semibold text-violet-700 text-xs dark:bg-violet-950/60 dark:text-violet-300">
+          <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 font-semibold text-blue-700 text-xs dark:bg-blue-950/60 dark:text-blue-300">
             <Percent className="h-3 w-3" /> Yüzde İndirimi
           </span>
         );
@@ -384,7 +384,7 @@ export default function PromotionsPage() {
             </span>
           </div>
           <h1 className="mt-1 flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-50">
-            <Tag className="h-6 w-6 text-violet-600 dark:text-violet-400" />
+            <Tag className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Kampanya & Promosyon Yönetimi
           </h1>
           <p className="mt-0.5 text-xs text-zinc-500">
@@ -400,14 +400,14 @@ export default function PromotionsPage() {
               onClick={() => setIsBulkModalOpen(true)}
               type="button"
             >
-              <Ticket className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+              <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               Kupon Üret
             </button>
           </PermissionGate>
 
           <PermissionGate permission="Promotions.Create">
             <button
-              className="flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-sm transition-all hover:bg-violet-700"
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-sm transition-all hover:bg-blue-700"
               onClick={() => {
                 setEditingCampaignId(null);
                 setIsCampaignModalOpen(true);
@@ -426,7 +426,7 @@ export default function PromotionsPage() {
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm transition-all hover:shadow dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex items-center justify-between text-zinc-500">
             <span className="font-medium text-xs">Aktif Kampanyalar</span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Flame className="h-4 w-4" />
             </div>
           </div>
@@ -488,7 +488,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "campaigns"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("campaigns")}
@@ -500,7 +500,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "coupons"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("coupons")}
@@ -512,7 +512,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "simulator"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("simulator")}
@@ -532,7 +532,7 @@ export default function PromotionsPage() {
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Kampanya adı veya kod ile ara..."
                   type="text"
@@ -541,7 +541,7 @@ export default function PromotionsPage() {
               </div>
 
               <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setTypeFilter(e.target.value)}
                 value={typeFilter}
               >
@@ -554,7 +554,7 @@ export default function PromotionsPage() {
               </select>
 
               <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setTriggerFilter(e.target.value)}
                 value={triggerFilter}
               >
@@ -564,7 +564,7 @@ export default function PromotionsPage() {
               </select>
 
               <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setActiveFilter(e.target.value)}
                 value={activeFilter}
               >
@@ -589,7 +589,7 @@ export default function PromotionsPage() {
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-violet-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
               </div>
             ) : campaigns.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -604,7 +604,7 @@ export default function PromotionsPage() {
                   cazip teklifler sunmaya başlayın.
                 </p>
                 <button
-                  className="mt-4 flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-violet-700"
+                  className="mt-4 flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-blue-700"
                   onClick={() => {
                     setEditingCampaignId(null);
                     setIsCampaignModalOpen(true);
@@ -672,7 +672,7 @@ export default function PromotionsPage() {
                             <Zap className="h-3 w-3 text-amber-500" /> Otomatik
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-md bg-violet-50 px-2 py-0.5 font-medium text-violet-700 dark:bg-violet-950/40 dark:text-violet-300">
+                          <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
                             <Ticket className="h-3 w-3" /> Kupon Kodu
                           </span>
                         )}
@@ -785,7 +785,7 @@ export default function PromotionsPage() {
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setCouponSearch(e.target.value)}
                   placeholder="Kupon kodu ile ara..."
                   type="text"
@@ -794,7 +794,7 @@ export default function PromotionsPage() {
               </div>
 
               <select
-                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setCouponCampaignFilter(e.target.value)}
                 value={couponCampaignFilter}
               >
@@ -808,7 +808,7 @@ export default function PromotionsPage() {
             </div>
 
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 font-semibold text-white text-xs hover:bg-violet-700"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs hover:bg-blue-700"
               onClick={() => setIsBulkModalOpen(true)}
               type="button"
             >
@@ -821,7 +821,7 @@ export default function PromotionsPage() {
           <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-violet-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
               </div>
             ) : coupons.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -836,7 +836,7 @@ export default function PromotionsPage() {
                   pazarlama faaliyetlerinizi hızlandırın.
                 </p>
                 <button
-                  className="mt-4 flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-violet-700"
+                  className="mt-4 flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-blue-700"
                   onClick={() => setIsBulkModalOpen(true)}
                   type="button"
                 >
@@ -869,7 +869,7 @@ export default function PromotionsPage() {
                     >
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-2">
-                          <code className="rounded bg-zinc-100 px-2 py-1 font-bold font-mono text-violet-700 dark:bg-zinc-800 dark:text-violet-300">
+                          <code className="rounded bg-zinc-100 px-2 py-1 font-bold font-mono text-blue-700 dark:bg-zinc-800 dark:text-blue-300">
                             {coup.code}
                           </code>
                           <button
@@ -900,7 +900,7 @@ export default function PromotionsPage() {
                         <div className="flex items-center gap-2">
                           <div className="h-1.5 w-16 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                             <div
-                              className="h-full bg-violet-600"
+                              className="h-full bg-blue-600"
                               style={{
                                 width: `${Math.min(100, (coup.usedCount / coup.maxUses) * 100)}%`,
                               }}
@@ -945,7 +945,7 @@ export default function PromotionsPage() {
           <div className="space-y-4 lg:col-span-7">
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                <ShoppingCart className="h-4 w-4 text-violet-600" />
+                <ShoppingCart className="h-4 w-4 text-blue-600" />
                 Örnek Sepet Oluştur
               </h3>
               <p className="mt-1 text-xs text-zinc-500">
@@ -961,12 +961,12 @@ export default function PromotionsPage() {
                 <div className="mt-1.5 flex max-h-36 flex-wrap gap-2 overflow-y-auto p-1">
                   {availableProducts.slice(0, 15).map((p) => (
                     <button
-                      className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-800 hover:border-violet-500 hover:bg-violet-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-violet-500"
+                      className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-800 hover:border-blue-500 hover:bg-blue-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-blue-500"
                       key={p.id}
                       onClick={() => addSimItem(p)}
                       type="button"
                     >
-                      <Plus className="h-3 w-3 text-violet-600" />
+                      <Plus className="h-3 w-3 text-blue-600" />
                       <span>{p.name}</span>
                       <span className="font-semibold text-zinc-500">
                         ₺{p.sellingPrice}
@@ -1044,7 +1044,7 @@ export default function PromotionsPage() {
                 <div className="relative flex-1">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                     onChange={(e) =>
                       setSimCouponCode(e.target.value.toUpperCase())
                     }
@@ -1054,7 +1054,7 @@ export default function PromotionsPage() {
                   />
                 </div>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-violet-700 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-700 disabled:opacity-50"
                   disabled={simLoading || simCartItems.length === 0}
                   onClick={runSimulation}
                   type="button"
@@ -1110,14 +1110,14 @@ export default function PromotionsPage() {
                       <div className="mt-2 space-y-2">
                         {simResult.appliedPromotions.map((p, idx) => (
                           <div
-                            className="flex items-center justify-between rounded-xl border border-violet-100 bg-violet-50/50 p-2.5 dark:border-violet-900/30 dark:bg-violet-950/20"
+                            className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 p-2.5 dark:border-blue-900/30 dark:bg-blue-950/20"
                             key={idx}
                           >
                             <div>
-                              <div className="font-semibold text-violet-950 dark:text-violet-200">
+                              <div className="font-semibold text-blue-950 dark:text-blue-200">
                                 {p.campaignName}
                               </div>
-                              <div className="text-[11px] text-violet-600 dark:text-violet-400">
+                              <div className="text-[11px] text-blue-600 dark:text-blue-400">
                                 {p.description}
                               </div>
                             </div>
@@ -1167,7 +1167,7 @@ export default function PromotionsPage() {
                     </div>
                     <div className="flex justify-between border-zinc-200 border-t pt-2 font-bold text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-100">
                       <span>Net Ödenecek Tutar:</span>
-                      <span className="text-violet-600 dark:text-violet-400">
+                      <span className="text-blue-600 dark:text-blue-400">
                         ₺
                         {(
                           simResult.netTotal + simResult.shippingFee

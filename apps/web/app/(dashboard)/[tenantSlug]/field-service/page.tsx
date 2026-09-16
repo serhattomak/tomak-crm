@@ -352,7 +352,7 @@ export default function FieldServicePage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2.5">
-            <Wrench className="h-6 w-6 text-violet-600 dark:text-violet-400" />
+            <Wrench className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Saha Servis & Mobil Teknisyen Yönetimi
           </h1>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -375,7 +375,7 @@ export default function FieldServicePage() {
           <Button
             size="sm"
             onClick={() => setIsCreateOpen(true)}
-            className="h-9 gap-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-xs"
+            className="h-9 gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs"
           >
             <Plus className="h-4 w-4" />
             Yeni İş Emri Oluştur
@@ -429,7 +429,7 @@ export default function FieldServicePage() {
                 placeholder="İş no, başlık, müşteri veya adres ara..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border-0 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-violet-500"
+                className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border-0 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -451,7 +451,7 @@ export default function FieldServicePage() {
 
           {loading ? (
             <div className="p-12 text-center text-zinc-500 text-xs">
-              <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-violet-500" />
+              <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-blue-500" />
               Saha servis görevleri listeleniyor...
             </div>
           ) : jobs.length === 0 ? (
@@ -462,7 +462,7 @@ export default function FieldServicePage() {
               <Button
                 size="sm"
                 onClick={() => setIsCreateOpen(true)}
-                className="mt-4 text-xs bg-violet-600 hover:bg-violet-700 text-white"
+                className="mt-4 text-xs bg-blue-600 hover:bg-blue-700 text-white"
               >
                 İş Emri Aç
               </Button>
@@ -480,14 +480,14 @@ export default function FieldServicePage() {
                     onClick={() => setSelectedJob(job)}
                     className={`p-4 rounded-xl border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-violet-500 bg-violet-50/30 dark:bg-violet-950/20 shadow-xs"
+                        ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/20 shadow-xs"
                         : "border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-violet-700 dark:text-violet-400">
+                          <span className="font-mono text-xs font-bold text-blue-700 dark:text-blue-400">
                             {job.jobNumber}
                           </span>
                           <span
@@ -572,7 +572,7 @@ export default function FieldServicePage() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-violet-600 dark:text-violet-400">
+                    <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
                       {selectedJob.jobNumber}
                     </span>
                     <span
@@ -614,7 +614,7 @@ export default function FieldServicePage() {
 
               <div className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 space-y-2 text-xs">
                 <div className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-                  <User className="h-3.5 w-3.5 text-violet-500" />
+                  <User className="h-3.5 w-3.5 text-blue-500" />
                   {selectedJob.customerName || "Müşteri Bilgisi Yok"}
                 </div>
                 <div className="flex items-start gap-1.5 text-zinc-600 dark:text-zinc-300">
@@ -624,7 +624,7 @@ export default function FieldServicePage() {
                 {selectedJob.contactPhone && (
                   <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
                     <Phone className="h-3.5 w-3.5 text-zinc-400" />
-                    <a href={`tel:${selectedJob.contactPhone}`} className="text-violet-600 hover:underline">
+                    <a href={`tel:${selectedJob.contactPhone}`} className="text-blue-600 hover:underline">
                       {selectedJob.contactPhone}
                     </a>
                   </div>
@@ -759,7 +759,7 @@ export default function FieldServicePage() {
           >
             <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
               <DialogTitle className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-violet-600" />
+                <Wrench className="h-5 w-5 text-blue-600" />
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
@@ -780,7 +780,7 @@ export default function FieldServicePage() {
                   placeholder="örn: Fiber Optik Switch Montajı veya Arıza Tespiti"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:ring-1 focus:ring-violet-500"
+                  className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -913,7 +913,7 @@ export default function FieldServicePage() {
                   type="submit"
                   size="sm"
                   disabled={submitting}
-                  className="bg-violet-600 hover:bg-violet-700 text-white font-semibold"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                 >
                   {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Servis Emrini Aç"}
                 </Button>

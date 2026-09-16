@@ -214,7 +214,7 @@ export function ActivityTimelineWidget() {
         );
       case "lead":
         return (
-          <UserPlus className="h-3 w-3 text-violet-600 dark:text-violet-400" />
+          <UserPlus className="h-3 w-3 text-blue-600 dark:text-blue-400" />
         );
       case "task":
         return (

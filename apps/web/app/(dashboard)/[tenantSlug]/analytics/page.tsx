@@ -243,7 +243,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col justify-between gap-4 border-zinc-200/80 border-b pb-5 md:flex-row md:items-center dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 text-white shadow-xs">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
               <BarChart3 className="h-5 w-5" />
             </div>
             <h1 className="font-extrabold text-xl text-zinc-900 tracking-tight sm:text-2xl dark:text-zinc-100">
@@ -369,11 +369,11 @@ export default function AnalyticsPage() {
                 %{quoteConversionRate}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-violet-600 dark:border-zinc-800 dark:text-violet-400">
+          <div className="mt-3 flex items-center gap-1.5 border-zinc-100 border-t pt-2.5 font-medium text-[11px] text-blue-600 dark:border-zinc-800 dark:text-blue-400">
             <span>
               {quoteStats?.acceptedCount || 0} Onaylandı /{" "}
               {quoteStats?.totalQuotes || 0} Toplam
@@ -461,7 +461,7 @@ export default function AnalyticsPage() {
                   </span>
                   <div className="relative flex h-36 w-full items-end justify-center rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
                     <div
-                      className="w-full rounded-xl bg-gradient-to-t from-violet-600 to-indigo-500 transition-all duration-500 hover:opacity-90"
+                      className="w-full rounded-xl bg-gradient-to-t from-blue-600 to-indigo-500 transition-all duration-500 hover:opacity-90"
                       style={{ height: `${m.percentage}%` }}
                       title={`₺${m.amount.toLocaleString("tr-TR")} (${m.orders} sipariş)`}
                     />

@@ -297,7 +297,7 @@ export default function OrderDetailPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl border border-violet-200 bg-violet-50 px-3.5 py-2 font-semibold text-violet-800 text-xs shadow-2xs transition-colors hover:bg-violet-100 disabled:opacity-50 dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300"
+            className="flex items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-3.5 py-2 font-semibold text-blue-800 text-xs shadow-2xs transition-colors hover:bg-blue-100 disabled:opacity-50 dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
             disabled={isCreatingInvoice}
             onClick={handleCreateInvoice}
             type="button"

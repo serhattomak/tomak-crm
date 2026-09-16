@@ -726,7 +726,7 @@ export default function ProjectDetailPage() {
           Proje Bulunamadı
         </h2>
         <Link
-          className="mt-4 font-semibold text-sm text-violet-600 hover:underline"
+          className="mt-4 font-semibold text-sm text-blue-600 hover:underline"
           href={`/${tenantSlug}/projects`}
         >
           ← Projeler Listesine Dön
@@ -757,7 +757,7 @@ export default function ProjectDetailPage() {
               <span>Projeler</span>
             </Link>
             <span>/</span>
-            <span className="font-bold text-violet-600 dark:text-violet-400">
+            <span className="font-bold text-blue-600 dark:text-blue-400">
               {project.key}
             </span>
           </div>
@@ -794,7 +794,7 @@ export default function ProjectDetailPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
+            className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
             onClick={() => {
               setCreateItemSprintId(activeSprint?.id || null);
               setIsCreateItemModalOpen(true);
@@ -812,7 +812,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "backlog"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("backlog")}
@@ -828,7 +828,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "board"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("board")}
@@ -846,7 +846,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "epics"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("epics")}
@@ -1113,7 +1113,7 @@ export default function ProjectDetailPage() {
               <div
                 className={`rounded-2xl border p-5 shadow-2xs transition-all ${
                   dragOverSprintId === sprint.id
-                    ? "border-violet-500 bg-violet-50/60 ring-2 ring-violet-500 dark:bg-violet-950/40"
+                    ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40"
                     : "border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900/90"
                 }`}
                 key={sprint.id}
@@ -1161,7 +1161,7 @@ export default function ProjectDetailPage() {
                     </span>
 
                     <button
-                      className="rounded-xl bg-violet-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95"
+                      className="rounded-xl bg-blue-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
                       onClick={() =>
                         handleUpdateSprintStatus(sprint.id, "Active")
                       }
@@ -1177,7 +1177,7 @@ export default function ProjectDetailPage() {
                     <div
                       className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
                         draggedItemId === item.id
-                          ? "border-violet-400 border-dashed opacity-40"
+                          ? "border-blue-400 border-dashed opacity-40"
                           : ""
                       }`}
                       draggable
@@ -1292,7 +1292,7 @@ export default function ProjectDetailPage() {
           <div
             className={`rounded-2xl border p-5 shadow-2xs transition-all ${
               dragOverSprintId === "backlog"
-                ? "border-violet-500 bg-violet-50/60 ring-2 ring-violet-500 dark:bg-violet-950/40"
+                ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40"
                 : "border-zinc-200/80 bg-white dark:border-zinc-800/90 dark:bg-zinc-900/90"
             }`}
             onDragLeave={(e) => {
@@ -1337,7 +1337,7 @@ export default function ProjectDetailPage() {
                 <div
                   className={`group flex cursor-grab items-center justify-between gap-3 p-3 transition hover:bg-white active:cursor-grabbing dark:hover:bg-zinc-800/80 ${
                     draggedItemId === item.id
-                      ? "border-violet-400 border-dashed opacity-40"
+                      ? "border-blue-400 border-dashed opacity-40"
                       : ""
                   }`}
                   draggable
@@ -1441,7 +1441,7 @@ export default function ProjectDetailPage() {
                     {sprints.length > 0 && (
                       <select
                         aria-label="Sprinte Taşı"
-                        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-[10px] text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-violet-400"
+                        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 font-semibold text-[10px] text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-blue-400"
                         onChange={(e) =>
                           handleAssignToSprint(item.id, e.target.value)
                         }
@@ -1511,7 +1511,7 @@ export default function ProjectDetailPage() {
                     <div
                       className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${
                         isOver
-                          ? "border-violet-500 bg-violet-50/70 ring-2 ring-violet-500 dark:border-violet-700 dark:bg-violet-950/40"
+                          ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40"
                           : "border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800/80 dark:bg-zinc-900/50"
                       }`}
                       key={colStatus}
@@ -1555,8 +1555,8 @@ export default function ProjectDetailPage() {
                             <div
                               className={`group rounded-xl border bg-white p-3.5 shadow-2xs transition-all dark:bg-zinc-800/90 ${
                                 isDragging
-                                  ? "scale-95 cursor-grabbing border-violet-500 border-dashed opacity-30 shadow-none"
-                                  : "cursor-grab border-zinc-200/80 hover:border-violet-300 hover:shadow-md active:cursor-grabbing dark:border-zinc-800 dark:hover:border-violet-700"
+                                  ? "scale-95 cursor-grabbing border-blue-500 border-dashed opacity-30 shadow-none"
+                                  : "cursor-grab border-zinc-200/80 hover:border-blue-300 hover:shadow-md active:cursor-grabbing dark:border-zinc-800 dark:hover:border-blue-700"
                               }`}
                               draggable
                               key={item.id}
@@ -1867,7 +1867,7 @@ export default function ProjectDetailPage() {
                   Başlık
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerTitle(e.target.value)}
                   required
                   type="text"
@@ -1882,7 +1882,7 @@ export default function ProjectDetailPage() {
                     Durum
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerStatus(e.target.value)}
                     value={drawerStatus}
                   >
@@ -1899,7 +1899,7 @@ export default function ProjectDetailPage() {
                     Öncelik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerPriority(e.target.value)}
                     value={drawerPriority}
                   >
@@ -1915,7 +1915,7 @@ export default function ProjectDetailPage() {
                     Story Points
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-bold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-bold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) =>
                       setDrawerStoryPoints(Number(e.target.value))
                     }
@@ -1936,7 +1936,7 @@ export default function ProjectDetailPage() {
                     Tür
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 font-semibold text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     onChange={(e) => setDrawerType(e.target.value)}
                     value={drawerType}
                   >
@@ -1956,7 +1956,7 @@ export default function ProjectDetailPage() {
                     Atanan Temsilci
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerAssigneeId(e.target.value)}
                     value={drawerAssigneeId}
                   >
@@ -1974,7 +1974,7 @@ export default function ProjectDetailPage() {
                     Epik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerEpicId(e.target.value)}
                     value={drawerEpicId}
                   >
@@ -1992,7 +1992,7 @@ export default function ProjectDetailPage() {
                     Sprint
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerSprintId(e.target.value)}
                     value={drawerSprintId}
                   >
@@ -2011,7 +2011,7 @@ export default function ProjectDetailPage() {
                     Müşteri Bağlantısı
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerCustomerId(e.target.value)}
                     value={drawerCustomerId}
                   >
@@ -2032,7 +2032,7 @@ export default function ProjectDetailPage() {
                     Tahmini Efor (Saat)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
                     onChange={(e) =>
                       setDrawerEstimatedHours(Number(e.target.value))
@@ -2048,7 +2048,7 @@ export default function ProjectDetailPage() {
                     Harcanan Efor (Saat)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     min={0}
                     onChange={(e) =>
                       setDrawerLoggedHours(Number(e.target.value))
@@ -2064,7 +2064,7 @@ export default function ProjectDetailPage() {
                     Bitiş Tarihi
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setDrawerDueDate(e.target.value)}
                     type="date"
                     value={drawerDueDate}
@@ -2078,7 +2078,7 @@ export default function ProjectDetailPage() {
                   Açıklama & Detaylar
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerDescription(e.target.value)}
                   placeholder="İş maddesinin detaylı açıklaması..."
                   rows={3}
@@ -2103,7 +2103,7 @@ export default function ProjectDetailPage() {
               {/* Save Button */}
               <div className="flex justify-end">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 active:scale-95 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95 disabled:opacity-50"
                   disabled={drawerSaving}
                   type="submit"
                 >
@@ -2125,7 +2125,7 @@ export default function ProjectDetailPage() {
 
               <form className="mt-2 flex gap-2" onSubmit={handleAddSubtask}>
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSubtaskTitle(e.target.value)}
                   placeholder="Yeni kontrol maddesi yazın..."
                   type="text"
@@ -2177,7 +2177,7 @@ export default function ProjectDetailPage() {
 
               <form className="mt-2 space-y-2" onSubmit={handleAddComment}>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewCommentContent(e.target.value)}
                   placeholder="Yorum ekle veya not bırak..."
                   rows={2}
@@ -2185,7 +2185,7 @@ export default function ProjectDetailPage() {
                 />
                 <div className="flex justify-end">
                   <button
-                    className="rounded-xl bg-violet-600 px-4 py-1.5 font-bold text-white text-xs hover:bg-violet-700"
+                    className="rounded-xl bg-blue-600 px-4 py-1.5 font-bold text-white text-xs hover:bg-blue-700"
                     disabled={!newCommentContent.trim()}
                     type="submit"
                   >
@@ -2259,7 +2259,7 @@ export default function ProjectDetailPage() {
                   Başlık *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemTitle(e.target.value)}
                   placeholder="İş maddesi başlığı..."
                   required
@@ -2274,7 +2274,7 @@ export default function ProjectDetailPage() {
                     Tür
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewItemType(e.target.value)}
                     value={newItemType}
                   >
@@ -2291,7 +2291,7 @@ export default function ProjectDetailPage() {
                     Öncelik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewItemPriority(e.target.value)}
                     value={newItemPriority}
                   >
@@ -2307,7 +2307,7 @@ export default function ProjectDetailPage() {
                     Story Points
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) =>
                       setNewItemStoryPoints(Number(e.target.value))
                     }
@@ -2330,7 +2330,7 @@ export default function ProjectDetailPage() {
                     Epik
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewItemEpicId(e.target.value)}
                     value={newItemEpicId}
                   >
@@ -2348,7 +2348,7 @@ export default function ProjectDetailPage() {
                     Atanan Temsilci
                   </label>
                   <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewItemAssigneeId(e.target.value)}
                     value={newItemAssigneeId}
                   >
@@ -2367,7 +2367,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemDescription(e.target.value)}
                   placeholder="İşin detayları..."
                   rows={2}
@@ -2384,7 +2384,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700 disabled:opacity-50"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700 disabled:opacity-50"
                   disabled={!newItemTitle.trim() || submittingItem}
                   type="submit"
                 >
@@ -2436,7 +2436,7 @@ export default function ProjectDetailPage() {
                   Sprint Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintName(e.target.value)}
                   placeholder={`Sprint ${sprints.length + 1}`}
                   required
@@ -2450,7 +2450,7 @@ export default function ProjectDetailPage() {
                   Sprint Hedefi (Goal)
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintGoal(e.target.value)}
                   placeholder="Bu sprintte neyi başarmayı hedefliyoruz?"
                   rows={2}
@@ -2464,7 +2464,7 @@ export default function ProjectDetailPage() {
                     Başlangıç
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewSprintStartDate(e.target.value)}
                     type="date"
                     value={newSprintStartDate}
@@ -2476,7 +2476,7 @@ export default function ProjectDetailPage() {
                     Bitiş
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNewSprintEndDate(e.target.value)}
                     type="date"
                     value={newSprintEndDate}
@@ -2493,7 +2493,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700"
                   disabled={!newSprintName.trim()}
                   type="submit"
                 >
@@ -2545,7 +2545,7 @@ export default function ProjectDetailPage() {
                   Epik Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicName(e.target.value)}
                   placeholder="Örn. Kullanıcı Yönetimi & Yetkilendirme"
                   required
@@ -2559,7 +2559,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicDescription(e.target.value)}
                   placeholder="Epik hedefleri ve kapsam..."
                   rows={2}
@@ -2602,7 +2602,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-violet-600 px-5 py-2 font-bold text-white hover:bg-violet-700"
+                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700"
                   disabled={!newEpicName.trim()}
                   type="submit"
                 >

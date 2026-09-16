@@ -185,7 +185,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded-full bg-violet-100 px-3 py-0.5 font-bold text-[11px] text-violet-700">
+                <span className="rounded-full bg-blue-100 px-3 py-0.5 font-bold text-[11px] text-blue-700">
                   Resmi Sözleşme
                 </span>
                 <span className="font-mono text-zinc-500 text-xs">
@@ -218,7 +218,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 </div>
               ) : (
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-md shadow-violet-500/20 hover:bg-violet-700 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-md shadow-blue-500/20 hover:bg-blue-700 active:scale-95"
                   onClick={() => setIsContractModalOpen(true)}
                   type="button"
                 >

@@ -170,7 +170,7 @@ export function BulkCouponModal({
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b pb-4 dark:border-zinc-800">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <KeyRound className="h-5 w-5" />
             </div>
             <div>
@@ -222,7 +222,7 @@ export function BulkCouponModal({
                   adet):
                 </span>
                 <button
-                  className="flex items-center gap-1 font-medium text-violet-600 hover:underline dark:text-violet-400"
+                  className="flex items-center gap-1 font-medium text-blue-600 hover:underline dark:text-blue-400"
                   onClick={handleCopyCodes}
                   type="button"
                 >
@@ -258,7 +258,7 @@ export function BulkCouponModal({
                 CSV İndir
               </button>
               <button
-                className="rounded-xl bg-violet-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-violet-700"
+                className="rounded-xl bg-blue-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-blue-700"
                 onClick={() => {
                   setGeneratedResult(null);
                   onClose();
@@ -303,7 +303,7 @@ export function BulkCouponModal({
                 Bağlı Kampanya *
               </label>
               <select
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setCampaignId(e.target.value)}
                 required
                 value={campaignId}
@@ -328,7 +328,7 @@ export function BulkCouponModal({
                 <div className="relative">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                     onChange={(e) =>
                       setCustomCode(e.target.value.toUpperCase())
                     }
@@ -361,7 +361,7 @@ export function BulkCouponModal({
                       Kod Ön Ek (Prefix)
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                       onChange={(e) => setPrefix(e.target.value.toUpperCase())}
                       placeholder="Örn: CRM, YAZ"
                       type="text"
@@ -420,7 +420,7 @@ export function BulkCouponModal({
                 İptal
               </button>
               <button
-                className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-violet-700 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
                 disabled={loading}
                 type="submit"
               >

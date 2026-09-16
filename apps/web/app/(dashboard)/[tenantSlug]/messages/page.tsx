@@ -598,7 +598,7 @@ export default function MessagesPage() {
       "text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-muted/40";
     if (isSelected) {
       activeClasses = isDirect
-        ? "border border-violet-200 bg-violet-50/90 text-violet-950 shadow-2xs dark:border-violet-900/60 dark:bg-violet-950/50 dark:text-violet-100"
+        ? "border border-blue-200 bg-blue-50/90 text-blue-950 shadow-2xs dark:border-blue-900/60 dark:bg-blue-950/50 dark:text-blue-100"
         : "border border-blue-100 bg-blue-50/80 text-blue-950 shadow-2xs dark:border-blue-900/50 dark:bg-blue-950/50 dark:text-blue-100";
     }
 
@@ -627,7 +627,7 @@ export default function MessagesPage() {
               width={36}
             />
           ) : isDirect ? (
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs shadow-2xs dark:bg-violet-950/60 dark:text-violet-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs shadow-2xs dark:bg-blue-950/60 dark:text-blue-300">
               {displayInfo.initials}
             </div>
           ) : (
@@ -714,7 +714,7 @@ export default function MessagesPage() {
             <span>Yeni Kanal</span>
           </Button>
           <Button
-            className="h-8 bg-violet-600 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 sm:h-9"
+            className="h-8 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 sm:h-9"
             onClick={() => setIsNewDmModalOpen(true)}
             size="sm"
           >
@@ -811,12 +811,12 @@ export default function MessagesPage() {
                         <ChevronDown className="h-3.5 w-3.5" />
                       )}
                       <span>Direkt Mesajlar</span>
-                      <span className="rounded-full bg-violet-100 px-1.5 py-0.2 font-mono text-[9px] text-violet-700 dark:bg-violet-950/70 dark:text-violet-300">
+                      <span className="rounded-full bg-blue-100 px-1.5 py-0.2 font-mono text-[9px] text-blue-700 dark:bg-blue-950/70 dark:text-blue-300">
                         {directChannels.length}
                       </span>
                     </button>
                     <button
-                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-zinc-800 dark:hover:text-violet-400"
+                      className="rounded-lg p-1 text-zinc-400 transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                       onClick={() => setIsNewDmModalOpen(true)}
                       title="Yeni Direkt Mesaj Başlat"
                       type="button"
@@ -833,7 +833,7 @@ export default function MessagesPage() {
                             Henüz bir direkt mesaj yok.
                           </p>
                           <button
-                            className="mt-1.5 inline-flex items-center gap-1 font-bold text-[11px] text-violet-600 hover:text-violet-700 dark:text-violet-400"
+                            className="mt-1.5 inline-flex items-center gap-1 font-bold text-[11px] text-blue-600 hover:text-blue-700 dark:text-blue-400"
                             onClick={() => setIsNewDmModalOpen(true)}
                             type="button"
                           >
@@ -885,7 +885,7 @@ export default function MessagesPage() {
                           width={40}
                         />
                       ) : (
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs sm:h-10 sm:w-10 dark:bg-violet-950/60 dark:text-violet-300">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs sm:h-10 sm:w-10 dark:bg-blue-950/60 dark:text-blue-300">
                           {displayInfo.initials}
                         </div>
                       );
@@ -909,7 +909,7 @@ export default function MessagesPage() {
                         : selectedChannel.title}
                     </h2>
                     {selectedChannel.type === "Direct" ? (
-                      <span className="rounded-md bg-violet-50 px-1.5 py-0.2 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                      <span className="rounded-md bg-blue-50 px-1.5 py-0.2 font-semibold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                         {getChannelDisplayInfo(selectedChannel).role}
                       </span>
                     ) : selectedChannel.isPrivate ? (
@@ -1232,7 +1232,7 @@ export default function MessagesPage() {
                                         <ShoppingCart className="h-4 w-4 text-emerald-500" />
                                       )}
                                       {embed.entityType === "Product" && (
-                                        <Package className="h-4 w-4 text-violet-500" />
+                                        <Package className="h-4 w-4 text-blue-500" />
                                       )}
                                       {embed.entityType === "LeaveRequest" && (
                                         <Calendar className="h-4 w-4 text-amber-500" />
@@ -1608,7 +1608,7 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <Package className="h-4 w-4 shrink-0 text-violet-600" />
+                      <Package className="h-4 w-4 shrink-0 text-blue-600" />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground dark:text-zinc-100">
                           {prod.name}
@@ -1859,7 +1859,7 @@ export default function MessagesPage() {
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                 <input
                   autoFocus
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setDmSearchQuery(e.target.value)
                   }
@@ -1873,7 +1873,7 @@ export default function MessagesPage() {
             <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
               {loadingTeamUsers ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Loader2 className="h-6 w-6 animate-spin text-violet-600" />
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
                   <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
                     Ekip üyeleri yükleniyor...
                   </p>
@@ -1901,7 +1901,7 @@ export default function MessagesPage() {
 
                   return (
                     <div
-                      className="group flex cursor-pointer items-center justify-between rounded-xl border border-transparent p-2.5 transition-all hover:border-violet-200 hover:bg-violet-50/60 dark:hover:border-violet-900/50 dark:hover:bg-violet-950/30"
+                      className="group flex cursor-pointer items-center justify-between rounded-xl border border-transparent p-2.5 transition-all hover:border-blue-200 hover:bg-blue-50/60 dark:hover:border-blue-900/50 dark:hover:bg-blue-950/30"
                       key={u.id}
                       onClick={() => !isStarting && handleStartDirectMessage(u)}
                     >
@@ -1916,7 +1916,7 @@ export default function MessagesPage() {
                               width={36}
                             />
                           ) : (
-                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-700 text-xs shadow-2xs dark:bg-violet-950/60 dark:text-violet-300">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700 text-xs shadow-2xs dark:bg-blue-950/60 dark:text-blue-300">
                               {initials}
                             </div>
                           )}
@@ -1939,7 +1939,7 @@ export default function MessagesPage() {
                       </div>
 
                       <Button
-                        className="h-7 shrink-0 bg-violet-600 px-3 font-semibold text-white text-xs opacity-0 transition-opacity hover:bg-violet-700 group-hover:opacity-100 dark:bg-violet-600"
+                        className="h-7 shrink-0 bg-blue-600 px-3 font-semibold text-white text-xs opacity-0 transition-opacity hover:bg-blue-700 group-hover:opacity-100 dark:bg-blue-600"
                         disabled={isStarting}
                         size="sm"
                       >

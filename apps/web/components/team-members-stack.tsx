@@ -45,7 +45,7 @@ const AVATAR_BG_COLORS = [
   "bg-fuchsia-600 text-white",
   "bg-emerald-600 text-white",
   "bg-blue-600 text-white",
-  "bg-violet-600 text-white",
+  "bg-blue-600 text-white",
   "bg-amber-600 text-white",
   "bg-rose-600 text-white",
 ];

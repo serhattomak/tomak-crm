@@ -21,7 +21,7 @@ import { usePermissions } from "@/lib/permissions/permission-context";
 import type { TeamMemberScore } from "./dashboard-types";
 
 const AVATAR_COLORS = [
-  "bg-violet-600",
+  "bg-blue-600",
   "bg-indigo-600",
   "bg-blue-600",
   "bg-emerald-600",
@@ -187,7 +187,7 @@ export function TeamLeaderboardWidget() {
             return {
               achieved: val.achieved,
               avatarColor:
-                AVATAR_COLORS[idx % AVATAR_COLORS.length] || "bg-violet-600",
+                AVATAR_COLORS[idx % AVATAR_COLORS.length] || "bg-blue-600",
               dealsClosed: val.dealsClosed,
               id,
               initials,

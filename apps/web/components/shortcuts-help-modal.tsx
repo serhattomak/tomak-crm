@@ -76,7 +76,7 @@ export function ShortcutsHelpModal({
         {/* Header */}
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3.5 dark:border-zinc-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Keyboard className="h-4.5 w-4.5" />
             </div>
             <div>
@@ -134,7 +134,7 @@ export function ShortcutsHelpModal({
         {/* Footer */}
         <div className="mt-4 flex items-center justify-between border-zinc-100 border-t pt-3 text-[11px] text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
           <div className="flex items-center gap-1.5">
-            <HelpCircle className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+            <HelpCircle className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>
               Herhangi bir ekranda <strong>?</strong> tuşuna basarak bu kılavuzu
               açabilirsiniz.

@@ -52,7 +52,7 @@ interface QuickActionDef {
 const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   {
     actionType: "lead",
-    color: "from-violet-600 to-indigo-600 text-white",
+    color: "from-blue-600 to-indigo-600 text-white",
     defaultEnabled: true,
     description: "Müşteri adayı kaydı oluştur",
     icon: UserPlus,

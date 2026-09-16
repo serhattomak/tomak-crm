@@ -52,7 +52,7 @@ import {
 
 function getCariTypeClass(type: string): string {
   if (type === "Customer") {
-    return "bg-violet-50 text-violet-700 dark:bg-violet-950/50 dark:text-violet-300";
+    return "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300";
   }
   if (type === "Supplier") {
     return "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300";
@@ -234,7 +234,7 @@ function CariRow({ cari, onOpenStatement, onQuickTx }: CariRowProps) {
             Fiş Kes
           </button>
           <button
-            className="rounded-lg border border-violet-200 bg-violet-50 px-2.5 py-1 font-semibold text-violet-700 text-xs shadow-2xs hover:bg-violet-100 active:scale-95 dark:border-violet-800/60 dark:bg-violet-950/60 dark:text-violet-300"
+            className="rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1 font-semibold text-blue-700 text-xs shadow-2xs hover:bg-blue-100 active:scale-95 dark:border-blue-800/60 dark:bg-blue-950/60 dark:text-blue-300"
             onClick={handleStatement}
             title="Ekstre Görüntüle"
             type="button"
@@ -695,7 +695,7 @@ export default function FinancePage() {
             Fiş / Makbuz Kes
           </button>
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-sm text-white shadow-xs transition-all hover:bg-violet-700 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-sm text-white shadow-xs transition-all hover:bg-blue-700 active:scale-95"
             onClick={handleOpenCariModal}
             type="button"
           >
@@ -720,7 +720,7 @@ export default function FinancePage() {
           value={`${overallCredit.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺`}
         />
         <KpiCard
-          colorClass="bg-violet-50 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400"
+          colorClass="bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400"
           icon={Layers}
           label="Net Cari Bakiye Dengesi"
           value={`${overallBalance.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺`}
@@ -738,7 +738,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "cari"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabCari}
@@ -749,7 +749,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "accounts"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabAccounts}
@@ -760,7 +760,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "transactions"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabTransactions}
@@ -780,7 +780,7 @@ export default function FinancePage() {
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
               <input
-                className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
+                className="w-full rounded-xl border border-zinc-200/80 bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-200"
                 onChange={handleCariSearchChange}
                 placeholder="Cari Ünvanı, Kodu veya Vergi No Ara..."
                 type="text"
@@ -834,7 +834,7 @@ export default function FinancePage() {
         <div className="space-y-4">
           <div className="flex justify-end">
             <button
-              className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-sm text-white shadow-xs hover:bg-violet-700 active:scale-95"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-sm text-white shadow-xs hover:bg-blue-700 active:scale-95"
               onClick={handleOpenAccountModal}
               type="button"
             >
@@ -949,7 +949,7 @@ export default function FinancePage() {
           >
             <div className="flex items-center justify-between border-zinc-200 border-b p-4 dark:border-zinc-800 print:hidden">
               <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Cari Hesap Ekstresi
                 </SheetTitle>
@@ -989,7 +989,7 @@ export default function FinancePage() {
                   <span className="block font-medium text-[11px] text-zinc-400 uppercase tracking-wider">
                     Güncel Bakiye
                   </span>
-                  <span className="font-bold font-mono text-lg text-violet-600 dark:text-violet-400">
+                  <span className="font-bold font-mono text-lg text-blue-600 dark:text-blue-400">
                     {selectedCariForStatement?.balance.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
                     })}{" "}
@@ -1339,7 +1339,7 @@ function CreateCariModal({
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
+            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"
@@ -1578,7 +1578,7 @@ function CreateAccountModal({
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
+            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"

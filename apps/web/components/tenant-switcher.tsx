@@ -77,7 +77,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
           type="button"
         >
           <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 font-bold text-white text-xs shadow-2xs ring-2 ring-violet-500/20 transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 font-bold text-white text-xs shadow-2xs ring-2 ring-blue-500/20 transition-transform group-hover:scale-105">
               {initials.charAt(0)}
             </div>
             <div
@@ -127,7 +127,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               <button
                 className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 ${
                   isSelected
-                    ? "bg-violet-50/70 font-semibold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
+                    ? "bg-blue-50/70 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
                     : "text-zinc-700 dark:text-zinc-300"
                 }`}
                 key={tenant.id}
@@ -141,7 +141,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
                   <span className="truncate">{tenant.name}</span>
                 </div>
                 {isSelected && (
-                  <Check className="h-3.5 w-3.5 shrink-0 text-violet-600 dark:text-violet-400" />
+                  <Check className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-blue-400" />
                 )}
               </button>
             );
@@ -157,7 +157,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             >
               <input
                 autoFocus
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setNewTenantName(e.target.value)}
                 placeholder="Çalışma Alanı Adı..."
                 type="text"
@@ -172,7 +172,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
                   Vazgeç
                 </button>
                 <button
-                  className="flex items-center gap-1 rounded-lg bg-violet-600 px-2.5 py-1 font-medium text-[11px] text-white hover:bg-violet-700 disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1 font-medium text-[11px] text-white hover:bg-blue-700 disabled:opacity-50"
                   disabled={isLoading}
                   type="submit"
                 >
@@ -183,7 +183,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
             </form>
           ) : (
             <button
-              className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 font-semibold text-violet-600 text-xs transition-colors hover:bg-violet-50 dark:text-violet-400 dark:hover:bg-violet-950/50"
+              className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 font-semibold text-blue-600 text-xs transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
               onClick={() => setIsCreating(true)}
               type="button"
             >

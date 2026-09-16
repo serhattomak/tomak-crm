@@ -838,7 +838,7 @@ export function CommandPalette({
             value={query}
           />
           {liveLoading && (
-            <Loader2 className="mr-2 h-4 w-4 shrink-0 animate-spin text-violet-600 dark:text-violet-400" />
+            <Loader2 className="mr-2 h-4 w-4 shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
           )}
           {query ? (
             <button
@@ -1033,7 +1033,7 @@ export function CommandPalette({
           <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
             <span>Kısayollar için</span>
             <kbd
-              className="cursor-pointer rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-violet-600 shadow-2xs hover:bg-violet-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-violet-400 dark:hover:bg-violet-950/50"
+              className="cursor-pointer rounded border border-zinc-200 bg-white px-1 font-bold font-mono text-[10px] text-blue-600 shadow-2xs hover:bg-blue-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-blue-400 dark:hover:bg-blue-950/50"
               onClick={() => {
                 onClose();
                 onOpenShortcutsHelp();
@@ -1065,7 +1065,7 @@ function PaletteRow({
     <div
       className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 transition-all ${
         isSelected
-          ? "border border-violet-200 bg-violet-50 text-violet-950 shadow-2xs dark:border-violet-800/80 dark:bg-violet-950/60 dark:text-violet-100"
+          ? "border border-blue-200 bg-blue-50 text-blue-950 shadow-2xs dark:border-blue-800/80 dark:bg-blue-950/60 dark:text-blue-100"
           : "border border-transparent text-zinc-800 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800/60"
       }`}
       data-item-index={index}
@@ -1076,7 +1076,7 @@ function PaletteRow({
         <div
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${
             isSelected
-              ? "bg-violet-600 text-white"
+              ? "bg-blue-600 text-white"
               : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
           }`}
         >
@@ -1090,7 +1090,7 @@ function PaletteRow({
             <div
               className={`mt-0.5 truncate text-[11px] ${
                 isSelected
-                  ? "text-violet-700/80 dark:text-violet-300/80"
+                  ? "text-blue-700/80 dark:text-blue-300/80"
                   : "text-zinc-400 dark:text-zinc-500"
               }`}
             >
@@ -1105,7 +1105,7 @@ function PaletteRow({
           <kbd
             className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-[10px] shadow-2xs ${
               isSelected
-                ? "border-violet-200 bg-white text-violet-800 dark:border-violet-700 dark:bg-zinc-800 dark:text-violet-300"
+                ? "border-blue-200 bg-white text-blue-800 dark:border-blue-700 dark:bg-zinc-800 dark:text-blue-300"
                 : "border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
             }`}
           >
@@ -1115,7 +1115,7 @@ function PaletteRow({
         <ChevronRight
           className={`h-3.5 w-3.5 transition-transform ${
             isSelected
-              ? "translate-x-0.5 text-violet-600 dark:text-violet-400"
+              ? "translate-x-0.5 text-blue-600 dark:text-blue-400"
               : "text-zinc-300 dark:text-zinc-600"
           }`}
         />

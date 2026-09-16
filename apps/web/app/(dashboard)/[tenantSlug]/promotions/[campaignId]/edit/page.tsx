@@ -239,7 +239,7 @@ export default function EditCampaignPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -275,7 +275,7 @@ export default function EditCampaignPage() {
         {/* Basic Section */}
         <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Tag className="h-4 w-4 text-violet-600" />
+            <Tag className="h-4 w-4 text-blue-600" />
             Genel Bilgiler & Zamanlama
           </h2>
 
@@ -285,7 +285,7 @@ export default function EditCampaignPage() {
                 Kampanya Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -299,7 +299,7 @@ export default function EditCampaignPage() {
                   Dahili Takip Kodu
                 </label>
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   type="text"
                   value={code}
@@ -325,7 +325,7 @@ export default function EditCampaignPage() {
                 Açıklama
               </label>
               <textarea
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
                 value={description}
@@ -367,7 +367,7 @@ export default function EditCampaignPage() {
               <button
                 aria-checked={isStackable}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  isStackable ? "bg-violet-600" : "bg-zinc-200 dark:bg-zinc-700"
+                  isStackable ? "bg-blue-600" : "bg-zinc-200 dark:bg-zinc-700"
                 }`}
                 onClick={() => setIsStackable(!isStackable)}
                 role="switch"
@@ -386,7 +386,7 @@ export default function EditCampaignPage() {
         {/* Discount & Targets */}
         <div className="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Coins className="h-4 w-4 text-violet-600" />
+            <Coins className="h-4 w-4 text-blue-600" />
             İndirim Değeri & Kapsam
           </h2>
 
@@ -494,7 +494,7 @@ export default function EditCampaignPage() {
             İptal
           </Link>
           <button
-            className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-bold text-white text-xs shadow-xs hover:bg-violet-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2 font-bold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
             disabled={saving}
             type="submit"
           >

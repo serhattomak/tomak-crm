@@ -91,7 +91,7 @@ export function CustomizeWidgetsModal({
         );
       case "BarChart3":
         return (
-          <BarChart3 className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+          <BarChart3 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         );
       case "Gauge":
         return (

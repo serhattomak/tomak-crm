@@ -81,7 +81,7 @@ export default function RecruitmentPage() {
     <Suspense
       fallback={
         <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-          <Loader2 className="mb-3 h-8 w-8 animate-spin text-violet-500" />
+          <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">İşe alım yükleniyor...</p>
         </div>
       }
@@ -649,7 +649,7 @@ function RecruitmentPageContent() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 font-semibold text-violet-600 text-xs uppercase tracking-wider">
+          <div className="flex items-center gap-2 font-semibold text-blue-600 text-xs uppercase tracking-wider">
             <Megaphone className="h-4 w-4" />
             <span>İşe Alım & Aday Takibi</span>
           </div>
@@ -668,15 +668,15 @@ function RecruitmentPageContent() {
             onClick={openCandModalForCreate}
             type="button"
           >
-            <Users className="h-3.5 w-3.5 text-violet-500" />
+            <Users className="h-3.5 w-3.5 text-blue-500" />
             <span>Yeni Aday</span>
           </button>
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-violet-700"
+            className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700"
             onClick={openReqModalForCreate}
             type="button"
           >
-            <Plus className="h-4 w-4 text-violet-400" />
+            <Plus className="h-4 w-4 text-blue-400" />
             <span>Yeni İlan Oluştur</span>
           </button>
         </div>
@@ -695,7 +695,7 @@ function RecruitmentPageContent() {
             onClick={() => handleTabChange("ilanlar")}
             type="button"
           >
-            <Briefcase className="h-4 w-4 text-violet-500" />
+            <Briefcase className="h-4 w-4 text-blue-500" />
             <span>İlanlar ({requisitions.length})</span>
           </button>
 
@@ -749,7 +749,7 @@ function RecruitmentPageContent() {
           type="button"
         >
           <RotateCcw
-            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-violet-500" : "text-zinc-500 dark:text-zinc-400"}`}
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-blue-500" : "text-zinc-500 dark:text-zinc-400"}`}
           />
           <span>Yenile</span>
         </button>
@@ -758,7 +758,7 @@ function RecruitmentPageContent() {
       {/* Content */}
       {isLoading ? (
         <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-zinc-100 bg-white p-8 text-zinc-500 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-          <Loader2 className="mb-3 h-8 w-8 animate-spin text-violet-500" />
+          <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Veriler yükleniyor...</p>
         </div>
       ) : (
@@ -771,7 +771,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="İlan ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setReqSearch(e.target.value)}
                     placeholder="Başlık, departman veya lokasyon ara..."
                     type="text"
@@ -829,7 +829,7 @@ function RecruitmentPageContent() {
                       oluşturun. İlanlar burada listelenir.
                     </p>
                     <button
-                      className="mt-4 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs hover:bg-violet-700"
+                      className="mt-4 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
                       onClick={openReqModalForCreate}
                       type="button"
                     >
@@ -873,7 +873,7 @@ function RecruitmentPageContent() {
                                     </>
                                   )}
                                   {req.employmentType && (
-                                    <span className="rounded-md bg-violet-50 px-1.5 py-0.5 font-semibold text-[10px] text-violet-700">
+                                    <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-semibold text-[10px] text-blue-700">
                                       {req.employmentType}
                                     </span>
                                   )}
@@ -995,7 +995,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="Aday ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setCandSearch(e.target.value)}
                     placeholder="Ad, e-posta, telefon veya etiket ara..."
                     type="text"
@@ -1040,7 +1040,7 @@ function RecruitmentPageContent() {
                       zorunludur.
                     </p>
                     <button
-                      className="mt-4 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs hover:bg-violet-700"
+                      className="mt-4 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
                       onClick={openCandModalForCreate}
                       type="button"
                     >
@@ -1068,7 +1068,7 @@ function RecruitmentPageContent() {
                             >
                               <td className="px-6 py-4">
                                 <div className="flex items-center gap-3">
-                                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 font-extrabold text-white text-xs shadow-xs">
+                                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 font-extrabold text-white text-xs shadow-xs">
                                     {c.firstName.charAt(0).toUpperCase()}
                                   </div>
                                   <div>
@@ -1103,7 +1103,7 @@ function RecruitmentPageContent() {
                                   <div className="flex flex-wrap gap-1">
                                     {c.tags.slice(0, 3).map((tag) => (
                                       <span
-                                        className="inline-flex items-center gap-1 rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700"
+                                        className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
                                         key={`${c.id}-${tag}`}
                                       >
                                         <Tags className="h-2.5 w-2.5" />
@@ -1171,7 +1171,7 @@ function RecruitmentPageContent() {
                   <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   <input
                     aria-label="Başvuru ara"
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                     onChange={(e) => setAppSearch(e.target.value)}
                     placeholder="Aday, e-posta, ilan veya aşama ara..."
                     type="text"
@@ -1219,7 +1219,7 @@ function RecruitmentPageContent() {
                     </SelectContent>
                   </Select>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-violet-700"
+                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-blue-700"
                     onClick={() => setShowAppModal(true)}
                     type="button"
                   >
@@ -1259,7 +1259,7 @@ function RecruitmentPageContent() {
                                   {stage.name}
                                 </span>
                                 {stage.isDefault && (
-                                  <span className="rounded-full bg-violet-100 px-1.5 py-0.5 font-bold text-[9px] text-violet-700">
+                                  <span className="rounded-full bg-blue-100 px-1.5 py-0.5 font-bold text-[9px] text-blue-700">
                                     Varsayılan
                                   </span>
                                 )}
@@ -1306,7 +1306,7 @@ function RecruitmentPageContent() {
                                       </span>
                                       {app.score !== undefined &&
                                         app.score !== null && (
-                                          <span className="rounded-md bg-violet-50 px-1.5 py-0.5 font-bold text-[10px] text-violet-700">
+                                          <span className="rounded-md bg-blue-50 px-1.5 py-0.5 font-bold text-[10px] text-blue-700">
                                             Puan {app.score}
                                           </span>
                                         )}
@@ -1376,7 +1376,7 @@ function RecruitmentPageContent() {
                                 {app.requisitionTitle}
                               </div>
                               <button
-                                className="mt-2 w-full rounded-lg bg-violet-600 px-2 py-1 font-semibold text-[11px] text-white hover:bg-violet-700"
+                                className="mt-2 w-full rounded-lg bg-blue-600 px-2 py-1 font-semibold text-[11px] text-white hover:bg-blue-700"
                                 onClick={() => setSelectedApplicationId(app.id)}
                                 type="button"
                               >
@@ -1401,7 +1401,7 @@ function RecruitmentPageContent() {
                         Adayları ilanlara bağlayarak başvuru oluşturun.
                       </p>
                       <button
-                        className="mt-4 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs hover:bg-violet-700"
+                        className="mt-4 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
                         onClick={() => setShowAppModal(true)}
                         type="button"
                       >
@@ -1482,7 +1482,7 @@ function RecruitmentPageContent() {
                                 <td className="px-6 py-4 text-center">
                                   {app.score !== undefined &&
                                   app.score !== null ? (
-                                    <span className="rounded-lg bg-violet-50 px-2.5 py-1 font-bold text-violet-700 text-xs">
+                                    <span className="rounded-lg bg-blue-50 px-2.5 py-1 font-bold text-blue-700 text-xs">
                                       {app.score}
                                     </span>
                                   ) : (
@@ -1561,7 +1561,7 @@ function RecruitmentPageContent() {
                     </p>
                   </div>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-violet-700"
+                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs hover:bg-blue-700"
                     onClick={openStageModalForCreate}
                     type="button"
                   >
@@ -1641,7 +1641,7 @@ function RecruitmentPageContent() {
                                   {s.name}
                                 </span>
                                 {s.isDefault && (
-                                  <span className="rounded-full bg-violet-100 px-2 py-0.5 font-bold text-[10px] text-violet-700">
+                                  <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-[10px] text-blue-700">
                                     Varsayılan
                                   </span>
                                 )}
@@ -1977,7 +1977,7 @@ function RequisitionModal({
       >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Briefcase className="h-5 w-5 text-violet-600" />
+            <Briefcase className="h-5 w-5 text-blue-600" />
             {requisition?.id ? "İlanı Düzenle" : "Yeni İş İlanı"}
           </DialogTitle>
           <DialogClose asChild>
@@ -2125,7 +2125,7 @@ function RequisitionModal({
           <div className="space-y-1.5">
             <Label>Açıklama</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="İlan detayları..."
               rows={3}
@@ -2135,7 +2135,7 @@ function RequisitionModal({
           <div className="space-y-1.5">
             <Label>Gereksinimler</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setRequirements(e.target.value)}
               placeholder="Aranan nitelikler..."
               rows={2}
@@ -2152,7 +2152,7 @@ function RequisitionModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-violet-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2306,7 +2306,7 @@ function CandidateModal({
       >
         <div className="flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Users className="h-5 w-5 text-violet-600" />
+            <Users className="h-5 w-5 text-blue-600" />
             {candidate?.id ? "Adayı Düzenle" : "Yeni Aday Ekle"}
           </DialogTitle>
           <DialogClose asChild>
@@ -2420,7 +2420,7 @@ function CandidateModal({
               Notlar
             </label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               value={notes}
@@ -2460,7 +2460,7 @@ function CandidateModal({
                   <p className="p-3 text-xs text-zinc-500 dark:text-zinc-400">
                     PDF önizleme desteklenmiyor,{" "}
                     <a
-                      className="text-violet-600 underline"
+                      className="text-blue-600 underline"
                       href={previewUrl}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -2474,7 +2474,7 @@ function CandidateModal({
             )}
             {candidate?.cvFileUrl && !previewUrl && (
               <a
-                className="mt-2 inline-flex items-center gap-1 text-violet-600 text-xs underline"
+                className="mt-2 inline-flex items-center gap-1 text-blue-600 text-xs underline"
                 href={candidate.cvFileUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2485,10 +2485,10 @@ function CandidateModal({
             )}
           </div>
 
-          <label className="flex items-start gap-2 rounded-xl border border-violet-200 bg-violet-50 p-3">
+          <label className="flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-3">
             <input
               checked={consentGiven}
-              className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-violet-600 focus:ring-violet-500 dark:border-zinc-700"
+              className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700"
               onChange={(e) => setConsentGiven(e.target.checked)}
               type="checkbox"
             />
@@ -2512,7 +2512,7 @@ function CandidateModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-violet-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
               disabled={isSubmitting || !consentGiven}
               type="submit"
             >
@@ -2672,7 +2672,7 @@ function ApplicationModal({
           <div className="space-y-1.5">
             <Label>Notlar</Label>
             <textarea
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               value={notes}
@@ -2781,7 +2781,7 @@ function StageModal({
               Aşama Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setName(e.target.value)}
               required
               type="text"
@@ -2793,7 +2793,7 @@ function StageModal({
               Slug (opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="otomatik oluşturulur"
               type="text"
@@ -2813,7 +2813,7 @@ function StageModal({
                   value={colorHex}
                 />
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setColorHex(e.target.value)}
                   type="text"
                   value={colorHex}
@@ -2838,7 +2838,7 @@ function StageModal({
           <label className="flex items-center gap-2">
             <input
               checked={isActive}
-              className="h-4 w-4 rounded border-zinc-300 text-violet-600 dark:border-zinc-700"
+              className="h-4 w-4 rounded border-zinc-300 text-blue-600 dark:border-zinc-700"
               onChange={(e) => setIsActive(e.target.checked)}
               type="checkbox"
             />
@@ -2856,7 +2856,7 @@ function StageModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2917,7 +2917,7 @@ function CandidateDetailDrawer({
               onClick={onEdit}
               type="button"
             >
-              <Edit2 className="h-3.5 w-3.5 text-violet-600" />
+              <Edit2 className="h-3.5 w-3.5 text-blue-600" />
               Düzenle
             </button>
             <SheetClose asChild>
@@ -2932,7 +2932,7 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-6 flex flex-col items-center text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 font-extrabold text-lg text-white shadow-lg">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 font-extrabold text-lg text-white shadow-lg">
             {candidate.firstName.charAt(0).toUpperCase()}
           </div>
           <SheetTitle className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
@@ -2986,7 +2986,7 @@ function CandidateDetailDrawer({
             <div className="flex flex-wrap gap-1 pt-1">
               {candidate.tags.map((tag) => (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700"
+                  className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
                   key={tag}
                 >
                   <Tags className="h-2.5 w-2.5" />
@@ -3012,7 +3012,7 @@ function CandidateDetailDrawer({
           {candidate.cvFileUrl ? (
             <div className="mt-2 space-y-2">
               <a
-                className="inline-flex items-center gap-1 font-semibold text-violet-600 text-xs underline"
+                className="inline-flex items-center gap-1 font-semibold text-blue-600 text-xs underline"
                 href={candidate.cvFileUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3030,7 +3030,7 @@ function CandidateDetailDrawer({
                     <p className="p-3 text-xs text-zinc-500 dark:text-zinc-400">
                       Önizleme desteklenmiyor.{" "}
                       <a
-                        className="text-violet-600 underline"
+                        className="text-blue-600 underline"
                         href={candidate.cvFileUrl}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -3055,7 +3055,7 @@ function CandidateDetailDrawer({
 
         <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           <button
-            className="w-full rounded-xl bg-violet-600 py-2.5 font-semibold text-white text-xs hover:bg-violet-700"
+            className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs hover:bg-blue-700"
             onClick={onClose}
             type="button"
           >
@@ -3192,7 +3192,7 @@ function ApplicationDetailDrawer({
               <div className="font-bold text-[11px] text-zinc-400 uppercase dark:text-zinc-500">
                 Puan
               </div>
-              <div className="mt-1 font-bold text-violet-700">
+              <div className="mt-1 font-bold text-blue-700">
                 {application.score ?? "—"}
               </div>
             </div>
@@ -3230,7 +3230,7 @@ function ApplicationDetailDrawer({
                 </span>
                 {candidate.tags?.map((t) => (
                   <span
-                    className="rounded-full bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700"
+                    className="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700"
                     key={t}
                   >
                     {t}
@@ -3239,7 +3239,7 @@ function ApplicationDetailDrawer({
               </div>
               {candidate.cvFileUrl && (
                 <a
-                  className="mt-2 inline-flex items-center gap-1 font-semibold text-violet-600 text-xs underline"
+                  className="mt-2 inline-flex items-center gap-1 font-semibold text-blue-600 text-xs underline"
                   href={candidate.cvFileUrl}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3282,7 +3282,7 @@ function ApplicationDetailDrawer({
 
         <div className="mt-6 border-zinc-100 border-t pt-4 dark:border-zinc-800">
           <button
-            className="w-full rounded-xl bg-violet-600 py-2.5 font-semibold text-white text-xs hover:bg-violet-700"
+            className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs hover:bg-blue-700"
             onClick={onClose}
             type="button"
           >

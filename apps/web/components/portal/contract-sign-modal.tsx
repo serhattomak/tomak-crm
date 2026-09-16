@@ -184,7 +184,7 @@ export function ContractSignModal({
       >
         <div className="flex items-center justify-between border-zinc-200 border-b p-5 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <FileSignature className="h-5 w-5" />
             </div>
             <div>
@@ -208,12 +208,12 @@ export function ContractSignModal({
 
         <form className="flex-1 overflow-y-auto p-6" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4">
-            <div className="rounded-2xl border border-violet-200/80 bg-violet-50/50 p-3.5 text-violet-900 text-xs dark:border-violet-900/40 dark:bg-violet-950/20 dark:text-violet-300">
+            <div className="rounded-2xl border border-blue-200/80 bg-blue-50/50 p-3.5 text-blue-900 text-xs dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-300">
               <div className="flex items-center gap-1.5 font-semibold">
-                <ShieldCheck className="h-4 w-4 text-violet-600" />
+                <ShieldCheck className="h-4 w-4 text-blue-600" />
                 Yasal Denetim İzi (Audit Trail)
               </div>
-              <p className="mt-1 text-[11px] text-violet-800/80 dark:text-violet-400">
+              <p className="mt-1 text-[11px] text-blue-800/80 dark:text-blue-400">
                 İmzalama anında IP adresiniz, zaman damganız ve doküman SHA-256
                 bütünlük özeti sistemde kalıcı ve değiştirilemez olarak
                 kaydedilecektir.
@@ -225,7 +225,7 @@ export function ContractSignModal({
                 Ad Soyad (Yetkili) *
               </label>
               <input
-                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-violet-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSignerName(e.target.value)}
                 placeholder="Örn: Ahmet Yılmaz"
                 required
@@ -239,7 +239,7 @@ export function ContractSignModal({
                 E-posta Adresi *
               </label>
               <input
-                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-violet-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-900 outline-hidden focus:border-blue-500 focus:bg-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) => setSignerEmail(e.target.value)}
                 placeholder="Örn: ahmet@sirket.com"
                 required
@@ -291,7 +291,7 @@ export function ContractSignModal({
               Vazgeç
             </Button>
             <Button
-              className="bg-violet-600 text-white hover:bg-violet-700"
+              className="bg-blue-600 text-white hover:bg-blue-700"
               disabled={isSubmitting}
               type="submit"
             >

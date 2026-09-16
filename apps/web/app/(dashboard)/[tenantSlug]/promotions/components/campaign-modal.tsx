@@ -399,7 +399,7 @@ export function CampaignModal({
         {/* Header */}
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Tag className="h-5 w-5" />
             </div>
             <div>
@@ -432,7 +432,7 @@ export function CampaignModal({
               <button
                 className={`flex items-center justify-center gap-1.5 py-1 font-semibold text-xs transition-all ${
                   isCurrent
-                    ? "border-violet-600 border-b-2 font-bold text-violet-600 dark:text-violet-400"
+                    ? "border-blue-600 border-b-2 font-bold text-blue-600 dark:text-blue-400"
                     : isDone
                       ? "text-emerald-600 dark:text-emerald-400"
                       : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
@@ -452,7 +452,7 @@ export function CampaignModal({
         <div className="flex-1 overflow-y-auto p-6">
           {fetching ? (
             <div className="flex h-64 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
             </div>
           ) : (
             <div className="space-y-4">
@@ -471,7 +471,7 @@ export function CampaignModal({
                       Kampanya Başlığı / Adı *
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Örn: Yaz Sezonu %20 İndirimi, 1000 TL Üzeri Kargo Bedava"
                       required
@@ -486,7 +486,7 @@ export function CampaignModal({
                         Dahili Takip Kodu (Opsiyonel)
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                        className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                         onChange={(e) => setCode(e.target.value.toUpperCase())}
                         placeholder="Örn: CAMP-SUMMER-2026"
                         type="text"
@@ -513,7 +513,7 @@ export function CampaignModal({
                       Açıklama & Kampanya Detayları
                     </label>
                     <textarea
-                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                      className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-800 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Kampanya şartları ve müşteriye görünecek detaylar..."
                       rows={2}
@@ -561,7 +561,7 @@ export function CampaignModal({
                       aria-checked={isStackable}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                         isStackable
-                          ? "bg-violet-600"
+                          ? "bg-blue-600"
                           : "bg-zinc-200 dark:bg-zinc-700"
                       }`}
                       onClick={() => setIsStackable(!isStackable)}
@@ -620,7 +620,7 @@ export function CampaignModal({
                         <button
                           className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
                             isSelected
-                              ? "border-violet-600 bg-violet-50/70 shadow-xs dark:border-violet-500 dark:bg-violet-950/40"
+                              ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40"
                               : "border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950"
                           }`}
                           key={t.id}
@@ -628,7 +628,7 @@ export function CampaignModal({
                           type="button"
                         >
                           <div
-                            className={`flex h-7 w-7 items-center justify-center rounded-lg ${isSelected ? "bg-violet-600 text-white" : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}
+                            className={`flex h-7 w-7 items-center justify-center rounded-lg ${isSelected ? "bg-blue-600 text-white" : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}
                           >
                             <Icon className="h-3.5 w-3.5" />
                           </div>
@@ -806,7 +806,7 @@ export function CampaignModal({
                     <button
                       className={`rounded-xl border p-3.5 text-left transition-all ${
                         scopeMode === "all"
-                          ? "border-violet-600 bg-violet-50/70 dark:border-violet-500 dark:bg-violet-950/40"
+                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
                           : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
                       }`}
                       onClick={() => setScopeMode("all")}
@@ -823,7 +823,7 @@ export function CampaignModal({
                     <button
                       className={`rounded-xl border p-3.5 text-left transition-all ${
                         scopeMode === "custom"
-                          ? "border-violet-600 bg-violet-50/70 dark:border-violet-500 dark:bg-violet-950/40"
+                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
                           : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
                       }`}
                       onClick={() => setScopeMode("custom")}
@@ -933,7 +933,7 @@ export function CampaignModal({
                     <button
                       className={`rounded-xl border p-3.5 text-left transition-all ${
                         triggerType === "Automatic"
-                          ? "border-violet-600 bg-violet-50/70 dark:border-violet-500 dark:bg-violet-950/40"
+                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
                           : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
                       }`}
                       onClick={() => setTriggerType("Automatic")}
@@ -951,14 +951,14 @@ export function CampaignModal({
                     <button
                       className={`rounded-xl border p-3.5 text-left transition-all ${
                         triggerType === "CouponCode"
-                          ? "border-violet-600 bg-violet-50/70 dark:border-violet-500 dark:bg-violet-950/40"
+                          ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40"
                           : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
                       }`}
                       onClick={() => setTriggerType("CouponCode")}
                       type="button"
                     >
                       <div className="flex items-center gap-1.5 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
-                        <Ticket className="h-3.5 w-3.5 text-violet-600" />
+                        <Ticket className="h-3.5 w-3.5 text-blue-600" />
                         Kupon Kodu Gerektiren
                       </div>
                       <p className="mt-0.5 text-[10px] text-zinc-500">
@@ -974,7 +974,7 @@ export function CampaignModal({
                           Birincil Kupon Kodu *
                         </label>
                         <input
-                          className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
+                          className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200"
                           onChange={(e) =>
                             setInitialCouponCode(e.target.value.toUpperCase())
                           }
@@ -1061,7 +1061,7 @@ export function CampaignModal({
                       <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                         İndirim & Kapsam:
                       </span>
-                      <div className="font-bold text-sm text-violet-600 dark:text-violet-400">
+                      <div className="font-bold text-sm text-blue-600 dark:text-blue-400">
                         {type === "Percentage" &&
                           `%${discountValue} Yüzde İndirimi`}
                         {type === "FixedAmount" &&
@@ -1109,7 +1109,7 @@ export function CampaignModal({
 
           {currentStep < 5 ? (
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-violet-700"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
               onClick={handleNext}
               type="button"
             >

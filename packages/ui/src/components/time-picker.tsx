@@ -113,9 +113,9 @@ export function TimePicker({
         <button
           className={cn(
             "flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-medium text-xs text-zinc-800 shadow-2xs outline-none transition-all placeholder:text-zinc-400",
-            "hover:border-zinc-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20",
+            "hover:border-zinc-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            "dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-violet-500 dark:focus:ring-violet-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
+            "dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-blue-500 dark:focus:ring-blue-500/20 dark:hover:border-zinc-700 dark:placeholder:text-zinc-500",
             className
           )}
           type="button"
@@ -157,11 +157,11 @@ export function TimePicker({
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2 mb-2">
             <div className="flex items-center gap-1.5 font-bold text-xs text-zinc-800 dark:text-zinc-200">
-              <Clock className="h-3.5 w-3.5 text-violet-600" />
+              <Clock className="h-3.5 w-3.5 text-blue-600" />
               <span>Saat Seçimi</span>
             </div>
             <button
-              className="text-[11px] font-semibold text-violet-600 hover:text-violet-700 dark:text-violet-400 px-2 py-0.5 rounded-lg hover:bg-violet-50 dark:hover:bg-violet-950/40 transition-colors"
+              className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
               onClick={handleSetNow}
               type="button"
             >
@@ -184,7 +184,7 @@ export function TimePicker({
                       className={cn(
                         "w-full py-1.5 text-xs font-mono font-medium rounded-lg text-center transition-all",
                         isSelected
-                          ? "bg-violet-600 text-white font-bold shadow-xs"
+                          ? "bg-blue-600 text-white font-bold shadow-xs"
                           : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200/70 dark:hover:bg-zinc-700/60"
                       )}
                       key={h}
@@ -211,7 +211,7 @@ export function TimePicker({
                       className={cn(
                         "w-full py-1.5 text-xs font-mono font-medium rounded-lg text-center transition-all",
                         isSelected
-                          ? "bg-violet-600 text-white font-bold shadow-xs"
+                          ? "bg-blue-600 text-white font-bold shadow-xs"
                           : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200/70 dark:hover:bg-zinc-700/60"
                       )}
                       key={m}
@@ -239,7 +239,7 @@ export function TimePicker({
                     className={cn(
                       "px-2 py-0.5 text-[11px] font-mono rounded-md border transition-all",
                       isSelected
-                        ? "bg-violet-50 border-violet-500 text-violet-700 font-bold dark:bg-violet-950/60 dark:border-violet-400 dark:text-violet-300"
+                        ? "bg-blue-50 border-blue-500 text-blue-700 font-bold dark:bg-blue-950/60 dark:border-blue-400 dark:text-blue-300"
                         : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     )}
                     key={preset}

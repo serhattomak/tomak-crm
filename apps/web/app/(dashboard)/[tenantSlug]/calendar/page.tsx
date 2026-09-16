@@ -772,13 +772,13 @@ export default function CalendarHubPage() {
       {/* Header Toolbar */}
       <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm md:p-5 xl:flex-row xl:items-center dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-violet-200 bg-violet-50 text-violet-600 shadow-sm dark:border-violet-800 dark:bg-violet-950/50 dark:text-violet-400">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 shadow-sm dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-400">
             <CalendarDays className="h-6 w-6" />
           </div>
           <div>
             <h1 className="flex items-center gap-2 font-bold text-xl text-zinc-900 tracking-tight md:text-2xl dark:text-zinc-100">
               Takvim & Görüşmeler
-              <span className="rounded-full bg-violet-100 px-2 py-0.5 font-semibold text-violet-700 text-xs dark:bg-violet-900/60 dark:text-violet-300">
+              <span className="rounded-full bg-blue-100 px-2 py-0.5 font-semibold text-blue-700 text-xs dark:bg-blue-900/60 dark:text-blue-300">
                 {activities.length} Aktivite
               </span>
             </h1>
@@ -867,7 +867,7 @@ export default function CalendarHubPage() {
               size="sm"
               variant="outline"
             >
-              <LinkIcon className="h-3.5 w-3.5 text-violet-600" />
+              <LinkIcon className="h-3.5 w-3.5 text-blue-600" />
               Senkronizasyon
             </Button>
             <Button
@@ -986,7 +986,7 @@ export default function CalendarHubPage() {
       {/* Loading */}
       {loading && (
         <div className="flex items-center justify-center rounded-2xl border border-zinc-200 bg-white p-12 dark:border-zinc-800 dark:bg-zinc-900">
-          <RefreshCw className="h-6 w-6 animate-spin text-violet-600" />
+          <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
           <span className="ml-2 text-sm text-zinc-500">
             Takvim etkinlikleri yükleniyor...
           </span>
@@ -1028,7 +1028,7 @@ export default function CalendarHubPage() {
                     <span
                       className={`inline-flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs transition-colors ${
                         cell.isToday
-                          ? "bg-violet-600 font-black text-white shadow-md"
+                          ? "bg-blue-600 font-black text-white shadow-md"
                           : cell.isCurrentMonth
                             ? "text-zinc-800 dark:text-zinc-200"
                             : "text-zinc-400 dark:text-zinc-600"
@@ -1118,7 +1118,7 @@ export default function CalendarHubPage() {
                 <span
                   className={`mt-1 flex h-7 w-7 items-center justify-center rounded-full font-bold text-sm ${
                     w.isToday
-                      ? "bg-violet-600 font-black text-white shadow-md"
+                      ? "bg-blue-600 font-black text-white shadow-md"
                       : "text-zinc-800 dark:text-zinc-200"
                   }`}
                 >
@@ -1181,7 +1181,7 @@ export default function CalendarHubPage() {
                           </span>
                         )}
                         {act.meetingLink && (
-                          <span className="mt-0.5 flex items-center gap-1 font-semibold text-[10px] text-violet-600 dark:text-violet-400">
+                          <span className="mt-0.5 flex items-center gap-1 font-semibold text-[10px] text-blue-600 dark:text-blue-400">
                             <Video className="h-3 w-3" />
                             Video Linki
                           </span>
@@ -1207,7 +1207,7 @@ export default function CalendarHubPage() {
         <div className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm md:p-6 dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
             <h3 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-              <Clock className="h-4 w-4 text-violet-600" />
+              <Clock className="h-4 w-4 text-blue-600" />
               Aktivite ve Görüşme Ajandası
             </h3>
             <span className="text-xs text-zinc-500">
@@ -1235,7 +1235,7 @@ export default function CalendarHubPage() {
                   className={`flex flex-col items-start justify-between gap-3 rounded-xl border p-3.5 transition-colors sm:flex-row sm:items-center ${
                     isDone
                       ? "border-zinc-200 bg-zinc-50/80 opacity-70 dark:border-zinc-800 dark:bg-zinc-900/40"
-                      : "border-zinc-200 bg-white hover:border-violet-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-violet-700"
+                      : "border-zinc-200 bg-white hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
                   }`}
                   key={act.id}
                 >
@@ -1306,7 +1306,7 @@ export default function CalendarHubPage() {
                   <div className="flex w-full items-center justify-end gap-1.5 border-zinc-100 border-t pt-2 sm:w-auto sm:border-t-0 sm:pt-0 dark:border-zinc-800">
                     {act.meetingLink && (
                       <a
-                        className="flex h-8 items-center gap-1 rounded-lg bg-violet-50 px-2.5 font-semibold text-violet-700 text-xs hover:bg-violet-100 dark:bg-violet-950/60 dark:text-violet-300"
+                        className="flex h-8 items-center gap-1 rounded-lg bg-blue-50 px-2.5 font-semibold text-blue-700 text-xs hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
                         href={act.meetingLink}
                         rel="noreferrer"
                         target="_blank"
@@ -1374,7 +1374,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
               <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                <CalendarDays className="h-5 w-5 text-violet-600" />
+                <CalendarDays className="h-5 w-5 text-blue-600" />
                 {activityForm.id
                   ? "Randevuyu Düzenle"
                   : "Yeni Randevu & Toplantı"}
@@ -1404,7 +1404,7 @@ export default function CalendarHubPage() {
                     <button
                       className={`rounded-xl border px-2 py-2 text-center font-bold text-xs transition-all ${
                         activityForm.type === t.id
-                          ? "border-violet-500 bg-violet-50 text-violet-700 dark:border-violet-500 dark:bg-violet-950/60 dark:text-violet-300"
+                          ? "border-blue-500 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300"
                           : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
                       }`}
                       key={t.id}
@@ -1649,7 +1649,7 @@ export default function CalendarHubPage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-violet-600 text-white hover:bg-violet-700"
+                  className="bg-blue-600 text-white hover:bg-blue-700"
                   type="submit"
                 >
                   {activityForm.id ? "Güncelle" : "Randevuyu Kaydet"}
@@ -1933,7 +1933,7 @@ export default function CalendarHubPage() {
             <div className="flex flex-col gap-4 text-xs">
               <div className="flex items-center justify-between rounded-xl border border-zinc-100 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
                 <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
-                  <Clock className="h-4 w-4 text-violet-600" />
+                  <Clock className="h-4 w-4 text-blue-600" />
                   <span className="font-semibold">
                     {selectedActivity.startTime
                       ? new Date(selectedActivity.startTime).toLocaleString(
@@ -1973,7 +1973,7 @@ export default function CalendarHubPage() {
                   </div>
                   {selectedActivity.customerId && (
                     <Link
-                      className="flex items-center gap-1 font-semibold text-violet-600 hover:underline dark:text-violet-400"
+                      className="flex items-center gap-1 font-semibold text-blue-600 hover:underline dark:text-blue-400"
                       href={`/${tenantSlug}/customers/${selectedActivity.customerId}`}
                     >
                       Müşteriye Git
@@ -2141,7 +2141,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-zinc-200 border-b pb-3 dark:border-zinc-800">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-                <LinkIcon className="h-5 w-5 text-violet-600" />
+                <LinkIcon className="h-5 w-5 text-blue-600" />
                 Dış Takvim Canlı Senkronizasyonu
               </DialogTitle>
               <DialogClose asChild>

@@ -518,7 +518,7 @@ export default function VehiclesPage() {
               <span>Dashboard</span>
             </Link>
             <span>/</span>
-            <span className="font-bold text-violet-600 dark:text-violet-400">
+            <span className="font-bold text-blue-600 dark:text-blue-400">
               Otomotiv & Araçlar
             </span>
           </div>
@@ -527,7 +527,7 @@ export default function VehiclesPage() {
             <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               Otomotiv & Araç İstihbarat Platformu
             </h1>
-            <span className="rounded-full border border-violet-200 bg-violet-50 px-2.5 py-0.5 font-bold text-violet-700 text-xs dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300">
+            <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-bold text-blue-700 text-xs dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-300">
               ULTRAND Engine
             </span>
           </div>
@@ -540,7 +540,7 @@ export default function VehiclesPage() {
         <div className="flex items-center gap-2">
           {activeTab === "catalog" && (
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
               onClick={() => {
                 setEditingVehicleId(null);
                 setIsCreateVehicleOpen(true);
@@ -554,7 +554,7 @@ export default function VehiclesPage() {
 
           {activeTab === "epc" && (
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
               onClick={() => {
                 setEditingPartId(null);
                 setIsCreatePartOpen(true);
@@ -568,7 +568,7 @@ export default function VehiclesPage() {
 
           {activeTab === "docs" && (
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-violet-700 active:scale-95"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
               onClick={() => setIsCreateDocOpen(true)}
               type="button"
             >
@@ -648,7 +648,7 @@ export default function VehiclesPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "catalog"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("catalog")}
@@ -664,7 +664,7 @@ export default function VehiclesPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "compare"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("compare")}
@@ -673,7 +673,7 @@ export default function VehiclesPage() {
           <TrendingUp className="h-4 w-4" />
           <span>Araç Karşılaştırma & Benchmarking</span>
           {compareIds.length > 0 && (
-            <span className="rounded-full bg-violet-100 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/80 dark:text-violet-300">
+            <span className="rounded-full bg-blue-100 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/80 dark:text-blue-300">
               {compareIds.length} Seçili
             </span>
           )}
@@ -682,7 +682,7 @@ export default function VehiclesPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "epc"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("epc")}
@@ -698,7 +698,7 @@ export default function VehiclesPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "docs"
-              ? "border-violet-600 text-violet-600 dark:border-violet-400 dark:text-violet-400"
+              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
               : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("docs")}
@@ -723,7 +723,7 @@ export default function VehiclesPage() {
               <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200/80 bg-white py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200/80 bg-white py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Marka, model, proje kodu, VIN ara..."
                   type="text"
@@ -834,7 +834,7 @@ export default function VehiclesPage() {
 
                 return (
                   <div
-                    className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-violet-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-violet-700"
+                    className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:hover:border-blue-700"
                     key={v.id}
                   >
                     <div>
@@ -931,7 +931,7 @@ export default function VehiclesPage() {
                       <button
                         className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-semibold text-xs transition ${
                           isCompared
-                            ? "border-violet-600 bg-violet-50 text-violet-700 dark:border-violet-500 dark:bg-violet-950/60 dark:text-violet-300"
+                            ? "border-blue-600 bg-blue-50 text-blue-700 dark:border-blue-500 dark:bg-blue-950/60 dark:text-blue-300"
                             : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
                         }`}
                         onClick={() => toggleCompare(v.id)}
@@ -958,7 +958,7 @@ export default function VehiclesPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
+                          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                           onClick={() => {
                             setEditingVehicleId(v.id);
                             setIsCreateVehicleOpen(true);
@@ -1088,7 +1088,7 @@ export default function VehiclesPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
+                            className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                             onClick={() => {
                               setEditingVehicleId(v.id);
                               setIsCreateVehicleOpen(true);
@@ -1169,7 +1169,7 @@ export default function VehiclesPage() {
               </button>
 
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-violet-700"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
                 onClick={() => window.print()}
                 type="button"
               >
@@ -1222,7 +1222,7 @@ export default function VehiclesPage() {
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {/* Category: GENEL & KASA */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
+                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <td
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1288,7 +1288,7 @@ export default function VehiclesPage() {
                   </tr>
 
                   {/* Category: MOTOR & PERFORMANS */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
+                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <td
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1337,7 +1337,7 @@ export default function VehiclesPage() {
                       );
                       return (
                         <td
-                          className="px-4 py-2.5 font-bold text-violet-700 dark:text-violet-300"
+                          className="px-4 py-2.5 font-bold text-blue-700 dark:text-blue-300"
                           key={v.id}
                         >
                           {spec.power || v.engine || "—"}
@@ -1366,7 +1366,7 @@ export default function VehiclesPage() {
                   </tr>
 
                   {/* Category: FİYAT & GARANTİ */}
-                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-violet-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-violet-400">
+                  <tr className="bg-zinc-100/60 font-bold text-[11px] text-blue-700 uppercase tracking-wider dark:bg-zinc-800/80 dark:text-blue-400">
                     <td
                       className="py-2.5 pr-4 pl-5"
                       colSpan={comparedVehicles.length + 1}
@@ -1433,7 +1433,7 @@ export default function VehiclesPage() {
                     <button
                       className={`flex w-full items-center justify-between rounded-xl px-3 py-2 font-semibold text-xs transition ${
                         isSelected
-                          ? "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
                           : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                       }`}
                       onClick={() => {
@@ -1453,12 +1453,12 @@ export default function VehiclesPage() {
 
                     {/* Subsystems */}
                     {isSelected && (
-                      <div className="mt-1 ml-3 space-y-0.5 border-violet-200 border-l-2 pl-6 dark:border-violet-900">
+                      <div className="mt-1 ml-3 space-y-0.5 border-blue-200 border-l-2 pl-6 dark:border-blue-900">
                         {sys.subsystems.map((sub) => (
                           <button
                             className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 font-medium text-[11px] transition ${
                               selectedSubsystemId === sub.id
-                                ? "bg-violet-100/80 font-bold text-violet-900 dark:bg-violet-900/50 dark:text-violet-200"
+                                ? "bg-blue-100/80 font-bold text-blue-900 dark:bg-blue-900/50 dark:text-blue-200"
                                 : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                             }`}
                             key={sub.id}
@@ -1556,7 +1556,7 @@ export default function VehiclesPage() {
                     <button
                       className={`absolute flex h-6 w-6 items-center justify-center rounded-full font-bold text-[10px] shadow-md transition-all ${
                         isHotspotSelected
-                          ? "z-10 scale-125 bg-violet-600 text-white ring-4 ring-violet-400/50"
+                          ? "z-10 scale-125 bg-blue-600 text-white ring-4 ring-blue-400/50"
                           : "bg-zinc-900 text-white hover:scale-110 dark:bg-white dark:text-zinc-900"
                       }`}
                       key={part.id}
@@ -1578,7 +1578,7 @@ export default function VehiclesPage() {
                 <div className="relative max-w-xs flex-1">
                   <Search className="absolute top-2 left-2.5 h-3.5 w-3.5 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-1.5 pr-3 pl-8 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setEpcSearch(e.target.value)}
                     placeholder="Parça No / OEM / TR / EN / CN ara..."
                     type="text"
@@ -1598,7 +1598,7 @@ export default function VehiclesPage() {
                     <div
                       className={`flex cursor-pointer items-center justify-between rounded-xl p-2.5 transition ${
                         isPartSelected
-                          ? "bg-violet-50 dark:bg-violet-950/50"
+                          ? "bg-blue-50 dark:bg-blue-950/50"
                           : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
                       }`}
                       key={p.id}
@@ -1626,7 +1626,7 @@ export default function VehiclesPage() {
                           ${p.unitPrice}
                         </span>
                         <button
-                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-violet-950/50"
+                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditingPartId(p.id);
@@ -1657,7 +1657,7 @@ export default function VehiclesPage() {
               <div className="space-y-4 text-xs">
                 <div className="flex items-start justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
                   <div>
-                    <span className="font-bold font-mono text-[10px] text-violet-600 dark:text-violet-400">
+                    <span className="font-bold font-mono text-[10px] text-blue-600 dark:text-blue-400">
                       {selectedPart.partNumber}
                     </span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1665,7 +1665,7 @@ export default function VehiclesPage() {
                     </h3>
                   </div>
                   <button
-                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                    className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1744,7 +1744,7 @@ export default function VehiclesPage() {
                   </button>
 
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 font-bold text-white text-xs transition hover:bg-violet-700"
+                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3 py-1.5 font-bold text-white text-xs transition hover:bg-blue-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1780,7 +1780,7 @@ export default function VehiclesPage() {
               <div className="relative min-w-[240px] max-w-md flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                 <input
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/80 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDocSearch(e.target.value)}
                   placeholder="Doküman adı, bülten no veya etiket ara..."
                   type="text"
@@ -1841,7 +1841,7 @@ export default function VehiclesPage() {
                 {filteredDocuments.length} Doküman
               </span>
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-blue-700"
                 onClick={() => setIsCreateDocOpen(true)}
                 type="button"
               >
@@ -1858,7 +1858,7 @@ export default function VehiclesPage() {
 
               return (
                 <div
-                  className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition hover:border-violet-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90"
+                  className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs transition hover:border-blue-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/90"
                   key={doc.id}
                   onClick={() => setSelectedPreviewDoc(doc)}
                 >
@@ -1883,7 +1883,7 @@ export default function VehiclesPage() {
                     </div>
 
                     <h4
-                      className="mt-3 line-clamp-2 font-bold text-xs text-zinc-900 transition group-hover:text-violet-600 dark:text-zinc-100 dark:group-hover:text-violet-400"
+                      className="mt-3 line-clamp-2 font-bold text-xs text-zinc-900 transition group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400"
                       title={doc.name}
                     >
                       {doc.name}
@@ -1900,7 +1900,7 @@ export default function VehiclesPage() {
                     </div>
 
                     {doc.vehicleName && (
-                      <div className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-violet-50 px-2 py-0.5 font-semibold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                      <div className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 font-semibold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                         <Car className="h-3 w-3" />
                         <span>{doc.vehicleName}</span>
                       </div>
@@ -1930,7 +1930,7 @@ export default function VehiclesPage() {
                     >
                       {doc.fileUrl && (
                         <a
-                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-violet-600 dark:hover:bg-zinc-800"
+                          className="rounded-lg p-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800"
                           download={doc.name}
                           href={doc.fileUrl}
                           rel="noreferrer"
@@ -1941,7 +1941,7 @@ export default function VehiclesPage() {
                         </a>
                       )}
                       <button
-                        className="flex items-center gap-0.5 font-semibold text-violet-600 hover:underline dark:text-violet-400"
+                        className="flex items-center gap-0.5 font-semibold text-blue-600 hover:underline dark:text-blue-400"
                         onClick={() => setSelectedPreviewDoc(doc)}
                         type="button"
                       >
@@ -1968,7 +1968,7 @@ export default function VehiclesPage() {
                     : "Kullanım kılavuzları, servis bültenleri (TSB) veya CAD şemalarını sisteme yükleyin."}
                 </p>
                 <button
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-blue-700"
                   onClick={() => setIsCreateDocOpen(true)}
                   type="button"
                 >
@@ -2020,7 +2020,7 @@ export default function VehiclesPage() {
 
               <div className="flex items-center gap-2">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={() => {
                     setEditingVehicleId(selectedVehicle.id);
                     setIsCreateVehicleOpen(true);
@@ -2094,7 +2094,7 @@ export default function VehiclesPage() {
                 <button
                   className={`whitespace-nowrap rounded-lg px-3 py-1.5 font-semibold transition ${
                     vehicleDetailTab === tab.id
-                      ? "bg-violet-50 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300"
+                      ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
                       : "text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                   key={tab.id}
@@ -2307,7 +2307,7 @@ export default function VehiclesPage() {
               </button>
 
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-violet-700"
+                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-blue-700"
                 onClick={() => {
                   setEditingVehicleId(selectedVehicle.id);
                   setIsCreateVehicleOpen(true);
@@ -2796,7 +2796,7 @@ function CreateEditVehicleModal({
               <button
                 className={`flex items-center gap-2.5 rounded-xl p-2 text-left transition ${
                   isCurrent
-                    ? "bg-white shadow-xs ring-1 ring-violet-500/20 dark:bg-zinc-800"
+                    ? "bg-white shadow-xs ring-1 ring-blue-500/20 dark:bg-zinc-800"
                     : isDone
                       ? "opacity-80 hover:bg-white/60 dark:hover:bg-zinc-800/60"
                       : "opacity-40"
@@ -2812,7 +2812,7 @@ function CreateEditVehicleModal({
                 <div
                   className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${
                     isCurrent
-                      ? "bg-violet-600 text-white shadow-xs"
+                      ? "bg-blue-600 text-white shadow-xs"
                       : isDone
                         ? "bg-emerald-600 text-white"
                         : "bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
@@ -2824,7 +2824,7 @@ function CreateEditVehicleModal({
                   <div
                     className={`truncate font-semibold text-xs ${
                       isCurrent
-                        ? "text-violet-600 dark:text-violet-400"
+                        ? "text-blue-600 dark:text-blue-400"
                         : "text-zinc-700 dark:text-zinc-300"
                     }`}
                   >
@@ -2863,7 +2863,7 @@ function CreateEditVehicleModal({
                         Marka <span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setBrand(e.target.value)}
                         placeholder="Örn. ULTRAND, Toyota, Ford"
                         required
@@ -2876,7 +2876,7 @@ function CreateEditVehicleModal({
                         Model <span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setModel(e.target.value)}
                         placeholder="Örn. Voyager, RAV4, Ranger"
                         required
@@ -2889,7 +2889,7 @@ function CreateEditVehicleModal({
                         Trim / Donanım Paketi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTrim(e.target.value)}
                         placeholder="Örn. Elite, Wildtrak, Premium"
                         type="text"
@@ -2914,7 +2914,7 @@ function CreateEditVehicleModal({
                         Segment
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="segment-options"
                         onChange={(e) => setSegment(e.target.value)}
                         placeholder="C-SUV, Pickup 1-Ton, Sedan D..."
@@ -2936,7 +2936,7 @@ function CreateEditVehicleModal({
                         Kasa Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="bodytype-options"
                         onChange={(e) => setBodyType(e.target.value)}
                         placeholder="SUV, Pickup, Sedan..."
@@ -2964,7 +2964,7 @@ function CreateEditVehicleModal({
                         Pazar
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setMarket(e.target.value)}
                         placeholder="Örn. TR / EU / MENA"
                         type="text"
@@ -2976,7 +2976,7 @@ function CreateEditVehicleModal({
                         Menşe Ülke
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setCountry(e.target.value)}
                         placeholder="Türkiye, Almanya..."
                         type="text"
@@ -2988,7 +2988,7 @@ function CreateEditVehicleModal({
                         Üretim Tesisi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setPlant(e.target.value)}
                         placeholder="Bursa Plant..."
                         type="text"
@@ -3000,7 +3000,7 @@ function CreateEditVehicleModal({
                         VIN Öneki
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setVinPrefix(e.target.value)}
                         placeholder="WVU / JTM"
                         type="text"
@@ -3037,7 +3037,7 @@ function CreateEditVehicleModal({
                         İkon / Emoji
                       </Label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-center text-base focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800"
                         onChange={(e) => setIcon(e.target.value)}
                         placeholder="🚗, 🚙, 🛻, ⚡"
                         type="text"
@@ -3085,7 +3085,7 @@ function CreateEditVehicleModal({
                       Proje Kodu
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setProjectCode(e.target.value)}
                       placeholder="ULT-VOY-01"
                       type="text"
@@ -3097,7 +3097,7 @@ function CreateEditVehicleModal({
                       Platform
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setPlatform(e.target.value)}
                       placeholder="P300 / TNGA-K"
                       type="text"
@@ -3109,7 +3109,7 @@ function CreateEditVehicleModal({
                       Nesil / Seri
                     </label>
                     <input
-                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                      className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                       onChange={(e) => setGeneration(e.target.value)}
                       placeholder="1st Gen"
                       type="text"
@@ -3133,7 +3133,7 @@ function CreateEditVehicleModal({
                         Motor Adı/Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setEngine(e.target.value)}
                         placeholder="Örn. 2.0L Turbo Petrol, 2.5L Hybrid"
                         type="text"
@@ -3145,7 +3145,7 @@ function CreateEditVehicleModal({
                         Şanzıman
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTransmission(e.target.value)}
                         placeholder="Örn. 8-Speed Automatic, 7-Speed DCT"
                         type="text"
@@ -3157,7 +3157,7 @@ function CreateEditVehicleModal({
                         Yakıt Türü
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="fuel-options"
                         onChange={(e) => setFuel(e.target.value)}
                         placeholder="Benzin, Dizel, Hibrit, EV..."
@@ -3177,7 +3177,7 @@ function CreateEditVehicleModal({
                         Çekiş Tipi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         list="drive-options"
                         onChange={(e) => setDriveType(e.target.value)}
                         placeholder="FWD, RWD, AWD, 4x4..."
@@ -3195,7 +3195,7 @@ function CreateEditVehicleModal({
                         Emisyon Sınıfı
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setEmission(e.target.value)}
                         placeholder="Euro 6d, Euro 6e"
                         type="text"
@@ -3236,7 +3236,7 @@ function CreateEditVehicleModal({
                         Ön Süspansiyon
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setSuspensionFront(e.target.value)}
                         placeholder="Örn. MacPherson Strut / Çift Salıncak"
                         type="text"
@@ -3248,7 +3248,7 @@ function CreateEditVehicleModal({
                         Arka Süspansiyon
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setSuspensionRear(e.target.value)}
                         placeholder="Örn. Multi-Link Bağımsız / Yaprak Yay"
                         type="text"
@@ -3262,14 +3262,14 @@ function CreateEditVehicleModal({
                       </label>
                       <div className="grid grid-cols-2 gap-2">
                         <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           onChange={(e) => setBrakesFront(e.target.value)}
                           placeholder="Ön (Havadis Disk)"
                           type="text"
                           value={brakesFront}
                         />
                         <input
-                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           onChange={(e) => setBrakesRear(e.target.value)}
                           placeholder="Arka (Disk / Kampana)"
                           type="text"
@@ -3282,7 +3282,7 @@ function CreateEditVehicleModal({
                         Lastik Ebatları
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTyres(e.target.value)}
                         placeholder="Örn. 235/55 R19 veya 265/60 R18"
                         type="text"
@@ -3445,7 +3445,7 @@ function CreateEditVehicleModal({
                         Maksimum Güç
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setPower(e.target.value)}
                         placeholder="Örn. 238 hp veya 175 kW"
                         type="text"
@@ -3457,7 +3457,7 @@ function CreateEditVehicleModal({
                         Maksimum Tork
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTorque(e.target.value)}
                         placeholder="Örn. 350 Nm"
                         type="text"
@@ -3469,7 +3469,7 @@ function CreateEditVehicleModal({
                         Motor Hacmi
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setDisplacement(e.target.value)}
                         placeholder="Örn. 1998 cc"
                         type="text"
@@ -3482,7 +3482,7 @@ function CreateEditVehicleModal({
                         0-100 km/s Hızlanma
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setAccel(e.target.value)}
                         placeholder="Örn. 7.8 sn"
                         type="text"
@@ -3494,7 +3494,7 @@ function CreateEditVehicleModal({
                         Maksimum Hız
                       </label>
                       <input
-                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                         onChange={(e) => setTopSpeed(e.target.value)}
                         placeholder="Örn. 205 km/h"
                         type="text"
@@ -3542,7 +3542,7 @@ function CreateEditVehicleModal({
                               <button
                                 className={`rounded-lg px-2.5 py-1 font-medium text-[11px] transition ${
                                   isSelected
-                                    ? "bg-violet-600 text-white"
+                                    ? "bg-blue-600 text-white"
                                     : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                                 }`}
                                 key={opt}
@@ -3561,7 +3561,7 @@ function CreateEditVehicleModal({
                           Tüm Güvenlik & ADAS Listesi (Virgülle ayrılmış)
                         </label>
                         <textarea
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           onChange={(e) => setAdasString(e.target.value)}
                           placeholder="Adaptif Hız Sabitleyici, Kör Nokta, Şerit Takip..."
                           rows={2}
@@ -3580,7 +3580,7 @@ function CreateEditVehicleModal({
                             Araç Garantisi
                           </label>
                           <input
-                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                             onChange={(e) => setWarrantyVehicle(e.target.value)}
                             placeholder="Örn. 3 Yıl / 100.000 km"
                             type="text"
@@ -3592,7 +3592,7 @@ function CreateEditVehicleModal({
                             Güç Aktarma Garantisi
                           </label>
                           <input
-                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                            className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                             onChange={(e) =>
                               setWarrantyPowertrain(e.target.value)
                             }
@@ -3608,7 +3608,7 @@ function CreateEditVehicleModal({
                           Notlar
                         </label>
                         <textarea
-                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           onChange={(e) => setNotes(e.target.value)}
                           placeholder="Model yılı revizyonları, bayi filo notları veya özel üretim detayları..."
                           rows={2}
@@ -3619,9 +3619,9 @@ function CreateEditVehicleModal({
                   </div>
 
                   {/* Sağ Kolon: CANLI KART ÖNİZLEMESİ (Live Mini Preview) */}
-                  <div className="flex flex-col rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50/50 via-white to-indigo-50/30 p-5 shadow-xs dark:border-violet-900/40 dark:from-violet-950/20 dark:via-zinc-900 dark:to-indigo-950/20">
-                    <div className="flex items-center justify-between border-violet-100 border-b pb-3 dark:border-violet-900/30">
-                      <span className="font-bold text-violet-600 text-xs uppercase tracking-wider dark:text-violet-400">
+                  <div className="flex flex-col rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/30 p-5 shadow-xs dark:border-blue-900/40 dark:from-blue-950/20 dark:via-zinc-900 dark:to-indigo-950/20">
+                    <div className="flex items-center justify-between border-blue-100 border-b pb-3 dark:border-blue-900/30">
+                      <span className="font-bold text-blue-600 text-xs uppercase tracking-wider dark:text-blue-400">
                         ✦ Canlı Katalog Kartı Önizlemesi
                       </span>
                       <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
@@ -3726,7 +3726,7 @@ function CreateEditVehicleModal({
 
               {step < 4 && (
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2 font-bold text-white shadow-xs hover:bg-violet-700 disabled:opacity-40"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-bold text-white shadow-xs hover:bg-blue-700 disabled:opacity-40"
                   disabled={step === 1 && !isStep1Valid}
                   key="btn-step-next"
                   onClick={handleNextStep}
@@ -3917,7 +3917,7 @@ function CreateEditPartModal({
                     Parça Adı (TR) <span className="text-red-500">*</span>
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNameTr(e.target.value)}
                     placeholder="Örn. Silindir Kapağı"
                     required
@@ -3930,7 +3930,7 @@ function CreateEditPartModal({
                     Part Name (EN)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNameEn(e.target.value)}
                     placeholder="Cylinder Head"
                     type="text"
@@ -3942,7 +3942,7 @@ function CreateEditPartModal({
                     零件名称 (CN)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setNameCn(e.target.value)}
                     placeholder="气缸盖"
                     type="text"
@@ -3963,7 +3963,7 @@ function CreateEditPartModal({
                     Parça No <span className="text-red-500">*</span>
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setPartNumber(e.target.value)}
                     placeholder="ULT-10037"
                     required
@@ -3976,7 +3976,7 @@ function CreateEditPartModal({
                     OEM No
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setOemNumber(e.target.value)}
                     placeholder="OEM-500911"
                     type="text"
@@ -4126,7 +4126,7 @@ function CreateEditPartModal({
                     Montaj Konumu
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     list="location-options"
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Motor Bölmesi, Şasi Altı..."
@@ -4146,7 +4146,7 @@ function CreateEditPartModal({
                     Süperseksiyon
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 font-mono text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setSupersession(e.target.value)}
                     placeholder="ULT-9022 → ULT-10037"
                     type="text"
@@ -4158,7 +4158,7 @@ function CreateEditPartModal({
                     Uyumlu Modeller
                   </label>
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setCompatibleModels(e.target.value)}
                     placeholder="Voyager, Ranger-X..."
                     type="text"
@@ -4172,7 +4172,7 @@ function CreateEditPartModal({
                   Parça Notları
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Montaj torku, servis bülteni bağlantısı veya revizyon notları..."
                   rows={2}
@@ -4191,7 +4191,7 @@ function CreateEditPartModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-6 py-2 font-bold text-white shadow-md hover:bg-blue-700 disabled:opacity-50"
               disabled={submitting || !nameTr.trim() || !partNumber.trim()}
               type="submit"
             >
@@ -4461,8 +4461,8 @@ function CreateDocumentModal({
                   <div
                     className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition ${
                       isDragging
-                        ? "border-violet-500 bg-violet-50/50 dark:bg-violet-950/30"
-                        : "border-zinc-200 bg-zinc-50/60 hover:border-violet-400 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:border-violet-500"
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30"
+                        : "border-zinc-200 bg-zinc-50/60 hover:border-blue-400 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:border-blue-500"
                     }`}
                     onClick={() => fileInputRef.current?.click()}
                     onDragLeave={() => setIsDragging(false)}
@@ -4474,7 +4474,7 @@ function CreateDocumentModal({
                   >
                     {isUploading ? (
                       <div className="flex flex-col items-center py-2">
-                        <Loader2 className="mb-2 h-8 w-8 animate-spin text-violet-600" />
+                        <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-600" />
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosya Yükleniyor...
                         </span>
@@ -4484,7 +4484,7 @@ function CreateDocumentModal({
                       </div>
                     ) : (
                       <>
-                        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                           <Upload className="h-6 w-6" />
                         </div>
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
@@ -4515,7 +4515,7 @@ function CreateDocumentModal({
                 <div className="relative">
                   <ExternalLink className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400" />
                   <input
-                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-3 pl-9 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setFileUrl(e.target.value)}
                     placeholder="https://oem-portal.example.com/docs/tsb-2026-01.pdf"
                     type="url"
@@ -4531,7 +4531,7 @@ function CreateDocumentModal({
                 Doküman Başlığı <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Örn. Voyager 2025 Periyodik Bakım ve Tork Tablosu"
                 required
@@ -4658,7 +4658,7 @@ function CreateDocumentModal({
                 Dosya Boyutu
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setFileSize(e.target.value)}
                 placeholder="Örn. 3.4 MB"
                 type="text"
@@ -4678,7 +4678,7 @@ function CreateDocumentModal({
                     <button
                       className={`rounded-lg px-2.5 py-1 font-semibold text-[11px] transition ${
                         isSelected
-                          ? "bg-violet-600 text-white shadow-2xs"
+                          ? "bg-blue-600 text-white shadow-2xs"
                           : "border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                       }`}
                       key={tag}
@@ -4695,7 +4695,7 @@ function CreateDocumentModal({
               {/* Custom Tag Input */}
               <div className="flex items-center gap-2 pt-1">
                 <input
-                  className="flex-1 rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-zinc-200 bg-white p-2 text-zinc-900 focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setCustomTagInput(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -4728,7 +4728,7 @@ function CreateDocumentModal({
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-6 py-2 font-bold text-white shadow-xs transition hover:bg-violet-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-6 py-2 font-bold text-white shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
               disabled={submitting || isUploading || !name.trim()}
               type="submit"
             >
@@ -4795,7 +4795,7 @@ function DocumentPreviewModal({
         <div className="flex items-center justify-between border-zinc-100 border-b px-6 py-4 dark:border-zinc-800">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
-              <FileText className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+              <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -4808,7 +4808,7 @@ function DocumentPreviewModal({
                 <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-bold text-[10px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   {document.documentType}
                 </span>
-                <span className="rounded-md bg-violet-50 px-2 py-0.5 font-bold text-[10px] text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
+                <span className="rounded-md bg-blue-50 px-2 py-0.5 font-bold text-[10px] text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                   {document.category}
                 </span>
               </div>
@@ -4886,7 +4886,7 @@ function DocumentPreviewModal({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50/70 p-12 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 <Boxes className="h-8 w-8" />
               </div>
               <h4 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -4902,7 +4902,7 @@ function DocumentPreviewModal({
               <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
                 {document.fileUrl ? (
                   <a
-                    className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2.5 font-bold text-white text-xs shadow-md transition hover:bg-violet-700"
+                    className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 font-bold text-white text-xs shadow-md transition hover:bg-blue-700"
                     download={document.name}
                     href={document.fileUrl}
                     rel="noreferrer"

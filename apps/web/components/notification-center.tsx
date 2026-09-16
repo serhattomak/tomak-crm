@@ -127,7 +127,7 @@ function NotificationItemRow({
       className={`group relative flex items-start gap-3 p-3.5 transition-colors ${
         item.read
           ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-          : "bg-violet-50/30 hover:bg-violet-50/60 dark:bg-violet-950/20 dark:hover:bg-violet-950/30"
+          : "bg-blue-50/30 hover:bg-blue-50/60 dark:bg-blue-950/20 dark:hover:bg-blue-950/30"
       }`}
     >
       <button
@@ -152,7 +152,7 @@ function NotificationItemRow({
                 {item.title}
               </span>
               {item.read ? null : (
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-600 dark:bg-violet-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
               )}
             </div>
             <span className="shrink-0 text-[10px] text-zinc-400">
@@ -169,7 +169,7 @@ function NotificationItemRow({
               <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-[9px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                 {item.badgeText}
               </span>
-              <span className="flex items-center gap-0.5 text-[10px] text-violet-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-violet-400">
+              <span className="flex items-center gap-0.5 text-[10px] text-blue-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-blue-400">
                 <span>Görüntüle</span>
                 <ExternalLink className="h-2.5 w-2.5" />
               </span>
@@ -271,7 +271,7 @@ function NotificationHeader({
   return (
     <div className="flex items-center justify-between border-zinc-100 border-b px-4 py-3 dark:border-zinc-800">
       <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+        <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
           <Bell className="h-4 w-4" />
         </div>
         <div>
@@ -296,7 +296,7 @@ function NotificationHeader({
             </span>
           </div>
           {unreadCount > 0 ? (
-            <p className="font-semibold text-[10px] text-violet-600 dark:text-violet-400">
+            <p className="font-semibold text-[10px] text-blue-600 dark:text-blue-400">
               {unreadCount} yeni okunmamış bildirim
             </p>
           ) : (
@@ -308,7 +308,7 @@ function NotificationHeader({
       <div className="flex items-center gap-1">
         <div className="relative">
           <button
-            className="flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50 px-2 py-1 font-bold text-[10px] text-violet-700 transition hover:bg-violet-100 active:scale-95 dark:border-violet-900/50 dark:bg-violet-950/40 dark:text-violet-300"
+            className="flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-2 py-1 font-bold text-[10px] text-blue-700 transition hover:bg-blue-100 active:scale-95 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300"
             onClick={onToggleTestMenu}
             title="Test Bildirimi Gönder"
             type="button"
@@ -336,7 +336,7 @@ function NotificationHeader({
 
         {unreadCount > 0 ? (
           <button
-            className="flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-[11px] text-violet-600 transition-colors hover:bg-violet-50 dark:text-violet-400 dark:hover:bg-violet-950/50"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-[11px] text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
             onClick={onMarkAllAsRead}
             title="Tümünü okundu işaretle"
             type="button"
@@ -478,8 +478,8 @@ export function NotificationCenter({
             <Bell className="h-4 w-4" />
             {unreadCount > 0 ? (
               <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-violet-600 ring-2 ring-white dark:ring-zinc-900" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-600 ring-2 ring-white dark:ring-zinc-900" />
               </span>
             ) : null}
           </button>

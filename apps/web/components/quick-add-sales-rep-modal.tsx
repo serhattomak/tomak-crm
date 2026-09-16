@@ -90,7 +90,7 @@ export function QuickAddSalesRepModal({
       >
         <div className="mb-4 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <UserPlus className="h-4 w-4" />
             </div>
             <div>
@@ -126,7 +126,7 @@ export function QuickAddSalesRepModal({
               </label>
               <input
                 autoFocus
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Örn: Can"
                 required
@@ -139,7 +139,7 @@ export function QuickAddSalesRepModal({
                 Soyad *
               </label>
               <input
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Örn: Özkan"
                 required
@@ -154,7 +154,7 @@ export function QuickAddSalesRepModal({
               E-Posta *
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="can.ozkan@sirket.com"
               required
@@ -179,7 +179,7 @@ export function QuickAddSalesRepModal({
               Ünvan
             </label>
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Satış Temsilcisi / Müşteri Yöneticisi"
               type="text"
@@ -196,7 +196,7 @@ export function QuickAddSalesRepModal({
               Vazgeç
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-1.5 font-semibold text-white shadow-xs transition-all hover:bg-violet-700 active:scale-95 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >

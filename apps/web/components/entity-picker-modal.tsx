@@ -153,7 +153,7 @@ export function EntityPickerModal<T = unknown>({
           <div className="flex items-center gap-1.5">
             {onAddNew && (
               <button
-                className="flex items-center gap-1 rounded-xl bg-violet-50 px-2.5 py-1.5 font-bold text-[11px] text-violet-700 transition hover:bg-violet-100 dark:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
+                className="flex items-center gap-1 rounded-xl bg-blue-50 px-2.5 py-1.5 font-bold text-[11px] text-blue-700 transition hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300 dark:hover:bg-blue-900"
                 onClick={() => {
                   handleClose();
                   onAddNew();
@@ -180,7 +180,7 @@ export function EntityPickerModal<T = unknown>({
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
             <input
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pr-4 pl-9 font-medium text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
               ref={inputRef}
@@ -208,7 +208,7 @@ export function EntityPickerModal<T = unknown>({
               </p>
               {onAddNew && (
                 <button
-                  className="mt-2 inline-flex items-center gap-1 font-bold text-violet-600 text-xs hover:underline dark:text-violet-400"
+                  className="mt-2 inline-flex items-center gap-1 font-bold text-blue-600 text-xs hover:underline dark:text-blue-400"
                   onClick={() => {
                     handleClose();
                     onAddNew();
@@ -230,7 +230,7 @@ export function EntityPickerModal<T = unknown>({
                 <div
                   className={`flex cursor-pointer items-center justify-between rounded-xl p-2.5 transition-all ${
                     isSelected
-                      ? "border border-violet-200/80 bg-violet-50/80 dark:border-violet-800 dark:bg-violet-950/40"
+                      ? "border border-blue-200/80 bg-blue-50/80 dark:border-blue-800 dark:bg-blue-950/40"
                       : "border border-transparent hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60"
                   }`}
                   key={item.id}
@@ -248,7 +248,7 @@ export function EntityPickerModal<T = unknown>({
                     ) : item.avatar?.text ? (
                       <div
                         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl font-bold text-white text-xs shadow-xs ${
-                          item.avatar.color || "bg-violet-600"
+                          item.avatar.color || "bg-blue-600"
                         }`}
                       >
                         {item.avatar.text}
@@ -284,7 +284,7 @@ export function EntityPickerModal<T = unknown>({
                   {/* Selection Status */}
                   <div className="flex shrink-0 items-center pl-2">
                     {isSelected ? (
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-600 text-white shadow-xs">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white shadow-xs">
                         <Check className="h-3 w-3" />
                       </div>
                     ) : (
@@ -357,7 +357,7 @@ export function SalesRepPicker({
     () =>
       employees.map((emp) => ({
         avatar: {
-          color: "bg-gradient-to-br from-violet-600 to-indigo-600",
+          color: "bg-gradient-to-br from-blue-600 to-indigo-600",
           image: emp.avatarUrl,
           text: (emp.firstName?.[0] || emp.fullName?.[0] || "T").toUpperCase(),
         },
@@ -381,7 +381,7 @@ export function SalesRepPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"
@@ -389,7 +389,7 @@ export function SalesRepPicker({
           <div className="flex min-w-0 items-center gap-2 truncate">
             {selectedEmployee ? (
               <>
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-violet-600 font-bold text-[10px] text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-[10px] text-white">
                   {(
                     selectedEmployee.firstName?.[0] ||
                     selectedEmployee.fullName?.[0] ||
@@ -514,7 +514,7 @@ export function CustomerPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"
@@ -641,7 +641,7 @@ export function ProductPicker({
     <>
       <div className={`relative flex items-center ${className || ""}`}>
         <button
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 font-medium text-xs text-zinc-900 shadow-2xs transition-all hover:border-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700"
           disabled={disabled}
           onClick={() => setIsOpen(true)}
           type="button"
