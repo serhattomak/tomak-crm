@@ -1,5 +1,6 @@
 "use client";
 
+import { Combobox } from "@workspace/ui/components/combobox";
 import {
   Dialog,
   DialogClose,
@@ -7,6 +8,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { PageContainer } from "@workspace/ui/components/page-container";
+import { SelectField } from "@workspace/ui/components/select";
 import {
   ArrowRight,
   Briefcase,
@@ -318,17 +320,19 @@ export default function ProjectsPage() {
             />
           </div>
 
-          <select
-            className="rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-2 font-medium text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-            onChange={(e) => setStatusFilter(e.target.value)}
+          <SelectField
+            aria-label="Durum filtresi"
+            onChange={setStatusFilter}
+            options={[
+              { label: "Aktif", value: "Active" },
+              { label: "Planlanıyor", value: "Planning" },
+              { label: "Beklemede", value: "OnHold" },
+              { label: "Tamamlandı", value: "Completed" },
+            ]}
+            placeholder="Tüm Durumlar"
+            triggerClassName="px-3 py-2 font-medium"
             value={statusFilter}
-          >
-            <option value="">Tüm Durumlar</option>
-            <option value="Active">Aktif</option>
-            <option value="Planning">Planlanıyor</option>
-            <option value="OnHold">Beklemede</option>
-            <option value="Completed">Tamamlandı</option>
-          </select>
+          />
         </div>
 
         <div className="flex items-center gap-1.5 border-zinc-100 border-t pt-3 sm:border-t-0 sm:pt-0 dark:border-zinc-800">
@@ -632,36 +636,35 @@ export default function ProjectsPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Proje Lideri
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setLeadUserId(e.target.value)}
+                  <Combobox
+                    aria-label="Proje Lideri"
+                    onChange={setLeadUserId}
+                    options={[
+                      { label: "Seçiniz", value: "" },
+                      ...employees.map((emp) => ({
+                        label: `${emp.fullName} (${emp.title || "Temsilci"})`,
+                        value: emp.id,
+                      })),
+                    ]}
+                    placeholder="Seçiniz"
                     value={leadUserId}
-                  >
-                    <option value="">Seçiniz</option>
-                    {employees.map((emp) => (
-                      <option key={emp.id} value={emp.id}>
-                        {emp.fullName} ({emp.title || "Temsilci"})
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Müşteri (Opsiyonel)
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setCustomerId(e.target.value)}
+                  <Combobox
+                    aria-label="Müşteri"
+                    onChange={setCustomerId}
+                    options={[
+                      { label: "İlişkisiz (Dahili)", value: "" },
+                      ...customers.map((c) => ({ label: c.name, value: c.id })),
+                    ]}
+                    placeholder="İlişkisiz (Dahili)"
                     value={customerId}
-                  >
-                    <option value="">İlişkisiz (Dahili)</option>
-                    {customers.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -683,15 +686,16 @@ export default function ProjectsPage() {
                   <label className="font-medium text-zinc-700 dark:text-zinc-300">
                     Durum
                   </label>
-                  <select
-                    className="w-full rounded-xl border border-zinc-200 bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-                    onChange={(e) => setStatus(e.target.value)}
+                  <SelectField
+                    aria-label="Durum"
+                    onChange={setStatus}
+                    options={[
+                      { label: "Aktif", value: "Active" },
+                      { label: "Planlanıyor", value: "Planning" },
+                      { label: "Beklemede", value: "OnHold" },
+                    ]}
                     value={status}
-                  >
-                    <option value="Active">Aktif</option>
-                    <option value="Planning">Planlanıyor</option>
-                    <option value="OnHold">Beklemede</option>
-                  </select>
+                  />
                 </div>
               </div>
 
